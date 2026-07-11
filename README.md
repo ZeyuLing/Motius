@@ -26,6 +26,10 @@ results, and qualitative SMPL renders.
 ### MDM: Human Motion Diffusion Model
 
 <p align="center">
+  <video src="./assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.mp4" controls muted loop width="720"></video>
+</p>
+
+<p align="center">
   <a href="assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.mp4">
     <img src="assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.gif" width="56%" alt="MDM SMPL mesh preview">
   </a>
