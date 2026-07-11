@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/brand/motius-logo.png" width="520" alt="Motius logo">
+  <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/brand/motius-logo-readme.png" width="640" alt="Motius logo">
 </p>
 
 # Motius

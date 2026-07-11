@@ -5,6 +5,7 @@
 ## Logo
 
 - `motius-logo.png`: primary horizontal lockup.
+- `motius-logo-readme.png`: cropped README/header version.
 - `motius-preview.png`: preview copy used in docs and review threads.
 
 ## Visual Idea
