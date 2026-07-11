@@ -20,15 +20,21 @@ methods.
 
 ## Preview
 
+Click each preview to open the full MP4 render.
+
 <table>
   <tr>
     <td width="50%">
-      <video src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.mp4" controls muted loop width="100%"></video>
+      <a href="../../assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.mp4">
+        <img src="../../assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.gif" width="100%" alt="HumanML3D MDM SMPL mesh preview">
+      </a>
       <br>
       <sub>HumanML3D test sample 000708: "she jumps up and down, kicking her heels in the air."</sub>
     </td>
     <td width="50%">
-      <video src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/mdm/mdm_motionhub_elegant_kick_smpl_mesh.mp4" controls muted loop width="100%"></video>
+      <a href="../../assets/model_zoo/mdm/mdm_motionhub_elegant_kick_smpl_mesh.mp4">
+        <img src="../../assets/model_zoo/mdm/mdm_motionhub_elegant_kick_smpl_mesh.gif" width="100%" alt="MotionHub MDM SMPL mesh preview">
+      </a>
       <br>
       <sub>MotionHub test sample: Elegant Kick A05 001.</sub>
     </td>

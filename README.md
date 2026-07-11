@@ -23,33 +23,24 @@ results, and qualitative SMPL renders.
 
 ## Model Zoo
 
-<table>
-  <thead>
-    <tr>
-      <th align="left" width="24%">Method</th>
-      <th align="left" width="44%">SMPL Preview</th>
-      <th align="left" width="32%">Release</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>MDM</strong><br>
-        Human Motion Diffusion Model<br>
-        <sub>Text-to-Motion, HumanML3D-263, 20 fps</sub>
-      </td>
-      <td>
-        <video src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.mp4" controls muted loop width="100%"></video>
-      </td>
-      <td>
-        <a href="docs/model_zoo/mdm.md"><strong>Model Card</strong></a><br>
-        <a href="https://huggingface.co/ZeyuLing/hftrainer-mdm-humanml3d">Checkpoint</a><br>
-        <a href="https://arxiv.org/abs/2209.14916">Paper</a> |
-        <a href="https://github.com/GuyTevet/motion-diffusion-model">Original GitHub</a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+### MDM: Human Motion Diffusion Model
+
+<p align="center">
+  <a href="assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.mp4">
+    <img src="assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.gif" width="56%" alt="MDM SMPL mesh preview">
+  </a>
+</p>
+
+<p align="center">
+  <a href="docs/model_zoo/mdm.md"><strong>Model Card</strong></a> |
+  <a href="https://huggingface.co/ZeyuLing/hftrainer-mdm-humanml3d">Checkpoint</a> |
+  <a href="https://arxiv.org/abs/2209.14916">Paper</a> |
+  <a href="https://github.com/GuyTevet/motion-diffusion-model">Original GitHub</a>
+</p>
+
+Text-to-Motion baseline packaged with the Motius inference pipeline, HumanML3D
+checkpoint loading, HumanML3D-263 motion representation, evaluation results,
+and SMPL mesh render examples.
 
 ## What Is Included
 
