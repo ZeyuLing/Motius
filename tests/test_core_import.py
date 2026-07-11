@@ -10,3 +10,13 @@ def test_core_import_and_registration():
     assert ModelBundle is not None
     assert BasePipeline is not None
     assert BaseTrainer is not None
+
+
+def test_mdm_pipeline_import_and_registration():
+    from motius.models.mdm import MDMBundle
+    from motius.pipelines.mdm import MDMPipeline
+    from motius.registry import MODEL_BUNDLES, PIPELINES
+
+    assert MDMPipeline.BUNDLE_CLS == "motius.models.mdm.MDMBundle"
+    assert PIPELINES.get("MDMPipeline") is MDMPipeline
+    assert MODEL_BUNDLES.get("MDMBundle") is MDMBundle
