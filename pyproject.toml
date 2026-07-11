@@ -26,7 +26,7 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["hftrainer*", "motius*"]
+include = ["motius*"]
 namespaces = false
 
 [tool.pytest.ini_options]

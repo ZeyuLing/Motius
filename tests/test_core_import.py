@@ -3,9 +3,9 @@ def test_core_import_and_registration():
 
     motius.register_all_modules()
 
-    from hftrainer.models import ModelBundle
-    from hftrainer.pipelines import BasePipeline
-    from hftrainer.trainers import BaseTrainer
+    from motius.models import ModelBundle
+    from motius.pipelines import BasePipeline
+    from motius.trainers import BaseTrainer
 
     assert ModelBundle is not None
     assert BasePipeline is not None

@@ -4,42 +4,63 @@
 
 # Motius
 
-Motius is a reproducible framework for human motion models.
+Motius is a modular framework for training, evaluating, and serving human
+motion generation models. It provides the shared runtime layer used across
+motion model research: registries, model bundles, trainers, pipelines, hooks,
+distributed runners, dataset transforms, evaluators, and visualization bases.
 
-This repository is being opened incrementally. The first public push contains
-the framework core: registries, model bundles, trainers, pipelines, hooks,
-distributed runner utilities, visualization bases, and minimal runtime configs.
-Method packages, evaluators, model cards, checkpoints, and datasets will be
-reviewed and added in separate commits.
+This repository is being opened incrementally. The current public release
+contains the reusable core framework. Method implementations, model cards,
+checkpoints, datasets, and benchmark reports will be reviewed and added in
+separate commits.
 
-## What Is Included Now
+## Framework At A Glance
 
-- Registry system for models, bundles, trainers, pipelines, datasets, hooks,
-  evaluators, and visualizers.
-- `ModelBundle`, `BaseTrainer`, and `BasePipeline` abstractions.
-- Accelerate-based training runner and loop helpers.
-- Core hooks for checkpoints, EMA, logging, and LR scheduling.
-- Dataset transform bases and visualization bases.
-- Minimal config templates under `configs/_base_`.
+| Area | Purpose |
+| ---- | ------- |
+| `motius.registry` | Central registries for models, bundles, trainers, pipelines, datasets, hooks, evaluators, and visualizers. |
+| `motius.models` | `ModelBundle` abstraction and model utility functions. |
+| `motius.trainers` | Reusable trainer base classes for method-specific training logic. |
+| `motius.pipelines` | Pipeline base classes for inference and task-facing APIs. |
+| `motius.runner` | Accelerate-based distributed training runner and train loops. |
+| `motius.datasets` | Dataset bases and reusable transform primitives. |
+| `motius.hooks` | Checkpoint, EMA, logging, and learning-rate scheduler hooks. |
+| `motius.evaluation` | Evaluator base interfaces. |
+| `motius.visualization` | File and TensorBoard visualization bases. |
+| `configs/_base_` | Minimal runtime config templates. |
+| `tools/` | Command-line training entry points. |
 
-## Namespace Note
+The detailed architecture, extension points, and package conventions live in
+the formal documentation:
 
-The public project name is **Motius**. The code currently keeps the historical
-`hftrainer` Python namespace for compatibility with the internal codebase while
-method packages are migrated. A lightweight `motius` namespace is also provided
-and currently re-exports the core framework API.
+- [Architecture](docs/architecture.md)
+- [Getting Started](docs/getting_started.md)
+- [Development Guide](docs/development.md)
+
+## Quick Start
+
+```bash
+python -m pip install -e ".[dev]"
+```
+
+Run a lightweight import and registration check:
+
+```bash
+python - <<'PY'
+import motius
+
+motius.register_all_modules()
+print("Motius core import OK")
+PY
+```
+
+Run the current smoke tests:
+
+```bash
+pytest -q
+```
 
 ## Development Status
 
 This is an early public core drop. APIs may still change while we separate
 research-specific method code from reusable framework code.
-
-## Quick Smoke Test
-
-```bash
-python - <<'PY'
-import motius
-motius.register_all_modules()
-print("Motius core import OK")
-PY
-```

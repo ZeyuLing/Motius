@@ -1,5 +1,5 @@
 """
-tools/train.py — Main training entry point for hftrainer.
+tools/train.py — Main training entry point for motius.
 
 Usage:
     python tools/train.py configs/hymotion_m2m/hymotion_m2m_caption_local_phase2.py [--work-dir WORK_DIR]
@@ -37,24 +37,19 @@ def _bind_local_cuda_device():
 
 _bind_local_cuda_device()
 
-# Pre-import the HuggingFace `datasets` library before hftrainer so that
-# `hftrainer.datasets` does not shadow it in sys.modules.
+# Pre-import the HuggingFace `datasets` library before motius so that
+# `motius.datasets` does not shadow it in sys.modules.
 try:
     import datasets as _hf_datasets  # noqa: F401
 except ImportError:
     pass
 
-# Ensure all registries are populated even when the import-light escape hatch
-# (HFTRAINER_SKIP_AUTOREGISTER) is set. Idempotent / cheap when already done.
-import hftrainer  # noqa: E402
-hftrainer.register_all_modules()
-from hftrainer.datasets.motion.motionhub.multitask_multiagent_dataset import (  # noqa: E402,F401
-    MotionhubMultiTaskMultiAgentDataset,
-)
+import motius  # noqa: E402
+motius.register_all_modules()
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Train a model with hftrainer')
+    parser = argparse.ArgumentParser(description='Train a model with motius')
     parser.add_argument('config', help='Path to config file (.py)')
     parser.add_argument('--work-dir', '--work_dir', dest='work_dir',
                         help='Override work_dir in config')
@@ -107,13 +102,13 @@ def main():
 
     os.makedirs(cfg.work_dir, exist_ok=True)
 
-    from hftrainer.utils.logger import get_logger
+    from motius.utils.logger import get_logger
     logger = get_logger()
     logger.info(f"Config: {args.config}")
     logger.info(f"Work dir: {cfg.work_dir}")
 
     # Build runner and train
-    from hftrainer import AccelerateRunner
+    from motius.runner import AccelerateRunner
     try:
         runner = AccelerateRunner.from_cfg(cfg)
         runner.train()
