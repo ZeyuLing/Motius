@@ -30,11 +30,11 @@ separate commits.
 | `configs/_base_` | Minimal runtime config templates. |
 | `tools/` | Command-line training entry points. |
 
-## Released Pipelines
+## Model Zoo
 
-| Method | Task | Documentation |
-| ------ | ---- | ------------- |
-| MDM | Text-to-Motion | [MDM Pipeline](docs/model_zoo/mdm.md) |
+| Method | Task | Model Card |
+| ------ | ---- | ---------- |
+| MDM | Text-to-Motion | [MDM](docs/model_zoo/mdm.md) |
 
 The detailed architecture, extension points, and package conventions live in
 the formal documentation:
