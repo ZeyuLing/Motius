@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "motius"
+version = "0.1.0"
+description = "A reproducible framework for human motion models"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "accelerate>=0.20",
+    "datasets>=2.0",
+    "diffusers>=0.20",
+    "mmengine>=0.7",
+    "peft>=0.5",
+    "safetensors>=0.3",
+    "torch>=2.0",
+    "transformers>=4.30",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["hftrainer*", "motius*"]
+namespaces = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "smoke: startup smoke tests for training and inference entry points",
+    "gpu: tests that require CUDA-capable hardware and local pretrained checkpoints",
+]
