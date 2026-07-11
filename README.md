@@ -23,28 +23,21 @@ results, and qualitative SMPL renders.
 
 ## Model Zoo
 
-### MDM: Human Motion Diffusion Model
+| Method | Task | Motion Rep. | Checkpoint | Card | Upstream |
+| ------ | ---- | ----------- | ---------- | ---- | -------- |
+| MDM | Text-to-Motion | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-mdm-humanml3d) | [Model Card](docs/model_zoo/mdm.md) | [Paper](https://arxiv.org/abs/2209.14916) / [Code](https://github.com/GuyTevet/motion-diffusion-model) |
+
+### Preview Gallery
 
 <p align="center">
-  <video src="./assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.mp4" controls muted loop width="720"></video>
-</p>
-
-<p align="center">
-  <a href="assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.mp4">
-    <img src="assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.gif" width="56%" alt="MDM SMPL mesh preview">
+  <a href="assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4">
+    <img src="assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.gif" width="48%" alt="MDM roundhouse-kick SMPL mesh preview">
   </a>
 </p>
 
 <p align="center">
-  <a href="docs/model_zoo/mdm.md"><strong>Model Card</strong></a> |
-  <a href="https://huggingface.co/ZeyuLing/hftrainer-mdm-humanml3d">Checkpoint</a> |
-  <a href="https://arxiv.org/abs/2209.14916">Paper</a> |
-  <a href="https://github.com/GuyTevet/motion-diffusion-model">Original GitHub</a>
+  <sub>MDM on HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." Click to open the MP4 render.</sub>
 </p>
-
-Text-to-Motion baseline packaged with the Motius inference pipeline, HumanML3D
-checkpoint loading, HumanML3D-263 motion representation, evaluation results,
-and SMPL mesh render examples.
 
 ## What Is Included
 

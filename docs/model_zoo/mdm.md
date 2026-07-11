@@ -20,26 +20,17 @@ methods.
 
 ## Preview
 
-Click each preview to open the full MP4 render.
+Click the preview to open the full MP4 render.
 
-<table>
-  <tr>
-    <td width="50%">
-      <a href="../../assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.mp4">
-        <img src="../../assets/model_zoo/mdm/mdm_humanml3d_000708_smpl_mesh.gif" width="100%" alt="HumanML3D MDM SMPL mesh preview">
-      </a>
-      <br>
-      <sub>HumanML3D test sample 000708: "she jumps up and down, kicking her heels in the air."</sub>
-    </td>
-    <td width="50%">
-      <a href="../../assets/model_zoo/mdm/mdm_motionhub_elegant_kick_smpl_mesh.mp4">
-        <img src="../../assets/model_zoo/mdm/mdm_motionhub_elegant_kick_smpl_mesh.gif" width="100%" alt="MotionHub MDM SMPL mesh preview">
-      </a>
-      <br>
-      <sub>MotionHub test sample: Elegant Kick A05 001.</sub>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <a href="../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4">
+    <img src="../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.gif" width="56%" alt="HumanML3D MDM roundhouse-kick SMPL mesh preview">
+  </a>
+</p>
+
+<p align="center">
+  <sub>HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot."</sub>
+</p>
 
 ## Release Snapshot
 
