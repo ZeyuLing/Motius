@@ -10,6 +10,7 @@
 
 <p align="center">
   <a href="#model-zoo">Model Zoo</a> |
+  <a href="#evaluator-zoo">Evaluator Zoo</a> |
   <a href="docs/getting_started.md">Getting Started</a> |
   <a href="docs/architecture.md">Architecture</a> |
   <a href="docs/development.md">Development Guide</a>
@@ -37,6 +38,12 @@ results, and qualitative SMPL renders.
 | KIMODO | Text + Kinematic Control | SOMA / G1 / SMPL-X | [SOMA-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-soma-rp) / [SMPLX-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-smplx-rp) | [Model Card](docs/model_zoo/kimodo.md) | [Paper](https://arxiv.org/abs/2603.15546) / [Code](https://github.com/nv-tlabs/kimodo) |
 | MLD | Text-to-Motion | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-mld-humanml3d) | [Model Card](docs/model_zoo/mld.md) | [Paper](https://arxiv.org/abs/2212.04048) / [Code](https://github.com/ChenFengYe/motion-latent-diffusion) |
 | MotionLCM | Text-to-Motion | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionlcm-humanml3d) | [Model Card](docs/model_zoo/motionlcm.md) | [Paper](https://arxiv.org/abs/2404.19759) / [Code](https://github.com/Dai-Wenxun/MotionLCM) |
+
+## Evaluator Zoo
+
+| Evaluator | Purpose | Motion Rep. | Checkpoint | Card | Reference |
+| --------- | ------- | ----------- | ---------- | ---- | --------- |
+| MotionCLIP-135 | Text-motion embedding, retrieval, pairwise score | SMPL-22 135-dim | Pending HF artifact | [Evaluator Card](docs/evaluator_zoo/motion_clip.md) | [Paper](https://arxiv.org/abs/2203.08063) / [Code](https://github.com/GuyTevet/MotionCLIP) |
 
 ### Preview Gallery
 
