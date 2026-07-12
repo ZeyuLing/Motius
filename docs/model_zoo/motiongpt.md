@@ -61,9 +61,11 @@ Protocol: HumanML3D official-test caption protocol, HumanML3D-263 generation
 converted through the shared SMPL/MotionStreamer path. For FID and MM-Dist,
 lower is better.
 
-| Evaluator | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| --------- | --: | --: | --: | --: | ------: | --------: |
-| MotionStreamer-272 | 0.494 | 0.635 | 0.694 | 23.681 | 19.678 | 25.541 |
+| Evaluator | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | - | - | - | - | - | - | Pending |
+| MotionStreamer Evaluator | 0.494 | 0.635 | 0.694 | 23.681 | 19.678 | 25.541 | Measured |
+| Motius Joint-Position Evaluator | - | - | - | - | - | - | Pending |
 
 Physical diagnostics:
 

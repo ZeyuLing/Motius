@@ -65,9 +65,11 @@ Protocol: HumanML3D official-test caption protocol, HumanML3D-263 generation
 converted through the shared SMPL/MotionStreamer path. For FID and MM-Dist,
 lower is better.
 
-| Evaluator | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| --------- | --: | --: | --: | --: | ------: | --------: |
-| MotionStreamer-272 | 0.474 | 0.650 | 0.731 | 36.377 | 20.002 | 25.178 |
+| Evaluator | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | - | - | - | - | - | - | Pending |
+| MotionStreamer Evaluator | 0.474 | 0.650 | 0.731 | 36.377 | 20.002 | 25.178 | Measured |
+| Motius Joint-Position Evaluator | - | - | - | - | - | - | Pending |
 
 Physical diagnostics:
 
@@ -78,7 +80,7 @@ Physical diagnostics:
 ## TP2M Results
 
 FlowMDM also supports prefix-conditioned TP2M evaluation with the same
-MotionStreamer-272 evaluator.
+MotionStreamer Evaluator.
 
 | Condition Frames | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
 | ----------------: | ------: | --: | --: | --: | --: | ------: | --------: |

@@ -21,18 +21,16 @@ methods.
 ## Preview
 
 <p align="center">
-  <a href="../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4">
-    <img src="../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh_poster.png" width="64%" alt="HumanML3D MDM roundhouse-kick SMPL mesh MP4 preview">
-  </a>
+  <img src="../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif" width="64%" alt="HumanML3D MDM roundhouse-kick SMPL mesh demo">
 </p>
 
 <p align="center">
-  <sub>MP4 preview, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot."</sub>
+  <sub>1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source is kept under <code>assets/model_zoo/mdm/</code>.</sub>
 </p>
 
-<!-- GitHub README/model-card pages only render inline video players for uploaded
-     GitHub attachment URLs. Repository-local MP4 files are kept under assets/ and
-     exposed through poster links until an attachment URL is available. -->
+<!-- GitHub README/model-card pages only render inline MP4 players for uploaded
+     GitHub attachment URLs. Until those attachment URLs are available, cards use
+     verified 30fps GIF demos and keep MP4 sources under assets/. -->
 
 ## Release Snapshot
 
@@ -82,28 +80,20 @@ denormalized to HumanML3D physical scale.
 
 ## Evaluation Results
 
-### HumanML3D-263 Official Test
+Protocol: HumanML3D official test split with selected captions unless stated
+otherwise. For FID and MM-Dist, lower is better.
 
-Protocol: HumanML3D official test split, selected caption, native 263-dim
-motion, one repeat. For FID and MM-Dist, lower is better.
+| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | 1,985 | 0.411 | 0.589 | 0.701 | 1.374 | 3.680 | 8.652 | Measured |
+| MotionStreamer Evaluator | - | - | - | - | - | - | - | Pending |
+| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
 
-| Split | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| ----- | ------- | ---: | ---: | ---: | ---: | ------: | --------: |
-| MDM | 1,985 | 0.411 | 0.589 | 0.701 | 1.374 | 3.680 | 8.652 |
-| GT | 1,985 | 0.523 | 0.710 | 0.804 | - | 2.939 | 9.207 |
+Ground-truth sanity row for the HumanML3D Official evaluator:
 
-### MotionCLIP Evaluator, SMPL-Aligned Outputs
-
-Protocol: generated motions retargeted to the shared SMPL representation and
-evaluated with the MotionCLIP evaluator. Results use 20 recall batches. For
-FID and MM-Dist, lower is better.
-
-| Split | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| ----- | ------- | ---: | ---: | ---: | ---: | ------: | --------: |
-| HumanML3D | 1,974 | 0.290 | 0.432 | 0.526 | 0.349 | 1.181 | 22.289 |
-| HumanML3D GT | 1,974 | 0.801 | 0.920 | 0.956 | - | 1.026 | 21.556 |
-| MotionHub | 1,513 | 0.144 | 0.242 | 0.314 | 0.436 | 1.233 | 22.474 |
-| MotionHub GT | 1,513 | 0.646 | 0.794 | 0.858 | - | 1.100 | 21.400 |
+| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
+| --------- | ------: | --: | --: | --: | --: | ------: | --------: |
+| HumanML3D Official GT | 1,985 | 0.523 | 0.710 | 0.804 | - | 2.939 | 9.207 |
 
 ## Motion Representation
 

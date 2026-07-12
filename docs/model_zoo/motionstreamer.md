@@ -75,10 +75,17 @@ denormalized to MotionStreamer-272 physical scale.
 Protocol: HumanML3D official-test selected-caption protocol in native
 MotionStreamer-272 space. For FID and MM-Dist, lower is better.
 
+| Evaluator | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | - | - | - | - | - | - | Pending |
+| MotionStreamer Evaluator | 0.631 | 0.802 | 0.859 | 11.790 | 16.081 | 27.284 | Paper row |
+| Motius Joint-Position Evaluator | - | - | - | - | - | - | Pending |
+
+Ground-truth sanity row:
+
 | Evaluator | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
 | --------- | --: | --: | --: | --: | ------: | --------: |
-| MotionStreamer-272 paper row | 0.631 | 0.802 | 0.859 | 11.790 | 16.081 | 27.284 |
-| GT real sanity row | 0.706 | - | 0.911 | 0.000 | 15.010 | 27.360 |
+| MotionStreamer Evaluator GT | 0.706 | - | 0.911 | 0.000 | 15.010 | 27.360 |
 
 The public Motius card keeps the paper row visible because the current packaged
 runtime reproduces the official architecture and checkpoint layout. Full-set

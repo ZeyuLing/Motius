@@ -58,10 +58,11 @@ decides sequence length through its EOS token.
 Protocol: HumanML3D official test split, native 263-dim motion, first caption,
 model-chosen length. For FID and MM-Dist, lower is better.
 
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| --------- | ------: | ---: | ---: | ---: | ---: | ------: | --------: |
-| HumanML3D-263 | 3,940 | 0.470 | 0.660 | 0.761 | 0.176 | 3.238 | 9.563 |
-| MotionStreamer-272 | 4,042 | 0.552 | 0.706 | 0.779 | 25.491 | 19.091 | 25.595 |
+| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------: | ---: | ---: | ---: | ---: | ------: | --------: | ------ |
+| HumanML3D Official | 3,940 | 0.470 | 0.660 | 0.761 | 0.176 | 3.238 | 9.563 | Measured |
+| MotionStreamer Evaluator | 4,042 | 0.552 | 0.706 | 0.779 | 25.491 | 19.091 | 25.595 | Measured |
+| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
 
 ## Motion Representation
 

@@ -88,10 +88,11 @@ Protocol: HumanML3D official-test selected-caption protocol. KIMODO SMPL-X
 output is converted through `SMPL-X -> SMPL motion_135 -> evaluator input`.
 For FID and MM-Dist, lower is better.
 
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| --------- | ------: | --: | --: | --: | --: | ------: | --------: |
-| HumanML3D-263 | 2,478 | 0.314 | 0.482 | 0.593 | 1.843 | 4.281 | 9.149 |
-| MotionStreamer-272 | 7,392 | 0.323 | 0.460 | 0.541 | 143.917 | 21.707 | 25.316 |
+| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | 2,478 | 0.314 | 0.482 | 0.593 | 1.843 | 4.281 | 9.149 | Measured |
+| MotionStreamer Evaluator | 7,392 | 0.323 | 0.460 | 0.541 | 143.917 | 21.707 | 25.316 | Measured |
+| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
 
 ## TP2M Results
 

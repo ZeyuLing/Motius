@@ -60,14 +60,15 @@ Protocol: HumanML3D official test split, native 263-dim motion, first caption,
 model-chosen length unless a fixed protocol length is supplied. For FID and
 MM-Dist, lower is better.
 
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| --------- | ------: | ---: | ---: | ---: | ---: | ------: | --------: |
-| HumanML3D-263 | 3,970 | 0.516 | 0.709 | 0.804 | 0.097 | 2.990 | 9.460 |
-| MotionStreamer-272 | 7,392 | 0.485 | 0.650 | 0.731 | 114.869 | 19.411 | 25.427 |
+| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------: | ---: | ---: | ---: | ---: | ------: | --------: | ------ |
+| HumanML3D Official | 3,970 | 0.516 | 0.709 | 0.804 | 0.097 | 2.990 | 9.460 | Measured |
+| MotionStreamer Evaluator | 7,392 | 0.485 | 0.650 | 0.731 | 114.869 | 19.411 | 25.427 | Measured |
+| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
 
-The HumanML3D-263 result is close to the released MoMask paper metrics
+The HumanML3D Official result is close to the released MoMask paper metrics
 (R@1/R@2/R@3 0.521/0.713/0.807, FID 0.045, MM-Dist 2.958, Diversity 9.620).
-The MotionStreamer-272 row is retained as a cross-representation diagnostic;
+The MotionStreamer Evaluator row is retained as a cross-representation diagnostic;
 it includes the extra HumanML3D-263 to SMPL/MotionStreamer conversion path.
 
 ## Motion Representation

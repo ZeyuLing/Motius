@@ -69,6 +69,12 @@ global translation plus SMPL-H rotations in row-layout 6D form.
 Public leaderboard metrics are pending until the self-contained DART checkpoint
 and SMPL render/evaluation conversion are published.
 
+| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | - | - | - | - | - | - | - | Pending |
+| MotionStreamer Evaluator | - | - | - | - | - | - | - | Pending |
+| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
+
 ## Motion Representation
 
 The pipeline returns the shared SMPL-H `motion_135` bridge:

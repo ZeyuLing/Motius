@@ -62,11 +62,20 @@ Protocol: HumanML3D official-test caption protocol, native MotionStreamer-272
 evaluation, `4,042` generated files and `4,032` evaluator-consumed samples
 after the standard R-Precision batching. For FID and MM-Dist, lower is better.
 
+| Evaluator | Model | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ----- | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | 7B train-only | - | - | - | - | - | - | Pending |
+| HumanML3D Official | 3B train-only | - | - | - | - | - | - | Pending |
+| MotionStreamer Evaluator | 7B train-only | 0.740 | 0.878 | 0.924 | 3.081 | 15.371 | 27.575 | Measured |
+| MotionStreamer Evaluator | 3B train-only | 0.740 | 0.877 | 0.923 | 3.066 | 15.381 | 27.560 | Measured |
+| Motius Joint-Position Evaluator | 7B train-only | - | - | - | - | - | - | Pending |
+| Motius Joint-Position Evaluator | 3B train-only | - | - | - | - | - | - | Pending |
+
+Ground-truth sanity row:
+
 | Evaluator | Model | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
 | --------- | ----- | --: | --: | --: | --: | ------: | --------: |
-| MotionStreamer-272 | 7B train-only | 0.740 | 0.878 | 0.924 | 3.081 | 15.371 | 27.575 |
-| MotionStreamer-272 | 3B train-only | 0.740 | 0.877 | 0.923 | 3.066 | 15.381 | 27.560 |
-| MotionStreamer-272 GT | Real motions | 0.778 | 0.906 | 0.946 | 0.000 | 14.820 | 27.853 |
+| MotionStreamer Evaluator | Real motions | 0.778 | 0.906 | 0.946 | 0.000 | 14.820 | 27.853 |
 
 ## Motion Representation
 

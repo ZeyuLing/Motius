@@ -75,10 +75,11 @@ from the corrected caption, while semantic evaluators are computed against the
 same corrected caption protocol as other methods. For FID and MM-Dist, lower is
 better.
 
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| --------- | ------: | ---: | ---: | ---: | ---: | ------: | --------: |
-| MotionStreamer-272, HML round-trip GT | 4,042 | 0.429 | 0.569 | 0.652 | 152.210 | 21.074 | 24.180 |
-| MotionCLIP-135 no-L2, HML round-trip GT | 4,042 | 0.357 | 0.499 | 0.589 | 457.544 | 44.410 | 21.681 |
+| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------: | ---: | ---: | ---: | ---: | ------: | --------: | ------ |
+| HumanML3D Official | - | - | - | - | - | - | - | Pending |
+| MotionStreamer Evaluator, HML round-trip GT | 4,042 | 0.429 | 0.569 | 0.652 | 152.210 | 21.074 | 24.180 | Measured |
+| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
 
 ### Physical Diagnostics
 

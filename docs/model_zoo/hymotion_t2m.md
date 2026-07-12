@@ -62,19 +62,18 @@ temporal smoothing by default.
 Protocol: HumanML3D official-test selected-caption protocol. For FID and
 MM-Dist, lower is better.
 
-### MotionStreamer-272 Evaluator
+| Evaluator | Variant | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | Full | 0.561 | 0.761 | 0.853 | 0.103 | 2.532 | 10.031 | Measured |
+| MotionStreamer Evaluator | Full | 0.737 | 0.881 | 0.929 | 16.021 | 14.789 | 27.187 | Measured |
+| Motius Joint-Position Evaluator | Full | - | - | - | - | - | - | Pending |
 
-| Variant | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| ------- | --: | --: | --: | --: | ------: | --------: |
-| Full | 0.737 | 0.881 | 0.929 | 16.021 | 14.789 | 27.187 |
-| GT real | 0.706 | 0.857 | 0.911 | 0.000 | 15.007 | 27.367 |
+Ground-truth sanity rows:
 
-### HumanML3D-263 Evaluator
-
-| Variant | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| ------- | --: | --: | --: | --: | ------: | --------: |
-| Full | 0.561 | 0.761 | 0.853 | 0.103 | 2.532 | 10.031 |
-| GT real | 0.522 | 0.725 | 0.823 | 0.000 | 2.691 | 9.876 |
+| Evaluator | Variant | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
+| --------- | ------- | --: | --: | --: | --: | ------: | --------: |
+| HumanML3D Official | GT real | 0.522 | 0.725 | 0.823 | 0.000 | 2.691 | 9.876 |
+| MotionStreamer Evaluator | GT real | 0.706 | 0.857 | 0.911 | 0.000 | 15.007 | 27.367 |
 
 The Lite checkpoint follows the same artifact and inference path; its public
 metric row will be refreshed after the render/eval assets are regenerated.

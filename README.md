@@ -43,26 +43,30 @@ results, and qualitative SMPL renders.
 
 ## Evaluator Zoo
 
+Motius model cards report text-to-motion metrics with three evaluator views:
+HumanML3D official metrics, MotionStreamer Evaluator metrics, and the Motius
+joint-position evaluator trained on unified SMPL-H joints. Historical
+contrastive-evaluator rows are not part of the public Evaluation tables.
+
 | Evaluator | Purpose | Motion Rep. | Checkpoint | Card | Reference |
 | --------- | ------- | ----------- | ---------- | ---- | --------- |
-| MotionCLIP-135 | Text-motion embedding, retrieval, pairwise score | SMPL-22 135-dim | Pending HF artifact | [Evaluator Card](docs/evaluator_zoo/motion_clip.md) | [Paper](https://arxiv.org/abs/2203.08063) / [Code](https://github.com/GuyTevet/MotionCLIP) |
+| HumanML3D Official | Standard T2M leaderboard metrics on the selected-caption HumanML3D test protocol | HumanML3D-263 | Official evaluator assets | [Evaluator Card](docs/evaluator_zoo/humanml3d_official.md) | HumanML3D / T2M Leaderboard protocol |
+| MotionStreamer Evaluator | Cross-representation semantic evaluator for SMPL-aligned T2M results | MotionStreamer-272 | Pending public artifact | [Evaluator Card](docs/evaluator_zoo/motionstreamer.md) | [Paper](https://arxiv.org/abs/2503.15451) / [Code](https://github.com/zju3dv/MotionStreamer) |
+| Motius Joint-Position Evaluator | Source-fair evaluator trained on HYMotion Data + MotionHub with unified SMPL-H joint positions | SMPL-H joints66 | Pending public artifact | [Evaluator Card](docs/evaluator_zoo/motius_joint_position.md) | Motius universal evaluator |
 
 ### Preview Gallery
 
 <p align="center">
-  <a href="assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4">
-    <img src="assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh_poster.png" width="56%" alt="MDM roundhouse-kick SMPL mesh MP4 preview">
-  </a>
+  <img src="assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif" width="56%" alt="MDM roundhouse-kick SMPL mesh demo">
 </p>
 
 <p align="center">
-  <sub>MP4 preview: MDM on HumanML3D test sample 001840, "someone executes a roundhouse kick with their left foot."</sub>
+  <sub>1024px / 30fps GIF demo, MDM on HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source is kept under <code>assets/model_zoo/mdm/</code>.</sub>
 </p>
 
-<!-- GitHub README only renders inline video players for uploaded GitHub attachment URLs
-     such as https://github.com/user-attachments/assets/<id>. Repository-local MP4
-     files are kept under assets/ and exposed through poster links until an attachment
-     URL is available. -->
+<!-- GitHub README only renders inline MP4 players for uploaded GitHub attachment URLs.
+     Until those attachment URLs are available, model cards use verified 30fps GIF demos
+     and keep MP4 sources under assets/. -->
 
 ## What Is Included
 

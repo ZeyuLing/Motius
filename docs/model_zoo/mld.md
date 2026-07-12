@@ -67,11 +67,11 @@ Protocol: HumanML3D official test split, corrected official captions,
 native 263-dim motion, one prediction per test id. For FID and MM-Dist, lower
 is better.
 
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| --------- | ------: | ---: | ---: | ---: | ---: | ------: | --------: |
-| HumanML3D-263 | 4,042 | 0.518 | 0.716 | 0.816 | 0.297 | 2.950 | 9.628 |
-| MotionStreamer-272 | 4,042 | 0.566 | 0.733 | 0.810 | 39.744 | 19.337 | 24.902 |
-| MotionCLIP-135 | 4,042 | 0.383 | 0.538 | 0.632 | 134.648 | 42.468 | 22.947 |
+| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------: | ---: | ---: | ---: | ---: | ------: | --------: | ------ |
+| HumanML3D Official | 4,042 | 0.518 | 0.716 | 0.816 | 0.297 | 2.950 | 9.628 | Measured |
+| MotionStreamer Evaluator | 4,042 | 0.566 | 0.733 | 0.810 | 39.744 | 19.337 | 24.902 | Measured |
+| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
 
 ## Motion Representation
 
