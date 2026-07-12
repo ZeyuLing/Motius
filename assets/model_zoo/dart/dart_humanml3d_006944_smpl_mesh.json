@@ -1,0 +1,20 @@
+{
+  "source": "/apdcephfs_cq11/share_1467498/home/zeyuling/hf_trainer/outputs/evaluation/t2m/humanml3d_official_test/motion135/dart/006944.npz",
+  "keys": [
+    "motion_135",
+    "source_id",
+    "caption",
+    "length20",
+    "target_frames",
+    "fps",
+    "duration"
+  ],
+  "method": "DART",
+  "sample_id": "006944",
+  "caption": "a person moves their right hand left, right, up, and down.",
+  "gif": "assets/model_zoo/dart/dart_humanml3d_006944_smpl_mesh_512_30fps.gif",
+  "frames": 120,
+  "fps": 30,
+  "width": 512,
+  "height": 512
+}

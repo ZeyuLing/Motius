@@ -57,17 +57,13 @@ contrastive-evaluator rows are not part of the public Evaluation tables.
 
 ### Preview Gallery
 
-Every released model card includes a 1024px / 30fps SMPL GIF preview and the
-matching MP4 source under `assets/model_zoo/<method>/`.
+Compact 512px / 30fps SMPL GIFs are rendered from released HumanML3D test outputs. Full per-model galleries are in the model cards.
 
-![MDM roundhouse-kick SMPL mesh demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
-
-MDM on HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot."
-
-![DART roundhouse-kick SMPL mesh demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/dart/dart_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
-
-DART on the same selected-caption test sample. MP4 sources live with the GIFs in
-`assets/model_zoo/`.
+| HumanML3D Sample | Input Text | MDM | HY-Motion T2M | DART |
+| ---------------- | ---------- | --- | ------------- | ---- |
+| `001840` | someone executes a roundhouse kick with their left foot. | <img src="assets/model_zoo/mdm/mdm_humanml3d_001840_smpl_mesh_512_30fps.gif" width="170" alt="MDM HumanML3D 001840 SMPL demo"> | <img src="assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_smpl_mesh_512_30fps.gif" width="170" alt="HY-Motion T2M HumanML3D 001840 SMPL demo"> | <img src="assets/model_zoo/dart/dart_humanml3d_001840_smpl_mesh_512_30fps.gif" width="170" alt="DART HumanML3D 001840 SMPL demo"> |
+| `004545` | a person jumping while raising both hands and moving apart legs. | <img src="assets/model_zoo/mdm/mdm_humanml3d_004545_smpl_mesh_512_30fps.gif" width="170" alt="MDM HumanML3D 004545 SMPL demo"> | <img src="assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_004545_smpl_mesh_512_30fps.gif" width="170" alt="HY-Motion T2M HumanML3D 004545 SMPL demo"> | <img src="assets/model_zoo/dart/dart_humanml3d_004545_smpl_mesh_512_30fps.gif" width="170" alt="DART HumanML3D 004545 SMPL demo"> |
+| `006944` | a person moves their right hand left, right, up, and down. | <img src="assets/model_zoo/mdm/mdm_humanml3d_006944_smpl_mesh_512_30fps.gif" width="170" alt="MDM HumanML3D 006944 SMPL demo"> | <img src="assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_006944_smpl_mesh_512_30fps.gif" width="170" alt="HY-Motion T2M HumanML3D 006944 SMPL demo"> | <img src="assets/model_zoo/dart/dart_humanml3d_006944_smpl_mesh_512_30fps.gif" width="170" alt="DART HumanML3D 006944 SMPL demo"> |
 
 ## What Is Included
 

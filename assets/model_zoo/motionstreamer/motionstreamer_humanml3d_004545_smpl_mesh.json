@@ -1,0 +1,28 @@
+{
+  "source": "/apdcephfs_cq11/share_1467498/home/zeyuling/hf_trainer/outputs/evaluation/t2m/humanml3d_official_test/motion135/motionstreamer/004545.npz",
+  "keys": [
+    "motion_272",
+    "motion_135",
+    "transl",
+    "global_orient",
+    "body_pose",
+    "text",
+    "sample_id",
+    "target_length",
+    "capped_target_length",
+    "generated_length",
+    "caption_protocol",
+    "dataset",
+    "aligned_to_gt_root",
+    "align_root_mode",
+    "motionstreamer_use_out_proj"
+  ],
+  "method": "MotionStreamer",
+  "sample_id": "004545",
+  "caption": "a person jumping while raising both hands and moving apart legs.",
+  "gif": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_004545_smpl_mesh_512_30fps.gif",
+  "frames": 95,
+  "fps": 30,
+  "width": 512,
+  "height": 512
+}

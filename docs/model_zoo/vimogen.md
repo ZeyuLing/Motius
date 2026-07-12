@@ -18,9 +18,13 @@ the rest of the Model Zoo.
 
 ## Preview
 
-![HumanML3D ViMoGen roundhouse-kick SMPL mesh demo](../../assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+| HumanML3D Sample | Input Text | SMPL Preview |
+| ---------------- | ---------- | ------------ |
+| `001840` | someone executes a roundhouse kick with their left foot. | <img src="../../assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_001840_smpl_mesh_512_30fps.gif" width="220" alt="ViMoGen HumanML3D 001840 SMPL demo"> |
+| `004545` | a person jumping while raising both hands and moving apart legs. | <img src="../../assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_004545_smpl_mesh_512_30fps.gif" width="220" alt="ViMoGen HumanML3D 004545 SMPL demo"> |
+| `006944` | a person moves their right hand left, right, up, and down. | <img src="../../assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_006944_smpl_mesh_512_30fps.gif" width="220" alt="ViMoGen HumanML3D 006944 SMPL demo"> |
 
-1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
+512px / 30fps GIF previews rendered from released HumanML3D test outputs.
 
 ## Release Snapshot
 

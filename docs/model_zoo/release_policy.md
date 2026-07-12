@@ -6,7 +6,7 @@ are present and verified:
 | Area | Required Artifact |
 | ---- | ----------------- |
 | Checkpoint | Public checkpoint link for every advertised variant |
-| Demo | At least one verified qualitative demo rendered from the released checkpoint |
+| Demo | At least three verified qualitative demos rendered from released outputs |
 | HumanML3D Official | T2M leaderboard metrics with the selected-caption HumanML3D protocol |
 | MotionStreamer Evaluator | Metrics after the checked MotionStreamer conversion path |
 | Motius Joint-Position Evaluator | Metrics with the unified SMPL-H joint-position evaluator |
@@ -16,6 +16,10 @@ Model cards must not use adapter outputs as the model's native representation.
 For example, HY-Motion T2M is `HY-Motion-201`; DART is `DART276`. SMPL,
 SMPL-H, MotionStreamer, or HumanML3D conversions can be documented only as
 rendering/evaluation adapters.
+
+Demo tables must cover different selected-caption HumanML3D test cases and show
+the input text next to each preview. Use compact 512px / 30fps GIFs for inline
+model-card previews; a single oversized image is not release-complete.
 
 The shared release facts live in
 [`release_manifest.json`](release_manifest.json). Update that manifest whenever

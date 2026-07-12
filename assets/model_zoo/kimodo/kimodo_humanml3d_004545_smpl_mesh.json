@@ -1,0 +1,26 @@
+{
+  "source": "/apdcephfs_cq11/share_1467498/home/zeyuling/hf_trainer/outputs/evaluation/t2m/humanml3d_official_test/motion135/kimodo/004545.npz",
+  "keys": [
+    "motion_135",
+    "transl",
+    "trans",
+    "global_orient",
+    "body_pose",
+    "poses",
+    "mocap_frame_rate",
+    "model",
+    "gender",
+    "source_id",
+    "source_skeleton_path",
+    "retarget_method",
+    "caption"
+  ],
+  "method": "KIMODO",
+  "sample_id": "004545",
+  "caption": "a person jumping while raising both hands and moving apart legs.",
+  "gif": "assets/model_zoo/kimodo/kimodo_humanml3d_004545_smpl_mesh_512_30fps.gif",
+  "frames": 95,
+  "fps": 30,
+  "width": 512,
+  "height": 512
+}

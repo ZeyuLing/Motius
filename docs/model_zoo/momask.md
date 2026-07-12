@@ -19,9 +19,13 @@ denormalization behind a consistent inference pipeline.
 
 ## Preview
 
-![HumanML3D MoMask roundhouse-kick SMPL mesh demo](../../assets/model_zoo/momask/momask_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+| HumanML3D Sample | Input Text | SMPL Preview |
+| ---------------- | ---------- | ------------ |
+| `001840` | someone executes a roundhouse kick with their left foot. | <img src="../../assets/model_zoo/momask/momask_humanml3d_001840_smpl_mesh_512_30fps.gif" width="220" alt="MoMask HumanML3D 001840 SMPL demo"> |
+| `004545` | a person jumping while raising both hands and moving apart legs. | <img src="../../assets/model_zoo/momask/momask_humanml3d_004545_smpl_mesh_512_30fps.gif" width="220" alt="MoMask HumanML3D 004545 SMPL demo"> |
+| `006944` | a person moves their right hand left, right, up, and down. | <img src="../../assets/model_zoo/momask/momask_humanml3d_006944_smpl_mesh_512_30fps.gif" width="220" alt="MoMask HumanML3D 006944 SMPL demo"> |
 
-1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/momask/momask_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/momask/momask_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
+512px / 30fps GIF previews rendered from released HumanML3D test outputs.
 
 ## Release Snapshot
 

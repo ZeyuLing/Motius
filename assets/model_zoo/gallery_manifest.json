@@ -1,0 +1,331 @@
+{
+  "cases": {
+    "001840": "someone executes a roundhouse kick with their left foot.",
+    "004545": "a person jumping while raising both hands and moving apart legs.",
+    "006944": "a person moves their right hand left, right, up, and down."
+  },
+  "models": {
+    "dart": {
+      "method": "DART",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/dart/dart_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/dart/dart_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/dart/dart_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/dart/dart_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/dart/dart_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/dart/dart_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "flowmdm": {
+      "method": "FlowMDM",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/flowmdm/flowmdm_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/flowmdm/flowmdm_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/flowmdm/flowmdm_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/flowmdm/flowmdm_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/flowmdm/flowmdm_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/flowmdm/flowmdm_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "hymotion_t2m": {
+      "method": "HY-Motion T2M",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "kimodo": {
+      "method": "KIMODO",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/kimodo/kimodo_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/kimodo/kimodo_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/kimodo/kimodo_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/kimodo/kimodo_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/kimodo/kimodo_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/kimodo/kimodo_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "mdm": {
+      "method": "MDM",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/mdm/mdm_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mdm/mdm_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/mdm/mdm_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mdm/mdm_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/mdm/mdm_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mdm/mdm_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "mld": {
+      "method": "MLD",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/mld/mld_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mld/mld_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/mld/mld_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mld/mld_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/mld/mld_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mld/mld_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "mogents": {
+      "method": "MoGenTS",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/mogents/mogents_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mogents/mogents_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/mogents/mogents_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mogents/mogents_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/mogents/mogents_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mogents/mogents_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "momask": {
+      "method": "MoMask",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/momask/momask_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/momask/momask_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/momask/momask_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/momask/momask_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/momask/momask_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/momask/momask_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motiongpt": {
+      "method": "MotionGPT",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/motiongpt/motiongpt_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motiongpt/motiongpt_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/motiongpt/motiongpt_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motiongpt/motiongpt_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/motiongpt/motiongpt_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motiongpt/motiongpt_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motionlcm": {
+      "method": "MotionLCM",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/motionlcm/motionlcm_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionlcm/motionlcm_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/motionlcm/motionlcm_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionlcm/motionlcm_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/motionlcm/motionlcm_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionlcm/motionlcm_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motionmillion": {
+      "method": "MotionMillion-7B",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motionstreamer": {
+      "method": "MotionStreamer",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "t2mgpt": {
+      "method": "T2M-GPT",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "vimogen": {
+      "method": "ViMoGen",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    }
+  }
+}

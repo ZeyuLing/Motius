@@ -23,6 +23,18 @@ import pyrender
 import torch
 import trimesh
 
+for _name, _value in {
+    "bool": bool,
+    "int": int,
+    "float": float,
+    "complex": complex,
+    "object": object,
+    "unicode": str,
+    "str": str,
+}.items():
+    if _name not in np.__dict__:
+        setattr(np, _name, _value)
+
 
 def _rot6d_row_to_axis_angle(rot6d: np.ndarray) -> np.ndarray:
     """Convert row-major 6D rotations to axis-angle."""

@@ -1,0 +1,23 @@
+{
+  "source": "/apdcephfs_cq11/share_1467498/home/zeyuling/hf_trainer/outputs/evaluation/t2m/humanml3d_official_test/motion135/mdm/006944.npz",
+  "keys": [
+    "motion_135",
+    "transl",
+    "global_orient",
+    "body_pose",
+    "target_joints",
+    "fitted_joints",
+    "fit_mpjpe_mm",
+    "source_fps",
+    "target_fps",
+    "refine_iters"
+  ],
+  "method": "MDM",
+  "sample_id": "006944",
+  "caption": "a person moves their right hand left, right, up, and down.",
+  "gif": "assets/model_zoo/mdm/mdm_humanml3d_006944_smpl_mesh_512_30fps.gif",
+  "frames": 120,
+  "fps": 30,
+  "width": 512,
+  "height": 512
+}

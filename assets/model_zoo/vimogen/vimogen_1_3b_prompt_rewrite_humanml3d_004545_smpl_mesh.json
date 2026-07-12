@@ -1,0 +1,14 @@
+{
+  "source": "/apdcephfs_cq11/share_1467498/home/zeyuling/hf_trainer/outputs/evaluation/t2m/humanml3d_official_test/motion135/vimogen_1_3b_deepseek_caption/004545.npz",
+  "keys": [
+    "motion_135"
+  ],
+  "method": "ViMoGen",
+  "sample_id": "004545",
+  "caption": "a person jumping while raising both hands and moving apart legs.",
+  "gif": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_004545_smpl_mesh_512_30fps.gif",
+  "frames": 94,
+  "fps": 30,
+  "width": 512,
+  "height": 512
+}

@@ -86,9 +86,12 @@ def _checkpoint_status(cell: str, check_hf: bool) -> tuple[str, str]:
 
 def _demo_status(card_text: str) -> tuple[str, str]:
     refs = re.findall(r"!\[[^\]]*\]\(([^)]+)\)", card_text)
+    refs.extend(re.findall(r"<img\s+[^>]*src=[\"']([^\"']+)[\"']", card_text))
     media = [ref for ref in refs if ref.lower().endswith((".gif", ".mp4", ".png", ".jpg", ".jpeg", ".webp"))]
+    if len(media) >= 3:
+        return "present", f"{len(media)} media refs"
     if media:
-        return "present", ", ".join(media)
+        return "missing", f"only {len(media)} media refs"
     if "Validated" in card_text and "will be added" in card_text:
         return "missing", "validated demo missing"
     return "missing", "no demo media reference"
