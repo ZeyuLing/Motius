@@ -20,9 +20,9 @@ denoiser, DDIM scheduler, and frozen SentenceT5 text wrapper.
 
 | HumanML3D Sample | Input Text | SMPL Preview |
 | ---------------- | ---------- | ------------ |
-| `001840` | someone executes a roundhouse kick with their left foot. | <img src="../../assets/model_zoo/mld/mld_humanml3d_001840_smpl_mesh_512_30fps.gif" width="220" alt="MLD HumanML3D 001840 SMPL demo"> |
-| `004545` | a person jumping while raising both hands and moving apart legs. | <img src="../../assets/model_zoo/mld/mld_humanml3d_004545_smpl_mesh_512_30fps.gif" width="220" alt="MLD HumanML3D 004545 SMPL demo"> |
-| `006944` | a person moves their right hand left, right, up, and down. | <img src="../../assets/model_zoo/mld/mld_humanml3d_006944_smpl_mesh_512_30fps.gif" width="220" alt="MLD HumanML3D 006944 SMPL demo"> |
+| `001840` | someone executes a roundhouse kick with their left foot. | ![MLD HumanML3D 001840 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/mld/mld_humanml3d_001840_smpl_mesh_512_30fps.gif) |
+| `004545` | a person jumping while raising both hands and moving apart legs. | ![MLD HumanML3D 004545 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/mld/mld_humanml3d_004545_smpl_mesh_512_30fps.gif) |
+| `006944` | a person moves their right hand left, right, up, and down. | ![MLD HumanML3D 006944 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/mld/mld_humanml3d_006944_smpl_mesh_512_30fps.gif) |
 
 512px / 30fps GIF previews rendered from released HumanML3D test outputs.
 
