@@ -24,8 +24,8 @@ results, and qualitative SMPL renders.
 
 ## Model Zoo
 
-| Method | Task | Motion Rep. | Checkpoint | Card | Upstream |
-| ------ | ---- | ----------- | ---------- | ---- | -------- |
+| Method | Task | Motion Rep. | Checkpoint | Card | References |
+| ------ | ---- | ----------- | ---------- | ---- | ---------- |
 | MDM | Text-to-Motion | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-mdm-humanml3d) | [Model Card](docs/model_zoo/mdm.md) | [Paper](https://arxiv.org/abs/2209.14916) / [Code](https://github.com/GuyTevet/motion-diffusion-model) |
 | T2M-GPT | Text-to-Motion | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-t2mgpt-humanml3d) | [Model Card](docs/model_zoo/t2mgpt.md) | [Paper](https://arxiv.org/abs/2301.06052) / [Code](https://github.com/Mael-zys/T2M-GPT) |
 | MoMask | Text-to-Motion | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-momask-humanml3d) | [Model Card](docs/model_zoo/momask.md) | [Paper](https://arxiv.org/abs/2312.00063) / [Code](https://github.com/EricGuo5513/momask-codes) |
@@ -39,6 +39,7 @@ results, and qualitative SMPL renders.
 | MLD | Text-to-Motion | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-mld-humanml3d) | [Model Card](docs/model_zoo/mld.md) | [Paper](https://arxiv.org/abs/2212.04048) / [Code](https://github.com/ChenFengYe/motion-latent-diffusion) |
 | MotionLCM | Text-to-Motion | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionlcm-humanml3d) | [Model Card](docs/model_zoo/motionlcm.md) | [Paper](https://arxiv.org/abs/2404.19759) / [Code](https://github.com/Dai-Wenxun/MotionLCM) |
 | ViMoGen | Text-to-Motion | DART276 | [HF](https://huggingface.co/ZeyuLing/hftrainer-vimogen-1.3b-humanml3d) | [Model Card](docs/model_zoo/vimogen.md) | [Paper](https://arxiv.org/abs/2510.26794) / [Code](https://github.com/MotrixLab/ViMoGen) |
+| DART | Autoregressive Text-to-Motion / Motion Control | SMPL-H motion_135 | Pending HF artifact | [Model Card](docs/model_zoo/dart.md) | [Paper](https://arxiv.org/abs/2410.05260) / [Code](https://github.com/zkf1997/DART) |
 
 ## Evaluator Zoo
 
@@ -49,13 +50,13 @@ results, and qualitative SMPL renders.
 ### Preview Gallery
 
 <p align="center">
-  <a href="assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4">
-    <img src="assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.gif" width="48%" alt="MDM roundhouse-kick SMPL mesh preview">
-  </a>
+  <video src="assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4" width="56%" controls muted loop playsinline>
+    MDM roundhouse-kick SMPL mesh preview.
+  </video>
 </p>
 
 <p align="center">
-  <sub>MDM on HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." Click to open the MP4 render.</sub>
+  <sub>MDM on HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot."</sub>
 </p>
 
 ## What Is Included

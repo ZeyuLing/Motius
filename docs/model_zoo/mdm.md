@@ -20,12 +20,10 @@ methods.
 
 ## Preview
 
-Click the preview to open the full MP4 render.
-
 <p align="center">
-  <a href="../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4">
-    <img src="../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.gif" width="56%" alt="HumanML3D MDM roundhouse-kick SMPL mesh preview">
-  </a>
+  <video src="../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4" width="64%" controls muted loop playsinline>
+    HumanML3D MDM roundhouse-kick SMPL mesh preview.
+  </video>
 </p>
 
 <p align="center">
