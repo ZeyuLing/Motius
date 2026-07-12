@@ -16,6 +16,7 @@ dependencies = [
     "mmengine>=0.7",
     "peft>=0.5",
     "safetensors>=0.3",
+    "scipy>=1.9",
     "torch>=2.0",
     "transformers>=4.30",
 ]
@@ -29,11 +30,22 @@ vimogen = [
     "regex>=2023.0",
     "sentencepiece>=0.1",
 ]
+retarget = [
+    "smplx>=0.1",
+]
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["motius*"]
 namespaces = false
+
+[tool.setuptools.package-data]
+"motius.motion" = [
+    "assets/*.npy",
+    "retarget/_gmr/LICENSE",
+    "retarget/_gmr/assets/unitree_g1/*.xml",
+    "retarget/_gmr/ik_configs/*.json",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

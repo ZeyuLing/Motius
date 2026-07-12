@@ -11,6 +11,7 @@
 <p align="center">
   <a href="#model-zoo">Model Zoo</a> |
   <a href="#evaluator-zoo">Evaluator Zoo</a> |
+  <a href="docs/motion/README.md">Motion Toolkit</a> |
   <a href="docs/model_zoo/release_policy.md">Release Policy</a> |
   <a href="docs/getting_started.md">Getting Started</a> |
   <a href="docs/architecture.md">Architecture</a> |
@@ -22,6 +23,11 @@ trainers, pipelines, evaluators, and visualization utilities. The public repo
 is being opened method by method: the reusable core is available now, and each
 released method will ship with a model card, checkpoint path, evaluation
 results, and qualitative SMPL renders.
+
+Motius also ships an explicit [Motion Toolkit](docs/motion/README.md) for
+converting HML263, MotionStreamer-272, HY-Motion-201, DART276, and SMPL
+`motion135`, plus SMPL/SOMA/G1 retargeting. Its documentation records skeleton,
+coordinate, FPS, and 6D rotation conventions for every route.
 
 ## Model Zoo
 
@@ -77,6 +83,7 @@ Compact 512px / 30fps SMPL GIFs are rendered from released HumanML3D test output
 | `motius.datasets` | Dataset bases and reusable transform primitives. |
 | `motius.hooks` | Checkpoint, EMA, logging, and learning-rate scheduler hooks. |
 | `motius.evaluation` | Evaluator base interfaces. |
+| `motius.motion` | Representation specs/converters, SMPL-22 FK, and optional SOMA/G1 retargeting. |
 | `motius.visualization` | File and TensorBoard visualization bases. |
 | `configs/_base_` | Minimal runtime config templates. |
 | `tools/` | Command-line training entry points. |
@@ -112,6 +119,7 @@ the formal documentation:
 - [Architecture](docs/architecture.md)
 - [Getting Started](docs/getting_started.md)
 - [Development Guide](docs/development.md)
+- [Motion representations and retargeting](docs/motion/README.md)
 
 ## Release Status
 
