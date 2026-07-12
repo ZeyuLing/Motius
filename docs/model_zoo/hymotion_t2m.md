@@ -16,6 +16,12 @@ motion model. This Motius release packages the MMDiT motion transformer,
 classifier-free guidance embeddings, normalization statistics, frozen Qwen3 /
 CLIP-L text encoders, official smoothing, and an ODE-based inference pipeline.
 
+## Preview
+
+![HumanML3D HY-Motion T2M roundhouse-kick SMPL mesh demo](../../assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
+
 ## Release Snapshot
 
 | Item | Value |
@@ -58,24 +64,17 @@ temporal smoothing by default.
 
 ## Evaluation Results
 
-Protocol: HumanML3D official-test selected-caption protocol. For FID and
-MM-Dist, lower is better.
+Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. MotionStreamer Evaluator and Motius Joint-Position Evaluator are computed after converting outputs through the shared SMPL/SMPL-H evaluation bridge. For FID and MM-Dist, lower is better.
 
-| Evaluator | Variant | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
-| --------- | ------- | --: | --: | --: | --: | ------: | --------: | ------ |
-| HumanML3D Official | Full | 0.561 | 0.761 | 0.853 | 0.103 | 2.532 | 10.031 | Measured |
-| MotionStreamer Evaluator | Full | 0.737 | 0.881 | 0.929 | 16.021 | 14.789 | 27.187 | Measured |
-| Motius Joint-Position Evaluator | Full | - | - | - | - | - | - | Pending |
+| Evaluator | Variant | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | Full | 3,970 | 0.561 | 0.761 | 0.853 | 0.103 | 2.532 | 10.031 | Measured |
+| MotionStreamer Evaluator | Full | 4,042 | 0.785 | 0.917 | 0.951 | 13.803 | 14.820 | 27.434 | Measured |
+| Motius Joint-Position Evaluator | Full | 4,034 | 0.572 | 0.741 | 0.817 | 28.302 | 30.515 | 54.130 | Measured |
+| HumanML3D Official | Lite | 3,970 | 0.488 | 0.674 | 0.772 | 0.085 | 3.179 | 9.539 | Measured |
+| MotionStreamer Evaluator | Lite | 4,042 | 0.794 | 0.915 | 0.952 | 10.451 | 14.836 | 27.471 | Measured |
+| Motius Joint-Position Evaluator | Lite | 4,034 | 0.594 | 0.746 | 0.814 | 32.069 | 30.671 | 55.421 | Measured |
 
-Ground-truth sanity rows:
-
-| Evaluator | Variant | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| --------- | ------- | --: | --: | --: | --: | ------: | --------: |
-| HumanML3D Official | GT real | 0.522 | 0.725 | 0.823 | 0.000 | 2.691 | 9.876 |
-| MotionStreamer Evaluator | GT real | 0.706 | 0.857 | 0.911 | 0.000 | 15.007 | 27.367 |
-
-The Lite checkpoint follows the same artifact and inference path; its public
-metric row will be refreshed after the render/eval assets are regenerated.
 
 ## Motion Representation
 
@@ -88,11 +87,6 @@ The pipeline may expose decoded helper tensors such as `rot6d`, `transl`, or
 separate HY-Motion checkpoint variants and should not be listed as the model's
 motion representation.
 
-## Qualitative Results
-
-Validated SMPL previews will be added after the public render assets are
-rebuilt through the shared SMPL-H visualization path. This card avoids shipping
-unverified preview media.
 
 ## Motius Components
 

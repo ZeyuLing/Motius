@@ -17,6 +17,12 @@ KIMODO runtime, skeleton assets, motion-representation utilities, and a unified
 pipeline facade for text-to-motion, multi-prompt transitions, full-body
 keyframes, end-effector controls, root paths, and prefix-conditioned TP2M.
 
+## Preview
+
+![HumanML3D KIMODO roundhouse-kick SMPL mesh demo](../../assets/model_zoo/kimodo/kimodo_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/kimodo/kimodo_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/kimodo/kimodo_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
+
 ## Release Snapshot
 
 | Item | Value |
@@ -84,15 +90,14 @@ samples = pipe.infer_tp2m(
 
 ## Evaluation Results
 
-Protocol: HumanML3D official-test selected-caption protocol. KIMODO SMPL-X
-output is converted through `SMPL-X -> SMPL motion_135 -> evaluator input`.
-For FID and MM-Dist, lower is better.
+Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. MotionStreamer Evaluator and Motius Joint-Position Evaluator are computed after converting outputs through the shared SMPL/SMPL-H evaluation bridge. For FID and MM-Dist, lower is better.
 
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
-| --------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
-| HumanML3D Official | 2,478 | 0.314 | 0.482 | 0.593 | 1.843 | 4.281 | 9.149 | Measured |
-| MotionStreamer Evaluator | 7,392 | 0.323 | 0.460 | 0.541 | 143.917 | 21.707 | 25.316 | Measured |
-| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
+| Evaluator | Variant | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | SMPL-X RP | 3,970 | 0.292 | 0.452 | 0.558 | 1.520 | 4.573 | 8.875 | Measured |
+| MotionStreamer Evaluator | SMPL-X RP | 4,042 | 0.365 | 0.500 | 0.582 | 117.028 | 21.410 | 25.363 | Measured |
+| Motius Joint-Position Evaluator | SMPL-X RP | 4,034 | 0.303 | 0.464 | 0.557 | 899.829 | 47.819 | 54.440 | Measured |
+
 
 ## TP2M Results
 
@@ -117,11 +122,6 @@ root translation `(3)` plus 22 local joint rotations in row-major 6D `(132)`.
 The public pipeline uses the same row-major 6D convention when creating prefix
 constraints and when exporting generated `motion_135`.
 
-## Qualitative Results
-
-Validated SMPL previews will be added after the public render pass is rebuilt
-from the SMPL-X/SOMA-to-SMPL bridge. This card avoids shipping unverified render
-assets and keeps the release focused on reproducible loading and metrics.
 
 ## Motius Components
 

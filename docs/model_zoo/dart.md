@@ -7,15 +7,19 @@
 <p align="center">
   <a href="https://arxiv.org/abs/2410.05260">Paper</a> |
   <a href="https://zkf1997.github.io/DART/">Project Page</a> |
-  <a href="https://github.com/zkf1997/DART">Original GitHub</a>
+  <a href="https://github.com/zkf1997/DART">Original GitHub</a> |
+  <a href="https://huggingface.co/ZeyuLing/motius-dart-humanml3d">Motius Checkpoint</a>
 </p>
 
 DART, short for DartControl, is a diffusion-based autoregressive motion model
 for real-time text-driven motion control. This Motius package exposes the
 HumanML3D DART276 rollout path through a `ModelBundle` and task-facing pipeline.
 
-Validated demos will be added after the DART artifact is converted into a
-self-contained public checkpoint and its renders are checked.
+## Preview
+
+![HumanML3D DART roundhouse-kick SMPL mesh demo](../../assets/model_zoo/dart/dart_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/dart/dart_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/dart/dart_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
 
 ## Release Snapshot
 
@@ -27,13 +31,10 @@ self-contained public checkpoint and its renders are checked.
 | Motion representation | DART276, 20 fps |
 | Backbone | Motion primitive VAE + latent diffusion denoiser |
 | Default guidance scale | `5.0` |
-| Checkpoint | Not released yet; no public Hugging Face artifact is available |
+| Checkpoint | [`ZeyuLing/motius-dart-humanml3d`](https://huggingface.co/ZeyuLing/motius-dart-humanml3d) |
 | Pipeline | `motius.pipelines.dart.DARTPipeline` |
 
-The runtime expects a self-contained artifact with denoiser weights, MVAE
-weights, seed motion data, text embeddings, and SMPL support files. The current
-public code is ready for that artifact layout, but the checkpoint itself has
-not been converted, verified, or uploaded.
+The checkpoint artifact contains the DART denoiser, MVAE, runtime configuration, seed motion, and DART276 normalization/text-embedding assets. It intentionally does not include license-controlled SMPL-H or SMPL-X body model files; install those locally under `data/smplx_lockedhead_20230207/models_lockedhead` or set `MOTIUS_BODY_MODEL_DIR` before full rollout or SMPL export.
 
 ## Usage
 
@@ -43,14 +44,13 @@ Install Motius:
 python -m pip install -e ".[dev]"
 ```
 
-Run the SMPL-sequence export adapter after placing a verified DART artifact at
-`checkpoints/dart/motius_hml3d`:
+Run the SMPL-sequence export adapter after installing the licensed body-model assets locally:
 
 ```python
 from motius.pipelines.dart import DARTPipeline
 
 pipe = DARTPipeline.from_pretrained(
-    "checkpoints/dart/motius_hml3d",
+    "ZeyuLing/motius-dart-humanml3d",
     device="cuda",
 )
 
@@ -61,20 +61,18 @@ smpl_sequences = pipe.infer_t2m_smpl(
 )
 ```
 
-`infer_t2m_smpl` is an adapter for rendering/evaluation conversion. The public
-checkpoint artifact must define and validate the DART276 export contract before
-this card is marked complete.
+`infer_t2m_smpl` is an adapter for rendering/evaluation conversion. DART remains native `DART276`; SMPL and `motion_135` tensors are export adapters, not separate checkpoint representations.
 
 ## Evaluation Results
 
-Public leaderboard metrics are pending until the self-contained DART checkpoint,
-demo render, and evaluation conversion are published.
+Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. MotionStreamer Evaluator and Motius Joint-Position Evaluator are computed after converting outputs through the shared SMPL/SMPL-H evaluation bridge. For FID and MM-Dist, lower is better.
 
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
-| --------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
-| HumanML3D Official | - | - | - | - | - | - | - | Pending |
-| MotionStreamer Evaluator | - | - | - | - | - | - | - | Pending |
-| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
+| Evaluator | Variant | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | Default | 3,970 | 0.401 | 0.592 | 0.700 | 1.846 | 3.709 | 9.867 | Measured |
+| MotionStreamer Evaluator | Default | 4,042 | 0.548 | 0.725 | 0.794 | 127.830 | 18.531 | 26.261 | Measured |
+| Motius Joint-Position Evaluator | Default | 4,034 | 0.425 | 0.606 | 0.702 | 371.131 | 38.764 | 56.949 | Measured |
+
 
 ## Motion Representation
 
@@ -84,8 +82,7 @@ or evaluator conversion, but those adapters are not the model's native motion
 representation and are not a published checkpoint variant.
 
 The underlying runtime uses motion primitives and an autoregressive rollout
-loop. The final public card will document the exact tensor contract after the
-self-contained DART checkpoint is converted and verified.
+loop. The public checkpoint documents this tensor contract in `model_index.json`.
 
 ## Motius Components
 

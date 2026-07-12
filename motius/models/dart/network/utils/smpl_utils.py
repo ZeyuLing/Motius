@@ -2,22 +2,55 @@ from pytorch3d import transforms
 from copy import deepcopy
 import torch
 import smplx
+import os
+from pathlib import Path
 from typing import Tuple
 from typing import Union
 
 from config_files.data_paths import *
 
-body_model_dir = str(body_model_dir)
+_BODY_MODEL_DIR = body_model_dir
+_BODY_MODEL_CACHE = {}
 
-body_model_dict = {
-    'male': smplx.build_layer(body_model_dir, model_type='smplx',
-                              gender='male', ext='npz',
-                              num_pca_comps=12),
-    'female': smplx.build_layer(body_model_dir, model_type='smplx',
-                                gender='female', ext='npz',
-                                num_pca_comps=12
-                                )
-}
+
+def _resolve_body_model_dir():
+    override = os.environ.get("MOTIUS_BODY_MODEL_DIR") or os.environ.get("DART_BODY_MODEL_DIR")
+    path = Path(override) if override else Path(_BODY_MODEL_DIR)
+    return str(path)
+
+
+def _build_body_model(model_type, gender, ext):
+    root = _resolve_body_model_dir()
+    try:
+        return smplx.build_layer(
+            root,
+            model_type=model_type,
+            gender=gender,
+            ext=ext,
+            num_pca_comps=12,
+        )
+    except Exception as exc:
+        raise RuntimeError(
+            "DART requires licensed SMPL-H/SMPL-X body model files for "
+            "rollout, dataset loading, and SMPL export. Install them under "
+            f"{root!r} or set MOTIUS_BODY_MODEL_DIR to the local body-model "
+            "directory."
+        ) from exc
+
+
+def _get_body_models(model_type):
+    if model_type not in _BODY_MODEL_CACHE:
+        if model_type == "smplx":
+            ext = "npz"
+        elif model_type == "smplh":
+            ext = "pkl"
+        else:
+            raise ValueError(f"Unsupported DART body model type: {model_type!r}")
+        _BODY_MODEL_CACHE[model_type] = {
+            "male": _build_body_model(model_type, "male", ext),
+            "female": _build_body_model(model_type, "female", ext),
+        }
+    return _BODY_MODEL_CACHE[model_type]
 
 def tensor_dict_to_device(tensor_dict, device, dtype=torch.float32):
     for k in tensor_dict:
@@ -123,21 +156,9 @@ class PrimitiveUtility:
             feature_dim += self.motion_repr[k]
         self.feature_dim = feature_dim
         self.body_type = body_type
-        if body_type == 'smplx':
-            self.bm_male = body_model_dict['male'].to(self.device).eval()
-            self.bm_female = body_model_dict['female'].to(self.device).eval()
-        else:
-            smplh_body_model_dict = {
-                'male': smplx.build_layer(body_model_dir, model_type='smplh',
-                                          gender='male', ext='pkl',
-                                          num_pca_comps=12),
-                'female': smplx.build_layer(body_model_dir, model_type='smplh',
-                                            gender='female', ext='pkl',
-                                            num_pca_comps=12
-                                            )
-            }
-            self.bm_male = smplh_body_model_dict['male'].to(self.device).eval()
-            self.bm_female = smplh_body_model_dict['female'].to(self.device).eval()
+        body_models = _get_body_models(body_type)
+        self.bm_male = body_models['male'].to(self.device).eval()
+        self.bm_female = body_models['female'].to(self.device).eval()
 
     def get_smpl_model(self, gender):
         return self.bm_male if gender == 'male' else self.bm_female

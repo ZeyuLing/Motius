@@ -22,9 +22,8 @@ methods.
 
 ![HumanML3D MDM roundhouse-kick SMPL mesh demo](../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
 
-1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a
-roundhouse kick with their left foot." MP4 source is kept under
-`assets/model_zoo/mdm/`.
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
+
 
 ## Release Snapshot
 
@@ -74,20 +73,14 @@ denormalized to HumanML3D physical scale.
 
 ## Evaluation Results
 
-Protocol: HumanML3D official test split with selected captions unless stated
-otherwise. For FID and MM-Dist, lower is better.
+Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. MotionStreamer Evaluator and Motius Joint-Position Evaluator are computed after converting outputs through the shared SMPL/SMPL-H evaluation bridge. For FID and MM-Dist, lower is better.
 
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
-| --------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
-| HumanML3D Official | 1,985 | 0.411 | 0.589 | 0.701 | 1.374 | 3.680 | 8.652 | Measured |
-| MotionStreamer Evaluator | - | - | - | - | - | - | - | Pending |
-| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
+| Evaluator | Variant | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | Default | 3,970 | 0.462 | 0.660 | 0.763 | 0.400 | 3.248 | 9.966 | Measured |
+| MotionStreamer Evaluator | Default | 4,042 | 0.521 | 0.694 | 0.770 | 35.517 | 19.425 | 25.338 | Measured |
+| Motius Joint-Position Evaluator | Default | 4,034 | 0.450 | 0.629 | 0.726 | 263.358 | 37.554 | 56.397 | Measured |
 
-Ground-truth sanity row for the HumanML3D Official evaluator:
-
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| --------- | ------: | --: | --: | --: | --: | ------: | --------: |
-| HumanML3D Official GT | 1,985 | 0.523 | 0.710 | 0.804 | - | 2.939 | 9.207 |
 
 ## Motion Representation
 

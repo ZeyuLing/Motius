@@ -16,8 +16,11 @@ Generation: Data, Model, and Evaluation*. This Motius release packages the
 released 1.3B HumanML3D checkpoint behind the same bundle/pipeline API used by
 the rest of the Model Zoo.
 
-Validated SMPL previews will be added after the render outputs are checked
-against the shared SMPL conversion path.
+## Preview
+
+![HumanML3D ViMoGen roundhouse-kick SMPL mesh demo](../../assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
 
 ## Release Snapshot
 
@@ -69,23 +72,14 @@ scripts, then score the result with the shared evaluator protocol.
 
 ## Evaluation Results
 
-Protocol: HumanML3D official test split (`n=4,042`) with the shared corrected
-caption set. ViMoGen generation uses a ViMoGen-style prompt rewrite derived
-from the corrected caption, while semantic evaluators are computed against the
-same corrected caption protocol as other methods. For FID and MM-Dist, lower is
-better.
+Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. MotionStreamer Evaluator and Motius Joint-Position Evaluator are computed after converting outputs through the shared SMPL/SMPL-H evaluation bridge. For FID and MM-Dist, lower is better.
 
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
-| --------- | ------: | ---: | ---: | ---: | ---: | ------: | --------: | ------ |
-| HumanML3D Official | - | - | - | - | - | - | - | Pending |
-| MotionStreamer Evaluator, HML round-trip GT | 4,042 | 0.429 | 0.569 | 0.652 | 152.210 | 21.074 | 24.180 | Measured |
-| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
+| Evaluator | Variant | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | 1.3B prompt-rewrite | 3,970 | 0.283 | 0.438 | 0.547 | 8.371 | 4.894 | 6.709 | Measured |
+| MotionStreamer Evaluator | 1.3B prompt-rewrite | 4,042 | 0.429 | 0.569 | 0.652 | 152.209 | 21.074 | 24.180 | Measured |
+| Motius Joint-Position Evaluator | 1.3B prompt-rewrite | 4,034 | 0.304 | 0.433 | 0.520 | 922.471 | 47.057 | 55.616 | Measured |
 
-### Physical Diagnostics
-
-| Slide | Float | Jitter | Dynamic | Penet |
-| ----: | ----: | -----: | ------: | ----: |
-| 6.949 | 23.727 | 4.437 | 16.384 | 0.000 |
 
 ## Motion Representation
 

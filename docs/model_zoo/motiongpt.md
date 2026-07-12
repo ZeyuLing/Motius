@@ -17,6 +17,12 @@ the HumanML3D motion tokenizer, FLAN-T5-base-style language model with motion
 tokens, HumanML3D statistics, and task-facing text-to-motion / motion-to-text
 pipeline methods without requiring the original checkout.
 
+## Preview
+
+![HumanML3D MotionGPT roundhouse-kick SMPL mesh demo](../../assets/model_zoo/motiongpt/motiongpt_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/motiongpt/motiongpt_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/motiongpt/motiongpt_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
+
 ## Release Snapshot
 
 | Item | Value |
@@ -57,21 +63,14 @@ denormalized to HumanML3D physical scale. The same pipeline also exposes
 
 ## Evaluation Results
 
-Protocol: HumanML3D official-test caption protocol, HumanML3D-263 generation
-converted through the shared SMPL/MotionStreamer path. For FID and MM-Dist,
-lower is better.
+Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. MotionStreamer Evaluator and Motius Joint-Position Evaluator are computed after converting outputs through the shared SMPL/SMPL-H evaluation bridge. For FID and MM-Dist, lower is better.
 
-| Evaluator | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
-| --------- | --: | --: | --: | --: | ------: | --------: | ------ |
-| HumanML3D Official | - | - | - | - | - | - | Pending |
-| MotionStreamer Evaluator | 0.494 | 0.635 | 0.694 | 23.681 | 19.678 | 25.541 | Measured |
-| Motius Joint-Position Evaluator | - | - | - | - | - | - | Pending |
+| Evaluator | Variant | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | Default | 3,962 | 0.434 | 0.600 | 0.686 | 0.156 | 3.920 | 9.747 | Measured |
+| MotionStreamer Evaluator | Default | 4,042 | 0.494 | 0.635 | 0.694 | 23.681 | 19.678 | 25.541 | Measured |
+| Motius Joint-Position Evaluator | Default | 4,034 | 0.432 | 0.580 | 0.662 | 188.125 | 38.453 | 56.885 | Measured |
 
-Physical diagnostics:
-
-| Slide | Float | Jitter | Dynamic |
-| ----: | ----: | -----: | ------: |
-| 3.878 | 10.884 | 5.168 | 21.061 |
 
 ## Motion Representation
 
@@ -91,12 +90,6 @@ The VQ-VAE converts normalized HumanML3D features into discrete motion tokens.
 MotionGPT then treats those tokens as a language vocabulary item alongside text
 tokens.
 
-## Qualitative Results
-
-Validated SMPL previews will be added to this card once the public qualitative
-assets are rendered through the shared SMPL-H visualization path. The current
-release keeps the model card focused on reproducible checkpoint loading and
-numeric evaluation rather than shipping unverified preview media.
 
 ## Motius Components
 

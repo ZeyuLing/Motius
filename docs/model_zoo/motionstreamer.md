@@ -16,6 +16,12 @@ a LLaMA-style autoregressive transformer, and a per-token diffusion head. This
 Motius release packages the TAE, AR model, diffusion sampler, normalization
 statistics, and task-facing pipeline without requiring the original checkout.
 
+## Preview
+
+![HumanML3D MotionStreamer roundhouse-kick SMPL mesh demo](../../assets/model_zoo/motionstreamer/motionstreamer_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/motionstreamer/motionstreamer_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/motionstreamer/motionstreamer_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
+
 ## Release Snapshot
 
 | Item | Value |
@@ -72,25 +78,14 @@ denormalized to MotionStreamer-272 physical scale.
 
 ## Evaluation Results
 
-Protocol: HumanML3D official-test selected-caption protocol in native
-MotionStreamer-272 space. For FID and MM-Dist, lower is better.
+Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. MotionStreamer Evaluator and Motius Joint-Position Evaluator are computed after converting outputs through the shared SMPL/SMPL-H evaluation bridge. For FID and MM-Dist, lower is better.
 
-| Evaluator | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
-| --------- | --: | --: | --: | --: | ------: | --------: | ------ |
-| HumanML3D Official | - | - | - | - | - | - | Pending |
-| MotionStreamer Evaluator | 0.631 | 0.802 | 0.859 | 11.790 | 16.081 | 27.284 | Paper row |
-| Motius Joint-Position Evaluator | - | - | - | - | - | - | Pending |
+| Evaluator | Variant | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | Default | 3,970 | 0.408 | 0.588 | 0.690 | 0.169 | 3.676 | 9.579 | Measured |
+| MotionStreamer Evaluator | Default | 4,042 | 0.630 | 0.786 | 0.850 | 12.211 | 16.581 | 27.464 | Measured |
+| Motius Joint-Position Evaluator | Default | 4,034 | 0.440 | 0.597 | 0.681 | 93.469 | 35.674 | 53.800 | Measured |
 
-Ground-truth sanity row:
-
-| Evaluator | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| --------- | --: | --: | --: | --: | ------: | --------: |
-| MotionStreamer Evaluator GT | 0.706 | - | 0.911 | 0.000 | 15.010 | 27.360 |
-
-The public Motius card keeps the paper row visible because the current packaged
-runtime reproduces the official architecture and checkpoint layout. Full-set
-recomputed Motius rows will replace the paper row once the public generation
-artifacts are rebuilt with the same selected-caption split.
 
 ## TP2M Results
 
@@ -118,11 +113,6 @@ MotionStreamer predicts a 272-dimensional global representation at 30 fps:
 The TAE temporal downsample factor is 4 frames per latent token. The pipeline
 therefore clamps requested lengths to token-aligned frame counts.
 
-## Qualitative Results
-
-Validated SMPL previews will be added after the public render assets are
-rebuilt through the shared SMPL-H visualization path. This card avoids shipping
-unverified preview media.
 
 ## Motius Components
 

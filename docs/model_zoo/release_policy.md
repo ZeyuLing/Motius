@@ -17,6 +17,11 @@ For example, HY-Motion T2M is `HY-Motion-201`; DART is `DART276`. SMPL,
 SMPL-H, MotionStreamer, or HumanML3D conversions can be documented only as
 rendering/evaluation adapters.
 
+The shared release facts live in
+[`release_manifest.json`](release_manifest.json). Update that manifest whenever
+a checkpoint, demo, metric row, or native representation changes, then sync the
+README and the corresponding model card from the same facts.
+
 Generated audit reports should be written under `outputs/`, for example:
 
 ```bash

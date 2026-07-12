@@ -19,6 +19,12 @@ Motius release packages the FSQ HumanVQVAE tokenizer, LLaMA-style autoregressive
 motion generator, Flan-T5-XL text encoder artifact, and MotionStreamer-272
 normalization into a consistent inference pipeline.
 
+## Preview
+
+![HumanML3D MotionMillion-7B roundhouse-kick SMPL mesh demo](../../assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
+
 ## Release Snapshot
 
 | Item | Value |
@@ -58,24 +64,17 @@ denormalized to the MotionStreamer-272 physical scale.
 
 ## Evaluation Results
 
-Protocol: HumanML3D official-test caption protocol, native MotionStreamer-272
-evaluation, `4,042` generated files and `4,032` evaluator-consumed samples
-after the standard R-Precision batching. For FID and MM-Dist, lower is better.
+Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. MotionStreamer Evaluator and Motius Joint-Position Evaluator are computed after converting outputs through the shared SMPL/SMPL-H evaluation bridge. For FID and MM-Dist, lower is better.
 
-| Evaluator | Model | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
-| --------- | ----- | --: | --: | --: | --: | ------: | --------: | ------ |
-| HumanML3D Official | 7B train-only | - | - | - | - | - | - | Pending |
-| HumanML3D Official | 3B train-only | - | - | - | - | - | - | Pending |
-| MotionStreamer Evaluator | 7B train-only | 0.740 | 0.878 | 0.924 | 3.081 | 15.371 | 27.575 | Measured |
-| MotionStreamer Evaluator | 3B train-only | 0.740 | 0.877 | 0.923 | 3.066 | 15.381 | 27.560 | Measured |
-| Motius Joint-Position Evaluator | 7B train-only | - | - | - | - | - | - | Pending |
-| Motius Joint-Position Evaluator | 3B train-only | - | - | - | - | - | - | Pending |
+| Evaluator | Variant | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | 7B train-only | 3,970 | 0.523 | 0.721 | 0.817 | 0.065 | 2.897 | 9.394 | Measured |
+| MotionStreamer Evaluator | 7B train-only | 4,042 | 0.740 | 0.878 | 0.924 | 3.081 | 15.371 | 27.575 | Measured |
+| Motius Joint-Position Evaluator | 7B train-only | 4,034 | 0.628 | 0.790 | 0.858 | 33.602 | 29.968 | 53.479 | Measured |
+| HumanML3D Official | 3B train-only | 3,970 | 0.528 | 0.723 | 0.818 | 0.071 | 2.882 | 9.379 | Measured |
+| MotionStreamer Evaluator | 3B train-only | 4,042 | 0.740 | 0.877 | 0.923 | 3.066 | 15.381 | 27.560 | Measured |
+| Motius Joint-Position Evaluator | 3B train-only | 4,034 | 0.623 | 0.786 | 0.857 | 34.414 | 29.966 | 54.624 | Measured |
 
-Ground-truth sanity row:
-
-| Evaluator | Model | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
-| --------- | ----- | --: | --: | --: | --: | ------: | --------: |
-| MotionStreamer Evaluator | Real motions | 0.778 | 0.906 | 0.946 | 0.000 | 14.820 | 27.853 |
 
 ## Motion Representation
 
@@ -90,12 +89,6 @@ text -> Flan-T5-XL -> LLaMA AR -> FSQ dequantize
 Because this representation matches MotionStreamer-272 directly, native
 evaluation does not need an additional rotation re-encoding step.
 
-## Qualitative Results
-
-Validated SMPL previews will be added to this card once the public qualitative
-assets are rendered through the shared SMPL-H visualization path. The current
-release keeps the model card focused on reproducible checkpoint loading and
-numeric evaluation rather than shipping unverified preview media.
 
 ## Motius Components
 

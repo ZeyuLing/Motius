@@ -1,0 +1,26 @@
+{
+  "source": "/apdcephfs_cq11/share_1467498/home/zeyuling/hf_trainer/outputs/evaluation/t2m/humanml3d_official_test/motion135/motionstreamer/001840.npz",
+  "keys": [
+    "motion_272",
+    "motion_135",
+    "transl",
+    "global_orient",
+    "body_pose",
+    "text",
+    "sample_id",
+    "target_length",
+    "capped_target_length",
+    "generated_length",
+    "caption_protocol",
+    "dataset",
+    "aligned_to_gt_root",
+    "align_root_mode",
+    "motionstreamer_use_out_proj"
+  ],
+  "mp4": "/tmp/motius-core-export/assets/model_zoo/motionstreamer/motionstreamer_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4",
+  "gif": "/tmp/motius-core-export/assets/model_zoo/motionstreamer/motionstreamer_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif",
+  "frames": 83,
+  "fps": 30,
+  "width": 1024,
+  "height": 1024
+}

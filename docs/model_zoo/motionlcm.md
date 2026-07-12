@@ -17,6 +17,12 @@ Model* (Dai et al., ECCV 2024). This Motius release exposes the text-to-motion
 path: SentenceT5 text features, latent consistency sampling in the MLD latent
 space, MLD VAE decoding, and HumanML3D-263 denormalization.
 
+## Preview
+
+![HumanML3D MotionLCM roundhouse-kick SMPL mesh demo](../../assets/model_zoo/motionlcm/motionlcm_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/motionlcm/motionlcm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/motionlcm/motionlcm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
+
 ## Release Snapshot
 
 | Item | Value |
@@ -56,15 +62,14 @@ denormalized to HumanML3D physical scale.
 
 ## Evaluation Results
 
-Protocol: HumanML3D official test split, corrected official captions,
-native 263-dim motion, one prediction per test id, NFE=1. For FID and MM-Dist,
-lower is better.
+Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. MotionStreamer Evaluator and Motius Joint-Position Evaluator are computed after converting outputs through the shared SMPL/SMPL-H evaluation bridge. For FID and MM-Dist, lower is better.
 
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
-| --------- | ------: | ---: | ---: | ---: | ---: | ------: | --------: | ------ |
-| HumanML3D Official | 4,042 | 0.509 | 0.708 | 0.811 | 0.340 | 2.969 | 9.641 | Measured |
-| MotionStreamer Evaluator | 4,042 | 0.566 | 0.735 | 0.808 | 44.055 | 19.454 | 24.640 | Measured |
-| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
+| Evaluator | Variant | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | Default | 4,042 | 0.509 | 0.708 | 0.811 | 0.340 | 2.969 | 9.641 | Measured |
+| MotionStreamer Evaluator | Default | 4,042 | 0.566 | 0.735 | 0.807 | 44.055 | 19.454 | 24.640 | Measured |
+| Motius Joint-Position Evaluator | Default | 4,034 | 0.516 | 0.692 | 0.774 | 283.053 | 36.587 | 56.946 | Measured |
+
 
 ## Motion Representation
 

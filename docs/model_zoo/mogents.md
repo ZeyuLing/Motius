@@ -18,6 +18,12 @@ spatial-temporal token transformer, residual token refiners, optional length
 estimator, CLIP ViT-B/32 text encoder loading, and HumanML3D-263
 denormalization behind a consistent inference pipeline.
 
+## Preview
+
+![HumanML3D MoGenTS roundhouse-kick SMPL mesh demo](../../assets/model_zoo/mogents/mogents_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/mogents/mogents_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/mogents/mogents_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
+
 ## Release Snapshot
 
 | Item | Value |
@@ -58,19 +64,14 @@ length estimator samples a token length from the prompt embedding.
 
 ## Evaluation Results
 
-Protocol: HumanML3D official test split, native 263-dim motion, first caption,
-model-chosen length unless a fixed protocol length is supplied. For FID and
-MM-Dist, lower is better.
+Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. MotionStreamer Evaluator and Motius Joint-Position Evaluator are computed after converting outputs through the shared SMPL/SMPL-H evaluation bridge. For FID and MM-Dist, lower is better.
 
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
-| --------- | ------: | ---: | ---: | ---: | ---: | ------: | --------: | ------ |
-| HumanML3D Official | 3,970 | 0.522 | 0.713 | 0.806 | 0.081 | 2.929 | 9.406 | Measured |
-| MotionStreamer Evaluator | 4,042 | 0.499 | 0.652 | 0.735 | 20.186 | 19.535 | 25.697 | Measured |
-| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
+| Evaluator | Variant | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | Default | 3,970 | 0.522 | 0.713 | 0.806 | 0.081 | 2.929 | 9.406 | Measured |
+| MotionStreamer Evaluator | Default | 4,042 | 0.499 | 0.652 | 0.735 | 20.186 | 19.535 | 25.697 | Measured |
+| Motius Joint-Position Evaluator | Default | 4,034 | 0.462 | 0.624 | 0.714 | 158.588 | 36.714 | 56.513 | Measured |
 
-The HumanML3D Official row is the native metric space for this checkpoint. The
-MotionStreamer Evaluator row is retained as a cross-representation diagnostic after
-conversion through the shared HumanML3D-263 to SMPL/MotionStreamer path.
 
 ## Motion Representation
 
@@ -90,12 +91,6 @@ The model tokenizes motion into a 1D auxiliary stream and a 2D joint-token map.
 The 2D stream preserves spatial-temporal structure before decoding back to the
 standard 263-dim HumanML3D representation.
 
-## Qualitative Results
-
-Validated SMPL previews will be added to this card once the public qualitative
-assets are rendered through the shared SMPL-H visualization path. The current
-release keeps the model card focused on reproducible checkpoint loading and
-numeric evaluation rather than shipping unverified preview media.
 
 ## Motius Components
 

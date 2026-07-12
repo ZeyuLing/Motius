@@ -17,6 +17,12 @@ This Motius release packages the MDM-style diffusion model, blended positional
 encoding sampler, HumanML3D statistics, and text-to-motion / multi-prompt
 pipeline methods without requiring the original checkout.
 
+## Preview
+
+![HumanML3D FlowMDM roundhouse-kick SMPL mesh demo](../../assets/model_zoo/flowmdm/flowmdm_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/flowmdm/flowmdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/flowmdm/flowmdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
+
 ## Release Snapshot
 
 | Item | Value |
@@ -61,21 +67,14 @@ denormalized to HumanML3D physical scale.
 
 ## Evaluation Results
 
-Protocol: HumanML3D official-test caption protocol, HumanML3D-263 generation
-converted through the shared SMPL/MotionStreamer path. For FID and MM-Dist,
-lower is better.
+Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. MotionStreamer Evaluator and Motius Joint-Position Evaluator are computed after converting outputs through the shared SMPL/SMPL-H evaluation bridge. For FID and MM-Dist, lower is better.
 
-| Evaluator | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
-| --------- | --: | --: | --: | --: | ------: | --------: | ------ |
-| HumanML3D Official | - | - | - | - | - | - | Pending |
-| MotionStreamer Evaluator | 0.474 | 0.650 | 0.731 | 36.377 | 20.002 | 25.178 | Measured |
-| Motius Joint-Position Evaluator | - | - | - | - | - | - | Pending |
+| Evaluator | Variant | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | Default | 3,970 | 0.439 | 0.636 | 0.744 | 0.327 | 3.387 | 9.942 | Measured |
+| MotionStreamer Evaluator | Default | 4,042 | 0.474 | 0.650 | 0.731 | 36.377 | 20.002 | 25.178 | Measured |
+| Motius Joint-Position Evaluator | Default | 4,034 | 0.439 | 0.615 | 0.711 | 227.494 | 37.410 | 55.513 | Measured |
 
-Physical diagnostics:
-
-| Slide | Float | Jitter | Dynamic |
-| ----: | ----: | -----: | ------: |
-| 3.045 | 7.406 | 5.013 | 22.321 |
 
 ## TP2M Results
 
@@ -102,12 +101,6 @@ FlowMDM generates HumanML3D-263 features at 20 fps. Per frame:
 | `local_vel` | 66 | local joint velocities |
 | `foot_contact` | 4 | binary foot-contact labels |
 
-## Qualitative Results
-
-Validated SMPL previews will be added to this card once the public qualitative
-assets are rendered through the shared SMPL-H visualization path. The current
-release keeps the model card focused on reproducible checkpoint loading and
-numeric evaluation rather than shipping unverified preview media.
 
 ## Motius Components
 

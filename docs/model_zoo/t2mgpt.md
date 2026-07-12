@@ -17,6 +17,12 @@ from Textual Descriptions with Discrete Representations* (Zhang et al., CVPR
 cross-conditional GPT sampler, CLIP text encoder loading, and HumanML3D-263
 denormalization behind a consistent pipeline.
 
+## Preview
+
+![HumanML3D T2M-GPT roundhouse-kick SMPL mesh demo](../../assets/model_zoo/t2mgpt/t2mgpt_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/t2mgpt/t2mgpt_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/t2mgpt/t2mgpt_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
+
 ## Release Snapshot
 
 | Item | Value |
@@ -55,14 +61,14 @@ decides sequence length through its EOS token.
 
 ## Evaluation Results
 
-Protocol: HumanML3D official test split, native 263-dim motion, first caption,
-model-chosen length. For FID and MM-Dist, lower is better.
+Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. MotionStreamer Evaluator and Motius Joint-Position Evaluator are computed after converting outputs through the shared SMPL/SMPL-H evaluation bridge. For FID and MM-Dist, lower is better.
 
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
-| --------- | ------: | ---: | ---: | ---: | ---: | ------: | --------: | ------ |
-| HumanML3D Official | 3,940 | 0.470 | 0.660 | 0.761 | 0.176 | 3.238 | 9.563 | Measured |
-| MotionStreamer Evaluator | 4,042 | 0.552 | 0.706 | 0.779 | 25.491 | 19.091 | 25.595 | Measured |
-| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
+| Evaluator | Variant | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | Default | 3,944 | 0.490 | 0.678 | 0.776 | 0.225 | 3.145 | 9.624 | Measured |
+| MotionStreamer Evaluator | Default | 4,042 | 0.552 | 0.706 | 0.779 | 25.491 | 19.091 | 25.595 | Measured |
+| Motius Joint-Position Evaluator | Default | 4,034 | 0.487 | 0.652 | 0.736 | 209.940 | 36.318 | 55.538 | Measured |
+
 
 ## Motion Representation
 

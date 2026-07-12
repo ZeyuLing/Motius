@@ -17,6 +17,12 @@ RVQ-VAE tokenizer, masked token generator, residual token refiner, optional
 length estimator, CLIP ViT-B/32 text encoder loading, and HumanML3D-263
 denormalization behind a consistent inference pipeline.
 
+## Preview
+
+![HumanML3D MoMask roundhouse-kick SMPL mesh demo](../../assets/model_zoo/momask/momask_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source: [../../assets/model_zoo/momask/momask_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4](../../assets/model_zoo/momask/momask_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4).
+
 ## Release Snapshot
 
 | Item | Value |
@@ -56,20 +62,14 @@ length estimator samples a token length from the prompt embedding.
 
 ## Evaluation Results
 
-Protocol: HumanML3D official test split, native 263-dim motion, first caption,
-model-chosen length unless a fixed protocol length is supplied. For FID and
-MM-Dist, lower is better.
+Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. MotionStreamer Evaluator and Motius Joint-Position Evaluator are computed after converting outputs through the shared SMPL/SMPL-H evaluation bridge. For FID and MM-Dist, lower is better.
 
-| Evaluator | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
-| --------- | ------: | ---: | ---: | ---: | ---: | ------: | --------: | ------ |
-| HumanML3D Official | 3,970 | 0.516 | 0.709 | 0.804 | 0.097 | 2.990 | 9.460 | Measured |
-| MotionStreamer Evaluator | 7,392 | 0.485 | 0.650 | 0.731 | 114.869 | 19.411 | 25.427 | Measured |
-| Motius Joint-Position Evaluator | - | - | - | - | - | - | - | Pending |
+| Evaluator | Variant | Samples | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Status |
+| --------- | ------- | ------: | --: | --: | --: | --: | ------: | --------: | ------ |
+| HumanML3D Official | Default | 3,970 | 0.516 | 0.709 | 0.804 | 0.097 | 2.990 | 9.460 | Measured |
+| MotionStreamer Evaluator | Default | 4,042 | 0.640 | 0.797 | 0.861 | 21.073 | 18.122 | 25.979 | Measured |
+| Motius Joint-Position Evaluator | Default | 4,034 | 0.567 | 0.754 | 0.836 | 143.543 | 33.312 | 56.611 | Measured |
 
-The HumanML3D Official result is close to the released MoMask paper metrics
-(R@1/R@2/R@3 0.521/0.713/0.807, FID 0.045, MM-Dist 2.958, Diversity 9.620).
-The MotionStreamer Evaluator row is retained as a cross-representation diagnostic;
-it includes the extra HumanML3D-263 to SMPL/MotionStreamer conversion path.
 
 ## Motion Representation
 
@@ -88,12 +88,6 @@ MoMask generates HumanML3D-263 features at 20 fps. Per frame:
 The RVQ-VAE downsamples motion by a factor of four frames. A 196-frame motion
 maps to 49 token positions, each represented by 6 residual quantizers.
 
-## Qualitative Results
-
-Validated SMPL previews will be added to this card once the public qualitative
-assets are rendered through the shared SMPL-H visualization path. The current
-release keeps the model card focused on reproducible checkpoint loading and
-numeric evaluation rather than shipping unverified preview media.
 
 ## Motius Components
 

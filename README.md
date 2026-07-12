@@ -40,7 +40,7 @@ results, and qualitative SMPL renders.
 | MLD | Text-to-Motion | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-mld-humanml3d) | [Model Card](docs/model_zoo/mld.md) | [Paper](https://arxiv.org/abs/2212.04048) / [Code](https://github.com/ChenFengYe/motion-latent-diffusion) |
 | MotionLCM | Text-to-Motion | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionlcm-humanml3d) | [Model Card](docs/model_zoo/motionlcm.md) | [Paper](https://arxiv.org/abs/2404.19759) / [Code](https://github.com/Dai-Wenxun/MotionLCM) |
 | ViMoGen | Text-to-Motion | DART276 | [HF](https://huggingface.co/ZeyuLing/hftrainer-vimogen-1.3b-humanml3d) | [Model Card](docs/model_zoo/vimogen.md) | [Paper](https://arxiv.org/abs/2510.26794) / [Code](https://github.com/MotrixLab/ViMoGen) |
-| DART | Autoregressive Text-to-Motion / Motion Control | DART276 | Not released yet | [Model Card](docs/model_zoo/dart.md) | [Paper](https://arxiv.org/abs/2410.05260) / [Code](https://github.com/zkf1997/DART) |
+| DART | Autoregressive Text-to-Motion / Motion Control | DART276 | [HF](https://huggingface.co/ZeyuLing/motius-dart-humanml3d) | [Model Card](docs/model_zoo/dart.md) | [Paper](https://arxiv.org/abs/2410.05260) / [Code](https://github.com/zkf1997/DART) |
 
 ## Evaluator Zoo
 
@@ -57,11 +57,17 @@ contrastive-evaluator rows are not part of the public Evaluation tables.
 
 ### Preview Gallery
 
+Every released model card includes a 1024px / 30fps SMPL GIF preview and the
+matching MP4 source under `assets/model_zoo/<method>/`.
+
 ![MDM roundhouse-kick SMPL mesh demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
 
-1024px / 30fps GIF demo, MDM on HumanML3D test sample 001840:
-"someone executes a roundhouse kick with their left foot." MP4 source is kept
-under `assets/model_zoo/mdm/`.
+MDM on HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot."
+
+![DART roundhouse-kick SMPL mesh demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/dart/dart_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
+
+DART on the same selected-caption test sample. MP4 sources live with the GIFs in
+`assets/model_zoo/`.
 
 ## What Is Included
 
