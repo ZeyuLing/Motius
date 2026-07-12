@@ -1,0 +1,32 @@
+{
+  "format_version": 1,
+  "evaluators": [
+    {
+      "name": "HumanML3D Official",
+      "card": "docs/evaluator_zoo/humanml3d_official.md",
+      "checkpoint": "ZeyuLing/motius-evaluator-humanml3d-official",
+      "motion_representation": "HumanML3D-263",
+      "paper": "https://openaccess.thecvf.com/content/CVPR2022/html/Guo_Generating_Diverse_and_Natural_3D_Human_Motions_From_Text_CVPR_2022_paper.html",
+      "source_repository": "https://github.com/EricGuo5513/text-to-motion",
+      "checkpoint_origin": "lossless inference-only conversion of the official released checkpoint"
+    },
+    {
+      "name": "MotionStreamer Evaluator",
+      "card": "docs/evaluator_zoo/motionstreamer.md",
+      "checkpoint": "ZeyuLing/motius-evaluator-motionstreamer-272",
+      "motion_representation": "MotionStreamer-272",
+      "paper": "https://arxiv.org/abs/2503.15451",
+      "source_repository": "https://github.com/zju3dv/MotionStreamer",
+      "checkpoint_origin": "lossless extraction of the official released evaluator encoders"
+    },
+    {
+      "name": "Motius Joint-Position Evaluator",
+      "card": "docs/evaluator_zoo/motius_joint_position.md",
+      "checkpoint": "ZeyuLing/motius-evaluator-universal-smplh-joints66",
+      "motion_representation": "canonicalized SMPL-H joints66",
+      "paper": "https://arxiv.org/abs/2305.00976",
+      "source_repository": "https://github.com/Mathux/TMR",
+      "checkpoint_origin": "Motius architecture reproduction trained from scratch; epoch 248"
+    }
+  ]
+}

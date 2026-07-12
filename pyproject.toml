@@ -12,6 +12,7 @@ dependencies = [
     "accelerate>=0.20",
     "datasets>=2.0",
     "diffusers>=0.20",
+    "huggingface_hub>=0.20",
     "mmengine>=0.7",
     "peft>=0.5",
     "safetensors>=0.3",

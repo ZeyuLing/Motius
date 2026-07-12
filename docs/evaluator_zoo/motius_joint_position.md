@@ -1,24 +1,60 @@
 <h1 align="center">Motius Joint-Position Evaluator Card</h1>
 
 <p align="center">
-  <strong>Universal SMPL-H joint-position evaluator for source-fair T2M reporting.</strong>
+  <strong>Universal SMPL-H joint-position evaluator for cross-model T2M reporting.</strong>
 </p>
 
-The Motius Joint-Position Evaluator is the new universal evaluator trained on
-HYMotion Data and MotionHub with unified SMPL-H joint positions. It is designed
-to avoid rotation-twist ambiguity in SMPL-style rotation features by scoring the
-motion in joint-position space.
+<p align="center">
+  <a href="https://arxiv.org/abs/2305.00976">TMR Paper</a> |
+  <a href="https://mathis.petrovich.fr/tmr/">TMR Project Page</a> |
+  <a href="https://github.com/Mathux/TMR">Original TMR GitHub</a> |
+  <a href="https://huggingface.co/ZeyuLing/motius-evaluator-universal-smplh-joints66">Motius Checkpoint</a>
+</p>
+
+The Motius Joint-Position Evaluator is a TMR architecture reproduction trained
+on full HYMotion Data SFT and the full single-person MotionHub training union.
+It scores canonicalized SMPL-H joint positions, avoiding the rotation-twist
+ambiguity that can affect comparisons in SMPL rotation space.
 
 ## Release Snapshot
 
 | Item | Value |
 | ---- | ----- |
 | Evaluator | Motius Joint-Position Evaluator |
-| Motion representation | SMPL-H joints66, 22 joints in xyz |
-| Training data | HYMotion Data + MotionHub |
-| Caption protocol | HumanML3D selected-caption protocol for HumanML3D reporting; MotionHub official test split for MotionHub reporting |
+| Architecture | TMR-style text/motion encoders with reconstruction decoder |
+| Motion representation | Canonicalized SMPL-H joints66, 22 joints in xyz at 30 fps |
+| Training data | Full HYMotion Data SFT + full single-person MotionHub training union |
+| Training checkpoint | Epoch 248, FP32 |
+| Caption protocol | HumanML3D selected captions; MotionHub official test annotations |
 | Metrics | R@1, R@2, R@3, FID, MM-Dist, Diversity |
-| Checkpoint/assets | Pending public artifact |
+| Checkpoint | [ZeyuLing/motius-evaluator-universal-smplh-joints66](https://huggingface.co/ZeyuLing/motius-evaluator-universal-smplh-joints66) |
+| Artifact format | Safetensors + corrected joints66 training statistics |
+
+## Provenance
+
+The architecture is reproduced from **TMR: Text-to-Motion Retrieval Using
+Contrastive 3D Human Motion Synthesis** and the official
+[`Mathux/TMR`](https://github.com/Mathux/TMR) repository. Motius reimplements
+the architecture in its own model/trainer stack and trains this checkpoint from
+scratch on the datasets above. Therefore, this is a **Motius-trained TMR
+reproduction**, not an official TMR checkpoint.
+
+The published artifact contains only the epoch-248 inference model and the
+normalization statistics used by that corrected run. Optimizer state,
+distributed random states, and local dataset caches are excluded.
+
+## Download
+
+```python
+from huggingface_hub import snapshot_download
+
+checkpoint_dir = snapshot_download(
+    repo_id="ZeyuLing/motius-evaluator-universal-smplh-joints66"
+)
+```
+
+The downloaded directory contains `model.safetensors`, `config.json`,
+`preprocessor_config.json`, joints66 statistics, and an SHA256 manifest.
 
 ## Reporting Rule
 
