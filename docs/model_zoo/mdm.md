@@ -20,17 +20,11 @@ methods.
 
 ## Preview
 
-<p align="center">
-  <img src="../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif" width="64%" alt="HumanML3D MDM roundhouse-kick SMPL mesh demo">
-</p>
+![HumanML3D MDM roundhouse-kick SMPL mesh demo](../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif)
 
-<p align="center">
-  <sub>1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot." MP4 source is kept under <code>assets/model_zoo/mdm/</code>.</sub>
-</p>
-
-<!-- GitHub README/model-card pages only render inline MP4 players for uploaded
-     GitHub attachment URLs. Until those attachment URLs are available, cards use
-     verified 30fps GIF demos and keep MP4 sources under assets/. -->
+1024px / 30fps GIF demo, HumanML3D test sample 001840: "someone executes a
+roundhouse kick with their left foot." MP4 source is kept under
+`assets/model_zoo/mdm/`.
 
 ## Release Snapshot
 

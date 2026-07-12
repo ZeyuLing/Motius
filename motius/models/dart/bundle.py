@@ -178,7 +178,8 @@ class DARTBundle(ModelBundle):
         index = {
             "model_type": "dart",
             "task": "text-to-motion",
-            "motion_representation": "smplh_motion135",
+            "motion_representation": "dart276",
+            "export_adapters": ["smpl_sequence", "smplh_motion135"],
             "denoiser_checkpoint": self.denoiser_checkpoint,
             "seed_sequence": self.seed_sequence,
             "guidance_param": self.guidance_param,

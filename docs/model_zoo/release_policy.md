@@ -1,0 +1,25 @@
+# Model Zoo Release Policy
+
+A Model Zoo entry is release-complete only when all of the following artifacts
+are present and verified:
+
+| Area | Required Artifact |
+| ---- | ----------------- |
+| Checkpoint | Public checkpoint link for every advertised variant |
+| Demo | At least one verified qualitative demo rendered from the released checkpoint |
+| HumanML3D Official | T2M leaderboard metrics with the selected-caption HumanML3D protocol |
+| MotionStreamer Evaluator | Metrics after the checked MotionStreamer conversion path |
+| Motius Joint-Position Evaluator | Metrics with the unified SMPL-H joint-position evaluator |
+| Representation | The model's native motion representation, with conversion helpers clearly marked as adapters |
+
+Model cards must not use adapter outputs as the model's native representation.
+For example, HY-Motion T2M is `HY-Motion-201`; DART is `DART276`. SMPL,
+SMPL-H, MotionStreamer, or HumanML3D conversions can be documented only as
+rendering/evaluation adapters.
+
+Generated audit reports should be written under `outputs/`, for example:
+
+```bash
+python tools/audit_model_zoo_release.py --check-hf \
+  --output outputs/model_zoo_release_audit.md
+```

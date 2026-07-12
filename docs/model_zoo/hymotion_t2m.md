@@ -22,7 +22,7 @@ CLIP-L text encoders, official smoothing, and an ODE-based inference pipeline.
 | ---- | ----- |
 | Method | HY-Motion 1.0 T2M, DiT + flow matching |
 | Tasks | Text-to-Motion |
-| Motion representation | HY-Motion-201 at 30 fps, with SMPL `motion_135` slice |
+| Motion representation | HY-Motion-201 at 30 fps |
 | Text encoder | Qwen3-8B token context + CLIP-L sentence embedding |
 | Pipeline | `motius.pipelines.hymotion_t2m.HyMotionT2MPipeline` |
 
@@ -49,8 +49,7 @@ out = pipe({
 })
 
 motion_201 = out["latent"]
-rot6d = out["rot6d"]
-transl = out["transl"]
+keypoints3d = out.get("keypoints3d")
 ```
 
 The pipeline pads inference to the 360-frame training length, integrates the
@@ -80,17 +79,14 @@ metric row will be refreshed after the render/eval assets are regenerated.
 
 ## Motion Representation
 
-HY-Motion uses a 201-dimensional feature at 30 fps. The model card-facing
-evaluation and visualization paths use the SMPL `motion_135` slice:
+HY-Motion T2M has a single public motion representation in this release:
+`HY-Motion-201` at 30 fps. The generated tensor is returned as
+`out["latent"]`.
 
-| Slice | Dim | Meaning |
-| ----- | --- | ------- |
-| root translation | 3 | global root position |
-| local rotations | 132 | 22 joints in row-major 6D |
-| additional features | 66 | model-side auxiliary motion channels |
-
-Motius decodes `rot6d`, `transl`, optional `keypoints3d`, and the generated
-latent motion tensor from the same pipeline call.
+The pipeline may expose decoded helper tensors such as `rot6d`, `transl`, or
+`keypoints3d` for visualization/evaluation adapters, but those helpers are not
+separate HY-Motion checkpoint variants and should not be listed as the model's
+motion representation.
 
 ## Qualitative Results
 
