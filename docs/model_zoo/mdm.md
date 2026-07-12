@@ -21,14 +21,18 @@ methods.
 ## Preview
 
 <p align="center">
-  <video src="../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4" width="64%" controls muted loop playsinline>
-    HumanML3D MDM roundhouse-kick SMPL mesh preview.
-  </video>
+  <a href="../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4">
+    <img src="../../assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh_poster.png" width="64%" alt="HumanML3D MDM roundhouse-kick SMPL mesh MP4 preview">
+  </a>
 </p>
 
 <p align="center">
-  <sub>HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot."</sub>
+  <sub>MP4 preview, HumanML3D test sample 001840: "someone executes a roundhouse kick with their left foot."</sub>
 </p>
+
+<!-- GitHub README/model-card pages only render inline video players for uploaded
+     GitHub attachment URLs. Repository-local MP4 files are kept under assets/ and
+     exposed through poster links until an attachment URL is available. -->
 
 ## Release Snapshot
 
