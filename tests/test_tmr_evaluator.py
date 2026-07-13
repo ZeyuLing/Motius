@@ -54,9 +54,31 @@ def test_representation_demo_contains_synchronized_routes() -> None:
     assert payload["fps"] == 30.0
     assert payload["frames"] == 180
     assert set(payload["representations"]) == {"humanml3d", "smpl", "g1"}
-    for representation in payload["representations"].values():
-        assert len(representation["positions"]) == payload["frames"]
-        assert np.isfinite(np.asarray(representation["positions"])).all()
+    hml = payload["representations"]["humanml3d"]
+    smpl = payload["representations"]["smpl"]
+    g1 = payload["representations"]["g1"]
+    assert len(hml["positions"]) == payload["frames"]
+    assert np.isfinite(np.asarray(hml["positions"])).all()
+    for representation in (hml, smpl, g1):
+        np.testing.assert_allclose(representation["initial_forward"], [0, 0, 1], atol=1e-5)
+
+    asset_dir = ROOT / "assets/motion/representation_demo"
+    assert (asset_dir / smpl["vertices_file"]).stat().st_size == (
+        payload["frames"] * smpl["vertex_count"] * 3 * 2
+    )
+    assert (asset_dir / smpl["normals_file"]).stat().st_size == (
+        payload["frames"] * smpl["vertex_count"] * 3
+    )
+    assert (asset_dir / smpl["indices_file"]).stat().st_size == smpl["index_count"] * 4
+    assert (asset_dir / g1["vertices_file"]).stat().st_size == g1["vertex_count"] * 3 * 4
+    assert (asset_dir / g1["indices_file"]).stat().st_size == g1["index_count"] * 4
+    assert (asset_dir / g1["transforms_file"]).stat().st_size == (
+        payload["frames"] * g1["geom_count"] * 7 * 4
+    )
+
+    viewer = (asset_dir / "index.html").read_text()
+    assert "One motion, three representations" not in viewer
+    assert "HumanML3D test" not in viewer
 
 
 def test_gmr_mesh_references_resolve_to_packaged_assets() -> None:

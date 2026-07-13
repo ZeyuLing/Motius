@@ -34,13 +34,14 @@ uses the following routes:
 
 ```text
 HumanML3D-263 -> official joint decode -> SMPL-22 joints
-SMPL motion135 -> shape-aware SMPL-H FK -> SMPL-22 body
-SMPL motion135 -> GMR inverse kinematics -> G1 qpos -> MuJoCo FK
+SMPL motion135 -> SMPL-H skinning -> animated SMPL surface mesh
+SMPL motion135 -> GMR inverse kinematics -> G1 qpos -> MuJoCo visual meshes
 ```
 
-The display recenters each body at its initial ground position for side-by-side
-inspection. It preserves the body proportions and articulated motion produced
-by each route; it does not claim that G1 retargeting is lossless.
+The display recenters each body at its initial ground position and aligns the
+anatomical body-forward direction to viewer `+z`. It preserves the body
+proportions and articulated motion produced by each route; it does not claim
+that G1 retargeting is lossless.
 
 ## The Two 6D Layouts
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build synchronized HumanML3D, SMPL-22, and Unitree G1 viewer data."""
+"""Build synchronized HumanML3D, SMPL mesh, and Unitree G1 mesh viewer data."""
 
 from __future__ import annotations
 
@@ -9,10 +9,12 @@ from pathlib import Path
 
 import numpy as np
 import torch
+from scipy.spatial.transform import Rotation
 
 from motius.motion.representation.rotation import matrix_to_axis_angle, rotation_6d_to_matrix
 from motius.motion.retarget import GMRSMPLToG1Retargeter
-from motius.motion.skeleton import SMPL22_PARENTS, smpl_to_joints
+from motius.motion.skeleton import SMPL22_PARENTS
+from motius.motion.skeleton.body_models import resolve_smpl_model_path
 
 
 G1_BODY_NAMES = (
@@ -53,6 +55,11 @@ G1_BODY_NAMES = (
     "right_rubber_hand",
 )
 
+VIEWER_FROM_Z_UP = np.asarray(
+    [[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]],
+    dtype=np.float32,
+)
+
 
 def _linear_resample(values: np.ndarray, src_fps: float, dst_fps: float, frames: int) -> np.ndarray:
     src_times = np.arange(len(values), dtype=np.float64) / float(src_fps)
@@ -72,40 +79,239 @@ def _motion135_axis_angle(motion: np.ndarray) -> np.ndarray:
     return matrix_to_axis_angle(matrices).reshape(frames, 22, 3).cpu().numpy()
 
 
-def _g1_fk(qpos: np.ndarray, xml_path: Path) -> tuple[np.ndarray, list[int], list[str]]:
+def _body_forward(
+    joints: np.ndarray,
+    *,
+    left_hip: int,
+    right_hip: int,
+    left_shoulder: int,
+    right_shoulder: int,
+    reverse: bool = False,
+) -> np.ndarray:
+    first = np.asarray(joints[0], dtype=np.float64)
+    across = 0.5 * (
+        first[right_hip] - first[left_hip]
+        + first[right_shoulder] - first[left_shoulder]
+    )
+    across[1] = 0.0
+    norm = float(np.linalg.norm(across))
+    if norm < 1e-8:
+        raise ValueError("Cannot infer initial body heading from hips and shoulders.")
+    across /= norm
+    forward = np.cross(across, np.asarray([0.0, 1.0, 0.0]))
+    if reverse:
+        forward *= -1.0
+    forward[1] = 0.0
+    return (forward / np.linalg.norm(forward)).astype(np.float32)
+
+
+def _canonical_heading(
+    joints: np.ndarray,
+    *,
+    left_hip: int,
+    right_hip: int,
+    left_shoulder: int,
+    right_shoulder: int,
+    reverse: bool = False,
+) -> tuple[np.ndarray, np.ndarray]:
+    forward = _body_forward(
+        joints,
+        left_hip=left_hip,
+        right_hip=right_hip,
+        left_shoulder=left_shoulder,
+        right_shoulder=right_shoulder,
+        reverse=reverse,
+    )
+    yaw = -float(np.arctan2(forward[0], forward[2]))
+    cosine, sine = np.cos(yaw), np.sin(yaw)
+    heading = np.asarray(
+        [[cosine, 0.0, sine], [0.0, 1.0, 0.0], [-sine, 0.0, cosine]],
+        dtype=np.float32,
+    )
+    origin = np.asarray([joints[0, 0, 0], 0.0, joints[0, 0, 2]], dtype=np.float32)
+    return heading, origin
+
+
+def _apply_heading(points: np.ndarray, heading: np.ndarray, origin: np.ndarray) -> np.ndarray:
+    return ((np.asarray(points, dtype=np.float32) - origin) @ heading.T).astype(np.float32)
+
+
+def _canonicalize_human_joints(joints: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    heading, origin = _canonical_heading(
+        joints,
+        left_hip=1,
+        right_hip=2,
+        left_shoulder=16,
+        right_shoulder=17,
+        reverse=True,
+    )
+    canonical = _apply_heading(joints, heading, origin)
+    canonical[..., 1] -= float(canonical[..., 1].min())
+    return canonical, heading
+
+
+def _smpl_surface(
+    axis_angle: np.ndarray,
+    transl: np.ndarray,
+    *,
+    model_dir: Path,
+    gender: str,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    import smplx
+
+    standard_model = model_dir / "smplh" / f"SMPLH_{gender.upper()}.pkl"
+    resolved = (
+        standard_model
+        if standard_model.is_file()
+        else resolve_smpl_model_path(model_dir, model_type="smplh", gender=gender)
+    )
+    if model_dir.is_file():
+        body_model = smplx.SMPLH(str(resolved), gender=gender, use_pca=False)
+    else:
+        body_model = smplx.create(
+            str(model_dir),
+            model_type="smplh",
+            gender=gender,
+            ext=resolved.suffix.lstrip("."),
+            use_pca=False,
+        )
+    frames = len(axis_angle)
+    zeros_hand = torch.zeros((frames, 45), dtype=torch.float32)
+    with torch.inference_mode():
+        output = body_model(
+            global_orient=torch.from_numpy(axis_angle[:, 0]).float(),
+            body_pose=torch.from_numpy(axis_angle[:, 1:].reshape(frames, 63)).float(),
+            left_hand_pose=zeros_hand,
+            right_hand_pose=zeros_hand,
+            transl=torch.from_numpy(np.asarray(transl, dtype=np.float32)),
+            betas=torch.zeros((frames, int(body_model.num_betas)), dtype=torch.float32),
+        )
+    vertices = output.vertices.detach().cpu().numpy().astype(np.float32)
+    joints = output.joints[:, :22].detach().cpu().numpy().astype(np.float32)
+    return vertices, joints, np.asarray(body_model.faces, dtype=np.uint32)
+
+
+def _quantize_vertices(vertices: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    minimum = vertices.min(axis=(0, 1)).astype(np.float32)
+    maximum = vertices.max(axis=(0, 1)).astype(np.float32)
+    scale = np.maximum((maximum - minimum) / 65535.0, 1e-8).astype(np.float32)
+    quantized = np.rint((vertices - minimum) / scale).clip(0, 65535).astype("<u2")
+    return quantized, minimum, scale
+
+
+def _quantize_vertex_normals(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
+    normals = np.empty_like(vertices, dtype=np.float32)
+    for frame, frame_vertices in enumerate(vertices):
+        frame_normals = np.zeros_like(frame_vertices, dtype=np.float32)
+        triangles = frame_vertices[faces]
+        face_normals = np.cross(
+            triangles[:, 1] - triangles[:, 0],
+            triangles[:, 2] - triangles[:, 0],
+        )
+        np.add.at(frame_normals, faces[:, 0], face_normals)
+        np.add.at(frame_normals, faces[:, 1], face_normals)
+        np.add.at(frame_normals, faces[:, 2], face_normals)
+        lengths = np.linalg.norm(frame_normals, axis=-1, keepdims=True)
+        normals[frame] = frame_normals / np.maximum(lengths, 1e-8)
+    return np.rint(normals * 127.0).clip(-127, 127).astype("i1")
+
+
+def _g1_mesh_assets(
+    qpos: np.ndarray,
+    xml_path: Path,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, list[dict], np.ndarray]:
     import mujoco
 
     model = mujoco.MjModel.from_xml_path(str(xml_path))
     data = mujoco.MjData(model)
+    geom_ids = np.where(
+        (model.geom_type == mujoco.mjtGeom.mjGEOM_MESH) & (model.geom_group == 1)
+    )[0]
     body_ids = [mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, name) for name in G1_BODY_NAMES]
-    id_to_output = {body_id: idx for idx, body_id in enumerate(body_ids)}
-    parents = []
-    for body_id in body_ids:
-        parent_id = int(model.body_parentid[body_id])
-        while parent_id not in id_to_output and parent_id > 0:
-            parent_id = int(model.body_parentid[parent_id])
-        parents.append(id_to_output.get(parent_id, -1))
+    frames = len(qpos)
+    body_positions = np.empty((frames, len(body_ids), 3), dtype=np.float32)
+    geom_positions = np.empty((frames, len(geom_ids), 3), dtype=np.float32)
+    geom_rotations = np.empty((frames, len(geom_ids), 3, 3), dtype=np.float32)
 
-    positions = np.empty((len(qpos), len(body_ids), 3), dtype=np.float32)
     for frame, pose in enumerate(qpos):
         data.qpos[:] = pose
         data.qvel[:] = 0
         mujoco.mj_forward(model, data)
-        positions[frame] = data.xpos[body_ids]
-    return positions, parents, list(G1_BODY_NAMES)
+        body_positions[frame] = data.xpos[body_ids]
+        geom_positions[frame] = data.geom_xpos[geom_ids]
+        geom_rotations[frame] = data.geom_xmat[geom_ids].reshape(-1, 3, 3)
 
+    body_positions = body_positions @ VIEWER_FROM_Z_UP.T
+    geom_positions = geom_positions @ VIEWER_FROM_Z_UP.T
+    geom_rotations = (
+        VIEWER_FROM_Z_UP[None, None]
+        @ geom_rotations
+        @ VIEWER_FROM_Z_UP.T[None, None]
+    )
+    heading, origin = _canonical_heading(
+        body_positions,
+        left_hip=1,
+        right_hip=8,
+        left_shoulder=19,
+        right_shoulder=27,
+    )
+    body_positions = _apply_heading(body_positions, heading, origin)
+    geom_positions = _apply_heading(geom_positions, heading, origin)
+    geom_rotations = heading[None, None] @ geom_rotations
 
-def _viewer_coordinates(joints: np.ndarray, root: int, source_up: str) -> np.ndarray:
-    joints = np.asarray(joints, dtype=np.float32).copy()
-    if source_up == "z":
-        joints = joints[..., [0, 2, 1]]
-        joints[..., 2] *= -1
-    elif source_up != "y":
-        raise ValueError(f"Unsupported up axis: {source_up}")
-    joints[..., 0] -= joints[0, root, 0]
-    joints[..., 2] -= joints[0, root, 2]
-    joints[..., 1] -= float(joints[..., 1].min())
-    return joints
+    vertices_parts: list[np.ndarray] = []
+    index_parts: list[np.ndarray] = []
+    metadata: list[dict] = []
+    vertex_offset = 0
+    index_offset = 0
+    geom_local_vertices: list[np.ndarray] = []
+    for output_index, geom_id in enumerate(geom_ids):
+        mesh_id = int(model.geom_dataid[geom_id])
+        vertex_begin = int(model.mesh_vertadr[mesh_id])
+        vertex_count = int(model.mesh_vertnum[mesh_id])
+        face_begin = int(model.mesh_faceadr[mesh_id])
+        face_count = int(model.mesh_facenum[mesh_id])
+        vertices = np.asarray(
+            model.mesh_vert[vertex_begin : vertex_begin + vertex_count], dtype=np.float32
+        ) @ VIEWER_FROM_Z_UP.T
+        indices = np.asarray(
+            model.mesh_face[face_begin : face_begin + face_count], dtype=np.uint32
+        ).reshape(-1)
+        vertices_parts.append(vertices)
+        index_parts.append(indices)
+        geom_local_vertices.append(vertices)
+        metadata.append(
+            {
+                "name": mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_MESH, mesh_id),
+                "vertex_offset": vertex_offset,
+                "vertex_count": vertex_count,
+                "index_offset": index_offset,
+                "index_count": int(len(indices)),
+                "color": np.round(model.geom_rgba[geom_id], 4).tolist(),
+                "transform_index": output_index,
+            }
+        )
+        vertex_offset += vertex_count
+        index_offset += len(indices)
+
+    floor = np.inf
+    for geom_index, vertices in enumerate(geom_local_vertices):
+        y_axes = geom_rotations[:, geom_index, 1, :]
+        local_y = y_axes @ vertices.T
+        floor = min(floor, float((local_y + geom_positions[:, geom_index, 1:2]).min()))
+    geom_positions[..., 1] -= floor
+    body_positions[..., 1] -= floor
+
+    quaternions = Rotation.from_matrix(geom_rotations.reshape(-1, 3, 3)).as_quat()
+    quaternions = quaternions.reshape(frames, len(geom_ids), 4).astype(np.float32)
+    transforms = np.concatenate([geom_positions, quaternions], axis=-1).astype("<f4")
+    return (
+        np.concatenate(vertices_parts, axis=0).astype("<f4"),
+        np.concatenate(index_parts, axis=0).astype("<u4"),
+        transforms,
+        metadata,
+        body_positions,
+    )
 
 
 def _round_nested(values: np.ndarray, digits: int = 5):
@@ -120,17 +326,30 @@ def build(args: argparse.Namespace) -> Path:
     frames = min(args.max_frames, len(motion135))
     motion135 = motion135[:frames]
     hml_joints = _linear_resample(hml_joints, args.hml_fps, args.fps, frames)
+    hml_joints, _ = _canonicalize_human_joints(hml_joints)
 
     axis_angle = _motion135_axis_angle(motion135)
-    smpl_joints = smpl_to_joints(
-        axis_angle[:, 0],
-        axis_angle[:, 1:].reshape(frames, 63),
+    smpl_vertices, smpl_joints, smpl_faces = _smpl_surface(
+        axis_angle,
         motion135[:, :3],
-        betas=np.zeros(16, dtype=np.float32),
+        model_dir=args.smpl_model_dir,
         gender=args.gender,
-        model_type="smplh",
-        model_path=args.smpl_model_dir,
     )
+    smpl_heading, smpl_origin = _canonical_heading(
+        smpl_joints,
+        left_hip=1,
+        right_hip=2,
+        left_shoulder=16,
+        right_shoulder=17,
+        reverse=True,
+    )
+    smpl_vertices = _apply_heading(smpl_vertices, smpl_heading, smpl_origin)
+    smpl_joints = _apply_heading(smpl_joints, smpl_heading, smpl_origin)
+    smpl_floor = float(smpl_vertices[..., 1].min())
+    smpl_vertices[..., 1] -= smpl_floor
+    smpl_joints[..., 1] -= smpl_floor
+    smpl_quantized, smpl_minimum, smpl_scale = _quantize_vertices(smpl_vertices)
+    smpl_normals = _quantize_vertex_normals(smpl_vertices, smpl_faces)
 
     retargeter = GMRSMPLToG1Retargeter(
         tgt_fps=int(args.fps),
@@ -143,67 +362,104 @@ def build(args: argparse.Namespace) -> Path:
         gender=args.gender,
     )
     g1_qpos = retargeter.to_mujoco_qpos(g1_result)
-    g1_positions, g1_parents, g1_names = _g1_fk(g1_qpos, retargeter.robot_xml)
+    g1_vertices, g1_indices, g1_transforms, g1_geoms, g1_body_positions = _g1_mesh_assets(
+        g1_qpos, retargeter.robot_xml
+    )
 
-    hml_joints = _viewer_coordinates(hml_joints, root=0, source_up="y")
-    smpl_joints = _viewer_coordinates(smpl_joints, root=0, source_up="y")
-    g1_positions = _viewer_coordinates(g1_positions, root=0, source_up="z")
+    smpl_quantized.tofile(args.output_dir / "smpl_vertices.u16")
+    smpl_normals.tofile(args.output_dir / "smpl_normals.i8")
+    smpl_faces.astype("<u4").reshape(-1).tofile(args.output_dir / "smpl_indices.u32")
+    g1_vertices.tofile(args.output_dir / "g1_mesh_vertices.f32")
+    g1_indices.tofile(args.output_dir / "g1_mesh_indices.u32")
+    g1_transforms.tofile(args.output_dir / "g1_geom_transforms.f32")
 
+    hml_forward = _body_forward(
+        hml_joints,
+        left_hip=1,
+        right_hip=2,
+        left_shoulder=16,
+        right_shoulder=17,
+        reverse=True,
+    )
+    smpl_forward = _body_forward(
+        smpl_joints,
+        left_hip=1,
+        right_hip=2,
+        left_shoulder=16,
+        right_shoulder=17,
+        reverse=True,
+    )
+    g1_forward = _body_forward(
+        g1_body_positions,
+        left_hip=1,
+        right_hip=8,
+        left_shoulder=19,
+        right_shoulder=27,
+    )
     payload = {
         "case_id": args.case_id,
-        "caption": args.caption,
         "fps": args.fps,
         "frames": frames,
         "duration_seconds": round(frames / args.fps, 3),
         "representations": {
             "humanml3d": {
                 "label": "HumanML3D-263",
-                "detail": "decoded SMPL-22 joints",
                 "parents": list(SMPL22_PARENTS),
                 "positions": _round_nested(hml_joints),
+                "initial_forward": _round_nested(hml_forward),
             },
             "smpl": {
-                "label": "SMPL motion135",
-                "detail": "shape-aware SMPL-22 FK",
-                "parents": list(SMPL22_PARENTS),
-                "positions": _round_nested(smpl_joints),
+                "label": "SMPL",
+                "vertex_count": int(smpl_vertices.shape[1]),
+                "index_count": int(smpl_faces.size),
+                "vertices_file": "smpl_vertices.u16",
+                "normals_file": "smpl_normals.i8",
+                "indices_file": "smpl_indices.u32",
+                "quantization_min": smpl_minimum.tolist(),
+                "quantization_scale": smpl_scale.tolist(),
+                "initial_forward": _round_nested(smpl_forward),
             },
             "g1": {
-                "label": "Unitree G1-38D",
-                "detail": "GMR-retargeted robot FK",
-                "parents": g1_parents,
-                "names": g1_names,
-                "positions": _round_nested(g1_positions),
+                "label": "Unitree G1",
+                "vertex_count": int(len(g1_vertices)),
+                "index_count": int(len(g1_indices)),
+                "geom_count": len(g1_geoms),
+                "vertices_file": "g1_mesh_vertices.f32",
+                "indices_file": "g1_mesh_indices.u32",
+                "transforms_file": "g1_geom_transforms.f32",
+                "geoms": g1_geoms,
+                "initial_forward": _round_nested(g1_forward),
             },
         },
         "provenance": {
             "humanml3d": str(args.hml_fixture),
             "smpl_motion135": str(args.motion135),
-            "g1_route": "SMPL motion135 -> GMR IK -> G1 qpos -> MuJoCo FK",
-            "body_model": "local licensed SMPL-H/SMPL-X files; not redistributed",
+            "g1_route": "SMPL motion135 -> GMR IK -> G1 qpos -> MuJoCo mesh FK",
+            "body_model": "local licensed SMPL-H parameters; only demo geometry is exported",
         },
     }
     json_path = args.output_dir / "data.json"
     json_path.write_text(json.dumps(payload, separators=(",", ":")))
     (args.output_dir / "data.js").write_text(
-        "window.MOTIUS_REPRESENTATION_DEMO=" + json.dumps(payload, separators=(",", ":")) + ";\n"
-    )
-    np.savez_compressed(
-        args.output_dir / "source_arrays.npz",
-        hml_joints=hml_joints,
-        smpl_joints=smpl_joints,
-        g1_qpos=g1_qpos,
-        g1_positions=g1_positions,
+        "window.MOTIUS_REPRESENTATION_DEMO="
+        + json.dumps(payload, separators=(",", ":"))
+        + ";\n"
     )
     (args.output_dir / "manifest.json").write_text(
         json.dumps(
             {
                 "case_id": args.case_id,
-                "caption": args.caption,
                 "fps": args.fps,
                 "frames": frames,
                 "viewer_data": "data.js",
-                "source_arrays": "source_arrays.npz",
+                "assets": [
+                    "smpl_vertices.u16",
+                    "smpl_normals.i8",
+                    "smpl_indices.u32",
+                    "g1_mesh_vertices.f32",
+                    "g1_mesh_indices.u32",
+                    "g1_geom_transforms.f32",
+                ],
             },
             indent=2,
         )
@@ -219,10 +475,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--smpl-model-dir", type=Path, default=Path("checkpoints/smpl_models"))
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/representation_demo/004822"))
     parser.add_argument("--case-id", default="004822")
-    parser.add_argument(
-        "--caption",
-        default="A person walks forward at an average pace, swaying their arms and torso with swagger.",
-    )
     parser.add_argument("--fps", type=float, default=30.0)
     parser.add_argument("--hml-fps", type=float, default=20.0)
     parser.add_argument("--max-frames", type=int, default=180)

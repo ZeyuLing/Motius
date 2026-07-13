@@ -1,8 +1,14 @@
 {
   "case_id": "004822",
-  "caption": "A person walks forward at an average pace, swaying their arms and torso with swagger.",
   "fps": 30.0,
   "frames": 180,
   "viewer_data": "data.js",
-  "source_arrays": "source_arrays.npz"
+  "assets": [
+    "smpl_vertices.u16",
+    "smpl_normals.i8",
+    "smpl_indices.u32",
+    "g1_mesh_vertices.f32",
+    "g1_mesh_indices.u32",
+    "g1_geom_transforms.f32"
+  ]
 }

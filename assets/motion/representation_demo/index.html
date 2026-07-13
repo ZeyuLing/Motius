@@ -16,54 +16,33 @@
     body { background: #f4f6f8; }
     #stage { position: fixed; inset: 0; }
     canvas { display: block; width: 100%; height: 100%; }
-    header {
-      position: fixed;
-      z-index: 3;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 24px 30px 0;
-      pointer-events: none;
-    }
-    .brandline { display: flex; align-items: baseline; gap: 12px; }
-    .brand {
-      color: #1261d8;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0;
-      text-transform: uppercase;
-    }
-    h1 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 720; letter-spacing: 0; }
-    .caption {
-      margin: 9px 0 0;
-      max-width: min(820px, calc(100vw - 60px));
-      color: #4a5568;
-      font-size: 14px;
-      line-height: 1.45;
-    }
     .labels {
       position: fixed;
       z-index: 3;
-      top: 112px;
+      top: 24px;
       left: 5vw;
       right: 5vw;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       pointer-events: none;
     }
-    .label { text-align: center; min-width: 0; }
-    .label strong { display: block; font-size: 14px; font-weight: 760; letter-spacing: 0; }
-    .label span { display: block; margin-top: 3px; color: #718096; font-size: 11px; }
-    .label.hml strong { color: #06738d; }
-    .label.smpl strong { color: #1859c9; }
-    .label.g1 strong { color: #b9412d; }
+    .label {
+      min-width: 0;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+    .label.hml { color: #087991; }
+    .label.smpl { color: #9a4e31; }
+    .label.g1 { color: #293446; }
     .controls {
       position: fixed;
       z-index: 4;
       left: 50%;
       bottom: 22px;
       transform: translateX(-50%);
-      width: min(700px, calc(100vw - 36px));
+      width: min(560px, calc(100vw - 36px));
       min-height: 50px;
       display: grid;
       grid-template-columns: 36px minmax(120px, 1fr) 78px 68px;
@@ -72,7 +51,7 @@
       padding: 8px 12px;
       border: 1px solid rgba(16, 24, 39, 0.12);
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       box-shadow: 0 8px 24px rgba(16, 24, 39, 0.11);
       backdrop-filter: blur(12px);
     }
@@ -107,7 +86,13 @@
       box-shadow: 8px 0 0 white;
     }
     input[type="range"] { width: 100%; accent-color: #1261d8; }
-    .time { color: #4a5568; font-variant-numeric: tabular-nums; font-size: 12px; text-align: right; white-space: nowrap; }
+    .time {
+      color: #4a5568;
+      font-variant-numeric: tabular-nums;
+      font-size: 12px;
+      text-align: right;
+      white-space: nowrap;
+    }
     select {
       width: 64px;
       height: 32px;
@@ -119,24 +104,14 @@
       font-size: 12px;
       padding: 0 7px;
     }
-    .hint {
-      position: fixed;
-      z-index: 3;
-      right: 22px;
-      bottom: 26px;
-      color: #718096;
-      font-size: 11px;
-      pointer-events: none;
-    }
     @media (max-width: 760px) {
-      header { padding: 18px 18px 0; }
-      h1 { font-size: 18px; }
-      .caption { max-width: calc(100vw - 36px); font-size: 12px; }
-      .labels { top: 118px; left: 1vw; right: 1vw; }
-      .label strong { font-size: 11px; }
-      .label span { display: none; }
-      .controls { bottom: 14px; grid-template-columns: 36px minmax(70px, 1fr) 64px 58px; gap: 7px; }
-      .hint { display: none; }
+      .labels { top: 18px; left: 1vw; right: 1vw; }
+      .label { font-size: 11px; }
+      .controls {
+        bottom: 14px;
+        grid-template-columns: 36px minmax(70px, 1fr) 64px 58px;
+        gap: 7px;
+      }
       .time { font-size: 10px; }
       select { width: 58px; }
     }
@@ -153,14 +128,10 @@
 </head>
 <body>
   <main id="stage" aria-label="Synchronized motion representation viewer"></main>
-  <header>
-    <div class="brandline"><span class="brand">Motius</span><h1>One motion, three representations</h1></div>
-    <p class="caption" id="caption"></p>
-  </header>
   <section class="labels" aria-hidden="true">
-    <div class="label hml"><strong>HumanML3D-263</strong><span>decoded SMPL-22 joints</span></div>
-    <div class="label smpl"><strong>SMPL motion135</strong><span>shape-aware SMPL-22 body</span></div>
-    <div class="label g1"><strong>Unitree G1-38D</strong><span>GMR retarget + robot FK</span></div>
+    <div class="label hml">HumanML3D-263</div>
+    <div class="label smpl">SMPL</div>
+    <div class="label g1">Unitree G1</div>
   </section>
   <div class="controls">
     <button id="play" type="button" title="Play or pause" aria-label="Play or pause" data-playing="true"></button>
@@ -173,56 +144,82 @@
       <option value="2">2x</option>
     </select>
   </div>
-  <span class="hint">Drag to orbit, scroll to zoom</span>
   <script type="module">
     import * as THREE from "three";
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
     const demo = window.MOTIUS_REPRESENTATION_DEMO;
     if (!demo) throw new Error("Representation data is missing.");
-    document.querySelector("#caption").textContent = `HumanML3D test ${demo.case_id}: "${demo.caption}"`;
+    window.__MOTIUS_READY__ = false;
+
+    async function loadArray(file, Type) {
+      const response = await fetch(file);
+      if (!response.ok) throw new Error(`Failed to load ${file}: ${response.status}`);
+      return new Type(await response.arrayBuffer());
+    }
+
+    const smplMeta = demo.representations.smpl;
+    const g1Meta = demo.representations.g1;
+    const [smplQuantized, smplNormals, smplIndices, g1Vertices, g1Indices, g1Transforms] = await Promise.all([
+      loadArray(smplMeta.vertices_file, Uint16Array),
+      loadArray(smplMeta.normals_file, Int8Array),
+      loadArray(smplMeta.indices_file, Uint32Array),
+      loadArray(g1Meta.vertices_file, Float32Array),
+      loadArray(g1Meta.indices_file, Uint32Array),
+      loadArray(g1Meta.transforms_file, Float32Array),
+    ]);
 
     const host = document.querySelector("#stage");
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xf4f6f8);
-    scene.fog = new THREE.Fog(0xf4f6f8, 10, 30);
+    scene.fog = new THREE.Fog(0xf4f6f8, 12, 32);
 
-    const camera = new THREE.PerspectiveCamera(34, 1, 0.05, 50);
-    camera.position.set(0, 1.45, 7.6);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+    const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 60);
+    camera.position.set(0, 1.25, 7.8);
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      powerPreference: "high-performance",
+      preserveDrawingBuffer: true,
+    });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
     host.appendChild(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.target.set(0, 0.83, 0);
+    controls.target.set(0, 0.82, 0);
     controls.minDistance = 4.5;
-    controls.maxDistance = 22;
+    controls.maxDistance = 28;
     controls.maxPolarAngle = Math.PI * 0.49;
 
-    scene.add(new THREE.HemisphereLight(0xffffff, 0x677284, 2.25));
-    const key = new THREE.DirectionalLight(0xffffff, 3.1);
-    key.position.set(-3, 6, 5);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x687487, 2.2));
+    const key = new THREE.DirectionalLight(0xffffff, 3.6);
+    key.position.set(-3.5, 6.5, 5.5);
     key.castShadow = true;
     key.shadow.mapSize.set(2048, 2048);
+    key.shadow.camera.left = -6;
+    key.shadow.camera.right = 6;
+    key.shadow.camera.top = 5;
+    key.shadow.camera.bottom = -3;
     scene.add(key);
-    const rim = new THREE.DirectionalLight(0xbfe8ff, 1.3);
-    rim.position.set(4, 3, -4);
+    const rim = new THREE.DirectionalLight(0xb9dcff, 1.35);
+    rim.position.set(4, 3, -5);
     scene.add(rim);
 
     const floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(10.5, 4.8),
-      new THREE.MeshStandardMaterial({ color: 0xe9edf2, roughness: 0.92, metalness: 0.02 })
+      new THREE.PlaneGeometry(11, 5.8),
+      new THREE.MeshStandardMaterial({ color: 0xe9edf2, roughness: 0.94, metalness: 0.01 })
     );
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
     scene.add(floor);
-    const grid = new THREE.GridHelper(10, 40, 0xb7c1ce, 0xd8dee7);
+    const grid = new THREE.GridHelper(11, 44, 0xb7c1ce, 0xd8dee7);
     grid.position.y = 0.002;
-    grid.material.opacity = 0.42;
+    grid.material.opacity = 0.38;
     grid.material.transparent = true;
     scene.add(grid);
 
@@ -231,33 +228,19 @@
     const tempB = new THREE.Vector3();
     const tempDirection = new THREE.Vector3();
 
-    function boneRadius(kind, index) {
-      if (kind === "humanml3d") return 0.018;
-      if (kind === "g1") return index < 18 ? 0.045 : 0.035;
-      const thick = new Set([1, 2, 4, 5, 7, 8, 16, 17, 18, 19]);
-      return thick.has(index) ? 0.07 : 0.055;
-    }
-
-    function makeRig(keyName, xOffset) {
-      const rep = demo.representations[keyName];
+    function makeHumanMLRig(xOffset) {
+      const rep = demo.representations.humanml3d;
       const group = new THREE.Group();
       group.position.x = xOffset;
       scene.add(group);
-      const colors = {
-        humanml3d: [0x12a8c3, 0x08738a],
-        smpl: [0x2a6ee8, 0x173f92],
-        g1: [0xf05a42, 0x283342]
-      }[keyName];
       const joints = [];
       const bones = [];
-      const jointGeometry = keyName === "g1"
-        ? new THREE.SphereGeometry(0.055, 14, 10)
-        : new THREE.SphereGeometry(keyName === "smpl" ? 0.07 : 0.035, 14, 10);
+      const jointGeometry = new THREE.SphereGeometry(0.032, 14, 10);
       rep.parents.forEach((parent, index) => {
         const material = new THREE.MeshStandardMaterial({
-          color: index % 2 ? colors[0] : colors[1],
-          roughness: keyName === "g1" ? 0.38 : 0.62,
-          metalness: keyName === "g1" ? 0.38 : 0.04
+          color: index % 2 ? 0x10a6bf : 0x08758b,
+          roughness: 0.62,
+          metalness: 0.03,
         });
         const joint = new THREE.Mesh(jointGeometry, material);
         joint.castShadow = true;
@@ -267,22 +250,11 @@
           bones.push(null);
           return;
         }
-        const geometry = new THREE.CylinderGeometry(1, 1, 1, keyName === "humanml3d" ? 8 : 12);
-        const bone = new THREE.Mesh(geometry, material.clone());
+        const bone = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 1, 9), material.clone());
         bone.castShadow = true;
         group.add(bone);
         bones.push(bone);
       });
-      let torso = null;
-      if (keyName === "smpl") {
-        torso = new THREE.Mesh(
-          new THREE.SphereGeometry(1, 20, 14),
-          new THREE.MeshStandardMaterial({ color: 0x88aef4, roughness: 0.68, metalness: 0.02 })
-        );
-        torso.scale.set(0.18, 0.27, 0.12);
-        torso.castShadow = true;
-        group.add(torso);
-      }
       function update(frame) {
         const positions = rep.positions[frame];
         positions.forEach((value, index) => joints[index].position.fromArray(value));
@@ -295,27 +267,106 @@
           const length = Math.max(tempDirection.length(), 0.0001);
           bone.position.copy(tempA).add(tempB).multiplyScalar(0.5);
           bone.quaternion.setFromUnitVectors(Y_AXIS, tempDirection.normalize());
-          const radius = boneRadius(keyName, index);
-          bone.scale.set(radius, length, radius);
+          bone.scale.set(0.021, length, 0.021);
         });
-        if (torso) {
-          const chest = positions[9];
-          const pelvis = positions[0];
-          torso.position.set(
-            (chest[0] + pelvis[0]) * 0.5,
-            (chest[1] + pelvis[1]) * 0.5 + 0.09,
-            (chest[2] + pelvis[2]) * 0.5
-          );
-        }
       }
       return { group, update };
     }
 
-    const rigs = [
-      makeRig("humanml3d", -2.35),
-      makeRig("smpl", 0),
-      makeRig("g1", 2.35)
-    ];
+    function makeSMPLMesh(xOffset) {
+      const group = new THREE.Group();
+      group.position.x = xOffset;
+      scene.add(group);
+      const positions = new Float32Array(smplMeta.vertex_count * 3);
+      const normals = new Float32Array(smplMeta.vertex_count * 3);
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
+      geometry.setIndex(new THREE.BufferAttribute(smplIndices, 1));
+      const material = new THREE.MeshStandardMaterial({
+        color: 0xc98f74,
+        roughness: 0.74,
+        metalness: 0.01,
+      });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      mesh.frustumCulled = false;
+      group.add(mesh);
+      const minimum = smplMeta.quantization_min;
+      const scale = smplMeta.quantization_scale;
+      function update(frame) {
+        const sourceOffset = frame * smplMeta.vertex_count * 3;
+        for (let index = 0; index < positions.length; index += 3) {
+          positions[index] = minimum[0] + smplQuantized[sourceOffset + index] * scale[0];
+          positions[index + 1] = minimum[1] + smplQuantized[sourceOffset + index + 1] * scale[1];
+          positions[index + 2] = minimum[2] + smplQuantized[sourceOffset + index + 2] * scale[2];
+          normals[index] = smplNormals[sourceOffset + index] / 127;
+          normals[index + 1] = smplNormals[sourceOffset + index + 1] / 127;
+          normals[index + 2] = smplNormals[sourceOffset + index + 2] / 127;
+        }
+        geometry.attributes.position.needsUpdate = true;
+        geometry.attributes.normal.needsUpdate = true;
+      }
+      return { group, update };
+    }
+
+    function makeG1Mesh(xOffset) {
+      const group = new THREE.Group();
+      group.position.x = xOffset;
+      scene.add(group);
+      const meshes = [];
+      const materials = new Map();
+      g1Meta.geoms.forEach((meta) => {
+        const vertexStart = meta.vertex_offset * 3;
+        const vertexEnd = vertexStart + meta.vertex_count * 3;
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute(
+          "position",
+          new THREE.BufferAttribute(g1Vertices.subarray(vertexStart, vertexEnd), 3)
+        );
+        geometry.setIndex(
+          new THREE.BufferAttribute(
+            g1Indices.subarray(meta.index_offset, meta.index_offset + meta.index_count),
+            1
+          )
+        );
+        geometry.computeVertexNormals();
+        const colorKey = meta.color.slice(0, 3).join("-");
+        if (!materials.has(colorKey)) {
+          materials.set(colorKey, new THREE.MeshStandardMaterial({
+            color: new THREE.Color(...meta.color.slice(0, 3)),
+            roughness: 0.46,
+            metalness: 0.24,
+          }));
+        }
+        const mesh = new THREE.Mesh(geometry, materials.get(colorKey));
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.frustumCulled = false;
+        group.add(mesh);
+        meshes.push({ mesh, transformIndex: meta.transform_index });
+      });
+      function update(frame) {
+        meshes.forEach(({ mesh, transformIndex }) => {
+          const offset = (frame * g1Meta.geom_count + transformIndex) * 7;
+          mesh.position.set(
+            g1Transforms[offset],
+            g1Transforms[offset + 1],
+            g1Transforms[offset + 2]
+          );
+          mesh.quaternion.set(
+            g1Transforms[offset + 3],
+            g1Transforms[offset + 4],
+            g1Transforms[offset + 5],
+            g1Transforms[offset + 6]
+          );
+        });
+      }
+      return { group, update };
+    }
+
+    const rigs = [makeHumanMLRig(-2.35), makeSMPLMesh(0), makeG1Mesh(2.35)];
     const timeline = document.querySelector("#timeline");
     const play = document.querySelector("#play");
     const speed = document.querySelector("#speed");
@@ -354,9 +405,10 @@
       const width = window.innerWidth;
       const height = window.innerHeight;
       camera.aspect = width / height;
-      camera.position.z = camera.aspect < 0.78 ? 21.5 : 7.6;
-      rigs[0].group.position.x = camera.aspect < 0.78 ? -2.2 : -2.35;
-      rigs[2].group.position.x = camera.aspect < 0.78 ? 2.2 : 2.35;
+      const mobile = camera.aspect < 0.78;
+      camera.position.z = mobile ? 20.5 : 7.8;
+      rigs[0].group.position.x = mobile ? -2.0 : -2.35;
+      rigs[2].group.position.x = mobile ? 2.0 : 2.35;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height, false);
       render();
@@ -374,10 +426,15 @@
     setFrame(0);
     resize();
     window.__MOTIUS_DEMO__ = {
-      setFrame: (frame) => { playing = false; play.dataset.playing = "false"; setFrame(frame); render(); },
+      setFrame: (frame) => {
+        playing = false;
+        play.dataset.playing = "false";
+        setFrame(frame);
+        render();
+      },
       render,
       frameCount: demo.frames,
-      fps: demo.fps
+      fps: demo.fps,
     };
     window.__MOTIUS_READY__ = true;
     requestAnimationFrame(animate);

@@ -82,9 +82,9 @@ the representation required by the target model, evaluator, or renderer.
 ### Same-Motion Representation Demo
 
 The preview below uses one official HumanML3D test motion for every panel. The
-left panel decodes HumanML3D-263 to SMPL-22 joints, the center runs shape-aware
-SMPL FK, and the right retargets that same SMPL motion to Unitree G1 with the
-public GMR API.
+left panel decodes HumanML3D-263 to SMPL-22 joints, the center renders the
+skinned SMPL surface, and the right animates the Unitree G1 MJCF visual meshes
+after GMR retargeting. All three are aligned to the same initial body heading.
 
 ![HumanML3D, SMPL, and Unitree G1 representation comparison](assets/motion/representation_demo/004822_hml_smpl_g1.gif)
 
