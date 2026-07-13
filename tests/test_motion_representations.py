@@ -5,6 +5,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
+from motius.motion.retarget import GMR_Y_UP_FROM_Z_UP, GMR_Z_UP_FROM_Y_UP
+
 from motius.motion.representation.convert import (
     convert_motion,
     smpl_to_hml263,
@@ -295,6 +297,22 @@ def test_g1_output_helpers_and_motion135_rotation_decode(tmp_path: Path):
     output = tmp_path / "g1.pkl"
     retargeter.to_asap_pkl(result, str(output))
     assert output.is_file()
+
+
+def test_gmr_z_up_axis_mapping_preserves_robot_forward_semantics():
+    np.testing.assert_allclose(
+        GMR_Y_UP_FROM_Z_UP @ GMR_Z_UP_FROM_Y_UP,
+        np.eye(3),
+        atol=1e-7,
+    )
+    smpl_forward = np.asarray([0.0, 0.0, 1.0], dtype=np.float32)
+    smpl_up = np.asarray([0.0, 1.0, 0.0], dtype=np.float32)
+    np.testing.assert_allclose(GMR_Z_UP_FROM_Y_UP @ smpl_forward, [1.0, 0.0, 0.0])
+    np.testing.assert_allclose(GMR_Z_UP_FROM_Y_UP @ smpl_up, [0.0, 0.0, 1.0])
+    np.testing.assert_allclose(
+        GMR_Y_UP_FROM_Z_UP @ (GMR_Z_UP_FROM_Y_UP @ smpl_forward),
+        smpl_forward,
+    )
 
 
 def test_g1_38_qpos_roundtrip_without_canonicalization():

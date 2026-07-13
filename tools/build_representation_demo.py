@@ -5,14 +5,19 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
 import torch
 from scipy.spatial.transform import Rotation
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from motius.motion.representation.rotation import matrix_to_axis_angle, rotation_6d_to_matrix
-from motius.motion.retarget import GMRSMPLToG1Retargeter
+from motius.motion.retarget import GMRSMPLToG1Retargeter, GMR_Y_UP_FROM_Z_UP
 from motius.motion.skeleton import SMPL22_PARENTS
 from motius.motion.skeleton.body_models import resolve_smpl_model_path
 
@@ -54,12 +59,6 @@ G1_BODY_NAMES = (
     "right_wrist_yaw_link",
     "right_rubber_hand",
 )
-
-VIEWER_FROM_Z_UP = np.asarray(
-    [[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]],
-    dtype=np.float32,
-)
-
 
 def _linear_resample(values: np.ndarray, src_fps: float, dst_fps: float, frames: int) -> np.ndarray:
     src_times = np.arange(len(values), dtype=np.float64) / float(src_fps)
@@ -105,6 +104,21 @@ def _body_forward(
     return (forward / np.linalg.norm(forward)).astype(np.float32)
 
 
+def _heading_from_forward(forward: np.ndarray) -> np.ndarray:
+    forward = np.asarray(forward, dtype=np.float64).copy()
+    forward[1] = 0.0
+    norm = float(np.linalg.norm(forward))
+    if norm < 1e-8:
+        raise ValueError("Cannot canonicalize a zero-length body heading.")
+    forward /= norm
+    yaw = -float(np.arctan2(forward[0], forward[2]))
+    cosine, sine = np.cos(yaw), np.sin(yaw)
+    return np.asarray(
+        [[cosine, 0.0, sine], [0.0, 1.0, 0.0], [-sine, 0.0, cosine]],
+        dtype=np.float32,
+    )
+
+
 def _canonical_heading(
     joints: np.ndarray,
     *,
@@ -122,12 +136,7 @@ def _canonical_heading(
         right_shoulder=right_shoulder,
         reverse=reverse,
     )
-    yaw = -float(np.arctan2(forward[0], forward[2]))
-    cosine, sine = np.cos(yaw), np.sin(yaw)
-    heading = np.asarray(
-        [[cosine, 0.0, sine], [0.0, 1.0, 0.0], [-sine, 0.0, cosine]],
-        dtype=np.float32,
-    )
+    heading = _heading_from_forward(forward)
     origin = np.asarray([joints[0, 0, 0], 0.0, joints[0, 0, 2]], dtype=np.float32)
     return heading, origin
 
@@ -232,6 +241,7 @@ def _g1_mesh_assets(
     body_positions = np.empty((frames, len(body_ids), 3), dtype=np.float32)
     geom_positions = np.empty((frames, len(geom_ids), 3), dtype=np.float32)
     geom_rotations = np.empty((frames, len(geom_ids), 3, 3), dtype=np.float32)
+    pelvis_forwards = np.empty((frames, 3), dtype=np.float32)
 
     for frame, pose in enumerate(qpos):
         data.qpos[:] = pose
@@ -240,23 +250,26 @@ def _g1_mesh_assets(
         body_positions[frame] = data.xpos[body_ids]
         geom_positions[frame] = data.geom_xpos[geom_ids]
         geom_rotations[frame] = data.geom_xmat[geom_ids].reshape(-1, 3, 3)
+        pelvis_rotation = data.xmat[body_ids[0]].reshape(3, 3)
+        pelvis_forwards[frame] = pelvis_rotation[:, 0]
 
-    body_positions = body_positions @ VIEWER_FROM_Z_UP.T
-    geom_positions = geom_positions @ VIEWER_FROM_Z_UP.T
+    body_positions = body_positions @ GMR_Y_UP_FROM_Z_UP.T
+    geom_positions = geom_positions @ GMR_Y_UP_FROM_Z_UP.T
+    pelvis_forwards = pelvis_forwards @ GMR_Y_UP_FROM_Z_UP.T
     geom_rotations = (
-        VIEWER_FROM_Z_UP[None, None]
+        GMR_Y_UP_FROM_Z_UP[None, None]
         @ geom_rotations
-        @ VIEWER_FROM_Z_UP.T[None, None]
+        @ GMR_Y_UP_FROM_Z_UP.T[None, None]
     )
-    heading, origin = _canonical_heading(
-        body_positions,
-        left_hip=1,
-        right_hip=8,
-        left_shoulder=19,
-        right_shoulder=27,
+    heading = _heading_from_forward(pelvis_forwards[0])
+    origin = np.asarray(
+        [body_positions[0, 0, 0], 0.0, body_positions[0, 0, 2]], dtype=np.float32
     )
     body_positions = _apply_heading(body_positions, heading, origin)
     geom_positions = _apply_heading(geom_positions, heading, origin)
+    pelvis_forwards = pelvis_forwards @ heading.T
+    pelvis_forwards[:, 1] = 0.0
+    pelvis_forwards /= np.maximum(np.linalg.norm(pelvis_forwards, axis=-1, keepdims=True), 1e-8)
     geom_rotations = heading[None, None] @ geom_rotations
 
     vertices_parts: list[np.ndarray] = []
@@ -273,7 +286,7 @@ def _g1_mesh_assets(
         face_count = int(model.mesh_facenum[mesh_id])
         vertices = np.asarray(
             model.mesh_vert[vertex_begin : vertex_begin + vertex_count], dtype=np.float32
-        ) @ VIEWER_FROM_Z_UP.T
+        ) @ GMR_Y_UP_FROM_Z_UP.T
         indices = np.asarray(
             model.mesh_face[face_begin : face_begin + face_count], dtype=np.uint32
         ).reshape(-1)
@@ -310,7 +323,7 @@ def _g1_mesh_assets(
         np.concatenate(index_parts, axis=0).astype("<u4"),
         transforms,
         metadata,
-        body_positions,
+        pelvis_forwards,
     )
 
 
@@ -362,9 +375,13 @@ def build(args: argparse.Namespace) -> Path:
         gender=args.gender,
     )
     g1_qpos = retargeter.to_mujoco_qpos(g1_result)
-    g1_vertices, g1_indices, g1_transforms, g1_geoms, g1_body_positions = _g1_mesh_assets(
-        g1_qpos, retargeter.robot_xml
-    )
+    (
+        g1_vertices,
+        g1_indices,
+        g1_transforms,
+        g1_geoms,
+        g1_forwards,
+    ) = _g1_mesh_assets(g1_qpos, retargeter.robot_xml)
 
     smpl_quantized.tofile(args.output_dir / "smpl_vertices.u16")
     smpl_normals.tofile(args.output_dir / "smpl_normals.i8")
@@ -389,13 +406,7 @@ def build(args: argparse.Namespace) -> Path:
         right_shoulder=17,
         reverse=True,
     )
-    g1_forward = _body_forward(
-        g1_body_positions,
-        left_hip=1,
-        right_hip=8,
-        left_shoulder=19,
-        right_shoulder=27,
-    )
+    g1_forward = g1_forwards[0]
     payload = {
         "case_id": args.case_id,
         "fps": args.fps,
@@ -429,6 +440,7 @@ def build(args: argparse.Namespace) -> Path:
                 "transforms_file": "g1_geom_transforms.f32",
                 "geoms": g1_geoms,
                 "initial_forward": _round_nested(g1_forward),
+                "forward_basis": "MuJoCo pelvis local +X axis",
             },
         },
         "provenance": {

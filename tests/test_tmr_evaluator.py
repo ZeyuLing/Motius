@@ -61,6 +61,7 @@ def test_representation_demo_contains_synchronized_routes() -> None:
     assert np.isfinite(np.asarray(hml["positions"])).all()
     for representation in (hml, smpl, g1):
         np.testing.assert_allclose(representation["initial_forward"], [0, 0, 1], atol=1e-5)
+    assert g1["forward_basis"] == "MuJoCo pelvis local +X axis"
 
     asset_dir = ROOT / "assets/motion/representation_demo"
     assert (asset_dir / smpl["vertices_file"]).stat().st_size == (

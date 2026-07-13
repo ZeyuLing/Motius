@@ -43,6 +43,12 @@ anatomical body-forward direction to viewer `+z`. It preserves the body
 proportions and articulated motion produced by each route; it does not claim
 that G1 retargeting is lossless.
 
+GMR's coordinate bridge is explicit: SMPL Y-up `[x, y, z]` becomes MuJoCo
+Z-up `[z, x, y]`, so SMPL `+z` body-forward becomes G1 `+x` body-forward.
+`GMR_Z_UP_FROM_Y_UP` and its inverse `GMR_Y_UP_FROM_Z_UP` are exported from
+`motius.motion.retarget`; renderers should use these matrices instead of
+assuming a generic Z-up axis permutation.
+
 ## The Two 6D Layouts
 
 Two layouts in this repository were historically both described as

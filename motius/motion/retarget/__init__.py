@@ -9,6 +9,8 @@ __all__ = [
     "GMRSMPLToG1Retargeter",
     "G1_JOINT_NAMES",
     "G1_JOINT_LIMITS",
+    "GMR_Y_UP_FROM_Z_UP",
+    "GMR_Z_UP_FROM_Y_UP",
     "SMPLSOMARetargeter",
     "KIMODOSOMAToSMPLRetargeter",
     "smpl_motion135_to_soma30",
@@ -21,7 +23,13 @@ def __getattr__(name: str):
         from . import hml263_smpl
 
         return getattr(hml263_smpl, name)
-    if name in {"GMRSMPLToG1Retargeter", "G1_JOINT_NAMES", "G1_JOINT_LIMITS"}:
+    if name in {
+        "GMRSMPLToG1Retargeter",
+        "G1_JOINT_NAMES",
+        "G1_JOINT_LIMITS",
+        "GMR_Y_UP_FROM_Z_UP",
+        "GMR_Z_UP_FROM_Y_UP",
+    }:
         from . import smpl_g1
 
         return getattr(smpl_g1, name)

@@ -44,6 +44,8 @@ __all__ = [
     'SMPL_JOINT_NAMES',
     'G1_JOINT_NAMES',
     'G1_JOINT_LIMITS',
+    'GMR_Y_UP_FROM_Z_UP',
+    'GMR_Z_UP_FROM_Y_UP',
     'GMRSMPLToG1Retargeter',
 ]
 
@@ -177,6 +179,14 @@ _DEFAULT_SMPLX_MODEL_DIR = pathlib.Path(
 # offset is what produces an upright, correctly-facing G1 in MuJoCo and was
 # validated against the rendered jog reference.
 _GMR_ZUP_ROT_OFFSET_XYZW = (-0.5, -0.5, -0.5, 0.5)
+
+# GMR maps SMPL Y-up coordinates to MuJoCo Z-up as [x, y, z] -> [z, x, y].
+# Keep the inverse public so downstream renderers do not guess a different
+# horizontal-axis convention and accidentally rotate or flip the robot.
+GMR_Z_UP_FROM_Y_UP = np.asarray(
+    [[0.0, 0.0, 1.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]], dtype=np.float32
+)
+GMR_Y_UP_FROM_Z_UP = GMR_Z_UP_FROM_Y_UP.T.copy()
 
 # GMR robot key -> vendored MuJoCo XML (used both as GMR's retarget target model
 # and for the headless ground-alignment FK pass).
@@ -566,7 +576,7 @@ class GMRSMPLToG1Retargeter:
 
         rot_offset = R.from_quat(list(_GMR_ZUP_ROT_OFFSET_XYZW))  # xyzw
         root_xyzw = root_wxyz[:, [1, 2, 3, 0]]
-        pos = rot_offset.inv().apply(root_pos)
+        pos = np.asarray(root_pos) @ GMR_Z_UP_FROM_Y_UP.T
         xyzw = (rot_offset.inv() * R.from_quat(root_xyzw)).as_quat()
         wxyz = xyzw[:, [3, 0, 1, 2]]
         return pos, wxyz
