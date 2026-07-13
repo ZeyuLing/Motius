@@ -34,8 +34,8 @@ motion201 = convert_motion(
     bone_offsets=offsets,
 )
 
-# A complete API-level SMPL-H -> HumanML3D conversion. Licensed body-model
-# files are supplied by path; no evaluation script or external repo is used.
+# A complete API-level SMPL-H -> HumanML3D conversion. First follow the
+# body-model setup in README.md; no evaluation script or external repo is used.
 motion_hml263 = smpl_to_humanml263(
     global_orient,
     body_pose,
@@ -43,11 +43,15 @@ motion_hml263 = smpl_to_humanml263(
     betas=betas,
     gender="female",
     model_type="smplh",
-    model_path="/models/smplh",
+    model_path="data/body_models",
     src_fps=20,
     coordinate_system="amass",  # AMASS Z-up -> HumanML3D Y-up
 )
 ```
+
+Download and install the licensed model parameters using the
+[SMPL body-model setup](../../README.md#smpl-body-model-setup). The API accepts
+either the documented directory root or a direct `.npz`/`.pkl` model file.
 
 Lower-level functions live in:
 
@@ -72,7 +76,7 @@ python tools/convert_motion.py dart276.npy motion135.npy \
 
 python tools/convert_motion.py amass_clip.npz hml263.npy \
   --src smpl --dst hml263 \
-  --smpl-model-dir /models/smplh --model-type smplh --gender female \
+  --smpl-model-dir data/body_models --model-type smplh --gender female \
   --src-fps 120 --dst-fps 20 --coordinate-system amass
 ```
 

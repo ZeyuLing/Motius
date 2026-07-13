@@ -85,6 +85,9 @@ The generic API lives at
 [`convert_motion`](motius/motion/representation/convert.py), with a matching
 [`tools/convert_motion.py`](tools/convert_motion.py) CLI.
 
+SMPL-parameter routes require locally licensed body-model files. Follow the
+[SMPL body-model setup](#smpl-body-model-setup) before using these routes.
+
 ```python
 from motius.motion import convert_motion, smpl_to_humanml263
 
@@ -100,7 +103,7 @@ motion_hml263 = smpl_to_humanml263(
     betas=betas,
     gender="female",
     model_type="smplh",
-    model_path="/models/smplh",
+    model_path="data/body_models",
     src_fps=20,
     coordinate_system="amass",
 )
@@ -110,6 +113,55 @@ motion_hml263 = smpl_to_humanml263(
 python tools/convert_motion.py input.npy output.npy \
   --src hymotion201 --dst ms272
 ```
+
+### SMPL Body-Model Setup
+
+`model_path` is a local filesystem path, not a remote URL. SMPL+H parameters
+cannot be redistributed with Motius, so download them from the
+[official MANO / SMPL+H download page](https://mano.is.tue.mpg.de/download.php):
+
+1. Register or sign in and accept the model license. Redirecting to the sign-in
+   page before authentication is expected.
+2. In **Downloads**, download **Extended SMPL+H model** for the genders you
+   need. The separate MANO hand package is not required for Motius's SMPL-22
+   joint conversion.
+3. Extract the archive and arrange the files in either supported layout:
+
+```text
+data/body_models/
+└── smplh/
+    ├── female/model.npz
+    ├── male/model.npz
+    └── neutral/model.npz       # if downloaded
+```
+
+The standard `smplx` layout is also accepted:
+
+```text
+data/body_models/
+└── smplh/
+    ├── SMPLH_FEMALE.pkl
+    ├── SMPLH_MALE.pkl
+    └── SMPLH_NEUTRAL.pkl       # if available
+```
+
+Pass the directory root as `model_path="data/body_models"`, or pass one model
+file directly. Verify the installation before conversion:
+
+```bash
+python - <<'PY'
+from motius.motion.skeleton import resolve_smpl_model_path
+
+path = resolve_smpl_model_path(
+    "data/body_models", model_type="smplh", gender="female"
+)
+print(path)
+PY
+```
+
+The printed path must be the downloaded female SMPL+H file. Select the same
+`gender` used by the source motion; `betas` are evaluated against that model's
+shape space. Keep these licensed files out of Git.
 
 See the [representation reference](docs/motion/representations.md),
 [conversion guide](docs/motion/conversion.md), and
