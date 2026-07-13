@@ -2,7 +2,9 @@
   "cases": {
     "001840": "someone executes a roundhouse kick with their left foot.",
     "004545": "a person jumping while raising both hands and moving apart legs.",
-    "006944": "a person moves their right hand left, right, up, and down."
+    "006944": "a person moves their right hand left, right, up, and down.",
+    "014457": "the person swings a golf club.",
+    "M013344": "in a fighting stance, person punches downward with their right hand."
   },
   "models": {
     "dart": {
@@ -107,10 +109,10 @@
           "metadata": "assets/model_zoo/mdm/mdm_humanml3d_001840_smpl_mesh.json"
         },
         {
-          "sample_id": "004545",
-          "caption": "a person jumping while raising both hands and moving apart legs.",
-          "gif": "assets/model_zoo/mdm/mdm_humanml3d_004545_smpl_mesh_512_30fps.gif",
-          "metadata": "assets/model_zoo/mdm/mdm_humanml3d_004545_smpl_mesh.json"
+          "sample_id": "014457",
+          "caption": "the person swings a golf club.",
+          "gif": "assets/model_zoo/mdm/mdm_humanml3d_014457_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mdm/mdm_humanml3d_014457_smpl_mesh.json"
         },
         {
           "sample_id": "006944",
@@ -130,10 +132,10 @@
           "metadata": "assets/model_zoo/mld/mld_humanml3d_001840_smpl_mesh.json"
         },
         {
-          "sample_id": "004545",
-          "caption": "a person jumping while raising both hands and moving apart legs.",
-          "gif": "assets/model_zoo/mld/mld_humanml3d_004545_smpl_mesh_512_30fps.gif",
-          "metadata": "assets/model_zoo/mld/mld_humanml3d_004545_smpl_mesh.json"
+          "sample_id": "M013344",
+          "caption": "in a fighting stance, person punches downward with their right hand.",
+          "gif": "assets/model_zoo/mld/mld_humanml3d_M013344_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mld/mld_humanml3d_M013344_smpl_mesh.json"
         },
         {
           "sample_id": "006944",

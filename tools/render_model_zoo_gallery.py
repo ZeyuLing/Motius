@@ -24,13 +24,17 @@ CASES = {
     "001840": "someone executes a roundhouse kick with their left foot.",
     "004545": "a person jumping while raising both hands and moving apart legs.",
     "006944": "a person moves their right hand left, right, up, and down.",
+    "014457": "the person swings a golf club.",
+    "M013344": "in a fighting stance, person punches downward with their right hand.",
 }
+DEFAULT_CASES = ("001840", "004545", "006944")
 
 MODELS = {
     "mdm": {
         "method": "MDM",
         "source": "mdm",
         "prefix": "mdm",
+        "cases": ("001840", "014457", "006944"),
     },
     "t2mgpt": {
         "method": "T2M-GPT",
@@ -81,6 +85,7 @@ MODELS = {
         "method": "MLD",
         "source": "mld",
         "prefix": "mld",
+        "cases": ("001840", "M013344", "006944"),
     },
     "motionlcm": {
         "method": "MotionLCM",
@@ -119,21 +124,35 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-frames", type=int, default=120)
     parser.add_argument("--write-mp4", action="store_true", help="Also write MP4 sources next to GIF previews.")
     parser.add_argument("--models", nargs="*", default=sorted(MODELS))
-    parser.add_argument("--cases", nargs="*", default=list(CASES))
+    parser.add_argument(
+        "--cases",
+        nargs="*",
+        default=None,
+        help="Override each selected model's default preview cases.",
+    )
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
     renderer = SMPLRenderer(args.model_dir, args.device, args.width, args.height)
-    manifest: dict[str, dict[str, object]] = {}
+    manifest_path = args.out_root / "gallery_manifest.json"
+    if manifest_path.exists():
+        payload = json.loads(manifest_path.read_text())
+        manifest: dict[str, dict[str, object]] = dict(payload.get("models", {}))
+        case_catalog = dict(payload.get("cases", {}))
+    else:
+        manifest = {}
+        case_catalog = {}
+    case_catalog.update(CASES)
 
     for model_key in args.models:
         info = MODELS[model_key]
         model_out = args.out_root / model_key
         model_out.mkdir(parents=True, exist_ok=True)
         rendered_cases = []
-        for case_id in args.cases:
+        case_ids = args.cases if args.cases is not None else info.get("cases", DEFAULT_CASES)
+        for case_id in case_ids:
             source = args.eval_root / str(info["source"]) / f"{case_id}.npz"
             if not source.exists():
                 raise FileNotFoundError(source)
@@ -176,9 +195,10 @@ def main() -> int:
             "cases": rendered_cases,
         }
 
-    out = args.out_root / "gallery_manifest.json"
-    out.write_text(json.dumps({"cases": CASES, "models": manifest}, indent=2) + "\n")
-    print(f"wrote {out}")
+    manifest_path.write_text(
+        json.dumps({"cases": case_catalog, "models": manifest}, indent=2) + "\n"
+    )
+    print(f"wrote {manifest_path}")
     return 0
 
 

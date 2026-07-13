@@ -1,5 +1,5 @@
 {
-  "source": "/apdcephfs_cq11/share_1467498/home/zeyuling/hf_trainer/outputs/evaluation/t2m/humanml3d_official_test/motion135/mld/004545.npz",
+  "source": "/apdcephfs_cq11/share_1467498/home/zeyuling/hf_trainer/outputs/evaluation/t2m/humanml3d_official_test/motion135/mld/M013344.npz",
   "keys": [
     "motion_135",
     "transl",
@@ -19,10 +19,10 @@
     "root_translation_restored"
   ],
   "method": "MLD",
-  "sample_id": "004545",
-  "caption": "a person jumping while raising both hands and moving apart legs.",
-  "gif": "assets/model_zoo/mld/mld_humanml3d_004545_smpl_mesh_512_30fps.gif",
-  "frames": 95,
+  "sample_id": "M013344",
+  "caption": "in a fighting stance, person punches downward with their right hand.",
+  "gif": "assets/model_zoo/mld/mld_humanml3d_M013344_smpl_mesh_512_30fps.gif",
+  "frames": 66,
   "fps": 30,
   "width": 512,
   "height": 512
