@@ -12,7 +12,6 @@
   <a href="#model-zoo">Model Zoo</a> |
   <a href="#evaluator-zoo">Evaluator Zoo</a> |
   <a href="#motion-representation-toolkit">Motion Toolkit</a> |
-  <a href="docs/model_zoo/release_policy.md">Release Policy</a> |
   <a href="docs/getting_started.md">Getting Started</a> |
   <a href="docs/architecture.md">Architecture</a> |
   <a href="docs/development.md">Development Guide</a>
