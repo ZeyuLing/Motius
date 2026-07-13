@@ -1,5 +1,17 @@
 # Motion Conversion
 
+Motius composes cross-representation conversion around SMPL-22 `motion135`:
+
+```text
+source representation -> SMPL-22 motion135 -> target representation
+```
+
+For example, an HY-Motion-201 sequence can expose its exact `motion135` prefix
+and then be encoded for the MotionStreamer-272 evaluator. A HumanML3D-263
+sequence first requires IK because its position features do not uniquely retain
+SMPL joint rotations. The supported route table below records these fidelity
+differences explicitly.
+
 ## Python API
 
 ```python

@@ -62,38 +62,48 @@ contrastive-evaluator rows are not part of the public Evaluation tables.
 
 ## Motion Representation Toolkit
 
-Motius exposes representation metadata, deterministic decoders, skeleton-aware
-converters, SMPL-22 forward kinematics, and optional SOMA/G1 retargeting under
-[`motius.motion`](motius/motion). The generic conversion API is
-[`convert_motion`](motius/motion/representation/convert.py); the same routes are
-available from [`tools/convert_motion.py`](tools/convert_motion.py).
+Motius provides first-class support for the motion representations used by
+different model families and makes them interoperable through a shared
+**SMPL-22 body-motion bridge**. A source representation is converted to SMPL
+`motion135` (root translation plus 22 local joint rotations), then encoded into
+the representation required by the target model, evaluator, or renderer.
+
+| Representation | Shape | Used by | Relationship to the SMPL bridge |
+| -------------- | ----: | ------- | --------------------------------- |
+| **SMPL-22 `motion135`** | `(T, 135)` | Canonical interchange, FK, mesh rendering | Central bridge: translation + 22 local 6D rotations |
+| **HumanML3D-263** | `(T, 263)` | HumanML3D-based T2M models | Recovered to SMPL through 22-joint IK |
+| **MotionStreamer-272** | `(T, 272)` | MotionStreamer and MotionMillion | Converts to and from SMPL-22 motion |
+| **HY-Motion-201** | `(T, 201)` | HY-Motion models | Contains `motion135` as an exact prefix plus 22 joint positions |
+| **DART276** | `(T, 276)` | DART and ViMoGen | Bridges through SMPL parameters and joints with explicit coordinate conversion |
+
+The shared bridge lets a model trained with one representation feed evaluators,
+visualizers, or pipelines built for another. Conversion is exact where the
+source preserves the required SMPL state; position-only recovery uses IK and is
+necessarily lossy.
+
+The generic API lives at
+[`convert_motion`](motius/motion/representation/convert.py), with a matching
+[`tools/convert_motion.py`](tools/convert_motion.py) CLI.
 
 ```python
 from motius.motion.representation.convert import convert_motion
 
-joints = convert_motion(motion_hml263, "hml263", "joints")
-motion135 = convert_motion(motion_hy201, "hymotion201", "motion135")
-motion272 = convert_motion(motion135, "motion135", "ms272")
+# HY-Motion-201 -> SMPL-22 bridge -> MotionStreamer-272
+smpl_motion = convert_motion(motion_hy201, "hymotion201", "motion135")
+motion_ms272 = convert_motion(smpl_motion, "motion135", "ms272")
 ```
 
 ```bash
 python tools/convert_motion.py input.npy output.npy \
-  --src hml263 --dst joints
+  --src hymotion201 --dst ms272
 ```
-
-| Source | Public targets | Conversion note |
-| ------ | -------------- | --------------- |
-| HumanML3D-263 | joints, `motion135`, MS272 | SMPL outputs use IK and are lossy |
-| MotionStreamer-272 | joints, `motion135` | Native joints; SMPL subject shape is not retained |
-| HY-Motion-201 | joints, `motion135` | Stored joints and exact 135-d prefix |
-| `motion135` | joints, HY-Motion-201, MS272 | FK routes require the target skeleton or bone offsets |
-| DART276 | joints, `motion135`, MS272 | Explicit DART/MBench coordinate conversion |
-| G1-38 | MuJoCo qpos-36 | Exact root-pose and 29-DOF decode |
 
 See the [representation reference](docs/motion/representations.md),
 [conversion guide](docs/motion/conversion.md), and
 [retargeting guide](docs/motion/retargeting.md) for channel layouts, 6D rotation
-conventions, FPS behavior, required assets, and lossiness guarantees.
+conventions, FPS behavior, required assets, and lossiness guarantees. SOMA and
+Unitree G1 are documented separately as retargeting targets rather than body
+representation interchange formats.
 
 ## What Is Included
 
