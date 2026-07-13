@@ -11,7 +11,7 @@
 <p align="center">
   <a href="#model-zoo">Model Zoo</a> |
   <a href="#evaluator-zoo">Evaluator Zoo</a> |
-  <a href="docs/motion/README.md">Motion Toolkit</a> |
+  <a href="#motion-representation-toolkit">Motion Toolkit</a> |
   <a href="docs/model_zoo/release_policy.md">Release Policy</a> |
   <a href="docs/getting_started.md">Getting Started</a> |
   <a href="docs/architecture.md">Architecture</a> |
@@ -42,7 +42,7 @@ coordinate, FPS, and 6D rotation conventions for every route.
 | MotionMillion | Zero-Shot Text-to-Motion | MotionStreamer-272 | [7B](https://huggingface.co/ZeyuLing/hftrainer-gotozero-7b-train-humanml272) / [3B](https://huggingface.co/ZeyuLing/hftrainer-gotozero-3b-train-humanml272) | [Model Card](docs/model_zoo/motionmillion.md) | [Paper](https://arxiv.org/abs/2507.07095) / [Code](https://github.com/VankouF/MotionMillion-Codes) |
 | MotionStreamer | Streaming Text-to-Motion / TP2M | MotionStreamer-272 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionstreamer-humanml272) | [Model Card](docs/model_zoo/motionstreamer.md) | [Paper](https://arxiv.org/abs/2503.15451) / [Code](https://github.com/zju3dv/MotionStreamer) |
 | HY-Motion T2M | Text-to-Motion | HY-Motion-201 | [Full](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0) / [Lite](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0-lite) | [Model Card](docs/model_zoo/hymotion_t2m.md) | [Paper](https://arxiv.org/abs/2512.23464) / [Code](https://github.com/Tencent-Hunyuan/HY-Motion-1.0) |
-| KIMODO | Text + Kinematic Control | SOMA / G1 / SMPL-X | [SOMA-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-soma-rp) / [SMPLX-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-smplx-rp) | [Model Card](docs/model_zoo/kimodo.md) | [Paper](https://arxiv.org/abs/2603.15546) / [Code](https://github.com/nv-tlabs/kimodo) |
+| KIMODO | Text + Kinematic Control | SOMA / G1 / SMPL-X | [SOMA-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-soma-rp) / [G1-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-rp) / [G1-SEED](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-seed) / [SMPLX-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-smplx-rp) | [Model Card](docs/model_zoo/kimodo.md) | [Paper](https://arxiv.org/abs/2603.15546) / [Code](https://github.com/nv-tlabs/kimodo) |
 | MLD | Text-to-Motion | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-mld-humanml3d) | [Model Card](docs/model_zoo/mld.md) | [Paper](https://arxiv.org/abs/2212.04048) / [Code](https://github.com/ChenFengYe/motion-latent-diffusion) |
 | MotionLCM | Text-to-Motion | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionlcm-humanml3d) | [Model Card](docs/model_zoo/motionlcm.md) | [Paper](https://arxiv.org/abs/2404.19759) / [Code](https://github.com/Dai-Wenxun/MotionLCM) |
 | ViMoGen | Text-to-Motion | DART276 | [HF](https://huggingface.co/ZeyuLing/hftrainer-vimogen-1.3b-humanml3d) | [Model Card](docs/model_zoo/vimogen.md) | [Paper](https://arxiv.org/abs/2510.26794) / [Code](https://github.com/MotrixLab/ViMoGen) |
@@ -61,15 +61,40 @@ contrastive-evaluator rows are not part of the public Evaluation tables.
 | MotionStreamer Evaluator | Cross-representation semantic evaluator for SMPL-aligned T2M results | MotionStreamer-272 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-motionstreamer-272) | [Evaluator Card](docs/evaluator_zoo/motionstreamer.md) | [Paper](https://arxiv.org/abs/2503.15451) / [Code](https://github.com/zju3dv/MotionStreamer) |
 | Motius Joint-Position Evaluator | Motius-trained TMR reproduction for unified SMPL-H joint positions | SMPL-H joints66 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-universal-smplh-joints66) | [Evaluator Card](docs/evaluator_zoo/motius_joint_position.md) | [TMR Paper](https://arxiv.org/abs/2305.00976) / [TMR Code](https://github.com/Mathux/TMR) |
 
-### Preview Gallery
+## Motion Representation Toolkit
 
-Compact 512px / 30fps SMPL GIFs are rendered from released HumanML3D test outputs. Full per-model galleries are in the model cards.
+Motius exposes representation metadata, deterministic decoders, skeleton-aware
+converters, SMPL-22 forward kinematics, and optional SOMA/G1 retargeting under
+[`motius.motion`](motius/motion). The generic conversion API is
+[`convert_motion`](motius/motion/representation/convert.py); the same routes are
+available from [`tools/convert_motion.py`](tools/convert_motion.py).
 
-| HumanML3D Sample | Input Text | MDM | HY-Motion T2M | DART |
-| ---------------- | ---------- | --- | ------------- | ---- |
-| `001840` | someone executes a roundhouse kick with their left foot. | ![MDM HumanML3D 001840 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/mdm/mdm_humanml3d_001840_smpl_mesh_512_30fps.gif) | ![HY-Motion T2M HumanML3D 001840 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_smpl_mesh_512_30fps.gif) | ![DART HumanML3D 001840 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/dart/dart_humanml3d_001840_smpl_mesh_512_30fps.gif) |
-| `004545` | a person jumping while raising both hands and moving apart legs. | ![MDM HumanML3D 004545 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/mdm/mdm_humanml3d_004545_smpl_mesh_512_30fps.gif) | ![HY-Motion T2M HumanML3D 004545 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_004545_smpl_mesh_512_30fps.gif) | ![DART HumanML3D 004545 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/dart/dart_humanml3d_004545_smpl_mesh_512_30fps.gif) |
-| `006944` | a person moves their right hand left, right, up, and down. | ![MDM HumanML3D 006944 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/mdm/mdm_humanml3d_006944_smpl_mesh_512_30fps.gif) | ![HY-Motion T2M HumanML3D 006944 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_006944_smpl_mesh_512_30fps.gif) | ![DART HumanML3D 006944 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/dart/dart_humanml3d_006944_smpl_mesh_512_30fps.gif) |
+```python
+from motius.motion.representation.convert import convert_motion
+
+joints = convert_motion(motion_hml263, "hml263", "joints")
+motion135 = convert_motion(motion_hy201, "hymotion201", "motion135")
+motion272 = convert_motion(motion135, "motion135", "ms272")
+```
+
+```bash
+python tools/convert_motion.py input.npy output.npy \
+  --src hml263 --dst joints
+```
+
+| Source | Public targets | Conversion note |
+| ------ | -------------- | --------------- |
+| HumanML3D-263 | joints, `motion135`, MS272 | SMPL outputs use IK and are lossy |
+| MotionStreamer-272 | joints, `motion135` | Native joints; SMPL subject shape is not retained |
+| HY-Motion-201 | joints, `motion135` | Stored joints and exact 135-d prefix |
+| `motion135` | joints, HY-Motion-201, MS272 | FK routes require the target skeleton or bone offsets |
+| DART276 | joints, `motion135`, MS272 | Explicit DART/MBench coordinate conversion |
+| G1-38 | MuJoCo qpos-36 | Exact root-pose and 29-DOF decode |
+
+See the [representation reference](docs/motion/representations.md),
+[conversion guide](docs/motion/conversion.md), and
+[retargeting guide](docs/motion/retargeting.md) for channel layouts, 6D rotation
+conventions, FPS behavior, required assets, and lossiness guarantees.
 
 ## What Is Included
 
