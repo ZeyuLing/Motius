@@ -1,6 +1,8 @@
 """Public motion representation library."""
 
 from .specs import (
+    ARDY_CORE330,
+    ARDY_G1_414,
     DART276,
     G1_38,
     HML263,
@@ -11,6 +13,7 @@ from .specs import (
     SPECS,
     MotionRepresentationSpec,
 )
+from .ardy import ardy_feature_slices, decode_ardy_features, split_ardy_features
 from .interhuman262 import (
     interhuman262_to_foot_contacts,
     interhuman262_to_joint_velocities,
@@ -56,6 +59,8 @@ def get_spec(name: str) -> MotionRepresentationSpec:
         "dart276": "dart276",
         "g138": "g1_38",
         "g1motion38": "g1_38",
+        "ardycore330": "ardy_core330",
+        "ardyg1414": "ardy_g1_414",
     }
     canonical = aliases.get(key, key)
     try:
@@ -72,6 +77,8 @@ __all__ = [
     "INTERHUMAN262",
     "DART276",
     "G1_38",
+    "ARDY_CORE330",
+    "ARDY_G1_414",
     "SPECS",
     "get_spec",
     "G1_MOTION_DIM",
@@ -79,6 +86,9 @@ __all__ = [
     "encode_g1_motion",
     "encode_g1_qpos",
     "decode_g1_to_qpos",
+    "ardy_feature_slices",
+    "split_ardy_features",
+    "decode_ardy_features",
     "interhuman262_to_foot_contacts",
     "interhuman262_to_joint_velocities",
     "interhuman262_to_joints",

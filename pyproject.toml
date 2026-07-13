@@ -51,6 +51,20 @@ intermask = [
     "torch-geometric>=2.5",
     "tqdm>=4.65",
 ]
+ardy = [
+    "einops>=0.7",
+    "gradio-client>=1.0",
+    "hydra-core>=1.3",
+    "omegaconf>=2.3",
+    "pydantic>=2.0",
+    "tqdm>=4.65",
+    "vector-quantize-pytorch>=1.25,<1.26",
+]
+ardy-text = [
+    "huggingface_hub>=1.0; python_version >= '3.10'",
+    "peft>=0.19; python_version >= '3.10'",
+    "transformers==5.8.1; python_version >= '3.10'",
+]
 
 [tool.setuptools.packages.find]
 where = ["."]
@@ -71,6 +85,14 @@ namespaces = false
 "motius.models.condmdi" = ["LICENSE"]
 "motius.models.intergen" = ["NOTICE", "network/configs/*.yaml"]
 "motius.models.intermask" = ["LICENSE"]
+"motius.models.ardy" = [
+    "LICENSE",
+    "ATTRIBUTIONS.md",
+    "network/assets/skeletons/cskel27/*.p",
+    "network/assets/skeletons/cskel27/*.npz",
+    "network/assets/skeletons/g1skel34/*.p",
+    "network/assets/skeletons/g1skel34/xml/*.xml",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

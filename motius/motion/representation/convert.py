@@ -422,6 +422,8 @@ def convert_motion(data, source: str, target: str, **kwargs):
             "g1motion38": "g1_38",
             "g1qpos36": "g1_qpos",
             "g1qpos": "g1_qpos",
+            "ardycore330": "ardy_core330",
+            "ardyg1414": "ardy_g1_414",
         }
         return aliases.get(key, key)
 
@@ -429,6 +431,33 @@ def convert_motion(data, source: str, target: str, **kwargs):
     target = normalize(target)
     if source == target:
         return data
+
+    if source in {"ardy_core330", "ardy_g1_414"}:
+        motion_rep = kwargs.get("motion_rep")
+        if motion_rep is None:
+            raise ValueError(
+                f"{source} conversion requires the checkpoint's exact motion_rep object"
+            )
+        from motius.motion.representation.ardy import decode_ardy_features
+
+        output = decode_ardy_features(
+            data,
+            motion_rep=motion_rep,
+            is_normalized=kwargs.get("is_normalized", True),
+            return_numpy=kwargs.get("return_numpy", False),
+        )
+        if target == "joints":
+            return output["posed_joints"]
+        if target == "g1_qpos" and source == "ardy_g1_414":
+            from motius.models.ardy.network.exports.mujoco import MujocoQposConverter
+
+            return MujocoQposConverter(motion_rep.skeleton).dict_to_qpos(
+                output,
+                device=kwargs.get("device"),
+                numpy=kwargs.get("return_numpy", False),
+            )
+        targets = "joints and g1_qpos" if source == "ardy_g1_414" else "joints"
+        raise ValueError(f"{source} supports exact conversion only to {targets}")
 
     if source == "g1_38" and target == "g1_qpos":
         import numpy as np

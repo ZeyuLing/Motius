@@ -25,7 +25,7 @@ results, and qualitative SMPL renders.
 
 Motius also ships an explicit [Motion Toolkit](docs/motion/README.md) for
 converting HML263, MotionStreamer-272, HY-Motion-201, DART276,
-InterHuman-262, and SMPL
+InterHuman-262, ARDY Core/G1, and SMPL
 `motion135`, plus SMPL/SOMA/G1 retargeting. Its documentation records skeleton,
 coordinate, FPS, and 6D rotation conventions for every route.
 
@@ -48,6 +48,7 @@ cards rather than treated as separate tasks.
 | MotionStreamer | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Multi-Prompt T2M, TP2M | MotionStreamer-272 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionstreamer-humanml272) | [Model Card](docs/model_zoo/motionstreamer.md) | [Paper](https://arxiv.org/abs/2503.15451) / [Code](https://github.com/zju3dv/MotionStreamer) |
 | HY-Motion T2M | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HY-Motion-201 | [Full](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0) / [Lite](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0-lite) | [Model Card](docs/model_zoo/hymotion_t2m.md) | [Paper](https://arxiv.org/abs/2512.23464) / [Code](https://github.com/Tencent-Hunyuan/HY-Motion-1.0) |
 | KIMODO | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Multi-Prompt T2M, TP2M, Kinematic Control | SOMA / G1 / SMPL-X | [SOMA-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-soma-rp) / [G1-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-rp) / [G1-SEED](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-seed) / [SMPLX-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-smplx-rp) | [Model Card](docs/model_zoo/kimodo.md) | [Paper](https://arxiv.org/abs/2603.15546) / [Code](https://github.com/nv-tlabs/kimodo) |
+| ARDY | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Kinematic Control | ARDY-Core-330 / ARDY-G1-414 | [Core](https://huggingface.co/nvidia/ARDY-Core-RP-20FPS-Horizon40) / [G1](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon52) | [Model Card](docs/model_zoo/ardy.md) | [Paper](https://arxiv.org/abs/2607.08741) / [Code](https://github.com/nv-tlabs/ardy) |
 | MLD | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-mld-humanml3d) | [Model Card](docs/model_zoo/mld.md) | [Paper](https://arxiv.org/abs/2212.04048) / [Code](https://github.com/ChenFengYe/motion-latent-diffusion) |
 | MotionLCM | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionlcm-humanml3d) | [Model Card](docs/model_zoo/motionlcm.md) | [Paper](https://arxiv.org/abs/2404.19759) / [Code](https://github.com/Dai-Wenxun/MotionLCM) |
 | ViMoGen | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | DART276 | [HF](https://huggingface.co/ZeyuLing/hftrainer-vimogen-1.3b-humanml3d) | [Model Card](docs/model_zoo/vimogen.md) | [Paper](https://arxiv.org/abs/2510.26794) / [Code](https://github.com/MotrixLab/ViMoGen) |
@@ -80,10 +81,12 @@ penetration under the same canonical skeleton protocol used by the leaderboard.
 ## Motion Representation Toolkit
 
 Motius provides first-class support for the motion representations used by
-different model families and makes them interoperable through a shared
-**SMPL-22 body-motion bridge**. A source representation is converted to SMPL
+different model families. SMPL-based formats interoperate through a shared
+**SMPL-22 body-motion bridge**: a source representation is converted to SMPL
 `motion135` (root translation plus 22 local joint rotations), then encoded into
 the representation required by the target model, evaluator, or renderer.
+Native-skeleton formats expose exact native decoding and require an explicit,
+validated retargeting route before crossing skeletons.
 
 | Representation | Shape | Used by | Relationship to the SMPL bridge |
 | -------------- | ----: | ------- | --------------------------------- |
@@ -94,6 +97,8 @@ the representation required by the target model, evaluator, or renderer.
 | **DART276** | `(T, 276)` | DART and ViMoGen | Bridges through SMPL parameters and joints with explicit coordinate conversion |
 | **InterHuman-262** | `(T, 2, 262)` | InterGen and InterMask | Two synchronized SMPL-22 tracks in one shared canonical world frame; exact joint decode, position-IK mesh bridge |
 | **Unitree G1-38D** | `(T, 38)` | G1-native generation and evaluation | SMPL body motion is retargeted through GMR; G1 qpos decode is exact |
+| **ARDY-Core-330** | `(T, 330)` | ARDY Core checkpoints | Exact native Core-27 joint/rotation decode; cross-skeleton use requires explicit retargeting |
+| **ARDY-G1-414** | `(T, 414)` | ARDY G1 checkpoints | Exact native G1 joint/rotation decode and exact MuJoCo qpos-36 export |
 
 ### Same-Motion Representation Demo
 

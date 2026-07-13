@@ -20,6 +20,40 @@ materialize joints or meshes.
 | `dart276` | `(T, 276)` | 20 | pose, joints, velocities, root orientation/translation | first two **columns** flattened row-wise |
 | `interhuman262` | `(T, 2, 262)` | 30 | per person: global joints, global velocities, 21 local rotations, contacts | first two **columns** flattened row-wise |
 | `g1_38` | `(T, 38)` | 30 | root XY velocity/height, root rotation, 29 joint angles | first two **columns** flattened row-wise |
+| `ardy_core330` | `(T, 330)` | 20 | Core-27 root, heading, positions, rotations, velocities, contacts | global rotations via ARDY `matrix_to_cont6d` |
+| `ardy_g1_414` | `(T, 414)` | 25 | G1-34 root, heading, positions, rotations, velocities, contacts | global rotations via ARDY `matrix_to_cont6d` |
+
+## ARDY Core-330 And G1-414
+
+Both ARDY formats expose an explicit motion tensor while the model tokenizer
+uses a hybrid explicit-root and latent-body representation internally:
+
+```text
+root XYZ | global heading (cos, sin) | root-local non-root joints
+         | global joint rotations 6D | global joint velocities | contacts
+```
+
+The widths are 330 for Core-27 and 414 for G1-34. Checkpoint statistics contain
+four additional local-root velocity/height channels used inside the tokenizer;
+those make the stored statistics 334/418 wide but do not change public motion
+tensor shapes.
+
+Exact native decoding requires the `motion_rep` bundled with the checkpoint,
+because it owns the skeleton, FPS, and normalization statistics:
+
+```python
+joints = convert_motion(
+    features,
+    "ardy_core330",
+    "joints",
+    motion_rep=pipe.bundle.motion_rep,
+    is_normalized=True,
+)
+```
+
+`ardy_g1_414` additionally converts exactly to MuJoCo qpos-36. ARDY Core-27 is
+not SMPL-22, so no implicit Core-to-SMPL joint truncation is provided. A
+cross-skeleton route must name and validate its retargeting method explicitly.
 
 ## InterHuman-262
 

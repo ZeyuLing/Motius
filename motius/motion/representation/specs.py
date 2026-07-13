@@ -163,6 +163,42 @@ G1_38 = MotionRepresentationSpec(
 )
 
 
+ARDY_CORE330 = MotionRepresentationSpec(
+    name="ardy_core330",
+    dim=330,
+    fps=20.0,
+    coordinate_frame="ARDY Core Y-up world frame; initial body heading is +Z",
+    rotation_convention="ARDY continuous 6D global rotations via matrix_to_cont6d",
+    layout=(
+        ("root_position", 0, 3, "absolute XYZ root position"),
+        ("global_root_heading", 3, 5, "cosine and sine of global heading"),
+        ("root_local_joint_positions", 5, 83, "26 non-root Core joints * XYZ"),
+        ("global_joint_rotations_6d", 83, 245, "27 global joint rotations * 6D"),
+        ("global_joint_velocities", 245, 326, "27 joints * XYZ velocity"),
+        ("foot_contacts", 326, 330, "left/right heel and toe contacts"),
+    ),
+    notes="Native explicit representation of the 27-joint ARDY Core checkpoints.",
+)
+
+
+ARDY_G1_414 = MotionRepresentationSpec(
+    name="ardy_g1_414",
+    dim=414,
+    fps=25.0,
+    coordinate_frame="ARDY Unitree G1 Y-up world frame; initial body heading is +Z",
+    rotation_convention="ARDY continuous 6D global rotations via matrix_to_cont6d",
+    layout=(
+        ("root_position", 0, 3, "absolute XYZ pelvis position"),
+        ("global_root_heading", 3, 5, "cosine and sine of global heading"),
+        ("root_local_joint_positions", 5, 104, "33 non-root G1 joints * XYZ"),
+        ("global_joint_rotations_6d", 104, 308, "34 global joint rotations * 6D"),
+        ("global_joint_velocities", 308, 410, "34 joints * XYZ velocity"),
+        ("foot_contacts", 410, 414, "left/right heel and toe contacts"),
+    ),
+    notes="Native explicit representation of the 34-joint ARDY G1 checkpoints.",
+)
+
+
 SPECS = {
     spec.name: spec
     for spec in (
@@ -173,6 +209,8 @@ SPECS = {
         DART276,
         INTERHUMAN262,
         G1_38,
+        ARDY_CORE330,
+        ARDY_G1_414,
     )
 }
 
@@ -186,5 +224,7 @@ __all__ = [
     "DART276",
     "INTERHUMAN262",
     "G1_38",
+    "ARDY_CORE330",
+    "ARDY_G1_414",
     "SPECS",
 ]
