@@ -267,6 +267,48 @@ evaluator = TMRG1Evaluator.from_pretrained(
 """
 
 
+INTERCLIP_README = """---
+library_name: motius
+pipeline_tag: feature-extraction
+license: cc-by-nc-sa-4.0
+tags:
+- human-motion
+- two-person-text-to-motion
+- evaluator
+- interhuman
+- interclip
+---
+
+# InterCLIP InterHuman-262 Evaluator
+
+Inference-only artifact for the InterCLIP evaluator released with InterGen.
+It embeds a caption and two synchronized InterHuman-262 motion tracks, and is
+the standard evaluator used by InterGen and InterMask on InterHuman.
+
+## Provenance
+
+- Paper: [InterGen: Diffusion-based Multi-human Motion Generation under Complex Interactions](https://arxiv.org/abs/2304.05684)
+- Original repository: [tr3e/InterGen](https://github.com/tr3e/InterGen)
+- Motius implementation: `InterHuman262Evaluator`
+- License: CC BY-NC-SA 4.0, following the official repository
+
+The artifact contains only `model.safetensors` and protocol metadata. Optimizer,
+trainer, callback, and Lightning state are excluded. OpenAI CLIP is used only
+for tokenization; all learned InterCLIP text and motion weights are contained in
+the SafeTensors file.
+
+```python
+from motius.evaluation.evaluators import InterHuman262Evaluator
+
+evaluator = InterHuman262Evaluator.from_pretrained(
+    "ZeyuLing/motius-evaluator-interhuman-interclip",
+    device="cuda",
+)
+metrics = evaluator.evaluate_npz("gt.npz", {"InterGen": "pred.npz"})
+```
+"""
+
+
 def export_humanml3d(args: argparse.Namespace) -> None:
     output_dir = args.output_dir
     _prepare_output(output_dir)
@@ -533,6 +575,46 @@ def _add_common(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--repo-id", default=None)
 
 
+def export_interclip(args: argparse.Namespace) -> None:
+    output_dir = args.output_dir
+    _prepare_output(output_dir)
+    checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
+    raw_state = checkpoint.get("state_dict", checkpoint)
+    state = {
+        (name.replace("model.", "", 1) if name.startswith("model.") else name): value.detach().cpu().contiguous()
+        for name, value in raw_state.items()
+        if torch.is_tensor(value)
+    }
+    save_file(state, output_dir / "model.safetensors", metadata={"format": "pt"})
+    config = {
+        "model_type": "interclip",
+        "library_name": "motius",
+        "input_dim_per_person": 262,
+        "encoded_dim_per_person": 258,
+        "embedding_dim": 512,
+        "motion_latent_dim": 1024,
+        "motion_layers": 8,
+        "motion_heads": 8,
+        "text_width": 768,
+        "text_layers": 8,
+        "text_heads": 8,
+    }
+    protocol = {
+        "motion_representation": "InterHuman-262 per person",
+        "pair_shape": "(B, T, 2, 262)",
+        "fps": 30,
+        "retrieval_batch_size": 96,
+        "retrieval_repeats": 20,
+        "embedding_scale": 6.0,
+        "metrics": ["R-Precision", "MM-Dist", "FID", "Diversity"],
+    }
+    _write_json(output_dir / "config.json", config)
+    _write_json(output_dir / "preprocessor_config.json", protocol)
+    (output_dir / "README.md").write_text(INTERCLIP_README)
+    _write_manifest(output_dir, (args.checkpoint,))
+    _push(output_dir, args.repo_id)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="kind", required=True)
@@ -554,6 +636,12 @@ def parse_args() -> argparse.Namespace:
     g1 = subparsers.add_parser("g1-tmr")
     _add_common(g1)
     g1.set_defaults(func=export_g1_tmr)
+
+    interclip = subparsers.add_parser("interclip")
+    interclip.add_argument("--checkpoint", type=Path, required=True)
+    interclip.add_argument("--output-dir", type=Path, required=True)
+    interclip.add_argument("--repo-id", default=None)
+    interclip.set_defaults(func=export_interclip)
     return parser.parse_args()
 
 

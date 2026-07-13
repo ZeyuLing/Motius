@@ -1,0 +1,12 @@
+{
+  "method": "intermask",
+  "case_id": "hug",
+  "prompt": "two people hug each other and then step back",
+  "seed": 2027,
+  "motion_len": 60,
+  "representation": "InterHuman-262 per person",
+  "mesh": "neutral SMPL position-IK",
+  "fit_mpjpe_mm": 39.664886474609375,
+  "gif": "assets/model_zoo/intermask/intermask_interhuman_hug_smpl_pair_512_30fps.gif",
+  "mp4": "outputs/release/interaction_previews/intermask_interhuman_hug_smpl_pair.mp4"
+}

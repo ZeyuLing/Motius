@@ -18,7 +18,28 @@ materialize joints or meshes.
 | `motion135` | `(T, 135)` | usually 30 | root translation + 22 local rotations | first two **columns** flattened row-wise, `R[:, :2].reshape(6)` |
 | `hymotion201` | `(T, 201)` | 30 | `motion135` + 22 pelvis-relative joints | same as `motion135` |
 | `dart276` | `(T, 276)` | 20 | pose, joints, velocities, root orientation/translation | first two **columns** flattened row-wise |
+| `interhuman262` | `(T, 2, 262)` | 30 | per person: global joints, global velocities, 21 local rotations, contacts | first two **columns** flattened row-wise |
 | `g1_38` | `(T, 38)` | 30 | root XY velocity/height, root rotation, 29 joint angles | first two **columns** flattened row-wise |
+
+## InterHuman-262
+
+Each person contributes 262 channels:
+
+```text
+[0:66]    22 global SMPL-22 joint positions
+[66:132]  22 global joint displacements
+[132:258] 21 non-root local rotations in 6D
+[258:262] left/right heel and toe contacts
+```
+
+A two-person clip has shape `(T, 2, 262)`. Both tracks must remain in the same
+canonical world frame. Motius canonicalizes the pair with person 1's first
+frame, then places person 2 with the official relative yaw and root offset;
+canonicalizing each person independently would destroy the interaction.
+
+The position channels decode exactly. InterHuman does not store root rotation,
+body shape, or joint twist completely, so an SMPL mesh is recovered with the
+documented position-IK bridge and is necessarily non-unique.
 
 ## Same-Motion Visual Comparison
 

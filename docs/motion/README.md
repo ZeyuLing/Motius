@@ -1,7 +1,7 @@
 # Motion Representation Toolkit
 
-Motius supports HumanML3D-263, MotionStreamer-272, HY-Motion-201, DART276, and
-SMPL-22 `motion135` as first-class motion representations. Instead of coupling
+Motius supports HumanML3D-263, MotionStreamer-272, HY-Motion-201, DART276,
+InterHuman-262, and SMPL-22 `motion135` as first-class motion representations. Instead of coupling
 every model to every other model's tensor layout, Motius uses SMPL body motion
 as the shared interchange layer:
 

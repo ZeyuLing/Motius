@@ -40,6 +40,17 @@ condmdi = [
     "tqdm>=4.65",
     "clip @ git+https://github.com/openai/CLIP.git",
 ]
+intergen = [
+    "clip @ git+https://github.com/openai/CLIP.git",
+    "yacs>=0.1.8",
+]
+intermask = [
+    "clip @ git+https://github.com/openai/CLIP.git",
+    "einops>=0.6",
+    "positional-encodings>=6.0",
+    "torch-geometric>=2.5",
+    "tqdm>=4.65",
+]
 
 [tool.setuptools.packages.find]
 where = ["."]
@@ -58,6 +69,8 @@ namespaces = false
 ]
 "motius.models.tmr" = ["LICENSE"]
 "motius.models.condmdi" = ["LICENSE"]
+"motius.models.intergen" = ["NOTICE", "network/configs/*.yaml"]
+"motius.models.intermask" = ["LICENSE"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

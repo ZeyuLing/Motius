@@ -1,0 +1,12 @@
+{
+  "method": "intergen",
+  "case_id": "handshake",
+  "prompt": "two people shake hands and then step apart",
+  "seed": 2027,
+  "motion_len": 60,
+  "representation": "InterHuman-262 per person",
+  "mesh": "neutral SMPL position-IK",
+  "fit_mpjpe_mm": 35.4946231842041,
+  "gif": "assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair_512_30fps.gif",
+  "mp4": "outputs/release/interaction_previews/intergen_interhuman_handshake_smpl_pair.mp4"
+}

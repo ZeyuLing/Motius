@@ -36,6 +36,15 @@
       "paper": "https://arxiv.org/abs/2305.00976",
       "source_repository": "https://github.com/Mathux/TMR",
       "checkpoint_origin": "Motius architecture reproduction trained from scratch; epoch 139"
+    },
+    {
+      "name": "InterCLIP",
+      "card": "docs/evaluator_zoo/interclip.md",
+      "checkpoint": "ZeyuLing/motius-evaluator-interhuman-interclip",
+      "motion_representation": "paired InterHuman-262",
+      "paper": "https://arxiv.org/abs/2304.05684",
+      "source_repository": "https://github.com/tr3e/InterGen",
+      "checkpoint_origin": "lossless inference-only conversion of the official InterCLIP checkpoint"
     }
   ]
 }

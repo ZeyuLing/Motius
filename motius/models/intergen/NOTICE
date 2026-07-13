@@ -1,0 +1,17 @@
+InterGen runtime attribution
+
+This implementation reproduces the architecture described in:
+
+  InterGen: Diffusion-based Multi-human Motion Generation under Complex
+  Interactions, https://github.com/tr3e/InterGen
+
+The official repository states that all material is licensed under Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA
+4.0):
+
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+This adapted runtime is therefore for non-commercial use, requires attribution,
+and must be shared under the same terms. The InterHuman dataset has additional
+no-redistribution language in the official repository and is not included with
+Motius.

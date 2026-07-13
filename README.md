@@ -24,14 +24,15 @@ released method will ship with a model card, checkpoint path, evaluation
 results, and qualitative SMPL renders.
 
 Motius also ships an explicit [Motion Toolkit](docs/motion/README.md) for
-converting HML263, MotionStreamer-272, HY-Motion-201, DART276, and SMPL
+converting HML263, MotionStreamer-272, HY-Motion-201, DART276,
+InterHuman-262, and SMPL
 `motion135`, plus SMPL/SOMA/G1 retargeting. Its documentation records skeleton,
 coordinate, FPS, and 6D rotation conventions for every route.
 
 ## Model Zoo
 
 Task labels use a controlled vocabulary: [`T2M`](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), `M2T`, `TP2M`,
-`Multi-Prompt T2M`, `Motion Control`, and `Kinematic Control`. Properties such
+`Two-Person T2M`, `Multi-Prompt T2M`, `Motion Control`, and `Kinematic Control`. Properties such
 as zero-shot, streaming, latent, or autoregressive are described in the model
 cards rather than treated as separate tasks.
 
@@ -52,6 +53,8 @@ cards rather than treated as separate tasks.
 | ViMoGen | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | DART276 | [HF](https://huggingface.co/ZeyuLing/hftrainer-vimogen-1.3b-humanml3d) | [Model Card](docs/model_zoo/vimogen.md) | [Paper](https://arxiv.org/abs/2510.26794) / [Code](https://github.com/MotrixLab/ViMoGen) |
 | DART | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Motion Control | DART276 | [HF](https://huggingface.co/ZeyuLing/motius-dart-humanml3d) | [Model Card](docs/model_zoo/dart.md) | [Paper](https://arxiv.org/abs/2410.05260) / [Code](https://github.com/zkf1997/DART) |
 | CondMDI | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Motion Control | HumanML3D-263 (absolute-root native) | [HF](https://huggingface.co/ZeyuLing/motius-condmdi-humanml3d) | [Model Card](docs/model_zoo/condmdi.md) | [Paper](https://arxiv.org/abs/2405.11126) / [Code](https://github.com/setarehc/diffusion-motion-inbetweening) |
+| InterGen | Two-Person T2M | InterHuman-262 per person | [HF](https://huggingface.co/ZeyuLing/motius-intergen-interhuman) | [Model Card](docs/model_zoo/intergen.md) | [Paper](https://arxiv.org/abs/2304.05684) / [Code](https://github.com/tr3e/InterGen) |
+| InterMask | Two-Person T2M | InterHuman-262 per person | [HF](https://huggingface.co/ZeyuLing/motius-intermask-interhuman) | [Model Card](docs/model_zoo/intermask.md) | [Paper](https://arxiv.org/abs/2410.10010) / [Code](https://github.com/gohar-malik/InterMask) |
 
 ## Evaluator Zoo
 
@@ -67,6 +70,7 @@ G1-native methods additionally use the robot-specific TMR-G1 evaluator.
 | MotionStreamer Evaluator | Cross-representation semantic evaluator for SMPL-aligned T2M results | MotionStreamer-272 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-motionstreamer-272) | [Evaluator Card](docs/evaluator_zoo/motionstreamer.md) | [Paper](https://arxiv.org/abs/2503.15451) / [Code](https://github.com/zju3dv/MotionStreamer) |
 | Motius Joint-Position Evaluator | Motius-trained TMR reproduction for unified SMPL-22 joint positions | SMPL-22 joints66 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-universal-smplh-joints66) | [Evaluator Card](docs/evaluator_zoo/motius_joint_position.md) | [TMR Paper](https://arxiv.org/abs/2305.00976) / [TMR Code](https://github.com/Mathux/TMR) |
 | Motius TMR-G1 Evaluator | Robot-native text-motion evaluator for Unitree G1 generation | G1-38D | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-g1-38d-tmr) | [Evaluator Card](docs/evaluator_zoo/g1_tmr.md) | [TMR Paper](https://arxiv.org/abs/2305.00976) / [TMR Code](https://github.com/Mathux/TMR) |
+| InterCLIP | Official text-interaction evaluator used by InterGen and InterMask | paired InterHuman-262 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-interhuman-interclip) | [Evaluator Card](docs/evaluator_zoo/interclip.md) | [InterGen Paper](https://arxiv.org/abs/2304.05684) / [Code](https://github.com/tr3e/InterGen) |
 
 Checkpoint-free [physical motion metrics](docs/evaluation/physical_metrics.md)
 are also available for SMPL-22 joints, `motion135`, and MotionStreamer-272.
@@ -88,6 +92,7 @@ the representation required by the target model, evaluator, or renderer.
 | **MotionStreamer-272** | `(T, 272)` | MotionStreamer and MotionMillion | Converts to and from SMPL-22 motion |
 | **HY-Motion-201** | `(T, 201)` | HY-Motion models | Contains `motion135` as an exact prefix plus 22 joint positions |
 | **DART276** | `(T, 276)` | DART and ViMoGen | Bridges through SMPL parameters and joints with explicit coordinate conversion |
+| **InterHuman-262** | `(T, 2, 262)` | InterGen and InterMask | Two synchronized SMPL-22 tracks in one shared canonical world frame; exact joint decode, position-IK mesh bridge |
 | **Unitree G1-38D** | `(T, 38)` | G1-native generation and evaluation | SMPL body motion is retargeted through GMR; G1 qpos decode is exact |
 
 ### Same-Motion Representation Demo

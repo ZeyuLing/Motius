@@ -1001,6 +1001,74 @@
           "metadata": "assets/model_zoo/condmdi/condmdi_humanml3d_006944_smpl_mesh.json"
         }
       ]
+    },
+    "intergen": {
+      "method": "InterGen",
+      "task": "Two-Person T2M",
+      "motion_representation": "paired InterHuman-262",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-intergen-interhuman",
+      "metric_source": "official InterGen paper, InterCLIP protocol",
+      "metrics": [
+        {
+          "evaluator": "InterCLIP",
+          "variant": "Official reported",
+          "R1": 0.371,
+          "R2": 0.515,
+          "R3": 0.624,
+          "FID": 5.918,
+          "MM-Dist": 5.108,
+          "Diversity": 7.387,
+          "Multimodality": 2.141
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "handshake",
+          "caption": "two people shake hands and then step apart",
+          "gif": "assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair_512_30fps.gif",
+          "metadata": "assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair.json"
+        },
+        {
+          "sample_id": "help_stand",
+          "caption": "one person helps another person stand up",
+          "gif": "assets/model_zoo/intergen/intergen_interhuman_help_stand_smpl_pair_512_30fps.gif",
+          "metadata": "assets/model_zoo/intergen/intergen_interhuman_help_stand_smpl_pair.json"
+        }
+      ]
+    },
+    "intermask": {
+      "method": "InterMask",
+      "task": "Two-Person T2M",
+      "motion_representation": "paired InterHuman-262",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-intermask-interhuman",
+      "metric_source": "official InterMask paper, InterCLIP protocol",
+      "metrics": [
+        {
+          "evaluator": "InterCLIP",
+          "variant": "Official reported",
+          "R1": 0.449,
+          "R2": 0.599,
+          "R3": 0.683,
+          "FID": 5.154,
+          "MM-Dist": 3.79,
+          "Diversity": 7.944,
+          "Multimodality": 1.737
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "hug",
+          "caption": "two people hug each other and then step back",
+          "gif": "assets/model_zoo/intermask/intermask_interhuman_hug_smpl_pair_512_30fps.gif",
+          "metadata": "assets/model_zoo/intermask/intermask_interhuman_hug_smpl_pair.json"
+        },
+        {
+          "sample_id": "gentle_push",
+          "caption": "one person gently pushes the other person backward",
+          "gif": "assets/model_zoo/intermask/intermask_interhuman_gentle_push_smpl_pair_512_30fps.gif",
+          "metadata": "assets/model_zoo/intermask/intermask_interhuman_gentle_push_smpl_pair.json"
+        }
+      ]
     }
   }
 }

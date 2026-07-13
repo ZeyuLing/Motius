@@ -21,6 +21,7 @@ from motius.motion import convert_motion, smpl_to_humanml263
 # Exact native position decode.
 joints = convert_motion(motion_hml263, "hml263", "joints")
 joints = convert_motion(motion_ms272, "ms272", "joints")
+joints_pair = convert_motion(motion_interhuman, "interhuman262", "joints")
 
 # HY-Motion's transform channels are an exact prefix.
 motion135 = convert_motion(motion_hy201, "hymotion201", "motion135")
@@ -102,11 +103,20 @@ store the converted array under `motion` and record source/target names.
 | motion135 | HML263 | FK plus official HumanML3D encoding; requires explicit SMPL-22 offsets |
 | DART276 | joints | Native DART decode, optional MBench coordinate conversion |
 | DART276 | motion135 | Coordinate/floor bridge; retains DART temporal sampling |
+| InterHuman-262 | joints | Exact stored global-position decode; preserves the shared pair frame |
+| paired joints | InterHuman-262 | Official pair-aware canonicalization; requires 21 non-root local rotations |
+| paired motion135 | InterHuman-262 | FK plus pair-aware encoding; requires explicit SMPL-22 offsets |
 | G1-38 | G1 qpos-36 | Exact root quaternion + 29-DOF decode |
 | G1 qpos-36 | G1-38 | Optional root canonicalization and XY velocity encoding |
 
 Routes can compose through `motion135`, for example DART276 to MS272. HML263
 to MS272 first performs the lossy SMPL IK step.
+
+InterHuman-262 intentionally does not expose a direct exact `motion135` decode:
+the representation omits root rotation and does not uniquely determine twist.
+Use its exact joint decode followed by `retarget_hml263_clip(...,
+rotation_init="position_ik")` when an SMPL mesh or `motion135` approximation is
+required.
 
 ## HumanML3D Protocol Controls
 

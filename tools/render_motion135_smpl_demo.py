@@ -196,6 +196,68 @@ class SMPLRenderer:
             raise RuntimeError("render produced zero frames")
         return frames
 
+    def render_pair(self, verts: np.ndarray, fps: int, max_frames: int) -> list[np.ndarray]:
+        """Render two synchronized SMPL tracks shaped ``(T, 2, V, 3)``."""
+        if verts.ndim != 4 or verts.shape[1] != 2:
+            raise ValueError(f"pair vertices must have shape (T, 2, V, 3), got {verts.shape}")
+        verts = verts[: min(max_frames, len(verts))]
+        renderer = pyrender.OffscreenRenderer(self.width, self.height)
+        frames: list[np.ndarray] = []
+        all_pts = verts.reshape(-1, 3)
+        y_center = float(np.percentile(all_pts[:, 1], 54))
+        span = np.ptp(all_pts, axis=0)
+        radius = max(float(span[0]), float(span[1]), float(span[2]), 1.9)
+        dist = max(3.0, radius * 1.45)
+        materials = [
+            pyrender.MetallicRoughnessMaterial(
+                baseColorFactor=(0.15, 0.42, 0.92, 1.0), metallicFactor=0.03, roughnessFactor=0.58
+            ),
+            pyrender.MetallicRoughnessMaterial(
+                baseColorFactor=(0.95, 0.31, 0.25, 1.0), metallicFactor=0.03, roughnessFactor=0.58
+            ),
+        ]
+        floor_mat = pyrender.MetallicRoughnessMaterial(
+            baseColorFactor=(0.88, 0.90, 0.93, 1.0), metallicFactor=0.0, roughnessFactor=1.0
+        )
+        try:
+            for frame_verts in verts:
+                center = frame_verts.reshape(-1, 3).mean(axis=0)
+                target = np.array([center[0], y_center, center[2]], dtype=np.float32)
+                eye = target + np.array([0.82 * dist, 0.42 * dist, 1.0 * dist], dtype=np.float32)
+                scene = pyrender.Scene(bg_color=[1.0, 1.0, 1.0, 1.0], ambient_light=[0.42, 0.42, 0.46])
+                for person in range(2):
+                    scene.add(
+                        pyrender.Mesh.from_trimesh(
+                            trimesh.Trimesh(frame_verts[person], self.faces, process=False),
+                            material=materials[person],
+                            smooth=True,
+                        )
+                    )
+                floor_size = max(3.6, radius * 1.5)
+                floor = trimesh.creation.box(extents=(floor_size, 0.012, floor_size))
+                floor.apply_translation([target[0], -0.006, target[2]])
+                scene.add(pyrender.Mesh.from_trimesh(floor, material=floor_mat, smooth=False))
+                scene.add(
+                    pyrender.PerspectiveCamera(yfov=math.radians(38), aspectRatio=self.width / self.height),
+                    pose=self._look_at(eye, target),
+                )
+                for light_eye, intensity in [
+                    (target + np.array([2.5, 4.0, 3.0], dtype=np.float32), 3.8),
+                    (target + np.array([-3.0, 2.5, 1.2], dtype=np.float32), 1.8),
+                    (target + np.array([0.0, 3.2, -3.0], dtype=np.float32), 1.4),
+                ]:
+                    scene.add(
+                        pyrender.DirectionalLight(color=np.ones(3), intensity=intensity),
+                        pose=self._look_at(light_eye, target),
+                    )
+                color, _ = renderer.render(scene)
+                frames.append(color)
+        finally:
+            renderer.delete()
+        if not frames:
+            raise RuntimeError("render produced zero frames")
+        return frames
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()

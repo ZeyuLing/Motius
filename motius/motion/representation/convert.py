@@ -48,6 +48,58 @@ def joints_to_hml263(joints, **kwargs):
     return fn(joints, **kwargs)
 
 
+def motion135_to_interhuman262(
+    motion_135,
+    *,
+    bone_offsets,
+    rotation_space: str = "local",
+    feet_threshold: float = 0.001,
+    reference_frame: int = 0,
+    source_coordinates: str = "y_up",
+):
+    """Encode one or two SMPL-22 ``motion135`` tracks as InterHuman-262."""
+
+    import numpy as np
+
+    from motius.motion.representation.interhuman262 import (
+        joints_pair_to_interhuman262,
+        joints_to_interhuman262,
+    )
+
+    motion = np.asarray(motion_135, dtype=np.float32)
+    if motion.ndim == 2 and motion.shape[-1] == 135:
+        joints = motion135_to_joints(
+            motion, bone_offsets=bone_offsets, rotation_space=rotation_space
+        )
+        return joints_to_interhuman262(
+            joints,
+            motion[:, 9:135],
+            feet_threshold=feet_threshold,
+            reference_frame=reference_frame,
+            source_coordinates=source_coordinates,
+        )
+    if motion.ndim == 3 and motion.shape[1:] == (2, 135):
+        joints = np.stack(
+            [
+                motion135_to_joints(
+                    motion[:, person],
+                    bone_offsets=bone_offsets,
+                    rotation_space=rotation_space,
+                )
+                for person in range(2)
+            ],
+            axis=1,
+        )
+        return joints_pair_to_interhuman262(
+            joints,
+            motion[:, :, 9:135],
+            feet_threshold=feet_threshold,
+            reference_frame=reference_frame,
+            source_coordinates=source_coordinates,
+        )
+    raise ValueError(f"motion135 must have shape (T,135) or (T,2,135), got {motion.shape}")
+
+
 def _to_humanml_coordinates(joints, coordinate_system: str):
     import numpy as np
 
@@ -359,6 +411,9 @@ def convert_motion(data, source: str, target: str, **kwargs):
             "motionstreamer272": "ms272",
             "motion272": "ms272",
             "hymotion201": "hymotion201",
+            "interhuman": "interhuman262",
+            "interhuman262": "interhuman262",
+            "intergen262": "interhuman262",
             "joints22": "joints",
             "smplhjoints": "joints",
             "smplparams": "smpl",
@@ -395,8 +450,27 @@ def convert_motion(data, source: str, target: str, **kwargs):
         )
 
     if source == "joints":
+        if target == "interhuman262":
+            from motius.motion.representation.interhuman262 import (
+                joints_pair_to_interhuman262,
+                joints_to_interhuman262,
+            )
+
+            if "local_rot6d" not in kwargs:
+                raise ValueError("joints -> InterHuman-262 requires local_rot6d")
+            import numpy as np
+
+            value = np.asarray(data)
+            encoder = joints_pair_to_interhuman262 if value.ndim == 4 else joints_to_interhuman262
+            return encoder(
+                value,
+                kwargs["local_rot6d"],
+                feet_threshold=kwargs.get("feet_threshold", 0.001),
+                reference_frame=kwargs.get("reference_frame", 0),
+                source_coordinates=kwargs.get("source_coordinates", "interhuman_raw"),
+            )
         if target != "hml263":
-            raise ValueError("raw joints currently support only the hml263 target")
+            raise ValueError("raw joints support hml263 and interhuman262 targets")
         accepted = {
             key: kwargs[key]
             for key in ("feet_threshold", "target_offsets")
@@ -501,6 +575,15 @@ def convert_motion(data, source: str, target: str, **kwargs):
         }
         data = dart276_to_motion135(data, **accepted)
         source = "motion135"
+    elif source == "interhuman262":
+        if target != "joints":
+            raise ValueError(
+                "InterHuman-262 currently decodes exactly to joints; rotation-complete "
+                "SMPL recovery requires the documented position-IK bridge"
+            )
+        from motius.motion.representation.interhuman262 import interhuman262_to_joints
+
+        return interhuman262_to_joints(data)
 
     if source != "motion135":
         raise ValueError(f"unsupported source representation: {source!r}")
@@ -540,6 +623,22 @@ def convert_motion(data, source: str, target: str, **kwargs):
         return motion135_to_hml263(
             data, bone_offsets=kwargs["bone_offsets"], **accepted
         )
+    if target == "interhuman262":
+        if "bone_offsets" not in kwargs:
+            raise ValueError("motion135 -> InterHuman-262 requires bone_offsets")
+        accepted = {
+            key: kwargs[key]
+            for key in (
+                "rotation_space",
+                "feet_threshold",
+                "reference_frame",
+                "source_coordinates",
+            )
+            if key in kwargs
+        }
+        return motion135_to_interhuman262(
+            data, bone_offsets=kwargs["bone_offsets"], **accepted
+        )
     raise ValueError(f"unsupported conversion target: {target!r}")
 
 
@@ -553,6 +652,7 @@ __all__ = [
     "motion135_to_joints",
     "joints_to_hml263",
     "motion135_to_hml263",
+    "motion135_to_interhuman262",
     "motion272_to_hml263",
     "smpl_to_motion135",
     "smpl_to_joints",

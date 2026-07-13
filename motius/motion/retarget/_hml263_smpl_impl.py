@@ -45,6 +45,17 @@ def _patch_numpy_chumpy_aliases() -> None:
     for name, value in aliases.items():
         if name not in np.__dict__:
             setattr(np, name, value)
+    # NumPy 2.x pickles reference ``numpy._core`` while NumPy 1.x exposes the
+    # same implementation as ``numpy.core``. SMPL assets exist in both forms.
+    import numpy.core.multiarray as numpy_multiarray
+
+    private_core = types.ModuleType("numpy._core")
+    private_core.__path__ = []
+    private_multiarray = types.ModuleType("numpy._core.multiarray")
+    private_multiarray._reconstruct = numpy_multiarray._reconstruct
+    private_core.multiarray = private_multiarray
+    sys.modules.setdefault("numpy._core", private_core)
+    sys.modules.setdefault("numpy._core.multiarray", private_multiarray)
 
 
 _patch_numpy_chumpy_aliases()

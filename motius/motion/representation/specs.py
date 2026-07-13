@@ -122,6 +122,32 @@ DART276 = MotionRepresentationSpec(
 )
 
 
+INTERHUMAN262 = MotionRepresentationSpec(
+    name="interhuman262",
+    dim=262,
+    fps=30.0,
+    coordinate_frame=(
+        "InterHuman canonical Y-up world frame shared by both people; person one "
+        "starts at the origin facing +Z and person two retains relative placement"
+    ),
+    rotation_convention=(
+        "21 non-root SMPL local rotations as row-interleaved first-two-column 6D: "
+        "R[:, :2].reshape(6); root rotation is represented implicitly by global "
+        "joint positions"
+    ),
+    layout=(
+        ("joint_positions", 0, 66, "22 global SMPL joints * XYZ"),
+        ("joint_velocities", 66, 132, "22 global SMPL joints * XYZ displacement"),
+        ("local_rotations", 132, 258, "21 non-root joints * 6D local rotations"),
+        ("foot_contacts", 258, 262, "left heel/toe and right heel/toe contacts"),
+    ),
+    notes=(
+        "Per-person feature width is 262. A complete two-person sample is (T,2,262). "
+        "Canonicalize the pair jointly to preserve interaction geometry."
+    ),
+)
+
+
 G1_38 = MotionRepresentationSpec(
     name="g1_38",
     dim=38,
@@ -145,6 +171,7 @@ SPECS = {
         MOTION135,
         HYMOTION201,
         DART276,
+        INTERHUMAN262,
         G1_38,
     )
 }
@@ -157,6 +184,7 @@ __all__ = [
     "MOTION135",
     "HYMOTION201",
     "DART276",
+    "INTERHUMAN262",
     "G1_38",
     "SPECS",
 ]
