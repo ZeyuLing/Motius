@@ -34,7 +34,7 @@ TASK_LABELS = {
     "Kinematic Control",
 }
 TASK_LEADERBOARDS = {
-    "T2M": "docs/leaderboards/t2m_humanml3d.md",
+    "T2M": "https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard",
 }
 
 
@@ -98,7 +98,11 @@ def _task_status(readme_cell: str, card_text: str) -> tuple[str, str]:
             return "invalid", f"{label} must link to {expected}"
         if not expected and target:
             return "invalid", f"{label} links to an unregistered leaderboard"
-        if expected and not (REPO_ROOT / expected).is_file():
+        if (
+            expected
+            and not expected.startswith(("http://", "https://"))
+            and not (REPO_ROOT / expected).is_file()
+        ):
             return "invalid", f"missing leaderboard target: {expected}"
 
     card_match = CARD_TASK_RE.search(card_text)

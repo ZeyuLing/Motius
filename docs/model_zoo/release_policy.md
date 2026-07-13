@@ -18,7 +18,7 @@ README and model-card task fields must use only these capability labels:
 
 | Label | Meaning |
 | ----- | ------- |
-| [`T2M`](../leaderboards/t2m_humanml3d.md) | Text-to-motion generation |
+| [`T2M`](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | Text-to-motion generation |
 | `M2T` | Motion-to-text generation |
 | `TP2M` | Text-guided generation conditioned on a motion prefix |
 | `Multi-Prompt T2M` | A sequence composed from multiple text prompts |
