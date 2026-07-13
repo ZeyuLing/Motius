@@ -16,7 +16,7 @@ differences explicitly.
 
 ```python
 import numpy as np
-from motius.motion.representation.convert import convert_motion
+from motius.motion import convert_motion, smpl_to_humanml263
 
 # Exact native position decode.
 joints = convert_motion(motion_hml263, "hml263", "joints")
@@ -32,6 +32,20 @@ motion201 = convert_motion(
     "motion135",
     "hymotion201",
     bone_offsets=offsets,
+)
+
+# A complete API-level SMPL-H -> HumanML3D conversion. Licensed body-model
+# files are supplied by path; no evaluation script or external repo is used.
+motion_hml263 = smpl_to_humanml263(
+    global_orient,
+    body_pose,
+    transl,
+    betas=betas,
+    gender="female",
+    model_type="smplh",
+    model_path="/models/smplh",
+    src_fps=20,
+    coordinate_system="amass",  # AMASS Z-up -> HumanML3D Y-up
 )
 ```
 
@@ -55,6 +69,11 @@ python tools/convert_motion.py motion135.npy motion201.npz \
 
 python tools/convert_motion.py dart276.npy motion135.npy \
   --src dart276 --dst motion135
+
+python tools/convert_motion.py amass_clip.npz hml263.npy \
+  --src smpl --dst hml263 \
+  --smpl-model-dir /models/smplh --model-type smplh --gender female \
+  --src-fps 120 --dst-fps 20 --coordinate-system amass
 ```
 
 For an input NPZ with multiple arrays, add `--input-key motion`. NPZ outputs
@@ -66,6 +85,9 @@ store the converted array under `motion` and record source/target names.
 | ------ | ------ | --------- |
 | HML263 | joints | Native RIC decode; deterministic |
 | HML263 | motion135 | SMPL IK; lossy; needs SMPL assets |
+| SMPL parameters | joints | Shape-aware FK; uses explicit beta, gender, and model file |
+| SMPL parameters | HML263 | Shape-aware FK followed by the official HumanML3D protocol |
+| joints | HML263 | Official skeleton retargeting, canonicalization, IK, velocities, and contacts |
 | MS272 | joints | Native stored-position decode |
 | MS272 | motion135 | Recovers root and rotations; subject shape is unavailable |
 | HY-Motion-201 | motion135 | Exact prefix extraction |
@@ -73,6 +95,7 @@ store the converted array under `motion` and record source/target names.
 | motion135 | joints | FK; requires explicit `(22,3)` offsets |
 | motion135 | HY-Motion-201 | FK appends 22 RIC joints; requires offsets |
 | motion135 | MS272 | Uses the bundled canonical MS272 evaluator skeleton by default |
+| motion135 | HML263 | FK plus official HumanML3D encoding; requires explicit SMPL-22 offsets |
 | DART276 | joints | Native DART decode, optional MBench coordinate conversion |
 | DART276 | motion135 | Coordinate/floor bridge; retains DART temporal sampling |
 | G1-38 | G1 qpos-36 | Exact root quaternion + 29-DOF decode |
@@ -81,10 +104,18 @@ store the converted array under `motion` and record source/target names.
 Routes can compose through `motion135`, for example DART276 to MS272. HML263
 to MS272 first performs the lossy SMPL IK step.
 
-## Why There Is No Generic Joints-To-HML263 Call
+## HumanML3D Protocol Controls
 
 Official HML263 encoding includes first-frame canonicalization, skeleton
-retargeting, inverse kinematics, velocities, and foot-contact extraction.
-Those choices are part of a dataset/evaluator protocol, not a shape-only tensor
-conversion. Motius therefore does not hide them behind a misleading generic
-function.
+retargeting, inverse kinematics, velocities, and foot-contact extraction. Motius
+implements those operations in `joints_to_hml263`; its input must already be a
+20-fps, metric, Y-up SMPL-22 joint sequence. `smpl_to_humanml263` additionally
+materializes shape-aware joints and exposes frame-rate and coordinate conversion
+explicitly.
+
+With the same beta, gender, body-model file, frame selection, and coordinate
+convention, the SMPL-H FK path is numerically equivalent to the body-model joint
+output. The repository regression fixture reproduces official HumanML3D sample
+`004822` within `1e-4`, including exact foot-contact channels. Different body
+shape is an expected source-skeleton difference rather than an HML263 encoder
+error.

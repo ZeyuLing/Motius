@@ -21,3 +21,24 @@ from motius.motion.skeleton.fk import (  # noqa: F401
     local_to_global_rot6d,
     global_to_local_rot6d,
 )
+from motius.motion.skeleton.body_models import (  # noqa: F401
+    SMPLSkeletonModel,
+    load_smpl_skeleton_model,
+    resolve_smpl_model_path,
+    smpl_to_joints,
+)
+
+__all__ = [
+    "SMPL22_NAMES",
+    "SMPL22_PARENTS",
+    "forward_kinematics",
+    "differentiable_fk",
+    "motion135_to_fk",
+    "fk_to_motion135",
+    "local_to_global_rot6d",
+    "global_to_local_rot6d",
+    "SMPLSkeletonModel",
+    "load_smpl_skeleton_model",
+    "resolve_smpl_model_path",
+    "smpl_to_joints",
+]

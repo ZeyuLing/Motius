@@ -16,7 +16,7 @@ with:
 - [Representation reference](representations.md): channel layouts, coordinate
   frames, frame rates, and 6D rotation conventions.
 - [Conversion guide](conversion.md): Python/CLI usage and the supported route
-  matrix.
+  matrix, including shape-aware SMPL to HumanML3D conversion.
 - [Retargeting guide](retargeting.md): HML263 to SMPL, SMPL to SOMA, and SMPL
   to Unitree G1.
 

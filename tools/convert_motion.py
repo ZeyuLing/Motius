@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from collections.abc import Mapping
 import os
 import sys
 from pathlib import Path
@@ -26,6 +27,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--input-key", help="Array key when input is .npz")
     parser.add_argument("--bone-offsets", type=Path, help="(22,3) .npy offsets for FK routes")
     parser.add_argument("--smpl-model-dir", type=Path, help="SMPL assets for HML263 -> motion135")
+    parser.add_argument("--gender", choices=("neutral", "male", "female"))
+    parser.add_argument("--model-type", choices=("smpl", "smplh", "smplx"))
+    parser.add_argument("--src-fps", type=float)
+    parser.add_argument("--dst-fps", type=float)
+    parser.add_argument(
+        "--coordinate-system", choices=("humanml", "amass"),
+        help="Coordinate system used by SMPL/joint inputs when targeting HML263",
+    )
+    parser.add_argument(
+        "--resample", choices=("auto", "stride", "linear", "none"),
+        help="Temporal resampling mode for HML263 targets",
+    )
+    parser.add_argument("--feet-threshold", type=float)
     parser.add_argument("--device", default=None, help="Torch device for IK routes")
     parser.add_argument("--refine-iters", type=int, default=None, help="Optional HML-to-SMPL IK steps")
     parser.add_argument(
@@ -35,7 +49,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def load_array(path: Path, key: str | None) -> np.ndarray:
+def load_array(path: Path, key: str | None, *, preserve_mapping: bool = False):
     loaded = np.load(path, allow_pickle=False)
     if isinstance(loaded, np.ndarray):
         return loaded
@@ -44,6 +58,8 @@ def load_array(path: Path, key: str | None) -> np.ndarray:
             if key not in loaded:
                 raise KeyError(f"{key!r} not found; available keys: {loaded.files}")
             return np.asarray(loaded[key])
+        if preserve_mapping:
+            return {name: np.asarray(loaded[name]) for name in loaded.files}
         if len(loaded.files) != 1:
             raise ValueError(f"input has multiple arrays {loaded.files}; pass --input-key")
         return np.asarray(loaded[loaded.files[0]])
@@ -61,12 +77,30 @@ def save_array(path: Path, array: np.ndarray, source: str, target: str) -> None:
 
 def main() -> None:
     args = parse_args()
-    motion = load_array(args.input, args.input_key)
+    source_key = args.src.lower().replace("-", "").replace("_", "")
+    motion = load_array(
+        args.input,
+        args.input_key,
+        preserve_mapping=source_key in {"smpl", "smplparams", "smplhparams"},
+    )
     kwargs = {"rotation_space": args.rotation_space}
     if args.bone_offsets:
         kwargs["bone_offsets"] = np.load(args.bone_offsets, allow_pickle=False)
     if args.smpl_model_dir:
         kwargs["model_dir"] = args.smpl_model_dir
+        kwargs["model_path"] = args.smpl_model_dir
+    for name in (
+        "gender",
+        "model_type",
+        "src_fps",
+        "dst_fps",
+        "coordinate_system",
+        "resample",
+        "feet_threshold",
+    ):
+        value = getattr(args, name)
+        if value is not None:
+            kwargs[name] = value
     if args.device:
         kwargs["device"] = args.device
     if args.refine_iters is not None:
@@ -76,7 +110,12 @@ def main() -> None:
     if not isinstance(converted, np.ndarray):
         converted = converted.detach().cpu().numpy()
     save_array(args.output, converted, args.src, args.dst)
-    print(f"{args.src} {motion.shape} -> {args.dst} {converted.shape}: {args.output}")
+    input_shape = (
+        {key: value.shape for key, value in motion.items()}
+        if isinstance(motion, Mapping)
+        else motion.shape
+    )
+    print(f"{args.src} {input_shape} -> {args.dst} {converted.shape}: {args.output}")
 
 
 if __name__ == "__main__":

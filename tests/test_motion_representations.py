@@ -5,7 +5,12 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from motius.motion.representation.convert import convert_motion
+from motius.motion.representation.convert import (
+    convert_motion,
+    smpl_to_hml263,
+    smpl_to_joints,
+)
+from motius.motion.representation.humanml import joints_to_hml263
 from motius.motion.representation.dart276 import (
     DART276_DIM,
     dart276_to_motion135,
@@ -29,6 +34,7 @@ from motius.motion.representation.rotation import (
     rotation_6d_to_matrix,
 )
 from motius.motion.skeleton.fk import motion135_to_fk
+from motius.motion.skeleton.names import SMPL22_PARENTS
 
 
 def _identity_motion135(frames: int) -> np.ndarray:
@@ -111,6 +117,99 @@ def test_hml263_to_joints_dispatch_shape():
     motion = np.zeros((7, 263), dtype=np.float32)
     joints = convert_motion(motion, "humanml3d-263", "joints")
     assert joints.shape == (7, 22, 3)
+
+
+def test_native_hml263_encoder_matches_official_sample():
+    fixture = Path(__file__).parent / "assets/humanml3d/004822_protocol.npz"
+    with np.load(fixture) as sample:
+        encoded = joints_to_hml263(sample["joints"])
+        expected = sample["hml263"]
+    np.testing.assert_allclose(encoded, expected, atol=1e-4, rtol=0)
+    np.testing.assert_array_equal(encoded[:, 259:263], expected[:, 259:263])
+
+
+def test_shape_aware_smpl_api_uses_betas_and_dispatches_to_hml263(tmp_path: Path):
+    offsets = np.asarray(
+        [
+            [0.0, 0.0, 0.0],
+            [0.08, 0.0, 0.0],
+            [-0.08, 0.0, 0.0],
+            [0.0, 0.12, 0.0],
+            [0.0, -0.40, 0.0],
+            [0.0, -0.40, 0.0],
+            [0.0, 0.12, 0.0],
+            [0.0, -0.40, 0.0],
+            [0.0, -0.40, 0.0],
+            [0.0, 0.12, 0.0],
+            [0.0, 0.0, 0.12],
+            [0.0, 0.0, 0.12],
+            [0.0, 0.18, 0.0],
+            [0.12, 0.0, 0.0],
+            [-0.12, 0.0, 0.0],
+            [0.0, 0.0, 0.12],
+            [0.0, -0.12, 0.0],
+            [0.0, -0.12, 0.0],
+            [0.0, -0.24, 0.0],
+            [0.0, -0.24, 0.0],
+            [0.0, -0.24, 0.0],
+            [0.0, -0.24, 0.0],
+        ],
+        dtype=np.float64,
+    )
+    rest = np.zeros((22, 3), dtype=np.float64)
+    for joint, parent in enumerate(SMPL22_PARENTS):
+        rest[joint] = offsets[joint] if parent < 0 else rest[parent] + offsets[joint]
+    shapedirs = np.zeros((22, 3, 2), dtype=np.float64)
+    shapedirs[:, 0, 0] = np.arange(22) * 0.001
+    regressor = np.eye(22, dtype=np.float64)
+    tree = np.stack([np.asarray(SMPL22_PARENTS), np.arange(22)])
+    model_path = tmp_path / "model.npz"
+    np.savez(
+        model_path,
+        v_template=rest,
+        shapedirs=shapedirs,
+        J_regressor=regressor,
+        kintree_table=tree,
+    )
+
+    frames = 4
+    global_orient = np.zeros((frames, 3), dtype=np.float32)
+    body_pose = np.zeros((frames, 63), dtype=np.float32)
+    transl = np.zeros((frames, 3), dtype=np.float32)
+    beta = np.asarray([1.5, 0.0], dtype=np.float32)
+    joints = smpl_to_joints(
+        global_orient,
+        body_pose,
+        transl,
+        betas=beta,
+        model_path=model_path,
+    )
+    expected_rest = rest + shapedirs[..., 0] * beta[0]
+    np.testing.assert_allclose(
+        joints, np.repeat(expected_rest[None], frames, axis=0), atol=1e-6
+    )
+
+    mapping = {
+        "global_orient": global_orient,
+        "body_pose": body_pose,
+        "transl": transl,
+        "betas": beta,
+        "gender": np.asarray("neutral"),
+    }
+    direct = smpl_to_hml263(
+        global_orient,
+        body_pose,
+        transl,
+        betas=beta,
+        model_path=model_path,
+    )
+    dispatched = convert_motion(
+        mapping,
+        "smpl",
+        "hml263",
+        model_path=model_path,
+    )
+    np.testing.assert_array_equal(direct, dispatched)
 
 
 def test_dart276_smpl_roundtrip_and_motion135_layout():

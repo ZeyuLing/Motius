@@ -17,6 +17,16 @@ from .g1 import (
     encode_g1_motion,
     encode_g1_qpos,
 )
+from .convert import (
+    convert_motion,
+    joints_to_hml263,
+    motion135_to_hml263,
+    motion272_to_hml263,
+    smpl_to_hml263,
+    smpl_to_humanml263,
+    smpl_to_joints,
+    smpl_to_motion135,
+)
 
 
 def get_spec(name: str) -> MotionRepresentationSpec:
@@ -55,4 +65,12 @@ __all__ = [
     "encode_g1_motion",
     "encode_g1_qpos",
     "decode_g1_to_qpos",
+    "convert_motion",
+    "joints_to_hml263",
+    "motion135_to_hml263",
+    "motion272_to_hml263",
+    "smpl_to_hml263",
+    "smpl_to_humanml263",
+    "smpl_to_joints",
+    "smpl_to_motion135",
 ]

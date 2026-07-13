@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
+
 
 def hml263_to_joints(m263, joints_num: int = 22):
     from motius.motion.representation.humanml import hml263_to_joints as fn
@@ -40,11 +42,243 @@ def motion135_to_joints(motion_135, *, bone_offsets, rotation_space: str = "loca
     return joints.detach().cpu().numpy() if is_numpy else joints
 
 
-def motion272_to_hml263(motion_272, **kwargs):
-    raise NotImplementedError(
-        "MS272 -> HML263 is a dataset-production conversion requiring the official "
-        "HumanML3D canonicalization, IK, and contact extraction pipeline"
+def joints_to_hml263(joints, **kwargs):
+    from motius.motion.representation.humanml import joints_to_hml263 as fn
+
+    return fn(joints, **kwargs)
+
+
+def _to_humanml_coordinates(joints, coordinate_system: str):
+    import numpy as np
+
+    coordinate_system = coordinate_system.lower()
+    output = np.asarray(joints).copy()
+    if coordinate_system in {"humanml", "humanml3d", "y_up"}:
+        return output
+    if coordinate_system in {"amass", "z_up"}:
+        transform = np.asarray(
+            [[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, 1.0, 0.0]],
+            dtype=output.dtype,
+        )
+        output = output @ transform
+        output[..., 0] *= -1
+        return output
+    raise ValueError(
+        "coordinate_system must be 'humanml' (Y-up) or 'amass' (Z-up), "
+        f"got {coordinate_system!r}"
     )
+
+
+def _resample_for_hml263(joints, *, src_fps: float, dst_fps: float, mode: str):
+    import numpy as np
+
+    positions = np.asarray(joints)
+    if abs(src_fps - dst_fps) < 1e-9 or mode == "none":
+        return positions.copy()
+    if src_fps <= 0 or dst_fps <= 0:
+        raise ValueError("src_fps and dst_fps must be positive")
+    ratio = src_fps / dst_fps
+    integer_ratio = int(round(ratio))
+    if mode == "auto" and ratio >= 1 and abs(ratio - integer_ratio) < 1e-9:
+        mode = "stride"
+    if mode == "stride":
+        if ratio < 1 or abs(ratio - integer_ratio) >= 1e-9:
+            raise ValueError(
+                f"stride resampling requires an integer src/dst ratio, got {src_fps}/{dst_fps}"
+            )
+        return positions[::integer_ratio].copy()
+    if mode not in {"auto", "linear"}:
+        raise ValueError(f"resample must be auto/stride/linear/none, got {mode!r}")
+    from motius.motion.representation.humanml import linear_resample_joints
+
+    return linear_resample_joints(positions, src_fps, dst_fps)
+
+
+def motion135_to_hml263(
+    motion_135,
+    *,
+    bone_offsets,
+    rotation_space: str = "local",
+    src_fps: float = 20.0,
+    dst_fps: float = 20.0,
+    resample: str = "auto",
+    coordinate_system: str = "humanml",
+    feet_threshold: float = 0.002,
+    target_offsets=None,
+):
+    """Convert ``motion135`` to HML263 through explicit SMPL-22 FK."""
+
+    joints = motion135_to_joints(
+        motion_135, bone_offsets=bone_offsets, rotation_space=rotation_space
+    )
+    if hasattr(joints, "detach"):
+        joints = joints.detach().cpu().numpy()
+    joints = _resample_for_hml263(
+        joints, src_fps=src_fps, dst_fps=dst_fps, mode=resample
+    )
+    joints = _to_humanml_coordinates(joints, coordinate_system)
+    return joints_to_hml263(
+        joints, feet_threshold=feet_threshold, target_offsets=target_offsets
+    )
+
+
+def motion272_to_hml263(
+    motion_272,
+    *,
+    src_fps: float = 30.0,
+    dst_fps: float = 20.0,
+    resample: str = "auto",
+    coordinate_system: str = "humanml",
+    feet_threshold: float = 0.002,
+    target_offsets=None,
+):
+    """Convert MS272 using its native stored SMPL-22 position channels."""
+
+    joints = motion272_to_joints(motion_272)
+    joints = _resample_for_hml263(
+        joints, src_fps=src_fps, dst_fps=dst_fps, mode=resample
+    )
+    joints = _to_humanml_coordinates(joints, coordinate_system)
+    return joints_to_hml263(
+        joints, feet_threshold=feet_threshold, target_offsets=target_offsets
+    )
+
+
+def smpl_to_motion135(global_orient, body_pose, transl):
+    """Pack SMPL body parameters as translation + 22 local 6D rotations."""
+
+    import numpy as np
+    import torch
+
+    from motius.motion.representation.rotation import (
+        axis_angle_to_matrix,
+        matrix_to_rotation_6d,
+    )
+
+    is_torch = torch.is_tensor(global_orient)
+    is_numpy = not is_torch
+    root = np.asarray(global_orient) if is_numpy else global_orient
+    frames = root.shape[0]
+    pose = np.asarray(body_pose) if is_numpy else body_pose
+    pose = pose.reshape(frames, -1, 3)
+    if pose.shape[1] < 21:
+        raise ValueError(f"body_pose needs at least 21 joints, got {pose.shape}")
+    local_axis_angle = (
+        np.concatenate([root.reshape(frames, 1, 3), pose[:, :21]], axis=1)
+        if is_numpy
+        else torch.cat([root.reshape(frames, 1, 3), pose[:, :21]], dim=1)
+    )
+    flat_axis_angle = local_axis_angle.reshape(-1, 3)
+    rotations = matrix_to_rotation_6d(
+        axis_angle_to_matrix(flat_axis_angle).reshape(frames, 22, 3, 3),
+        convention="row",
+    ).reshape(frames, 132)
+    translation = np.asarray(transl) if is_numpy else transl
+    translation = translation.reshape(frames, 3)
+    return (
+        np.concatenate([translation, rotations], axis=-1).astype(np.float32)
+        if is_numpy
+        else torch.cat([translation, rotations], dim=-1)
+    )
+
+
+def smpl_to_joints(
+    global_orient,
+    body_pose,
+    transl,
+    *,
+    betas=None,
+    gender: str = "neutral",
+    model_type: str = "smplh",
+    model_path,
+):
+    """Public shape-aware SMPL-family parameters to SMPL-22 joints API."""
+
+    from motius.motion.skeleton.body_models import smpl_to_joints as fn
+
+    return fn(
+        global_orient,
+        body_pose,
+        transl,
+        betas=betas,
+        gender=gender,
+        model_type=model_type,
+        model_path=model_path,
+    )
+
+
+def smpl_to_hml263(
+    global_orient,
+    body_pose,
+    transl,
+    *,
+    betas=None,
+    gender: str = "neutral",
+    model_type: str = "smplh",
+    model_path,
+    src_fps: float = 20.0,
+    dst_fps: float = 20.0,
+    resample: str = "auto",
+    coordinate_system: str = "humanml",
+    feet_threshold: float = 0.002,
+    target_offsets=None,
+):
+    """Convert SMPL-family parameters to official HumanML3D-263 features.
+
+    ``betas`` and ``gender`` are applied while materializing the source joints.
+    For AMASS parameters, pass ``coordinate_system="amass"``. Integer frame-rate
+    reductions use phase-aligned striding by default, matching HumanML3D's AMASS
+    preprocessing; other ratios use linear joint interpolation.
+    """
+
+    joints = smpl_to_joints(
+        global_orient,
+        body_pose,
+        transl,
+        betas=betas,
+        gender=gender,
+        model_type=model_type,
+        model_path=model_path,
+    )
+    joints = _resample_for_hml263(
+        joints, src_fps=src_fps, dst_fps=dst_fps, mode=resample
+    )
+    joints = _to_humanml_coordinates(joints, coordinate_system)
+    return joints_to_hml263(
+        joints, feet_threshold=feet_threshold, target_offsets=target_offsets
+    )
+
+
+def smpl_to_humanml263(*args, **kwargs):
+    """Descriptive alias of :func:`smpl_to_hml263`."""
+
+    return smpl_to_hml263(*args, **kwargs)
+
+
+def _smpl_parameters(data: Mapping):
+    import numpy as np
+
+    if "poses" in data:
+        poses = np.asarray(data["poses"])
+        global_orient = poses[:, :3]
+        body_pose = poses[:, 3:66]
+    else:
+        global_orient = data["global_orient"]
+        body_pose = data["body_pose"]
+    transl = data.get("transl", data.get("trans"))
+    if transl is None:
+        raise KeyError("SMPL input needs 'transl' or 'trans'")
+    return global_orient, body_pose, transl
+
+
+def _metadata_string(value) -> str:
+    import numpy as np
+
+    array = np.asarray(value)
+    if array.size != 1:
+        raise ValueError(f"expected scalar metadata, got shape {array.shape}")
+    item = array.reshape(()).item()
+    return item.decode() if isinstance(item, bytes) else str(item)
 
 
 def motion135_to_hymotion201(motion_135, bone_offsets):
@@ -127,6 +361,8 @@ def convert_motion(data, source: str, target: str, **kwargs):
             "hymotion201": "hymotion201",
             "joints22": "joints",
             "smplhjoints": "joints",
+            "smplparams": "smpl",
+            "smplhparams": "smpl",
             "g138": "g1_38",
             "g1motion38": "g1_38",
             "g1qpos36": "g1_qpos",
@@ -158,6 +394,59 @@ def convert_motion(data, source: str, target: str, **kwargs):
             root_velocity=kwargs.get("root_velocity", True),
         )
 
+    if source == "joints":
+        if target != "hml263":
+            raise ValueError("raw joints currently support only the hml263 target")
+        accepted = {
+            key: kwargs[key]
+            for key in ("feet_threshold", "target_offsets")
+            if key in kwargs
+        }
+        return joints_to_hml263(data, **accepted)
+
+    if source == "smpl":
+        if not isinstance(data, Mapping):
+            raise TypeError("source='smpl' expects a mapping of SMPL parameter arrays")
+        global_orient, body_pose, transl = _smpl_parameters(data)
+        if target == "motion135":
+            return smpl_to_motion135(global_orient, body_pose, transl)
+        if target not in {"joints", "hml263"}:
+            data = smpl_to_motion135(global_orient, body_pose, transl)
+            source = "motion135"
+        else:
+            common = {
+                "betas": kwargs.get("betas", data.get("betas")),
+                "gender": _metadata_string(
+                    kwargs.get("gender", data.get("gender", "neutral"))
+                ),
+                "model_type": _metadata_string(
+                    kwargs.get(
+                        "model_type",
+                        data.get("model_type", data.get("smpl_type", "smplh")),
+                    )
+                ),
+                "model_path": kwargs.get("model_path", kwargs.get("model_dir")),
+            }
+            if common["model_path"] is None:
+                raise ValueError("SMPL conversion to joints/HML263 requires model_path")
+            if target == "joints":
+                return smpl_to_joints(global_orient, body_pose, transl, **common)
+            accepted = {
+                key: kwargs[key]
+                for key in (
+                    "src_fps",
+                    "dst_fps",
+                    "resample",
+                    "coordinate_system",
+                    "feet_threshold",
+                    "target_offsets",
+                )
+                if key in kwargs
+            }
+            return smpl_to_hml263(
+                global_orient, body_pose, transl, **common, **accepted
+            )
+
     if source == "hml263":
         if target == "joints":
             return hml263_to_joints(data)
@@ -171,6 +460,20 @@ def convert_motion(data, source: str, target: str, **kwargs):
     elif source == "ms272":
         if target == "joints":
             return motion272_to_joints(data)
+        if target == "hml263":
+            accepted = {
+                key: kwargs[key]
+                for key in (
+                    "src_fps",
+                    "dst_fps",
+                    "resample",
+                    "coordinate_system",
+                    "feet_threshold",
+                    "target_offsets",
+                )
+                if key in kwargs
+            }
+            return motion272_to_hml263(data, **accepted)
         data = motion272_to_motion135(data)
         source = "motion135"
     elif source == "hymotion201":
@@ -218,6 +521,25 @@ def convert_motion(data, source: str, target: str, **kwargs):
         if "bone_offsets" not in kwargs:
             raise ValueError("motion135 -> HY-Motion-201 requires bone_offsets")
         return motion135_to_hymotion201(data, kwargs["bone_offsets"])
+    if target == "hml263":
+        if "bone_offsets" not in kwargs:
+            raise ValueError("motion135 -> HML263 requires bone_offsets")
+        accepted = {
+            key: kwargs[key]
+            for key in (
+                "rotation_space",
+                "src_fps",
+                "dst_fps",
+                "resample",
+                "coordinate_system",
+                "feet_threshold",
+                "target_offsets",
+            )
+            if key in kwargs
+        }
+        return motion135_to_hml263(
+            data, bone_offsets=kwargs["bone_offsets"], **accepted
+        )
     raise ValueError(f"unsupported conversion target: {target!r}")
 
 
@@ -229,7 +551,13 @@ __all__ = [
     "motion272_to_joints",
     "motion272_to_motion135",
     "motion135_to_joints",
+    "joints_to_hml263",
+    "motion135_to_hml263",
     "motion272_to_hml263",
+    "smpl_to_motion135",
+    "smpl_to_joints",
+    "smpl_to_hml263",
+    "smpl_to_humanml263",
     "motion135_to_hymotion201",
     "hymotion201_to_motion135",
     "hymotion201_to_joints",

@@ -71,7 +71,7 @@ the representation required by the target model, evaluator, or renderer.
 | Representation | Shape | Used by | Relationship to the SMPL bridge |
 | -------------- | ----: | ------- | --------------------------------- |
 | **SMPL-22 `motion135`** | `(T, 135)` | Canonical interchange, FK, mesh rendering | Central bridge: translation + 22 local 6D rotations |
-| **HumanML3D-263** | `(T, 263)` | HumanML3D-based T2M models | Recovered to SMPL through 22-joint IK |
+| **HumanML3D-263** | `(T, 263)` | HumanML3D-based T2M models | Native decode plus official SMPL-22 joint encoder |
 | **MotionStreamer-272** | `(T, 272)` | MotionStreamer and MotionMillion | Converts to and from SMPL-22 motion |
 | **HY-Motion-201** | `(T, 201)` | HY-Motion models | Contains `motion135` as an exact prefix plus 22 joint positions |
 | **DART276** | `(T, 276)` | DART and ViMoGen | Bridges through SMPL parameters and joints with explicit coordinate conversion |
@@ -86,11 +86,24 @@ The generic API lives at
 [`tools/convert_motion.py`](tools/convert_motion.py) CLI.
 
 ```python
-from motius.motion.representation.convert import convert_motion
+from motius.motion import convert_motion, smpl_to_humanml263
 
 # HY-Motion-201 -> SMPL-22 bridge -> MotionStreamer-272
 smpl_motion = convert_motion(motion_hy201, "hymotion201", "motion135")
 motion_ms272 = convert_motion(smpl_motion, "motion135", "ms272")
+
+# Shape-aware SMPL-H -> official HumanML3D-263.
+motion_hml263 = smpl_to_humanml263(
+    global_orient,
+    body_pose,
+    transl,
+    betas=betas,
+    gender="female",
+    model_type="smplh",
+    model_path="/models/smplh",
+    src_fps=20,
+    coordinate_system="amass",
+)
 ```
 
 ```bash

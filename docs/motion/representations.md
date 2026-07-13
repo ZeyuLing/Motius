@@ -57,7 +57,8 @@ released MBench coordinate transform and floor alignment.
 ## Frame Rate
 
 Most representation converters preserve the input frame count and sampling.
-They do not silently resample. The exception is the HML263-to-SMPL retargeter,
-whose defaults explicitly resample 20 fps input to 30 fps output. Track FPS in
-your dataset metadata whenever a target representation can be used at multiple
-rates.
+The HML263-to-SMPL retargeter and SMPL-to-HML263 encoder expose `src_fps` and
+`dst_fps` because the protocols use different native rates. Integer downsampling
+uses phase-aligned striding by default; other ratios use linear joint
+interpolation. Track FPS and crop phase in dataset metadata whenever a target
+representation can be used at multiple rates.
