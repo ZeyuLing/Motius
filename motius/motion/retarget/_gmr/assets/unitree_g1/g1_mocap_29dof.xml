@@ -1,5 +1,5 @@
 <mujoco model="g1_mocap">
-  <compiler angle="radian" meshdir="meshes"/>
+  <compiler angle="radian" meshdir="../../../../../models/kimodo/network/assets/skeletons/g1skel34/meshes/g1"/>
 
   <default>
     <motor ctrlrange="-1 1" ctrllimited="true"/>

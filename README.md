@@ -53,12 +53,14 @@ Motius model cards report text-to-motion metrics with three evaluator views:
 HumanML3D official metrics, MotionStreamer Evaluator metrics, and the Motius
 joint-position evaluator trained on unified SMPL-22 joints. Historical
 contrastive-evaluator rows are not part of the public Evaluation tables.
+G1-native methods additionally use the robot-specific TMR-G1 evaluator.
 
 | Evaluator | Purpose | Motion Rep. | Checkpoint | Card | Reference |
 | --------- | ------- | ----------- | ---------- | ---- | --------- |
 | HumanML3D Official | Standard T2M leaderboard metrics on the selected-caption HumanML3D test protocol | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-humanml3d-official) | [Evaluator Card](docs/evaluator_zoo/humanml3d_official.md) | [Paper](https://openaccess.thecvf.com/content/CVPR2022/html/Guo_Generating_Diverse_and_Natural_3D_Human_Motions_From_Text_CVPR_2022_paper.html) / [Code](https://github.com/EricGuo5513/text-to-motion) |
 | MotionStreamer Evaluator | Cross-representation semantic evaluator for SMPL-aligned T2M results | MotionStreamer-272 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-motionstreamer-272) | [Evaluator Card](docs/evaluator_zoo/motionstreamer.md) | [Paper](https://arxiv.org/abs/2503.15451) / [Code](https://github.com/zju3dv/MotionStreamer) |
 | Motius Joint-Position Evaluator | Motius-trained TMR reproduction for unified SMPL-22 joint positions | SMPL-22 joints66 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-universal-smplh-joints66) | [Evaluator Card](docs/evaluator_zoo/motius_joint_position.md) | [TMR Paper](https://arxiv.org/abs/2305.00976) / [TMR Code](https://github.com/Mathux/TMR) |
+| Motius TMR-G1 Evaluator | Robot-native text-motion evaluator for Unitree G1 generation | G1-38D | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-g1-38d-tmr) | [Evaluator Card](docs/evaluator_zoo/g1_tmr.md) | [TMR Paper](https://arxiv.org/abs/2305.00976) / [TMR Code](https://github.com/Mathux/TMR) |
 
 ## Motion Representation Toolkit
 
@@ -75,6 +77,19 @@ the representation required by the target model, evaluator, or renderer.
 | **MotionStreamer-272** | `(T, 272)` | MotionStreamer and MotionMillion | Converts to and from SMPL-22 motion |
 | **HY-Motion-201** | `(T, 201)` | HY-Motion models | Contains `motion135` as an exact prefix plus 22 joint positions |
 | **DART276** | `(T, 276)` | DART and ViMoGen | Bridges through SMPL parameters and joints with explicit coordinate conversion |
+| **Unitree G1-38D** | `(T, 38)` | G1-native generation and evaluation | SMPL body motion is retargeted through GMR; G1 qpos decode is exact |
+
+### Same-Motion Representation Demo
+
+The preview below uses one official HumanML3D test motion for every panel. The
+left panel decodes HumanML3D-263 to SMPL-22 joints, the center runs shape-aware
+SMPL FK, and the right retargets that same SMPL motion to Unitree G1 with the
+public GMR API.
+
+![HumanML3D, SMPL, and Unitree G1 representation comparison](assets/motion/representation_demo/004822_hml_smpl_g1.gif)
+
+[Open the synchronized Three.js viewer](assets/motion/representation_demo/index.html)
+or read the [representation protocol](docs/motion/representations.md).
 
 The shared bridge lets a model trained with one representation feed evaluators,
 visualizers, or pipelines built for another. Conversion is exact where the
@@ -103,7 +118,7 @@ motion_hml263 = smpl_to_humanml263(
     betas=betas,
     gender="female",
     model_type="smplh",
-    model_path="data/body_models",
+    model_path="checkpoints/smpl_models",
     src_fps=20,
     coordinate_system="amass",
 )
@@ -128,7 +143,7 @@ cannot be redistributed with Motius, so download them from the
 3. Extract the archive and arrange the files in either supported layout:
 
 ```text
-data/body_models/
+checkpoints/smpl_models/
 └── smplh/
     ├── female/model.npz
     ├── male/model.npz
@@ -138,14 +153,14 @@ data/body_models/
 The standard `smplx` layout is also accepted:
 
 ```text
-data/body_models/
+checkpoints/smpl_models/
 └── smplh/
     ├── SMPLH_FEMALE.pkl
     ├── SMPLH_MALE.pkl
     └── SMPLH_NEUTRAL.pkl       # if available
 ```
 
-Pass the directory root as `model_path="data/body_models"`, or pass one model
+Pass the directory root as `model_path="checkpoints/smpl_models"`, or pass one model
 file directly. Verify the installation before conversion:
 
 ```bash
@@ -153,7 +168,7 @@ python - <<'PY'
 from motius.motion.skeleton import resolve_smpl_model_path
 
 path = resolve_smpl_model_path(
-    "data/body_models", model_type="smplh", gender="female"
+    "checkpoints/smpl_models", model_type="smplh", gender="female"
 )
 print(path)
 PY

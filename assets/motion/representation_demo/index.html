@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Motius Representation Comparison</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f4f6f8;
+      color: #101827;
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+    body { background: #f4f6f8; }
+    #stage { position: fixed; inset: 0; }
+    canvas { display: block; width: 100%; height: 100%; }
+    header {
+      position: fixed;
+      z-index: 3;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 24px 30px 0;
+      pointer-events: none;
+    }
+    .brandline { display: flex; align-items: baseline; gap: 12px; }
+    .brand {
+      color: #1261d8;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+    h1 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 720; letter-spacing: 0; }
+    .caption {
+      margin: 9px 0 0;
+      max-width: min(820px, calc(100vw - 60px));
+      color: #4a5568;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .labels {
+      position: fixed;
+      z-index: 3;
+      top: 112px;
+      left: 5vw;
+      right: 5vw;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      pointer-events: none;
+    }
+    .label { text-align: center; min-width: 0; }
+    .label strong { display: block; font-size: 14px; font-weight: 760; letter-spacing: 0; }
+    .label span { display: block; margin-top: 3px; color: #718096; font-size: 11px; }
+    .label.hml strong { color: #06738d; }
+    .label.smpl strong { color: #1859c9; }
+    .label.g1 strong { color: #b9412d; }
+    .controls {
+      position: fixed;
+      z-index: 4;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      width: min(700px, calc(100vw - 36px));
+      min-height: 50px;
+      display: grid;
+      grid-template-columns: 36px minmax(120px, 1fr) 78px 68px;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      border: 1px solid rgba(16, 24, 39, 0.12);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 8px 24px rgba(16, 24, 39, 0.11);
+      backdrop-filter: blur(12px);
+    }
+    button {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: #101827;
+      cursor: pointer;
+    }
+    button::before {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 10px;
+      width: 0;
+      height: 0;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      border-left: 10px solid white;
+    }
+    button[data-playing="true"]::before {
+      left: 11px;
+      top: 10px;
+      width: 4px;
+      height: 14px;
+      border: 0;
+      background: white;
+      box-shadow: 8px 0 0 white;
+    }
+    input[type="range"] { width: 100%; accent-color: #1261d8; }
+    .time { color: #4a5568; font-variant-numeric: tabular-nums; font-size: 12px; text-align: right; white-space: nowrap; }
+    select {
+      width: 64px;
+      height: 32px;
+      border: 1px solid #d6dbe3;
+      border-radius: 6px;
+      background: white;
+      color: #263244;
+      font: inherit;
+      font-size: 12px;
+      padding: 0 7px;
+    }
+    .hint {
+      position: fixed;
+      z-index: 3;
+      right: 22px;
+      bottom: 26px;
+      color: #718096;
+      font-size: 11px;
+      pointer-events: none;
+    }
+    @media (max-width: 760px) {
+      header { padding: 18px 18px 0; }
+      h1 { font-size: 18px; }
+      .caption { max-width: calc(100vw - 36px); font-size: 12px; }
+      .labels { top: 118px; left: 1vw; right: 1vw; }
+      .label strong { font-size: 11px; }
+      .label span { display: none; }
+      .controls { bottom: 14px; grid-template-columns: 36px minmax(70px, 1fr) 64px 58px; gap: 7px; }
+      .hint { display: none; }
+      .time { font-size: 10px; }
+      select { width: 58px; }
+    }
+  </style>
+  <script src="data.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main id="stage" aria-label="Synchronized motion representation viewer"></main>
+  <header>
+    <div class="brandline"><span class="brand">Motius</span><h1>One motion, three representations</h1></div>
+    <p class="caption" id="caption"></p>
+  </header>
+  <section class="labels" aria-hidden="true">
+    <div class="label hml"><strong>HumanML3D-263</strong><span>decoded SMPL-22 joints</span></div>
+    <div class="label smpl"><strong>SMPL motion135</strong><span>shape-aware SMPL-22 body</span></div>
+    <div class="label g1"><strong>Unitree G1-38D</strong><span>GMR retarget + robot FK</span></div>
+  </section>
+  <div class="controls">
+    <button id="play" type="button" title="Play or pause" aria-label="Play or pause" data-playing="true"></button>
+    <input id="timeline" type="range" min="0" max="179" value="0" step="1" aria-label="Motion frame">
+    <span class="time" id="time">0.00 / 6.00 s</span>
+    <select id="speed" aria-label="Playback speed">
+      <option value="0.5">0.5x</option>
+      <option value="1" selected>1x</option>
+      <option value="1.5">1.5x</option>
+      <option value="2">2x</option>
+    </select>
+  </div>
+  <span class="hint">Drag to orbit, scroll to zoom</span>
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const demo = window.MOTIUS_REPRESENTATION_DEMO;
+    if (!demo) throw new Error("Representation data is missing.");
+    document.querySelector("#caption").textContent = `HumanML3D test ${demo.case_id}: "${demo.caption}"`;
+
+    const host = document.querySelector("#stage");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xf4f6f8);
+    scene.fog = new THREE.Fog(0xf4f6f8, 10, 30);
+
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.05, 50);
+    camera.position.set(0, 1.45, 7.6);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    host.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 0.83, 0);
+    controls.minDistance = 4.5;
+    controls.maxDistance = 22;
+    controls.maxPolarAngle = Math.PI * 0.49;
+
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x677284, 2.25));
+    const key = new THREE.DirectionalLight(0xffffff, 3.1);
+    key.position.set(-3, 6, 5);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0xbfe8ff, 1.3);
+    rim.position.set(4, 3, -4);
+    scene.add(rim);
+
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(10.5, 4.8),
+      new THREE.MeshStandardMaterial({ color: 0xe9edf2, roughness: 0.92, metalness: 0.02 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    scene.add(floor);
+    const grid = new THREE.GridHelper(10, 40, 0xb7c1ce, 0xd8dee7);
+    grid.position.y = 0.002;
+    grid.material.opacity = 0.42;
+    grid.material.transparent = true;
+    scene.add(grid);
+
+    const Y_AXIS = new THREE.Vector3(0, 1, 0);
+    const tempA = new THREE.Vector3();
+    const tempB = new THREE.Vector3();
+    const tempDirection = new THREE.Vector3();
+
+    function boneRadius(kind, index) {
+      if (kind === "humanml3d") return 0.018;
+      if (kind === "g1") return index < 18 ? 0.045 : 0.035;
+      const thick = new Set([1, 2, 4, 5, 7, 8, 16, 17, 18, 19]);
+      return thick.has(index) ? 0.07 : 0.055;
+    }
+
+    function makeRig(keyName, xOffset) {
+      const rep = demo.representations[keyName];
+      const group = new THREE.Group();
+      group.position.x = xOffset;
+      scene.add(group);
+      const colors = {
+        humanml3d: [0x12a8c3, 0x08738a],
+        smpl: [0x2a6ee8, 0x173f92],
+        g1: [0xf05a42, 0x283342]
+      }[keyName];
+      const joints = [];
+      const bones = [];
+      const jointGeometry = keyName === "g1"
+        ? new THREE.SphereGeometry(0.055, 14, 10)
+        : new THREE.SphereGeometry(keyName === "smpl" ? 0.07 : 0.035, 14, 10);
+      rep.parents.forEach((parent, index) => {
+        const material = new THREE.MeshStandardMaterial({
+          color: index % 2 ? colors[0] : colors[1],
+          roughness: keyName === "g1" ? 0.38 : 0.62,
+          metalness: keyName === "g1" ? 0.38 : 0.04
+        });
+        const joint = new THREE.Mesh(jointGeometry, material);
+        joint.castShadow = true;
+        group.add(joint);
+        joints.push(joint);
+        if (parent < 0) {
+          bones.push(null);
+          return;
+        }
+        const geometry = new THREE.CylinderGeometry(1, 1, 1, keyName === "humanml3d" ? 8 : 12);
+        const bone = new THREE.Mesh(geometry, material.clone());
+        bone.castShadow = true;
+        group.add(bone);
+        bones.push(bone);
+      });
+      let torso = null;
+      if (keyName === "smpl") {
+        torso = new THREE.Mesh(
+          new THREE.SphereGeometry(1, 20, 14),
+          new THREE.MeshStandardMaterial({ color: 0x88aef4, roughness: 0.68, metalness: 0.02 })
+        );
+        torso.scale.set(0.18, 0.27, 0.12);
+        torso.castShadow = true;
+        group.add(torso);
+      }
+      function update(frame) {
+        const positions = rep.positions[frame];
+        positions.forEach((value, index) => joints[index].position.fromArray(value));
+        rep.parents.forEach((parent, index) => {
+          if (parent < 0) return;
+          const bone = bones[index];
+          tempA.fromArray(positions[parent]);
+          tempB.fromArray(positions[index]);
+          tempDirection.subVectors(tempB, tempA);
+          const length = Math.max(tempDirection.length(), 0.0001);
+          bone.position.copy(tempA).add(tempB).multiplyScalar(0.5);
+          bone.quaternion.setFromUnitVectors(Y_AXIS, tempDirection.normalize());
+          const radius = boneRadius(keyName, index);
+          bone.scale.set(radius, length, radius);
+        });
+        if (torso) {
+          const chest = positions[9];
+          const pelvis = positions[0];
+          torso.position.set(
+            (chest[0] + pelvis[0]) * 0.5,
+            (chest[1] + pelvis[1]) * 0.5 + 0.09,
+            (chest[2] + pelvis[2]) * 0.5
+          );
+        }
+      }
+      return { group, update };
+    }
+
+    const rigs = [
+      makeRig("humanml3d", -2.35),
+      makeRig("smpl", 0),
+      makeRig("g1", 2.35)
+    ];
+    const timeline = document.querySelector("#timeline");
+    const play = document.querySelector("#play");
+    const speed = document.querySelector("#speed");
+    const time = document.querySelector("#time");
+    timeline.max = demo.frames - 1;
+    let currentFrame = 0;
+    let playing = true;
+    let lastTimestamp = performance.now();
+    let frameAccumulator = 0;
+
+    function setFrame(frame) {
+      currentFrame = ((Math.round(frame) % demo.frames) + demo.frames) % demo.frames;
+      rigs.forEach((rig) => rig.update(currentFrame));
+      timeline.value = currentFrame;
+      time.textContent = `${(currentFrame / demo.fps).toFixed(2)} / ${demo.duration_seconds.toFixed(2)} s`;
+    }
+    function render() {
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    function animate(timestamp) {
+      const elapsed = Math.min((timestamp - lastTimestamp) / 1000, 0.1);
+      lastTimestamp = timestamp;
+      if (playing) {
+        frameAccumulator += elapsed * demo.fps * Number(speed.value);
+        if (frameAccumulator >= 1) {
+          const advance = Math.floor(frameAccumulator);
+          frameAccumulator -= advance;
+          setFrame(currentFrame + advance);
+        }
+      }
+      render();
+      requestAnimationFrame(animate);
+    }
+    function resize() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      camera.aspect = width / height;
+      camera.position.z = camera.aspect < 0.78 ? 21.5 : 7.6;
+      rigs[0].group.position.x = camera.aspect < 0.78 ? -2.2 : -2.35;
+      rigs[2].group.position.x = camera.aspect < 0.78 ? 2.2 : 2.35;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height, false);
+      render();
+    }
+    play.addEventListener("click", () => {
+      playing = !playing;
+      play.dataset.playing = String(playing);
+      play.title = playing ? "Pause" : "Play";
+    });
+    timeline.addEventListener("input", () => {
+      setFrame(Number(timeline.value));
+      frameAccumulator = 0;
+    });
+    window.addEventListener("resize", resize);
+    setFrame(0);
+    resize();
+    window.__MOTIUS_DEMO__ = {
+      setFrame: (frame) => { playing = false; play.dataset.playing = "false"; setFrame(frame); render(); },
+      render,
+      frameCount: demo.frames,
+      fps: demo.fps
+    };
+    window.__MOTIUS_READY__ = true;
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

@@ -20,6 +20,28 @@ materialize joints or meshes.
 | `dart276` | `(T, 276)` | 20 | pose, joints, velocities, root orientation/translation | first two **columns** flattened row-wise |
 | `g1_38` | `(T, 38)` | 30 | root XY velocity/height, root rotation, 29 joint angles | first two **columns** flattened row-wise |
 
+## Same-Motion Visual Comparison
+
+All three panels below use HumanML3D test case `004822`: *A person walks
+forward at an average pace, swaying their arms and torso with swagger.* This
+keeps the source motion fixed while changing only the representation and target
+body.
+
+![HumanML3D-263, SMPL motion135, and Unitree G1-38D](../../assets/motion/representation_demo/004822_hml_smpl_g1.gif)
+
+The synchronized [Three.js viewer](../../assets/motion/representation_demo/index.html)
+uses the following routes:
+
+```text
+HumanML3D-263 -> official joint decode -> SMPL-22 joints
+SMPL motion135 -> shape-aware SMPL-H FK -> SMPL-22 body
+SMPL motion135 -> GMR inverse kinematics -> G1 qpos -> MuJoCo FK
+```
+
+The display recenters each body at its initial ground position for side-by-side
+inspection. It preserves the body proportions and articulated motion produced
+by each route; it does not claim that G1 retargeting is lossless.
+
 ## The Two 6D Layouts
 
 Two layouts in this repository were historically both described as

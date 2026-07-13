@@ -46,6 +46,10 @@ namespaces = false
     "retarget/_gmr/assets/unitree_g1/*.xml",
     "retarget/_gmr/ik_configs/*.json",
 ]
+"motius.models.kimodo" = [
+    "network/assets/skeletons/g1skel34/meshes/g1/*.STL",
+]
+"motius.models.tmr" = ["LICENSE"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -34,6 +34,8 @@ def register_all_modules() -> None:
     import motius.visualization.file_visualizer  # noqa: F401
     import motius.visualization.tensorboard_visualizer  # noqa: F401
     import motius.datasets.transforms  # noqa: F401
+    import motius.evaluation.evaluators  # noqa: F401
+    import motius.models.tmr  # noqa: F401
 
 
 __all__ = [

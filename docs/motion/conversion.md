@@ -43,7 +43,7 @@ motion_hml263 = smpl_to_humanml263(
     betas=betas,
     gender="female",
     model_type="smplh",
-    model_path="data/body_models",
+    model_path="checkpoints/smpl_models",
     src_fps=20,
     coordinate_system="amass",  # AMASS Z-up -> HumanML3D Y-up
 )
@@ -76,7 +76,7 @@ python tools/convert_motion.py dart276.npy motion135.npy \
 
 python tools/convert_motion.py amass_clip.npz hml263.npy \
   --src smpl --dst hml263 \
-  --smpl-model-dir data/body_models --model-type smplh --gender female \
+  --smpl-model-dir checkpoints/smpl_models --model-type smplh --gender female \
   --src-fps 120 --dst-fps 20 --coordinate-system amass
 ```
 

@@ -27,6 +27,15 @@
       "paper": "https://arxiv.org/abs/2305.00976",
       "source_repository": "https://github.com/Mathux/TMR",
       "checkpoint_origin": "Motius architecture reproduction trained from scratch; epoch 248"
+    },
+    {
+      "name": "Motius TMR-G1 Evaluator",
+      "card": "docs/evaluator_zoo/g1_tmr.md",
+      "checkpoint": "ZeyuLing/motius-evaluator-g1-38d-tmr",
+      "motion_representation": "canonicalized Unitree G1-38D",
+      "paper": "https://arxiv.org/abs/2305.00976",
+      "source_repository": "https://github.com/Mathux/TMR",
+      "checkpoint_origin": "Motius architecture reproduction trained from scratch; epoch 139"
     }
   ]
 }

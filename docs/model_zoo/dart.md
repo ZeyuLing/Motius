@@ -38,7 +38,7 @@ HumanML3D DART276 rollout path through a `ModelBundle` and task-facing pipeline.
 | Checkpoint | [`ZeyuLing/motius-dart-humanml3d`](https://huggingface.co/ZeyuLing/motius-dart-humanml3d) |
 | Pipeline | `motius.pipelines.dart.DARTPipeline` |
 
-The checkpoint artifact contains the DART denoiser, MVAE, runtime configuration, seed motion, and DART276 normalization/text-embedding assets. It intentionally does not include license-controlled SMPL-H or SMPL-X body model files; install those locally under `data/smplx_lockedhead_20230207/models_lockedhead` or set `MOTIUS_BODY_MODEL_DIR` before full rollout or SMPL export.
+The checkpoint artifact contains the DART denoiser, MVAE, runtime configuration, seed motion, and DART276 normalization/text-embedding assets. It intentionally does not include license-controlled SMPL-H or SMPL-X body model files; install those locally under `checkpoints/smpl_models` or set `MOTIUS_BODY_MODEL_DIR` before full rollout or SMPL export.
 
 ## Usage
 

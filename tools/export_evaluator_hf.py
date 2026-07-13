@@ -220,6 +220,53 @@ artifact = snapshot_download("ZeyuLing/motius-evaluator-universal-smplh-joints66
 """
 
 
+G1_TMR_README = """---
+library_name: motius
+pipeline_tag: feature-extraction
+license: mit
+tags:
+- robotics
+- human-motion
+- text-to-motion
+- evaluator
+- tmr
+- unitree-g1
+---
+
+# Motius TMR-G1 Evaluator
+
+Motius reproduction of the TMR architecture trained from scratch for native
+Unitree G1 motion. The motion input is the canonicalized G1-38D representation
+at 30 fps: root XY velocity and height, root rotation 6D, and 29 joint angles.
+
+## Provenance
+
+- Architecture paper: [TMR: Text-to-Motion Retrieval Using Contrastive 3D Human Motion Synthesis](https://arxiv.org/abs/2305.00976)
+- Original architecture repository: [Mathux/TMR](https://github.com/Mathux/TMR)
+- Motius implementation: `TMRBundle` / `TMRG1Evaluator`
+
+## Artifact layout
+
+- `model.safetensors`: motion encoder, text encoder, and reconstruction decoder
+- `stats/`: G1-38D training-set normalization statistics
+- `config.json` and `preprocessor_config.json`: architecture and protocol
+- `artifact_manifest.json`: file and source-checkpoint hashes
+
+The public checkpoint is epoch 139, trained on the 344,966-motion training split
+of the 359,153-clip HYMotion Data G1 materialization.
+
+## Download
+
+```python
+from motius.evaluation import TMRG1Evaluator
+
+evaluator = TMRG1Evaluator.from_pretrained(
+    "ZeyuLing/motius-evaluator-g1-38d-tmr"
+)
+```
+"""
+
+
 def export_humanml3d(args: argparse.Namespace) -> None:
     output_dir = args.output_dir
     _prepare_output(output_dir)
@@ -415,6 +462,69 @@ def export_universal_tmr(args: argparse.Namespace) -> None:
     _push(output_dir, args.repo_id)
 
 
+def export_g1_tmr(args: argparse.Namespace) -> None:
+    output_dir = args.output_dir
+    _prepare_output(output_dir)
+    checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
+    if "tmr" not in checkpoint:
+        raise KeyError(f"Expected a 'tmr' state dict in {args.checkpoint}")
+    tensors = _tensor_dict(checkpoint["tmr"], prefix="tmr.")
+    save_file(tensors, output_dir / "model.safetensors", metadata={"format": "pt"})
+    _copy_files(args.mean.parent, output_dir / "stats", (args.mean.name, args.std.name))
+    (output_dir / "stats" / args.mean.name).rename(output_dir / "stats" / "mean.npy")
+    (output_dir / "stats" / args.std.name).rename(output_dir / "stats" / "std.npy")
+    config = {
+        "architectures": ["TMRBundle"],
+        "format_version": FORMAT_VERSION,
+        "library_name": "motius",
+        "model_type": "motius-g1-38d-tmr",
+        "weights_file": "model.safetensors",
+        "motion_nfeats": 38,
+        "text_nfeats": 768,
+        "vae": True,
+        "arch": {
+            "latent_dim": 256,
+            "ff_size": 1024,
+            "num_layers": 6,
+            "num_heads": 4,
+            "dropout": 0.1,
+            "activation": "gelu",
+        },
+        "training": {
+            "checkpoint_epoch": 139,
+            "data": "HYMotion Data G1 materialization",
+            "total_clips": 359153,
+            "train_clips": 344966,
+            "validation_clips": 7083,
+            "test_clips": 7104,
+        },
+        "source": {
+            "paper": "https://arxiv.org/abs/2305.00976",
+            "repository": "https://github.com/Mathux/TMR",
+            "checkpoint_retrained": True,
+        },
+    }
+    preprocessor = {
+        "motion_representation": "canonicalized Unitree G1-38D",
+        "layout": "root XY velocity, root Z height, root rotation 6D, 29 joint angles",
+        "rotation_6d": "first two rotation-matrix columns flattened row-wise",
+        "canonicalization": "frame-0 ground origin and zero heading",
+        "root_velocity": True,
+        "fps": 30,
+        "min_seconds": 0.5,
+        "max_seconds": 120.0,
+        "token_model": "distilbert-base-uncased",
+        "sentence_model": "sentence-transformers/all-mpnet-base-v2",
+        "mean": "stats/mean.npy",
+        "std": "stats/std.npy",
+    }
+    _write_json(output_dir / "config.json", config)
+    _write_json(output_dir / "preprocessor_config.json", preprocessor)
+    (output_dir / "README.md").write_text(G1_TMR_README)
+    _write_manifest(output_dir, (args.checkpoint, args.mean, args.std))
+    _push(output_dir, args.repo_id)
+
+
 def _add_common(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--mean", type=Path, required=True)
@@ -440,6 +550,10 @@ def parse_args() -> argparse.Namespace:
     universal = subparsers.add_parser("universal-tmr")
     _add_common(universal)
     universal.set_defaults(func=export_universal_tmr)
+
+    g1 = subparsers.add_parser("g1-tmr")
+    _add_common(g1)
+    g1.set_defaults(func=export_g1_tmr)
     return parser.parse_args()
 
 
