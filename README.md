@@ -51,6 +51,7 @@ cards rather than treated as separate tasks.
 | MotionLCM | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionlcm-humanml3d) | [Model Card](docs/model_zoo/motionlcm.md) | [Paper](https://arxiv.org/abs/2404.19759) / [Code](https://github.com/Dai-Wenxun/MotionLCM) |
 | ViMoGen | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | DART276 | [HF](https://huggingface.co/ZeyuLing/hftrainer-vimogen-1.3b-humanml3d) | [Model Card](docs/model_zoo/vimogen.md) | [Paper](https://arxiv.org/abs/2510.26794) / [Code](https://github.com/MotrixLab/ViMoGen) |
 | DART | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Motion Control | DART276 | [HF](https://huggingface.co/ZeyuLing/motius-dart-humanml3d) | [Model Card](docs/model_zoo/dart.md) | [Paper](https://arxiv.org/abs/2410.05260) / [Code](https://github.com/zkf1997/DART) |
+| CondMDI | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Motion Control | HumanML3D-263 (absolute-root native) | [HF](https://huggingface.co/ZeyuLing/motius-condmdi-humanml3d) | [Model Card](docs/model_zoo/condmdi.md) | [Paper](https://arxiv.org/abs/2405.11126) / [Code](https://github.com/setarehc/diffusion-motion-inbetweening) |
 
 ## Evaluator Zoo
 

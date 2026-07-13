@@ -932,6 +932,75 @@
           "metadata": "assets/model_zoo/dart/dart_humanml3d_006944_smpl_mesh.json"
         }
       ]
+    },
+    "condmdi": {
+      "method": "CondMDI",
+      "motion_representation": "HumanML3D-263 (absolute-root native)",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-condmdi-humanml3d",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 3970,
+          "R1": 0.4488,
+          "R2": 0.6416,
+          "R3": 0.7492,
+          "FID": 0.2945,
+          "MM-Dist": 3.2183,
+          "Diversity": 9.7953
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": 4032,
+          "R1": 0.4526,
+          "R2": 0.6111,
+          "R3": 0.7016,
+          "FID": 121.8374,
+          "MM-Dist": 19.9702,
+          "Diversity": 25.4639
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.4296,
+          "R2": 0.6039,
+          "R3": 0.7024,
+          "FID": 349.9873,
+          "MM-Dist": 39.1271,
+          "Diversity": 55.7954
+        }
+      ],
+      "physical_metrics": {
+        "samples": 4042,
+        "Slide": 4.2218,
+        "Float": 18.6892,
+        "Jitter": 6.9367,
+        "Dynamic": 21.5089,
+        "Penetration": 0.0,
+        "PoseQ": 1.8304
+      },
+      "preview_cases": [
+        {
+          "sample_id": "014457",
+          "caption": "the person swings a golf club.",
+          "gif": "assets/model_zoo/condmdi/condmdi_humanml3d_014457_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/condmdi/condmdi_humanml3d_014457_smpl_mesh.json"
+        },
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/condmdi/condmdi_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/condmdi/condmdi_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it's doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/condmdi/condmdi_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/condmdi/condmdi_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
     }
   }
 }

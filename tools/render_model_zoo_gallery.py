@@ -16,6 +16,7 @@ from pathlib import Path
 os.environ.setdefault("PYOPENGL_PLATFORM", "osmesa")
 
 import imageio.v2 as imageio
+from PIL import Image
 
 from render_motion135_smpl_demo import SMPLRenderer, load_motion
 
@@ -102,7 +103,26 @@ MODELS = {
         "source": "dart",
         "prefix": "dart",
     },
+    "condmdi": {
+        "method": "CondMDI",
+        "source": "motion135",
+        "prefix": "condmdi",
+        "cases": ("014457", "001840", "006944"),
+        "captions": {
+            "014457": "the person swings a golf club.",
+            "001840": "hands in fighting position while the left foot kicks aggressively up and over.",
+            "006944": "the person who does arms straight out and then it's doing something with their right hand in front of their face.",
+        },
+    },
 }
+
+
+def gif_frame_durations_ms(frame_count: int, fps: int) -> list[int]:
+    """Quantize frame times to GIF centiseconds without changing average fps."""
+    if fps <= 0 or fps > 100:
+        raise ValueError("GIF fps must be in the range 1..100")
+    ticks = [round(index * 100 / fps) for index in range(frame_count + 1)]
+    return [10 * max(1, ticks[index + 1] - ticks[index]) for index in range(frame_count)]
 
 
 def parse_args() -> argparse.Namespace:
@@ -164,12 +184,21 @@ def main() -> int:
                 args.max_frames,
             )
             gif = model_out / f"{name}_{args.width}_{args.fps}fps.gif"
-            imageio.mimwrite(gif, frames, fps=args.fps, loop=0)
+            pil_frames = [Image.fromarray(frame) for frame in frames]
+            pil_frames[0].save(
+                gif,
+                save_all=True,
+                append_images=pil_frames[1:],
+                duration=gif_frame_durations_ms(len(frames), args.fps),
+                loop=0,
+                disposal=2,
+            )
+            caption = info.get("captions", CASES)[case_id]
             case_meta = {
                 **meta,
                 "method": info["method"],
                 "sample_id": case_id,
-                "caption": CASES[case_id],
+                "caption": caption,
                 "gif": str(gif),
                 "frames": len(frames),
                 "fps": args.fps,
@@ -184,7 +213,7 @@ def main() -> int:
             rendered_cases.append(
                 {
                     "sample_id": case_id,
-                    "caption": CASES[case_id],
+                    "caption": caption,
                     "gif": str(gif),
                     "metadata": str(model_out / f"{name}.json"),
                 }

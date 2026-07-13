@@ -20,3 +20,13 @@ def test_mdm_pipeline_import_and_registration():
     assert MDMPipeline.BUNDLE_CLS == "motius.models.mdm.MDMBundle"
     assert PIPELINES.get("MDMPipeline") is MDMPipeline
     assert MODEL_BUNDLES.get("MDMBundle") is MDMBundle
+
+
+def test_condmdi_pipeline_import_and_registration():
+    from motius.models.condmdi import CondMDIBundle
+    from motius.pipelines.condmdi import CondMDIPipeline
+    from motius.registry import MODEL_BUNDLES, PIPELINES
+
+    assert CondMDIPipeline.BUNDLE_CLS == "motius.models.condmdi.CondMDIBundle"
+    assert PIPELINES.get("CondMDIPipeline") is CondMDIPipeline
+    assert MODEL_BUNDLES.get("CondMDIBundle") is CondMDIBundle

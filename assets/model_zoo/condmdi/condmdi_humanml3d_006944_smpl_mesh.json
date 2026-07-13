@@ -1,0 +1,30 @@
+{
+  "source": "outputs/release/condmdi/full_eval/motion135/006944.npz",
+  "keys": [
+    "motion_135",
+    "transl",
+    "canonical_transl",
+    "global_orient",
+    "body_pose",
+    "target_joints",
+    "fitted_joints",
+    "canonical_fitted_joints",
+    "fit_mpjpe_mm",
+    "output_vs_canonical_target_mpjpe_mm",
+    "source_fps",
+    "target_fps",
+    "refine_iters",
+    "rotation_init",
+    "root_translation_restore_mode",
+    "root_translation_restored",
+    "global_orient_locked"
+  ],
+  "method": "CondMDI",
+  "sample_id": "006944",
+  "caption": "the person who does arms straight out and then it's doing something with their right hand in front of their face.",
+  "gif": "assets/model_zoo/condmdi/condmdi_humanml3d_006944_smpl_mesh_512_30fps.gif",
+  "frames": 120,
+  "fps": 30,
+  "width": 512,
+  "height": 512
+}
