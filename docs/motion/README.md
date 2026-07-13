@@ -19,6 +19,8 @@ with:
   matrix, including shape-aware SMPL to HumanML3D conversion.
 - [Retargeting guide](retargeting.md): HML263 to SMPL, SMPL to SOMA, and SMPL
   to Unitree G1.
+- [Physical evaluation](../evaluation/physical_metrics.md): checkpoint-free
+  Slide, Float, Jitter, Dynamic, and Penet metrics on canonical SMPL-22 joints.
 
 The key rule is simple: conversion is not assumed to be lossless. Motius tells
 you when a route drops shape, estimates twist with IK, changes coordinates, or

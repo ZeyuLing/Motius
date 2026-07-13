@@ -1,0 +1,1173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>T2M HumanML3D Leaderboard</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap");
+
+    :root {
+      color-scheme: light;
+      --bg: #f4f6f5;
+      --panel: #ffffff;
+      --ink: #17211f;
+      --muted: #63706c;
+      --line: #d9dfdc;
+      --line-strong: #bdc8c3;
+      --teal: #087d72;
+      --blue: #315f9d;
+      --amber: #ad6d00;
+      --coral: #c7563f;
+      --green: #176b48;
+      --shadow: 0 8px 24px rgba(29, 45, 40, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Manrope", ui-sans-serif, sans-serif;
+      line-height: 1.5;
+    }
+
+    .page {
+      width: min(1440px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 22px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 880px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 999px;
+      padding: 5px 10px;
+      color: #3d4857;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .updated {
+      flex: 0 0 auto;
+      min-width: 184px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .updated strong {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .score-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .score-card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      border-top: 3px solid var(--teal);
+    }
+
+    .score-card:nth-child(2) { border-top-color: var(--blue); }
+    .score-card:nth-child(3) { border-top-color: var(--amber); }
+    .score-card:nth-child(4) { border-top-color: var(--coral); }
+
+    .score-card .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .score-card .value {
+      margin-top: 6px;
+      font-size: 21px;
+      font-weight: 720;
+      min-height: 31px;
+    }
+
+    .score-card .note {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 18px 0 12px;
+    }
+
+    .tabs {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .tab {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .tab[aria-selected="true"] {
+      background: #eef3f2;
+      color: var(--teal);
+      font-weight: 650;
+    }
+
+    .search {
+      width: min(340px, 100%);
+      border: 1px solid var(--line-strong);
+      background: var(--panel);
+      color: var(--ink);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font: inherit;
+      font-size: 14px;
+      outline: none;
+      box-shadow: var(--shadow);
+    }
+
+    .search:focus {
+      border-color: var(--teal);
+    }
+
+    .table-shell {
+      overflow: auto;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      min-width: 1040px;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 13px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #f2f5f8;
+      color: #425064;
+      border-bottom: 1px solid var(--line-strong);
+      padding: 10px 9px;
+      text-align: right;
+      white-space: nowrap;
+      font-weight: 650;
+    }
+
+    thead th:first-child,
+    tbody td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 3;
+      text-align: left;
+      min-width: 178px;
+      max-width: 220px;
+      background: inherit;
+    }
+
+    thead th:first-child {
+      background: #f2f5f8;
+    }
+
+    tbody td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 9px;
+      text-align: right;
+      white-space: nowrap;
+      background: var(--panel);
+    }
+
+    tbody tr:nth-child(even) td {
+      background: #fbfcfe;
+    }
+
+    tbody tr:hover td {
+      background: #f5faf9;
+    }
+
+    .method {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .rank {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: #e9eff6;
+      color: #405066;
+      font-size: 12px;
+      font-weight: 700;
+      flex: 0 0 auto;
+    }
+
+    .method-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .version {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .ref {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 3px 8px;
+      border: 1px solid var(--line);
+      color: #4a5666;
+      background: #f8fafc;
+      font-size: 12px;
+    }
+
+    .best {
+      color: var(--green);
+      font-weight: 720;
+      background: #edf8f1 !important;
+    }
+
+    .second {
+      color: var(--blue);
+      font-weight: 720;
+      background: #eef4fb !important;
+    }
+
+    tr.reference-row td {
+      background: #fff8e8 !important;
+      border-bottom-color: #ead6a7;
+    }
+
+    .reference-rank {
+      background: #f4dfac;
+      color: #745009;
+      width: 36px;
+      border-radius: 5px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0;
+    }
+
+    .warn {
+      color: var(--amber);
+      font-weight: 650;
+    }
+
+    .lower {
+      color: var(--coral);
+    }
+
+    .caption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    button.sortable {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 5px;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-weight: inherit;
+      cursor: pointer;
+    }
+
+    .sort-indicator {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .comparison-studio {
+      margin: 24px 0 20px;
+      padding: 20px 0 22px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .ranking-key {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .key-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .key-swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      background: var(--green);
+    }
+
+    .key-swatch.second-key { background: var(--blue); }
+    .key-swatch.reference-key { background: #d6ad54; }
+
+    .compare-toolbar {
+      display: grid;
+      grid-template-columns: minmax(180px, 0.7fr) minmax(210px, 1fr) minmax(360px, 2fr);
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field > label,
+    .field-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    select {
+      width: 100%;
+      min-height: 39px;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      background: var(--panel);
+      color: var(--ink);
+      padding: 8px 10px;
+      font: inherit;
+      font-size: 13px;
+    }
+
+    .method-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 39px;
+    }
+
+    .method-option {
+      position: relative;
+    }
+
+    .method-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .method-option span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--panel);
+      color: #46534f;
+      padding: 6px 9px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: border-color 140ms ease, background 140ms ease, color 140ms ease;
+    }
+
+    .method-option input:checked + span {
+      border-color: var(--teal);
+      background: #eaf5f2;
+      color: #075f57;
+      font-weight: 700;
+    }
+
+    .method-option input:disabled + span {
+      opacity: 0.42;
+      cursor: not-allowed;
+    }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+      gap: 12px;
+    }
+
+    .chart-panel {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .chart-panel h3 {
+      margin: 0 0 2px;
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+
+    .chart-note {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 340px;
+    }
+
+    .chart-panel:last-child .canvas-wrap {
+      height: 340px;
+    }
+
+    @media (max-width: 880px) {
+      .page {
+        width: min(100vw - 20px, 1440px);
+        padding-top: 18px;
+      }
+
+      .topbar,
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .score-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .compare-toolbar,
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .method-picker {
+        max-height: 112px;
+        overflow: auto;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .search {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .score-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .ranking-key {
+        justify-content: flex-start;
+      }
+
+      .canvas-wrap,
+      .chart-panel:last-child .canvas-wrap {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="topbar" aria-labelledby="title">
+      <div>
+        <h1 id="title">T2M HumanML3D Leaderboard</h1>
+        <p class="subtitle">
+          HumanML3D official test split, selected GT caption protocol. Public rows report
+          semantic retrieval metrics, universal SMPL-22 TMR metrics, and joint-level physical quality metrics.
+          uTMR metrics use canonicalized SMPL-22 joints66 at 30 fps.
+        </p>
+        <div class="badge-row" aria-label="protocol">
+          <span class="badge">Task: Text-to-Motion</span>
+          <span class="badge">Dataset: HumanML3D official test</span>
+          <span class="badge">MS samples: 4042</span>
+          <span class="badge">uTMR samples: 4034</span>
+          <span class="badge">Captions: selected full-clip GT</span>
+        </div>
+      </div>
+      <div class="updated">
+        <strong>Current Public Snapshot</strong>
+        Updated from verified internal metric JSONs. PRISM 1.0 is the no-KT/no-KAFS baseline rerun with pad360/crop; PRISM KAFS cfg5 is the latest submitted checkpoint.
+      </div>
+    </section>
+
+    <section class="score-strip" aria-label="summary">
+      <div class="score-card">
+        <div class="label">Best MS FID</div>
+        <div class="value" id="summary-ms-fid">-</div>
+        <div class="note" id="summary-ms-fid-note">Generated methods only</div>
+      </div>
+      <div class="score-card">
+        <div class="label">Best MS R@1</div>
+        <div class="value" id="summary-ms-r1">-</div>
+        <div class="note" id="summary-ms-r1-note">Generated methods only</div>
+      </div>
+      <div class="score-card">
+        <div class="label">Best uTMR R@3</div>
+        <div class="value" id="summary-utmr-r3">-</div>
+        <div class="note" id="summary-utmr-r3-note">Generated methods only</div>
+      </div>
+      <div class="score-card">
+        <div class="label">Lowest Foot Slide</div>
+        <div class="value" id="summary-slide">-</div>
+        <div class="note" id="summary-slide-note">Generated methods only</div>
+      </div>
+    </section>
+
+    <section class="comparison-studio" aria-labelledby="comparison-title">
+      <div class="section-heading">
+        <h2 id="comparison-title">Method Comparison</h2>
+        <div class="ranking-key" aria-label="ranking legend">
+          <span class="key-item"><span class="key-swatch"></span>Best</span>
+          <span class="key-item"><span class="key-swatch second-key"></span>Second</span>
+          <span class="key-item"><span class="key-swatch reference-key"></span>GT reference</span>
+        </div>
+      </div>
+      <div class="compare-toolbar">
+        <div class="field">
+          <label for="chart-group">Metric group</label>
+          <select id="chart-group">
+            <option value="semantic">Semantic</option>
+            <option value="physical">Physical</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="bar-metric">Bar metric</label>
+          <select id="bar-metric"></select>
+        </div>
+        <div class="field">
+          <span class="field-label">Radar methods, up to four</span>
+          <div id="method-picker" class="method-picker" aria-label="Radar methods"></div>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <article class="chart-panel">
+          <h3 id="bar-title">Generated-method ranking</h3>
+          <p class="chart-note" id="bar-note"></p>
+          <div class="canvas-wrap"><canvas id="bar-chart"></canvas></div>
+        </article>
+        <article class="chart-panel">
+          <h3>Normalized profile</h3>
+          <p class="chart-note">100 is the best generated-method value on each axis; GT is excluded.</p>
+          <div class="canvas-wrap"><canvas id="radar-chart"></canvas></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="controls" aria-label="table controls">
+      <div class="tabs" role="tablist" aria-label="leaderboard sections">
+        <button class="tab" role="tab" aria-selected="true" data-view="semantic">Semantic</button>
+        <button class="tab" role="tab" aria-selected="false" data-view="physical">Physical</button>
+        <button class="tab" role="tab" aria-selected="false" data-view="calibration">Calibration</button>
+      </div>
+      <input class="search" id="search" type="search" placeholder="Filter method" aria-label="Filter method">
+    </section>
+
+    <section id="semantic" class="view" aria-label="semantic metrics">
+      <div class="table-shell">
+        <table data-table="semantic">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="caption">MS = MotionStreamer-272 evaluator. uTMR = universal SMPL-22 joints66 TMR evaluator. Lower FID and MM are better; higher R-Precision is better. Diversity is a reference statistic and is not ranked.</p>
+    </section>
+
+    <section id="physical" class="view hidden" aria-label="physical metrics">
+      <div class="table-shell">
+        <table data-table="physical">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="caption">Slide, Float, and Jitter use the shared SMPL-22 joint-level physical metric implementation. PoseQ is the MBench NRDF pose-quality score. Dynamic is compared with the GT reference rather than minimized.</p>
+    </section>
+
+    <section id="calibration" class="view hidden" aria-label="calibration metrics">
+      <div class="table-shell">
+        <table data-table="calibration">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="caption">Calibration rows quantify legacy SMPL-to-HML263 conversion loss and are not ranked as generation methods. uTMR sanity is tracked by the GT row in the semantic table.</p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script>
+    const semanticRows = [
+      {method: "GT", version: "0 beta", ref: "raw/refk", isReference: true, msN: 4042, msR1: 0.7703, msR2: 0.9030, msR3: 0.9442, msFID: 0.0000, msMM: 14.8785, msDiv: 27.7705, utmrN: 4034, utmrR1: 0.6873, utmrR2: 0.8485, utmrR3: 0.9058, utmrFID: 0.0000, utmrMM: 27.6009, utmrDiv: 53.9410},
+      {method: "HYMotion", version: "1.0B", ref: "raw/refk", msN: 4042, msR1: 0.7847, msR2: 0.9172, msR3: 0.9509, msFID: 13.8030, msMM: 14.8196, msDiv: 27.4339, utmrN: 4034, utmrR1: 0.5722, utmrR2: 0.7406, utmrR3: 0.8170, utmrFID: 28.3024, utmrMM: 30.5147, utmrDiv: 54.1295},
+      {method: "HYMotion", version: "0.46B", ref: "raw/refk", msN: 4042, msR1: 0.7939, msR2: 0.9152, msR3: 0.9524, msFID: 10.4512, msMM: 14.8361, msDiv: 27.4712, utmrN: 4034, utmrR1: 0.5940, utmrR2: 0.7463, utmrR3: 0.8135, utmrFID: 32.0689, utmrMM: 30.6713, utmrDiv: 55.4210},
+      {method: "PRISM", version: "KAFS cfg5", ref: "raw/refk", msN: 4042, msR1: 0.7408, msR2: 0.8619, msR3: 0.9050, msFID: 19.9682, msMM: 15.8072, msDiv: 27.2536, utmrN: 4034, utmrR1: 0.6629, utmrR2: 0.8105, utmrR3: 0.8656, utmrFID: 123.8378, utmrMM: 30.5957, utmrDiv: 56.6863},
+      {method: "PRISM", version: "1.0", ref: "raw/refk", msN: 4042, msR1: 0.7463, msR2: 0.8832, msR3: 0.9241, msFID: 19.0359, msMM: 15.5135, msDiv: 27.4151, utmrN: 4034, utmrR1: 0.6483, utmrR2: 0.8065, utmrR3: 0.8725, utmrFID: 146.1266, utmrMM: 30.9335, utmrDiv: 57.4521},
+      {method: "MotionStreamer", version: "official", ref: "raw/refk", msN: 4042, msR1: 0.6303, msR2: 0.7865, msR3: 0.8498, msFID: 12.2110, msMM: 16.5810, msDiv: 27.4637, utmrN: 4034, utmrR1: 0.4400, utmrR2: 0.5967, utmrR3: 0.6811, utmrFID: 93.4685, utmrMM: 35.6739, utmrDiv: 53.8000},
+      {method: "GoToZero", version: "7B-train", ref: "raw/refk", msN: 4042, msR1: 0.7403, msR2: 0.8777, msR3: 0.9236, msFID: 3.0807, msMM: 15.3706, msDiv: 27.5748, utmrN: 4034, utmrR1: 0.6277, utmrR2: 0.7904, utmrR3: 0.8579, utmrFID: 33.6025, utmrMM: 29.9675, utmrDiv: 53.4788},
+      {method: "GoToZero", version: "3B-train", ref: "raw/refk", msN: 4042, msR1: 0.7401, msR2: 0.8772, msR3: 0.9229, msFID: 3.0658, msMM: 15.3806, msDiv: 27.5604, utmrN: 4034, utmrR1: 0.6228, utmrR2: 0.7860, utmrR3: 0.8569, utmrFID: 34.4144, utmrMM: 29.9661, utmrDiv: 54.6241},
+      {method: "ViMoGen", version: "1.3B prompt-rewrite", ref: "HML263 round-trip", msN: 4042, msR1: 0.4291, msR2: 0.5687, msR3: 0.6518, msFID: 152.2095, msMM: 21.0737, msDiv: 24.1803, utmrN: 4034, utmrR1: 0.3041, utmrR2: 0.4330, utmrR3: 0.5198, utmrFID: 922.4709, utmrMM: 47.0574, utmrDiv: 55.6162},
+      {method: "ViMoGen", version: "1.3B", ref: "HML263 round-trip", msN: null, msR1: null, msR2: null, msR3: null, msFID: null, msMM: null, msDiv: null, utmrN: 4034, utmrR1: 0.1855, utmrR2: 0.2711, utmrR3: 0.3408, utmrFID: 1515.1381, utmrMM: 53.7815, utmrDiv: 53.0319},
+      {method: "DART", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.5476, msR2: 0.7245, msR3: 0.7937, msFID: 127.8302, msMM: 18.5312, msDiv: 26.2611, utmrN: 4034, utmrR1: 0.4249, utmrR2: 0.6064, utmrR3: 0.7019, utmrFID: 371.1307, utmrMM: 38.7637, utmrDiv: 56.9485},
+      {method: "FlowMDM", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.4737, msR2: 0.6496, msR3: 0.7312, msFID: 36.3767, msMM: 20.0018, msDiv: 25.1783, utmrN: 4034, utmrR1: 0.4390, utmrR2: 0.6153, utmrR3: 0.7111, utmrFID: 227.4945, utmrMM: 37.4096, utmrDiv: 55.5127},
+      {method: "MotionLab", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.6367, msR2: 0.7882, msR3: 0.8529, msFID: 25.4469, msMM: 17.9756, msDiv: 25.5355, utmrN: 4034, utmrR1: 0.5873, utmrR2: 0.7480, utmrR3: 0.8162, utmrFID: 174.8632, utmrMM: 33.1142, utmrDiv: 55.2916},
+      {method: "T2M-GPT", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.5516, msR2: 0.7056, msR3: 0.7788, msFID: 25.4913, msMM: 19.0912, msDiv: 25.5949, utmrN: 4034, utmrR1: 0.4869, utmrR2: 0.6520, utmrR3: 0.7359, utmrFID: 209.9396, utmrMM: 36.3177, utmrDiv: 55.5376},
+      {method: "MDM", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.5208, msR2: 0.6937, msR3: 0.7701, msFID: 35.5169, msMM: 19.4246, msDiv: 25.3383, utmrN: 4034, utmrR1: 0.4501, utmrR2: 0.6290, utmrR3: 0.7262, utmrFID: 263.3581, utmrMM: 37.5544, utmrDiv: 56.3969},
+      {method: "MoMask", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.6404, msR2: 0.7974, msR3: 0.8609, msFID: 21.0729, msMM: 18.1216, msDiv: 25.9789, utmrN: 4034, utmrR1: 0.5665, utmrR2: 0.7540, utmrR3: 0.8356, utmrFID: 143.5427, utmrMM: 33.3118, utmrDiv: 56.6110},
+      {method: "MoGenTS", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.5910, msR2: 0.7523, msR3: 0.8138, msFID: 109.8191, msMM: 18.6038, msDiv: 25.3317, utmrN: 4034, utmrR1: 0.4623, utmrR2: 0.6238, utmrR3: 0.7138, utmrFID: 158.5883, utmrMM: 36.7141, utmrDiv: 56.5133},
+      {method: "MotionGPT", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.4940, msR2: 0.6352, msR3: 0.6944, msFID: 23.6811, msMM: 19.6781, msDiv: 25.5410, utmrN: 4034, utmrR1: 0.4325, utmrR2: 0.5801, utmrR3: 0.6617, utmrFID: 188.1248, utmrMM: 38.4534, utmrDiv: 56.8849},
+      {method: "MotionGPT3", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.6709, msR2: 0.8242, msR3: 0.8817, msFID: 20.9913, msMM: 17.5664, msDiv: 25.6889, utmrN: 4034, utmrR1: 0.5997, utmrR2: 0.7656, utmrR3: 0.8425, utmrFID: 171.1764, utmrMM: 32.5604, utmrDiv: 56.1671},
+      {method: "KIMODO", version: "SMPL-X RP", ref: "raw/refk", msN: 4042, msR1: 0.3646, msR2: 0.4998, msR3: 0.5818, msFID: 117.0279, msMM: 21.4102, msDiv: 25.3629, utmrN: 4034, utmrR1: 0.3033, utmrR2: 0.4638, utmrR3: 0.5570, utmrFID: 899.8286, utmrMM: 47.8189, utmrDiv: 54.4397},
+      {method: "MLD", version: "canonical", ref: "canonical", msN: null, msR1: null, msR2: null, msR3: null, msFID: null, msMM: null, msDiv: null, utmrN: 4034, utmrR1: 0.5169, utmrR2: 0.6850, utmrR3: 0.7701, utmrFID: 258.6208, utmrMM: 36.3447, utmrDiv: 57.3461},
+      {method: "MotionLCM", version: "canonical", ref: "canonical", msN: null, msR1: null, msR2: null, msR3: null, msFID: null, msMM: null, msDiv: null, utmrN: 4034, utmrR1: 0.5156, utmrR2: 0.6915, utmrR3: 0.7736, utmrFID: 283.0533, utmrMM: 36.5871, utmrDiv: 56.9460},
+    ];
+
+    const physicalRows = [
+      {method: "GT", version: "0 beta", isReference: true, n: 4042, slide: 0.0020, float: 0.0264, jitter: 0.0055, dynamic: 0.0232, poseq: 1.4300},
+      {method: "HYMotion", version: "1.0B", n: 4042, slide: 3.0803, float: 6.6387, jitter: 5.4315, dynamic: 25.0297, poseq: 1.7040},
+      {method: "HYMotion", version: "0.46B", n: 4042, slide: 3.5416, float: 8.0197, jitter: 5.9834, dynamic: 26.3973, poseq: 1.6875},
+      {method: "PRISM", version: "KAFS cfg5", n: 4042, slide: 3.4524, float: 7.7084, jitter: 6.4377, dynamic: 27.6258, poseq: 1.6807},
+      {method: "PRISM", version: "1.0", n: 4042, slide: 3.6746, float: 7.8379, jitter: 6.1307, dynamic: 27.7158, poseq: 1.6854},
+      {method: "MotionStreamer", version: "official", n: 4042, slide: 5.0011, float: 17.0663, jitter: 11.0975, dynamic: 23.6778, poseq: 1.2656},
+      {method: "GoToZero", version: "7B-train", n: 4042, slide: 4.4411, float: 20.0600, jitter: 9.9057, dynamic: 21.3236, poseq: 1.2388},
+      {method: "GoToZero", version: "3B-train", n: 4042, slide: 4.4398, float: 20.0928, jitter: 9.8859, dynamic: 21.3268, poseq: 1.2377},
+      {method: "ViMoGen", version: "1.3B prompt-rewrite", n: 4042, slide: 6.9485, float: 23.7270, jitter: 4.4370, dynamic: 16.3838, poseq: 2.0434},
+      {method: "DART", version: "official", n: 4042, slide: 3.2958, float: 5.9494, jitter: 4.4701, dynamic: 17.9559, poseq: 2.1452},
+      {method: "FlowMDM", version: "official", n: 4042, slide: 3.0452, float: 7.4055, jitter: 5.0130, dynamic: 22.3205, poseq: 1.8526},
+      {method: "MotionLab", version: "official", n: 4042, slide: 2.4231, float: 4.0795, jitter: 5.8493, dynamic: 24.3519, poseq: 1.8781},
+      {method: "T2M-GPT", version: "official", n: 4042, slide: 3.7598, float: 11.1799, jitter: 4.9000, dynamic: 19.3651, poseq: 1.8004},
+      {method: "MDM", version: "official", n: 4042, slide: 2.5318, float: 4.9987, jitter: 4.7034, dynamic: 22.1361, poseq: 1.9613},
+      {method: "MoMask", version: "official", n: 4042, slide: 3.7319, float: 9.5021, jitter: 5.7226, dynamic: 23.4879, poseq: 1.8611},
+      {method: "MoGenTS", version: "official", n: 4042, slide: 4.1508, float: 12.3141, jitter: 5.1289, dynamic: 23.0138, poseq: 1.8073},
+      {method: "MotionGPT", version: "official", n: 4042, slide: 3.8783, float: 10.8835, jitter: 5.1680, dynamic: 21.0609, poseq: 1.8257},
+      {method: "MotionGPT3", version: "official", n: 4042, slide: 3.8137, float: 9.6933, jitter: 4.7599, dynamic: 23.1948, poseq: 1.7930},
+      {method: "KIMODO", version: "SMPL-X RP", n: 4042, slide: 3.5414, float: 2.7151, jitter: 6.3208, dynamic: 29.9568, poseq: 1.6522}
+    ];
+
+    const calibrationRows = [
+      {method: "GT SMPL -> HML263 -> SMPL vs raw GT", n: 4042, msR1: 0.7173, msR3: 0.9219, msFID: 67.4322, msMM: 16.7867, msDiv: 26.6252}
+    ];
+
+    const tables = {
+      semantic: {
+        rows: semanticRows,
+        sortKey: "utmrR3",
+        sortDir: "desc",
+        columns: [
+          {key: "method", label: "Method", type: "method"},
+          {key: "ref", label: "Ref", type: "ref"},
+          {key: "msN", label: "MS n", numeric: true},
+          {key: "msR1", label: "MS R1", numeric: true, higher: true},
+          {key: "msR2", label: "MS R2", numeric: true, higher: true},
+          {key: "msR3", label: "MS R3", numeric: true, higher: true},
+          {key: "msFID", label: "MS FID", numeric: true, lower: true},
+          {key: "msMM", label: "MS MM", numeric: true, lower: true},
+          {key: "msDiv", label: "MS Div", numeric: true, referenceStatistic: true},
+          {key: "utmrN", label: "uTMR n", numeric: true},
+          {key: "utmrR1", label: "uTMR R1", numeric: true, higher: true},
+          {key: "utmrR2", label: "uTMR R2", numeric: true, higher: true},
+          {key: "utmrR3", label: "uTMR R3", numeric: true, higher: true},
+          {key: "utmrFID", label: "uTMR FID", numeric: true, lower: true},
+          {key: "utmrMM", label: "uTMR MM", numeric: true, lower: true},
+          {key: "utmrDiv", label: "uTMR Div", numeric: true, referenceStatistic: true}
+        ]
+      },
+      physical: {
+        rows: physicalRows,
+        sortKey: "jitter",
+        sortDir: "asc",
+        columns: [
+          {key: "method", label: "Method", type: "method"},
+          {key: "n", label: "n", numeric: true},
+          {key: "slide", label: "Slide", numeric: true, lower: true},
+          {key: "float", label: "Float", numeric: true, lower: true},
+          {key: "jitter", label: "Jitter", numeric: true, lower: true},
+          {key: "dynamic", label: "Dynamic", numeric: true, referenceStatistic: true},
+          {key: "poseq", label: "PoseQ", numeric: true, lower: true}
+        ]
+      },
+      calibration: {
+        rows: calibrationRows,
+        sortKey: "msFID",
+        sortDir: "asc",
+        columns: [
+          {key: "method", label: "Calibration", type: "method"},
+          {key: "n", label: "n", numeric: true},
+          {key: "msR1", label: "MS R1", numeric: true, higher: true},
+          {key: "msR3", label: "MS R3", numeric: true, higher: true},
+          {key: "msFID", label: "MS FID", numeric: true, lower: true},
+          {key: "msMM", label: "MS MM", numeric: true, lower: true},
+          {key: "msDiv", label: "MS Div", numeric: true, higher: true}
+        ]
+      }
+    };
+
+    const chartGroups = {
+      semantic: {
+        rows: semanticRows,
+        metrics: [
+          {key: "msR1", label: "MS R@1", higher: true},
+          {key: "msR3", label: "MS R@3", higher: true},
+          {key: "msFID", label: "MS FID", lower: true},
+          {key: "msMM", label: "MS MM-Dist", lower: true},
+          {key: "utmrR1", label: "uTMR R@1", higher: true},
+          {key: "utmrR3", label: "uTMR R@3", higher: true},
+          {key: "utmrFID", label: "uTMR FID", lower: true},
+          {key: "utmrMM", label: "uTMR MM-Dist", lower: true}
+        ]
+      },
+      physical: {
+        rows: physicalRows,
+        metrics: [
+          {key: "slide", label: "Slide", lower: true},
+          {key: "float", label: "Float", lower: true},
+          {key: "jitter", label: "Jitter", lower: true},
+          {key: "poseq", label: "PoseQ", lower: true},
+          {key: "dynamic", label: "Dynamic", targetReference: true}
+        ]
+      }
+    };
+
+    const chartColors = ["#087d72", "#315f9d", "#c7563f", "#ad6d00"];
+    const selectedMethods = {
+      semantic: new Set(["HYMotion::0.46B", "PRISM::1.0", "GoToZero::7B-train", "MotionGPT3::official"]),
+      physical: new Set(["HYMotion::0.46B", "PRISM::1.0", "GoToZero::7B-train", "MotionLab::official"])
+    };
+    let activeView = "semantic";
+    let activeChartGroup = "semantic";
+    let query = "";
+    let barChart = null;
+    let radarChart = null;
+
+    function rowId(row) {
+      return `${row.method}::${row.version || ""}`;
+    }
+
+    function rowLabel(row) {
+      return row.version ? `${row.method} ${row.version}` : row.method;
+    }
+
+    function formatValue(value) {
+      if (value === null || value === undefined) return "—";
+      if (typeof value !== "number") return value;
+      if (Number.isInteger(value)) return value.toString();
+      return value.toFixed(4);
+    }
+
+    function methodCell(row, rank) {
+      const version = row.version ? `<span class="version">${row.version}</span>` : "";
+      const badge = row.isReference
+        ? '<span class="rank reference-rank">REF</span>'
+        : `<span class="rank">${rank}</span>`;
+      return `<div class="method">${badge}<span class="method-name"><strong>${row.method}</strong> ${version}</span></div>`;
+    }
+
+    function sortRows(rows, key, direction) {
+      return [...rows].sort((a, b) => {
+        const av = a[key];
+        const bv = b[key];
+        const aMissing = typeof av !== "number" && typeof av !== "string";
+        const bMissing = typeof bv !== "number" && typeof bv !== "string";
+        if (aMissing !== bMissing) return aMissing ? 1 : -1;
+        const delta = typeof av === "number" && typeof bv === "number"
+          ? av - bv
+          : String(av).localeCompare(String(bv));
+        return direction === "asc" ? delta : -delta;
+      });
+    }
+
+    function bestClass(row, col, allRows) {
+      if (row.isReference || !col.numeric || (!col.lower && !col.higher)) return "";
+      const values = allRows
+        .filter((item) => !item.isReference && typeof item[col.key] === "number")
+        .map((item) => item[col.key])
+        .sort((a, b) => col.lower ? a - b : b - a);
+      const distinct = values.filter((value, index) => index === 0 || Math.abs(value - values[index - 1]) > 1e-8);
+      if (Math.abs(row[col.key] - distinct[0]) < 1e-8) return "best";
+      if (distinct.length > 1 && Math.abs(row[col.key] - distinct[1]) < 1e-8) return "second";
+      return "";
+    }
+
+    function renderTable(name) {
+      const cfg = tables[name];
+      const table = document.querySelector(`table[data-table="${name}"]`);
+      const thead = table.querySelector("thead");
+      const tbody = table.querySelector("tbody");
+      const lowerQuery = query.trim().toLowerCase();
+      const generated = sortRows(cfg.rows.filter((row) => !row.isReference), cfg.sortKey, cfg.sortDir);
+      const rankById = new Map(generated.map((row, index) => [rowId(row), index + 1]));
+      const rows = [...cfg.rows.filter((row) => row.isReference), ...generated]
+        .filter((row) => `${row.method} ${row.version || ""} ${row.ref || ""}`.toLowerCase().includes(lowerQuery));
+
+      thead.innerHTML = `<tr>${cfg.columns.map((col) => {
+        const indicator = cfg.sortKey === col.key ? (cfg.sortDir === "asc" ? "asc" : "desc") : "";
+        const hint = col.lower
+          ? "lower is better"
+          : col.higher
+            ? "higher is better"
+            : col.referenceStatistic
+              ? "compare with the GT reference"
+              : "";
+        return `<th title="${hint}"><button class="sortable" data-table-name="${name}" data-key="${col.key}"><span>${col.label}</span><span class="sort-indicator">${indicator}</span></button></th>`;
+      }).join("")}</tr>`;
+
+      tbody.innerHTML = rows.map((row) => {
+        const rowClass = row.isReference ? "reference-row" : "";
+        return `<tr class="${rowClass}">${cfg.columns.map((col) => {
+          if (col.type === "method") return `<td>${methodCell(row, rankById.get(rowId(row)))}</td>`;
+          if (col.type === "ref") return `<td><span class="ref">${row[col.key]}</span></td>`;
+          return `<td class="${bestClass(row, col, cfg.rows)}">${formatValue(row[col.key])}</td>`;
+        }).join("")}</tr>`;
+      }).join("");
+
+      thead.querySelectorAll("button.sortable").forEach((button) => {
+        button.addEventListener("click", () => {
+          const key = button.dataset.key;
+          if (cfg.sortKey === key) {
+            cfg.sortDir = cfg.sortDir === "asc" ? "desc" : "asc";
+          } else {
+            cfg.sortKey = key;
+            const col = cfg.columns.find((item) => item.key === key);
+            cfg.sortDir = col && col.higher ? "desc" : "asc";
+          }
+          renderTable(name);
+        });
+      });
+    }
+
+    function setSummary(valueId, noteId, row, value, suffix) {
+      document.getElementById(valueId).textContent = rowLabel(row);
+      document.getElementById(noteId).textContent = `${formatValue(value)}${suffix || ""}; GT excluded`;
+    }
+
+    function renderSummaries() {
+      const generatedSemantic = semanticRows.filter((row) => !row.isReference);
+      const generatedPhysical = physicalRows.filter((row) => !row.isReference);
+      const best = (rows, key, lower) => rows
+        .filter((row) => typeof row[key] === "number")
+        .sort((a, b) => lower ? a[key] - b[key] : b[key] - a[key])[0];
+      const msFid = best(generatedSemantic, "msFID", true);
+      const msR1 = best(generatedSemantic, "msR1", false);
+      const utmrR3 = best(generatedSemantic, "utmrR3", false);
+      const slide = best(generatedPhysical, "slide", true);
+      setSummary("summary-ms-fid", "summary-ms-fid-note", msFid, msFid.msFID);
+      setSummary("summary-ms-r1", "summary-ms-r1-note", msR1, msR1.msR1);
+      setSummary("summary-utmr-r3", "summary-utmr-r3-note", utmrR3, utmrR3.utmrR3);
+      setSummary("summary-slide", "summary-slide-note", slide, slide.slide, " mm/frame");
+    }
+
+    function referenceValue(group, metric) {
+      const reference = chartGroups[group].rows.find((row) => row.isReference);
+      return reference ? reference[metric.key] : null;
+    }
+
+    function comparisonScore(row, group, metric) {
+      const value = row[metric.key];
+      if (typeof value !== "number") return Number.POSITIVE_INFINITY;
+      if (metric.targetReference) return Math.abs(value - referenceValue(group, metric));
+      return metric.lower ? value : -value;
+    }
+
+    function normalizedScore(row, group, metric) {
+      const generated = chartGroups[group].rows.filter(
+        (item) => !item.isReference && typeof item[metric.key] === "number"
+      );
+      const values = generated.map((item) => item[metric.key]);
+      const value = row[metric.key];
+      if (typeof value !== "number" || !values.length) return 0;
+      if (metric.targetReference) {
+        const target = referenceValue(group, metric);
+        const distances = values.map((item) => Math.abs(item - target));
+        const worst = Math.max(...distances);
+        return worst === 0 ? 100 : 100 * (1 - Math.abs(value - target) / worst);
+      }
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      if (Math.abs(max - min) < 1e-12) return 100;
+      return metric.lower
+        ? 100 * (max - value) / (max - min)
+        : 100 * (value - min) / (max - min);
+    }
+
+    function renderMetricOptions() {
+      const select = document.getElementById("bar-metric");
+      select.innerHTML = chartGroups[activeChartGroup].metrics
+        .map((metric) => `<option value="${metric.key}">${metric.label}</option>`)
+        .join("");
+    }
+
+    function renderMethodPicker() {
+      const picker = document.getElementById("method-picker");
+      const rows = chartGroups[activeChartGroup].rows.filter((row) => !row.isReference);
+      const selected = selectedMethods[activeChartGroup];
+      const availableIds = new Set(rows.map(rowId));
+      [...selected].forEach((id) => {
+        if (!availableIds.has(id)) selected.delete(id);
+      });
+      if (!selected.size) rows.slice(0, 4).forEach((row) => selected.add(rowId(row)));
+      picker.innerHTML = rows.map((row) => {
+        const id = rowId(row);
+        const checked = selected.has(id) ? "checked" : "";
+        const disabled = selected.size >= 4 && !selected.has(id) ? "disabled" : "";
+        return `<label class="method-option"><input type="checkbox" value="${id}" ${checked} ${disabled}><span>${rowLabel(row)}</span></label>`;
+      }).join("");
+      picker.querySelectorAll("input").forEach((input) => {
+        input.addEventListener("change", () => {
+          if (input.checked) selected.add(input.value);
+          else selected.delete(input.value);
+          renderMethodPicker();
+          renderCharts();
+        });
+      });
+    }
+
+    function chartFont() {
+      return {family: "Manrope", size: 11};
+    }
+
+    function renderCharts() {
+      if (typeof Chart === "undefined") {
+        document.getElementById("bar-note").textContent = "Charts could not be loaded.";
+        return;
+      }
+      const group = chartGroups[activeChartGroup];
+      const metricKey = document.getElementById("bar-metric").value || group.metrics[0].key;
+      const metric = group.metrics.find((item) => item.key === metricKey) || group.metrics[0];
+      const ranked = group.rows
+        .filter((row) => !row.isReference && typeof row[metric.key] === "number")
+        .sort((a, b) => comparisonScore(a, activeChartGroup, metric) - comparisonScore(b, activeChartGroup, metric))
+        .slice(0, 10);
+      const direction = metric.targetReference
+        ? "closest to GT"
+        : metric.lower
+          ? "lower is better"
+          : "higher is better";
+      document.getElementById("bar-title").textContent = `${metric.label} ranking`;
+      document.getElementById("bar-note").textContent = `Top 10 generated methods; ${direction}.`;
+
+      if (barChart) barChart.destroy();
+      barChart = new Chart(document.getElementById("bar-chart"), {
+        type: "bar",
+        data: {
+          labels: ranked.map(rowLabel),
+          datasets: [{
+            data: ranked.map((row) => row[metric.key]),
+            backgroundColor: ranked.map((_, index) => index === 0 ? "#176b48" : index === 1 ? "#315f9d" : "#8abeb7"),
+            borderColor: ranked.map((_, index) => index === 0 ? "#176b48" : index === 1 ? "#315f9d" : "#4e948b"),
+            borderWidth: 1,
+            borderRadius: 3
+          }]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {duration: 280},
+          plugins: {
+            legend: {display: false},
+            tooltip: {callbacks: {label: (context) => formatValue(context.raw)}}
+          },
+          scales: {
+            x: {beginAtZero: true, grid: {color: "#e7ebe9"}, ticks: {font: chartFont(), color: "#63706c"}},
+            y: {grid: {display: false}, ticks: {font: chartFont(), color: "#34413d"}}
+          }
+        }
+      });
+
+      const selected = selectedMethods[activeChartGroup];
+      const profileRows = group.rows.filter((row) => selected.has(rowId(row)));
+      if (radarChart) radarChart.destroy();
+      radarChart = new Chart(document.getElementById("radar-chart"), {
+        type: "radar",
+        data: {
+          labels: group.metrics.map((item) => item.label),
+          datasets: profileRows.map((row, index) => ({
+            label: rowLabel(row),
+            data: group.metrics.map((item) => normalizedScore(row, activeChartGroup, item)),
+            borderColor: chartColors[index % chartColors.length],
+            backgroundColor: `${chartColors[index % chartColors.length]}18`,
+            borderWidth: 2,
+            pointRadius: 2,
+            pointHoverRadius: 4
+          }))
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {duration: 280},
+          plugins: {
+            legend: {position: "bottom", labels: {boxWidth: 10, boxHeight: 10, font: chartFont(), color: "#34413d"}},
+            tooltip: {callbacks: {label: (context) => `${context.dataset.label}: ${context.raw.toFixed(1)}`}}
+          },
+          scales: {
+            r: {
+              min: 0,
+              max: 100,
+              ticks: {stepSize: 25, display: false},
+              grid: {color: "#dfe5e2"},
+              angleLines: {color: "#dfe5e2"},
+              pointLabels: {font: chartFont(), color: "#46534f"}
+            }
+          }
+        }
+      });
+    }
+
+    function setView(name) {
+      activeView = name;
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.setAttribute("aria-selected", String(tab.dataset.view === name));
+      });
+      document.querySelectorAll(".view").forEach((view) => {
+        view.classList.toggle("hidden", view.id !== name);
+      });
+      renderTable(name);
+    }
+
+    document.querySelectorAll(".tab").forEach((tab) => {
+      tab.addEventListener("click", () => setView(tab.dataset.view));
+    });
+
+    document.getElementById("search").addEventListener("input", (event) => {
+      query = event.target.value;
+      renderTable(activeView);
+    });
+
+    document.getElementById("chart-group").addEventListener("change", (event) => {
+      activeChartGroup = event.target.value;
+      renderMetricOptions();
+      renderMethodPicker();
+      renderCharts();
+    });
+
+    document.getElementById("bar-metric").addEventListener("change", renderCharts);
+
+    renderSummaries();
+    renderMetricOptions();
+    renderMethodPicker();
+    renderCharts();
+    renderTable("semantic");
+    renderTable("physical");
+    renderTable("calibration");
+  </script>
+</body>
+</html>

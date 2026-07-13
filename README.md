@@ -67,6 +67,11 @@ G1-native methods additionally use the robot-specific TMR-G1 evaluator.
 | Motius Joint-Position Evaluator | Motius-trained TMR reproduction for unified SMPL-22 joint positions | SMPL-22 joints66 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-universal-smplh-joints66) | [Evaluator Card](docs/evaluator_zoo/motius_joint_position.md) | [TMR Paper](https://arxiv.org/abs/2305.00976) / [TMR Code](https://github.com/Mathux/TMR) |
 | Motius TMR-G1 Evaluator | Robot-native text-motion evaluator for Unitree G1 generation | G1-38D | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-g1-38d-tmr) | [Evaluator Card](docs/evaluator_zoo/g1_tmr.md) | [TMR Paper](https://arxiv.org/abs/2305.00976) / [TMR Code](https://github.com/Mathux/TMR) |
 
+Checkpoint-free [physical motion metrics](docs/evaluation/physical_metrics.md)
+are also available for SMPL-22 joints, `motion135`, and MotionStreamer-272.
+They report foot slide, floating, jitter, dynamic motion, and diagnostic floor
+penetration under the same canonical skeleton protocol used by the leaderboard.
+
 ## Motion Representation Toolkit
 
 Motius provides first-class support for the motion representations used by
@@ -201,7 +206,7 @@ representation interchange formats.
 | `motius.runner` | Accelerate-based distributed training runner and train loops. |
 | `motius.datasets` | Dataset bases and reusable transform primitives. |
 | `motius.hooks` | Checkpoint, EMA, logging, and learning-rate scheduler hooks. |
-| `motius.evaluation` | Evaluator base interfaces. |
+| `motius.evaluation` | Evaluator interfaces plus semantic and physical metric APIs. |
 | `motius.motion` | Representation specs/converters, SMPL-22 FK, and optional SOMA/G1 retargeting. |
 | `motius.visualization` | File and TensorBoard visualization bases. |
 | `configs/_base_` | Minimal runtime config templates. |
@@ -239,6 +244,7 @@ the formal documentation:
 - [Getting Started](docs/getting_started.md)
 - [Development Guide](docs/development.md)
 - [Motion representations and retargeting](docs/motion/README.md)
+- [Physical motion metrics](docs/evaluation/physical_metrics.md)
 
 ## Release Status
 
