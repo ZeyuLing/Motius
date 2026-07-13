@@ -18,7 +18,7 @@ README and model-card task fields must use only these capability labels:
 
 | Label | Meaning |
 | ----- | ------- |
-| `T2M` | Text-to-motion generation |
+| [`T2M`](../leaderboards/t2m_humanml3d.md) | Text-to-motion generation |
 | `M2T` | Motion-to-text generation |
 | `TP2M` | Text-guided generation conditioned on a motion prefix |
 | `Multi-Prompt T2M` | A sequence composed from multiple text prompts |
@@ -28,6 +28,10 @@ README and model-card task fields must use only these capability labels:
 Zero-shot, streaming, latent, diffusion, and autoregressive describe how a
 method is trained or executed; they are not separate tasks. Keep those terms in
 the model summary and method description instead of the task field.
+
+In the root Model Zoo table, every task with a published Motius leaderboard
+must link to that page. Model-card task rows keep the canonical plain-text
+labels so the cards remain portable to Hugging Face.
 
 Model cards must not use adapter outputs as the model's native representation.
 For example, HY-Motion T2M is `HY-Motion-201`; DART is `DART276`. SMPL,

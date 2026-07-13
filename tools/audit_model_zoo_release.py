@@ -24,6 +24,7 @@ README = REPO_ROOT / "README.md"
 MODEL_CARD_RE = re.compile(r"\[Model Card\]\((docs/model_zoo/[^)]+)\)")
 HF_RE = re.compile(r"https://huggingface\.co/([^)\s|]+)")
 CARD_TASK_RE = re.compile(r"^\| Tasks? \| ([^|]+?) \|$", re.MULTILINE)
+TASK_LINK_RE = re.compile(r"^\[([^\]]+)\]\(([^)]+)\)$")
 TASK_LABELS = {
     "T2M",
     "M2T",
@@ -31,6 +32,9 @@ TASK_LABELS = {
     "Multi-Prompt T2M",
     "Motion Control",
     "Kinematic Control",
+}
+TASK_LEADERBOARDS = {
+    "T2M": "docs/leaderboards/t2m_humanml3d.md",
 }
 
 
@@ -69,25 +73,44 @@ def _read_model_rows() -> list[ModelRow]:
     return rows
 
 
-def _parse_task_labels(cell: str) -> list[str]:
-    return [label.strip() for label in cell.split(",") if label.strip()]
+def _parse_task_entries(cell: str) -> list[tuple[str, str | None]]:
+    entries = []
+    for value in cell.split(","):
+        value = value.strip()
+        if not value:
+            continue
+        match = TASK_LINK_RE.fullmatch(value)
+        entries.append((match.group(1), match.group(2)) if match else (value, None))
+    return entries
 
 
 def _task_status(readme_cell: str, card_text: str) -> tuple[str, str]:
-    readme_labels = _parse_task_labels(readme_cell)
+    readme_entries = _parse_task_entries(readme_cell)
+    readme_labels = [label for label, _ in readme_entries]
     if not readme_labels:
         return "invalid", "README task field is empty"
     invalid = [label for label in readme_labels if label not in TASK_LABELS]
     if invalid:
         return "invalid", "unknown README tasks: " + ", ".join(invalid)
+    for label, target in readme_entries:
+        expected = TASK_LEADERBOARDS.get(label)
+        if expected and target != expected:
+            return "invalid", f"{label} must link to {expected}"
+        if not expected and target:
+            return "invalid", f"{label} links to an unregistered leaderboard"
+        if expected and not (REPO_ROOT / expected).is_file():
+            return "invalid", f"missing leaderboard target: {expected}"
 
     card_match = CARD_TASK_RE.search(card_text)
     if not card_match:
         return "invalid", "model card has no Task/Tasks row"
-    card_labels = _parse_task_labels(card_match.group(1))
+    card_entries = _parse_task_entries(card_match.group(1))
+    card_labels = [label for label, _ in card_entries]
     invalid = [label for label in card_labels if label not in TASK_LABELS]
     if invalid:
         return "invalid", "unknown model-card tasks: " + ", ".join(invalid)
+    if any(target for _, target in card_entries):
+        return "invalid", "model-card tasks must use portable plain-text labels"
     if card_labels != readme_labels:
         return "invalid", "README/model-card task mismatch"
     return "valid", ""
