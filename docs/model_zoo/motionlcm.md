@@ -32,7 +32,7 @@ space, MLD VAE decoding, and HumanML3D-263 denormalization.
 | Item | Value |
 | ---- | ----- |
 | Method | MotionLCM, latent consistency model for human motion |
-| Task | Text-to-Motion |
+| Tasks | T2M |
 | Venue | ECCV 2024 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Text encoder | SentenceT5-Large, frozen |

@@ -31,7 +31,7 @@ the rest of the Model Zoo.
 | Item | Value |
 | ---- | ----- |
 | Method | ViMoGen 1.3B |
-| Task | Text-to-Motion |
+| Tasks | T2M |
 | Venue | ICLR 2026 |
 | Motion representation | DART276, 20 fps |
 | Text encoder | Wan2.1 T2V-1.3B UMT5-XXL encoder |

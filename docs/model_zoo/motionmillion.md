@@ -34,7 +34,7 @@ normalization into a consistent inference pipeline.
 | Item | Value |
 | ---- | ----- |
 | Method | Go to Zero / MotionMillion |
-| Task | Zero-shot Text-to-Motion |
+| Tasks | T2M |
 | Venue | ICCV 2025 |
 | Motion representation | MotionStreamer-272 / humanml3d_272, 30 fps |
 | Text encoder | Flan-T5-XL, frozen |

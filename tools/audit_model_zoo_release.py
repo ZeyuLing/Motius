@@ -23,11 +23,21 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 README = REPO_ROOT / "README.md"
 MODEL_CARD_RE = re.compile(r"\[Model Card\]\((docs/model_zoo/[^)]+)\)")
 HF_RE = re.compile(r"https://huggingface\.co/([^)\s|]+)")
+CARD_TASK_RE = re.compile(r"^\| Tasks? \| ([^|]+?) \|$", re.MULTILINE)
+TASK_LABELS = {
+    "T2M",
+    "M2T",
+    "TP2M",
+    "Multi-Prompt T2M",
+    "Motion Control",
+    "Kinematic Control",
+}
 
 
 @dataclass
 class ModelRow:
     method: str
+    task_cell: str
     checkpoint_cell: str
     card_path: Path
 
@@ -40,7 +50,7 @@ def _read_model_rows() -> list[ModelRow]:
     rows: list[ModelRow] = []
     in_table = False
     for line in README.read_text().splitlines():
-        if line.startswith("| Method | Task | Motion Rep. | Checkpoint | Card | References |"):
+        if line.startswith("| Method | Tasks | Motion Rep. | Checkpoint | Card | References |"):
             in_table = True
             continue
         if in_table and line.startswith("## "):
@@ -55,8 +65,32 @@ def _read_model_rows() -> list[ModelRow]:
         match = MODEL_CARD_RE.search(cells[4])
         if not match:
             continue
-        rows.append(ModelRow(cells[0], cells[3], REPO_ROOT / match.group(1)))
+        rows.append(ModelRow(cells[0], cells[1], cells[3], REPO_ROOT / match.group(1)))
     return rows
+
+
+def _parse_task_labels(cell: str) -> list[str]:
+    return [label.strip() for label in cell.split(",") if label.strip()]
+
+
+def _task_status(readme_cell: str, card_text: str) -> tuple[str, str]:
+    readme_labels = _parse_task_labels(readme_cell)
+    if not readme_labels:
+        return "invalid", "README task field is empty"
+    invalid = [label for label in readme_labels if label not in TASK_LABELS]
+    if invalid:
+        return "invalid", "unknown README tasks: " + ", ".join(invalid)
+
+    card_match = CARD_TASK_RE.search(card_text)
+    if not card_match:
+        return "invalid", "model card has no Task/Tasks row"
+    card_labels = _parse_task_labels(card_match.group(1))
+    invalid = [label for label in card_labels if label not in TASK_LABELS]
+    if invalid:
+        return "invalid", "unknown model-card tasks: " + ", ".join(invalid)
+    if card_labels != readme_labels:
+        return "invalid", "README/model-card task mismatch"
+    return "valid", ""
 
 
 def _hf_repo_exists(repo_id: str, timeout: int = 20) -> bool:
@@ -115,12 +149,12 @@ def _format_markdown(rows: Iterable[dict[str, str]]) -> str:
     out = [
         "# Model Zoo Release Audit",
         "",
-        "| Method | Checkpoint | Demo | Metrics | Notes |",
-        "| ------ | ---------- | ---- | ------- | ----- |",
+        "| Method | Tasks | Checkpoint | Demo | Metrics | Notes |",
+        "| ------ | ----- | ---------- | ---- | ------- | ----- |",
     ]
     for row in rows:
         out.append(
-            f"| {row['method']} | {row['checkpoint']} | {row['demo']} | "
+            f"| {row['method']} | {row['tasks']} | {row['checkpoint']} | {row['demo']} | "
             f"{row['metrics']} | {row['notes']} |"
         )
     out.append("")
@@ -131,13 +165,17 @@ def run(check_hf: bool) -> str:
     audit_rows = []
     for row in _read_model_rows():
         text = row.card_path.read_text() if row.card_path.exists() else ""
+        tasks, task_note = _task_status(row.task_cell, text)
         checkpoint, checkpoint_note = _checkpoint_status(row.checkpoint_cell, check_hf)
         demo, demo_note = _demo_status(text)
         metrics, metric_note = _metric_status(text)
-        notes = "; ".join(note for note in [checkpoint_note, demo_note, metric_note] if note)
+        notes = "; ".join(
+            note for note in [task_note, checkpoint_note, demo_note, metric_note] if note
+        )
         audit_rows.append(
             {
                 "method": row.method,
+                "tasks": tasks,
                 "checkpoint": checkpoint,
                 "demo": demo,
                 "metrics": metrics,

@@ -31,7 +31,7 @@ statistics, and task-facing pipeline without requiring the original checkout.
 | Item | Value |
 | ---- | ----- |
 | Method | MotionStreamer, diffusion autoregression in causal latent space |
-| Tasks | Streaming Text-to-Motion, TP2M, sequential / multi-prompt generation |
+| Tasks | T2M, Multi-Prompt T2M, TP2M |
 | Venue | ICCV 2025 |
 | Motion representation | MotionStreamer-272, 30 fps |
 | Text encoder | SentenceT5-XXL |

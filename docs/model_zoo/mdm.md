@@ -33,7 +33,7 @@ methods.
 | Item | Value |
 | ---- | ----- |
 | Method | MDM, classifier-free diffusion for human motion |
-| Task | Text-to-Motion |
+| Tasks | T2M |
 | Venue | ICLR 2023 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Text encoder | CLIP ViT-B/32, frozen |

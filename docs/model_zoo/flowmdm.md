@@ -32,7 +32,7 @@ pipeline methods without requiring the original checkout.
 | Item | Value |
 | ---- | ----- |
 | Method | FlowMDM, diffusion with blended positional encodings |
-| Tasks | Text-to-Motion, sequential / multi-prompt Text-to-Motion |
+| Tasks | T2M, Multi-Prompt T2M, TP2M |
 | Venue | CVPR 2024 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Checkpoint | [`ZeyuLing/hftrainer-flowmdm-humanml3d`](https://huggingface.co/ZeyuLing/hftrainer-flowmdm-humanml3d) |

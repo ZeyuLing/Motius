@@ -31,7 +31,7 @@ CLIP-L text encoders, official smoothing, and an ODE-based inference pipeline.
 | Item | Value |
 | ---- | ----- |
 | Method | HY-Motion 1.0 T2M, DiT + flow matching |
-| Tasks | Text-to-Motion |
+| Tasks | T2M |
 | Motion representation | HY-Motion-201 at 30 fps |
 | Text encoder | Qwen3-8B token context + CLIP-L sentence embedding |
 | Pipeline | `motius.pipelines.hymotion_t2m.HyMotionT2MPipeline` |

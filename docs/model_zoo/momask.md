@@ -32,7 +32,7 @@ denormalization behind a consistent inference pipeline.
 | Item | Value |
 | ---- | ----- |
 | Method | MoMask, masked discrete motion token generation |
-| Task | Text-to-Motion |
+| Tasks | T2M |
 | Venue | CVPR 2024 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Text encoder | CLIP ViT-B/32, frozen |

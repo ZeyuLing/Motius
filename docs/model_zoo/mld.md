@@ -31,7 +31,7 @@ denoiser, DDIM scheduler, and frozen SentenceT5 text wrapper.
 | Item | Value |
 | ---- | ----- |
 | Method | MLD, latent diffusion for human motion |
-| Task | Text-to-Motion |
+| Tasks | T2M |
 | Venue | CVPR 2023 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Text encoder | SentenceT5-Large, frozen |

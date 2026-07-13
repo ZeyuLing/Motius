@@ -32,7 +32,7 @@ pipeline methods without requiring the original checkout.
 | Item | Value |
 | ---- | ----- |
 | Method | MotionGPT, language modeling over text and motion tokens |
-| Tasks | Text-to-Motion, Motion-to-Text |
+| Tasks | T2M, M2T |
 | Venue | NeurIPS 2023 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Language backbone | FLAN-T5-base-style encoder-decoder with motion tokens |

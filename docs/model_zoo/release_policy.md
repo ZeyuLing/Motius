@@ -12,6 +12,23 @@ are present and verified:
 | Motius Joint-Position Evaluator | Metrics with the unified SMPL-22 joint-position evaluator |
 | Representation | The model's native motion representation, with conversion helpers clearly marked as adapters |
 
+## Task Taxonomy
+
+README and model-card task fields must use only these capability labels:
+
+| Label | Meaning |
+| ----- | ------- |
+| `T2M` | Text-to-motion generation |
+| `M2T` | Motion-to-text generation |
+| `TP2M` | Text-guided generation conditioned on a motion prefix |
+| `Multi-Prompt T2M` | A sequence composed from multiple text prompts |
+| `Motion Control` | Motion generation under general control signals |
+| `Kinematic Control` | Motion generation under keyframe, trajectory, or end-effector constraints |
+
+Zero-shot, streaming, latent, diffusion, and autoregressive describe how a
+method is trained or executed; they are not separate tasks. Keep those terms in
+the model summary and method description instead of the task field.
+
 Model cards must not use adapter outputs as the model's native representation.
 For example, HY-Motion T2M is `HY-Motion-201`; DART is `DART276`. SMPL,
 SMPL-H, MotionStreamer, or HumanML3D conversions can be documented only as

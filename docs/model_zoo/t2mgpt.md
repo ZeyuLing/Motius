@@ -32,7 +32,7 @@ denormalization behind a consistent pipeline.
 | Item | Value |
 | ---- | ----- |
 | Method | T2M-GPT, autoregressive discrete motion tokens |
-| Task | Text-to-Motion |
+| Tasks | T2M |
 | Venue | CVPR 2023 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Text encoder | CLIP ViT-B/32, frozen |

@@ -33,7 +33,7 @@ denormalization behind a consistent inference pipeline.
 | Item | Value |
 | ---- | ----- |
 | Method | MoGenTS, spatial-temporal discrete motion tokens |
-| Task | Text-to-Motion |
+| Tasks | T2M |
 | Venue | NeurIPS 2024 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Text encoder | CLIP ViT-B/32, frozen |

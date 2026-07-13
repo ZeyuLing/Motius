@@ -30,7 +30,7 @@ HumanML3D DART276 rollout path through a `ModelBundle` and task-facing pipeline.
 | Item | Value |
 | ---- | ----- |
 | Method | DART / DartControl |
-| Task | Autoregressive Text-to-Motion and motion control |
+| Tasks | T2M, Motion Control |
 | Venue | ICLR 2025 |
 | Motion representation | DART276, 20 fps |
 | Backbone | Motion primitive VAE + latent diffusion denoiser |
