@@ -181,15 +181,18 @@ tags:
 - text-to-motion
 - evaluator
 - tmr
-- smpl-h
+- smpl
+- smpl-22
 ---
 
-# Motius Universal SMPL-H Joints66 Evaluator
+# Motius Universal SMPL-22 Joints66 Evaluator
 
 Motius reproduction of the TMR architecture, trained from scratch on the full
 HYMotion Data SFT set and the full single-person MotionHub training union. Motion
-is represented as canonicalized SMPL-H body-joint positions (22 joints in xyz)
-at 30 fps. This is a Motius-trained checkpoint, not an official TMR checkpoint.
+is represented as canonicalized SMPL-22 body-joint positions (22 joints in xyz)
+at 30 fps. The tensors are materialized with a neutral SMPL-H model, with hand
+articulation excluded. This is a Motius-trained checkpoint, not an official TMR
+checkpoint.
 
 ## Provenance
 
@@ -368,7 +371,7 @@ def export_universal_tmr(args: argparse.Namespace) -> None:
         "architectures": ["TMRBundle"],
         "format_version": FORMAT_VERSION,
         "library_name": "motius",
-        "model_type": "motius-universal-smplh-joints66-tmr",
+        "model_type": "motius-universal-smpl22-joints66-tmr",
         "weights_file": "model.safetensors",
         "motion_nfeats": 66,
         "text_nfeats": 768,
@@ -393,7 +396,8 @@ def export_universal_tmr(args: argparse.Namespace) -> None:
         },
     }
     preprocessor = {
-        "motion_representation": "canonicalized SMPL-H joints66 (22 xyz joints)",
+        "motion_representation": "canonicalized SMPL-22 joints66 (22 xyz joints)",
+        "fk_implementation": "neutral SMPL-H with hand articulation excluded",
         "fps": 30,
         "min_seconds": 0.5,
         "max_seconds": 20.0,

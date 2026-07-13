@@ -25,7 +25,7 @@ HML_JOINT_NAMES = [
     'right_wrist',
 ]
 
-NUM_HML_JOINTS = len(HML_JOINT_NAMES)  # 22 SMPLH body joints
+NUM_HML_JOINTS = len(HML_JOINT_NAMES)  # SMPL-22 body joints
 
 HML_LOWER_BODY_JOINTS = [HML_JOINT_NAMES.index(name) for name in ['pelvis', 'left_hip', 'right_hip', 'left_knee', 'right_knee', 'left_ankle', 'right_ankle', 'left_foot', 'right_foot',]]
 SMPL_UPPER_BODY_JOINTS = [i for i in range(len(HML_JOINT_NAMES)) if i not in HML_LOWER_BODY_JOINTS]

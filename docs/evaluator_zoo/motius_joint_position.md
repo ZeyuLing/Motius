@@ -1,7 +1,7 @@
 <h1 align="center">Motius Joint-Position Evaluator Card</h1>
 
 <p align="center">
-  <strong>Universal SMPL-H joint-position evaluator for cross-model T2M reporting.</strong>
+  <strong>Universal SMPL-22 joint-position evaluator for cross-model T2M reporting.</strong>
 </p>
 
 <p align="center">
@@ -13,7 +13,7 @@
 
 The Motius Joint-Position Evaluator is a TMR architecture reproduction trained
 on full HYMotion Data SFT and the full single-person MotionHub training union.
-It scores canonicalized SMPL-H joint positions, avoiding the rotation-twist
+It scores canonicalized SMPL-22 joint positions, avoiding the rotation-twist
 ambiguity that can affect comparisons in SMPL rotation space.
 
 ## Release Snapshot
@@ -22,7 +22,8 @@ ambiguity that can affect comparisons in SMPL rotation space.
 | ---- | ----- |
 | Evaluator | Motius Joint-Position Evaluator |
 | Architecture | TMR-style text/motion encoders with reconstruction decoder |
-| Motion representation | Canonicalized SMPL-H joints66, 22 joints in xyz at 30 fps |
+| Motion representation | Canonicalized SMPL-22 joints66, 22 joints in xyz at 30 fps |
+| FK implementation | Neutral SMPL-H body model; hand articulation is excluded |
 | Training data | Full HYMotion Data SFT + full single-person MotionHub training union |
 | Training checkpoint | Epoch 248, FP32 |
 | Caption protocol | HumanML3D selected captions; MotionHub official test annotations |
@@ -63,7 +64,9 @@ has not been run for a method yet, the row should be marked `Pending`.
 
 ## Notes
 
-The evaluator expects a unified SMPL-H skeleton and canonicalized joint
-positions. Methods that generate HumanML3D-263, MotionStreamer-272, SMPL,
-SMPL-X, or DART-style motion must use the checked conversion path before
-reporting this metric.
+The evaluator expects the unified SMPL-22 body skeleton and canonicalized joint
+positions. SMPL-22 is the pelvis-to-wrist body subset shared by SMPL and
+SMPL-H; SMPL-H identifies the current FK implementation, not a different
+22-joint convention. Methods that generate HumanML3D-263,
+MotionStreamer-272, SMPL, SMPL-X, or DART-style motion must use the checked
+conversion path before reporting this metric.

@@ -52,14 +52,14 @@ coordinate, FPS, and 6D rotation conventions for every route.
 
 Motius model cards report text-to-motion metrics with three evaluator views:
 HumanML3D official metrics, MotionStreamer Evaluator metrics, and the Motius
-joint-position evaluator trained on unified SMPL-H joints. Historical
+joint-position evaluator trained on unified SMPL-22 joints. Historical
 contrastive-evaluator rows are not part of the public Evaluation tables.
 
 | Evaluator | Purpose | Motion Rep. | Checkpoint | Card | Reference |
 | --------- | ------- | ----------- | ---------- | ---- | --------- |
 | HumanML3D Official | Standard T2M leaderboard metrics on the selected-caption HumanML3D test protocol | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-humanml3d-official) | [Evaluator Card](docs/evaluator_zoo/humanml3d_official.md) | [Paper](https://openaccess.thecvf.com/content/CVPR2022/html/Guo_Generating_Diverse_and_Natural_3D_Human_Motions_From_Text_CVPR_2022_paper.html) / [Code](https://github.com/EricGuo5513/text-to-motion) |
 | MotionStreamer Evaluator | Cross-representation semantic evaluator for SMPL-aligned T2M results | MotionStreamer-272 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-motionstreamer-272) | [Evaluator Card](docs/evaluator_zoo/motionstreamer.md) | [Paper](https://arxiv.org/abs/2503.15451) / [Code](https://github.com/zju3dv/MotionStreamer) |
-| Motius Joint-Position Evaluator | Motius-trained TMR reproduction for unified SMPL-H joint positions | SMPL-H joints66 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-universal-smplh-joints66) | [Evaluator Card](docs/evaluator_zoo/motius_joint_position.md) | [TMR Paper](https://arxiv.org/abs/2305.00976) / [TMR Code](https://github.com/Mathux/TMR) |
+| Motius Joint-Position Evaluator | Motius-trained TMR reproduction for unified SMPL-22 joint positions | SMPL-22 joints66 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-universal-smplh-joints66) | [Evaluator Card](docs/evaluator_zoo/motius_joint_position.md) | [TMR Paper](https://arxiv.org/abs/2305.00976) / [TMR Code](https://github.com/Mathux/TMR) |
 
 ## Motion Representation Toolkit
 

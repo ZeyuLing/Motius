@@ -2,6 +2,15 @@
 
 Static metadata is available from `motius.motion.representation.SPECS`.
 
+## SMPL-22 Naming
+
+`SMPL-22` is the canonical pelvis-to-wrist body skeleton used by Motius: the
+root plus the first 21 articulated body joints. These joint names, their order,
+and their kinematic hierarchy are shared by SMPL and SMPL-H. Motius therefore
+uses `SMPL-22`, rather than `SMPL-H`, as the representation name. A specific
+SMPL-H model may still be named when documenting the implementation used to
+materialize joints or meshes.
+
 | Name | Shape | Native FPS | Layout | 6D rotation convention |
 | ---- | ----: | ---------: | ------ | ---------------------- |
 | `hml263` | `(T, 263)` | 20 | root velocity/height, RIC joints, local rotations, velocities, contacts | HumanML3D feature protocol |

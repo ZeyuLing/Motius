@@ -9,7 +9,7 @@ are present and verified:
 | Demo | At least three verified qualitative demos rendered from released outputs |
 | HumanML3D Official | T2M leaderboard metrics with the selected-caption HumanML3D protocol |
 | MotionStreamer Evaluator | Metrics after the checked MotionStreamer conversion path |
-| Motius Joint-Position Evaluator | Metrics with the unified SMPL-H joint-position evaluator |
+| Motius Joint-Position Evaluator | Metrics with the unified SMPL-22 joint-position evaluator |
 | Representation | The model's native motion representation, with conversion helpers clearly marked as adapters |
 
 Model cards must not use adapter outputs as the model's native representation.

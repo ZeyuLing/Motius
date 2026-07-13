@@ -23,7 +23,7 @@
       "name": "Motius Joint-Position Evaluator",
       "card": "docs/evaluator_zoo/motius_joint_position.md",
       "checkpoint": "ZeyuLing/motius-evaluator-universal-smplh-joints66",
-      "motion_representation": "canonicalized SMPL-H joints66",
+      "motion_representation": "canonicalized SMPL-22 joints66",
       "paper": "https://arxiv.org/abs/2305.00976",
       "source_repository": "https://github.com/Mathux/TMR",
       "checkpoint_origin": "Motius architecture reproduction trained from scratch; epoch 248"

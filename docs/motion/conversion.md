@@ -14,7 +14,7 @@ joints = convert_motion(motion_ms272, "ms272", "joints")
 motion135 = convert_motion(motion_hy201, "hymotion201", "motion135")
 
 # FK routes require the skeleton used by the target protocol.
-offsets = np.load("path/to/smplh22_bone_offsets.npy")
+offsets = np.load("path/to/smpl22_bone_offsets.npy")
 motion201 = convert_motion(
     motion135,
     "motion135",
@@ -39,7 +39,7 @@ python tools/convert_motion.py input.npy output.npy \
 
 python tools/convert_motion.py motion135.npy motion201.npz \
   --src motion135 --dst hymotion201 \
-  --bone-offsets assets/my_smplh22_offsets.npy
+  --bone-offsets assets/my_smpl22_offsets.npy
 
 python tools/convert_motion.py dart276.npy motion135.npy \
   --src dart276 --dst motion135
