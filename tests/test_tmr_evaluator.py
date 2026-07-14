@@ -4,6 +4,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+from PIL import Image
 
 from motius.evaluation.metrics import aggregate_t2m_metrics, r_precision
 from motius.models.tmr import TMRBundle
@@ -108,6 +109,11 @@ def test_two_person_representation_demo_uses_gt_retarget_preview() -> None:
     assert "InterX SMPL-H GT" in metadata["route"]
     assert metadata["threejs_viewer"] == "assets/motion/interhuman_representation_demo/index.html"
     assert (ROOT / metadata["gif"]).is_file()
+    gif = Image.open(ROOT / metadata["gif"])
+    assert gif.size == (1024, 576)
+    assert getattr(gif, "n_frames", 1) == metadata["frames"]
+    capture_script = (ROOT / "tools/capture_threejs_demo_gif.py").read_text()
+    assert "window.__MOTIUS_DEMO__.setFrame" in capture_script
 
     asset_dir = ROOT / "assets/motion/interhuman_representation_demo"
     data_source = (asset_dir / "data.js").read_text()
