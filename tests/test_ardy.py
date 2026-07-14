@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 import pytest
 import torch
@@ -32,6 +34,14 @@ def test_ardy_bundle_alias_without_loading_weights():
     bundle = ARDYBundle.from_pretrained("core8", load_model=False)
     assert bundle.model_name == "nvidia/ARDY-Core-RP-20FPS-Horizon8"
     assert bundle.SUPPORTED_TASKS["streaming_text_to_motion"]
+
+
+def test_ardy_export_demo_defaults_are_release_safe():
+    source = (Path(__file__).resolve().parents[1] / "tools/export_ardy_core_demo.py").read_text()
+    assert "someone executes a roundhouse kick" not in source
+    assert "release_ready" in source
+    assert "allow-synthetic-release-output" in source
+    assert "random hash-conditioned tensors" in source
 
 
 @pytest.mark.parametrize(

@@ -5,7 +5,8 @@ This tool runs entirely through Motius. It never imports an upstream ARDY
 checkout. In environments without the gated LLM2Vec/Llama text encoder, pass
 ``--synthetic-text-feat`` to verify the released Core checkpoint, decoder,
 Core skinning, and SMPL retarget visualization paths. Such outputs are not
-semantic text-to-motion results.
+semantic text-to-motion results and are always written to a smoke-test output
+directory unless ``--allow-synthetic-release-output`` is explicitly set.
 """
 
 from __future__ import annotations
@@ -63,18 +64,23 @@ from motius.pipelines.ardy import ARDYPipeline  # noqa: E402
 
 DEFAULT_CASES = [
     {
-        "sample_id": "001840",
-        "caption": "someone executes a roundhouse kick with their left foot.",
+        "sample_id": "rigplay_walk_turn_jog",
+        "caption": "a person walks forward, turns right, and starts jogging",
     },
     {
-        "sample_id": "004545",
-        "caption": "a person jumping while raising both hands and moving apart legs.",
+        "sample_id": "rigplay_side_step",
+        "caption": "a person quickly sidesteps to the left and then returns to standing",
     },
     {
-        "sample_id": "006944",
-        "caption": "a person moves their right hand left, right, up, and down.",
+        "sample_id": "rigplay_crouch_reach",
+        "caption": "a person crouches down and reaches forward with both hands",
     },
 ]
+
+SYNTHETIC_NOTE = (
+    "Synthetic text features validate checkpoint/decoder/Core skinning/SMPL retarget plumbing only; "
+    "they are random hash-conditioned tensors and are not semantic T2M results."
+)
 
 
 def _seed_from_text(text: str) -> int:
@@ -342,6 +348,14 @@ def main() -> None:
     parser.add_argument("--fps", type=int, default=20)
     parser.add_argument("--seed", type=int, default=20260714)
     parser.add_argument("--synthetic-text-feat", action="store_true")
+    parser.add_argument(
+        "--allow-synthetic-release-output",
+        action="store_true",
+        help=(
+            "Allow --synthetic-text-feat to write to the requested output dir. "
+            "Use only for debugging; synthetic outputs are not release demos."
+        ),
+    )
     parser.add_argument("--hf-home", type=Path, default=Path("checkpoints/ardy"))
     parser.add_argument("--model-dir", type=Path, default=None, help="SMPL model directory.")
     parser.add_argument("--device", default="cuda")
@@ -357,30 +371,32 @@ def main() -> None:
         raise FileNotFoundError("SMPL mesh comparison requires --model-dir or MOTIUS_SMPL_MODEL_DIR")
     model_dir = Path(model_dir)
 
+    if args.synthetic_text_feat and not args.allow_synthetic_release_output:
+        requested = args.output_dir
+        if requested.name != "smoke":
+            args.output_dir = requested / "smoke"
+        print(
+            f"--synthetic-text-feat is a smoke-test mode; writing to {args.output_dir} instead of {requested}.",
+            flush=True,
+        )
+
     if args.synthetic_text_feat:
         args.hf_home.mkdir(parents=True, exist_ok=True)
         os.environ.setdefault("HF_HOME", str(args.hf_home.resolve()))
 
-    pipe = ARDYPipeline.from_pretrained(
-        args.checkpoint,
-        bundle_kwargs={
-            "device": args.device,
-            "text_encoder": False if args.synthetic_text_feat else None,
-        },
-    )
+    bundle_kwargs = {"device": args.device}
+    if args.synthetic_text_feat:
+        bundle_kwargs["text_encoder"] = False
+    pipe = ARDYPipeline.from_pretrained(args.checkpoint, bundle_kwargs=bundle_kwargs)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     manifest = {
         "checkpoint": pipe.bundle.model_name,
         "frames": args.frames,
         "fps": args.fps,
         "synthetic_text_feat": bool(args.synthetic_text_feat),
+        "release_ready": not bool(args.synthetic_text_feat),
         "smpl_model_dir": str(model_dir),
-        "note": (
-            "Synthetic text features validate checkpoint/decoder/Core skinning/SMPL retarget plumbing only; "
-            "they are not semantic T2M results."
-            if args.synthetic_text_feat
-            else "Official text encoder path."
-        ),
+        "note": SYNTHETIC_NOTE if args.synthetic_text_feat else "Official text encoder path.",
         "cases": [],
     }
     for index, case in enumerate(_load_cases(args.cases)):
