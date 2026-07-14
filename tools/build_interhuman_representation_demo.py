@@ -287,6 +287,21 @@ def _skeleton_mesh(joints: np.ndarray, radius: float) -> trimesh.Trimesh:
     return trimesh.util.concatenate(parts)
 
 
+def _floor_grid_mesh(size: float, center_z: float, divisions: int = 22) -> trimesh.Trimesh:
+    parts = []
+    step = float(size) / float(divisions)
+    half = float(size) * 0.5
+    thickness = max(float(size) * 0.0012, 0.004)
+    for index in range(divisions + 1):
+        offset = -half + index * step
+        x_line = trimesh.creation.box(extents=(thickness, 0.004, size))
+        x_line.apply_translation([offset, 0.004, center_z])
+        z_line = trimesh.creation.box(extents=(size, 0.004, thickness))
+        z_line.apply_translation([0.0, 0.004, center_z + offset])
+        parts.extend([x_line, z_line])
+    return trimesh.util.concatenate(parts)
+
+
 def render_interhuman_skeleton_smpl_mesh(
     joints: np.ndarray,
     smpl_vertices: np.ndarray,
@@ -324,6 +339,9 @@ def render_interhuman_skeleton_smpl_mesh(
         "floor": pyrender.MetallicRoughnessMaterial(
             baseColorFactor=(0.90, 0.91, 0.93, 1.0), metallicFactor=0.0, roughnessFactor=1.0
         ),
+        "grid": pyrender.MetallicRoughnessMaterial(
+            baseColorFactor=(0.70, 0.74, 0.80, 1.0), metallicFactor=0.0, roughnessFactor=1.0
+        ),
     }
     renderer = pyrender.OffscreenRenderer(width, height)
     frames: list[np.ndarray] = []
@@ -349,6 +367,13 @@ def render_interhuman_skeleton_smpl_mesh(
             floor = trimesh.creation.box(extents=(floor_size, 0.012, floor_size))
             floor.apply_translation([0.0, -0.006, target[2]])
             scene.add(pyrender.Mesh.from_trimesh(floor, material=materials["floor"], smooth=False))
+            scene.add(
+                pyrender.Mesh.from_trimesh(
+                    _floor_grid_mesh(floor_size, target[2]),
+                    material=materials["grid"],
+                    smooth=False,
+                )
+            )
             scene.add(pyrender.PerspectiveCamera(yfov=math.radians(36), aspectRatio=width / height), pose=camera_pose)
             for light_eye, intensity in [
                 (target + np.asarray([2.6, 4.2, 3.0], dtype=np.float32), 4.0),
