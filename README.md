@@ -10,6 +10,7 @@
 
 <p align="center">
   <a href="#model-zoo">Model Zoo</a> |
+  <a href="#leaderboards">Leaderboards</a> |
   <a href="#evaluator-zoo">Evaluator Zoo</a> |
   <a href="#motion-representation-toolkit">Motion Toolkit</a> |
   <a href="docs/getting_started.md">Getting Started</a> |
@@ -29,10 +30,18 @@ InterHuman-262, ARDY-330, Unitree G1, and SMPL
 `motion135`, plus SMPL/SOMA/G1 retargeting. Its documentation records skeleton,
 coordinate, FPS, and 6D rotation conventions for every route.
 
+## Leaderboards
+
+| Leaderboard | Scope | Source |
+| ----------- | ----- | ------ |
+| [T2M HumanML3D](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | Text-to-motion generation on HumanML3D official test split | [Static Space](docs/leaderboards/hf_space_t2m_humanml3d) |
+| [Temporal Condition](docs/leaderboards/hf_space_temporal_condition) | TP2M and multi-prompt temporal-conditioned generation protocols | [Static Space](docs/leaderboards/hf_space_temporal_condition) |
+
 ## Model Zoo
 
-Task labels use a controlled vocabulary: [`T2M`](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), `M2T`, `TP2M`,
-`Two-Person T2M`, `Multi-Prompt T2M`, `Motion Control`, and `Kinematic Control`. Properties such
+Task labels use a controlled vocabulary: [`T2M`](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), `M2T`,
+[`TP2M`](docs/leaderboards/hf_space_temporal_condition),
+`Two-Person T2M`, [`Multi-Prompt T2M`](docs/leaderboards/hf_space_temporal_condition), `Motion Control`, and `Kinematic Control`. Properties such
 as zero-shot, streaming, latent, or autoregressive are described in the model
 cards rather than treated as separate tasks.
 
@@ -43,11 +52,11 @@ cards rather than treated as separate tasks.
 | MoMask | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-momask-humanml3d) | [Model Card](docs/model_zoo/momask.md) | [Paper](https://arxiv.org/abs/2312.00063) / [Code](https://github.com/EricGuo5513/momask-codes) |
 | MoGenTS | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-mogents-humanml3d) | [Model Card](docs/model_zoo/mogents.md) | [Paper](https://arxiv.org/abs/2409.17686) / [Code](https://github.com/weihaosky/mogents) |
 | MotionGPT | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), M2T | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motiongpt-humanml3d) | [Model Card](docs/model_zoo/motiongpt.md) | [Paper](https://arxiv.org/abs/2306.14795) / [Code](https://github.com/OpenMotionLab/MotionGPT) |
-| FlowMDM | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Multi-Prompt T2M, TP2M | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-flowmdm-humanml3d) | [Model Card](docs/model_zoo/flowmdm.md) | [Paper](https://arxiv.org/abs/2402.15509) / [Code](https://github.com/BarqueroGerman/FlowMDM) |
+| FlowMDM | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Multi-Prompt T2M](docs/leaderboards/hf_space_temporal_condition), [TP2M](docs/leaderboards/hf_space_temporal_condition) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-flowmdm-humanml3d) | [Model Card](docs/model_zoo/flowmdm.md) | [Paper](https://arxiv.org/abs/2402.15509) / [Code](https://github.com/BarqueroGerman/FlowMDM) |
 | MotionMillion | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | MotionStreamer-272 | [7B](https://huggingface.co/ZeyuLing/hftrainer-gotozero-7b-train-humanml272) / [3B](https://huggingface.co/ZeyuLing/hftrainer-gotozero-3b-train-humanml272) | [Model Card](docs/model_zoo/motionmillion.md) | [Paper](https://arxiv.org/abs/2507.07095) / [Code](https://github.com/VankouF/MotionMillion-Codes) |
-| MotionStreamer | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Multi-Prompt T2M, TP2M | MotionStreamer-272 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionstreamer-humanml272) | [Model Card](docs/model_zoo/motionstreamer.md) | [Paper](https://arxiv.org/abs/2503.15451) / [Code](https://github.com/zju3dv/MotionStreamer) |
+| MotionStreamer | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Multi-Prompt T2M](docs/leaderboards/hf_space_temporal_condition), [TP2M](docs/leaderboards/hf_space_temporal_condition) | MotionStreamer-272 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionstreamer-humanml272) | [Model Card](docs/model_zoo/motionstreamer.md) | [Paper](https://arxiv.org/abs/2503.15451) / [Code](https://github.com/zju3dv/MotionStreamer) |
 | HY-Motion T2M | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HY-Motion-201 | [Full](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0) / [Lite](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0-lite) | [Model Card](docs/model_zoo/hymotion_t2m.md) | [Paper](https://arxiv.org/abs/2512.23464) / [Code](https://github.com/Tencent-Hunyuan/HY-Motion-1.0) |
-| KIMODO | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Multi-Prompt T2M, TP2M, Kinematic Control | SOMA / G1 / SMPL-X | [SOMA-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-soma-rp) / [G1-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-rp) / [G1-SEED](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-seed) / [SMPLX-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-smplx-rp) | [Model Card](docs/model_zoo/kimodo.md) | [Paper](https://arxiv.org/abs/2603.15546) / [Code](https://github.com/nv-tlabs/kimodo) |
+| KIMODO | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Multi-Prompt T2M](docs/leaderboards/hf_space_temporal_condition), [TP2M](docs/leaderboards/hf_space_temporal_condition), Kinematic Control | SOMA / G1 / SMPL-X | [SOMA-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-soma-rp) / [G1-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-rp) / [G1-SEED](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-seed) / [SMPLX-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-smplx-rp) | [Model Card](docs/model_zoo/kimodo.md) | [Paper](https://arxiv.org/abs/2603.15546) / [Code](https://github.com/nv-tlabs/kimodo) |
 | ARDY | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Kinematic Control | ARDY-330 / Unitree G1 explicit 414D | [Core](https://huggingface.co/nvidia/ARDY-Core-RP-20FPS-Horizon40) / [G1](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon52) | [Model Card](docs/model_zoo/ardy.md) | [Paper](https://arxiv.org/abs/2607.08741) / [Code](https://github.com/nv-tlabs/ardy) |
 | MotionBricks | Kinematic Control | MotionBricks G1 global 414D / local 413D / dual 418D | [Official LFS](https://github.com/NVlabs/GR00T-WholeBodyControl/tree/main/motionbricks) | [Model Card](docs/model_zoo/motionbricks.md) | [Paper](https://arxiv.org/abs/2604.24833) / [Code](https://github.com/NVlabs/GR00T-WholeBodyControl/tree/main/motionbricks) |
 | MLD | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-mld-humanml3d) | [Model Card](docs/model_zoo/mld.md) | [Paper](https://arxiv.org/abs/2212.04048) / [Code](https://github.com/ChenFengYe/motion-latent-diffusion) |

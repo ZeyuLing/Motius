@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Temporal Condition Leaderboard</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap");
+    :root {
+      color-scheme: light;
+      --bg: #f5f7f8;
+      --panel: #ffffff;
+      --ink: #172026;
+      --muted: #60717b;
+      --line: #d7e0e3;
+      --line-strong: #b7c5ca;
+      --teal: #0b8f95;
+      --green: #18724f;
+      --blue: #3367a7;
+      --amber: #a76e00;
+      --coral: #bd5646;
+      --shadow: 0 8px 24px rgba(23, 32, 38, 0.07);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Manrope", ui-sans-serif, sans-serif;
+      line-height: 1.5;
+    }
+    .page {
+      width: min(1440px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 28px 0 42px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 22px;
+      margin-bottom: 18px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+    .subtitle {
+      max-width: 900px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .badge {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 999px;
+      padding: 5px 10px;
+      color: #3b4a51;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .updated {
+      flex: 0 0 auto;
+      min-width: 190px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      box-shadow: var(--shadow);
+    }
+    .updated strong {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 650;
+    }
+    .score-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .score-card {
+      border: 1px solid var(--line);
+      border-top: 3px solid var(--teal);
+      background: var(--panel);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    .score-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .score-card strong {
+      display: block;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-top: 14px;
+    }
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 15px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfd;
+    }
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.3;
+      letter-spacing: 0;
+    }
+    .note {
+      color: var(--muted);
+      font-size: 12px;
+      max-width: 720px;
+    }
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 920px;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: right;
+      white-space: nowrap;
+    }
+    th {
+      background: #f8fafb;
+      color: #40515a;
+      font-weight: 650;
+      font-size: 12px;
+    }
+    td:first-child, th:first-child,
+    td:nth-child(2), th:nth-child(2) {
+      text-align: left;
+    }
+    tr.best {
+      background: #f1fbf8;
+    }
+    .method {
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .mono {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+    }
+    .bars {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 130px 1fr 70px;
+      gap: 12px;
+      align-items: center;
+      font-size: 13px;
+    }
+    .bar-track {
+      height: 14px;
+      border-radius: 999px;
+      background: #edf2f3;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), var(--green));
+      border-radius: inherit;
+    }
+    footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    @media (max-width: 900px) {
+      .topbar { flex-direction: column; }
+      .score-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .panel-head { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="topbar">
+      <div>
+        <h1>Temporal Condition Leaderboard</h1>
+        <p class="subtitle">
+          HumanML3D temporal-conditioned generation benchmark. TP2M methods are
+          given a caption and a short ground-truth motion prefix, then evaluated
+          on continuation quality with the MotionStreamer-272 evaluator.
+        </p>
+        <div class="badge-row">
+          <span class="badge">Task: TP2M</span>
+          <span class="badge">Dataset: HumanML3D official test</span>
+          <span class="badge">Captions: selected captions</span>
+          <span class="badge">Evaluator: MotionStreamer-272</span>
+          <span class="badge">Conditions: 1 / 5 / 9 frames</span>
+        </div>
+      </div>
+      <div class="updated">
+        <strong>Maintained in Motius</strong>
+        Static Space source<br>
+        docs/leaderboards/hf_space_temporal_condition
+      </div>
+    </section>
+
+    <section class="score-strip" aria-label="headline scores">
+      <div class="score-card"><span>Best R@3, 9-frame prefix</span><strong>0.856</strong></div>
+      <div class="score-card"><span>Best FID, 9-frame prefix</span><strong>11.077</strong></div>
+      <div class="score-card"><span>Tracked methods</span><strong>3</strong></div>
+      <div class="score-card"><span>Condition settings</span><strong>1 / 5 / 9</strong></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>TP2M Results</h2>
+        <div class="note">
+          Best/second-best highlighting excludes GT rows; this table currently
+          tracks released methods with implemented TP2M pipelines in Motius.
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Condition Frames</th>
+              <th>Samples</th>
+              <th>R@1</th>
+              <th>R@2</th>
+              <th>R@3</th>
+              <th>FID ↓</th>
+              <th>MM-Dist ↓</th>
+              <th>Diversity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="method">FlowMDM</td><td>1</td><td class="mono">3,968</td><td>0.449</td><td>0.630</td><td>0.706</td><td>83.773</td><td>19.872</td><td>26.365</td></tr>
+            <tr><td class="method">FlowMDM</td><td>5</td><td class="mono">3,968</td><td>0.481</td><td>0.654</td><td>0.729</td><td>75.853</td><td>19.456</td><td>26.467</td></tr>
+            <tr><td class="method">FlowMDM</td><td>9</td><td class="mono">3,968</td><td>0.490</td><td>0.664</td><td>0.742</td><td>71.338</td><td>19.262</td><td>26.625</td></tr>
+            <tr class="best"><td class="method">MotionStreamer</td><td>1</td><td class="mono">3,904</td><td>0.617</td><td>0.780</td><td>0.850</td><td>12.479</td><td>16.849</td><td>27.134</td></tr>
+            <tr class="best"><td class="method">MotionStreamer</td><td>5</td><td class="mono">3,904</td><td>0.628</td><td>0.786</td><td>0.853</td><td>11.214</td><td>16.586</td><td>27.144</td></tr>
+            <tr class="best"><td class="method">MotionStreamer</td><td>9</td><td class="mono">3,904</td><td>0.633</td><td>0.788</td><td>0.856</td><td>11.077</td><td>16.486</td><td>27.381</td></tr>
+            <tr><td class="method">KIMODO</td><td>1</td><td class="mono">3,968</td><td>0.525</td><td>0.690</td><td>0.769</td><td>82.560</td><td>19.301</td><td>26.158</td></tr>
+            <tr><td class="method">KIMODO</td><td>5</td><td class="mono">3,968</td><td>0.538</td><td>0.699</td><td>0.775</td><td>80.381</td><td>19.199</td><td>26.154</td></tr>
+            <tr><td class="method">KIMODO</td><td>9</td><td class="mono">3,968</td><td>0.531</td><td>0.704</td><td>0.772</td><td>79.122</td><td>19.166</td><td>26.202</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>R@3 by 9-Frame Prefix</h2>
+        <div class="note">Higher is better. Bars use the 9-frame TP2M condition setting.</div>
+      </div>
+      <div class="bars">
+        <div class="bar-row"><span>MotionStreamer</span><div class="bar-track"><div class="bar" style="width: 100%"></div></div><strong>0.856</strong></div>
+        <div class="bar-row"><span>KIMODO</span><div class="bar-track"><div class="bar" style="width: 90.2%"></div></div><strong>0.772</strong></div>
+        <div class="bar-row"><span>FlowMDM</span><div class="bar-track"><div class="bar" style="width: 86.7%"></div></div><strong>0.742</strong></div>
+      </div>
+    </section>
+
+    <footer>
+      Source rows are mirrored from the Motius model cards for FlowMDM,
+      MotionStreamer, and KIMODO. Multi-prompt temporal composition belongs to
+      this leaderboard family and will be added as separate protocol tables as
+      public results are finalized.
+    </footer>
+  </main>
+</body>
+</html>
