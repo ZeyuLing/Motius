@@ -364,6 +364,7 @@ def main() -> None:
     parser.add_argument("--height", type=int, default=720)
     parser.add_argument("--max-render-frames", type=int, default=96)
     parser.add_argument("--write-mp4", action="store_true")
+    parser.add_argument("--skip-render", action="store_true", help="Write mesh npz artifacts without pyrender output.")
     args = parser.parse_args()
 
     model_dir = args.model_dir or os.environ.get("MOTIUS_SMPL_MODEL_DIR")
@@ -443,25 +444,27 @@ def main() -> None:
             fps=args.fps,
             fit_mpjpe_mm=smpl_metrics["fit_mpjpe_mm"],
         )
-        frames = render_core_smpl_mesh_gif(
-            core_vertices,
-            core_faces,
-            smpl_vertices,
-            smpl_faces,
-            gif_path,
-            fps=args.fps,
-            width=args.width,
-            height=args.height,
-            max_frames=args.max_render_frames,
-        )
         case_meta = {
             "sample_id": case["sample_id"],
             "caption": caption,
             "npz": str(npz_path),
-            "gif": str(gif_path),
             "fit_mpjpe_mm": smpl_metrics["fit_mpjpe_mm"],
         }
-        if args.write_mp4:
+        frames = None
+        if not args.skip_render:
+            frames = render_core_smpl_mesh_gif(
+                core_vertices,
+                core_faces,
+                smpl_vertices,
+                smpl_faces,
+                gif_path,
+                fps=args.fps,
+                width=args.width,
+                height=args.height,
+                max_frames=args.max_render_frames,
+            )
+            case_meta["gif"] = str(gif_path)
+        if args.write_mp4 and frames is not None:
             mp4_path = args.output_dir / f"{stem}_core_mesh_smpl_mesh.mp4"
             imageio.mimwrite(mp4_path, frames, fps=args.fps, quality=8, macro_block_size=1)
             case_meta["mp4"] = str(mp4_path)
