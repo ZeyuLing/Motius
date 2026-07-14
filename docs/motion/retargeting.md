@@ -56,16 +56,21 @@ motion_interhuman = motion135_to_interhuman262(
 The pair is canonicalized once using person one's first frame. Do not
 canonicalize each person independently.
 
-## ARDY Core To SMPL-22 Joints
+## Core-27 And SMPL-22 Joint Bridges
 
 The official ARDY repository does not provide Core-to-SMPL or SMPL-to-Core
-retargeting code. It visualizes the released Core checkpoint with its native
-Core-27 skin. Motius exposes only a named joint-position bridge:
+rotation retargeting code. It visualizes the released Core checkpoint with its
+native Core-27 skin. Motius exposes named joint-position bridges:
 
 ```python
-from motius.motion import ardy_core27_to_smpl22_joints, convert_motion
+from motius.motion import (
+    ardy_core27_to_smpl22_joints,
+    convert_motion,
+    smpl22_joints_to_ardy_core27_joints,
+)
 
 smpl22_joints = ardy_core27_to_smpl22_joints(core27_joints)
+core27_joints = smpl22_joints_to_ardy_core27_joints(smpl22_joints)
 
 smpl22_joints = convert_motion(
     ardy_features,
@@ -75,6 +80,10 @@ smpl22_joints = convert_motion(
     is_normalized=True,
 )
 ```
+
+These bridges are for skeleton viewers and joint-position evaluators. They do
+not produce a Core-330 ARDY feature tensor, recover SMPL shape/twist, or create
+a valid `motion135` sequence.
 
 This route maps Core joints into SMPL-22 joint order for visualization and
 joint-position evaluator experiments. It is not a valid SMPL pose, not a

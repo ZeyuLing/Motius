@@ -25,7 +25,7 @@ results, and qualitative SMPL renders.
 
 Motius also ships an explicit [Motion Toolkit](docs/motion/README.md) for
 converting HML263, MotionStreamer-272, HY-Motion-201, DART276,
-InterHuman-262, ARDY Core/G1, and SMPL
+InterHuman-262, Core-27, Unitree G1, and SMPL
 `motion135`, plus SMPL/SOMA/G1 retargeting. Its documentation records skeleton,
 coordinate, FPS, and 6D rotation conventions for every route.
 
@@ -48,7 +48,7 @@ cards rather than treated as separate tasks.
 | MotionStreamer | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Multi-Prompt T2M, TP2M | MotionStreamer-272 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionstreamer-humanml272) | [Model Card](docs/model_zoo/motionstreamer.md) | [Paper](https://arxiv.org/abs/2503.15451) / [Code](https://github.com/zju3dv/MotionStreamer) |
 | HY-Motion T2M | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HY-Motion-201 | [Full](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0) / [Lite](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0-lite) | [Model Card](docs/model_zoo/hymotion_t2m.md) | [Paper](https://arxiv.org/abs/2512.23464) / [Code](https://github.com/Tencent-Hunyuan/HY-Motion-1.0) |
 | KIMODO | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Multi-Prompt T2M, TP2M, Kinematic Control | SOMA / G1 / SMPL-X | [SOMA-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-soma-rp) / [G1-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-rp) / [G1-SEED](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-seed) / [SMPLX-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-smplx-rp) | [Model Card](docs/model_zoo/kimodo.md) | [Paper](https://arxiv.org/abs/2603.15546) / [Code](https://github.com/nv-tlabs/kimodo) |
-| ARDY | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Kinematic Control | ARDY-Core-330 / ARDY-G1-414 | [Core](https://huggingface.co/nvidia/ARDY-Core-RP-20FPS-Horizon40) / [G1](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon52) | [Model Card](docs/model_zoo/ardy.md) | [Paper](https://arxiv.org/abs/2607.08741) / [Code](https://github.com/nv-tlabs/ardy) |
+| ARDY | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Kinematic Control | Core-330 / Unitree G1 explicit 414D | [Core](https://huggingface.co/nvidia/ARDY-Core-RP-20FPS-Horizon40) / [G1](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon52) | [Model Card](docs/model_zoo/ardy.md) | [Paper](https://arxiv.org/abs/2607.08741) / [Code](https://github.com/nv-tlabs/ardy) |
 | MLD | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-mld-humanml3d) | [Model Card](docs/model_zoo/mld.md) | [Paper](https://arxiv.org/abs/2212.04048) / [Code](https://github.com/ChenFengYe/motion-latent-diffusion) |
 | MotionLCM | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionlcm-humanml3d) | [Model Card](docs/model_zoo/motionlcm.md) | [Paper](https://arxiv.org/abs/2404.19759) / [Code](https://github.com/Dai-Wenxun/MotionLCM) |
 | ViMoGen | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | DART276 | [HF](https://huggingface.co/ZeyuLing/hftrainer-vimogen-1.3b-humanml3d) | [Model Card](docs/model_zoo/vimogen.md) | [Paper](https://arxiv.org/abs/2510.26794) / [Code](https://github.com/MotrixLab/ViMoGen) |
@@ -96,30 +96,30 @@ validated retargeting route before crossing skeletons.
 | **HY-Motion-201** | `(T, 201)` | HY-Motion models | Contains `motion135` as an exact prefix plus 22 joint positions |
 | **DART276** | `(T, 276)` | DART and ViMoGen | Bridges through SMPL parameters and joints with explicit coordinate conversion |
 | **InterHuman-262** | `(T, 2, 262)` | InterGen and InterMask | Two synchronized SMPL-22 tracks in one shared canonical world frame; exact joint decode, position-IK mesh bridge |
-| **Unitree G1-38D** | `(T, 38)` | G1-native generation and evaluation | SMPL body motion is retargeted through GMR; G1 qpos decode is exact |
-| **ARDY-Core-330** | `(T, 330)` | ARDY Core checkpoints | Exact native Core-27 decode; named Core-27 to SMPL-22 joint bridge for joint evaluators |
-| **ARDY-G1-414** | `(T, 414)` | ARDY G1 checkpoints | Exact native G1 joint/rotation decode and exact MuJoCo qpos-36 export |
+| **Unitree G1** | `(T, 38)` or ARDY explicit `(T, 414)` | G1-native generation and evaluation | SMPL body motion is retargeted through GMR; G1 qpos decode is exact. ARDY's G1 checkpoint uses the same Unitree G1 skeleton family with its own explicit 414D tensor. |
+| **Core-27 / Core-330** | `(T, 330)` | ARDY Core checkpoints | Exact native Core-27 decode; named Core-27 to SMPL-22 joint bridge for joint evaluators |
 
 ### Same-Motion Representation Demo
 
-The preview below uses one official HumanML3D test motion for every panel. The
-left panel decodes HumanML3D-263 to SMPL-22 joints, the center renders the
-skinned SMPL surface, and the right animates the Unitree G1 MJCF visual meshes
-after GMR retargeting. All three are aligned to the same initial body heading.
+The preview below uses one official HumanML3D test motion for every panel:
+HumanML3D-263 joints, SMPL mesh, SOMA-30 joints, Core-27 joints, and Unitree G1
+MJCF visual meshes. All panels are aligned to the same initial body heading.
 
-![HumanML3D, SMPL, and Unitree G1 representation comparison](assets/motion/representation_demo/004822_hml_smpl_g1.gif)
+![HumanML3D, SMPL, SOMA, Core, and Unitree G1 representation comparison](assets/motion/representation_demo/004822_hml_smpl_soma_core_g1.gif)
 
 [Open the synchronized Three.js viewer](assets/motion/representation_demo/index.html)
 or read the [representation protocol](docs/motion/representations.md).
 
 ### Two-Person Representation Demo
 
-The preview below uses one GT InterX clip for every panel. The left panel
-decodes `InterHuman-262` to two synchronized SMPL-22 joint tracks, and the
-right panel renders the same body motion as paired SMPL meshes. Both panels are
-aligned in the same shared world frame.
+The preview below uses an InterX GT clip where one person steps forward and
+points while the other leans back. The case avoids precision-contact actions
+such as high-fives or hand holding, so the demo focuses on representation
+geometry rather than hand-contact accuracy. The left panel decodes
+`InterHuman-262` to two synchronized SMPL-22 joint tracks, and the right panel
+renders the same body motion as paired SMPL meshes.
 
-![GT InterX to InterHuman skeleton and SMPL mesh representation comparison](assets/motion/interhuman_representation_demo/interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.gif)
+![GT InterX to InterHuman skeleton and SMPL mesh representation comparison](assets/motion/interhuman_representation_demo/interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif)
 
 [Open the synchronized Three.js viewer](assets/motion/interhuman_representation_demo/index.html)
 or read the [two-person representation protocol](docs/motion/representations.md#two-person-interhuman-preview).
@@ -164,6 +164,9 @@ smpl22_joints = convert_motion(
     motion_rep=ardy_pipe.bundle.motion_rep,
     is_normalized=True,
 )
+
+# SMPL-22 joints -> named Core-27 joint bridge for Core skeleton viewers.
+core27_joints = convert_motion(smpl22_joints, "smpl22_joints", "core27_joints")
 ```
 
 ```bash

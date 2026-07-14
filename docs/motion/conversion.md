@@ -113,10 +113,11 @@ store the converted array under `motion` and record source/target names.
 | InterHuman-262 | joints | Exact stored global-position decode; preserves the shared pair frame |
 | paired joints | InterHuman-262 | Official pair-aware canonicalization; requires 21 non-root local rotations |
 | paired motion135 | InterHuman-262 | FK plus pair-aware encoding; requires explicit SMPL-22 offsets |
-| ARDY Core-330 | joints | Exact native Core-27 decode; requires the checkpoint `motion_rep` |
-| ARDY Core-330 | SMPL-22 joints | Named joint-position bridge; not an SMPL pose or mesh recovery |
-| ARDY G1-414 | joints | Exact native G1-34 decode; requires the checkpoint `motion_rep` |
-| ARDY G1-414 | G1 qpos-36 | Exact MuJoCo root pose plus 29-DOF export |
+| Core-330 | Core-27 joints | Exact native Core-27 decode; requires the checkpoint `motion_rep` |
+| Core-27 joints | SMPL-22 joints | Named joint-position bridge; not an SMPL pose or mesh recovery |
+| SMPL-22 joints | Core-27 joints | Named joint-position bridge for Core skeleton viewers and joint evaluators |
+| Unitree G1 explicit 414D | G1 joints | Exact native Unitree G1 decode; requires the checkpoint `motion_rep` |
+| Unitree G1 explicit 414D | G1 qpos-36 | Exact MuJoCo root pose plus 29-DOF export |
 | G1-38 | G1 qpos-36 | Exact root quaternion + 29-DOF decode |
 | G1 qpos-36 | G1-38 | Optional root canonicalization and XY velocity encoding |
 
@@ -129,10 +130,11 @@ Use its exact joint decode followed by `retarget_hml263_clip(...,
 rotation_init="position_ik")` when an SMPL mesh or `motion135` approximation is
 required.
 
-ARDY Core-330 follows the same honesty rule. The official ARDY repository does
-not provide Core-to-SMPL retargeting. Motius exposes only
-`ardy_core27_to_smpl22_joints` for joint-level comparison until a validated
-position-IK bridge reports its fitting error.
+Core-330 follows the same honesty rule. The official ARDY repository does not
+provide Core-to-SMPL retargeting. Motius exposes
+`ardy_core27_to_smpl22_joints` and `smpl22_joints_to_ardy_core27_joints` for
+joint-level comparison until a validated rotation/mesh retargeter reports its
+fitting error.
 
 ## HumanML3D Protocol Controls
 

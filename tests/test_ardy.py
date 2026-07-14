@@ -9,16 +9,18 @@ import pytest
 import torch
 
 from motius.models.ardy import ARDYBundle
-from motius.motion.representation import get_spec, split_ardy_features
+from motius.motion.representation import convert_motion, get_spec, split_ardy_features
 
 
 def test_ardy_specs_match_explicit_feature_widths():
-    core = get_spec("ARDY-Core-330")
-    g1 = get_spec("ARDY-G1-414")
+    core = get_spec("Core-330")
+    g1 = get_spec("G1-414")
     assert core.dim == 330
     assert core.layout[-1][2] == 330
     assert g1.dim == 414
     assert g1.layout[-1][2] == 414
+    assert "not an SMPL-family body model" in core.notes
+    assert "not listed as a separate body model" in g1.notes
 
 
 @pytest.mark.parametrize("name,dim", [("ardy_core330", 330), ("ardy_g1_414", 414)])
@@ -98,7 +100,10 @@ def test_ardy_constraint_loader_honors_dtype():
 
 
 def test_ardy_core27_to_smpl22_joint_bridge_is_explicit():
-    from motius.motion import ardy_core27_to_smpl22_joints
+    from motius.motion import (
+        ardy_core27_to_smpl22_joints,
+        smpl22_joints_to_ardy_core27_joints,
+    )
 
     joints = np.arange(2 * 27 * 3, dtype=np.float32).reshape(2, 27, 3)
     smpl = ardy_core27_to_smpl22_joints(joints)
@@ -112,3 +117,48 @@ def test_ardy_core27_to_smpl22_joint_bridge_is_explicit():
     recentered = ardy_core27_to_smpl22_joints(joints, recenter_root=True)
     np.testing.assert_allclose(recentered[:, 0, [0, 2]], 0.0)
     np.testing.assert_array_equal(recentered[:, 0, 1], smpl[:, 0, 1])
+
+    core = smpl22_joints_to_ardy_core27_joints(smpl)
+    assert core.shape == (2, 27, 3)
+    np.testing.assert_array_equal(core[:, 0], smpl[:, 0])
+    np.testing.assert_array_equal(core[:, 23], smpl[:, 1])
+    np.testing.assert_array_equal(core[:, 19], smpl[:, 2])
+    np.testing.assert_allclose(core[:, 11], smpl[:, 21] + (smpl[:, 21] - smpl[:, 19]) * 0.38)
+    roundtrip = convert_motion(core, source="core27_joints", target="smpl22_joints")
+    np.testing.assert_array_equal(roundtrip, smpl)
+    np.testing.assert_array_equal(
+        convert_motion(smpl, source="smpl22_joints", target="core27_joints"),
+        core,
+    )
+
+
+def test_convert_motion_smpl_parameters_pass_shape_and_gender(monkeypatch):
+    import motius.motion.representation.convert as convert_module
+
+    seen = {}
+
+    def fake_smpl_to_joints(global_orient, body_pose, transl, **kwargs):
+        seen.update(kwargs)
+        return np.zeros((1, 22, 3), dtype=np.float32)
+
+    monkeypatch.setattr(convert_module, "smpl_to_joints", fake_smpl_to_joints)
+    data = {
+        "global_orient": np.zeros((1, 3), dtype=np.float32),
+        "body_pose": np.zeros((1, 63), dtype=np.float32),
+        "transl": np.zeros((1, 3), dtype=np.float32),
+        "betas": np.ones((1, 10), dtype=np.float32),
+        "gender": np.array("female"),
+        "smpl_type": np.array("smplh"),
+    }
+    output = convert_motion(
+        data,
+        source="smpl",
+        target="joints",
+        model_path="/tmp/smpl_models",
+    )
+
+    assert output.shape == (1, 22, 3)
+    np.testing.assert_array_equal(seen["betas"], data["betas"])
+    assert seen["gender"] == "female"
+    assert seen["model_type"] == "smplh"
+    assert seen["model_path"] == "/tmp/smpl_models"

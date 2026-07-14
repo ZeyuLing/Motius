@@ -167,7 +167,7 @@ ARDY_CORE330 = MotionRepresentationSpec(
     name="ardy_core330",
     dim=330,
     fps=20.0,
-    coordinate_frame="ARDY Core Y-up world frame; initial body heading is +Z",
+    coordinate_frame="Core-27 Y-up world frame used by released ARDY Core checkpoints",
     rotation_convention="ARDY continuous 6D global rotations via matrix_to_cont6d",
     layout=(
         ("root_position", 0, 3, "absolute XYZ root position"),
@@ -177,7 +177,11 @@ ARDY_CORE330 = MotionRepresentationSpec(
         ("global_joint_velocities", 245, 326, "27 joints * XYZ velocity"),
         ("foot_contacts", 326, 330, "left/right heel and toe contacts"),
     ),
-    notes="Native explicit representation of the 27-joint ARDY Core checkpoints.",
+    notes=(
+        "Native explicit tensor for NVIDIA's Core skeleton checkpoints. Core is "
+        "not an SMPL-family body model; Motius exposes a named Core-27 <-> "
+        "SMPL-22 joint-position bridge for viewers and joint evaluators."
+    ),
 )
 
 
@@ -185,7 +189,7 @@ ARDY_G1_414 = MotionRepresentationSpec(
     name="ardy_g1_414",
     dim=414,
     fps=25.0,
-    coordinate_frame="ARDY Unitree G1 Y-up world frame; initial body heading is +Z",
+    coordinate_frame="Unitree G1 Y-up world frame used by released ARDY G1 checkpoints",
     rotation_convention="ARDY continuous 6D global rotations via matrix_to_cont6d",
     layout=(
         ("root_position", 0, 3, "absolute XYZ pelvis position"),
@@ -195,7 +199,11 @@ ARDY_G1_414 = MotionRepresentationSpec(
         ("global_joint_velocities", 308, 410, "34 joints * XYZ velocity"),
         ("foot_contacts", 410, 414, "left/right heel and toe contacts"),
     ),
-    notes="Native explicit representation of the 34-joint ARDY G1 checkpoints.",
+    notes=(
+        "Native explicit tensor for ARDY's Unitree G1 checkpoints. This is the "
+        "same robot family as the public Unitree G1 representation; it is not "
+        "listed as a separate body model."
+    ),
 )
 
 

@@ -23,7 +23,7 @@
       left: 5vw;
       right: 5vw;
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       pointer-events: none;
     }
     .label {
@@ -35,6 +35,8 @@
     }
     .label.hml { color: #087991; }
     .label.smpl { color: #9a4e31; }
+    .label.soma { color: #7a5a10; }
+    .label.core { color: #5b5594; }
     .label.g1 { color: #293446; }
     .controls {
       position: fixed;
@@ -131,6 +133,8 @@
   <section class="labels" aria-hidden="true">
     <div class="label hml">HumanML3D-263</div>
     <div class="label smpl">SMPL</div>
+    <div class="label soma">SOMA-30</div>
+    <div class="label core">Core-27</div>
     <div class="label g1">Unitree G1</div>
   </section>
   <div class="controls">
@@ -228,8 +232,7 @@
     const tempB = new THREE.Vector3();
     const tempDirection = new THREE.Vector3();
 
-    function makeHumanMLRig(xOffset) {
-      const rep = demo.representations.humanml3d;
+    function makeSkeletonRig(rep, xOffset, palette) {
       const group = new THREE.Group();
       group.position.x = xOffset;
       scene.add(group);
@@ -238,7 +241,7 @@
       const jointGeometry = new THREE.SphereGeometry(0.032, 14, 10);
       rep.parents.forEach((parent, index) => {
         const material = new THREE.MeshStandardMaterial({
-          color: index % 2 ? 0x10a6bf : 0x08758b,
+          color: index % 2 ? palette[1] : palette[0],
           roughness: 0.62,
           metalness: 0.03,
         });
@@ -366,7 +369,13 @@
       return { group, update };
     }
 
-    const rigs = [makeHumanMLRig(-2.35), makeSMPLMesh(0), makeG1Mesh(2.35)];
+    const rigs = [
+      makeSkeletonRig(demo.representations.humanml3d, -4.6, [0x08758b, 0x10a6bf]),
+      makeSMPLMesh(-2.3),
+      makeSkeletonRig(demo.representations.soma, 0, [0x9b6b17, 0xd79922]),
+      makeSkeletonRig(demo.representations.core, 2.3, [0x5b5594, 0x8b84cf]),
+      makeG1Mesh(4.6),
+    ];
     const timeline = document.querySelector("#timeline");
     const play = document.querySelector("#play");
     const speed = document.querySelector("#speed");
@@ -406,9 +415,9 @@
       const height = window.innerHeight;
       camera.aspect = width / height;
       const mobile = camera.aspect < 0.78;
-      camera.position.z = mobile ? 20.5 : 7.8;
-      rigs[0].group.position.x = mobile ? -2.0 : -2.35;
-      rigs[2].group.position.x = mobile ? 2.0 : 2.35;
+      camera.position.z = mobile ? 26.5 : 11.2;
+      const offsets = mobile ? [-4.4, -2.2, 0, 2.2, 4.4] : [-4.6, -2.3, 0, 2.3, 4.6];
+      rigs.forEach((rig, index) => { rig.group.position.x = offsets[index]; });
       camera.updateProjectionMatrix();
       renderer.setSize(width, height, false);
       render();

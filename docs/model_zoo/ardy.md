@@ -36,7 +36,7 @@ available on the [project page](https://research.nvidia.com/labs/sil/projects/ar
 | Method | Two-stage autoregressive diffusion with explicit root and latent body streams |
 | Tasks | T2M, online prompt updates, kinematic control |
 | Venue | ACM TOG 45(4), SIGGRAPH 2026, Article 86 |
-| Native skeletons | Core-27 and Unitree G1-34 |
+| Native skeletons | Core-27 and Unitree G1 |
 | Native FPS | Core 20 fps; G1 25 fps |
 | Text encoder | LLM2Vec with Meta-Llama-3-8B-Instruct |
 | Pipeline | `motius.pipelines.ardy.ARDYPipeline` |
@@ -48,11 +48,11 @@ available on the [project page](https://research.nvidia.com/labs/sil/projects/ar
 | ----- | -------- | --: | ----------------: | ------------------- |
 | `core` / `core40` | Core-27 | 20 | 40 frames | [`nvidia/ARDY-Core-RP-20FPS-Horizon40`](https://huggingface.co/nvidia/ARDY-Core-RP-20FPS-Horizon40) |
 | `core8` | Core-27 | 20 | 8 frames | [`nvidia/ARDY-Core-RP-20FPS-Horizon8`](https://huggingface.co/nvidia/ARDY-Core-RP-20FPS-Horizon8) |
-| `g1` / `g152` | G1-34 | 25 | 52 frames | [`nvidia/ARDY-G1-RP-25FPS-Horizon52`](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon52) |
-| `g18` | G1-34 | 25 | 8 frames | [`nvidia/ARDY-G1-RP-25FPS-Horizon8`](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon8) |
+| `g1` / `g152` | Unitree G1 | 25 | 52 frames | [`nvidia/ARDY-G1-RP-25FPS-Horizon52`](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon52) |
+| `g18` | Unitree G1 | 25 | 8 frames | [`nvidia/ARDY-G1-RP-25FPS-Horizon8`](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon8) |
 
 NVIDIA has not released an ARDY SMPL-X checkpoint. The official release only
-contains Core-27 and Unitree G1-34 checkpoints; the upstream README lists a
+contains Core and Unitree G1 checkpoints; the upstream README lists a
 SOMA checkpoint as coming soon. SMPL-X text-to-motion support belongs to
 NVIDIA's separate KIMODO-SMPLX release, not to ARDY.
 
@@ -170,7 +170,7 @@ qpos = g1_motion["qpos"]  # (1, 125, 36), MuJoCo root pose + 29 DOF
 ARDY's hybrid latent representation is internal to the tokenizer. The public
 pipeline returns the exact explicit checkpoint representation:
 
-| Field | Core-330 | G1-414 |
+| Field | Core-330 | Unitree G1 explicit 414D |
 | ----- | -------: | -----: |
 | Root position | 3 | 3 |
 | Global root heading `(cos, sin)` | 2 | 2 |
@@ -201,16 +201,18 @@ joints = convert_motion(
 )
 ```
 
-Core-27 is not SMPL-22. NVIDIA's official ARDY repository does not include a
-Core-to-SMPL or SMPL-to-Core retargeter; it provides native Core/G1 skeleton
-visualization and motion-correction utilities. Motius therefore does not
-silently truncate or rename joints when crossing skeletons.
+Core is NVIDIA ARDY's official skeleton label for the released Core
+checkpoints, not a new Motius body model. Unitree G1 is the same robot skeleton
+family used elsewhere in Motius; ARDY's G1 checkpoint simply uses its own 414D
+explicit tensor. Core-27 is not SMPL-22. NVIDIA's official ARDY repository does
+not include a Core-to-SMPL or SMPL-to-Core rotation retargeter, so Motius does
+not silently truncate or rename joints when crossing skeletons.
 
 For joint-position visualization and evaluator smoke tests, Motius provides a
 named bridge:
 
 ```python
-from motius.motion import convert_motion
+from motius.motion import convert_motion, smpl22_joints_to_ardy_core27_joints
 
 smpl22_joints = convert_motion(
     motion["features"],
@@ -219,13 +221,14 @@ smpl22_joints = convert_motion(
     motion_rep=pipe.bundle.motion_rep,
     is_normalized=True,
 )
+core27_joints = smpl22_joints_to_ardy_core27_joints(smpl22_joints)
 ```
 
-This bridge maps Core-27 joint positions into SMPL-22 order. It does not recover
-SMPL twist, body shape, or a valid `motion135` rotation sequence. SMPL mesh
-rendering and leaderboard evaluation must use a separately validated
-position-IK bridge and report its fitting error. G1 output can be exported
-exactly to MuJoCo qpos-36.
+These bridges map between Core-27 and SMPL-22 joint positions. They do not
+recover SMPL twist, body shape, a valid `motion135` rotation sequence, or a
+full Core-330 feature tensor from SMPL. SMPL mesh rendering and leaderboard
+evaluation must use a separately validated position-IK bridge and report its
+fitting error. Unitree G1 output can be exported exactly to MuJoCo qpos-36.
 
 ## Evaluation Results
 

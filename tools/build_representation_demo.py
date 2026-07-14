@@ -18,6 +18,15 @@ if str(ROOT) not in sys.path:
 
 from motius.motion.representation.rotation import matrix_to_axis_angle, rotation_6d_to_matrix
 from motius.motion.retarget import GMRSMPLToG1Retargeter, GMR_Y_UP_FROM_Z_UP
+from motius.motion.retarget.ardy_core import (
+    ARDY_CORE27_NAMES,
+    smpl22_joints_to_ardy_core27_joints,
+)
+from motius.motion.retarget.smpl_soma import (
+    SOMA30_NAMES,
+    SOMA30_PARENTS,
+    SMPL22_TO_SOMA30,
+)
 from motius.motion.skeleton import SMPL22_PARENTS
 from motius.motion.skeleton.body_models import resolve_smpl_model_path
 
@@ -59,6 +68,68 @@ G1_BODY_NAMES = (
     "right_wrist_yaw_link",
     "right_rubber_hand",
 )
+
+CORE27_PARENTS = np.asarray(
+    [
+        -1,
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        4,
+        7,
+        8,
+        9,
+        10,
+        10,
+        4,
+        13,
+        14,
+        15,
+        16,
+        16,
+        0,
+        19,
+        20,
+        21,
+        0,
+        23,
+        24,
+        25,
+    ],
+    dtype=np.int64,
+)
+
+
+def _smpl22_joints_to_soma30_preview(joints: np.ndarray) -> np.ndarray:
+    value = np.asarray(joints, dtype=np.float32)
+    if value.shape[-2:] != (22, 3):
+        raise ValueError(f"SMPL joints must end in (22, 3), got {value.shape}")
+    soma = np.empty(value.shape[:-2] + (len(SOMA30_NAMES), 3), dtype=np.float32)
+    for smpl_index, soma_index in enumerate(SMPL22_TO_SOMA30.tolist()):
+        soma[..., soma_index, :] = value[..., smpl_index, :]
+
+    def extend(target: str, base: str, parent: str, scale: float) -> None:
+        target_i = SOMA30_NAMES.index(target)
+        base_i = SOMA30_NAMES.index(base)
+        parent_i = SOMA30_NAMES.index(parent)
+        soma[..., target_i, :] = soma[..., base_i, :] + (
+            soma[..., base_i, :] - soma[..., parent_i, :]
+        ) * scale
+
+    head = soma[..., SOMA30_NAMES.index("Head"), :]
+    neck = soma[..., SOMA30_NAMES.index("Neck2"), :]
+    soma[..., SOMA30_NAMES.index("Jaw"), :] = head + np.asarray([0.0, -0.08, 0.06], dtype=np.float32)
+    soma[..., SOMA30_NAMES.index("LeftEye"), :] = head + np.asarray([0.045, 0.035, 0.055], dtype=np.float32)
+    soma[..., SOMA30_NAMES.index("RightEye"), :] = head + np.asarray([-0.045, 0.035, 0.055], dtype=np.float32)
+    soma[..., SOMA30_NAMES.index("Neck2"), :] = neck
+    extend("LeftHandThumbEnd", "LeftHand", "LeftForeArm", 0.20)
+    extend("LeftHandMiddleEnd", "LeftHand", "LeftForeArm", 0.36)
+    extend("RightHandThumbEnd", "RightHand", "RightForeArm", 0.20)
+    extend("RightHandMiddleEnd", "RightHand", "RightForeArm", 0.36)
+    return soma
 
 def _linear_resample(values: np.ndarray, src_fps: float, dst_fps: float, frames: int) -> np.ndarray:
     src_times = np.arange(len(values), dtype=np.float64) / float(src_fps)
@@ -364,6 +435,11 @@ def build(args: argparse.Namespace) -> Path:
     smpl_quantized, smpl_minimum, smpl_scale = _quantize_vertices(smpl_vertices)
     smpl_normals = _quantize_vertex_normals(smpl_vertices, smpl_faces)
 
+    soma_joints = _smpl22_joints_to_soma30_preview(smpl_joints)
+    soma_joints[..., 1] -= float(soma_joints[..., 1].min())
+    core_joints = smpl22_joints_to_ardy_core27_joints(smpl_joints)
+    core_joints[..., 1] -= float(core_joints[..., 1].min())
+
     retargeter = GMRSMPLToG1Retargeter(
         tgt_fps=int(args.fps),
         smplx_model_dir=args.smpl_model_dir,
@@ -430,6 +506,20 @@ def build(args: argparse.Namespace) -> Path:
                 "quantization_scale": smpl_scale.tolist(),
                 "initial_forward": _round_nested(smpl_forward),
             },
+            "soma": {
+                "label": "SOMA-30",
+                "parents": SOMA30_PARENTS.astype(int).tolist(),
+                "positions": _round_nested(soma_joints),
+                "initial_forward": _round_nested(smpl_forward),
+                "source_names": list(SOMA30_NAMES),
+            },
+            "core": {
+                "label": "Core-27",
+                "parents": CORE27_PARENTS.astype(int).tolist(),
+                "positions": _round_nested(core_joints),
+                "initial_forward": _round_nested(smpl_forward),
+                "source_names": list(ARDY_CORE27_NAMES),
+            },
             "g1": {
                 "label": "Unitree G1",
                 "vertex_count": int(len(g1_vertices)),
@@ -446,6 +536,8 @@ def build(args: argparse.Namespace) -> Path:
         "provenance": {
             "humanml3d": str(args.hml_fixture),
             "smpl_motion135": str(args.motion135),
+            "soma_route": "SMPL-22 joints -> named SOMA-30 preview bridge",
+            "core_route": "SMPL-22 joints -> named Core-27 joint-position bridge",
             "g1_route": "SMPL motion135 -> GMR IK -> G1 qpos -> MuJoCo mesh FK",
             "body_model": "local licensed SMPL-H parameters; only demo geometry is exported",
         },

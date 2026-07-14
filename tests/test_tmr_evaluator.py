@@ -54,13 +54,19 @@ def test_representation_demo_contains_synchronized_routes() -> None:
     assert payload["case_id"] == "004822"
     assert payload["fps"] == 30.0
     assert payload["frames"] == 180
-    assert set(payload["representations"]) == {"humanml3d", "smpl", "g1"}
+    assert set(payload["representations"]) == {"humanml3d", "smpl", "soma", "core", "g1"}
     hml = payload["representations"]["humanml3d"]
     smpl = payload["representations"]["smpl"]
+    soma = payload["representations"]["soma"]
+    core = payload["representations"]["core"]
     g1 = payload["representations"]["g1"]
     assert len(hml["positions"]) == payload["frames"]
     assert np.isfinite(np.asarray(hml["positions"])).all()
-    for representation in (hml, smpl, g1):
+    assert len(soma["positions"]) == payload["frames"]
+    assert len(core["positions"]) == payload["frames"]
+    assert len(soma["parents"]) == 30
+    assert len(core["parents"]) == 27
+    for representation in (hml, smpl, soma, core, g1):
         np.testing.assert_allclose(representation["initial_forward"], [0, 0, 1], atol=1e-5)
     assert g1["forward_basis"] == "MuJoCo pelvis local +X axis"
 
@@ -79,6 +85,8 @@ def test_representation_demo_contains_synchronized_routes() -> None:
     )
 
     viewer = (asset_dir / "index.html").read_text()
+    assert "SOMA-30" in viewer
+    assert "Core-27" in viewer
     assert "One motion, three representations" not in viewer
     assert "HumanML3D test" not in viewer
 
@@ -86,7 +94,7 @@ def test_representation_demo_contains_synchronized_routes() -> None:
 def test_two_person_representation_demo_uses_gt_retarget_preview() -> None:
     readme = (ROOT / "README.md").read_text()
     section = readme.split("### Two-Person Representation Demo", 1)[1].split("\n### ", 1)[0]
-    assert "interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.gif" in section
+    assert "interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif" in section
     assert "assets/motion/interhuman_representation_demo/index.html" in section
     assert "Three.js viewer" in section
     assert "assets/model_zoo/intergen" not in section
@@ -98,10 +106,10 @@ def test_two_person_representation_demo_uses_gt_retarget_preview() -> None:
     metadata = json.loads(
         (
             ROOT
-            / "assets/motion/interhuman_representation_demo/interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.json"
+            / "assets/motion/interhuman_representation_demo/interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.json"
         ).read_text()
     )
-    assert metadata["sample_id"] == "G012T003A016R008"
+    assert metadata["sample_id"] == "G021T002A012R014"
     assert metadata["source"] == "GT InterX smplh_52_2p/P1+P2"
     assert metadata["fps"] == 30
     assert metadata["frames"] == 72
@@ -120,7 +128,7 @@ def test_two_person_representation_demo_uses_gt_retarget_preview() -> None:
     payload = json.loads(
         data_source.removeprefix("window.MOTIUS_TWO_PERSON_REPRESENTATION_DEMO=").removesuffix(";\n")
     )
-    assert payload["sample_id"] == "G012T003A016R008"
+    assert payload["sample_id"] == "G021T002A012R014"
     assert payload["fps"] == 30
     assert payload["frames"] == 72
     assert set(payload["representations"]) == {"interhuman", "smpl"}

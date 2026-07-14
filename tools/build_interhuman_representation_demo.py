@@ -29,6 +29,7 @@ from motius.motion.representation.interhuman262 import (  # noqa: E402
 from motius.motion.representation.rotation import axis_angle_to_rotation_6d  # noqa: E402
 from motius.motion.retarget.hml263_smpl import load_smpl_rest, retarget_hml263_clip  # noqa: E402
 from motius.motion.skeleton import SMPL22_PARENTS  # noqa: E402
+from motius.motion.skeleton.body_models import resolve_smpl_model_path  # noqa: E402
 from render_motion135_smpl_demo import SMPLRenderer  # noqa: E402
 
 
@@ -56,8 +57,12 @@ def _load_raw_pair(data_root: Path, sample_id: str) -> tuple[np.ndarray, np.ndar
 def _load_interx_smplh_pair(
     data_root: Path,
     sample_id: str,
+    model_dir: Path,
     renderer: SMPLRenderer,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    import smplx
+
+    models = {}
     people = []
     rotations = []
     joints = []
@@ -70,21 +75,49 @@ def _load_interx_smplh_pair(
         global_orient = np.asarray(data["global_orient"], dtype=np.float32)
         body_pose = np.asarray(data["body_pose"], dtype=np.float32)
         transl = np.asarray(data["transl"], dtype=np.float32)
+        gender_item = (
+            np.asarray(data["gender"]).reshape(()).item()
+            if "gender" in data.files
+            else "neutral"
+        )
+        gender = gender_item.decode() if isinstance(gender_item, bytes) else str(gender_item)
+        gender = gender.lower()
+        betas = np.asarray(data["betas"], dtype=np.float32) if "betas" in data.files else None
+        raw_betas = np.asarray(data["raw_betas"], dtype=np.float32) if "raw_betas" in data.files else None
+        if raw_betas is not None and (betas is None or float(np.abs(betas).max()) < 1e-8):
+            betas = raw_betas
+        if betas is None:
+            betas = np.zeros((10,), dtype=np.float32)
+        betas = np.asarray(betas, dtype=np.float32).reshape(-1)[:10]
         n = min(len(global_orient), len(body_pose), len(transl))
-        people.append((global_orient[:n], body_pose[:n], transl[:n]))
+        people.append((global_orient[:n], body_pose[:n], transl[:n], betas[:10], gender))
     n = min(len(value[0]) for value in people)
-    for global_orient, body_pose, transl in people:
+    for global_orient, body_pose, transl, betas, gender in people:
         global_orient = global_orient[:n]
         body_pose = body_pose[:n]
         transl = transl[:n]
-        body69 = np.zeros((n, 69), dtype=np.float32)
-        body69[:, :63] = body_pose
+        model_gender = gender
+        try:
+            resolve_smpl_model_path(model_dir, model_type="smplh", gender=model_gender)
+        except FileNotFoundError:
+            model_gender = "neutral"
+        if model_gender not in models:
+            models[model_gender] = smplx.create(
+                str(model_dir),
+                model_type="smplh",
+                gender=model_gender,
+                use_pca=False,
+            ).to(renderer.device).eval()
+        model = models[model_gender]
+        beta_tensor = torch.from_numpy(np.broadcast_to(betas, (n, len(betas))).copy()).to(renderer.device)
 
         with torch.no_grad():
-            result = renderer.model(
-                betas=torch.zeros(n, 10, device=renderer.device),
+            result = model(
+                betas=beta_tensor,
                 global_orient=torch.from_numpy(global_orient).to(renderer.device),
-                body_pose=torch.from_numpy(body69).to(renderer.device),
+                body_pose=torch.from_numpy(body_pose).to(renderer.device),
+                left_hand_pose=torch.zeros(n, 45, device=renderer.device),
+                right_hand_pose=torch.zeros(n, 45, device=renderer.device),
                 transl=torch.from_numpy(transl).to(renderer.device),
             )
         joints.append(result.joints[:, :22].detach().cpu().numpy().astype(np.float32))
@@ -399,7 +432,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", choices=("interhuman", "interx-smplh"), default="interx-smplh")
     parser.add_argument("--data-root", type=Path, default=Path("data/motionhub/interx"))
-    parser.add_argument("--sample-id", default="G012T003A016R008")
+    parser.add_argument("--sample-id", default="G021T002A012R014")
     parser.add_argument("--model-dir", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, default=Path("assets/motion/interhuman_representation_demo"))
     parser.add_argument("--device", default="cuda")
@@ -438,7 +471,12 @@ def main() -> None:
         source_label = "GT InterHuman motions_processed/person1+person2"
         route = "raw InterHuman 492D -> joints_pair_to_interhuman262 -> position-IK SMPL mesh"
     else:
-        raw_joints, raw_rotations, smpl_vertices = _load_interx_smplh_pair(args.data_root, args.sample_id, renderer)
+        raw_joints, raw_rotations, smpl_vertices = _load_interx_smplh_pair(
+            args.data_root,
+            args.sample_id,
+            args.model_dir,
+            renderer,
+        )
         interhuman = joints_pair_to_interhuman262(
             raw_joints,
             raw_rotations,

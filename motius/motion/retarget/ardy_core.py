@@ -1,10 +1,10 @@
-"""ARDY Core-27 to SMPL-22 joint retargeting helpers.
+"""Core-27 to SMPL-22 joint retargeting helpers.
 
 The released ARDY Core checkpoints use NVIDIA's ``cskel27`` animation
 skeleton. It is not an SMPL-family skeleton. The mapping below is therefore a
-joint-position bridge only: it is suitable for visualization and evaluator
-inputs that consume SMPL-22 joint positions, but it does not recover SMPL
-twist, shape, or a valid ``motion135`` rotation sequence.
+joint-position bridge only: it is suitable for visualization and joint-space
+evaluator inputs, but it does not recover SMPL twist, shape, or a valid
+``motion135`` rotation sequence.
 """
 
 from __future__ import annotations
@@ -74,6 +74,39 @@ SMPL22_FROM_ARDY_CORE27 = [
     ("RightHand",),     # R_Wrist
 ]
 
+_SMPL22_TO_ARDY_CORE27_BY_NAME = {
+    "Hips": 0,
+    "LeftUpLeg": 1,
+    "RightUpLeg": 2,
+    "Spine": 3,
+    "LeftLeg": 4,
+    "RightLeg": 5,
+    "Spine2": 6,
+    "LeftFoot": 7,
+    "RightFoot": 8,
+    "Spine3": 9,
+    "LeftToeBase": 10,
+    "RightToeBase": 11,
+    "Neck": 12,
+    "LeftShoulder": 13,
+    "RightShoulder": 14,
+    "Head": 15,
+    "LeftArm": 16,
+    "RightArm": 17,
+    "LeftForeArm": 18,
+    "RightForeArm": 19,
+    "LeftHand": 20,
+    "RightHand": 21,
+}
+
+_INTERPOLATED_CORE_JOINTS = {
+    "Spine1": ("Spine", "Spine2"),
+    "RightHandEnd": ("RightHand", "RightForeArm"),
+    "RightHandThumb1": ("RightHand", "RightForeArm"),
+    "LeftHandEnd": ("LeftHand", "LeftForeArm"),
+    "LeftHandThumb1": ("LeftHand", "LeftForeArm"),
+}
+
 
 def ardy_core27_to_smpl22_joints(joints, *, recenter_root: bool = False) -> np.ndarray:
     """Map ARDY Core-27 joint positions to SMPL-22 joint order.
@@ -106,9 +139,49 @@ def ardy_core27_to_smpl22_joints(joints, *, recenter_root: bool = False) -> np.n
     return mapped
 
 
+def smpl22_joints_to_ardy_core27_joints(joints, *, recenter_root: bool = False) -> np.ndarray:
+    """Map SMPL-22 joint positions to Core-27 joint order.
+
+    Core has hand end/thumb helper joints that do not exist in SMPL-22. Those
+    helper joints are placed by extending the wrist away from the forearm so
+    the output remains stable for skeleton visualization and joint evaluators.
+    This is not a rotation retargeter and does not produce ARDY's 330D feature
+    tensor.
+    """
+
+    value = np.asarray(joints, dtype=np.float32)
+    if value.shape[-2:] != (22, 3):
+        raise ValueError(f"SMPL joints must end in (22, 3), got {value.shape}")
+
+    mapped = np.empty(value.shape[:-2] + (27, 3), dtype=np.float32)
+    for core_name in ARDY_CORE27_NAMES:
+        core_index = ARDY_CORE27_INDEX[core_name]
+        if core_name in _SMPL22_TO_ARDY_CORE27_BY_NAME:
+            mapped[..., core_index, :] = value[
+                ..., _SMPL22_TO_ARDY_CORE27_BY_NAME[core_name], :
+            ]
+            continue
+        first_name, second_name = _INTERPOLATED_CORE_JOINTS[core_name]
+        first = value[..., _SMPL22_TO_ARDY_CORE27_BY_NAME[first_name], :]
+        second = value[..., _SMPL22_TO_ARDY_CORE27_BY_NAME[second_name], :]
+        if core_name == "Spine1":
+            mapped[..., core_index, :] = 0.5 * (first + second)
+            continue
+        direction = first - second
+        scale = 0.22 if "Thumb" in core_name else 0.38
+        mapped[..., core_index, :] = first + direction * scale
+
+    if recenter_root:
+        origin = mapped[..., :1, :].copy()
+        origin[..., 1] = 0.0
+        mapped = mapped - origin
+    return mapped
+
+
 __all__ = [
     "ARDY_CORE27_INDEX",
     "ARDY_CORE27_NAMES",
     "SMPL22_FROM_ARDY_CORE27",
     "ardy_core27_to_smpl22_joints",
+    "smpl22_joints_to_ardy_core27_joints",
 ]

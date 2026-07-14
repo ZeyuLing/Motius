@@ -45,6 +45,7 @@ from motius.motion.retarget.ardy_core import (
     ARDY_CORE27_NAMES,
     SMPL22_FROM_ARDY_CORE27,
     ardy_core27_to_smpl22_joints,
+    smpl22_joints_to_ardy_core27_joints,
 )
 
 
@@ -65,7 +66,9 @@ def get_spec(name: str) -> MotionRepresentationSpec:
         "g138": "g1_38",
         "g1motion38": "g1_38",
         "ardycore330": "ardy_core330",
+        "core330": "ardy_core330",
         "ardyg1414": "ardy_g1_414",
+        "g1414": "ardy_g1_414",
     }
     canonical = aliases.get(key, key)
     try:
@@ -97,6 +100,7 @@ __all__ = [
     "ARDY_CORE27_NAMES",
     "SMPL22_FROM_ARDY_CORE27",
     "ardy_core27_to_smpl22_joints",
+    "smpl22_joints_to_ardy_core27_joints",
     "interhuman262_to_foot_contacts",
     "interhuman262_to_joint_velocities",
     "interhuman262_to_joints",

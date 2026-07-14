@@ -19,13 +19,13 @@ materialize joints or meshes.
 | `hymotion201` | `(T, 201)` | 30 | `motion135` + 22 pelvis-relative joints | same as `motion135` |
 | `dart276` | `(T, 276)` | 20 | pose, joints, velocities, root orientation/translation | first two **columns** flattened row-wise |
 | `interhuman262` | `(T, 2, 262)` | 30 | per person: global joints, global velocities, 21 local rotations, contacts | first two **columns** flattened row-wise |
-| `g1_38` | `(T, 38)` | 30 | root XY velocity/height, root rotation, 29 joint angles | first two **columns** flattened row-wise |
+| `g1_38` | `(T, 38)` | 30 | Unitree G1 root XY velocity/height, root rotation, 29 joint angles | first two **columns** flattened row-wise |
 | `ardy_core330` | `(T, 330)` | 20 | Core-27 root, heading, positions, rotations, velocities, contacts | global rotations via ARDY `matrix_to_cont6d` |
-| `ardy_g1_414` | `(T, 414)` | 25 | G1-34 root, heading, positions, rotations, velocities, contacts | global rotations via ARDY `matrix_to_cont6d` |
+| `ardy_g1_414` | `(T, 414)` | 25 | Unitree G1 explicit root, heading, positions, rotations, velocities, contacts | global rotations via ARDY `matrix_to_cont6d` |
 
-## ARDY Core-330 And G1-414
+## Core-330 And Unitree G1 Explicit 414D
 
-Both ARDY formats expose an explicit motion tensor while the model tokenizer
+Both ARDY release formats expose an explicit motion tensor while the model tokenizer
 uses a hybrid explicit-root and latent-body representation internally:
 
 ```text
@@ -33,7 +33,7 @@ root XYZ | global heading (cos, sin) | root-local non-root joints
          | global joint rotations 6D | global joint velocities | contacts
 ```
 
-The widths are 330 for Core-27 and 414 for G1-34. Checkpoint statistics contain
+The widths are 330 for Core-27 and 414 for Unitree G1. Checkpoint statistics contain
 four additional local-root velocity/height channels used inside the tokenizer;
 those make the stored statistics 334/418 wide but do not change public motion
 tensor shapes.
@@ -51,13 +51,13 @@ joints = convert_motion(
 )
 ```
 
-`ardy_g1_414` additionally converts exactly to MuJoCo qpos-36. ARDY Core-27 is
-not SMPL-22, so no implicit Core-to-SMPL joint truncation is provided. Motius
-does expose `ardy_core27_to_smpl22_joints`, a named joint-position bridge that
-maps Core's Hips/limbs/spine/end-effectors into SMPL-22 order for visualization
-and joint-position evaluators. It does not recover SMPL twist, shape, or a
-valid `motion135` sequence; SMPL mesh rendering still requires a documented
-position-IK fit.
+`ardy_g1_414` additionally converts exactly to MuJoCo qpos-36 for the Unitree
+G1 robot. It is not a separate body model from Unitree G1; it is ARDY's
+explicit tensor for that robot skeleton. Core-27 is not SMPL-22, so Motius
+exposes named joint-position bridges in both directions:
+`ardy_core27_to_smpl22_joints` and `smpl22_joints_to_ardy_core27_joints`.
+They are suitable for viewers and joint-position evaluators, but they do not
+recover SMPL twist, shape, or a valid `motion135` sequence.
 
 ## InterHuman-262
 
@@ -105,12 +105,12 @@ mesh previews and must report the IK fit error.
 
 ## Same-Motion Visual Comparison
 
-All three panels below use HumanML3D test case `004822`: *A person walks
+All five panels below use HumanML3D test case `004822`: *A person walks
 forward at an average pace, swaying their arms and torso with swagger.* This
 keeps the source motion fixed while changing only the representation and target
 body.
 
-![HumanML3D-263, SMPL motion135, and Unitree G1-38D](../../assets/motion/representation_demo/004822_hml_smpl_g1.gif)
+![HumanML3D-263, SMPL motion135, SOMA-30, Core-27, and Unitree G1](../../assets/motion/representation_demo/004822_hml_smpl_soma_core_g1.gif)
 
 The synchronized [Three.js viewer](../../assets/motion/representation_demo/index.html)
 uses the following routes:
@@ -118,6 +118,8 @@ uses the following routes:
 ```text
 HumanML3D-263 -> official joint decode -> SMPL-22 joints
 SMPL motion135 -> SMPL-H skinning -> animated SMPL surface mesh
+SMPL-22 joints -> named SOMA-30 preview bridge
+SMPL-22 joints -> named Core-27 joint-position bridge
 SMPL motion135 -> GMR inverse kinematics -> G1 qpos -> MuJoCo visual meshes
 ```
 
@@ -135,19 +137,19 @@ assuming a generic Z-up axis permutation.
 ## Two-Person InterHuman Preview
 
 The InterHuman preview is a representation demo, not a model-generation demo.
-It uses one GT InterX clip in both panels: the same motion converted to paired
-InterHuman skeletons on the left and the original GT SMPL-H pose rendered as
-neutral SMPL meshes on the right. The shared canonical frame is preserved for
-both people. Like the single-person representation viewer, the exported data
-stays centered in its canonical motion frame and the browser viewer applies the
-side-by-side panel offsets.
+It uses InterX clip `G021T002A012R014` in both panels: one person steps forward
+and points while the other leans back. This avoids precision-contact actions
+such as high-fives or hand holding. The same motion is converted to paired
+InterHuman skeletons on the left and rendered from the original GT SMPL-H pose
+on the right. The shared canonical frame is preserved for both people.
 
-![GT InterX to InterHuman skeleton and SMPL mesh representation comparison](../../assets/motion/interhuman_representation_demo/interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.gif)
+![GT InterX to InterHuman skeleton and SMPL mesh representation comparison](../../assets/motion/interhuman_representation_demo/interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif)
 
 [Open the synchronized Three.js viewer](../../assets/motion/interhuman_representation_demo/index.html).
 
-The builder reads InterX `smplh_52_2p/P1` and `P2` GT arrays, extracts SMPL-22
-joints, converts them with `joints_pair_to_interhuman262`, decodes exact
+The builder reads InterX `smplh_52_2p/P1` and `P2` GT arrays, including
+`raw_betas`/`betas` and `gender` when available, extracts SMPL-22 joints,
+converts them with `joints_pair_to_interhuman262`, decodes exact
 `InterHuman-262` joint positions, and renders the original GT body pose for the
 SMPL mesh preview. It also writes centered `data.js`, `smpl_pair_vertices.u16`,
 `smpl_pair_normals.i8`, and `smpl_indices.u32` for the browser viewer.
