@@ -19,7 +19,7 @@ import os
 import sys
 from pathlib import Path
 
-os.environ.setdefault("PYOPENGL_PLATFORM", "osmesa")
+os.environ.setdefault("PYOPENGL_PLATFORM", "egl")
 
 import imageio.v2 as imageio
 import numpy as np
