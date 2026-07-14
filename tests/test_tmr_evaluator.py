@@ -123,7 +123,13 @@ def test_two_person_representation_demo_uses_gt_retarget_preview() -> None:
     assert interhuman["person_count"] == 2
     assert smpl["person_count"] == 2
     assert len(interhuman["positions"]) == payload["frames"]
-    assert np.isfinite(np.asarray(interhuman["positions"])).all()
+    interhuman_positions = np.asarray(interhuman["positions"])
+    assert np.isfinite(interhuman_positions).all()
+    np.testing.assert_allclose(
+        interhuman_positions[0].reshape(-1, 3).mean(axis=0)[[0, 2]],
+        [0.0, 0.0],
+        atol=1e-4,
+    )
     assert (asset_dir / smpl["vertices_file"]).stat().st_size == (
         payload["frames"] * smpl["person_count"] * smpl["vertex_count"] * 3 * 2
     )
@@ -135,6 +141,8 @@ def test_two_person_representation_demo_uses_gt_retarget_preview() -> None:
     assert "MOTIUS_TWO_PERSON_REPRESENTATION_DEMO" in viewer
     assert "GridHelper" in viewer
     assert "PlaneGeometry" in viewer
+    assert "makeSkeletonPair(-1.35)" in viewer
+    assert "makeSMPLPair(1.35)" in viewer
 
 
 def test_gmr_mesh_references_resolve_to_packaged_assets() -> None:

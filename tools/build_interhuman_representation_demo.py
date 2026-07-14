@@ -178,8 +178,8 @@ def write_threejs_viewer_data(
     fps: int,
     max_frames: int,
 ) -> dict:
-    skeleton = _center_pair(joints[:max_frames], -1.35)
-    mesh = _center_pair(smpl_vertices[: len(skeleton)], 1.35)
+    skeleton = _center_pair(joints[:max_frames], 0.0)
+    mesh = _center_pair(smpl_vertices[: len(skeleton)], 0.0)
     quantized, minimum, scale = _quantize_pair_vertices(mesh)
     normals = _quantize_pair_normals(mesh, smpl_faces)
     quantized.tofile(out_dir / "smpl_pair_vertices.u16")

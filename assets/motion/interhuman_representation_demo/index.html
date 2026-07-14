@@ -20,8 +20,8 @@
       position: fixed;
       z-index: 3;
       top: 24px;
-      left: 7vw;
-      right: 7vw;
+      left: 5vw;
+      right: 5vw;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       pointer-events: none;
@@ -104,7 +104,7 @@
       padding: 0 7px;
     }
     @media (max-width: 760px) {
-      .labels { top: 18px; left: 2vw; right: 2vw; }
+      .labels { top: 18px; left: 1vw; right: 1vw; }
       .label { font-size: 11px; }
       .controls {
         bottom: 14px;
@@ -167,10 +167,10 @@
     const host = document.querySelector("#stage");
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xf4f6f8);
-    scene.fog = new THREE.Fog(0xf4f6f8, 12, 34);
+    scene.fog = new THREE.Fog(0xf4f6f8, 12, 32);
 
-    const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 70);
-    camera.position.set(0, 1.35, 7.6);
+    const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 60);
+    camera.position.set(0, 1.25, 7.8);
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       powerPreference: "high-performance",
@@ -187,13 +187,13 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.target.set(0, 0.82, 0);
-    controls.minDistance = 4.2;
-    controls.maxDistance = 26;
+    controls.minDistance = 4.5;
+    controls.maxDistance = 28;
     controls.maxPolarAngle = Math.PI * 0.49;
 
     scene.add(new THREE.HemisphereLight(0xffffff, 0x6d7888, 2.2));
-    const key = new THREE.DirectionalLight(0xffffff, 3.7);
-    key.position.set(-3.4, 6.4, 5.4);
+    const key = new THREE.DirectionalLight(0xffffff, 3.6);
+    key.position.set(-3.5, 6.5, 5.5);
     key.castShadow = true;
     key.shadow.mapSize.set(2048, 2048);
     key.shadow.camera.left = -6;
@@ -202,17 +202,17 @@
     key.shadow.camera.bottom = -3;
     scene.add(key);
     const rim = new THREE.DirectionalLight(0xb9dcff, 1.35);
-    rim.position.set(4.2, 3.0, -5.2);
+    rim.position.set(4, 3, -5);
     scene.add(rim);
 
     const floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(10.5, 5.8),
+      new THREE.PlaneGeometry(11, 5.8),
       new THREE.MeshStandardMaterial({ color: 0xe9edf2, roughness: 0.94, metalness: 0.01 })
     );
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
     scene.add(floor);
-    const grid = new THREE.GridHelper(10.5, 42, 0xb7c1ce, 0xd8dee7);
+    const grid = new THREE.GridHelper(11, 44, 0xb7c1ce, 0xd8dee7);
     grid.position.y = 0.002;
     grid.material.opacity = 0.38;
     grid.material.transparent = true;
@@ -223,8 +223,9 @@
     const tempB = new THREE.Vector3();
     const tempDirection = new THREE.Vector3();
 
-    function makeSkeletonPair() {
+    function makeSkeletonPair(xOffset) {
       const group = new THREE.Group();
+      group.position.x = xOffset;
       scene.add(group);
       const palette = [0x087991, 0x0a6bdc];
       const joints = [];
@@ -275,8 +276,9 @@
       return { group, update };
     }
 
-    function makeSMPLPair() {
+    function makeSMPLPair(xOffset) {
       const group = new THREE.Group();
+      group.position.x = xOffset;
       scene.add(group);
       const minimum = smplMeta.quantization_min;
       const scale = smplMeta.quantization_scale;
@@ -319,7 +321,7 @@
       return { group, update };
     }
 
-    const rigs = [makeSkeletonPair(), makeSMPLPair()];
+    const rigs = [makeSkeletonPair(-1.35), makeSMPLPair(1.35)];
     const timeline = document.querySelector("#timeline");
     const play = document.querySelector("#play");
     const speed = document.querySelector("#speed");
@@ -359,8 +361,10 @@
       const height = window.innerHeight;
       camera.aspect = width / height;
       const mobile = camera.aspect < 0.78;
-      camera.position.z = mobile ? 14.5 : 7.6;
-      camera.position.y = mobile ? 1.7 : 1.35;
+      camera.position.z = mobile ? 14.5 : 7.8;
+      camera.position.y = mobile ? 1.7 : 1.25;
+      rigs[0].group.position.x = mobile ? -1.05 : -1.35;
+      rigs[1].group.position.x = mobile ? 1.05 : 1.35;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height, false);
       render();

@@ -138,8 +138,9 @@ The InterHuman preview is a representation demo, not a model-generation demo.
 It uses one GT InterX clip in both panels: the same motion converted to paired
 InterHuman skeletons on the left and the original GT SMPL-H pose rendered as
 neutral SMPL meshes on the right. The shared canonical frame is preserved for
-both people. The shipped viewer is a Three.js page with a floor grid, shadows,
-and 30 fps playback; the GIF below is only a README-compatible fallback preview.
+both people. Like the single-person representation viewer, the exported data
+stays centered in its canonical motion frame and the browser viewer applies the
+side-by-side panel offsets.
 
 ![GT InterX to InterHuman skeleton and SMPL mesh representation comparison](../../assets/motion/interhuman_representation_demo/interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.gif)
 
@@ -148,7 +149,7 @@ and 30 fps playback; the GIF below is only a README-compatible fallback preview.
 The builder reads InterX `smplh_52_2p/P1` and `P2` GT arrays, extracts SMPL-22
 joints, converts them with `joints_pair_to_interhuman262`, decodes exact
 `InterHuman-262` joint positions, and renders the original GT body pose for the
-SMPL mesh preview. It also writes `data.js`, `smpl_pair_vertices.u16`,
+SMPL mesh preview. It also writes centered `data.js`, `smpl_pair_vertices.u16`,
 `smpl_pair_normals.i8`, and `smpl_indices.u32` for the browser viewer.
 
 ## The Two 6D Layouts
