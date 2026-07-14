@@ -24,7 +24,7 @@ joints = convert_motion(motion_ms272, "ms272", "joints")
 joints_pair = convert_motion(motion_interhuman, "interhuman262", "joints")
 smpl22_from_ardy = convert_motion(
     ardy_features,
-    "ardy_core330",
+    "ardy_330",
     "smpl22_joints",
     motion_rep=ardy_pipe.bundle.motion_rep,
     is_normalized=True,
@@ -113,9 +113,9 @@ store the converted array under `motion` and record source/target names.
 | InterHuman-262 | joints | Exact stored global-position decode; preserves the shared pair frame |
 | paired joints | InterHuman-262 | Official pair-aware canonicalization; requires 21 non-root local rotations |
 | paired motion135 | InterHuman-262 | FK plus pair-aware encoding; requires explicit SMPL-22 offsets |
-| Core-330 | Core-27 joints | Exact native Core-27 decode; requires the checkpoint `motion_rep` |
-| Core-27 joints | SMPL-22 joints | Named joint-position bridge; not an SMPL pose or mesh recovery |
-| SMPL-22 joints | Core-27 joints | Named joint-position bridge for Core skeleton viewers and joint evaluators |
+| ARDY-330 | ARDY-27 joints | Exact native ARDY-27 decode; requires the checkpoint `motion_rep` |
+| ARDY-27 joints | SMPL-22 joints | Named joint-position bridge; not an SMPL pose or mesh recovery |
+| SMPL-22 joints | ARDY-27 joints | Named joint-position bridge for ARDY skeleton viewers and joint evaluators |
 | Unitree G1 explicit 414D | G1 joints | Exact native Unitree G1 decode; requires the checkpoint `motion_rep` |
 | Unitree G1 explicit 414D | G1 qpos-36 | Exact MuJoCo root pose plus 29-DOF export |
 | G1-38 | G1 qpos-36 | Exact root quaternion + 29-DOF decode |
@@ -130,8 +130,8 @@ Use its exact joint decode followed by `retarget_hml263_clip(...,
 rotation_init="position_ik")` when an SMPL mesh or `motion135` approximation is
 required.
 
-Core-330 follows the same honesty rule. The official ARDY repository does not
-provide Core-to-SMPL retargeting. Motius exposes
+ARDY-330 follows the same honesty rule. The official ARDY repository does not
+provide ARDY-to-SMPL retargeting. Motius exposes
 `ardy_core27_to_smpl22_joints` and `smpl22_joints_to_ardy_core27_joints` for
 joint-level comparison until a validated rotation/mesh retargeter reports its
 fitting error.

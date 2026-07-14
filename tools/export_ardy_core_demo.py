@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Generate ARDY Core mesh demos and Core->SMPL mesh comparisons.
+"""Generate ARDY-330 mesh demos and ARDY->SMPL mesh comparisons.
 
 This tool runs entirely through Motius. It never imports an upstream ARDY
 checkout. In environments without the gated LLM2Vec/Llama text encoder, pass
-``--synthetic-text-feat`` to verify the released Core checkpoint, decoder,
-Core skinning, and SMPL retarget visualization paths. Such outputs are not
+``--synthetic-text-feat`` to verify the released ARDY-330 checkpoint, decoder,
+ARDY skinning, and SMPL retarget visualization paths. Such outputs are not
 semantic text-to-motion results and are always written to a smoke-test output
 directory unless ``--allow-synthetic-release-output`` is explicitly set.
 """
@@ -78,7 +78,7 @@ DEFAULT_CASES = [
 ]
 
 SYNTHETIC_NOTE = (
-    "Synthetic text features validate checkpoint/decoder/Core skinning/SMPL retarget plumbing only; "
+    "Synthetic text features validate checkpoint/decoder/ARDY skinning/SMPL retarget plumbing only; "
     "they are random hash-conditioned tensors and are not semantic T2M results."
 )
 
@@ -135,11 +135,11 @@ def core_lbs_vertices(
     *,
     device: str | torch.device = "cpu",
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Skin ARDY Core-27 rotations with the vendored Core mesh asset."""
+    """Skin ARDY-27 rotations with the vendored ARDY mesh asset."""
 
     skin_path = _skin_asset_path()
     if not skin_path.exists():
-        raise FileNotFoundError(f"Core skin asset not found: {skin_path}")
+        raise FileNotFoundError(f"ARDY skin asset not found: {skin_path}")
     skin = np.load(skin_path, allow_pickle=True)
     bind_vertices = np.asarray(skin["bind_vertices"], dtype=np.float32)
     faces = np.asarray(skin["faces"], dtype=np.int32)
@@ -270,7 +270,7 @@ def render_core_smpl_mesh_gif(
     height: int,
     max_frames: int,
 ) -> list[np.ndarray]:
-    """Render Core mesh and SMPL mesh side by side."""
+    """Render ARDY mesh and SMPL mesh side by side."""
 
     core = _center_and_offset(core_vertices[:max_frames], -0.8)
     smpl = _center_and_offset(smpl_vertices[: len(core)], 0.8)

@@ -13,7 +13,7 @@ from motius.motion.representation import convert_motion, get_spec, split_ardy_fe
 
 
 def test_ardy_specs_match_explicit_feature_widths():
-    core = get_spec("Core-330")
+    core = get_spec("ARDY-330")
     g1 = get_spec("G1-414")
     assert core.dim == 330
     assert core.layout[-1][2] == 330
@@ -23,7 +23,7 @@ def test_ardy_specs_match_explicit_feature_widths():
     assert "not listed as a separate body model" in g1.notes
 
 
-@pytest.mark.parametrize("name,dim", [("ardy_core330", 330), ("ardy_g1_414", 414)])
+@pytest.mark.parametrize("name,dim", [("ardy_330", 330), ("ardy_g1_414", 414)])
 def test_split_ardy_features_covers_every_channel(name, dim):
     value = np.arange(2 * dim, dtype=np.float32).reshape(2, dim)
     fields = split_ardy_features(value, name)
@@ -124,10 +124,10 @@ def test_ardy_core27_to_smpl22_joint_bridge_is_explicit():
     np.testing.assert_array_equal(core[:, 23], smpl[:, 1])
     np.testing.assert_array_equal(core[:, 19], smpl[:, 2])
     np.testing.assert_allclose(core[:, 11], smpl[:, 21] + (smpl[:, 21] - smpl[:, 19]) * 0.38)
-    roundtrip = convert_motion(core, source="core27_joints", target="smpl22_joints")
+    roundtrip = convert_motion(core, source="ardy27_joints", target="smpl22_joints")
     np.testing.assert_array_equal(roundtrip, smpl)
     np.testing.assert_array_equal(
-        convert_motion(smpl, source="smpl22_joints", target="core27_joints"),
+        convert_motion(smpl, source="smpl22_joints", target="ardy27_joints"),
         core,
     )
 

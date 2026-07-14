@@ -36,8 +36,8 @@ available on the [project page](https://research.nvidia.com/labs/sil/projects/ar
 | Method | Two-stage autoregressive diffusion with explicit root and latent body streams |
 | Tasks | T2M, online prompt updates, kinematic control |
 | Venue | ACM TOG 45(4), SIGGRAPH 2026, Article 86 |
-| Native skeletons | Core-27 and Unitree G1 |
-| Native FPS | Core 20 fps; G1 25 fps |
+| Native skeletons | ARDY-27 and Unitree G1 |
+| Native FPS | ARDY-330 20 fps; G1 25 fps |
 | Text encoder | LLM2Vec with Meta-Llama-3-8B-Instruct |
 | Pipeline | `motius.pipelines.ardy.ARDYPipeline` |
 | Upstream revision | `nv-tlabs/ardy@693f74d13b3d04a0a22ce127ee79c929dd89756b` |
@@ -46,13 +46,13 @@ available on the [project page](https://research.nvidia.com/labs/sil/projects/ar
 
 | Alias | Skeleton | FPS | Generated horizon | Official checkpoint |
 | ----- | -------- | --: | ----------------: | ------------------- |
-| `core` / `core40` | Core-27 | 20 | 40 frames | [`nvidia/ARDY-Core-RP-20FPS-Horizon40`](https://huggingface.co/nvidia/ARDY-Core-RP-20FPS-Horizon40) |
-| `core8` | Core-27 | 20 | 8 frames | [`nvidia/ARDY-Core-RP-20FPS-Horizon8`](https://huggingface.co/nvidia/ARDY-Core-RP-20FPS-Horizon8) |
+| `core` / `core40` | ARDY-27 | 20 | 40 frames | [`nvidia/ARDY-Core-RP-20FPS-Horizon40`](https://huggingface.co/nvidia/ARDY-Core-RP-20FPS-Horizon40) |
+| `core8` | ARDY-27 | 20 | 8 frames | [`nvidia/ARDY-Core-RP-20FPS-Horizon8`](https://huggingface.co/nvidia/ARDY-Core-RP-20FPS-Horizon8) |
 | `g1` / `g152` | Unitree G1 | 25 | 52 frames | [`nvidia/ARDY-G1-RP-25FPS-Horizon52`](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon52) |
 | `g18` | Unitree G1 | 25 | 8 frames | [`nvidia/ARDY-G1-RP-25FPS-Horizon8`](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon8) |
 
 NVIDIA has not released an ARDY SMPL-X checkpoint. The official release only
-contains Core and Unitree G1 checkpoints; the upstream README lists a
+contains ARDY-27 and Unitree G1 checkpoints; the upstream README lists a
 SOMA checkpoint as coming soon. SMPL-X text-to-motion support belongs to
 NVIDIA's separate KIMODO-SMPLX release, not to ARDY.
 
@@ -61,7 +61,7 @@ remain subject to the license published with each artifact.
 
 ## Installation
 
-Core checkpoint inference requires the ARDY optional dependencies:
+ARDY-330 checkpoint inference requires the ARDY optional dependencies:
 
 ```bash
 python -m pip install -e ".[ardy]"
@@ -80,7 +80,7 @@ The Hugging Face account must have access to
 The denoiser can also run with `text_encoder=False` and externally computed
 LLM2Vec features of shape `(B, tokens, 4096)`.
 
-Use the Horizon-40 Core model for the strongest default generation and
+Use the Horizon-40 ARDY-330 model for the strongest default generation and
 constraint following. Horizon-8 is intended for lower-latency replanning.
 
 ## Usage
@@ -170,7 +170,7 @@ qpos = g1_motion["qpos"]  # (1, 125, 36), MuJoCo root pose + 29 DOF
 ARDY's hybrid latent representation is internal to the tokenizer. The public
 pipeline returns the exact explicit checkpoint representation:
 
-| Field | Core-330 | Unitree G1 explicit 414D |
+| Field | ARDY-330 | Unitree G1 explicit 414D |
 | ----- | -------: | -----: |
 | Root position | 3 | 3 |
 | Global root heading `(cos, sin)` | 2 | 2 |
@@ -191,22 +191,24 @@ Use `split_ardy_features` for named slices and pass the checkpoint's exact
 from motius.motion import convert_motion
 from motius.motion.representation import split_ardy_features
 
-parts = split_ardy_features(motion["features"], "ardy_core330")
+parts = split_ardy_features(motion["features"], "ardy_330")
 joints = convert_motion(
     motion["features"],
-    "ardy_core330",
+    "ardy_330",
     "joints",
     motion_rep=pipe.bundle.motion_rep,
     is_normalized=True,
 )
 ```
 
-Core is NVIDIA ARDY's official skeleton label for the released Core
-checkpoints, not a new Motius body model. Unitree G1 is the same robot skeleton
-family used elsewhere in Motius; ARDY's G1 checkpoint simply uses its own 414D
-explicit tensor. Core-27 is not SMPL-22. NVIDIA's official ARDY repository does
-not include a Core-to-SMPL or SMPL-to-Core rotation retargeter, so Motius does
-not silently truncate or rename joints when crossing skeletons.
+ARDY-330 is the public Motius name for NVIDIA ARDY's released 27-joint human
+skeleton representation. The official Hugging Face repositories keep `Core` in
+their artifact names; Motius treats that as an upstream checkpoint alias, not as
+a separate body-model family. Unitree G1 is the same robot skeleton family used
+elsewhere in Motius; ARDY's G1 checkpoint simply uses its own 414D explicit
+tensor. ARDY-27 is not SMPL-22. NVIDIA's official ARDY repository does not
+include an ARDY-to-SMPL or SMPL-to-ARDY rotation retargeter, so Motius does not
+silently truncate or rename joints when crossing skeletons.
 
 For joint-position visualization and evaluator smoke tests, Motius provides a
 named bridge:
@@ -216,17 +218,17 @@ from motius.motion import convert_motion, smpl22_joints_to_ardy_core27_joints
 
 smpl22_joints = convert_motion(
     motion["features"],
-    "ardy_core330",
+    "ardy_330",
     "smpl22_joints",
     motion_rep=pipe.bundle.motion_rep,
     is_normalized=True,
 )
-core27_joints = smpl22_joints_to_ardy_core27_joints(smpl22_joints)
+ardy27_joints = smpl22_joints_to_ardy_core27_joints(smpl22_joints)
 ```
 
-These bridges map between Core-27 and SMPL-22 joint positions. They do not
+These bridges map between ARDY-27 and SMPL-22 joint positions. They do not
 recover SMPL twist, body shape, a valid `motion135` rotation sequence, or a
-full Core-330 feature tensor from SMPL. SMPL mesh rendering and leaderboard
+full ARDY-330 feature tensor from SMPL. SMPL mesh rendering and leaderboard
 evaluation must use a separately validated position-IK bridge and report its
 fitting error. Unitree G1 output can be exported exactly to MuJoCo qpos-36.
 
@@ -255,7 +257,7 @@ leaderboard as an official-paper benchmark row, separate from the released
 checkpoint rows.
 
 Motius's HumanML3D, MotionStreamer, and joint-position evaluator rows are not
-reported yet: the released Core-27 output first needs a validated SMPL-22
+reported yet: the released ARDY-27 output first needs a validated SMPL-22
 retargeting protocol. This card keeps the official native metrics separate
 instead of presenting an unverified cross-skeleton score.
 

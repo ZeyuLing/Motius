@@ -71,7 +71,7 @@ class ARDYPipeline(BasePipeline):
 
     @property
     def representation(self) -> str:
-        return "ardy_g1_414" if "g1" in self.model.skeleton.name.lower() else "ardy_core330"
+        return "ardy_g1_414" if "g1" in self.model.skeleton.name.lower() else "ardy_330"
 
     def _validate_steps(self, value: Optional[int]) -> int:
         maximum = int(self.model.diffusion.num_base_steps)

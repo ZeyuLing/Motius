@@ -1,6 +1,7 @@
 """Public motion representation library."""
 
 from .specs import (
+    ARDY_330,
     ARDY_CORE330,
     ARDY_G1_414,
     DART276,
@@ -9,6 +10,9 @@ from .specs import (
     HYMOTION201,
     INTERHUMAN262,
     MOTION135,
+    MOTIONBRICKS_G1_413,
+    MOTIONBRICKS_G1_414,
+    MOTIONBRICKS_G1_418,
     MS272,
     SPECS,
     MotionRepresentationSpec,
@@ -65,10 +69,15 @@ def get_spec(name: str) -> MotionRepresentationSpec:
         "dart276": "dart276",
         "g138": "g1_38",
         "g1motion38": "g1_38",
-        "ardycore330": "ardy_core330",
-        "core330": "ardy_core330",
+        "ardy330": "ardy_330",
+        "ardycore330": "ardy_330",
+        "core330": "ardy_330",
+        "ardy27": "ardy_330",
         "ardyg1414": "ardy_g1_414",
         "g1414": "ardy_g1_414",
+        "motionbricksg1414": "motionbricks_g1_414",
+        "motionbricksg1413": "motionbricks_g1_413",
+        "motionbricksg1418": "motionbricks_g1_418",
     }
     canonical = aliases.get(key, key)
     try:
@@ -85,8 +94,12 @@ __all__ = [
     "INTERHUMAN262",
     "DART276",
     "G1_38",
+    "ARDY_330",
     "ARDY_CORE330",
     "ARDY_G1_414",
+    "MOTIONBRICKS_G1_414",
+    "MOTIONBRICKS_G1_413",
+    "MOTIONBRICKS_G1_418",
     "SPECS",
     "get_spec",
     "G1_MOTION_DIM",

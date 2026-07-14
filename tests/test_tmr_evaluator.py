@@ -90,7 +90,7 @@ def test_representation_demo_contains_synchronized_routes() -> None:
 
     viewer = (asset_dir / "index.html").read_text()
     assert "SOMA-30" in viewer
-    assert "Core-27" in viewer
+    assert "ARDY-330" in viewer
     assert "makeSequenceMesh(somaMeta" in viewer
     assert "makeSequenceMesh(coreMeta" in viewer
     assert "One motion, three representations" not in viewer

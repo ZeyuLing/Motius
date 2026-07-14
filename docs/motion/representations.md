@@ -20,10 +20,10 @@ materialize joints or meshes.
 | `dart276` | `(T, 276)` | 20 | pose, joints, velocities, root orientation/translation | first two **columns** flattened row-wise |
 | `interhuman262` | `(T, 2, 262)` | 30 | per person: global joints, global velocities, 21 local rotations, contacts | first two **columns** flattened row-wise |
 | `g1_38` | `(T, 38)` | 30 | Unitree G1 root XY velocity/height, root rotation, 29 joint angles | first two **columns** flattened row-wise |
-| `ardy_core330` | `(T, 330)` | 20 | Core-27 root, heading, positions, rotations, velocities, contacts | global rotations via ARDY `matrix_to_cont6d` |
+| `ardy_330` | `(T, 330)` | 20 | ARDY-27 root, heading, positions, rotations, velocities, contacts | global rotations via ARDY `matrix_to_cont6d` |
 | `ardy_g1_414` | `(T, 414)` | 25 | Unitree G1 explicit root, heading, positions, rotations, velocities, contacts | global rotations via ARDY `matrix_to_cont6d` |
 
-## Core-330 And Unitree G1 Explicit 414D
+## ARDY-330 And Unitree G1 Explicit 414D
 
 Both ARDY release formats expose an explicit motion tensor while the model tokenizer
 uses a hybrid explicit-root and latent-body representation internally:
@@ -33,7 +33,7 @@ root XYZ | global heading (cos, sin) | root-local non-root joints
          | global joint rotations 6D | global joint velocities | contacts
 ```
 
-The widths are 330 for Core-27 and 414 for Unitree G1. Checkpoint statistics contain
+The widths are 330 for ARDY-27 and 414 for Unitree G1. Checkpoint statistics contain
 four additional local-root velocity/height channels used inside the tokenizer;
 those make the stored statistics 334/418 wide but do not change public motion
 tensor shapes.
@@ -44,7 +44,7 @@ because it owns the skeleton, FPS, and normalization statistics:
 ```python
 joints = convert_motion(
     features,
-    "ardy_core330",
+    "ardy_330",
     "joints",
     motion_rep=pipe.bundle.motion_rep,
     is_normalized=True,
@@ -53,7 +53,7 @@ joints = convert_motion(
 
 `ardy_g1_414` additionally converts exactly to MuJoCo qpos-36 for the Unitree
 G1 robot. It is not a separate body model from Unitree G1; it is ARDY's
-explicit tensor for that robot skeleton. Core-27 is not SMPL-22, so Motius
+explicit tensor for that robot skeleton. ARDY-27 is not SMPL-22, so Motius
 exposes named joint-position bridges in both directions:
 `ardy_core27_to_smpl22_joints` and `smpl22_joints_to_ardy_core27_joints`.
 They are suitable for viewers and joint-position evaluators, but they do not
@@ -110,7 +110,7 @@ forward at an average pace, swaying their arms and torso with swagger.* This
 keeps the source motion fixed while changing only the representation and target
 body.
 
-![HumanML3D-263, SMPL motion135, SOMA-30, Core-27, and Unitree G1](../../assets/motion/representation_demo/004822_hml_smpl_soma_core_g1.gif)
+![HumanML3D-263, SMPL motion135, SOMA-30, ARDY-330, and Unitree G1](../../assets/motion/representation_demo/004822_hml_smpl_soma_core_g1.gif)
 
 The synchronized [Three.js viewer](../../assets/motion/representation_demo/index.html)
 uses the following routes:
@@ -119,7 +119,7 @@ uses the following routes:
 HumanML3D-263 -> official joint decode -> SMPL-22 joints
 SMPL motion135 -> SMPL-H skinning -> animated SMPL surface mesh
 SMPL motion135 -> SOMA30 rotation transfer -> SOMA77 LBS mesh
-SMPL motion135 global rotations -> Core-27 visual rotation bridge -> Core LBS mesh
+SMPL motion135 global rotations -> ARDY-27 visual rotation bridge -> ARDY LBS mesh
 SMPL motion135 -> GMR inverse kinematics -> G1 qpos -> MuJoCo visual meshes
 ```
 

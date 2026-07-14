@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections import OrderedDict
 
 
-_JOINTS = {"ardy_core330": 27, "ardy_g1_414": 34}
+_JOINTS = {"ardy_330": 27, "ardy_core330": 27, "ardy_g1_414": 34}
 
 
 def ardy_feature_slices(representation: str):

@@ -56,11 +56,11 @@ motion_interhuman = motion135_to_interhuman262(
 The pair is canonicalized once using person one's first frame. Do not
 canonicalize each person independently.
 
-## Core-27 And SMPL-22 Joint Bridges
+## ARDY-27 And SMPL-22 Joint Bridges
 
-The official ARDY repository does not provide Core-to-SMPL or SMPL-to-Core
-rotation retargeting code. It visualizes the released Core checkpoint with its
-native Core-27 skin. Motius exposes named joint-position bridges:
+The official ARDY repository does not provide ARDY-to-SMPL or SMPL-to-ARDY
+rotation retargeting code. It visualizes the released ARDY-330 checkpoint with its
+native ARDY-27 skin. Motius exposes named joint-position bridges:
 
 ```python
 from motius.motion import (
@@ -69,12 +69,12 @@ from motius.motion import (
     smpl22_joints_to_ardy_core27_joints,
 )
 
-smpl22_joints = ardy_core27_to_smpl22_joints(core27_joints)
-core27_joints = smpl22_joints_to_ardy_core27_joints(smpl22_joints)
+smpl22_joints = ardy_core27_to_smpl22_joints(ardy27_joints)
+ardy27_joints = smpl22_joints_to_ardy_core27_joints(smpl22_joints)
 
 smpl22_joints = convert_motion(
     ardy_features,
-    "ardy_core330",
+    "ardy_330",
     "smpl22_joints",
     motion_rep=ardy_pipe.bundle.motion_rep,
     is_normalized=True,
@@ -82,10 +82,10 @@ smpl22_joints = convert_motion(
 ```
 
 These bridges are for skeleton viewers and joint-position evaluators. They do
-not produce a Core-330 ARDY feature tensor, recover SMPL shape/twist, or create
+not produce a ARDY-330 ARDY feature tensor, recover SMPL shape/twist, or create
 a valid `motion135` sequence.
 
-This route maps Core joints into SMPL-22 joint order for visualization and
+This route maps ARDY-27 joints into SMPL-22 joint order for visualization and
 joint-position evaluator experiments. It is not a valid SMPL pose, not a
 `motion135` sequence, and not sufficient for SMPL mesh rendering. Mesh or
 leaderboard evaluation through SMPL requires a later position-IK bridge with a

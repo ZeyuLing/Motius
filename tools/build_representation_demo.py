@@ -228,7 +228,7 @@ def _core_skin_vertices(
         / "motius/models/ardy/network/assets/skeletons/cskel27/skin_standard.npz"
     )
     if not skin_path.exists():
-        raise FileNotFoundError(f"Core skin asset not found: {skin_path}")
+        raise FileNotFoundError(f"ARDY skin asset not found: {skin_path}")
     skin = np.load(skin_path)
     bind_vertices = np.asarray(skin["bind_vertices"], dtype=np.float32)
     faces = np.asarray(skin["faces"], dtype=np.uint32)
@@ -671,7 +671,7 @@ def build(args: argparse.Namespace) -> Path:
                 "initial_forward": _round_nested(smpl_forward),
             },
             "core": {
-                "label": "Core-27",
+                "label": "ARDY-330",
                 "vertex_count": int(core_vertices.shape[1]),
                 "index_count": int(core_faces.size),
                 "vertices_file": "core_vertices.u16",
@@ -698,7 +698,7 @@ def build(args: argparse.Namespace) -> Path:
             "humanml3d": str(args.hml_fixture),
             "smpl_motion135": str(args.motion135),
             "soma_route": "SMPL motion135 -> SOMA30 rotation transfer -> SOMA77 LBS mesh",
-            "core_route": "SMPL motion135 global rotations -> Core-27 visual rotation bridge -> Core LBS mesh",
+            "core_route": "SMPL motion135 global rotations -> ARDY-27 visual rotation bridge -> ARDY LBS mesh",
             "g1_route": "SMPL motion135 -> GMR IK -> G1 qpos -> MuJoCo mesh FK",
             "body_model": "local licensed SMPL-H parameters; only demo geometry is exported",
         },

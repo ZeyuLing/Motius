@@ -422,12 +422,15 @@ def convert_motion(data, source: str, target: str, **kwargs):
             "g1motion38": "g1_38",
             "g1qpos36": "g1_qpos",
             "g1qpos": "g1_qpos",
-            "ardycore330": "ardy_core330",
+            "ardy330": "ardy_330",
+            "ardycore330": "ardy_330",
             "ardyg1414": "ardy_g1_414",
-            "core27": "core27_joints",
-            "core27joints": "core27_joints",
-            "ardycore27": "core27_joints",
-            "ardycorejoints": "core27_joints",
+            "core27": "ardy27_joints",
+            "core27joints": "ardy27_joints",
+            "ardy27": "ardy27_joints",
+            "ardy27joints": "ardy27_joints",
+            "ardycore27": "ardy27_joints",
+            "ardycorejoints": "ardy27_joints",
             "smpl22joints": "smpl22_joints",
             "smpljoints": "smpl22_joints",
         }
@@ -438,7 +441,7 @@ def convert_motion(data, source: str, target: str, **kwargs):
     if source == target:
         return data
 
-    if source in {"ardy_core330", "ardy_g1_414"}:
+    if source in {"ardy_330", "ardy_core330", "ardy_g1_414"}:
         motion_rep = kwargs.get("motion_rep")
         if motion_rep is None:
             raise ValueError(
@@ -454,7 +457,7 @@ def convert_motion(data, source: str, target: str, **kwargs):
         )
         if target == "joints":
             return output["posed_joints"]
-        if target == "smpl22_joints" and source == "ardy_core330":
+        if target == "smpl22_joints" and source in {"ardy_330", "ardy_core330"}:
             from motius.motion.retarget.ardy_core import ardy_core27_to_smpl22_joints
 
             return ardy_core27_to_smpl22_joints(
@@ -476,9 +479,9 @@ def convert_motion(data, source: str, target: str, **kwargs):
         )
         raise ValueError(f"{source} supports exact conversion only to {targets}")
 
-    if source == "core27_joints":
+    if source in {"ardy27_joints", "core27_joints"}:
         if target != "smpl22_joints":
-            raise ValueError("Core-27 joints support exact conversion only to smpl22_joints")
+            raise ValueError("ARDY-27 joints support exact conversion only to smpl22_joints")
         from motius.motion.retarget.ardy_core import ardy_core27_to_smpl22_joints
 
         return ardy_core27_to_smpl22_joints(
@@ -486,8 +489,8 @@ def convert_motion(data, source: str, target: str, **kwargs):
             recenter_root=kwargs.get("recenter_root", False),
         )
     if source == "smpl22_joints":
-        if target != "core27_joints":
-            raise ValueError("SMPL-22 joints support exact conversion only to core27_joints")
+        if target not in {"ardy27_joints", "core27_joints"}:
+            raise ValueError("SMPL-22 joints support exact conversion only to ardy27_joints")
         from motius.motion.retarget.ardy_core import smpl22_joints_to_ardy_core27_joints
 
         return smpl22_joints_to_ardy_core27_joints(

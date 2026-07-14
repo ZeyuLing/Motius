@@ -163,26 +163,30 @@ G1_38 = MotionRepresentationSpec(
 )
 
 
-ARDY_CORE330 = MotionRepresentationSpec(
-    name="ardy_core330",
+ARDY_330 = MotionRepresentationSpec(
+    name="ardy_330",
     dim=330,
     fps=20.0,
-    coordinate_frame="Core-27 Y-up world frame used by released ARDY Core checkpoints",
+    coordinate_frame="ARDY 27-joint Y-up world frame used by released ARDY checkpoints",
     rotation_convention="ARDY continuous 6D global rotations via matrix_to_cont6d",
     layout=(
         ("root_position", 0, 3, "absolute XYZ root position"),
         ("global_root_heading", 3, 5, "cosine and sine of global heading"),
-        ("root_local_joint_positions", 5, 83, "26 non-root Core joints * XYZ"),
+        ("root_local_joint_positions", 5, 83, "26 non-root ARDY joints * XYZ"),
         ("global_joint_rotations_6d", 83, 245, "27 global joint rotations * 6D"),
         ("global_joint_velocities", 245, 326, "27 joints * XYZ velocity"),
         ("foot_contacts", 326, 330, "left/right heel and toe contacts"),
     ),
     notes=(
-        "Native explicit tensor for NVIDIA's Core skeleton checkpoints. Core is "
-        "not an SMPL-family body model; Motius exposes a named Core-27 <-> "
+        "Native explicit tensor for NVIDIA ARDY's 27-joint skeleton checkpoints. "
+        "ARDY-330 is not an SMPL-family body model; Motius exposes a named ARDY-27 <-> "
         "SMPL-22 joint-position bridge for viewers and joint evaluators."
     ),
 )
+
+
+# Backward-compatible symbol for older internal imports.
+ARDY_CORE330 = ARDY_330
 
 
 ARDY_G1_414 = MotionRepresentationSpec(
@@ -207,6 +211,58 @@ ARDY_G1_414 = MotionRepresentationSpec(
 )
 
 
+MOTIONBRICKS_G1_414 = MotionRepresentationSpec(
+    name="motionbricks_g1_414",
+    dim=414,
+    fps=30.0,
+    coordinate_frame="MotionBricks Unitree G1 Y-up motion space, Z-forward",
+    rotation_convention="continuous 6D global rotations for 34 G1 joints",
+    layout=(
+        ("global_root_pos", 0, 3, "XYZ pelvis position in motion space"),
+        ("global_root_heading", 3, 5, "cosine and sine of Y-axis heading"),
+        ("ric_data", 5, 104, "33 non-root G1 joint positions minus projected root XZ"),
+        ("global_rot_data", 104, 308, "34 global joint rotations * 6D"),
+        ("local_vel", 308, 410, "34 world-frame joint velocities * XYZ"),
+        ("foot_contacts", 410, 414, "left/right ankle and toe contacts"),
+    ),
+    notes=(
+        "Global subset used by the MotionBricks root model and data loader. "
+        "It shares the 409D body block with the local 413D subset."
+    ),
+)
+
+
+MOTIONBRICKS_G1_413 = MotionRepresentationSpec(
+    name="motionbricks_g1_413",
+    dim=413,
+    fps=30.0,
+    coordinate_frame="MotionBricks Unitree G1 local-root subset",
+    rotation_convention="continuous 6D global rotations for the shared 409D body block",
+    layout=(
+        ("local_root_rot_vel", 0, 1, "Y-axis angular velocity"),
+        ("local_root_vel", 1, 3, "heading-frame XZ root velocity"),
+        ("global_root_y", 3, 4, "absolute root height"),
+        ("body_features", 4, 413, "shared 409D body block: positions, rotations, velocities, contacts"),
+    ),
+    notes="Local-root subset consumed by MotionBricks pose/tokenizer modules.",
+)
+
+
+MOTIONBRICKS_G1_418 = MotionRepresentationSpec(
+    name="motionbricks_g1_418",
+    dim=418,
+    fps=30.0,
+    coordinate_frame="MotionBricks full dual-root Unitree G1 representation",
+    rotation_convention="continuous 6D global rotations for the shared 409D body block",
+    layout=(
+        ("global_root", 0, 5, "global root subset"),
+        ("local_root", 5, 9, "local root subset"),
+        ("body_features", 9, 418, "shared G1 body features"),
+    ),
+    notes="Full dual-root representation; global 414D and local 413D subsets are losslessly convertible.",
+)
+
+
 SPECS = {
     spec.name: spec
     for spec in (
@@ -217,10 +273,16 @@ SPECS = {
         DART276,
         INTERHUMAN262,
         G1_38,
-        ARDY_CORE330,
+        ARDY_330,
         ARDY_G1_414,
+        MOTIONBRICKS_G1_414,
+        MOTIONBRICKS_G1_413,
+        MOTIONBRICKS_G1_418,
     )
 }
+
+# Backward-compatible lookup key.
+SPECS["ardy_core330"] = ARDY_330
 
 
 __all__ = [
@@ -232,7 +294,11 @@ __all__ = [
     "DART276",
     "INTERHUMAN262",
     "G1_38",
+    "ARDY_330",
     "ARDY_CORE330",
     "ARDY_G1_414",
+    "MOTIONBRICKS_G1_414",
+    "MOTIONBRICKS_G1_413",
+    "MOTIONBRICKS_G1_418",
     "SPECS",
 ]
