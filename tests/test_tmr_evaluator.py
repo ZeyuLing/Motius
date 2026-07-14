@@ -139,6 +139,14 @@ def test_two_person_representation_demo_uses_gt_retarget_preview() -> None:
     assert (asset_dir / smpl["vertices_file"]).stat().st_size == (
         payload["frames"] * smpl["person_count"] * smpl["vertex_count"] * 3 * 2
     )
+    smpl_vertices = np.fromfile(asset_dir / smpl["vertices_file"], dtype="<u2").reshape(
+        payload["frames"], smpl["person_count"], smpl["vertex_count"], 3
+    )
+    smpl_positions = (
+        smpl_vertices.astype(np.float32) * np.asarray(smpl["quantization_scale"], dtype=np.float32)
+        + np.asarray(smpl["quantization_min"], dtype=np.float32)
+    )
+    np.testing.assert_allclose(smpl_positions[:, :, :, 1].min(axis=(0, 2)), [0.0, 0.0], atol=1e-4)
     assert (asset_dir / smpl["normals_file"]).stat().st_size == (
         payload["frames"] * smpl["person_count"] * smpl["vertex_count"] * 3
     )

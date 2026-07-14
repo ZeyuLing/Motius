@@ -125,10 +125,13 @@ def _fit_pair_vertices(
     return vertices, float(np.mean(errors))
 
 
-def _center_pair(points: np.ndarray, x_offset: float) -> np.ndarray:
+def _center_pair(points: np.ndarray, x_offset: float, *, per_person_floor: bool = False) -> np.ndarray:
     value = np.asarray(points, dtype=np.float32).copy()
-    ground = float(value[..., 1].min())
-    value[..., 1] -= ground
+    if per_person_floor:
+        for person in range(value.shape[1]):
+            value[:, person, ..., 1] -= float(value[:, person, ..., 1].min())
+    else:
+        value[..., 1] -= float(value[..., 1].min())
     center = value[0].reshape(-1, 3).mean(axis=0)
     center[1] = 0.0
     value -= center
@@ -179,7 +182,7 @@ def write_threejs_viewer_data(
     max_frames: int,
 ) -> dict:
     skeleton = _center_pair(joints[:max_frames], 0.0)
-    mesh = _center_pair(smpl_vertices[: len(skeleton)], 0.0)
+    mesh = _center_pair(smpl_vertices[: len(skeleton)], 0.0, per_person_floor=True)
     quantized, minimum, scale = _quantize_pair_vertices(mesh)
     normals = _quantize_pair_normals(mesh, smpl_faces)
     quantized.tofile(out_dir / "smpl_pair_vertices.u16")
