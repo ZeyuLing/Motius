@@ -164,7 +164,10 @@ def load_text_encoder(
         conf.pop("device", None)
         text_encoder = instantiate_from_dict(conf)
 
-    if device is None:
+    env_device = get_env_var("TEXT_ENCODER_DEVICE", None)
+    if env_device:
+        device = env_device
+    elif device is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype = torch.float32 if fp32 else torch.bfloat16
     return text_encoder.to(device=device, dtype=dtype)
