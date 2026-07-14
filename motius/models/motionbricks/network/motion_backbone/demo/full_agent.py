@@ -1,3 +1,4 @@
+from __future__ import annotations
 from motius.models.motionbricks.network.motion_backbone.inference.motion_inference import motion_inference
 from copy import deepcopy
 import torch as t

@@ -1,3 +1,4 @@
+from __future__ import annotations
 # NOTE: taken from MotionGPT code base
 import numpy as np
 import torch

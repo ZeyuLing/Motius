@@ -1,3 +1,4 @@
+from __future__ import annotations
 import numpy as np
 import torch as t
 import torch
@@ -227,6 +228,10 @@ class mujoco_qpos_converter(nn.Module):
         # load the offset matrices from the xml
         from scipy.spatial.transform import Rotation
 
+        def rotation_from_mujoco_quat(quat):
+            quat = np.asarray(quat, dtype=float)
+            return Rotation.from_quat(quat[[1, 2, 3, 0]])
+
         R_zup_to_yup = Rotation.from_euler("x", -90, degrees=True)
         x_forward_to_y_forward = Rotation.from_euler("z", -90, degrees=True)
         mujoco_to_motion = R_zup_to_yup * x_forward_to_y_forward
@@ -241,10 +246,7 @@ class mujoco_qpos_converter(nn.Module):
         for i, joint in enumerate(mujoco_hinge_joints):
             body = parent_map[joint]
             if "quat" in body.attrib:
-                rot = Rotation.from_quat(
-                    [float(x) for x in body.get("quat").strip().split(" ")],
-                    scalar_first=True
-                )
+                rot = rotation_from_mujoco_quat([float(x) for x in body.get("quat").strip().split(" ")])
                 idx = self._mujoco_indices_to_motion_indices[i]
                 self._rot_offsets_q2t[idx] = torch.from_numpy(rot.as_matrix())
                 rot = mujoco_to_motion * rot * mujoco_to_motion.inv()

@@ -1,3 +1,4 @@
+from __future__ import annotations
 from .base import SkeletonBase
 
 # If a joint's channel is not in this list, it is a dead joint that is not activated

@@ -1,3 +1,4 @@
+from __future__ import annotations
 import os
 import argparse
 from omegaconf import OmegaConf, open_dict
@@ -30,6 +31,27 @@ def get_path_dir(exp):
             'root_model_path': root_model_path, 'root_model_ckpt': root_model_ckpt,
             'vqvae_path': vqvae_path, 'vqvae_ckpt': vqvae_ckpt}
 
+
+def _rewrite_out_paths(value, result_dir):
+    if isinstance(value, str):
+        normalized = value.replace("\\", "/")
+        for prefix in ("./out/", "out/"):
+            if normalized.startswith(prefix):
+                return os.path.abspath(os.path.join(result_dir, normalized[len(prefix):]))
+        if normalized == "./out" or normalized == "out":
+            return os.path.abspath(result_dir)
+        return value
+    if isinstance(value, list):
+        return [_rewrite_out_paths(item, result_dir) for item in value]
+    if isinstance(value, dict):
+        return {key: _rewrite_out_paths(item, result_dir) for key, item in value.items()}
+    return value
+
+
+def _normalize_checkpoint_paths(conf, result_dir):
+    normalized = _rewrite_out_paths(OmegaConf.to_container(conf, resolve=False), result_dir)
+    return OmegaConf.create(normalized)
+
 def test(args: argparse.Namespace = None):
     if args is None:
         parser = argparse.ArgumentParser(description='model_test')
@@ -54,6 +76,7 @@ def test(args: argparse.Namespace = None):
         config_path = f"{ckpt_dir}/hparams.yaml"
 
         conf = OmegaConf.load(config_path)
+        conf = _normalize_checkpoint_paths(conf, args.result_dir)
         conf.ckpt_path = ckpt_path
 
         if type(conf.model.args.vqvae_model_ckpt_path) == str:

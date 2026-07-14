@@ -1,3 +1,4 @@
+from __future__ import annotations
 from omegaconf import DictConfig
 from hydra.utils import instantiate
 

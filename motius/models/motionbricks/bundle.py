@@ -2,6 +2,11 @@
 
 from __future__ import annotations
 
+import json
+import os
+import shutil
+import sys
+import importlib
 from dataclasses import dataclass
 from pathlib import Path
 from types import SimpleNamespace
@@ -14,6 +19,58 @@ from motius.registry import MODEL_BUNDLES
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 _NETWORK_ROOT = Path(__file__).resolve().parent / "network"
 _DEFAULT_CHECKPOINT_DIR = _REPO_ROOT / "checkpoints" / "motionbricks"
+_ARTIFACT_FORMAT = "motius-motionbricks-wrapper-v1"
+
+
+def _read_json(path: Path) -> dict:
+    return json.loads(path.read_text())
+
+
+def _maybe_download_hub(name_or_path: str, local: Path) -> Path:
+    if local.exists():
+        return local
+    if "/" not in name_or_path:
+        return local
+    from huggingface_hub import snapshot_download
+
+    return Path(snapshot_download(repo_id=name_or_path, repo_type="model"))
+
+
+def _copy_tree(src: Path, dst: Path, copy_mode: str = "copy") -> None:
+    if not src.exists():
+        raise FileNotFoundError(f"MotionBricks artifact source does not exist: {src}")
+    if dst.exists():
+        shutil.rmtree(dst)
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    copy_function = shutil.copy2
+    if copy_mode == "hardlink":
+        def copy_function(src, dst):
+            try:
+                os.link(Path(src).resolve(), dst)
+            except OSError:
+                shutil.copy2(src, dst)
+    elif copy_mode != "copy":
+        raise ValueError(f"Unsupported MotionBricks artifact copy mode: {copy_mode}")
+    shutil.copytree(src, dst, symlinks=False, copy_function=copy_function)
+
+
+def _is_local_relative_path(value: Optional[str]) -> bool:
+    if not value:
+        return False
+    path = str(value)
+    return "://" not in path and not Path(path).is_absolute()
+
+
+def _resolve_relative_path(value: Optional[str], base: Path) -> Optional[str]:
+    if not _is_local_relative_path(value):
+        return value
+    return str(base / str(value))
+
+
+def _register_motionbricks_alias() -> None:
+    """Expose the vendored runtime under the package name used in Hydra configs."""
+    if "motionbricks" not in sys.modules:
+        sys.modules["motionbricks"] = importlib.import_module("motius.models.motionbricks.network")
 
 
 @dataclass(frozen=True)
@@ -165,6 +222,7 @@ class MotionBricksBundle(ModelBundle):
         self.validate_checkpoints()
         if self._agent is not None and not overrides:
             return self._agent
+        _register_motionbricks_alias()
         try:
             from motius.models.motionbricks.network.motion_backbone.demo.utils import navigation_demo
         except ImportError as exc:
@@ -174,6 +232,123 @@ class MotionBricksBundle(ModelBundle):
             ) from exc
         self._agent = navigation_demo(self._runtime_args(**overrides))
         return self._agent
+
+    def save_pretrained(
+        self,
+        save_directory: str,
+        *,
+        include_checkpoint: bool = True,
+        checkpoint_source: str | Path | None = None,
+        checkpoint_subdir: str = "motionbricks_checkpoint",
+        copy_mode: str = "copy",
+        **kwargs: Any,
+    ):
+        """Save a HuggingFace-style Motius MotionBricks artifact."""
+        save_dir = Path(save_directory)
+        save_dir.mkdir(parents=True, exist_ok=True)
+        config = {
+            "checkpoint_dir": str(self.checkpoint_dir),
+            "device": self.device_name,
+            "controller": self.controller,
+            "clips": self.clips,
+            "runtime_kwargs": self.runtime_kwargs,
+        }
+        artifacts = {}
+        if include_checkpoint:
+            src = Path(checkpoint_source or self.checkpoint_dir)
+            _copy_tree(src, save_dir / checkpoint_subdir, copy_mode=copy_mode)
+            config["checkpoint_dir"] = checkpoint_subdir
+            artifacts["motionbricks_checkpoint"] = checkpoint_subdir
+
+        meta = {
+            "model_type": "motionbricks",
+            "format": _ARTIFACT_FORMAT,
+            "bundle_class": "motius.models.motionbricks.MotionBricksBundle",
+            "pipeline_class": "motius.pipelines.motionbricks.MotionBricksPipeline",
+            "artifacts": artifacts,
+            "config": config,
+            "source": {
+                "repo": "NVlabs/GR00T-WholeBodyControl",
+                "subdir": "motionbricks",
+                "paper": "https://arxiv.org/abs/2604.24833",
+            },
+        }
+        (save_dir / "motionbricks_config.json").write_text(json.dumps(meta, indent=2) + "\n")
+        (save_dir / "model_index.json").write_text(
+            json.dumps(
+                {
+                    "_class_name": "MotionBricksPipeline",
+                    "_library_name": "motius",
+                    "model_type": "motionbricks",
+                    "format": _ARTIFACT_FORMAT,
+                    "bundle_class": meta["bundle_class"],
+                    "pipeline_class": meta["pipeline_class"],
+                    "artifacts": artifacts,
+                    "supported_tasks": self.SUPPORTED_TASKS,
+                    "api": {
+                        "from_pretrained": "motius.pipelines.motionbricks.MotionBricksPipeline.from_pretrained",
+                    },
+                },
+                indent=2,
+            )
+            + "\n"
+        )
+        readme = save_dir / "README.md"
+        if not readme.exists():
+            readme.write_text(
+                "---\n"
+                "library_name: motius\n"
+                "tags:\n"
+                "- motion-generation\n"
+                "- robotics\n"
+                "- unitree-g1\n"
+                "- motionbricks\n"
+                "license: other\n"
+                "---\n\n"
+                "# MotionBricks Motius Artifact\n\n"
+                "This artifact stores the official MotionBricks checkpoint "
+                "layout for the Motius `MotionBricksPipeline` wrapper.\n\n"
+                "```python\n"
+                "from motius.pipelines.motionbricks import MotionBricksPipeline\n\n"
+                "pipe = MotionBricksPipeline.from_pretrained(\"<artifact-path-or-repo>\", bundle_kwargs={\"device\": \"cuda\", \"controller\": \"random\"})\n"
+                "out = pipe.rollout(steps=240)\n"
+                "qpos = out[\"qpos\"]\n"
+                "```\n"
+            )
+        return save_directory
+
+    @classmethod
+    def from_config(cls, cfg: Optional[dict] = None, **kwargs):
+        base_dir = None
+        if isinstance(cfg, (str, Path)):
+            cfg_path = Path(cfg)
+            if cfg_path.is_dir():
+                cfg_path = cfg_path / "motionbricks_config.json"
+            base_dir = cfg_path.parent
+            cfg = _read_json(cfg_path)
+        cfg_dict = cls._to_plain_dict(cfg)
+        if cfg_dict.get("model_type") == "motionbricks" and "config" in cfg_dict:
+            cfg_dict = dict(cfg_dict["config"])
+        runtime_kwargs = cfg_dict.pop("runtime_kwargs", None) or {}
+        cfg_dict.update(runtime_kwargs)
+        cfg_dict.pop("format", None)
+        cfg_dict.pop("artifacts", None)
+        if base_dir is not None:
+            cfg_dict["checkpoint_dir"] = _resolve_relative_path(
+                cfg_dict.get("checkpoint_dir"),
+                base_dir,
+            )
+        return super().from_config(cfg_dict, **kwargs)
+
+    @classmethod
+    def from_pretrained(cls, pretrained_model_name_or_path: str, **kwargs):
+        path = Path(str(pretrained_model_name_or_path))
+        if not (path / "motionbricks_config.json").exists():
+            path = _maybe_download_hub(str(pretrained_model_name_or_path), path)
+        cfg_file = path / "motionbricks_config.json"
+        if cfg_file.exists():
+            return cls.from_config(cfg_file, **kwargs)
+        return super().from_pretrained(pretrained_model_name_or_path, **kwargs)
 
 
 __all__ = ["MotionBricksBundle", "MotionBricksCheckpointLayout"]

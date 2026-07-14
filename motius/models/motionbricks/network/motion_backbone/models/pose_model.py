@@ -1,3 +1,4 @@
+from __future__ import annotations
 from motius.models.motionbricks.network.vqvae.neural_modules import vqvae
 from motius.models.motionbricks.network.motion_backbone.neural_modules.pose_backbone import pose_backbone_network
 import torch as t

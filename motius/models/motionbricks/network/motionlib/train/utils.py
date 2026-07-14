@@ -1,3 +1,4 @@
+from __future__ import annotations
 # numpy / torch / pytorch_lightning should not be imported
 # even implicitely in the imports
 # so that the logging behave properly

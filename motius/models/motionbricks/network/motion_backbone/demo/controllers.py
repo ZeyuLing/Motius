@@ -1,3 +1,4 @@
+from __future__ import annotations
 import torch as t
 from motius.models.motionbricks.network.motion_backbone.demo.clips import clip_holder_G1
 import mujoco
@@ -5,14 +6,31 @@ import numpy as np
 from scipy.spatial.transform import Rotation as R
 import copy
 import platform
-if platform.system() == 'Linux' or platform.system() == 'Darwin':
-    from pynput import keyboard
-else:
-    import keyboard
+
+keyboard = None
+
+
+def _load_keyboard_backend():
+    global keyboard
+    if keyboard is not None:
+        return keyboard
+    try:
+        if platform.system() == 'Linux' or platform.system() == 'Darwin':
+            from pynput import keyboard as keyboard_backend
+        else:
+            import keyboard as keyboard_backend
+    except Exception as exc:
+        raise ImportError(
+            "MotionBricks WASD controller requires a keyboard backend and display. "
+            "Use controller='random' for headless rollout."
+        ) from exc
+    keyboard = keyboard_backend
+    return keyboard
 
 class KeyboardHandler:
     def __init__(self):
-        self.listener = keyboard.Listener(
+        keyboard_backend = _load_keyboard_backend()
+        self.listener = keyboard_backend.Listener(
             on_press=self.on_press,
             on_release=self.on_release)
         self.listener.start()
@@ -80,33 +98,34 @@ class base_controller(object):
                           'x', 'z', 'c', 'v', 'b', 'r', 't', 'f', 'g', 'q', 'e']
             key_pressed = {key: True if key in key_pressed else False for key in candidates}
         else:
+            keyboard_backend = _load_keyboard_backend()
             # windows / macos
             key_pressed = {
                 # movement direction
-                "w": keyboard.is_pressed('w'), "a": keyboard.is_pressed('a'),
-                "s": keyboard.is_pressed('s'), "d": keyboard.is_pressed('d'),
+                "w": keyboard_backend.is_pressed('w'), "a": keyboard_backend.is_pressed('a'),
+                "s": keyboard_backend.is_pressed('s'), "d": keyboard_backend.is_pressed('d'),
 
                 # heading direction
-                "left": keyboard.is_pressed('left'), "right": keyboard.is_pressed('right'),
-                "up": keyboard.is_pressed('up'), "down": keyboard.is_pressed('down'),
+                "left": keyboard_backend.is_pressed('left'), "right": keyboard_backend.is_pressed('right'),
+                "up": keyboard_backend.is_pressed('up'), "down": keyboard_backend.is_pressed('down'),
 
                 # mode control; zxcvb are the placeholder for different styles of motions
-                "z": keyboard.is_pressed('z'),
-                "x": keyboard.is_pressed('x'),
-                "c": keyboard.is_pressed('c'),
-                "v": keyboard.is_pressed('v'),
-                "b": keyboard.is_pressed('b'),
+                "z": keyboard_backend.is_pressed('z'),
+                "x": keyboard_backend.is_pressed('x'),
+                "c": keyboard_backend.is_pressed('c'),
+                "v": keyboard_backend.is_pressed('v'),
+                "b": keyboard_backend.is_pressed('b'),
 
-                "r": keyboard.is_pressed('r'),
-                "t": keyboard.is_pressed('t'),
-                "f": keyboard.is_pressed('f'),
-                "g": keyboard.is_pressed('g'),
-                "q": keyboard.is_pressed('q'),
-                "e": keyboard.is_pressed('e'),
+                "r": keyboard_backend.is_pressed('r'),
+                "t": keyboard_backend.is_pressed('t'),
+                "f": keyboard_backend.is_pressed('f'),
+                "g": keyboard_backend.is_pressed('g'),
+                "q": keyboard_backend.is_pressed('q'),
+                "e": keyboard_backend.is_pressed('e'),
 
                 # old mode control
-                "shift": keyboard.is_pressed('shift'), "ctrl": keyboard.is_pressed('ctrl'),
-                "enter": keyboard.is_pressed('enter'),
+                "shift": keyboard_backend.is_pressed('shift'), "ctrl": keyboard_backend.is_pressed('ctrl'),
+                "enter": keyboard_backend.is_pressed('enter'),
             }
         return key_pressed
 

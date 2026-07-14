@@ -38,6 +38,25 @@ def test_ardy_bundle_alias_without_loading_weights():
     assert bundle.SUPPORTED_TASKS["streaming_text_to_motion"]
 
 
+def test_ardy_artifact_roundtrip_without_loading_weights(tmp_path: Path):
+    ckpt = tmp_path / "source"
+    ckpt.mkdir()
+    (ckpt / "config.yaml").write_text("_target_: dummy\n")
+    bundle = ARDYBundle.from_pretrained("core8", load_model=False, text_encoder_mode="local")
+    bundle.save_pretrained(
+        tmp_path / "artifact",
+        checkpoint_source=str(ckpt),
+        include_text_encoder=False,
+    )
+
+    reloaded = ARDYBundle.from_pretrained(tmp_path / "artifact", load_model=False)
+    assert reloaded.model_name == "nvidia/ARDY-Core-RP-20FPS-Horizon8"
+    assert reloaded.checkpoint_path == str(tmp_path / "artifact" / "ardy_checkpoint")
+    assert reloaded.text_encoder_mode == "local"
+    assert (tmp_path / "artifact" / "model_index.json").is_file()
+    assert (tmp_path / "artifact" / "ardy_config.json").is_file()
+
+
 def test_ardy_export_demo_defaults_are_release_safe():
     source = (Path(__file__).resolve().parents[1] / "tools/export_ardy_core_demo.py").read_text()
     assert "someone executes a roundhouse kick" not in source

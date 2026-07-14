@@ -1,3 +1,4 @@
+from __future__ import annotations
 def tensor_needed(motion_rep):
     needs = set()
 

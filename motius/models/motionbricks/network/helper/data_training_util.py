@@ -1,3 +1,4 @@
+from __future__ import annotations
 import torch
 import torch as t
 import numpy as np

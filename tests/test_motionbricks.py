@@ -51,6 +51,24 @@ def test_motionbricks_pipeline_from_pretrained_without_loading(tmp_path: Path):
     assert pipe.fps == 30
 
 
+def test_motionbricks_artifact_roundtrip_without_loading(tmp_path: Path):
+    source = tmp_path / "source"
+    layout = MotionBricksBundle(checkpoint_dir=source, load_model=False).required_checkpoint_files
+    for path in (layout.clip, layout.vqvae, layout.pose, layout.root_model):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"checkpoint")
+
+    bundle = MotionBricksBundle(checkpoint_dir=source, load_model=False, device="cpu", controller="random")
+    bundle.save_pretrained(tmp_path / "artifact")
+
+    reloaded = MotionBricksBundle.from_pretrained(tmp_path / "artifact", load_model=False)
+    assert reloaded.checkpoint_dir == tmp_path / "artifact" / "motionbricks_checkpoint"
+    assert reloaded.controller == "random"
+    reloaded.validate_checkpoints()
+    assert (tmp_path / "artifact" / "model_index.json").is_file()
+    assert (tmp_path / "artifact" / "motionbricks_config.json").is_file()
+
+
 def test_motionbricks_vendored_namespace_imports_light_dataset():
     from motius.models.motionbricks.network.data.synthetic_dataset import (
         SyntheticMotionDataset,
