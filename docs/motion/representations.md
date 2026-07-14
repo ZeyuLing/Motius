@@ -52,8 +52,12 @@ joints = convert_motion(
 ```
 
 `ardy_g1_414` additionally converts exactly to MuJoCo qpos-36. ARDY Core-27 is
-not SMPL-22, so no implicit Core-to-SMPL joint truncation is provided. A
-cross-skeleton route must name and validate its retargeting method explicitly.
+not SMPL-22, so no implicit Core-to-SMPL joint truncation is provided. Motius
+does expose `ardy_core27_to_smpl22_joints`, a named joint-position bridge that
+maps Core's Hips/limbs/spine/end-effectors into SMPL-22 order for visualization
+and joint-position evaluators. It does not recover SMPL twist, shape, or a
+valid `motion135` sequence; SMPL mesh rendering still requires a documented
+position-IK fit.
 
 ## InterHuman-262
 
@@ -74,6 +78,30 @@ canonicalizing each person independently would destroy the interaction.
 The position channels decode exactly. InterHuman does not store root rotation,
 body shape, or joint twist completely, so an SMPL mesh is recovered with the
 documented position-IK bridge and is necessarily non-unique.
+
+The paired representation can be encoded from SMPL-22 joint tracks or paired
+`motion135`:
+
+```python
+from motius.motion import convert_motion, motion135_to_interhuman262
+
+joints_pair = convert_motion(motion_interhuman, "interhuman262", "joints")
+motion_interhuman = motion135_to_interhuman262(
+    motion135_pair,                 # (T, 2, 135)
+    bone_offsets=smpl22_offsets,    # (22, 3), same FK skeleton as motion135
+    source_coordinates="y_up",
+)
+```
+
+Going back to SMPL is intentionally split into two levels:
+
+```text
+InterHuman-262 -> exact SMPL-22 joint positions
+InterHuman-262 -> position-IK -> approximate SMPL motion135 / mesh
+```
+
+The first route is deterministic and evaluator-safe. The second route is for
+mesh previews and must report the IK fit error.
 
 ## Same-Motion Visual Comparison
 
@@ -103,6 +131,16 @@ Z-up `[z, x, y]`, so SMPL `+z` body-forward becomes G1 `+x` body-forward.
 `GMR_Z_UP_FROM_Y_UP` and its inverse `GMR_Y_UP_FROM_Z_UP` are exported from
 `motius.motion.retarget`; renderers should use these matrices instead of
 assuming a generic Z-up axis permutation.
+
+## Two-Person InterHuman Preview
+
+InterHuman demos use paired SMPL meshes fitted from InterHuman-262 joint
+positions. The same shared canonical frame is used for both people.
+
+| Source | Prompt | Preview |
+| ------ | ------ | ------- |
+| InterGen | two people shake hands and then step apart | ![InterGen InterHuman to SMPL pair](../../assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair_512_30fps.gif) |
+| InterMask | two people hug each other and then step back | ![InterMask InterHuman to SMPL pair](../../assets/model_zoo/intermask/intermask_interhuman_hug_smpl_pair_512_30fps.gif) |
 
 ## The Two 6D Layouts
 

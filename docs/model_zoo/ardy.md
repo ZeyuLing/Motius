@@ -201,9 +201,30 @@ joints = convert_motion(
 )
 ```
 
-Core-27 is not SMPL-22. Motius therefore does not silently truncate or rename
-joints when crossing skeletons. Cross-model evaluation or SMPL mesh rendering
-requires an explicit Core-to-SMPL retargeting bridge. G1 output can be exported
+Core-27 is not SMPL-22. NVIDIA's official ARDY repository does not include a
+Core-to-SMPL or SMPL-to-Core retargeter; it provides native Core/G1 skeleton
+visualization and motion-correction utilities. Motius therefore does not
+silently truncate or rename joints when crossing skeletons.
+
+For joint-position visualization and evaluator smoke tests, Motius provides a
+named bridge:
+
+```python
+from motius.motion import convert_motion
+
+smpl22_joints = convert_motion(
+    motion["features"],
+    "ardy_core330",
+    "smpl22_joints",
+    motion_rep=pipe.bundle.motion_rep,
+    is_normalized=True,
+)
+```
+
+This bridge maps Core-27 joint positions into SMPL-22 order. It does not recover
+SMPL twist, body shape, or a valid `motion135` rotation sequence. SMPL mesh
+rendering and leaderboard evaluation must use a separately validated
+position-IK bridge and report its fitting error. G1 output can be exported
 exactly to MuJoCo qpos-36.
 
 ## Evaluation Results

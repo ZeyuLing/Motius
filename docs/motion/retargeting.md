@@ -24,6 +24,64 @@ then optionally refines it against recovered joints. It is inherently lossy:
 HML263 does not uniquely determine body shape or twist. Inspect mesh output as
 well as joint MPJPE before using converted data for evaluation.
 
+## InterHuman To SMPL
+
+InterHuman-262 stores paired SMPL-22 joint positions directly, so the exact
+decode is:
+
+```python
+from motius.motion import convert_motion
+
+joints_pair = convert_motion(motion_interhuman, "interhuman262", "joints")
+```
+
+The inverse route to SMPL mesh is not exact. InterHuman omits root rotation,
+shape, and complete twist, so Motius model cards use a neutral-SMPL position-IK
+bridge for previews and report the fit error in the preview metadata. Use that
+mesh bridge for qualitative inspection; use the exact joint decode for
+joint-position evaluators.
+
+To encode paired SMPL motion into InterHuman-262:
+
+```python
+from motius.motion import motion135_to_interhuman262
+
+motion_interhuman = motion135_to_interhuman262(
+    motion135_pair,              # (T, 2, 135)
+    bone_offsets=smpl22_offsets, # (22, 3)
+    source_coordinates="y_up",
+)
+```
+
+The pair is canonicalized once using person one's first frame. Do not
+canonicalize each person independently.
+
+## ARDY Core To SMPL-22 Joints
+
+The official ARDY repository does not provide Core-to-SMPL or SMPL-to-Core
+retargeting code. It visualizes the released Core checkpoint with its native
+Core-27 skin. Motius exposes only a named joint-position bridge:
+
+```python
+from motius.motion import ardy_core27_to_smpl22_joints, convert_motion
+
+smpl22_joints = ardy_core27_to_smpl22_joints(core27_joints)
+
+smpl22_joints = convert_motion(
+    ardy_features,
+    "ardy_core330",
+    "smpl22_joints",
+    motion_rep=ardy_pipe.bundle.motion_rep,
+    is_normalized=True,
+)
+```
+
+This route maps Core joints into SMPL-22 joint order for visualization and
+joint-position evaluator experiments. It is not a valid SMPL pose, not a
+`motion135` sequence, and not sufficient for SMPL mesh rendering. Mesh or
+leaderboard evaluation through SMPL requires a later position-IK bridge with a
+reported fitting error.
+
 ## SMPL To KIMODO SOMA
 
 Set `KIMODO_SKELETON_ASSETS` to a directory containing `smplx22/joints.p` and

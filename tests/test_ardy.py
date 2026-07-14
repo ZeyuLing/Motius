@@ -85,3 +85,20 @@ def test_ardy_constraint_loader_honors_dtype():
     )
     assert constraints[0].frame_indices.dtype == torch.int64
     assert constraints[0].root_2d.dtype == torch.float64
+
+
+def test_ardy_core27_to_smpl22_joint_bridge_is_explicit():
+    from motius.motion import ardy_core27_to_smpl22_joints
+
+    joints = np.arange(2 * 27 * 3, dtype=np.float32).reshape(2, 27, 3)
+    smpl = ardy_core27_to_smpl22_joints(joints)
+    assert smpl.shape == (2, 22, 3)
+    np.testing.assert_array_equal(smpl[:, 0], joints[:, 0])    # Pelvis <- Hips
+    np.testing.assert_array_equal(smpl[:, 1], joints[:, 23])   # L_Hip <- LeftUpLeg
+    np.testing.assert_array_equal(smpl[:, 2], joints[:, 19])   # R_Hip <- RightUpLeg
+    np.testing.assert_array_equal(smpl[:, 20], joints[:, 16])  # L_Wrist <- LeftHand
+    np.testing.assert_array_equal(smpl[:, 21], joints[:, 10])  # R_Wrist <- RightHand
+
+    recentered = ardy_core27_to_smpl22_joints(joints, recenter_root=True)
+    np.testing.assert_allclose(recentered[:, 0, [0, 2]], 0.0)
+    np.testing.assert_array_equal(recentered[:, 0, 1], smpl[:, 0, 1])

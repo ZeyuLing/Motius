@@ -22,6 +22,13 @@ from motius.motion import convert_motion, smpl_to_humanml263
 joints = convert_motion(motion_hml263, "hml263", "joints")
 joints = convert_motion(motion_ms272, "ms272", "joints")
 joints_pair = convert_motion(motion_interhuman, "interhuman262", "joints")
+smpl22_from_ardy = convert_motion(
+    ardy_features,
+    "ardy_core330",
+    "smpl22_joints",
+    motion_rep=ardy_pipe.bundle.motion_rep,
+    is_normalized=True,
+)
 
 # HY-Motion's transform channels are an exact prefix.
 motion135 = convert_motion(motion_hy201, "hymotion201", "motion135")
@@ -106,6 +113,10 @@ store the converted array under `motion` and record source/target names.
 | InterHuman-262 | joints | Exact stored global-position decode; preserves the shared pair frame |
 | paired joints | InterHuman-262 | Official pair-aware canonicalization; requires 21 non-root local rotations |
 | paired motion135 | InterHuman-262 | FK plus pair-aware encoding; requires explicit SMPL-22 offsets |
+| ARDY Core-330 | joints | Exact native Core-27 decode; requires the checkpoint `motion_rep` |
+| ARDY Core-330 | SMPL-22 joints | Named joint-position bridge; not an SMPL pose or mesh recovery |
+| ARDY G1-414 | joints | Exact native G1-34 decode; requires the checkpoint `motion_rep` |
+| ARDY G1-414 | G1 qpos-36 | Exact MuJoCo root pose plus 29-DOF export |
 | G1-38 | G1 qpos-36 | Exact root quaternion + 29-DOF decode |
 | G1 qpos-36 | G1-38 | Optional root canonicalization and XY velocity encoding |
 
@@ -117,6 +128,11 @@ the representation omits root rotation and does not uniquely determine twist.
 Use its exact joint decode followed by `retarget_hml263_clip(...,
 rotation_init="position_ik")` when an SMPL mesh or `motion135` approximation is
 required.
+
+ARDY Core-330 follows the same honesty rule. The official ARDY repository does
+not provide Core-to-SMPL retargeting. Motius exposes only
+`ardy_core27_to_smpl22_joints` for joint-level comparison until a validated
+position-IK bridge reports its fitting error.
 
 ## HumanML3D Protocol Controls
 

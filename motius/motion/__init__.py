@@ -12,6 +12,7 @@ from .representation import (
     smpl_to_humanml263,
     smpl_to_joints,
     motion135_to_interhuman262,
+    ardy_core27_to_smpl22_joints,
 )
 
 __all__ = [
@@ -23,6 +24,7 @@ __all__ = [
     "joints_to_interhuman262",
     "interhuman262_to_joints",
     "motion135_to_interhuman262",
+    "ardy_core27_to_smpl22_joints",
     "smpl_to_joints",
     "smpl_to_hml263",
     "smpl_to_humanml263",

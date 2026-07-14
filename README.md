@@ -97,7 +97,7 @@ validated retargeting route before crossing skeletons.
 | **DART276** | `(T, 276)` | DART and ViMoGen | Bridges through SMPL parameters and joints with explicit coordinate conversion |
 | **InterHuman-262** | `(T, 2, 262)` | InterGen and InterMask | Two synchronized SMPL-22 tracks in one shared canonical world frame; exact joint decode, position-IK mesh bridge |
 | **Unitree G1-38D** | `(T, 38)` | G1-native generation and evaluation | SMPL body motion is retargeted through GMR; G1 qpos decode is exact |
-| **ARDY-Core-330** | `(T, 330)` | ARDY Core checkpoints | Exact native Core-27 joint/rotation decode; cross-skeleton use requires explicit retargeting |
+| **ARDY-Core-330** | `(T, 330)` | ARDY Core checkpoints | Exact native Core-27 decode; named Core-27 to SMPL-22 joint bridge for joint evaluators |
 | **ARDY-G1-414** | `(T, 414)` | ARDY G1 checkpoints | Exact native G1 joint/rotation decode and exact MuJoCo qpos-36 export |
 
 ### Same-Motion Representation Demo
@@ -111,6 +111,17 @@ after GMR retargeting. All three are aligned to the same initial body heading.
 
 [Open the synchronized Three.js viewer](assets/motion/representation_demo/index.html)
 or read the [representation protocol](docs/motion/representations.md).
+
+### Two-Person Representation Demo
+
+InterHuman-262 stores two synchronized SMPL-22 joint tracks in one shared world
+frame. The previews below show the documented InterHuman-to-SMPL position-IK
+mesh bridge used for qualitative paired-motion inspection.
+
+| Representation | Prompt | SMPL Pair Preview |
+| -------------- | ------ | ----------------- |
+| InterHuman-262 / InterGen | two people shake hands and then step apart | ![InterGen InterHuman handshake SMPL pair](assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair_512_30fps.gif) |
+| InterHuman-262 / InterMask | two people hug each other and then step back | ![InterMask InterHuman hug SMPL pair](assets/model_zoo/intermask/intermask_interhuman_hug_smpl_pair_512_30fps.gif) |
 
 The shared bridge lets a model trained with one representation feed evaluators,
 visualizers, or pipelines built for another. Conversion is exact where the
@@ -142,6 +153,15 @@ motion_hml263 = smpl_to_humanml263(
     model_path="checkpoints/smpl_models",
     src_fps=20,
     coordinate_system="amass",
+)
+
+# ARDY Core-330 -> Core-27 decode -> named SMPL-22 joint bridge.
+smpl22_joints = convert_motion(
+    ardy_features,
+    "ardy_core330",
+    "smpl22_joints",
+    motion_rep=ardy_pipe.bundle.motion_rep,
+    is_normalized=True,
 )
 ```
 

@@ -41,6 +41,11 @@ from .convert import (
     smpl_to_joints,
     smpl_to_motion135,
 )
+from motius.motion.retarget.ardy_core import (
+    ARDY_CORE27_NAMES,
+    SMPL22_FROM_ARDY_CORE27,
+    ardy_core27_to_smpl22_joints,
+)
 
 
 def get_spec(name: str) -> MotionRepresentationSpec:
@@ -89,6 +94,9 @@ __all__ = [
     "ardy_feature_slices",
     "split_ardy_features",
     "decode_ardy_features",
+    "ARDY_CORE27_NAMES",
+    "SMPL22_FROM_ARDY_CORE27",
+    "ardy_core27_to_smpl22_joints",
     "interhuman262_to_foot_contacts",
     "interhuman262_to_joint_velocities",
     "interhuman262_to_joints",

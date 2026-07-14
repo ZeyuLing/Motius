@@ -424,6 +424,8 @@ def convert_motion(data, source: str, target: str, **kwargs):
             "g1qpos": "g1_qpos",
             "ardycore330": "ardy_core330",
             "ardyg1414": "ardy_g1_414",
+            "smpl22joints": "smpl22_joints",
+            "smpljoints": "smpl22_joints",
         }
         return aliases.get(key, key)
 
@@ -448,6 +450,13 @@ def convert_motion(data, source: str, target: str, **kwargs):
         )
         if target == "joints":
             return output["posed_joints"]
+        if target == "smpl22_joints" and source == "ardy_core330":
+            from motius.motion.retarget.ardy_core import ardy_core27_to_smpl22_joints
+
+            return ardy_core27_to_smpl22_joints(
+                output["posed_joints"],
+                recenter_root=kwargs.get("recenter_root", False),
+            )
         if target == "g1_qpos" and source == "ardy_g1_414":
             from motius.models.ardy.network.exports.mujoco import MujocoQposConverter
 
@@ -456,7 +465,11 @@ def convert_motion(data, source: str, target: str, **kwargs):
                 device=kwargs.get("device"),
                 numpy=kwargs.get("return_numpy", False),
             )
-        targets = "joints and g1_qpos" if source == "ardy_g1_414" else "joints"
+        targets = (
+            "joints and g1_qpos"
+            if source == "ardy_g1_414"
+            else "joints and smpl22_joints"
+        )
         raise ValueError(f"{source} supports exact conversion only to {targets}")
 
     if source == "g1_38" and target == "g1_qpos":
