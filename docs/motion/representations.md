@@ -14,6 +14,7 @@ materialize joints or meshes.
 | Name | Shape | Native FPS | Layout | 6D rotation convention |
 | ---- | ----: | ---------: | ------ | ---------------------- |
 | `hml263` | `(T, 263)` | 20 | root velocity/height, RIC joints, local rotations, velocities, contacts | HumanML3D feature protocol |
+| `babel135` | `(T, 135)` | 30 | Z-up root height/planar velocity + 22 local rotations | first two **rows**, `R[:2, :].reshape(6)` |
 | `ms272` | `(T, 272)` | 30 | root velocity, heading delta, joints, velocities, local rotations | first two **rows**, `R[:2, :].reshape(6)` |
 | `motion135` | `(T, 135)` | usually 30 | root translation + 22 local rotations | first two **columns** flattened row-wise, `R[:, :2].reshape(6)` |
 | `hymotion201` | `(T, 201)` | 30 | `motion135` + 22 pelvis-relative joints | same as `motion135` |
@@ -22,6 +23,23 @@ materialize joints or meshes.
 | `g1_38` | `(T, 38)` | 30 | Unitree G1 root XY velocity/height, root rotation, 29 joint angles | first two **columns** flattened row-wise |
 | `ardy_330` | `(T, 330)` | 20 | ARDY-27 root, heading, positions, rotations, velocities, contacts | global rotations via ARDY `matrix_to_cont6d` |
 | `ardy_g1_414` | `(T, 414)` | 25 | Unitree G1 explicit root, heading, positions, rotations, velocities, contacts | global rotations via ARDY `matrix_to_cont6d` |
+
+## BABEL-135
+
+FlowMDM's BABEL checkpoint uses a 135-dimensional Z-up representation that is
+not SMPL `motion135`, despite the equal width:
+
+```text
+[0]       root Z height
+[1:3]     root XY displacement per frame
+[3:135]   22 local joint rotations, first two matrix rows
+```
+
+Use `encode_babel135`, `decode_babel135`, or `babel135_to_joints`; never pass a
+BABEL array to a `motion135` converter. The joint decoder requires explicit
+SMPL-22 bone offsets. The public BABEL sequential protocol stores its fixed
+offsets in the generated manifest so every method reaches the same evaluator
+skeleton.
 
 ## ARDY-330 And Unitree G1 Explicit 414D
 

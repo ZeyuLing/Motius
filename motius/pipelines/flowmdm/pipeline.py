@@ -35,6 +35,16 @@ class FlowMDMPipeline(BasePipeline):
         length = (int(n_frames) // 4) * 4
         return max(min_length, min(max_length, length))
 
+    def resolve_length(self, n_frames: int) -> int:
+        """Resolve a duration without changing the official BABEL protocol."""
+
+        if getattr(self.bundle, "dataset", "humanml") == "babel":
+            length = int(n_frames)
+            if length < 30 or length > 200:
+                raise ValueError(f"BABEL segment length must be in [30, 200], got {length}")
+            return length
+        return self.clamp_length(int(n_frames))
+
     @staticmethod
     def _clear_embedding_cache(sampler) -> None:
         model = getattr(sampler, "model", None)
@@ -108,7 +118,7 @@ class FlowMDMPipeline(BasePipeline):
             raise ValueError("captions and lengths must have equal length")
         out: List[np.ndarray] = []
         for i, (caption, length) in enumerate(zip(captions, lengths)):
-            length = self.clamp_length(int(length))
+            length = self.resolve_length(int(length))
             torch.manual_seed(int(seed) + int(shard_index) * 100000 + int(sample_offset) + i)
             pred_norm = self._sample_one(str(caption), length)
             pred = self.bundle.denormalize(pred_norm).detach().cpu().numpy().astype(np.float32)
@@ -156,7 +166,7 @@ class FlowMDMPipeline(BasePipeline):
             raise ValueError("captions, lengths, and gt_features must have equal length")
         out: List[np.ndarray] = []
         for i, (caption, raw_len, gt) in enumerate(zip(captions, lengths, gt_features)):
-            length = self.clamp_length(int(raw_len))
+            length = self.resolve_length(int(raw_len))
             torch.manual_seed(int(seed) + int(shard_index) * 100000 + int(sample_offset) + i)
             inpainting = self._build_prefix_inpainting(gt, length, condition_num_frames)
             pred_norm = self._sample_one(str(caption), length, inpainting=inpainting)
@@ -183,7 +193,7 @@ class FlowMDMPipeline(BasePipeline):
                 )
             if not captions:
                 raise ValueError(f"sample {i} has no captions")
-            seg_lengths = [self.clamp_length(int(n)) for n in lengths]
+            seg_lengths = [self.resolve_length(int(n)) for n in lengths]
             torch.manual_seed(int(seed) + int(shard_index) * 100000 + int(sample_offset) + i)
             pred_norm = self._sample_sequence(captions, seg_lengths)
             pred = self.bundle.denormalize(pred_norm).detach().cpu().numpy().astype(np.float32)

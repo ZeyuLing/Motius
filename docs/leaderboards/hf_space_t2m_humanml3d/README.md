@@ -14,5 +14,8 @@ license: mit
 Static leaderboard page for HumanML3D official-test text-to-motion evaluation.
 
 The public page contains the benchmark protocol, generated-method comparison
-charts, and metric tables. Internal result paths, motion visualization links,
+charts, metric tables, and navigation to the Temporal Condition and BABEL
+Sequential Generation leaderboards.
+GT, paper-only, and explicitly marked calibration rows are excluded from all
+generated-method rankings. Internal result paths, motion visualization links,
 and debugging notes stay in the repository documentation and experiment logs.

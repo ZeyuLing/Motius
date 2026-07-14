@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BABEL Sequential Generation Leaderboard</title>
+  <style>
+    :root {
+      --ink: #18231f;
+      --muted: #63706c;
+      --line: #dce3df;
+      --soft: #f4f7f5;
+      --paper: #ffffff;
+      --green: #087d72;
+      --green-soft: #e7f4f1;
+      --blue: #315f9d;
+      --coral: #c7563f;
+      --amber: #ad6d00;
+      --shadow: 0 8px 24px rgba(24, 35, 31, 0.07);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+    a { color: inherit; }
+    button, input, select { font: inherit; letter-spacing: 0; }
+    .shell { width: min(1480px, calc(100% - 40px)); margin: 0 auto; }
+    .leaderboard-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 54px;
+      border-bottom: 1px solid var(--line);
+      overflow-x: auto;
+    }
+    .nav-label {
+      margin-right: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .nav-link {
+      padding: 8px 10px;
+      border-radius: 6px;
+      color: #47544f;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav-link:hover { background: var(--soft); }
+    .nav-link[aria-current="page"] { color: var(--green); background: var(--green-soft); font-weight: 700; }
+    header { padding: 34px 0 24px; border-bottom: 1px solid var(--line); }
+    .title-row { display: flex; justify-content: space-between; gap: 28px; align-items: flex-start; }
+    h1 { margin: 0 0 10px; font-size: 32px; line-height: 1.2; font-weight: 760; }
+    .lede { max-width: 820px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
+    .status {
+      flex: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border: 1px solid #b8dcd6;
+      border-radius: 6px;
+      color: #086c63;
+      background: #eef9f6;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .badge { padding: 6px 9px; border: 1px solid var(--line); border-radius: 5px; color: #47544f; background: var(--paper); font-size: 12px; }
+    .summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid var(--line); }
+    .summary-item { padding: 22px 18px; border-right: 1px solid var(--line); }
+    .summary-item:first-child { padding-left: 0; }
+    .summary-item:last-child { border-right: 0; }
+    .summary .value { font-size: 25px; font-weight: 760; }
+    .summary .label { margin-top: 5px; color: var(--muted); font-size: 12px; }
+    section { padding: 28px 0; border-bottom: 1px solid var(--line); }
+    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 16px; }
+    h2 { margin: 0; font-size: 19px; }
+    .caption { margin: 6px 0 0; color: var(--muted); line-height: 1.55; }
+    .controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; }
+    .field { display: grid; gap: 5px; }
+    .field label { color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+    select, .search {
+      height: 38px;
+      border: 1px solid #cbd5d0;
+      border-radius: 6px;
+      color: var(--ink);
+      background: var(--paper);
+      padding: 0 10px;
+      outline: 0;
+    }
+    select:focus, .search:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(8,125,114,.12); }
+    .chart-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(360px, .8fr); gap: 14px; }
+    .chart-panel { min-width: 0; padding: 17px; border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); }
+    .chart-panel h3 { margin: 0; font-size: 14px; }
+    .chart-note { min-height: 19px; margin: 5px 0 12px; color: var(--muted); font-size: 12px; }
+    .canvas-wrap { position: relative; height: 310px; }
+    .tabs { display: flex; gap: 4px; padding: 3px; border: 1px solid var(--line); border-radius: 7px; background: var(--soft); }
+    .tab { border: 0; border-radius: 5px; padding: 7px 11px; color: var(--muted); background: transparent; cursor: pointer; }
+    .tab[aria-selected="true"] { color: var(--ink); background: var(--paper); box-shadow: 0 1px 4px rgba(24,35,31,.1); font-weight: 700; }
+    .table-tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .search { width: min(280px, 100%); }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+    table { width: 100%; min-width: 980px; border-collapse: collapse; }
+    th, td { padding: 11px 12px; border-bottom: 1px solid #e6ebe8; text-align: right; white-space: nowrap; }
+    th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align: left; }
+    th { position: sticky; top: 0; z-index: 1; color: #4a5752; background: #f8faf9; font-size: 11px; text-transform: uppercase; cursor: pointer; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #fafcfb; }
+    .method { font-weight: 720; }
+    .version { color: var(--muted); font-size: 12px; }
+    .rank { display: inline-flex; justify-content: center; min-width: 28px; margin-right: 7px; padding: 3px 5px; border-radius: 4px; color: #187066; background: #dff1ed; font-size: 10px; font-weight: 800; }
+    .rank.second { color: #815600; background: #f8edcf; }
+    .rank.reference { color: #56625e; background: #e9eeeb; }
+    .best { color: #08766c; background: #edf8f5; font-weight: 760; }
+    .second-best { color: #8a5b00; background: #fff8e8; font-weight: 720; }
+    .empty { padding: 36px 18px; color: var(--muted); text-align: center; }
+    .metric-key { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; color: var(--muted); font-size: 12px; }
+    .key { display: inline-flex; align-items: center; gap: 6px; }
+    .swatch { width: 12px; height: 12px; border-radius: 3px; background: #edf8f5; border: 1px solid #b9ddd6; }
+    .swatch.second { background: #fff8e8; border-color: #ecd598; }
+    .swatch.ref { background: #e9eeeb; border-color: #cfd7d3; }
+    .protocol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--line); }
+    .protocol div { padding: 16px; background: var(--paper); }
+    .protocol dt { color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+    .protocol dd { margin: 6px 0 0; line-height: 1.5; }
+    footer { padding: 22px 0 34px; color: var(--muted); font-size: 12px; }
+    footer a { color: var(--green); }
+    @media (max-width: 900px) {
+      .shell { width: min(100% - 24px, 1480px); }
+      .title-row, .section-head { align-items: stretch; flex-direction: column; }
+      .summary { grid-template-columns: repeat(2, 1fr); }
+      .summary-item:nth-child(2) { border-right: 0; }
+      .summary-item:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .summary-item:nth-child(3) { padding-left: 0; }
+      .chart-grid { grid-template-columns: 1fr; }
+      .protocol { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      h1 { font-size: 27px; }
+      .status { align-self: flex-start; }
+      .controls, .field, select { width: 100%; }
+      .table-tools { align-items: stretch; flex-direction: column; }
+      .search { width: 100%; }
+      .canvas-wrap { height: 280px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="leaderboard-nav" aria-label="Motius leaderboards">
+      <span class="nav-label">Leaderboards</span>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard">T2M HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard">Temporal Condition</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard" aria-current="page">BABEL Sequential</a>
+    </nav>
+    <header>
+      <div class="title-row">
+        <div>
+          <h1>BABEL Sequential Generation Leaderboard</h1>
+          <p class="lede">Long-form human motion composition from an ordered sequence of text prompts. Every method is retargeted to the same SMPL-22 joints before semantic, distribution, and transition-quality evaluation.</p>
+        </div>
+        <span class="status" id="status">Protocol v2</span>
+      </div>
+      <div class="badges">
+        <span class="badge">BABEL validation split</span>
+        <span class="badge">64 compositions × 32 prompts</span>
+        <span class="badge">30 fps</span>
+        <span class="badge">Motius Joint-Position Evaluator</span>
+      </div>
+    </header>
+    <div class="summary">
+      <div class="summary-item"><div class="value" id="method-count">0</div><div class="label">Ranked methods</div></div>
+      <div class="summary-item"><div class="value">64</div><div class="label">Compositions</div></div>
+      <div class="summary-item"><div class="value">2,048</div><div class="label">Captioned segments</div></div>
+      <div class="summary-item"><div class="value">1,984</div><div class="label">Transition boundaries</div></div>
+    </div>
+
+    <section>
+      <div class="section-head">
+        <div><h2>Method Comparison</h2><p class="caption">Generated methods only; reference rows never set the chart scale.</p></div>
+        <div class="controls">
+          <div class="field"><label for="chart-group">Metric group</label><select id="chart-group"><option value="semantic">Semantic</option><option value="transition">Transition</option></select></div>
+          <div class="field"><label for="chart-metric">Metric</label><select id="chart-metric"></select></div>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <article class="chart-panel"><h3>Ranked Values</h3><p class="chart-note" id="bar-note"></p><div class="canvas-wrap"><canvas id="bar-chart"></canvas></div></article>
+        <article class="chart-panel"><h3>Normalized Profile</h3><p class="chart-note">100 is the best generated-method value on each axis.</p><div class="canvas-wrap"><canvas id="radar-chart"></canvas></div></article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><div><h2>Results</h2><p class="caption">Click any metric header to sort. Best and second-best values are recomputed within the active view.</p></div></div>
+      <div class="table-tools">
+        <div class="tabs" role="tablist" aria-label="metric view">
+          <button class="tab" type="button" data-view="semantic" aria-selected="true">Semantic</button>
+          <button class="tab" type="button" data-view="transition" aria-selected="false">Transition</button>
+        </div>
+        <input class="search" id="search" type="search" placeholder="Filter method" aria-label="Filter method">
+      </div>
+      <div class="table-wrap"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div>
+      <div class="metric-key"><span class="key"><span class="swatch"></span>Best</span><span class="key"><span class="swatch second"></span>Second</span><span class="key"><span class="swatch ref"></span>Reference, excluded from ranking</span></div>
+    </section>
+
+    <section>
+      <div class="section-head"><div><h2>Protocol</h2><p class="caption">A single conversion and metric contract for every sequential-generation method.</p></div></div>
+      <dl class="protocol">
+        <div><dt>Prompts</dt><dd>FlowMDM's official BABEL validation composition file: 64 sequences and 2,048 ordered action prompts.</dd></div>
+        <div><dt>Reference Pool</dt><dd>Deterministic 2,048-sample pools from eligible BABEL val action segments and independent 30-frame transition windows.</dd></div>
+        <div><dt>Representation</dt><dd>Canonical SMPL-22 joints66, first pelvis at the XZ origin, first-frame body facing +Z.</dd></div>
+        <div><dt>Semantic Metrics</dt><dd>R-Precision, MM-Dist, and FID from the Motius Joint-Position Evaluator; Diversity is shown as a reference statistic.</dd></div>
+        <div><dt>Transition Metrics</dt><dd>Embedding FID and AUJ gap are ranked; Diversity and absolute Peak Jerk are diagnostic reference statistics.</dd></div>
+        <div><dt>Ranking</dt><dd>GT/reference and paper-only values are visible but cannot receive best or second-best styling.</dd></div>
+      </dl>
+    </section>
+    <footer>Protocol and implementation: <a href="https://github.com/ZeyuLing/Motius">ZeyuLing/Motius</a>. Composition protocol adapted from <a href="https://github.com/BarqueroGerman/FlowMDM">FlowMDM</a>; motion data from <a href="https://babel.is.tue.mpg.de/data.html">BABEL</a>.</footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script>
+    const rows = Object.freeze([
+      {method:"BABEL val", version:"Reference pools", samples:2048, isReference:true, r1:null, r2:null, r3:null, fid:0.0, mmDist:null, diversity:56.0822, transitionFid:0.0, transitionDiversity:55.2796, peakJerk:89.84, aujGap:null},
+      {method:"FlowMDM", version:"Official BABEL", samples:2048, r1:0.2173, r2:0.3389, r3:0.4214, fid:212.3355, mmDist:49.9531, diversity:55.6829, transitionFid:334.7499, transitionDiversity:53.9730, peakJerk:421.20, aujGap:29.2441}
+    ]);
+    const groups = {
+      semantic: [
+        {key:"r1", label:"R@1", direction:"max", digits:4},
+        {key:"r2", label:"R@2", direction:"max", digits:4},
+        {key:"r3", label:"R@3", direction:"max", digits:4},
+        {key:"fid", label:"FID", direction:"min", digits:4},
+        {key:"mmDist", label:"MM-Dist", direction:"min", digits:4},
+        {key:"diversity", label:"Diversity", direction:"max", digits:4, referenceStatistic:true}
+      ],
+      transition: [
+        {key:"transitionFid", label:"Transition FID", direction:"min", digits:4},
+        {key:"transitionDiversity", label:"Transition Diversity", direction:"max", digits:4, referenceStatistic:true},
+        {key:"peakJerk", label:"Peak Jerk", direction:"min", digits:2, referenceStatistic:true},
+        {key:"aujGap", label:"AUJ Gap", direction:"min", digits:4}
+      ]
+    };
+    const baseColumns = [
+      {key:"method", label:"Method"}, {key:"version", label:"Version"},
+      {key:"samples", label:"Segments", numeric:true}
+    ];
+    const colors = ["#087d72", "#315f9d", "#c7563f", "#ad6d00", "#6e5aa5"];
+    const state = {view:"semantic", query:"", sortKey:"r1", sortDirection:"desc"};
+    let barChart = null;
+    let radarChart = null;
+
+    function rankable(row) { return !row.isReference && !row.paperOnly && !row.rankExcluded; }
+    function metric(key) { return groups[state.view].find(item => item.key === key); }
+    function format(value, spec) {
+      if (value === null || value === undefined || Number.isNaN(Number(value))) return "-";
+      if (spec && spec.digits !== undefined) return Number(value).toFixed(spec.digits);
+      return Number(value).toLocaleString();
+    }
+    function ranking(spec) {
+      if (spec.referenceStatistic) return [];
+      return rows.filter(row => rankable(row) && Number.isFinite(Number(row[spec.key])))
+        .sort((a,b) => spec.direction === "min" ? a[spec.key]-b[spec.key] : b[spec.key]-a[spec.key]);
+    }
+    function classFor(row, spec) {
+      if (!rankable(row)) return "";
+      const ranked = ranking(spec);
+      if (ranked[0] === row) return "best";
+      if (ranked[1] === row) return "second-best";
+      return "";
+    }
+    function filteredRows() {
+      const q = state.query.trim().toLowerCase();
+      const values = rows.filter(row => !q || `${row.method} ${row.version || ""}`.toLowerCase().includes(q));
+      const spec = metric(state.sortKey);
+      return values.sort((a,b) => {
+        const av = a[state.sortKey], bv = b[state.sortKey];
+        if (typeof av === "number" && typeof bv === "number") return state.sortDirection === "asc" ? av-bv : bv-av;
+        return String(av || "").localeCompare(String(bv || "")) * (state.sortDirection === "asc" ? 1 : -1);
+      });
+    }
+    function renderTable() {
+      const metrics = groups[state.view];
+      const columns = [...baseColumns, ...metrics];
+      document.getElementById("table-head").innerHTML = `<tr>${columns.map(col => `<th data-key="${col.key}">${col.label}${state.sortKey===col.key ? (state.sortDirection==="asc" ? " ↑" : " ↓") : ""}</th>`).join("")}</tr>`;
+      const body = document.getElementById("table-body");
+      const visible = filteredRows();
+      if (!visible.length) {
+        body.innerHTML = `<tr><td class="empty" colspan="${columns.length}">${rows.length ? "No matching method." : "Measured benchmark run in progress."}</td></tr>`;
+      } else {
+        body.innerHTML = visible.map(row => {
+          const ranked = groups[state.view].length ? ranking(groups[state.view][0]) : [];
+          const rank = !rankable(row) ? '<span class="rank reference">REF</span>' : ranked.indexOf(row) >= 0 ? `<span class="rank${ranked.indexOf(row)===1 ? " second" : ""}">#${ranked.indexOf(row)+1}</span>` : "";
+          return `<tr><td class="method">${rank}${row.method}</td><td class="version">${row.version || "-"}</td><td>${format(row.samples)}</td>${metrics.map(spec => `<td class="${classFor(row,spec)}">${format(row[spec.key],spec)}</td>`).join("")}</tr>`;
+        }).join("");
+      }
+      document.querySelectorAll("th[data-key]").forEach(head => head.addEventListener("click", () => {
+        const key = head.dataset.key;
+        if (state.sortKey === key) state.sortDirection = state.sortDirection === "asc" ? "desc" : "asc";
+        else { state.sortKey = key; state.sortDirection = metric(key)?.direction === "min" ? "asc" : "desc"; }
+        renderTable();
+      }));
+    }
+    function normalized(row, spec, ranked) {
+      const values = ranked.map(item => Number(item[spec.key])).filter(Number.isFinite);
+      if (!values.length) return 0;
+      const min = Math.min(...values), max = Math.max(...values);
+      if (max === min) return 100;
+      return spec.direction === "min" ? 100*(max-row[spec.key])/(max-min) : 100*(row[spec.key]-min)/(max-min);
+    }
+    function renderCharts() {
+      if (typeof Chart === "undefined") return;
+      const specs = groups[state.view].filter(item => !item.referenceStatistic);
+      const key = document.getElementById("chart-metric").value || specs[0].key;
+      const spec = specs.find(item => item.key === key) || specs[0];
+      const ranked = rows.filter(rankable).filter(row => specs.some(item => Number.isFinite(Number(row[item.key]))));
+      const ordered = [...ranked].filter(row => Number.isFinite(Number(row[spec.key]))).sort((a,b) => spec.direction === "min" ? a[spec.key]-b[spec.key] : b[spec.key]-a[spec.key]);
+      document.getElementById("bar-note").textContent = `${spec.label}; ${spec.direction === "min" ? "lower" : "higher"} is better.`;
+      if (barChart) barChart.destroy();
+      if (radarChart) radarChart.destroy();
+      barChart = new Chart(document.getElementById("bar-chart"), {type:"bar", data:{labels:ordered.map(row=>row.method), datasets:[{data:ordered.map(row=>row[spec.key]), backgroundColor:ordered.map((_,i)=>colors[i%colors.length]), borderRadius:4}]}, options:{indexAxis:"y", responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true, grid:{color:"#e7ebe9"}},y:{grid:{display:false}}}}});
+      radarChart = new Chart(document.getElementById("radar-chart"), {type:"radar", data:{labels:specs.map(item=>item.label), datasets:ranked.map((row,i)=>({label:row.method,data:specs.map(item=>normalized(row,item,ranked)),borderColor:colors[i%colors.length],backgroundColor:colors[i%colors.length]+"18",pointRadius:2,borderWidth:2}))}, options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:"#e0e6e3"},angleLines:{color:"#e0e6e3"}}},plugins:{legend:{position:"bottom",labels:{boxWidth:10,boxHeight:10}}}}});
+    }
+    function configureMetrics() {
+      const select = document.getElementById("chart-metric");
+      const rankedMetrics = groups[state.view].filter(item => !item.referenceStatistic);
+      select.innerHTML = rankedMetrics.map(item=>`<option value="${item.key}">${item.label}</option>`).join("");
+      state.sortKey = rankedMetrics[0].key;
+      state.sortDirection = rankedMetrics[0].direction === "min" ? "asc" : "desc";
+      renderTable(); renderCharts();
+    }
+    document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", () => {
+      state.view = tab.dataset.view;
+      document.querySelectorAll(".tab").forEach(item=>item.setAttribute("aria-selected",String(item===tab)));
+      document.getElementById("chart-group").value = state.view;
+      configureMetrics();
+    }));
+    document.getElementById("search").addEventListener("input", event => { state.query=event.target.value; renderTable(); });
+    document.getElementById("chart-group").addEventListener("change", event => { state.view=event.target.value; document.querySelectorAll(".tab").forEach(item=>item.setAttribute("aria-selected",String(item.dataset.view===state.view))); configureMetrics(); });
+    document.getElementById("chart-metric").addEventListener("change", renderCharts);
+    document.getElementById("method-count").textContent = rows.filter(rankable).length;
+    configureMetrics();
+  </script>
+</body>
+</html>

@@ -22,6 +22,27 @@ def _device(value: str | torch.device) -> torch.device:
     return requested
 
 
+def _normalize_tmr_state_dict(
+    state: dict[str, torch.Tensor], bundle: TMRBundle
+) -> dict[str, torch.Tensor]:
+    """Accept both bundle-prefixed and official TMR-core artifact layouts."""
+
+    expected = set(bundle.state_dict())
+    if set(state) == expected:
+        return state
+    prefixed = {f"tmr.{key}": value for key, value in state.items()}
+    if set(prefixed) == expected:
+        return prefixed
+    return state
+
+
+def _resolve_text_model_source(artifact_dir: Path, preprocessor: dict) -> str | Path:
+    bundled = artifact_dir / preprocessor.get("text_encoder_dir", "text_encoder")
+    if bundled.is_dir():
+        return bundled
+    return preprocessor.get("token_model", "distilbert-base-uncased")
+
+
 def _pad(features: Sequence[np.ndarray], device: torch.device) -> dict[str, torch.Tensor]:
     lengths = torch.tensor([len(item) for item in features], dtype=torch.long, device=device)
     width = int(features[0].shape[-1])
@@ -100,6 +121,7 @@ class TMRTextMotionEvaluator:
             sample_mean=True,
         )
         state = load_file(str(artifact_dir / config.get("weights_file", "model.safetensors")))
+        state = _normalize_tmr_state_dict(state, bundle)
         missing, unexpected = bundle.load_state_dict(state, strict=False)
         if missing or unexpected:
             raise RuntimeError(
@@ -108,12 +130,12 @@ class TMRTextMotionEvaluator:
             )
         from transformers import AutoModel, AutoTokenizer
 
-        text_model_name = preprocessor.get("token_model", "distilbert-base-uncased")
+        text_model_source = _resolve_text_model_source(artifact_dir, preprocessor)
         tokenizer = AutoTokenizer.from_pretrained(
-            text_model_name, local_files_only=local_files_only
+            text_model_source, local_files_only=local_files_only
         )
         text_model = AutoModel.from_pretrained(
-            text_model_name, local_files_only=local_files_only
+            text_model_source, local_files_only=local_files_only
         )
         return cls(
             bundle,

@@ -20,8 +20,8 @@ README and model-card task fields must use only these capability labels:
 | ----- | ------- |
 | [`T2M`](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | Text-to-motion generation |
 | `M2T` | Motion-to-text generation |
-| `TP2M` | Text-guided generation conditioned on a motion prefix |
-| `Multi-Prompt T2M` | A sequence composed from multiple text prompts |
+| [`TP2M`](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) | Text-guided generation conditioned on a motion prefix |
+| [`Sequential Generation`](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) | One continuous motion composed from an ordered sequence of prompts |
 | `Motion Control` | Motion generation under general control signals |
 | `Kinematic Control` | Motion generation under keyframe, trajectory, or end-effector constraints |
 

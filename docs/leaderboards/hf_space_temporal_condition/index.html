@@ -6,22 +6,27 @@
   <title>Temporal Condition Leaderboard</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap");
+
     :root {
       color-scheme: light;
-      --bg: #f5f7f8;
+      --bg: #f4f6f5;
       --panel: #ffffff;
-      --ink: #172026;
-      --muted: #60717b;
-      --line: #d7e0e3;
-      --line-strong: #b7c5ca;
-      --teal: #0b8f95;
-      --green: #18724f;
-      --blue: #3367a7;
-      --amber: #a76e00;
-      --coral: #bd5646;
-      --shadow: 0 8px 24px rgba(23, 32, 38, 0.07);
+      --ink: #17211f;
+      --muted: #63706c;
+      --line: #d9dfdc;
+      --line-strong: #bdc8c3;
+      --teal: #087d72;
+      --blue: #315f9d;
+      --amber: #ad6d00;
+      --coral: #c7563f;
+      --green: #176b48;
+      --shadow: 0 8px 24px rgba(29, 45, 40, 0.07);
     }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       background: var(--bg);
@@ -29,47 +34,97 @@
       font-family: "Manrope", ui-sans-serif, sans-serif;
       line-height: 1.5;
     }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
     .page {
       width: min(1440px, calc(100vw - 32px));
       margin: 0 auto;
-      padding: 28px 0 42px;
+      padding: 28px 0 40px;
     }
+
+    .leaderboard-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .nav-label {
+      margin-right: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .nav-link {
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 6px 9px;
+      color: #46534f;
+      text-decoration: none;
+    }
+
+    .nav-link:hover {
+      border-color: var(--line);
+      background: var(--panel);
+    }
+
+    .nav-link[aria-current="page"] {
+      border-color: var(--line-strong);
+      background: var(--panel);
+      color: var(--teal);
+      font-weight: 700;
+    }
+
     .topbar {
       display: flex;
-      justify-content: space-between;
       align-items: flex-start;
+      justify-content: space-between;
       gap: 20px;
+      margin-bottom: 18px;
       border-bottom: 1px solid var(--line);
       padding-bottom: 22px;
-      margin-bottom: 18px;
     }
+
     h1 {
       margin: 0;
       font-size: 30px;
       line-height: 1.15;
       letter-spacing: 0;
     }
+
     .subtitle {
       max-width: 900px;
       margin: 10px 0 0;
       color: var(--muted);
       font-size: 14px;
     }
+
     .badge-row {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 14px;
     }
+
     .badge {
+      display: inline-flex;
+      align-items: center;
       border: 1px solid var(--line);
       background: var(--panel);
       border-radius: 999px;
       padding: 5px 10px;
-      color: #3b4a51;
+      color: #3d4857;
       font-size: 12px;
       white-space: nowrap;
     }
+
     .updated {
       flex: 0 0 auto;
       min-width: 190px;
@@ -81,18 +136,21 @@
       font-size: 12px;
       box-shadow: var(--shadow);
     }
+
     .updated strong {
       display: block;
       color: var(--ink);
       font-size: 14px;
       font-weight: 650;
     }
+
     .score-strip {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
       margin: 18px 0;
     }
+
     .score-card {
       border: 1px solid var(--line);
       border-top: 3px solid var(--teal);
@@ -101,125 +159,557 @@
       padding: 14px;
       box-shadow: var(--shadow);
     }
-    .score-card span {
-      display: block;
+
+    .score-card:nth-child(2) {
+      border-top-color: var(--blue);
+    }
+
+    .score-card:nth-child(3) {
+      border-top-color: var(--amber);
+    }
+
+    .score-card:nth-child(4) {
+      border-top-color: var(--coral);
+    }
+
+    .score-card .label {
       color: var(--muted);
       font-size: 12px;
-      margin-bottom: 4px;
+      text-transform: uppercase;
     }
-    .score-card strong {
-      display: block;
-      font-family: "IBM Plex Mono", ui-monospace, monospace;
-      font-size: 22px;
+
+    .score-card .value {
+      min-height: 31px;
+      margin-top: 6px;
+      font-size: 21px;
+      font-weight: 720;
+    }
+
+    .score-card .note {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .comparison-studio {
+      margin: 24px 0 20px;
+      padding: 20px 0 22px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 18px;
       line-height: 1.2;
+      letter-spacing: 0;
     }
-    .panel {
+
+    .ranking-key {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .key-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .key-swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      background: var(--green);
+    }
+
+    .key-swatch.second-key {
+      background: var(--blue);
+    }
+
+    .compare-toolbar {
+      display: grid;
+      grid-template-columns: minmax(160px, 0.55fr) minmax(190px, 0.7fr) minmax(360px, 2fr);
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field > label,
+    .field-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    select {
+      width: 100%;
+      min-height: 39px;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      background: var(--panel);
+      color: var(--ink);
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+
+    .method-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 39px;
+    }
+
+    .method-option {
+      position: relative;
+    }
+
+    .method-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .method-option span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--panel);
+      color: #46534f;
+      padding: 6px 9px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: border-color 140ms ease, background 140ms ease, color 140ms ease;
+    }
+
+    .method-option input:checked + span {
+      border-color: var(--teal);
+      background: #eaf5f2;
+      color: #075f57;
+      font-weight: 700;
+    }
+
+    .method-option input:disabled + span {
+      opacity: 0.42;
+      cursor: not-allowed;
+    }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      gap: 12px;
+    }
+
+    .chart-panel {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .chart-panel h3 {
+      margin: 0 0 2px;
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+
+    .chart-note {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 320px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 18px 0 12px;
+    }
+
+    .tabs {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
       border: 1px solid var(--line);
       background: var(--panel);
       border-radius: 8px;
       box-shadow: var(--shadow);
-      overflow: hidden;
-      margin-top: 14px;
     }
-    .panel-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 15px 16px;
-      border-bottom: 1px solid var(--line);
-      background: #fbfcfd;
-    }
-    h2 {
-      margin: 0;
-      font-size: 18px;
-      line-height: 1.3;
-      letter-spacing: 0;
-    }
-    .note {
+
+    .tab {
+      appearance: none;
+      border: 0;
+      background: transparent;
       color: var(--muted);
-      font-size: 12px;
-      max-width: 720px;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 13px;
+      cursor: pointer;
     }
-    .table-wrap { overflow-x: auto; }
+
+    .tab[aria-selected="true"] {
+      background: #eef3f2;
+      color: var(--teal);
+      font-weight: 650;
+    }
+
+    .search {
+      width: min(340px, 100%);
+      border: 1px solid var(--line-strong);
+      background: var(--panel);
+      color: var(--ink);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+      box-shadow: var(--shadow);
+    }
+
+    .search:focus {
+      border-color: var(--teal);
+    }
+
+    .table-shell {
+      overflow: auto;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
     table {
       width: 100%;
-      border-collapse: collapse;
-      min-width: 920px;
+      min-width: 940px;
+      border-collapse: separate;
+      border-spacing: 0;
       font-size: 13px;
     }
-    th, td {
-      padding: 10px 12px;
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      border-bottom: 1px solid var(--line-strong);
+      background: #f2f5f8;
+      color: #425064;
+      padding: 10px 9px;
+      text-align: right;
+      white-space: nowrap;
+      font-weight: 650;
+    }
+
+    thead th:first-child,
+    tbody td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 3;
+      min-width: 180px;
+      max-width: 220px;
+      background: inherit;
+      text-align: left;
+    }
+
+    thead th:first-child {
+      background: #f2f5f8;
+    }
+
+    tbody td {
       border-bottom: 1px solid var(--line);
+      background: var(--panel);
+      padding: 10px 9px;
       text-align: right;
       white-space: nowrap;
     }
-    th {
-      background: #f8fafb;
-      color: #40515a;
-      font-weight: 650;
+
+    tbody tr:nth-child(even) td {
+      background: #fbfcfe;
+    }
+
+    tbody tr:hover td {
+      background: #f5faf9;
+    }
+
+    .method {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .method-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .rank {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: #e9eff6;
+      color: #405066;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .reference-rank {
+      width: auto;
+      min-width: 36px;
+      border-radius: 5px;
+      background: #f4dfac;
+      color: #745009;
+      padding: 0 5px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+    }
+
+    .condition {
+      display: inline-flex;
+      min-width: 50px;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: #f8fafc;
+      padding: 3px 7px;
+      color: #4a5666;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+    }
+
+    .best {
+      background: #edf8f1 !important;
+      color: var(--green);
+      font-weight: 720;
+    }
+
+    .second {
+      background: #eef4fb !important;
+      color: var(--blue);
+      font-weight: 720;
+    }
+
+    tr.reference-row td {
+      background: #fff8e8 !important;
+      border-bottom-color: #ead6a7;
+    }
+
+    button.sortable {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 5px;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-weight: inherit;
+      cursor: pointer;
+    }
+
+    thead th:first-child button.sortable {
+      justify-content: flex-start;
+    }
+
+    .sort-indicator {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .caption,
+    .result-status {
+      color: var(--muted);
       font-size: 12px;
     }
-    td:first-child, th:first-child,
-    td:nth-child(2), th:nth-child(2) {
-      text-align: left;
+
+    .caption {
+      margin-top: 10px;
     }
-    tr.best {
-      background: #f1fbf8;
+
+    .result-status {
+      margin: 8px 2px 0;
+      text-align: right;
     }
-    .method {
+
+    .empty {
+      padding: 34px 12px !important;
+      color: var(--muted);
+      text-align: center !important;
+    }
+
+    .protocol {
+      margin-top: 24px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .protocol summary {
+      cursor: pointer;
+      padding: 14px 0;
+      font-size: 15px;
       font-weight: 700;
-      color: var(--ink);
     }
-    .mono {
-      font-family: "IBM Plex Mono", ui-monospace, monospace;
-    }
-    .bars {
+
+    .protocol-grid {
       display: grid;
-      gap: 12px;
-      padding: 16px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+      padding: 0 0 18px;
     }
-    .bar-row {
-      display: grid;
-      grid-template-columns: 130px 1fr 70px;
-      gap: 12px;
-      align-items: center;
+
+    .protocol-block {
+      border-left: 2px solid var(--line-strong);
+      padding-left: 12px;
+    }
+
+    .protocol-block h3 {
+      margin: 0 0 8px;
       font-size: 13px;
     }
-    .bar-track {
-      height: 14px;
-      border-radius: 999px;
-      background: #edf2f3;
-      overflow: hidden;
-      border: 1px solid var(--line);
+
+    .protocol-block dl {
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr);
+      gap: 5px 10px;
+      margin: 0;
+      font-size: 12px;
     }
-    .bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--teal), var(--green));
-      border-radius: inherit;
+
+    .protocol-block dt {
+      color: var(--muted);
+      font-weight: 650;
     }
+
+    .protocol-block dd {
+      margin: 0;
+    }
+
     footer {
       margin-top: 18px;
       color: var(--muted);
       font-size: 12px;
     }
-    @media (max-width: 900px) {
-      .topbar { flex-direction: column; }
-      .score-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .panel-head { flex-direction: column; }
+
+    @media (max-width: 880px) {
+      .page {
+        width: min(100vw - 20px, 1440px);
+        padding-top: 18px;
+      }
+
+      .topbar,
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .score-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .compare-toolbar,
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .protocol-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .search {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .leaderboard-nav {
+        align-items: stretch;
+        flex-wrap: wrap;
+      }
+
+      .nav-label {
+        width: 100%;
+      }
+
+      .score-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .ranking-key {
+        justify-content: flex-start;
+      }
+
+      .canvas-wrap {
+        height: 290px;
+      }
     }
   </style>
 </head>
 <body>
   <main class="page">
-    <section class="topbar">
+    <nav class="leaderboard-nav" aria-label="Motius leaderboards">
+      <span class="nav-label">Leaderboards</span>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard">T2M HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard" aria-current="page">Temporal Condition</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard">BABEL Sequential</a>
+    </nav>
+
+    <section class="topbar" aria-labelledby="title">
       <div>
-        <h1>Temporal Condition Leaderboard</h1>
+        <h1 id="title">Temporal Condition Leaderboard</h1>
         <p class="subtitle">
-          HumanML3D temporal-conditioned generation benchmark. TP2M methods are
-          given a caption and a short ground-truth motion prefix, then evaluated
-          on continuation quality with the MotionStreamer-272 evaluator.
+          HumanML3D temporal-conditioned generation benchmark. TP2M methods receive a caption
+          and a short ground-truth motion prefix, then generate the continuation evaluated by
+          MotionStreamer-272. Results remain separated by prefix length.
         </p>
-        <div class="badge-row">
+        <div class="badge-row" aria-label="protocol">
           <span class="badge">Task: TP2M</span>
           <span class="badge">Dataset: HumanML3D official test</span>
           <span class="badge">Captions: selected captions</span>
@@ -228,75 +718,624 @@
         </div>
       </div>
       <div class="updated">
-        <strong>Maintained in Motius</strong>
-        Static Space source<br>
-        docs/leaderboards/hf_space_temporal_condition
+        <strong>Current Public Snapshot</strong>
+        Nine verified result rows across three released Motius pipelines and three prefix settings.
       </div>
     </section>
 
-    <section class="score-strip" aria-label="headline scores">
-      <div class="score-card"><span>Best R@3, 9-frame prefix</span><strong>0.856</strong></div>
-      <div class="score-card"><span>Best FID, 9-frame prefix</span><strong>11.077</strong></div>
-      <div class="score-card"><span>Tracked methods</span><strong>3</strong></div>
-      <div class="score-card"><span>Condition settings</span><strong>1 / 5 / 9</strong></div>
+    <section class="score-strip" aria-label="summary">
+      <div class="score-card">
+        <div class="label">Best R@3, 9-frame prefix</div>
+        <div class="value" id="summary-r3">-</div>
+        <div class="note" id="summary-r3-note">Generated methods only</div>
+      </div>
+      <div class="score-card">
+        <div class="label">Best FID, 9-frame prefix</div>
+        <div class="value" id="summary-fid">-</div>
+        <div class="note" id="summary-fid-note">Generated methods only</div>
+      </div>
+      <div class="score-card">
+        <div class="label">Tracked methods</div>
+        <div class="value" id="summary-methods">-</div>
+        <div class="note" id="summary-methods-note">Released TP2M pipelines</div>
+      </div>
+      <div class="score-card">
+        <div class="label">Condition settings</div>
+        <div class="value" id="summary-conditions">-</div>
+        <div class="note" id="summary-conditions-note">Ground-truth prefix frames</div>
+      </div>
     </section>
 
-    <section class="panel">
-      <div class="panel-head">
-        <h2>TP2M Results</h2>
-        <div class="note">
-          Best/second-best highlighting excludes GT rows; this table currently
-          tracks released methods with implemented TP2M pipelines in Motius.
+    <section class="comparison-studio" aria-labelledby="comparison-title">
+      <div class="section-heading">
+        <h2 id="comparison-title">Method Comparison</h2>
+        <div class="ranking-key" aria-label="ranking legend">
+          <span class="key-item"><span class="key-swatch"></span>Best per condition</span>
+          <span class="key-item"><span class="key-swatch second-key"></span>Second per condition</span>
         </div>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Method</th>
-              <th>Condition Frames</th>
-              <th>Samples</th>
-              <th>R@1</th>
-              <th>R@2</th>
-              <th>R@3</th>
-              <th>FID ↓</th>
-              <th>MM-Dist ↓</th>
-              <th>Diversity</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td class="method">FlowMDM</td><td>1</td><td class="mono">3,968</td><td>0.449</td><td>0.630</td><td>0.706</td><td>83.773</td><td>19.872</td><td>26.365</td></tr>
-            <tr><td class="method">FlowMDM</td><td>5</td><td class="mono">3,968</td><td>0.481</td><td>0.654</td><td>0.729</td><td>75.853</td><td>19.456</td><td>26.467</td></tr>
-            <tr><td class="method">FlowMDM</td><td>9</td><td class="mono">3,968</td><td>0.490</td><td>0.664</td><td>0.742</td><td>71.338</td><td>19.262</td><td>26.625</td></tr>
-            <tr class="best"><td class="method">MotionStreamer</td><td>1</td><td class="mono">3,904</td><td>0.617</td><td>0.780</td><td>0.850</td><td>12.479</td><td>16.849</td><td>27.134</td></tr>
-            <tr class="best"><td class="method">MotionStreamer</td><td>5</td><td class="mono">3,904</td><td>0.628</td><td>0.786</td><td>0.853</td><td>11.214</td><td>16.586</td><td>27.144</td></tr>
-            <tr class="best"><td class="method">MotionStreamer</td><td>9</td><td class="mono">3,904</td><td>0.633</td><td>0.788</td><td>0.856</td><td>11.077</td><td>16.486</td><td>27.381</td></tr>
-            <tr><td class="method">KIMODO</td><td>1</td><td class="mono">3,968</td><td>0.525</td><td>0.690</td><td>0.769</td><td>82.560</td><td>19.301</td><td>26.158</td></tr>
-            <tr><td class="method">KIMODO</td><td>5</td><td class="mono">3,968</td><td>0.538</td><td>0.699</td><td>0.775</td><td>80.381</td><td>19.199</td><td>26.154</td></tr>
-            <tr><td class="method">KIMODO</td><td>9</td><td class="mono">3,968</td><td>0.531</td><td>0.704</td><td>0.772</td><td>79.122</td><td>19.166</td><td>26.202</td></tr>
-          </tbody>
-        </table>
+      <div class="compare-toolbar">
+        <div class="field">
+          <label for="chart-condition">Prefix condition</label>
+          <select id="chart-condition"></select>
+        </div>
+        <div class="field">
+          <label for="bar-metric">Bar metric</label>
+          <select id="bar-metric"></select>
+        </div>
+        <div class="field">
+          <span class="field-label">Radar methods, up to four</span>
+          <div id="method-picker" class="method-picker" aria-label="Radar methods"></div>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <article class="chart-panel">
+          <h3 id="bar-title">Generated-method ranking</h3>
+          <p class="chart-note" id="bar-note"></p>
+          <div class="canvas-wrap"><canvas id="bar-chart"></canvas></div>
+        </article>
+        <article class="chart-panel">
+          <h3>Normalized profile</h3>
+          <p class="chart-note">100 is the best generated-method value on each ranked axis.</p>
+          <div class="canvas-wrap"><canvas id="radar-chart"></canvas></div>
+        </article>
       </div>
     </section>
 
-    <section class="panel">
-      <div class="panel-head">
-        <h2>R@3 by 9-Frame Prefix</h2>
-        <div class="note">Higher is better. Bars use the 9-frame TP2M condition setting.</div>
+    <section class="controls" aria-label="table controls">
+      <div class="tabs" role="tablist" aria-label="condition frames">
+        <button class="tab" type="button" role="tab" aria-selected="true" data-condition="all">All conditions</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-condition="1">1 frame</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-condition="5">5 frames</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-condition="9">9 frames</button>
       </div>
-      <div class="bars">
-        <div class="bar-row"><span>MotionStreamer</span><div class="bar-track"><div class="bar" style="width: 100%"></div></div><strong>0.856</strong></div>
-        <div class="bar-row"><span>KIMODO</span><div class="bar-track"><div class="bar" style="width: 90.2%"></div></div><strong>0.772</strong></div>
-        <div class="bar-row"><span>FlowMDM</span><div class="bar-track"><div class="bar" style="width: 86.7%"></div></div><strong>0.742</strong></div>
-      </div>
+      <input class="search" id="search" type="search" placeholder="Filter method" aria-label="Filter method">
     </section>
+
+    <section aria-label="TP2M results">
+      <div class="table-shell">
+        <table data-table="temporal">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="result-status" id="result-status" aria-live="polite"></p>
+      <p class="caption">
+        R-Precision is higher-is-better; FID and MM-Dist are lower-is-better.
+        Diversity is a reference statistic and is not ranked. Best and second-best cells
+        are computed independently within each prefix condition.
+      </p>
+    </section>
+
+    <details class="protocol" open>
+      <summary>Protocol Details</summary>
+      <div class="protocol-grid">
+        <section class="protocol-block">
+          <h3>Task</h3>
+          <dl>
+            <dt>Input</dt><dd>Selected caption plus the first N ground-truth motion frames.</dd>
+            <dt>Output</dt><dd>Continuation for the remaining HumanML3D sequence.</dd>
+            <dt>Conditions</dt><dd>1, 5, and 9 prefix frames, reported separately.</dd>
+          </dl>
+        </section>
+        <section class="protocol-block">
+          <h3>Evaluation</h3>
+          <dl>
+            <dt>Split</dt><dd>HumanML3D official test split.</dd>
+            <dt>Evaluator</dt><dd>MotionStreamer-272 retrieval and distribution metrics.</dd>
+            <dt>Samples</dt><dd>Per-row counts reflect successful protocol outputs.</dd>
+          </dl>
+        </section>
+        <section class="protocol-block">
+          <h3>Ranking</h3>
+          <dl>
+            <dt>Scope</dt><dd>Each metric is ranked within the same prefix condition.</dd>
+            <dt>Excluded</dt><dd>GT, reference, paper-only, and explicitly excluded rows.</dd>
+            <dt>Diversity</dt><dd>Displayed for context; not treated as monotonic quality.</dd>
+          </dl>
+        </section>
+      </div>
+    </details>
 
     <footer>
       Source rows are mirrored from the Motius model cards for FlowMDM,
-      MotionStreamer, and KIMODO. Multi-prompt temporal composition belongs to
-      this leaderboard family and will be added as separate protocol tables as
-      public results are finalized.
+      MotionStreamer, and KIMODO. Ordered multi-prompt composition is maintained
+      separately on the BABEL Sequential Generation leaderboard.
     </footer>
   </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script>
+    const temporalRows = Object.freeze([
+      Object.freeze({method: "FlowMDM", conditionFrames: 1, samples: 3968, r1: 0.449, r2: 0.630, r3: 0.706, fid: 83.773, mmDist: 19.872, diversity: 26.365}),
+      Object.freeze({method: "FlowMDM", conditionFrames: 5, samples: 3968, r1: 0.481, r2: 0.654, r3: 0.729, fid: 75.853, mmDist: 19.456, diversity: 26.467}),
+      Object.freeze({method: "FlowMDM", conditionFrames: 9, samples: 3968, r1: 0.490, r2: 0.664, r3: 0.742, fid: 71.338, mmDist: 19.262, diversity: 26.625}),
+      Object.freeze({method: "MotionStreamer", conditionFrames: 1, samples: 3904, r1: 0.617, r2: 0.780, r3: 0.850, fid: 12.479, mmDist: 16.849, diversity: 27.134}),
+      Object.freeze({method: "MotionStreamer", conditionFrames: 5, samples: 3904, r1: 0.628, r2: 0.786, r3: 0.853, fid: 11.214, mmDist: 16.586, diversity: 27.144}),
+      Object.freeze({method: "MotionStreamer", conditionFrames: 9, samples: 3904, r1: 0.633, r2: 0.788, r3: 0.856, fid: 11.077, mmDist: 16.486, diversity: 27.381}),
+      Object.freeze({method: "KIMODO", conditionFrames: 1, samples: 3968, r1: 0.525, r2: 0.690, r3: 0.769, fid: 82.560, mmDist: 19.301, diversity: 26.158}),
+      Object.freeze({method: "KIMODO", conditionFrames: 5, samples: 3968, r1: 0.538, r2: 0.699, r3: 0.775, fid: 80.381, mmDist: 19.199, diversity: 26.154}),
+      Object.freeze({method: "KIMODO", conditionFrames: 9, samples: 3968, r1: 0.531, r2: 0.704, r3: 0.772, fid: 79.122, mmDist: 19.166, diversity: 26.202})
+    ]);
+
+    const columns = [
+      {key: "method", label: "Method", type: "method"},
+      {key: "conditionFrames", label: "Condition Frames", type: "condition", numeric: true},
+      {key: "samples", label: "Samples", type: "integer", numeric: true},
+      {key: "r1", label: "R@1", numeric: true, higher: true},
+      {key: "r2", label: "R@2", numeric: true, higher: true},
+      {key: "r3", label: "R@3", numeric: true, higher: true},
+      {key: "fid", label: "FID", numeric: true, lower: true},
+      {key: "mmDist", label: "MM-Dist", numeric: true, lower: true},
+      {key: "diversity", label: "Diversity", numeric: true, referenceStatistic: true}
+    ];
+
+    const chartMetrics = columns.filter(function (column) {
+      return column.higher || column.lower;
+    });
+    const conditions = Array.from(new Set(temporalRows.map(function (row) {
+      return row.conditionFrames;
+    }))).sort(function (a, b) {
+      return a - b;
+    });
+    const methods = Array.from(new Set(temporalRows.map(function (row) {
+      return row.method;
+    })));
+    const selectedMethods = new Set(methods.slice(0, 4));
+    const chartColors = ["#087d72", "#315f9d", "#c7563f", "#ad6d00"];
+
+    const state = {
+      activeCondition: "all",
+      chartCondition: conditions[conditions.length - 1],
+      query: "",
+      sortKey: "r3",
+      sortDir: "desc"
+    };
+
+    let barChart = null;
+    let radarChart = null;
+
+    function rowId(row) {
+      return row.method + "::" + row.conditionFrames;
+    }
+
+    function isRankableRow(row) {
+      return !row.isReference && !row.paperOnly && !row.rankExcluded;
+    }
+
+    function formatMetric(value) {
+      return typeof value === "number" ? value.toFixed(3) : "-";
+    }
+
+    function formatCell(row, column) {
+      const value = row[column.key];
+      if (value === null || value === undefined) return "-";
+      if (column.type === "integer") return Number(value).toLocaleString("en-US");
+      if (column.type === "condition") {
+        return '<span class="condition">' + value + ' frame' + (value === 1 ? "" : "s") + "</span>";
+      }
+      if (typeof value === "number") return formatMetric(value);
+      return String(value);
+    }
+
+    function rankBadge(row, rank) {
+      if (row.isReference) return '<span class="rank reference-rank">REF</span>';
+      if (row.paperOnly) return '<span class="rank reference-rank">PAPER</span>';
+      if (row.rankExcluded) return '<span class="rank reference-rank">EXCL</span>';
+      return '<span class="rank">' + rank + "</span>";
+    }
+
+    function methodCell(row, rank) {
+      return '<div class="method">' + rankBadge(row, rank) +
+        '<span class="method-name"><strong>' + row.method + "</strong></span></div>";
+    }
+
+    function compareRows(a, b, key, direction) {
+      const av = a[key];
+      const bv = b[key];
+      const aMissing = typeof av !== "number" && typeof av !== "string";
+      const bMissing = typeof bv !== "number" && typeof bv !== "string";
+      if (aMissing !== bMissing) return aMissing ? 1 : -1;
+      let delta = typeof av === "number" && typeof bv === "number"
+        ? av - bv
+        : String(av).localeCompare(String(bv));
+      if (direction === "desc") delta *= -1;
+      if (delta !== 0) return delta;
+      if (a.conditionFrames !== b.conditionFrames) return a.conditionFrames - b.conditionFrames;
+      return a.method.localeCompare(b.method);
+    }
+
+    function metricColumnForRanks() {
+      const selected = columns.find(function (column) {
+        return column.key === state.sortKey && (column.higher || column.lower);
+      });
+      return selected || columns.find(function (column) {
+        return column.key === "r3";
+      });
+    }
+
+    function conditionRankMap() {
+      const ranks = new Map();
+      const metric = metricColumnForRanks();
+      conditions.forEach(function (condition) {
+        const rows = temporalRows
+          .filter(function (row) {
+            return row.conditionFrames === condition &&
+              isRankableRow(row) &&
+              typeof row[metric.key] === "number";
+          })
+          .slice()
+          .sort(function (a, b) {
+            return compareRows(a, b, metric.key, metric.lower ? "asc" : "desc");
+          });
+        rows.forEach(function (row, index) {
+          ranks.set(rowId(row), index + 1);
+        });
+      });
+      return ranks;
+    }
+
+    function bestClass(row, column) {
+      if (!isRankableRow(row) || (!column.lower && !column.higher)) return "";
+      const values = temporalRows
+        .filter(function (item) {
+          return item.conditionFrames === row.conditionFrames &&
+            isRankableRow(item) &&
+            typeof item[column.key] === "number";
+        })
+        .map(function (item) {
+          return item[column.key];
+        })
+        .sort(function (a, b) {
+          return column.lower ? a - b : b - a;
+        });
+      const distinct = values.filter(function (value, index) {
+        return index === 0 || Math.abs(value - values[index - 1]) > 1e-8;
+      });
+      if (Math.abs(row[column.key] - distinct[0]) < 1e-8) return "best";
+      if (distinct.length > 1 && Math.abs(row[column.key] - distinct[1]) < 1e-8) return "second";
+      return "";
+    }
+
+    function filteredRows() {
+      const lowerQuery = state.query.trim().toLowerCase();
+      return temporalRows
+        .filter(function (row) {
+          return state.activeCondition === "all" ||
+            row.conditionFrames === Number(state.activeCondition);
+        })
+        .filter(function (row) {
+          return (row.method + " " + row.conditionFrames).toLowerCase().includes(lowerQuery);
+        })
+        .slice()
+        .sort(function (a, b) {
+          return compareRows(a, b, state.sortKey, state.sortDir);
+        });
+    }
+
+    function renderTable() {
+      const table = document.querySelector('table[data-table="temporal"]');
+      const thead = table.querySelector("thead");
+      const tbody = table.querySelector("tbody");
+      const rows = filteredRows();
+      const ranks = conditionRankMap();
+
+      thead.innerHTML = "<tr>" + columns.map(function (column) {
+        const active = state.sortKey === column.key;
+        const indicator = active ? (state.sortDir === "asc" ? "↑" : "↓") : "";
+        const directionHint = column.lower
+          ? "lower is better"
+          : column.higher
+            ? "higher is better"
+            : column.referenceStatistic
+              ? "reference statistic; not ranked"
+              : "";
+        const ariaSort = active
+          ? (state.sortDir === "asc" ? "ascending" : "descending")
+          : "none";
+        return '<th title="' + directionHint + '" aria-sort="' + ariaSort + '">' +
+          '<button type="button" class="sortable" data-key="' + column.key + '">' +
+          "<span>" + column.label + '</span><span class="sort-indicator">' +
+          indicator + "</span></button></th>";
+      }).join("") + "</tr>";
+
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td class="empty" colspan="' + columns.length +
+          '">No rows match the current filters.</td></tr>';
+      } else {
+        tbody.innerHTML = rows.map(function (row) {
+          const rowClass = row.isReference ? "reference-row" : "";
+          return '<tr class="' + rowClass + '">' + columns.map(function (column) {
+            if (column.type === "method") {
+              return "<td>" + methodCell(row, ranks.get(rowId(row))) + "</td>";
+            }
+            return '<td class="' + bestClass(row, column) + '">' +
+              formatCell(row, column) + "</td>";
+          }).join("") + "</tr>";
+        }).join("");
+      }
+
+      document.getElementById("result-status").textContent =
+        rows.length + " of " + temporalRows.length + " result rows";
+
+      thead.querySelectorAll("button.sortable").forEach(function (button) {
+        button.addEventListener("click", function () {
+          const key = button.dataset.key;
+          if (state.sortKey === key) {
+            state.sortDir = state.sortDir === "asc" ? "desc" : "asc";
+          } else {
+            state.sortKey = key;
+            const column = columns.find(function (item) {
+              return item.key === key;
+            });
+            state.sortDir = column && column.higher ? "desc" : "asc";
+          }
+          renderTable();
+        });
+      });
+    }
+
+    function bestRow(rows, key, lower) {
+      return rows
+        .filter(function (row) {
+          return isRankableRow(row) && typeof row[key] === "number";
+        })
+        .slice()
+        .sort(function (a, b) {
+          return lower ? a[key] - b[key] : b[key] - a[key];
+        })[0];
+    }
+
+    function renderSummaries() {
+      const nineFrameRows = temporalRows.filter(function (row) {
+        return row.conditionFrames === 9;
+      });
+      const bestR3 = bestRow(nineFrameRows, "r3", false);
+      const bestFid = bestRow(nineFrameRows, "fid", true);
+
+      document.getElementById("summary-r3").textContent = bestR3.method;
+      document.getElementById("summary-r3-note").textContent =
+        formatMetric(bestR3.r3) + "; references excluded";
+      document.getElementById("summary-fid").textContent = bestFid.method;
+      document.getElementById("summary-fid-note").textContent =
+        formatMetric(bestFid.fid) + "; references excluded";
+      document.getElementById("summary-methods").textContent = methods.length;
+      document.getElementById("summary-methods-note").textContent = methods.join(", ");
+      document.getElementById("summary-conditions").textContent = conditions.join(" / ");
+      document.getElementById("summary-conditions-note").textContent =
+        temporalRows.length + " structured result rows";
+    }
+
+    function renderChartControls() {
+      const conditionSelect = document.getElementById("chart-condition");
+      conditionSelect.innerHTML = conditions.map(function (condition) {
+        return '<option value="' + condition + '">' + condition + " frame" +
+          (condition === 1 ? "" : "s") + "</option>";
+      }).join("");
+      conditionSelect.value = String(state.chartCondition);
+
+      const metricSelect = document.getElementById("bar-metric");
+      metricSelect.innerHTML = chartMetrics.map(function (metric) {
+        return '<option value="' + metric.key + '">' + metric.label + "</option>";
+      }).join("");
+      metricSelect.value = "r3";
+    }
+
+    function renderMethodPicker() {
+      const picker = document.getElementById("method-picker");
+      picker.innerHTML = methods.map(function (method) {
+        const checked = selectedMethods.has(method) ? " checked" : "";
+        const disabled = selectedMethods.size >= 4 && !selectedMethods.has(method)
+          ? " disabled"
+          : "";
+        return '<label class="method-option"><input type="checkbox" value="' +
+          method + '"' + checked + disabled + "><span>" + method + "</span></label>";
+      }).join("");
+
+      picker.querySelectorAll("input").forEach(function (input) {
+        input.addEventListener("change", function () {
+          if (input.checked) selectedMethods.add(input.value);
+          else selectedMethods.delete(input.value);
+          renderMethodPicker();
+          renderCharts();
+        });
+      });
+    }
+
+    function chartFont() {
+      return {family: "Manrope", size: 11};
+    }
+
+    function normalizedScore(row, rows, metric) {
+      const values = rows
+        .filter(function (item) {
+          return isRankableRow(item) && typeof item[metric.key] === "number";
+        })
+        .map(function (item) {
+          return item[metric.key];
+        });
+      const value = row[metric.key];
+      if (typeof value !== "number" || !values.length) return 0;
+      const min = Math.min.apply(null, values);
+      const max = Math.max.apply(null, values);
+      if (Math.abs(max - min) < 1e-12) return 100;
+      return metric.lower
+        ? 100 * (max - value) / (max - min)
+        : 100 * (value - min) / (max - min);
+    }
+
+    function renderCharts() {
+      if (typeof Chart === "undefined") {
+        document.getElementById("bar-note").textContent = "Charts could not be loaded.";
+        return;
+      }
+
+      const condition = Number(document.getElementById("chart-condition").value);
+      state.chartCondition = condition;
+      const metricKey = document.getElementById("bar-metric").value || "r3";
+      const metric = chartMetrics.find(function (item) {
+        return item.key === metricKey;
+      }) || chartMetrics[0];
+      const rows = temporalRows.filter(function (row) {
+        return row.conditionFrames === condition && isRankableRow(row);
+      });
+      const ranked = rows
+        .filter(function (row) {
+          return typeof row[metric.key] === "number";
+        })
+        .slice()
+        .sort(function (a, b) {
+          return compareRows(a, b, metric.key, metric.lower ? "asc" : "desc");
+        });
+      const direction = metric.lower ? "lower is better" : "higher is better";
+
+      document.getElementById("bar-title").textContent =
+        metric.label + " at " + condition + "-frame prefix";
+      document.getElementById("bar-note").textContent =
+        "Generated methods only; " + direction + ".";
+
+      if (barChart) barChart.destroy();
+      barChart = new Chart(document.getElementById("bar-chart"), {
+        type: "bar",
+        data: {
+          labels: ranked.map(function (row) {
+            return row.method;
+          }),
+          datasets: [{
+            data: ranked.map(function (row) {
+              return row[metric.key];
+            }),
+            backgroundColor: ranked.map(function (_, index) {
+              return index === 0 ? "#176b48" : index === 1 ? "#315f9d" : "#8abeb7";
+            }),
+            borderColor: ranked.map(function (_, index) {
+              return index === 0 ? "#176b48" : index === 1 ? "#315f9d" : "#4e948b";
+            }),
+            borderWidth: 1,
+            borderRadius: 3
+          }]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {duration: 280},
+          plugins: {
+            legend: {display: false},
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  return formatMetric(context.raw);
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              grid: {color: "#e7ebe9"},
+              ticks: {font: chartFont(), color: "#63706c"}
+            },
+            y: {
+              grid: {display: false},
+              ticks: {font: chartFont(), color: "#34413d"}
+            }
+          }
+        }
+      });
+
+      const profileRows = rows.filter(function (row) {
+        return selectedMethods.has(row.method);
+      });
+      if (radarChart) radarChart.destroy();
+      radarChart = new Chart(document.getElementById("radar-chart"), {
+        type: "radar",
+        data: {
+          labels: chartMetrics.map(function (item) {
+            return item.label;
+          }),
+          datasets: profileRows.map(function (row, index) {
+            return {
+              label: row.method,
+              data: chartMetrics.map(function (item) {
+                return normalizedScore(row, rows, item);
+              }),
+              borderColor: chartColors[index % chartColors.length],
+              backgroundColor: chartColors[index % chartColors.length] + "18",
+              borderWidth: 2,
+              pointRadius: 2,
+              pointHoverRadius: 4
+            };
+          })
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {duration: 280},
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                boxWidth: 10,
+                boxHeight: 10,
+                font: chartFont(),
+                color: "#34413d"
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  return context.dataset.label + ": " + context.raw.toFixed(1);
+                }
+              }
+            }
+          },
+          scales: {
+            r: {
+              min: 0,
+              max: 100,
+              ticks: {stepSize: 25, display: false},
+              grid: {color: "#dfe5e2"},
+              angleLines: {color: "#dfe5e2"},
+              pointLabels: {font: chartFont(), color: "#46534f"}
+            }
+          }
+        }
+      });
+    }
+
+    function setCondition(condition) {
+      state.activeCondition = condition;
+      document.querySelectorAll(".tab").forEach(function (tab) {
+        tab.setAttribute("aria-selected", String(tab.dataset.condition === condition));
+      });
+      if (condition !== "all") {
+        state.chartCondition = Number(condition);
+        document.getElementById("chart-condition").value = condition;
+        renderCharts();
+      }
+      renderTable();
+    }
+
+    document.querySelectorAll(".tab").forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        setCondition(tab.dataset.condition);
+      });
+    });
+
+    document.getElementById("search").addEventListener("input", function (event) {
+      state.query = event.target.value;
+      renderTable();
+    });
+
+    document.getElementById("chart-condition").addEventListener("change", renderCharts);
+    document.getElementById("bar-metric").addEventListener("change", renderCharts);
+
+    renderSummaries();
+    renderChartControls();
+    renderMethodPicker();
+    renderCharts();
+    renderTable();
+  </script>
 </body>
 </html>

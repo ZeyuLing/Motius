@@ -41,6 +41,42 @@
       padding: 28px 0 40px;
     }
 
+    .leaderboard-nav {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .nav-label {
+      margin-right: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .nav-link {
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 6px 9px;
+      color: #46534f;
+      text-decoration: none;
+    }
+
+    .nav-link:hover {
+      border-color: var(--line);
+      background: var(--panel);
+    }
+
+    .nav-link[aria-current="page"] {
+      border-color: var(--line-strong);
+      background: var(--panel);
+      color: var(--teal);
+      font-weight: 700;
+    }
+
     .topbar {
       display: flex;
       align-items: flex-start;
@@ -589,6 +625,12 @@
 </head>
 <body>
   <main class="page">
+    <nav class="leaderboard-nav" aria-label="Motius leaderboards">
+      <span class="nav-label">Leaderboards</span>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard" aria-current="page">T2M HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard">Temporal Condition</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard">BABEL Sequential</a>
+    </nav>
     <section class="topbar" aria-labelledby="title">
       <div>
         <h1 id="title">T2M HumanML3D Leaderboard</h1>
@@ -742,6 +784,7 @@
       {method: "DART", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.5476, msR2: 0.7245, msR3: 0.7937, msFID: 127.8302, msMM: 18.5312, msDiv: 26.2611, utmrN: 4034, utmrR1: 0.4249, utmrR2: 0.6064, utmrR3: 0.7019, utmrFID: 371.1307, utmrMM: 38.7637, utmrDiv: 56.9485},
       {method: "CondMDI", version: "official", ref: "HML263 round-trip", msN: 4032, msR1: 0.4526, msR2: 0.6111, msR3: 0.7016, msFID: 121.8374, msMM: 19.9702, msDiv: 25.4639, utmrN: 4034, utmrR1: 0.4296, utmrR2: 0.6039, utmrR3: 0.7024, utmrFID: 349.9873, utmrMM: 39.1271, utmrDiv: 55.7954},
       {method: "FlowMDM", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.4737, msR2: 0.6496, msR3: 0.7312, msFID: 36.3767, msMM: 20.0018, msDiv: 25.1783, utmrN: 4034, utmrR1: 0.4390, utmrR2: 0.6153, utmrR3: 0.7111, utmrFID: 227.4945, utmrMM: 37.4096, utmrDiv: 55.5127},
+      {method: "MotionCLR", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.3931, msR2: 0.5208, msR3: 0.5960, msFID: 298.9693, msMM: 22.5207, msDiv: 20.6074, utmrN: 4034, utmrR1: 0.3569, utmrR2: 0.5250, utmrR3: 0.6250, utmrFID: 1063.7324, utmrMM: 44.8058, utmrDiv: 50.4069},
       {method: "MotionLab", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.6367, msR2: 0.7882, msR3: 0.8529, msFID: 25.4469, msMM: 17.9756, msDiv: 25.5355, utmrN: 4034, utmrR1: 0.5873, utmrR2: 0.7480, utmrR3: 0.8162, utmrFID: 174.8632, utmrMM: 33.1142, utmrDiv: 55.2916},
       {method: "T2M-GPT", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.5516, msR2: 0.7056, msR3: 0.7788, msFID: 25.4913, msMM: 19.0912, msDiv: 25.5949, utmrN: 4034, utmrR1: 0.4869, utmrR2: 0.6520, utmrR3: 0.7359, utmrFID: 209.9396, utmrMM: 36.3177, utmrDiv: 55.5376},
       {method: "MDM", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.5208, msR2: 0.6937, msR3: 0.7701, msFID: 35.5169, msMM: 19.4246, msDiv: 25.3383, utmrN: 4034, utmrR1: 0.4501, utmrR2: 0.6290, utmrR3: 0.7262, utmrFID: 263.3581, utmrMM: 37.5544, utmrDiv: 56.3969},
@@ -767,6 +810,7 @@
       {method: "DART", version: "official", n: 4042, slide: 3.2958, float: 5.9494, jitter: 4.4701, dynamic: 17.9559, poseq: 2.1452},
       {method: "CondMDI", version: "official", n: 4042, slide: 4.2218, float: 18.6892, jitter: 6.9367, dynamic: 21.5089, poseq: 1.8304},
       {method: "FlowMDM", version: "official", n: 4042, slide: 3.0452, float: 7.4055, jitter: 5.0130, dynamic: 22.3205, poseq: 1.8526},
+      {method: "MotionCLR", version: "official", n: 4042, slide: 3.9074, float: 10.1052, jitter: 8.7418, dynamic: 23.4910, poseq: 3.1287},
       {method: "MotionLab", version: "official", n: 4042, slide: 2.4231, float: 4.0795, jitter: 5.8493, dynamic: 24.3519, poseq: 1.8781},
       {method: "T2M-GPT", version: "official", n: 4042, slide: 3.7598, float: 11.1799, jitter: 4.9000, dynamic: 19.3651, poseq: 1.8004},
       {method: "MDM", version: "official", n: 4042, slide: 2.5318, float: 4.9987, jitter: 4.7034, dynamic: 22.1361, poseq: 1.9613},
@@ -782,7 +826,7 @@
     ];
 
     const calibrationRows = [
-      {method: "GT SMPL -> HML263 -> SMPL vs raw GT", n: 4042, msR1: 0.7173, msR3: 0.9219, msFID: 67.4322, msMM: 16.7867, msDiv: 26.6252}
+      {method: "GT SMPL -> HML263 -> SMPL vs raw GT", n: 4042, msR1: 0.7173, msR3: 0.9219, msFID: 67.4322, msMM: 16.7867, msDiv: 26.6252, rankExcluded: true}
     ];
 
     const tables = {
@@ -901,6 +945,10 @@
       return row.version ? `${row.method} ${row.version}` : row.method;
     }
 
+    function isRankableRow(row) {
+      return !row.isReference && !row.paperOnly && !row.rankExcluded;
+    }
+
     function formatValue(value) {
       if (value === null || value === undefined) return "—";
       if (typeof value !== "number") return value;
@@ -914,7 +962,9 @@
         ? '<span class="rank reference-rank">REF</span>'
         : row.paperOnly
           ? '<span class="rank reference-rank">PAPER</span>'
-          : `<span class="rank">${rank}</span>`;
+          : row.rankExcluded
+            ? '<span class="rank reference-rank">CAL</span>'
+            : `<span class="rank">${rank}</span>`;
       return `<div class="method">${badge}<span class="method-name"><strong>${row.method}</strong> ${version}</span></div>`;
     }
 
@@ -933,9 +983,9 @@
     }
 
     function bestClass(row, col, allRows) {
-      if (row.isReference || row.paperOnly || !col.numeric || (!col.lower && !col.higher)) return "";
+      if (!isRankableRow(row) || !col.numeric || (!col.lower && !col.higher)) return "";
       const values = allRows
-        .filter((item) => !item.isReference && !item.paperOnly && typeof item[col.key] === "number")
+        .filter((item) => isRankableRow(item) && typeof item[col.key] === "number")
         .map((item) => item[col.key])
         .sort((a, b) => col.lower ? a - b : b - a);
       const distinct = values.filter((value, index) => index === 0 || Math.abs(value - values[index - 1]) > 1e-8);
@@ -951,12 +1001,12 @@
       const tbody = table.querySelector("tbody");
       const lowerQuery = query.trim().toLowerCase();
       const generated = sortRows(cfg.rows.filter((row) => !row.isReference), cfg.sortKey, cfg.sortDir);
-      const rankById = new Map(generated.map((row, index) => [rowId(row), index + 1]));
+      const rankById = new Map(generated.filter(isRankableRow).map((row, index) => [rowId(row), index + 1]));
       const rows = [...cfg.rows.filter((row) => row.isReference), ...generated]
         .filter((row) => `${row.method} ${row.version || ""} ${row.ref || ""}`.toLowerCase().includes(lowerQuery));
 
       thead.innerHTML = `<tr>${cfg.columns.map((col) => {
-        const indicator = cfg.sortKey === col.key ? (cfg.sortDir === "asc" ? "asc" : "desc") : "";
+        const indicator = cfg.sortKey === col.key ? (cfg.sortDir === "asc" ? "↑" : "↓") : "";
         const hint = col.lower
           ? "lower is better"
           : col.higher
@@ -997,8 +1047,8 @@
     }
 
     function renderSummaries() {
-      const generatedSemantic = semanticRows.filter((row) => !row.isReference);
-      const generatedPhysical = physicalRows.filter((row) => !row.isReference);
+      const generatedSemantic = semanticRows.filter(isRankableRow);
+      const generatedPhysical = physicalRows.filter(isRankableRow);
       const best = (rows, key, lower) => rows
         .filter((row) => typeof row[key] === "number")
         .sort((a, b) => lower ? a[key] - b[key] : b[key] - a[key])[0];
@@ -1026,7 +1076,7 @@
 
     function normalizedScore(row, group, metric) {
       const generated = chartGroups[group].rows.filter(
-        (item) => !item.isReference && typeof item[metric.key] === "number"
+        (item) => isRankableRow(item) && typeof item[metric.key] === "number"
       );
       const values = generated.map((item) => item[metric.key]);
       const value = row[metric.key];
@@ -1054,7 +1104,7 @@
 
     function renderMethodPicker() {
       const picker = document.getElementById("method-picker");
-      const rows = chartGroups[activeChartGroup].rows.filter((row) => !row.isReference);
+      const rows = chartGroups[activeChartGroup].rows.filter(isRankableRow);
       const selected = selectedMethods[activeChartGroup];
       const availableIds = new Set(rows.map(rowId));
       [...selected].forEach((id) => {
@@ -1090,7 +1140,7 @@
       const metricKey = document.getElementById("bar-metric").value || group.metrics[0].key;
       const metric = group.metrics.find((item) => item.key === metricKey) || group.metrics[0];
       const ranked = group.rows
-        .filter((row) => !row.isReference && typeof row[metric.key] === "number")
+        .filter((row) => isRankableRow(row) && typeof row[metric.key] === "number")
         .sort((a, b) => comparisonScore(a, activeChartGroup, metric) - comparisonScore(b, activeChartGroup, metric))
         .slice(0, 10);
       const direction = metric.targetReference

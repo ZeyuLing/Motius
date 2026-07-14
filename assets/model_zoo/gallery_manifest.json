@@ -4,7 +4,8 @@
     "004545": "a person jumping while raising both hands and moving apart legs.",
     "006944": "a person moves their right hand left, right, up, and down.",
     "014457": "the person swings a golf club.",
-    "M013344": "in a fighting stance, person punches downward with their right hand."
+    "M013344": "in a fighting stance, person punches downward with their right hand.",
+    "004822": "person walking at an average pace forward, swaying arms and torso with a sense of swagger."
   },
   "models": {
     "dart": {
@@ -349,6 +350,29 @@
           "caption": "the person who does arms straight out and then it's doing something with their right hand in front of their face.",
           "gif": "assets/model_zoo/condmdi/condmdi_humanml3d_006944_smpl_mesh_512_30fps.gif",
           "metadata": "assets/model_zoo/condmdi/condmdi_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motionclr": {
+      "method": "MotionCLR",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004822",
+          "caption": "person walking at an average pace forward, swaying arms and torso with a sense of swagger.",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh.json"
+        },
+        {
+          "sample_id": "014457",
+          "caption": "the person swings a golf club.",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_014457_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_014457_smpl_mesh.json"
         }
       ]
     }

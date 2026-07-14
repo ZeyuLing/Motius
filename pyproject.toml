@@ -51,6 +51,9 @@ intermask = [
     "torch-geometric>=2.5",
     "tqdm>=4.65",
 ]
+motionclr = [
+    "clip @ git+https://github.com/openai/CLIP.git",
+]
 ardy = [
     "einops>=0.7",
     "gradio-client>=1.0",
@@ -96,6 +99,7 @@ namespaces = false
 "motius.models.condmdi" = ["LICENSE"]
 "motius.models.intergen" = ["NOTICE", "network/configs/*.yaml"]
 "motius.models.intermask" = ["LICENSE"]
+"motius.models.motionclr" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.models.ardy" = [
     "LICENSE",
     "ATTRIBUTIONS.md",

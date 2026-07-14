@@ -30,18 +30,11 @@ InterHuman-262, ARDY-330, Unitree G1, and SMPL
 `motion135`, plus SMPL/SOMA/G1 retargeting. Its documentation records skeleton,
 coordinate, FPS, and 6D rotation conventions for every route.
 
-## Leaderboards
-
-| Leaderboard | Scope | Source |
-| ----------- | ----- | ------ |
-| [T2M HumanML3D](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | Text-to-motion generation on HumanML3D official test split | [Static Space](docs/leaderboards/hf_space_t2m_humanml3d) |
-| [Temporal Condition](docs/leaderboards/hf_space_temporal_condition) | TP2M and multi-prompt temporal-conditioned generation protocols | [Static Space](docs/leaderboards/hf_space_temporal_condition) |
-
 ## Model Zoo
 
 Task labels use a controlled vocabulary: [`T2M`](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), `M2T`,
-[`TP2M`](docs/leaderboards/hf_space_temporal_condition),
-`Two-Person T2M`, [`Multi-Prompt T2M`](docs/leaderboards/hf_space_temporal_condition), `Motion Control`, and `Kinematic Control`. Properties such
+[`TP2M`](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard),
+`Two-Person T2M`, [`Sequential Generation`](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard), `Motion Control`, and `Kinematic Control`. Properties such
 as zero-shot, streaming, latent, or autoregressive are described in the model
 cards rather than treated as separate tasks.
 
@@ -52,11 +45,12 @@ cards rather than treated as separate tasks.
 | MoMask | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-momask-humanml3d) | [Model Card](docs/model_zoo/momask.md) | [Paper](https://arxiv.org/abs/2312.00063) / [Code](https://github.com/EricGuo5513/momask-codes) |
 | MoGenTS | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-mogents-humanml3d) | [Model Card](docs/model_zoo/mogents.md) | [Paper](https://arxiv.org/abs/2409.17686) / [Code](https://github.com/weihaosky/mogents) |
 | MotionGPT | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), M2T | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motiongpt-humanml3d) | [Model Card](docs/model_zoo/motiongpt.md) | [Paper](https://arxiv.org/abs/2306.14795) / [Code](https://github.com/OpenMotionLab/MotionGPT) |
-| FlowMDM | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Multi-Prompt T2M](docs/leaderboards/hf_space_temporal_condition), [TP2M](docs/leaderboards/hf_space_temporal_condition) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-flowmdm-humanml3d) | [Model Card](docs/model_zoo/flowmdm.md) | [Paper](https://arxiv.org/abs/2402.15509) / [Code](https://github.com/BarqueroGerman/FlowMDM) |
+| FlowMDM | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard), [TP2M](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) | HumanML3D-263 / BABEL-135 | [HML3D](https://huggingface.co/ZeyuLing/hftrainer-flowmdm-humanml3d) / [BABEL](https://huggingface.co/ZeyuLing/motius-flowmdm-babel) | [Model Card](docs/model_zoo/flowmdm.md) | [Paper](https://arxiv.org/abs/2402.15509) / [Code](https://github.com/BarqueroGerman/FlowMDM) |
+| MotionCLR | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/motius-motionclr-humanml3d) | [Model Card](docs/model_zoo/motionclr.md) | [Paper](https://arxiv.org/abs/2410.18977) / [Code](https://github.com/IDEA-Research/MotionCLR) |
 | MotionMillion | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | MotionStreamer-272 | [7B](https://huggingface.co/ZeyuLing/hftrainer-gotozero-7b-train-humanml272) / [3B](https://huggingface.co/ZeyuLing/hftrainer-gotozero-3b-train-humanml272) | [Model Card](docs/model_zoo/motionmillion.md) | [Paper](https://arxiv.org/abs/2507.07095) / [Code](https://github.com/VankouF/MotionMillion-Codes) |
-| MotionStreamer | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Multi-Prompt T2M](docs/leaderboards/hf_space_temporal_condition), [TP2M](docs/leaderboards/hf_space_temporal_condition) | MotionStreamer-272 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionstreamer-humanml272) | [Model Card](docs/model_zoo/motionstreamer.md) | [Paper](https://arxiv.org/abs/2503.15451) / [Code](https://github.com/zju3dv/MotionStreamer) |
+| MotionStreamer | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard), [TP2M](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) | MotionStreamer-272 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionstreamer-humanml272) | [Model Card](docs/model_zoo/motionstreamer.md) | [Paper](https://arxiv.org/abs/2503.15451) / [Code](https://github.com/zju3dv/MotionStreamer) |
 | HY-Motion T2M | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HY-Motion-201 | [Full](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0) / [Lite](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0-lite) | [Model Card](docs/model_zoo/hymotion_t2m.md) | [Paper](https://arxiv.org/abs/2512.23464) / [Code](https://github.com/Tencent-Hunyuan/HY-Motion-1.0) |
-| KIMODO | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Multi-Prompt T2M](docs/leaderboards/hf_space_temporal_condition), [TP2M](docs/leaderboards/hf_space_temporal_condition), Kinematic Control | SOMA / G1 / SMPL-X | [SOMA-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-soma-rp) / [G1-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-rp) / [G1-SEED](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-seed) / [SMPLX-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-smplx-rp) | [Model Card](docs/model_zoo/kimodo.md) | [Paper](https://arxiv.org/abs/2603.15546) / [Code](https://github.com/nv-tlabs/kimodo) |
+| KIMODO | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard), [TP2M](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard), Kinematic Control | SOMA / G1 / SMPL-X | [SOMA-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-soma-rp) / [G1-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-rp) / [G1-SEED](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-seed) / [SMPLX-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-smplx-rp) | [Model Card](docs/model_zoo/kimodo.md) | [Paper](https://arxiv.org/abs/2603.15546) / [Code](https://github.com/nv-tlabs/kimodo) |
 | ARDY | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Kinematic Control | ARDY-330 / Unitree G1 explicit 414D | [Core](https://huggingface.co/nvidia/ARDY-Core-RP-20FPS-Horizon40) / [G1](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon52) | [Model Card](docs/model_zoo/ardy.md) | [Paper](https://arxiv.org/abs/2607.08741) / [Code](https://github.com/nv-tlabs/ardy) |
 | MotionBricks | Kinematic Control | MotionBricks G1 global 414D / local 413D / dual 418D | [Official LFS](https://github.com/NVlabs/GR00T-WholeBodyControl/tree/main/motionbricks) | [Model Card](docs/model_zoo/motionbricks.md) | [Paper](https://arxiv.org/abs/2604.24833) / [Code](https://github.com/NVlabs/GR00T-WholeBodyControl/tree/main/motionbricks) |
 | MLD | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/hftrainer-mld-humanml3d) | [Model Card](docs/model_zoo/mld.md) | [Paper](https://arxiv.org/abs/2212.04048) / [Code](https://github.com/ChenFengYe/motion-latent-diffusion) |
@@ -66,6 +60,14 @@ cards rather than treated as separate tasks.
 | CondMDI | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Motion Control | HumanML3D-263 (absolute-root native) | [HF](https://huggingface.co/ZeyuLing/motius-condmdi-humanml3d) | [Model Card](docs/model_zoo/condmdi.md) | [Paper](https://arxiv.org/abs/2405.11126) / [Code](https://github.com/setarehc/diffusion-motion-inbetweening) |
 | InterGen | Two-Person T2M | InterHuman-262 per person | [HF](https://huggingface.co/ZeyuLing/motius-intergen-interhuman) | [Model Card](docs/model_zoo/intergen.md) | [Paper](https://arxiv.org/abs/2304.05684) / [Code](https://github.com/tr3e/InterGen) |
 | InterMask | Two-Person T2M | InterHuman-262 per person | [HF](https://huggingface.co/ZeyuLing/motius-intermask-interhuman) | [Model Card](docs/model_zoo/intermask.md) | [Paper](https://arxiv.org/abs/2410.10010) / [Code](https://github.com/gohar-malik/InterMask) |
+
+## Leaderboards
+
+| Leaderboard | Scope | Public Page |
+| ----------- | ----- | ----------- |
+| [T2M HumanML3D](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | Text-to-motion generation on the HumanML3D official test split | [Source](docs/leaderboards/hf_space_t2m_humanml3d) |
+| [Temporal Condition](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) | Caption plus observed-prefix continuation on HumanML3D | [Source](docs/leaderboards/hf_space_temporal_condition) |
+| [BABEL Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) | Ordered multi-prompt composition with semantic and transition evaluation | [Source](docs/leaderboards/hf_space_babel_sequential) |
 
 ## Evaluator Zoo
 
@@ -102,6 +104,7 @@ validated retargeting route before crossing skeletons.
 | -------------- | ----: | ------- | --------------------------------- |
 | **SMPL-22 `motion135`** | `(T, 135)` | Canonical interchange, FK, mesh rendering | Central bridge: translation + 22 local 6D rotations |
 | **HumanML3D-263** | `(T, 263)` | HumanML3D-based T2M models | Native decode plus official SMPL-22 joint encoder |
+| **BABEL-135** | `(T, 135)` | FlowMDM sequential generation | Z-up root height/velocity plus 22 local rotations; converts to canonical SMPL-22 joints with explicit offsets |
 | **MotionStreamer-272** | `(T, 272)` | MotionStreamer and MotionMillion | Converts to and from SMPL-22 motion |
 | **HY-Motion-201** | `(T, 201)` | HY-Motion models | Contains `motion135` as an exact prefix plus 22 joint positions |
 | **DART276** | `(T, 276)` | DART and ViMoGen | Bridges through SMPL parameters and joints with explicit coordinate conversion |
@@ -290,6 +293,7 @@ the formal documentation:
 - [Getting Started](docs/getting_started.md)
 - [Development Guide](docs/development.md)
 - [Motion representations and retargeting](docs/motion/README.md)
+- [BABEL sequential generation evaluation](docs/evaluation/babel_sequential.md)
 - [Physical motion metrics](docs/evaluation/physical_metrics.md)
 
 ## Release Status

@@ -497,13 +497,19 @@ def matrix_to_rot6d(rotmat: np.ndarray, convention: str = "row") -> np.ndarray:
     raise ValueError(f"unsupported rot6d convention: {convention}")
 
 
+def _resolve_smplx_model_root(model_dir: Path) -> Path:
+    if (model_dir / "SMPL_NEUTRAL.pkl").is_file():
+        return model_dir.parent
+    return model_dir
+
+
 def load_smpl_rest(model_dir: Path, device: torch.device):
     if model_dir.name == "body_models":
         nochumpy = model_dir.with_name("body_models_nochumpy")
         if (nochumpy / "smpl" / "SMPL_NEUTRAL.pkl").exists():
             model_dir = nochumpy
     model = smplx.create(
-        str(model_dir),
+        str(_resolve_smplx_model_root(model_dir)),
         model_type="smpl",
         gender="neutral",
         ext="pkl",

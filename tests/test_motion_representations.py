@@ -6,6 +6,7 @@ import numpy as np
 import torch
 
 from motius.motion.retarget import GMR_Y_UP_FROM_Z_UP, GMR_Z_UP_FROM_Y_UP
+from motius.motion.retarget._hml263_smpl_impl import _resolve_smplx_model_root
 
 from motius.motion.representation.convert import (
     convert_motion,
@@ -37,6 +38,7 @@ from motius.motion.representation.rotation import (
 )
 from motius.motion.skeleton.fk import motion135_to_fk
 from motius.motion.skeleton.names import SMPL22_PARENTS
+from tools.convert_hml263_predictions import _relative_offsets
 
 
 def _identity_motion135(frames: int) -> np.ndarray:
@@ -45,6 +47,22 @@ def _identity_motion135(frames: int) -> np.ndarray:
     motion = np.zeros((frames, 135), dtype=np.float32)
     motion[:, 3:] = np.tile(identity6, 22)
     return motion
+
+
+def test_smpl_loader_accepts_root_or_direct_smpl_directory(tmp_path: Path) -> None:
+    direct = tmp_path / "body_models" / "smpl"
+    direct.mkdir(parents=True)
+    (direct / "SMPL_NEUTRAL.pkl").touch()
+    assert _resolve_smplx_model_root(direct) == direct.parent
+    assert _resolve_smplx_model_root(direct.parent) == direct.parent
+
+
+def test_relative_smpl_offsets_preserve_root_and_parent_differences() -> None:
+    rest = np.arange(66, dtype=np.float32).reshape(22, 3) / 10
+    offsets = _relative_offsets(rest, np.asarray(SMPL22_PARENTS))
+    np.testing.assert_array_equal(offsets[0], rest[0])
+    for joint, parent in enumerate(SMPL22_PARENTS[1:], start=1):
+        np.testing.assert_array_equal(offsets[joint], rest[joint] - rest[parent])
 
 
 def test_explicit_6d_layouts_are_not_interchangeable():

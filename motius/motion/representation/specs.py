@@ -44,6 +44,25 @@ HML263 = MotionRepresentationSpec(
 )
 
 
+BABEL135 = MotionRepresentationSpec(
+    name="babel135",
+    dim=135,
+    fps=30.0,
+    coordinate_frame="FlowMDM/BABEL canonical Z-up frame with integrated planar root velocity",
+    rotation_convention="first-two-rows 6D: R[:2, :].reshape(6)",
+    layout=(
+        ("root_height", 0, 1, "absolute root Z height"),
+        ("root_xy_velocity", 1, 3, "canonical planar root velocity"),
+        ("local_rotations_rows6d", 3, 135, "22 joints * R[:2, :].reshape(6)"),
+    ),
+    notes=(
+        "Native FlowMDM BABEL representation. Despite the same width, this is not "
+        "Motius motion135, whose first three channels are absolute XYZ translation "
+        "and whose rotation 6D layout stores the first two columns."
+    ),
+)
+
+
 MS272 = MotionRepresentationSpec(
     name="ms272",
     dim=272,
@@ -267,6 +286,7 @@ SPECS = {
     spec.name: spec
     for spec in (
         HML263,
+        BABEL135,
         MS272,
         MOTION135,
         HYMOTION201,
@@ -288,6 +308,7 @@ SPECS["ardy_core330"] = ARDY_330
 __all__ = [
     "MotionRepresentationSpec",
     "HML263",
+    "BABEL135",
     "MS272",
     "MOTION135",
     "HYMOTION201",

@@ -366,6 +366,22 @@
           "Diversity": 55.5127
         }
       ],
+      "sequential_metrics": {
+        "protocol": "BABEL FlowMDM validation compositions, joints66 v2",
+        "evaluator": "Motius Joint-Position Evaluator",
+        "cases": 64,
+        "segments": 2048,
+        "R1": 0.21728515625,
+        "R2": 0.3388671875,
+        "R3": 0.42138671875,
+        "FID": 212.33550149796474,
+        "MM-Dist": 49.9531415104866,
+        "Diversity": 55.68293783352351,
+        "Transition-FID": 334.7498886465228,
+        "Transition-Diversity": 53.97303429293057,
+        "Peak-Jerk": 421.1975402832031,
+        "AUJ-Gap": 29.24412727355957
+      },
       "preview_cases": [
         {
           "sample_id": "001840",
@@ -384,6 +400,75 @@
           "caption": "a person moves their right hand left, right, up, and down.",
           "gif": "assets/model_zoo/flowmdm/flowmdm_humanml3d_006944_smpl_mesh_512_30fps.gif",
           "metadata": "assets/model_zoo/flowmdm/flowmdm_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motionclr": {
+      "method": "MotionCLR",
+      "motion_representation": "HumanML3D-263",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-motionclr-humanml3d",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 3970,
+          "R1": 0.5527,
+          "R2": 0.752,
+          "R3": 0.8488,
+          "FID": 0.1045,
+          "MM-Dist": 2.7019,
+          "Diversity": 9.658
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": 4042,
+          "R1": 0.3931,
+          "R2": 0.5208,
+          "R3": 0.596,
+          "FID": 298.9693,
+          "MM-Dist": 22.5207,
+          "Diversity": 20.6074
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.3569,
+          "R2": 0.525,
+          "R3": 0.625,
+          "FID": 1063.7324,
+          "MM-Dist": 44.8058,
+          "Diversity": 50.4069
+        }
+      ],
+      "physical_metrics": {
+        "samples": 4042,
+        "Slide": 3.9074,
+        "Float": 10.1052,
+        "Jitter": 8.7418,
+        "Dynamic": 23.491,
+        "Penetration": 0.0,
+        "PoseQ": 3.1287
+      },
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004822",
+          "caption": "person walking at an average pace forward, swaying arms and torso with a sense of swagger.",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh.json"
+        },
+        {
+          "sample_id": "014457",
+          "caption": "the person swings a golf club.",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_014457_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_014457_smpl_mesh.json"
         }
       ]
     },

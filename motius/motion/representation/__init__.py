@@ -4,6 +4,7 @@ from .specs import (
     ARDY_330,
     ARDY_CORE330,
     ARDY_G1_414,
+    BABEL135,
     DART276,
     G1_38,
     HML263,
@@ -16,6 +17,16 @@ from .specs import (
     MS272,
     SPECS,
     MotionRepresentationSpec,
+)
+from .babel135 import (
+    BABEL135_DIM,
+    babel135_to_joints,
+    babel135_to_motion135,
+    babel_rows6d_to_matrix,
+    decode_babel135,
+    encode_babel135,
+    infer_smpl22_offsets,
+    matrix_to_babel_rows6d,
 )
 from .ardy import ardy_feature_slices, decode_ardy_features, split_ardy_features
 from .interhuman262 import (
@@ -39,6 +50,7 @@ from .convert import (
     joints_to_hml263,
     motion135_to_hml263,
     motion135_to_interhuman262,
+    motion135_to_motion272,
     motion272_to_hml263,
     smpl_to_hml263,
     smpl_to_humanml263,
@@ -60,6 +72,8 @@ def get_spec(name: str) -> MotionRepresentationSpec:
     aliases = {
         "humanml3d263": "hml263",
         "humanml263": "hml263",
+        "babel135": "babel135",
+        "flowmdmbabel135": "babel135",
         "motionstreamer272": "ms272",
         "motion272": "ms272",
         "hymotion201": "hymotion201",
@@ -88,6 +102,8 @@ def get_spec(name: str) -> MotionRepresentationSpec:
 __all__ = [
     "MotionRepresentationSpec",
     "HML263",
+    "BABEL135",
+    "BABEL135_DIM",
     "MS272",
     "MOTION135",
     "HYMOTION201",
@@ -102,6 +118,13 @@ __all__ = [
     "MOTIONBRICKS_G1_418",
     "SPECS",
     "get_spec",
+    "babel_rows6d_to_matrix",
+    "matrix_to_babel_rows6d",
+    "encode_babel135",
+    "decode_babel135",
+    "babel135_to_motion135",
+    "babel135_to_joints",
+    "infer_smpl22_offsets",
     "G1_MOTION_DIM",
     "G1_QPOS_DIM",
     "encode_g1_motion",
@@ -125,6 +148,7 @@ __all__ = [
     "joints_to_hml263",
     "motion135_to_hml263",
     "motion135_to_interhuman262",
+    "motion135_to_motion272",
     "motion272_to_hml263",
     "smpl_to_hml263",
     "smpl_to_humanml263",

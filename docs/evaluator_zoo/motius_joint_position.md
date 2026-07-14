@@ -23,13 +23,13 @@ ambiguity that can affect comparisons in SMPL rotation space.
 | Evaluator | Motius Joint-Position Evaluator |
 | Architecture | TMR-style text/motion encoders with reconstruction decoder |
 | Motion representation | Canonicalized SMPL-22 joints66, 22 joints in xyz at 30 fps |
-| FK implementation | Neutral SMPL-H body model; hand articulation is excluded |
+| FK implementation | Neutral SMPL body model; the public body skeleton has 22 joints |
 | Training data | Full HYMotion Data SFT + full single-person MotionHub training union |
 | Training checkpoint | Epoch 248, FP32 |
 | Caption protocol | HumanML3D selected captions; MotionHub official test annotations |
 | Metrics | R@1, R@2, R@3, FID, MM-Dist, Diversity |
 | Checkpoint | [ZeyuLing/motius-evaluator-universal-smplh-joints66](https://huggingface.co/ZeyuLing/motius-evaluator-universal-smplh-joints66) |
-| Artifact format | Safetensors + corrected joints66 training statistics |
+| Artifact format | Safetensors + bundled DistilBERT + corrected joints66 training statistics |
 
 ## Provenance
 
@@ -44,18 +44,43 @@ The published artifact contains only the epoch-248 inference model and the
 normalization statistics used by that corrected run. Optimizer state,
 distributed random states, and local dataset caches are excluded.
 
-## Download
+## Usage
 
 ```python
-from huggingface_hub import snapshot_download
+from motius.evaluation.evaluators import TMRTextMotionEvaluator
 
-checkpoint_dir = snapshot_download(
-    repo_id="ZeyuLing/motius-evaluator-universal-smplh-joints66"
+evaluator = TMRTextMotionEvaluator.from_pretrained(
+    "ZeyuLing/motius-evaluator-universal-smplh-joints66",
+    device="cuda",
+)
+
+metrics = evaluator.evaluate(
+    captions,
+    predicted_joints66,
+    reference_joints66,
+    chunk_size=32,
+    n_repeats=1,
 )
 ```
 
+For a materialized HumanML3D selected-caption split, the repository CLI loads
+the paired captions and GT joints, enforces one selected caption per sample,
+and writes the complete metric JSON:
+
+```bash
+python tools/eval_t2m_joint_evaluator.py \
+  --dataset-dir /path/to/universal_joints66_dataset \
+  --split humanml3d_test \
+  --predictions-dir outputs/evaluation/t2m/humanml3d_official_test/joints66/my_method \
+  --method my_method \
+  --output outputs/evaluation/t2m/humanml3d_official_test/metrics/my_method/joints66.json \
+  --n-repeats 1
+```
+
 The downloaded directory contains `model.safetensors`, `config.json`,
-`preprocessor_config.json`, joints66 statistics, and an SHA256 manifest.
+`preprocessor_config.json`, `text_encoder/`, joints66 statistics, and an SHA256
+manifest. The bundled tokenizer and DistilBERT weights allow the same API to
+load from a local snapshot with `local_files_only=True` on offline workers.
 
 ## Reporting Rule
 
@@ -66,7 +91,6 @@ has not been run for a method yet, the row should be marked `Pending`.
 
 The evaluator expects the unified SMPL-22 body skeleton and canonicalized joint
 positions. SMPL-22 is the pelvis-to-wrist body subset shared by SMPL and
-SMPL-H; SMPL-H identifies the current FK implementation, not a different
-22-joint convention. Methods that generate HumanML3D-263,
+SMPL-H. Methods that generate HumanML3D-263,
 MotionStreamer-272, SMPL, SMPL-X, or DART-style motion must use the checked
 conversion path before reporting this metric.

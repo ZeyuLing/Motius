@@ -7,6 +7,10 @@ import torch
 from PIL import Image
 
 from motius.evaluation.metrics import aggregate_t2m_metrics, r_precision
+from motius.evaluation.evaluators.tmr import (
+    _normalize_tmr_state_dict,
+    _resolve_text_model_source,
+)
 from motius.models.tmr import TMRBundle
 
 
@@ -30,6 +34,29 @@ def test_tmr_bundle_encodes_text_and_motion() -> None:
     text = {"x": torch.randn(2, 3, 16), "mask": mask}
     assert bundle.encode_motion(motion).shape == (2, 32)
     assert bundle.encode_text(text).shape == (2, 32)
+
+
+def test_tmr_evaluator_accepts_prefixless_core_artifact() -> None:
+    bundle = TMRBundle(
+        motion_nfeats=38,
+        text_nfeats=16,
+        arch={"latent_dim": 32, "ff_size": 64, "num_layers": 1, "num_heads": 4},
+    )
+    core_state = {
+        key.removeprefix("tmr."): value for key, value in bundle.state_dict().items()
+    }
+    normalized = _normalize_tmr_state_dict(core_state, bundle)
+    assert set(normalized) == set(bundle.state_dict())
+
+
+def test_tmr_evaluator_prefers_bundled_text_encoder(tmp_path: Path) -> None:
+    bundled = tmp_path / "text_encoder"
+    bundled.mkdir()
+    assert _resolve_text_model_source(tmp_path, {"token_model": "remote/model"}) == bundled
+    assert (
+        _resolve_text_model_source(tmp_path / "missing", {"token_model": "remote/model"})
+        == "remote/model"
+    )
 
 
 def test_t2m_metrics_report_perfect_aligned_retrieval() -> None:

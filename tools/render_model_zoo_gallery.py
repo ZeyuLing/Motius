@@ -26,6 +26,7 @@ CASES = {
     "004545": "a person jumping while raising both hands and moving apart legs.",
     "006944": "a person moves their right hand left, right, up, and down.",
     "014457": "the person swings a golf club.",
+    "004822": "person walking at an average pace forward, swaying arms and torso with a sense of swagger.",
     "M013344": "in a fighting stance, person punches downward with their right hand.",
 }
 DEFAULT_CASES = ("001840", "004545", "006944")
@@ -61,6 +62,17 @@ MODELS = {
         "method": "FlowMDM",
         "source": "flowmdm",
         "prefix": "flowmdm",
+    },
+    "motionclr": {
+        "method": "MotionCLR",
+        "source": "motionclr",
+        "prefix": "motionclr",
+        "cases": ("001840", "004822", "014457"),
+        "captions": {
+            "001840": "hands in fighting position while the left foot kicks aggressively up and over.",
+            "004822": "person walking at an average pace forward, swaying arms and torso with a sense of swagger.",
+            "014457": "the person swings a golf club.",
+        },
     },
     "motionmillion": {
         "method": "MotionMillion-7B",

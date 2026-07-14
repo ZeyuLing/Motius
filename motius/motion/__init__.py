@@ -1,6 +1,7 @@
 """Motion representations, skeleton utilities, and retargeting APIs."""
 
 from .representation import (
+    BABEL135,
     SPECS,
     convert_motion,
     get_spec,
@@ -13,12 +14,24 @@ from .representation import (
     smpl_to_joints,
     motion135_to_interhuman262,
     ardy_core27_to_smpl22_joints,
+    babel135_to_joints,
+    babel135_to_motion135,
+    decode_babel135,
+    encode_babel135,
+    infer_smpl22_offsets,
     smpl22_joints_to_ardy_core27_joints,
 )
+from .skeleton.canonical import canonicalize_smpl22_joints
 
 __all__ = [
+    "BABEL135",
     "SPECS",
     "get_spec",
+    "encode_babel135",
+    "decode_babel135",
+    "babel135_to_motion135",
+    "babel135_to_joints",
+    "infer_smpl22_offsets",
     "convert_motion",
     "joints_to_hml263",
     "joints_pair_to_interhuman262",
@@ -30,4 +43,5 @@ __all__ = [
     "smpl_to_joints",
     "smpl_to_hml263",
     "smpl_to_humanml263",
+    "canonicalize_smpl22_joints",
 ]

@@ -37,6 +37,18 @@ def _maybe_download_hub(name_or_path: str, local: Path) -> Path:
         return local
 
 
+def _load_tensor(path: Path) -> np.ndarray:
+    """Load tensor-only statistics across supported PyTorch versions."""
+
+    try:
+        value = torch.load(str(path), map_location="cpu", weights_only=True)
+    except TypeError:  # PyTorch < 2.0 does not expose weights_only.
+        value = torch.load(str(path), map_location="cpu")
+    if isinstance(value, torch.Tensor):
+        value = value.detach().cpu().numpy()
+    return np.asarray(value)
+
+
 class _UnusedRotation2XYZ(torch.nn.Module):
     """FlowMDM predicts HML263; the SMPL visualizer is unused for T2M eval."""
 
@@ -95,16 +107,30 @@ class FlowMDMBundle(ModelBundle):
         std_path: Optional[str] = None,
         device: str | int = 0,
         seed: int = 42,
-        guidance_param: float = 2.5,
-        bpe_denoising_step: int = 60,
+        guidance_param: Optional[float] = None,
+        bpe_denoising_step: Optional[int] = None,
         use_chunked_att: bool = False,
         **kwargs,
     ):
         super().__init__()
         artifact = Path(artifact_dir or _DEFAULT_ARTIFACT).resolve()
-        model_path = Path(model_path or artifact / "model000500000.pt").resolve()
-        mean_path = Path(mean_path or artifact / "Mean.npy").resolve()
-        std_path = Path(std_path or artifact / "Std.npy").resolve()
+        model_args = json.loads((artifact / "args.json").read_text())
+        dataset = str(model_args.get("dataset", "humanml")).lower()
+        if dataset not in {"humanml", "babel"}:
+            raise ValueError(f"FlowMDM artifact dataset must be humanml or babel, got {dataset!r}")
+        default_model = "model001300000.pt" if dataset == "babel" else "model000500000.pt"
+        model_path = Path(model_path or artifact / default_model).resolve()
+        if guidance_param is None:
+            guidance_param = 1.5 if dataset == "babel" else 2.5
+        if bpe_denoising_step is None:
+            bpe_denoising_step = 125 if dataset == "babel" else 60
+
+        if dataset == "babel":
+            mean_path = Path(mean_path or artifact / "rfeats_mean.pt").resolve()
+            std_path = Path(std_path or artifact / "rfeats_std.pt").resolve()
+        else:
+            mean_path = Path(mean_path or artifact / "Mean.npy").resolve()
+            std_path = Path(std_path or artifact / "Std.npy").resolve()
 
         _install_unused_rotation2xyz_module()
         from motius.models.flowmdm.network.diffusion.diffusion_wrappers import (
@@ -136,11 +162,25 @@ class FlowMDMBundle(ModelBundle):
         self.sampler = DiffusionWrapper_FlowMDM(flow_args, diffusion, model)
         self.flow_args = flow_args
         self.guidance_param = float(guidance_param)
+        self.dataset = dataset
+        self.representation = "babel135" if dataset == "babel" else "hml263"
+        self.fps = 30.0 if dataset == "babel" else 20.0
 
-        mean = np.load(str(mean_path)).astype(np.float32)
-        std = np.load(str(std_path)).astype(np.float32)
-        if mean.shape != (263,) or std.shape != (263,):
-            raise ValueError(f"expected 263-dim FlowMDM stats, got {mean.shape} and {std.shape}")
+        if dataset == "babel":
+            mean = _load_tensor(mean_path)
+            std = _load_tensor(std_path)
+            expected_dim = 135
+        else:
+            mean = np.load(str(mean_path))
+            std = np.load(str(std_path))
+            expected_dim = 263
+        mean = np.asarray(mean, dtype=np.float32).reshape(-1)
+        std = np.asarray(std, dtype=np.float32).reshape(-1)
+        if mean.shape != (expected_dim,) or std.shape != (expected_dim,):
+            raise ValueError(
+                f"expected {expected_dim}-dim {dataset} FlowMDM stats, "
+                f"got {mean.shape} and {std.shape}"
+            )
         self.register_buffer("mean", torch.from_numpy(mean), persistent=True)
         self.register_buffer("std", torch.from_numpy(std), persistent=True)
 
