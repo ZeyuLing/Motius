@@ -595,7 +595,8 @@
         <p class="subtitle">
           HumanML3D official test split, selected GT caption protocol. Public rows report
           semantic retrieval metrics, universal SMPL-22 TMR metrics, and joint-level physical quality metrics.
-          uTMR metrics use canonicalized SMPL-22 joints66 at 30 fps.
+          uTMR metrics use canonicalized SMPL-22 joints66 at 30 fps. Paper-only rows are kept
+          separate when no released checkpoint can be evaluated through the shared SMPL-22 bridge.
         </p>
         <div class="badge-row" aria-label="protocol">
           <span class="badge">Task: Text-to-Motion</span>
@@ -678,6 +679,7 @@
       <div class="tabs" role="tablist" aria-label="leaderboard sections">
         <button class="tab" role="tab" aria-selected="true" data-view="semantic">Semantic</button>
         <button class="tab" role="tab" aria-selected="false" data-view="physical">Physical</button>
+        <button class="tab" role="tab" aria-selected="false" data-view="paper">Paper Benchmarks</button>
         <button class="tab" role="tab" aria-selected="false" data-view="calibration">Calibration</button>
       </div>
       <input class="search" id="search" type="search" placeholder="Filter method" aria-label="Filter method">
@@ -701,6 +703,16 @@
         </table>
       </div>
       <p class="caption">Slide, Float, and Jitter use the shared SMPL-22 joint-level physical metric implementation. PoseQ is the MBench NRDF pose-quality score. Dynamic is compared with the GT reference rather than minimized.</p>
+    </section>
+
+    <section id="paper" class="view hidden" aria-label="paper benchmark metrics">
+      <div class="table-shell">
+        <table data-table="paper">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="caption">Paper benchmark rows reproduce metrics reported by the original papers when the released checkpoint is not available in the shared SMPL-22 evaluation protocol. They are not used for generated-method ranking.</p>
     </section>
 
     <section id="calibration" class="view hidden" aria-label="calibration metrics">
@@ -765,6 +777,10 @@
       {method: "KIMODO", version: "SMPL-X RP", n: 4042, slide: 3.5414, float: 2.7151, jitter: 6.3208, dynamic: 29.9568, poseq: 1.6522}
     ];
 
+    const paperRows = [
+      {method: "ARDY", version: "HumanML3D paper benchmark", paperOnly: true, representation: "not released", checkpoint: "not released", source: "ARDY paper", rPrecision: 0.7290, fid: 0.0440, skating: 6.2800, constraintError: 4.1500, latency: 0.1500, note: "Reported for a separately trained HumanML3D benchmark model; released ARDY checkpoints are Core-27/G1-34, not SMPL-X."}
+    ];
+
     const calibrationRows = [
       {method: "GT SMPL -> HML263 -> SMPL vs raw GT", n: 4042, msR1: 0.7173, msR3: 0.9219, msFID: 67.4322, msMM: 16.7867, msDiv: 26.6252}
     ];
@@ -805,6 +821,23 @@
           {key: "jitter", label: "Jitter", numeric: true, lower: true},
           {key: "dynamic", label: "Dynamic", numeric: true, referenceStatistic: true},
           {key: "poseq", label: "PoseQ", numeric: true, lower: true}
+        ]
+      },
+      paper: {
+        rows: paperRows,
+        sortKey: "rPrecision",
+        sortDir: "desc",
+        columns: [
+          {key: "method", label: "Method", type: "method"},
+          {key: "representation", label: "Rep"},
+          {key: "checkpoint", label: "Checkpoint"},
+          {key: "source", label: "Source"},
+          {key: "rPrecision", label: "R-Precision", numeric: true, higher: true},
+          {key: "fid", label: "FID", numeric: true, lower: true},
+          {key: "skating", label: "Skate %", numeric: true, lower: true},
+          {key: "constraintError", label: "Constraint cm", numeric: true, lower: true},
+          {key: "latency", label: "Latency s", numeric: true, lower: true},
+          {key: "note", label: "Note"}
         ]
       },
       calibration: {
@@ -879,7 +912,9 @@
       const version = row.version ? `<span class="version">${row.version}</span>` : "";
       const badge = row.isReference
         ? '<span class="rank reference-rank">REF</span>'
-        : `<span class="rank">${rank}</span>`;
+        : row.paperOnly
+          ? '<span class="rank reference-rank">PAPER</span>'
+          : `<span class="rank">${rank}</span>`;
       return `<div class="method">${badge}<span class="method-name"><strong>${row.method}</strong> ${version}</span></div>`;
     }
 
@@ -898,9 +933,9 @@
     }
 
     function bestClass(row, col, allRows) {
-      if (row.isReference || !col.numeric || (!col.lower && !col.higher)) return "";
+      if (row.isReference || row.paperOnly || !col.numeric || (!col.lower && !col.higher)) return "";
       const values = allRows
-        .filter((item) => !item.isReference && typeof item[col.key] === "number")
+        .filter((item) => !item.isReference && !item.paperOnly && typeof item[col.key] === "number")
         .map((item) => item[col.key])
         .sort((a, b) => col.lower ? a - b : b - a);
       const distinct = values.filter((value, index) => index === 0 || Math.abs(value - values[index - 1]) > 1e-8);
@@ -1169,6 +1204,7 @@
     renderCharts();
     renderTable("semantic");
     renderTable("physical");
+    renderTable("paper");
     renderTable("calibration");
   </script>
 </body>

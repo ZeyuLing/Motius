@@ -51,6 +51,11 @@ available on the [project page](https://research.nvidia.com/labs/sil/projects/ar
 | `g1` / `g152` | G1-34 | 25 | 52 frames | [`nvidia/ARDY-G1-RP-25FPS-Horizon52`](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon52) |
 | `g18` | G1-34 | 25 | 8 frames | [`nvidia/ARDY-G1-RP-25FPS-Horizon8`](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon8) |
 
+NVIDIA has not released an ARDY SMPL-X checkpoint. The official release only
+contains Core-27 and Unitree G1-34 checkpoints; the upstream README lists a
+SOMA checkpoint as coming soon. SMPL-X text-to-motion support belongs to
+NVIDIA's separate KIMODO-SMPLX release, not to ARDY.
+
 The checkpoints are downloaded from NVIDIA's Hugging Face repositories and
 remain subject to the license published with each artifact.
 
@@ -221,7 +226,9 @@ keyframe error, 0.015 m trajectory error, and 0.024 m waypoint error.
 The paper's separately trained HumanML3D benchmark model reports R-Precision
 0.729, FID 0.044, skating ratio 6.28%, constraint error 4.15 cm, and 0.15 s
 latency. That benchmark model is not one of the four released Core/G1 Rigplay
-checkpoints above.
+checkpoints above. Motius lists this paper-only result in the T2M HumanML3D
+leaderboard as an official-paper benchmark row, separate from the released
+checkpoint rows.
 
 Motius's HumanML3D, MotionStreamer, and joint-position evaluator rows are not
 reported yet: the released Core-27 output first needs a validated SMPL-22
