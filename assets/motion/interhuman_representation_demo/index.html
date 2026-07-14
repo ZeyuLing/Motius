@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Motius Two-Person Representation Comparison</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f4f6f8;
+      color: #101827;
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+    body { background: #f4f6f8; }
+    #stage { position: fixed; inset: 0; }
+    canvas { display: block; width: 100%; height: 100%; }
+    .labels {
+      position: fixed;
+      z-index: 3;
+      top: 24px;
+      left: 7vw;
+      right: 7vw;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      pointer-events: none;
+    }
+    .label {
+      min-width: 0;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+    .label.interhuman { color: #087991; }
+    .label.smpl { color: #8f4b2e; }
+    .controls {
+      position: fixed;
+      z-index: 4;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      width: min(560px, calc(100vw - 36px));
+      min-height: 50px;
+      display: grid;
+      grid-template-columns: 36px minmax(120px, 1fr) 78px 68px;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      border: 1px solid rgba(16, 24, 39, 0.12);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 8px 24px rgba(16, 24, 39, 0.11);
+      backdrop-filter: blur(12px);
+    }
+    button {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: #101827;
+      cursor: pointer;
+    }
+    button::before {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 10px;
+      width: 0;
+      height: 0;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      border-left: 10px solid white;
+    }
+    button[data-playing="true"]::before {
+      left: 11px;
+      top: 10px;
+      width: 4px;
+      height: 14px;
+      border: 0;
+      background: white;
+      box-shadow: 8px 0 0 white;
+    }
+    input[type="range"] { width: 100%; accent-color: #1261d8; }
+    .time {
+      color: #4a5568;
+      font-variant-numeric: tabular-nums;
+      font-size: 12px;
+      text-align: right;
+      white-space: nowrap;
+    }
+    select {
+      width: 64px;
+      height: 32px;
+      border: 1px solid #d6dbe3;
+      border-radius: 6px;
+      background: white;
+      color: #263244;
+      font: inherit;
+      font-size: 12px;
+      padding: 0 7px;
+    }
+    @media (max-width: 760px) {
+      .labels { top: 18px; left: 2vw; right: 2vw; }
+      .label { font-size: 11px; }
+      .controls {
+        bottom: 14px;
+        grid-template-columns: 36px minmax(70px, 1fr) 64px 58px;
+        gap: 7px;
+      }
+      .time { font-size: 10px; }
+      select { width: 58px; }
+    }
+  </style>
+  <script src="data.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main id="stage" aria-label="Synchronized two-person representation viewer"></main>
+  <section class="labels" aria-hidden="true">
+    <div class="label interhuman">InterHuman Skeleton</div>
+    <div class="label smpl">SMPL Mesh</div>
+  </section>
+  <div class="controls">
+    <button id="play" type="button" title="Play or pause" aria-label="Play or pause" data-playing="true"></button>
+    <input id="timeline" type="range" min="0" max="71" value="0" step="1" aria-label="Motion frame">
+    <span class="time" id="time">0.00 / 2.40 s</span>
+    <select id="speed" aria-label="Playback speed">
+      <option value="0.5">0.5x</option>
+      <option value="1" selected>1x</option>
+      <option value="1.5">1.5x</option>
+      <option value="2">2x</option>
+    </select>
+  </div>
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const demo = window.MOTIUS_TWO_PERSON_REPRESENTATION_DEMO;
+    if (!demo) throw new Error("Two-person representation data is missing.");
+    window.__MOTIUS_READY__ = false;
+
+    async function loadArray(file, Type) {
+      const response = await fetch(file);
+      if (!response.ok) throw new Error(`Failed to load ${file}: ${response.status}`);
+      return new Type(await response.arrayBuffer());
+    }
+
+    const skeletonMeta = demo.representations.interhuman;
+    const smplMeta = demo.representations.smpl;
+    const [smplQuantized, smplNormals, smplIndices] = await Promise.all([
+      loadArray(smplMeta.vertices_file, Uint16Array),
+      loadArray(smplMeta.normals_file, Int8Array),
+      loadArray(smplMeta.indices_file, Uint32Array),
+    ]);
+
+    const host = document.querySelector("#stage");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xf4f6f8);
+    scene.fog = new THREE.Fog(0xf4f6f8, 12, 34);
+
+    const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 70);
+    camera.position.set(0, 1.35, 7.6);
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      powerPreference: "high-performance",
+      preserveDrawingBuffer: true,
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
+    host.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 0.82, 0);
+    controls.minDistance = 4.2;
+    controls.maxDistance = 26;
+    controls.maxPolarAngle = Math.PI * 0.49;
+
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x6d7888, 2.2));
+    const key = new THREE.DirectionalLight(0xffffff, 3.7);
+    key.position.set(-3.4, 6.4, 5.4);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    key.shadow.camera.left = -6;
+    key.shadow.camera.right = 6;
+    key.shadow.camera.top = 5;
+    key.shadow.camera.bottom = -3;
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0xb9dcff, 1.35);
+    rim.position.set(4.2, 3.0, -5.2);
+    scene.add(rim);
+
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(10.5, 5.8),
+      new THREE.MeshStandardMaterial({ color: 0xe9edf2, roughness: 0.94, metalness: 0.01 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    scene.add(floor);
+    const grid = new THREE.GridHelper(10.5, 42, 0xb7c1ce, 0xd8dee7);
+    grid.position.y = 0.002;
+    grid.material.opacity = 0.38;
+    grid.material.transparent = true;
+    scene.add(grid);
+
+    const Y_AXIS = new THREE.Vector3(0, 1, 0);
+    const tempA = new THREE.Vector3();
+    const tempB = new THREE.Vector3();
+    const tempDirection = new THREE.Vector3();
+
+    function makeSkeletonPair() {
+      const group = new THREE.Group();
+      scene.add(group);
+      const palette = [0x087991, 0x0a6bdc];
+      const joints = [];
+      const bones = [];
+      for (let person = 0; person < skeletonMeta.person_count; person++) {
+        const personJoints = [];
+        const personBones = [];
+        const jointGeometry = new THREE.SphereGeometry(0.032, 14, 10);
+        skeletonMeta.parents.forEach((parent, index) => {
+          const material = new THREE.MeshStandardMaterial({
+            color: index % 2 ? 0x12aabd : palette[person],
+            roughness: 0.62,
+            metalness: 0.03,
+          });
+          const joint = new THREE.Mesh(jointGeometry, material);
+          joint.castShadow = true;
+          group.add(joint);
+          personJoints.push(joint);
+          if (parent < 0) {
+            personBones.push(null);
+            return;
+          }
+          const bone = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 1, 9), material.clone());
+          bone.castShadow = true;
+          group.add(bone);
+          personBones.push(bone);
+        });
+        joints.push(personJoints);
+        bones.push(personBones);
+      }
+      function update(frame) {
+        const people = skeletonMeta.positions[frame];
+        people.forEach((positions, person) => {
+          positions.forEach((value, index) => joints[person][index].position.fromArray(value));
+          skeletonMeta.parents.forEach((parent, index) => {
+            if (parent < 0) return;
+            const bone = bones[person][index];
+            tempA.fromArray(positions[parent]);
+            tempB.fromArray(positions[index]);
+            tempDirection.subVectors(tempB, tempA);
+            const length = Math.max(tempDirection.length(), 0.0001);
+            bone.position.copy(tempA).add(tempB).multiplyScalar(0.5);
+            bone.quaternion.setFromUnitVectors(Y_AXIS, tempDirection.normalize());
+            bone.scale.set(0.021, length, 0.021);
+          });
+        });
+      }
+      return { group, update };
+    }
+
+    function makeSMPLPair() {
+      const group = new THREE.Group();
+      scene.add(group);
+      const minimum = smplMeta.quantization_min;
+      const scale = smplMeta.quantization_scale;
+      const colors = [0x3f7fdc, 0xd66a4a];
+      const meshes = [];
+      for (let person = 0; person < smplMeta.person_count; person++) {
+        const positions = new Float32Array(smplMeta.vertex_count * 3);
+        const normals = new Float32Array(smplMeta.vertex_count * 3);
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
+        geometry.setIndex(new THREE.BufferAttribute(smplIndices, 1));
+        const material = new THREE.MeshStandardMaterial({
+          color: colors[person],
+          roughness: 0.72,
+          metalness: 0.01,
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.frustumCulled = false;
+        group.add(mesh);
+        meshes.push({ geometry, positions, normals });
+      }
+      function update(frame) {
+        meshes.forEach(({ geometry, positions, normals }, person) => {
+          const sourceOffset = (frame * smplMeta.person_count + person) * smplMeta.vertex_count * 3;
+          for (let index = 0; index < positions.length; index += 3) {
+            positions[index] = minimum[0] + smplQuantized[sourceOffset + index] * scale[0];
+            positions[index + 1] = minimum[1] + smplQuantized[sourceOffset + index + 1] * scale[1];
+            positions[index + 2] = minimum[2] + smplQuantized[sourceOffset + index + 2] * scale[2];
+            normals[index] = smplNormals[sourceOffset + index] / 127;
+            normals[index + 1] = smplNormals[sourceOffset + index + 1] / 127;
+            normals[index + 2] = smplNormals[sourceOffset + index + 2] / 127;
+          }
+          geometry.attributes.position.needsUpdate = true;
+          geometry.attributes.normal.needsUpdate = true;
+        });
+      }
+      return { group, update };
+    }
+
+    const rigs = [makeSkeletonPair(), makeSMPLPair()];
+    const timeline = document.querySelector("#timeline");
+    const play = document.querySelector("#play");
+    const speed = document.querySelector("#speed");
+    const time = document.querySelector("#time");
+    timeline.max = demo.frames - 1;
+    let currentFrame = 0;
+    let playing = true;
+    let lastTimestamp = performance.now();
+    let frameAccumulator = 0;
+
+    function setFrame(frame) {
+      currentFrame = ((Math.round(frame) % demo.frames) + demo.frames) % demo.frames;
+      rigs.forEach((rig) => rig.update(currentFrame));
+      timeline.value = currentFrame;
+      time.textContent = `${(currentFrame / demo.fps).toFixed(2)} / ${demo.duration_seconds.toFixed(2)} s`;
+    }
+    function render() {
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    function animate(timestamp) {
+      const elapsed = Math.min((timestamp - lastTimestamp) / 1000, 0.1);
+      lastTimestamp = timestamp;
+      if (playing) {
+        frameAccumulator += elapsed * demo.fps * Number(speed.value);
+        if (frameAccumulator >= 1) {
+          const advance = Math.floor(frameAccumulator);
+          frameAccumulator -= advance;
+          setFrame(currentFrame + advance);
+        }
+      }
+      render();
+      requestAnimationFrame(animate);
+    }
+    function resize() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      camera.aspect = width / height;
+      const mobile = camera.aspect < 0.78;
+      camera.position.z = mobile ? 14.5 : 7.6;
+      camera.position.y = mobile ? 1.7 : 1.35;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height, false);
+      render();
+    }
+    play.addEventListener("click", () => {
+      playing = !playing;
+      play.dataset.playing = String(playing);
+      play.title = playing ? "Pause" : "Play";
+    });
+    timeline.addEventListener("input", () => {
+      setFrame(Number(timeline.value));
+      frameAccumulator = 0;
+    });
+    window.addEventListener("resize", resize);
+    setFrame(0);
+    resize();
+    window.__MOTIUS_DEMO__ = {
+      setFrame: (frame) => {
+        playing = false;
+        play.dataset.playing = "false";
+        setFrame(frame);
+        render();
+      },
+      render,
+      frameCount: demo.frames,
+      fps: demo.fps,
+    };
+    window.__MOTIUS_READY__ = true;
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

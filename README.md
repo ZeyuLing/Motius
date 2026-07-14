@@ -115,11 +115,16 @@ or read the [representation protocol](docs/motion/representations.md).
 ### Two-Person Representation Demo
 
 InterHuman-262 stores two synchronized SMPL-22 joint tracks in one shared world
-frame. The preview below uses one GT InterX clip for both panels: the left side
-renders the same motion after conversion to InterHuman skeleton tracks, while
-the right side renders the original GT SMPL-H pose as SMPL meshes.
+frame. The Three.js viewer uses one GT InterX clip for both panels: the left
+side renders the same motion after conversion to InterHuman skeleton tracks,
+while the right side renders the original GT SMPL-H pose as SMPL meshes. It
+uses the same floor grid, shadowed mesh rendering, and 30 fps playback style as
+the single-person representation demo.
 
 ![GT InterX to InterHuman skeleton and SMPL mesh representation comparison](assets/motion/interhuman_representation_demo/interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.gif)
+
+[Open the synchronized Three.js viewer](assets/motion/interhuman_representation_demo/index.html)
+or read the [two-person representation protocol](docs/motion/representations.md#two-person-interhuman-preview).
 
 The demo is generated from InterX `smplh_52_2p/P1` and `P2` GT arrays. Motius
 extracts SMPL-22 joints, converts them into paired `InterHuman-262`, decodes the

@@ -86,9 +86,13 @@ def test_two_person_representation_demo_uses_gt_retarget_preview() -> None:
     readme = (ROOT / "README.md").read_text()
     section = readme.split("### Two-Person Representation Demo", 1)[1].split("\n### ", 1)[0]
     assert "interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.gif" in section
+    assert "assets/motion/interhuman_representation_demo/index.html" in section
+    assert "Three.js viewer" in section
     assert "assets/model_zoo/intergen" not in section
     assert "assets/model_zoo/intermask" not in section
-    assert "model-generation demo" in (ROOT / "docs/motion/representations.md").read_text()
+    representation_doc = (ROOT / "docs/motion/representations.md").read_text()
+    assert "model-generation demo" in representation_doc
+    assert "smpl_pair_vertices.u16" in representation_doc
 
     metadata = json.loads(
         (
@@ -102,7 +106,35 @@ def test_two_person_representation_demo_uses_gt_retarget_preview() -> None:
     assert metadata["frames"] == 72
     assert metadata["fit_mpjpe_mm"] == 0.0
     assert "InterX SMPL-H GT" in metadata["route"]
+    assert metadata["threejs_viewer"] == "assets/motion/interhuman_representation_demo/index.html"
     assert (ROOT / metadata["gif"]).is_file()
+
+    asset_dir = ROOT / "assets/motion/interhuman_representation_demo"
+    data_source = (asset_dir / "data.js").read_text()
+    payload = json.loads(
+        data_source.removeprefix("window.MOTIUS_TWO_PERSON_REPRESENTATION_DEMO=").removesuffix(";\n")
+    )
+    assert payload["sample_id"] == "G012T003A016R008"
+    assert payload["fps"] == 30
+    assert payload["frames"] == 72
+    assert set(payload["representations"]) == {"interhuman", "smpl"}
+    interhuman = payload["representations"]["interhuman"]
+    smpl = payload["representations"]["smpl"]
+    assert interhuman["person_count"] == 2
+    assert smpl["person_count"] == 2
+    assert len(interhuman["positions"]) == payload["frames"]
+    assert np.isfinite(np.asarray(interhuman["positions"])).all()
+    assert (asset_dir / smpl["vertices_file"]).stat().st_size == (
+        payload["frames"] * smpl["person_count"] * smpl["vertex_count"] * 3 * 2
+    )
+    assert (asset_dir / smpl["normals_file"]).stat().st_size == (
+        payload["frames"] * smpl["person_count"] * smpl["vertex_count"] * 3
+    )
+    assert (asset_dir / smpl["indices_file"]).stat().st_size == smpl["index_count"] * 4
+    viewer = (asset_dir / "index.html").read_text()
+    assert "MOTIUS_TWO_PERSON_REPRESENTATION_DEMO" in viewer
+    assert "GridHelper" in viewer
+    assert "PlaneGeometry" in viewer
 
 
 def test_gmr_mesh_references_resolve_to_packaged_assets() -> None:

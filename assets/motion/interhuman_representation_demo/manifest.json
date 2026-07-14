@@ -1,0 +1,11 @@
+{
+  "sample_id": "G012T003A016R008",
+  "fps": 30,
+  "frames": 72,
+  "viewer_data": "data.js",
+  "assets": [
+    "smpl_pair_vertices.u16",
+    "smpl_pair_normals.i8",
+    "smpl_indices.u32"
+  ]
+}

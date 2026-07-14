@@ -136,6 +136,112 @@ def _center_pair(points: np.ndarray, x_offset: float) -> np.ndarray:
     return value
 
 
+def _round_nested(values: np.ndarray, digits: int = 5):
+    return np.round(values, digits).tolist()
+
+
+def _quantize_pair_vertices(vertices: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    minimum = vertices.min(axis=(0, 1, 2)).astype(np.float32)
+    maximum = vertices.max(axis=(0, 1, 2)).astype(np.float32)
+    scale = np.maximum((maximum - minimum) / 65535.0, 1e-8).astype(np.float32)
+    quantized = np.rint((vertices - minimum) / scale).clip(0, 65535).astype("<u2")
+    return quantized, minimum, scale
+
+
+def _quantize_pair_normals(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
+    flat_vertices = vertices.reshape(-1, vertices.shape[-2], 3)
+    normals = np.empty_like(flat_vertices, dtype=np.float32)
+    for frame, frame_vertices in enumerate(flat_vertices):
+        frame_normals = np.zeros_like(frame_vertices, dtype=np.float32)
+        triangles = frame_vertices[faces]
+        face_normals = np.cross(
+            triangles[:, 1] - triangles[:, 0],
+            triangles[:, 2] - triangles[:, 0],
+        )
+        np.add.at(frame_normals, faces[:, 0], face_normals)
+        np.add.at(frame_normals, faces[:, 1], face_normals)
+        np.add.at(frame_normals, faces[:, 2], face_normals)
+        lengths = np.linalg.norm(frame_normals, axis=-1, keepdims=True)
+        normals[frame] = frame_normals / np.maximum(lengths, 1e-8)
+    return np.rint(normals.reshape(vertices.shape) * 127.0).clip(-127, 127).astype("i1")
+
+
+def write_threejs_viewer_data(
+    joints: np.ndarray,
+    smpl_vertices: np.ndarray,
+    smpl_faces: np.ndarray,
+    out_dir: Path,
+    *,
+    sample_id: str,
+    source_label: str,
+    route: str,
+    fps: int,
+    max_frames: int,
+) -> dict:
+    skeleton = _center_pair(joints[:max_frames], -1.35)
+    mesh = _center_pair(smpl_vertices[: len(skeleton)], 1.35)
+    quantized, minimum, scale = _quantize_pair_vertices(mesh)
+    normals = _quantize_pair_normals(mesh, smpl_faces)
+    quantized.tofile(out_dir / "smpl_pair_vertices.u16")
+    normals.tofile(out_dir / "smpl_pair_normals.i8")
+    smpl_faces.astype("<u4").reshape(-1).tofile(out_dir / "smpl_indices.u32")
+
+    payload = {
+        "sample_id": sample_id,
+        "fps": fps,
+        "frames": int(len(skeleton)),
+        "duration_seconds": round(len(skeleton) / fps, 3),
+        "representations": {
+            "interhuman": {
+                "label": "InterHuman-262",
+                "person_count": 2,
+                "parents": list(SMPL22_PARENTS),
+                "positions": _round_nested(skeleton),
+            },
+            "smpl": {
+                "label": "SMPL Mesh",
+                "person_count": 2,
+                "vertex_count": int(mesh.shape[-2]),
+                "index_count": int(smpl_faces.size),
+                "vertices_file": "smpl_pair_vertices.u16",
+                "normals_file": "smpl_pair_normals.i8",
+                "indices_file": "smpl_indices.u32",
+                "quantization_min": minimum.tolist(),
+                "quantization_scale": scale.tolist(),
+            },
+        },
+        "provenance": {
+            "source": source_label,
+            "route": route,
+            "body_model": "local licensed SMPL-H parameters; only demo geometry is exported",
+        },
+    }
+    (out_dir / "data.json").write_text(json.dumps(payload, separators=(",", ":")))
+    (out_dir / "data.js").write_text(
+        "window.MOTIUS_TWO_PERSON_REPRESENTATION_DEMO="
+        + json.dumps(payload, separators=(",", ":"))
+        + ";\n"
+    )
+    (out_dir / "manifest.json").write_text(
+        json.dumps(
+            {
+                "sample_id": sample_id,
+                "fps": fps,
+                "frames": int(len(skeleton)),
+                "viewer_data": "data.js",
+                "assets": [
+                    "smpl_pair_vertices.u16",
+                    "smpl_pair_normals.i8",
+                    "smpl_indices.u32",
+                ],
+            },
+            indent=2,
+        )
+        + "\n"
+    )
+    return payload
+
+
 def _look_at(eye: np.ndarray, center: np.ndarray) -> np.ndarray:
     up = np.asarray([0.0, 1.0, 0.0], dtype=np.float32)
     forward = center - eye
@@ -331,6 +437,17 @@ def main() -> None:
         height=args.height,
         max_frames=args.frames,
     )
+    viewer_payload = write_threejs_viewer_data(
+        joints,
+        smpl_vertices,
+        renderer.faces,
+        args.out_dir,
+        sample_id=args.sample_id,
+        source_label=source_label,
+        route=route,
+        fps=args.fps,
+        max_frames=args.frames,
+    )
     meta = {
         "sample_id": args.sample_id,
         "source": source_label,
@@ -340,6 +457,9 @@ def main() -> None:
         "frames": len(frames),
         "fit_mpjpe_mm": fit_mpjpe_mm,
         "gif": str(gif),
+        "threejs_viewer": str(args.out_dir / "index.html"),
+        "viewer_data": str(args.out_dir / "data.js"),
+        "viewer_assets": viewer_payload["representations"]["smpl"],
     }
     if args.write_npz:
         npz = args.out_dir / f"{stem}.npz"

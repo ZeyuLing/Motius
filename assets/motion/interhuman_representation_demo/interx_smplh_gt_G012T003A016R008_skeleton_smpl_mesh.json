@@ -6,5 +6,26 @@
   "fps": 30,
   "frames": 72,
   "fit_mpjpe_mm": 0.0,
-  "gif": "assets/motion/interhuman_representation_demo/interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.gif"
+  "gif": "assets/motion/interhuman_representation_demo/interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.gif",
+  "threejs_viewer": "assets/motion/interhuman_representation_demo/index.html",
+  "viewer_data": "assets/motion/interhuman_representation_demo/data.js",
+  "viewer_assets": {
+    "label": "SMPL Mesh",
+    "person_count": 2,
+    "vertex_count": 6890,
+    "index_count": 41328,
+    "vertices_file": "smpl_pair_vertices.u16",
+    "normals_file": "smpl_pair_normals.i8",
+    "indices_file": "smpl_indices.u32",
+    "quantization_min": [
+      0.39757245779037476,
+      0.0,
+      -0.7943912148475647
+    ],
+    "quantization_scale": [
+      2.787734047160484e-05,
+      2.931804738182109e-05,
+      1.910522951220628e-05
+    ]
+  }
 }
