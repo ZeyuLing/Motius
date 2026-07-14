@@ -82,6 +82,25 @@ def test_representation_demo_contains_synchronized_routes() -> None:
     assert "HumanML3D test" not in viewer
 
 
+def test_two_person_representation_demo_uses_gt_retarget_preview() -> None:
+    readme = (ROOT / "README.md").read_text()
+    section = readme.split("### Two-Person Representation Demo", 1)[1].split("\n### ", 1)[0]
+    assert "interhuman_gt_407_skeleton_smpl_mesh.gif" in section
+    assert "assets/model_zoo/intergen" not in section
+    assert "assets/model_zoo/intermask" not in section
+    assert "model-generation demo" in (ROOT / "docs/motion/representations.md").read_text()
+
+    metadata = json.loads(
+        (ROOT / "assets/motion/interhuman_representation_demo/interhuman_gt_407_skeleton_smpl_mesh.json").read_text()
+    )
+    assert metadata["sample_id"] == "407"
+    assert metadata["fps"] == 30
+    assert metadata["frames"] == 72
+    assert metadata["fit_mpjpe_mm"] < 60.0
+    assert "raw InterHuman 492D" in metadata["route"]
+    assert (ROOT / metadata["gif"]).is_file()
+
+
 def test_gmr_mesh_references_resolve_to_packaged_assets() -> None:
     xml_path = ROOT / "motius/motion/retarget/_gmr/assets/unitree_g1/g1_mocap_29dof.xml"
     xml = xml_path.read_text()

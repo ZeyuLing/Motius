@@ -134,13 +134,17 @@ assuming a generic Z-up axis permutation.
 
 ## Two-Person InterHuman Preview
 
-InterHuman demos use paired SMPL meshes fitted from InterHuman-262 joint
-positions. The same shared canonical frame is used for both people.
+The InterHuman preview is a representation demo, not a model-generation demo.
+It uses one GT InterHuman clip in both panels: decoded paired InterHuman
+skeletons on the left and the same motion fitted to neutral SMPL meshes on the
+right. The shared canonical frame is preserved for both people.
 
-| Source | Prompt | Preview |
-| ------ | ------ | ------- |
-| InterGen | two people shake hands and then step apart | ![InterGen InterHuman to SMPL pair](../../assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair_512_30fps.gif) |
-| InterMask | two people hug each other and then step back | ![InterMask InterHuman to SMPL pair](../../assets/model_zoo/intermask/intermask_interhuman_hug_smpl_pair_512_30fps.gif) |
+![GT InterHuman skeleton and SMPL mesh representation comparison](../../assets/motion/interhuman_representation_demo/interhuman_gt_407_skeleton_smpl_mesh.gif)
+
+The builder reads the official `motions_processed/person1` and
+`motions_processed/person2` raw 492D files, converts them with
+`joints_pair_to_interhuman262`, decodes exact `InterHuman-262` joint positions,
+and uses position IK only for the SMPL mesh preview.
 
 ## The Two 6D Layouts
 

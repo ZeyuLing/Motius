@@ -1,0 +1,10 @@
+{
+  "sample_id": "407",
+  "source": "GT InterHuman motions_processed/person1+person2",
+  "representation": "InterHuman-262 skeleton to SMPL mesh",
+  "route": "raw InterHuman 492D -> joints_pair_to_interhuman262 -> position-IK SMPL mesh",
+  "fps": 30,
+  "frames": 72,
+  "fit_mpjpe_mm": 47.904951095581055,
+  "gif": "assets/motion/interhuman_representation_demo/interhuman_gt_407_skeleton_smpl_mesh.gif"
+}
