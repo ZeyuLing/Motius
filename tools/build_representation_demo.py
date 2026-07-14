@@ -18,16 +18,11 @@ if str(ROOT) not in sys.path:
 
 from motius.motion.representation.rotation import matrix_to_axis_angle, rotation_6d_to_matrix
 from motius.motion.retarget import GMRSMPLToG1Retargeter, GMR_Y_UP_FROM_Z_UP
-from motius.motion.retarget.ardy_core import (
-    ARDY_CORE27_NAMES,
-    smpl22_joints_to_ardy_core27_joints,
-)
+from motius.motion.retarget.ardy_core import ARDY_CORE27_INDEX
 from motius.motion.retarget.smpl_soma import (
-    SOMA30_NAMES,
-    SOMA30_PARENTS,
-    SMPL22_TO_SOMA30,
+    smpl_motion135_to_soma30,
 )
-from motius.motion.skeleton import SMPL22_PARENTS
+from motius.motion.skeleton import SMPL22_NAMES, SMPL22_PARENTS
 from motius.motion.skeleton.body_models import resolve_smpl_model_path
 
 
@@ -103,33 +98,162 @@ CORE27_PARENTS = np.asarray(
 )
 
 
-def _smpl22_joints_to_soma30_preview(joints: np.ndarray) -> np.ndarray:
-    value = np.asarray(joints, dtype=np.float32)
-    if value.shape[-2:] != (22, 3):
-        raise ValueError(f"SMPL joints must end in (22, 3), got {value.shape}")
-    soma = np.empty(value.shape[:-2] + (len(SOMA30_NAMES), 3), dtype=np.float32)
-    for smpl_index, soma_index in enumerate(SMPL22_TO_SOMA30.tolist()):
-        soma[..., soma_index, :] = value[..., smpl_index, :]
+def _global_to_local_mats(global_rots: np.ndarray, parents: np.ndarray) -> np.ndarray:
+    local = np.empty_like(global_rots, dtype=np.float32)
+    for joint, parent in enumerate(np.asarray(parents).tolist()):
+        if parent < 0:
+            local[:, joint] = global_rots[:, joint]
+        else:
+            local[:, joint] = np.einsum(
+                "tki,tkl->til",
+                global_rots[:, parent],
+                global_rots[:, joint],
+            )
+    return local
 
-    def extend(target: str, base: str, parent: str, scale: float) -> None:
-        target_i = SOMA30_NAMES.index(target)
-        base_i = SOMA30_NAMES.index(base)
-        parent_i = SOMA30_NAMES.index(parent)
-        soma[..., target_i, :] = soma[..., base_i, :] + (
-            soma[..., base_i, :] - soma[..., parent_i, :]
-        ) * scale
 
-    head = soma[..., SOMA30_NAMES.index("Head"), :]
-    neck = soma[..., SOMA30_NAMES.index("Neck2"), :]
-    soma[..., SOMA30_NAMES.index("Jaw"), :] = head + np.asarray([0.0, -0.08, 0.06], dtype=np.float32)
-    soma[..., SOMA30_NAMES.index("LeftEye"), :] = head + np.asarray([0.045, 0.035, 0.055], dtype=np.float32)
-    soma[..., SOMA30_NAMES.index("RightEye"), :] = head + np.asarray([-0.045, 0.035, 0.055], dtype=np.float32)
-    soma[..., SOMA30_NAMES.index("Neck2"), :] = neck
-    extend("LeftHandThumbEnd", "LeftHand", "LeftForeArm", 0.20)
-    extend("LeftHandMiddleEnd", "LeftHand", "LeftForeArm", 0.36)
-    extend("RightHandThumbEnd", "RightHand", "RightForeArm", 0.20)
-    extend("RightHandMiddleEnd", "RightHand", "RightForeArm", 0.36)
-    return soma
+def _smpl_local_to_global(local_rots: np.ndarray) -> np.ndarray:
+    global_rots = np.empty_like(local_rots, dtype=np.float32)
+    for joint, parent in enumerate(np.asarray(SMPL22_PARENTS).tolist()):
+        if parent < 0:
+            global_rots[:, joint] = local_rots[:, joint]
+        else:
+            global_rots[:, joint] = global_rots[:, parent] @ local_rots[:, joint]
+    return global_rots
+
+
+def _motion135_local_rot_mats(motion: np.ndarray) -> np.ndarray:
+    frames = len(motion)
+    mats = rotation_6d_to_matrix(
+        torch.from_numpy(motion[:, 3:135].reshape(-1, 6)),
+        convention="row",
+    ).reshape(frames, 22, 3, 3)
+    return mats.cpu().numpy().astype(np.float32)
+
+
+def _smpl_global_to_core27_global(smpl_global: np.ndarray) -> np.ndarray:
+    smpl_index = {name: idx for idx, name in enumerate(SMPL22_NAMES)}
+    core_to_smpl = {
+        "Hips": "Pelvis",
+        "Spine": "Spine1",
+        "Spine1": "Spine1",
+        "Spine2": "Spine2",
+        "Spine3": "Spine3",
+        "Neck": "Neck",
+        "Head": "Head",
+        "RightShoulder": "R_Collar",
+        "RightArm": "R_Shoulder",
+        "RightForeArm": "R_Elbow",
+        "RightHand": "R_Wrist",
+        "RightHandEnd": "R_Wrist",
+        "RightHandThumb1": "R_Wrist",
+        "LeftShoulder": "L_Collar",
+        "LeftArm": "L_Shoulder",
+        "LeftForeArm": "L_Elbow",
+        "LeftHand": "L_Wrist",
+        "LeftHandEnd": "L_Wrist",
+        "LeftHandThumb1": "L_Wrist",
+        "RightUpLeg": "R_Hip",
+        "RightLeg": "R_Knee",
+        "RightFoot": "R_Ankle",
+        "RightToeBase": "R_Foot",
+        "LeftUpLeg": "L_Hip",
+        "LeftLeg": "L_Knee",
+        "LeftFoot": "L_Ankle",
+        "LeftToeBase": "L_Foot",
+    }
+    core_global = np.empty(smpl_global.shape[:1] + (27, 3, 3), dtype=np.float32)
+    for core_name, smpl_name in core_to_smpl.items():
+        core_global[:, ARDY_CORE27_INDEX[core_name]] = smpl_global[:, smpl_index[smpl_name]]
+    return core_global
+
+
+def _soma_skin_vertices(
+    soma30_global_rots: np.ndarray,
+    soma30_root_positions: np.ndarray,
+    *,
+    device: str,
+) -> tuple[np.ndarray, np.ndarray]:
+    from motius.models.kimodo.network.skeleton import SOMASkeleton30
+    from motius.models.kimodo.network.skeleton.transforms import global_rots_to_local_rots
+
+    skin_path = (
+        ROOT
+        / "motius/models/kimodo/network/assets/skeletons/somaskel77/skin_standard.npz"
+    )
+    if not skin_path.exists():
+        raise FileNotFoundError(f"SOMA skin asset not found: {skin_path}")
+    skin = np.load(skin_path)
+    bind_vertices = np.asarray(skin["bind_vertices"], dtype=np.float32)
+    faces = np.asarray(skin["faces"], dtype=np.uint32)
+    bind = np.asarray(skin["bind_rig_transform"], dtype=np.float32)
+    lbs_indices = np.asarray(skin["lbs_indices"], dtype=np.int64)
+    lbs_weights = np.asarray(skin["lbs_weights"], dtype=np.float32)
+
+    device_t = torch.device(device if torch.cuda.is_available() or device == "cpu" else "cpu")
+    soma30 = SOMASkeleton30().to(device_t)
+    global_t = torch.from_numpy(np.asarray(soma30_global_rots, dtype=np.float32)).to(device_t)
+    root_t = torch.from_numpy(np.asarray(soma30_root_positions, dtype=np.float32)).to(device_t)
+    with torch.no_grad():
+        soma30_local = global_rots_to_local_rots(global_t, soma30)
+        soma77_local = soma30.to_SOMASkeleton77(soma30_local)
+        soma77 = soma30.somaskel77.to(device_t)
+        soma77_global, soma77_joints, _ = soma77.fk(soma77_local, root_t)
+        root_delta = root_t - soma77_joints[:, 0, :]
+        soma77_joints = soma77_joints + root_delta[:, None, :]
+
+    transforms = np.tile(np.eye(4, dtype=np.float32), (len(root_t), 77, 1, 1))
+    transforms[:, :, :3, :3] = soma77_global.detach().cpu().numpy().astype(np.float32)
+    transforms[:, :, :3, 3] = soma77_joints.detach().cpu().numpy().astype(np.float32)
+    skin_transforms = transforms @ np.linalg.inv(bind)[None]
+    vertex_h = np.concatenate([bind_vertices, np.ones((len(bind_vertices), 1), dtype=np.float32)], axis=1)
+    gathered_t = skin_transforms[:, lbs_indices]
+    transformed = np.einsum("tvkij,vj->tvki", gathered_t, vertex_h)
+    vertices = (transformed[..., :3] * lbs_weights[None, :, :, None]).sum(axis=2).astype(np.float32)
+    vertices[..., 1] -= float(vertices[..., 1].min())
+    return vertices, faces
+
+
+def _core_skin_vertices(
+    core_local_rots: np.ndarray,
+    root_positions: np.ndarray,
+    *,
+    device: str,
+) -> tuple[np.ndarray, np.ndarray]:
+    from motius.models.ardy.network.skeleton import CoreSkeleton27
+    from motius.models.ardy.network.skeleton.kinematics import fk
+
+    skin_path = (
+        ROOT
+        / "motius/models/ardy/network/assets/skeletons/cskel27/skin_standard.npz"
+    )
+    if not skin_path.exists():
+        raise FileNotFoundError(f"Core skin asset not found: {skin_path}")
+    skin = np.load(skin_path)
+    bind_vertices = np.asarray(skin["bind_vertices"], dtype=np.float32)
+    faces = np.asarray(skin["faces"], dtype=np.uint32)
+    bind = np.asarray(skin["bind_rig_transform"], dtype=np.float32)
+    lbs_indices = np.asarray(skin["lbs_indices"], dtype=np.int64)
+    lbs_weights = np.asarray(skin["lbs_weights"], dtype=np.float32)
+
+    device_t = torch.device(device if torch.cuda.is_available() or device == "cpu" else "cpu")
+    skeleton = CoreSkeleton27().to(device_t)
+    with torch.no_grad():
+        global_rots, posed_joints, _ = fk(
+            torch.from_numpy(np.asarray(core_local_rots, dtype=np.float32)).to(device_t),
+            torch.from_numpy(np.asarray(root_positions, dtype=np.float32)).to(device_t),
+            skeleton,
+        )
+    transforms = np.tile(np.eye(4, dtype=np.float32), (len(root_positions), 27, 1, 1))
+    transforms[:, :, :3, :3] = global_rots.detach().cpu().numpy().astype(np.float32)
+    transforms[:, :, :3, 3] = posed_joints.detach().cpu().numpy().astype(np.float32)
+    skin_transforms = transforms @ np.linalg.inv(bind)[None]
+    vertex_h = np.concatenate([bind_vertices, np.ones((len(bind_vertices), 1), dtype=np.float32)], axis=1)
+    gathered_t = skin_transforms[:, lbs_indices]
+    transformed = np.einsum("tvkij,vj->tvki", gathered_t, vertex_h)
+    vertices = (transformed[..., :3] * lbs_weights[None, :, :, None]).sum(axis=2).astype(np.float32)
+    vertices[..., 1] -= float(vertices[..., 1].min())
+    return vertices, faces
 
 def _linear_resample(values: np.ndarray, src_fps: float, dst_fps: float, frames: int) -> np.ndarray:
     src_times = np.arange(len(values), dtype=np.float64) / float(src_fps)
@@ -435,10 +559,33 @@ def build(args: argparse.Namespace) -> Path:
     smpl_quantized, smpl_minimum, smpl_scale = _quantize_vertices(smpl_vertices)
     smpl_normals = _quantize_vertex_normals(smpl_vertices, smpl_faces)
 
-    soma_joints = _smpl22_joints_to_soma30_preview(smpl_joints)
-    soma_joints[..., 1] -= float(soma_joints[..., 1].min())
-    core_joints = smpl22_joints_to_ardy_core27_joints(smpl_joints)
-    core_joints[..., 1] -= float(core_joints[..., 1].min())
+    soma_result = smpl_motion135_to_soma30(
+        motion135,
+        assets_root=ROOT / "motius/models/kimodo/network/assets/skeletons",
+    )
+    soma_vertices, soma_faces = _soma_skin_vertices(
+        soma_result["soma30_global_rots"],
+        soma_result["soma30_joints"][:, 0, :],
+        device="cpu",
+    )
+    soma_vertices = _apply_heading(soma_vertices, smpl_heading, smpl_origin)
+    soma_vertices[..., 1] -= float(soma_vertices[..., 1].min())
+    soma_quantized, soma_minimum, soma_scale = _quantize_vertices(soma_vertices)
+    soma_normals = _quantize_vertex_normals(soma_vertices, soma_faces)
+
+    smpl_local_rots = _motion135_local_rot_mats(motion135)
+    smpl_global_rots = _smpl_local_to_global(smpl_local_rots)
+    core_global_rots = _smpl_global_to_core27_global(smpl_global_rots)
+    core_local_rots = _global_to_local_mats(core_global_rots, CORE27_PARENTS)
+    core_vertices, core_faces = _core_skin_vertices(
+        core_local_rots,
+        motion135[:, :3],
+        device="cpu",
+    )
+    core_vertices = _apply_heading(core_vertices, smpl_heading, smpl_origin)
+    core_vertices[..., 1] -= float(core_vertices[..., 1].min())
+    core_quantized, core_minimum, core_scale = _quantize_vertices(core_vertices)
+    core_normals = _quantize_vertex_normals(core_vertices, core_faces)
 
     retargeter = GMRSMPLToG1Retargeter(
         tgt_fps=int(args.fps),
@@ -462,6 +609,12 @@ def build(args: argparse.Namespace) -> Path:
     smpl_quantized.tofile(args.output_dir / "smpl_vertices.u16")
     smpl_normals.tofile(args.output_dir / "smpl_normals.i8")
     smpl_faces.astype("<u4").reshape(-1).tofile(args.output_dir / "smpl_indices.u32")
+    soma_quantized.tofile(args.output_dir / "soma_vertices.u16")
+    soma_normals.tofile(args.output_dir / "soma_normals.i8")
+    soma_faces.astype("<u4").reshape(-1).tofile(args.output_dir / "soma_indices.u32")
+    core_quantized.tofile(args.output_dir / "core_vertices.u16")
+    core_normals.tofile(args.output_dir / "core_normals.i8")
+    core_faces.astype("<u4").reshape(-1).tofile(args.output_dir / "core_indices.u32")
     g1_vertices.tofile(args.output_dir / "g1_mesh_vertices.f32")
     g1_indices.tofile(args.output_dir / "g1_mesh_indices.u32")
     g1_transforms.tofile(args.output_dir / "g1_geom_transforms.f32")
@@ -508,17 +661,25 @@ def build(args: argparse.Namespace) -> Path:
             },
             "soma": {
                 "label": "SOMA-30",
-                "parents": SOMA30_PARENTS.astype(int).tolist(),
-                "positions": _round_nested(soma_joints),
+                "vertex_count": int(soma_vertices.shape[1]),
+                "index_count": int(soma_faces.size),
+                "vertices_file": "soma_vertices.u16",
+                "normals_file": "soma_normals.i8",
+                "indices_file": "soma_indices.u32",
+                "quantization_min": soma_minimum.tolist(),
+                "quantization_scale": soma_scale.tolist(),
                 "initial_forward": _round_nested(smpl_forward),
-                "source_names": list(SOMA30_NAMES),
             },
             "core": {
                 "label": "Core-27",
-                "parents": CORE27_PARENTS.astype(int).tolist(),
-                "positions": _round_nested(core_joints),
+                "vertex_count": int(core_vertices.shape[1]),
+                "index_count": int(core_faces.size),
+                "vertices_file": "core_vertices.u16",
+                "normals_file": "core_normals.i8",
+                "indices_file": "core_indices.u32",
+                "quantization_min": core_minimum.tolist(),
+                "quantization_scale": core_scale.tolist(),
                 "initial_forward": _round_nested(smpl_forward),
-                "source_names": list(ARDY_CORE27_NAMES),
             },
             "g1": {
                 "label": "Unitree G1",
@@ -536,8 +697,8 @@ def build(args: argparse.Namespace) -> Path:
         "provenance": {
             "humanml3d": str(args.hml_fixture),
             "smpl_motion135": str(args.motion135),
-            "soma_route": "SMPL-22 joints -> named SOMA-30 preview bridge",
-            "core_route": "SMPL-22 joints -> named Core-27 joint-position bridge",
+            "soma_route": "SMPL motion135 -> SOMA30 rotation transfer -> SOMA77 LBS mesh",
+            "core_route": "SMPL motion135 global rotations -> Core-27 visual rotation bridge -> Core LBS mesh",
             "g1_route": "SMPL motion135 -> GMR IK -> G1 qpos -> MuJoCo mesh FK",
             "body_model": "local licensed SMPL-H parameters; only demo geometry is exported",
         },
@@ -560,6 +721,12 @@ def build(args: argparse.Namespace) -> Path:
                     "smpl_vertices.u16",
                     "smpl_normals.i8",
                     "smpl_indices.u32",
+                    "soma_vertices.u16",
+                    "soma_normals.i8",
+                    "soma_indices.u32",
+                    "core_vertices.u16",
+                    "core_normals.i8",
+                    "core_indices.u32",
                     "g1_mesh_vertices.f32",
                     "g1_mesh_indices.u32",
                     "g1_geom_transforms.f32",

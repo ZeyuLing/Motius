@@ -102,8 +102,8 @@ validated retargeting route before crossing skeletons.
 ### Same-Motion Representation Demo
 
 The preview below uses one official HumanML3D test motion for every panel:
-HumanML3D-263 joints, SMPL mesh, SOMA-30 joints, Core-27 joints, and Unitree G1
-MJCF visual meshes. All panels are aligned to the same initial body heading.
+HumanML3D-263 joints, SMPL mesh, SOMA mesh, Core mesh, and Unitree G1 MJCF
+visual meshes. All panels are aligned to the same initial body heading.
 
 ![HumanML3D, SMPL, SOMA, Core, and Unitree G1 representation comparison](assets/motion/representation_demo/004822_hml_smpl_soma_core_g1.gif)
 

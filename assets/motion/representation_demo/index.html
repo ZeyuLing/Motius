@@ -163,11 +163,32 @@
     }
 
     const smplMeta = demo.representations.smpl;
+    const somaMeta = demo.representations.soma;
+    const coreMeta = demo.representations.core;
     const g1Meta = demo.representations.g1;
-    const [smplQuantized, smplNormals, smplIndices, g1Vertices, g1Indices, g1Transforms] = await Promise.all([
+    const [
+      smplQuantized,
+      smplNormals,
+      smplIndices,
+      somaQuantized,
+      somaNormals,
+      somaIndices,
+      coreQuantized,
+      coreNormals,
+      coreIndices,
+      g1Vertices,
+      g1Indices,
+      g1Transforms,
+    ] = await Promise.all([
       loadArray(smplMeta.vertices_file, Uint16Array),
       loadArray(smplMeta.normals_file, Int8Array),
       loadArray(smplMeta.indices_file, Uint32Array),
+      loadArray(somaMeta.vertices_file, Uint16Array),
+      loadArray(somaMeta.normals_file, Int8Array),
+      loadArray(somaMeta.indices_file, Uint32Array),
+      loadArray(coreMeta.vertices_file, Uint16Array),
+      loadArray(coreMeta.normals_file, Int8Array),
+      loadArray(coreMeta.indices_file, Uint32Array),
       loadArray(g1Meta.vertices_file, Float32Array),
       loadArray(g1Meta.indices_file, Uint32Array),
       loadArray(g1Meta.transforms_file, Float32Array),
@@ -276,18 +297,18 @@
       return { group, update };
     }
 
-    function makeSMPLMesh(xOffset) {
+    function makeSequenceMesh(meta, quantized, normalBytes, indices, xOffset, color) {
       const group = new THREE.Group();
       group.position.x = xOffset;
       scene.add(group);
-      const positions = new Float32Array(smplMeta.vertex_count * 3);
-      const normals = new Float32Array(smplMeta.vertex_count * 3);
+      const positions = new Float32Array(meta.vertex_count * 3);
+      const normals = new Float32Array(meta.vertex_count * 3);
       const geometry = new THREE.BufferGeometry();
       geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
       geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
-      geometry.setIndex(new THREE.BufferAttribute(smplIndices, 1));
+      geometry.setIndex(new THREE.BufferAttribute(indices, 1));
       const material = new THREE.MeshStandardMaterial({
-        color: 0xc98f74,
+        color,
         roughness: 0.74,
         metalness: 0.01,
       });
@@ -296,17 +317,17 @@
       mesh.receiveShadow = true;
       mesh.frustumCulled = false;
       group.add(mesh);
-      const minimum = smplMeta.quantization_min;
-      const scale = smplMeta.quantization_scale;
+      const minimum = meta.quantization_min;
+      const scale = meta.quantization_scale;
       function update(frame) {
-        const sourceOffset = frame * smplMeta.vertex_count * 3;
+        const sourceOffset = frame * meta.vertex_count * 3;
         for (let index = 0; index < positions.length; index += 3) {
-          positions[index] = minimum[0] + smplQuantized[sourceOffset + index] * scale[0];
-          positions[index + 1] = minimum[1] + smplQuantized[sourceOffset + index + 1] * scale[1];
-          positions[index + 2] = minimum[2] + smplQuantized[sourceOffset + index + 2] * scale[2];
-          normals[index] = smplNormals[sourceOffset + index] / 127;
-          normals[index + 1] = smplNormals[sourceOffset + index + 1] / 127;
-          normals[index + 2] = smplNormals[sourceOffset + index + 2] / 127;
+          positions[index] = minimum[0] + quantized[sourceOffset + index] * scale[0];
+          positions[index + 1] = minimum[1] + quantized[sourceOffset + index + 1] * scale[1];
+          positions[index + 2] = minimum[2] + quantized[sourceOffset + index + 2] * scale[2];
+          normals[index] = normalBytes[sourceOffset + index] / 127;
+          normals[index + 1] = normalBytes[sourceOffset + index + 1] / 127;
+          normals[index + 2] = normalBytes[sourceOffset + index + 2] / 127;
         }
         geometry.attributes.position.needsUpdate = true;
         geometry.attributes.normal.needsUpdate = true;
@@ -371,9 +392,9 @@
 
     const rigs = [
       makeSkeletonRig(demo.representations.humanml3d, -4.6, [0x08758b, 0x10a6bf]),
-      makeSMPLMesh(-2.3),
-      makeSkeletonRig(demo.representations.soma, 0, [0x9b6b17, 0xd79922]),
-      makeSkeletonRig(demo.representations.core, 2.3, [0x5b5594, 0x8b84cf]),
+      makeSequenceMesh(smplMeta, smplQuantized, smplNormals, smplIndices, -2.3, 0xc98f74),
+      makeSequenceMesh(somaMeta, somaQuantized, somaNormals, somaIndices, 0, 0xd79922),
+      makeSequenceMesh(coreMeta, coreQuantized, coreNormals, coreIndices, 2.3, 0x8b84cf),
       makeG1Mesh(4.6),
     ];
     const timeline = document.querySelector("#timeline");

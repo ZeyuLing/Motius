@@ -118,8 +118,8 @@ uses the following routes:
 ```text
 HumanML3D-263 -> official joint decode -> SMPL-22 joints
 SMPL motion135 -> SMPL-H skinning -> animated SMPL surface mesh
-SMPL-22 joints -> named SOMA-30 preview bridge
-SMPL-22 joints -> named Core-27 joint-position bridge
+SMPL motion135 -> SOMA30 rotation transfer -> SOMA77 LBS mesh
+SMPL motion135 global rotations -> Core-27 visual rotation bridge -> Core LBS mesh
 SMPL motion135 -> GMR inverse kinematics -> G1 qpos -> MuJoCo visual meshes
 ```
 

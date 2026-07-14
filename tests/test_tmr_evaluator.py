@@ -62,10 +62,6 @@ def test_representation_demo_contains_synchronized_routes() -> None:
     g1 = payload["representations"]["g1"]
     assert len(hml["positions"]) == payload["frames"]
     assert np.isfinite(np.asarray(hml["positions"])).all()
-    assert len(soma["positions"]) == payload["frames"]
-    assert len(core["positions"]) == payload["frames"]
-    assert len(soma["parents"]) == 30
-    assert len(core["parents"]) == 27
     for representation in (hml, smpl, soma, core, g1):
         np.testing.assert_allclose(representation["initial_forward"], [0, 0, 1], atol=1e-5)
     assert g1["forward_basis"] == "MuJoCo pelvis local +X axis"
@@ -78,6 +74,14 @@ def test_representation_demo_contains_synchronized_routes() -> None:
         payload["frames"] * smpl["vertex_count"] * 3
     )
     assert (asset_dir / smpl["indices_file"]).stat().st_size == smpl["index_count"] * 4
+    for mesh in (soma, core):
+        assert (asset_dir / mesh["vertices_file"]).stat().st_size == (
+            payload["frames"] * mesh["vertex_count"] * 3 * 2
+        )
+        assert (asset_dir / mesh["normals_file"]).stat().st_size == (
+            payload["frames"] * mesh["vertex_count"] * 3
+        )
+        assert (asset_dir / mesh["indices_file"]).stat().st_size == mesh["index_count"] * 4
     assert (asset_dir / g1["vertices_file"]).stat().st_size == g1["vertex_count"] * 3 * 4
     assert (asset_dir / g1["indices_file"]).stat().st_size == g1["index_count"] * 4
     assert (asset_dir / g1["transforms_file"]).stat().st_size == (
@@ -87,6 +91,8 @@ def test_representation_demo_contains_synchronized_routes() -> None:
     viewer = (asset_dir / "index.html").read_text()
     assert "SOMA-30" in viewer
     assert "Core-27" in viewer
+    assert "makeSequenceMesh(somaMeta" in viewer
+    assert "makeSequenceMesh(coreMeta" in viewer
     assert "One motion, three representations" not in viewer
     assert "HumanML3D test" not in viewer
 

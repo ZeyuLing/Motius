@@ -7,6 +7,12 @@
     "smpl_vertices.u16",
     "smpl_normals.i8",
     "smpl_indices.u32",
+    "soma_vertices.u16",
+    "soma_normals.i8",
+    "soma_indices.u32",
+    "core_vertices.u16",
+    "core_normals.i8",
+    "core_indices.u32",
     "g1_mesh_vertices.f32",
     "g1_mesh_indices.u32",
     "g1_geom_transforms.f32"
