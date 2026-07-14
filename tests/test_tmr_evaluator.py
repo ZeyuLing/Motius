@@ -85,19 +85,23 @@ def test_representation_demo_contains_synchronized_routes() -> None:
 def test_two_person_representation_demo_uses_gt_retarget_preview() -> None:
     readme = (ROOT / "README.md").read_text()
     section = readme.split("### Two-Person Representation Demo", 1)[1].split("\n### ", 1)[0]
-    assert "interhuman_gt_407_skeleton_smpl_mesh.gif" in section
+    assert "interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.gif" in section
     assert "assets/model_zoo/intergen" not in section
     assert "assets/model_zoo/intermask" not in section
     assert "model-generation demo" in (ROOT / "docs/motion/representations.md").read_text()
 
     metadata = json.loads(
-        (ROOT / "assets/motion/interhuman_representation_demo/interhuman_gt_407_skeleton_smpl_mesh.json").read_text()
+        (
+            ROOT
+            / "assets/motion/interhuman_representation_demo/interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.json"
+        ).read_text()
     )
-    assert metadata["sample_id"] == "407"
+    assert metadata["sample_id"] == "G012T003A016R008"
+    assert metadata["source"] == "GT InterX smplh_52_2p/P1+P2"
     assert metadata["fps"] == 30
     assert metadata["frames"] == 72
-    assert metadata["fit_mpjpe_mm"] < 60.0
-    assert "raw InterHuman 492D" in metadata["route"]
+    assert metadata["fit_mpjpe_mm"] == 0.0
+    assert "InterX SMPL-H GT" in metadata["route"]
     assert (ROOT / metadata["gif"]).is_file()
 
 

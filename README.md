@@ -115,17 +115,15 @@ or read the [representation protocol](docs/motion/representations.md).
 ### Two-Person Representation Demo
 
 InterHuman-262 stores two synchronized SMPL-22 joint tracks in one shared world
-frame. The preview below uses one GT InterHuman clip for both panels: the left
-side renders the decoded InterHuman skeleton tracks, while the right side
-renders the same tracks after the documented InterHuman-to-SMPL position-IK
-mesh bridge.
+frame. The preview below uses one GT InterX clip for both panels: the left side
+renders the same motion after conversion to InterHuman skeleton tracks, while
+the right side renders the original GT SMPL-H pose as SMPL meshes.
 
-![GT InterHuman skeleton and SMPL mesh representation comparison](assets/motion/interhuman_representation_demo/interhuman_gt_407_skeleton_smpl_mesh.gif)
+![GT InterX to InterHuman skeleton and SMPL mesh representation comparison](assets/motion/interhuman_representation_demo/interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.gif)
 
-The demo is generated from official `motions_processed/person1` and
-`motions_processed/person2` GT arrays. Motius first converts the raw 492D
-processed files into paired `InterHuman-262`, then decodes the exact skeleton
-positions and fits neutral SMPL meshes with position IK for visual inspection.
+The demo is generated from InterX `smplh_52_2p/P1` and `P2` GT arrays. Motius
+extracts SMPL-22 joints, converts them into paired `InterHuman-262`, decodes the
+skeleton positions, and renders the same GT body pose as neutral SMPL meshes.
 
 The shared bridge lets a model trained with one representation feed evaluators,
 visualizers, or pipelines built for another. Conversion is exact where the

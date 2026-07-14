@@ -135,16 +135,17 @@ assuming a generic Z-up axis permutation.
 ## Two-Person InterHuman Preview
 
 The InterHuman preview is a representation demo, not a model-generation demo.
-It uses one GT InterHuman clip in both panels: decoded paired InterHuman
-skeletons on the left and the same motion fitted to neutral SMPL meshes on the
-right. The shared canonical frame is preserved for both people.
+It uses one GT InterX clip in both panels: the same motion converted to paired
+InterHuman skeletons on the left and the original GT SMPL-H pose rendered as
+neutral SMPL meshes on the right. The shared canonical frame is preserved for
+both people.
 
-![GT InterHuman skeleton and SMPL mesh representation comparison](../../assets/motion/interhuman_representation_demo/interhuman_gt_407_skeleton_smpl_mesh.gif)
+![GT InterX to InterHuman skeleton and SMPL mesh representation comparison](../../assets/motion/interhuman_representation_demo/interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.gif)
 
-The builder reads the official `motions_processed/person1` and
-`motions_processed/person2` raw 492D files, converts them with
-`joints_pair_to_interhuman262`, decodes exact `InterHuman-262` joint positions,
-and uses position IK only for the SMPL mesh preview.
+The builder reads InterX `smplh_52_2p/P1` and `P2` GT arrays, extracts SMPL-22
+joints, converts them with `joints_pair_to_interhuman262`, decodes exact
+`InterHuman-262` joint positions, and renders the original GT body pose for the
+SMPL mesh preview.
 
 ## The Two 6D Layouts
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a GT InterHuman skeleton versus SMPL mesh representation demo."""
+"""Build a GT two-person skeleton versus SMPL mesh representation demo."""
 
 from __future__ import annotations
 
@@ -15,6 +15,7 @@ os.environ.setdefault("PYOPENGL_PLATFORM", "osmesa")
 import imageio.v2 as imageio
 import numpy as np
 import pyrender
+import torch
 import trimesh
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,6 +26,7 @@ from motius.motion.representation.interhuman262 import (  # noqa: E402
     interhuman262_to_joints,
     joints_pair_to_interhuman262,
 )
+from motius.motion.representation.rotation import axis_angle_to_rotation_6d  # noqa: E402
 from motius.motion.retarget.hml263_smpl import load_smpl_rest, retarget_hml263_clip  # noqa: E402
 from motius.motion.skeleton import SMPL22_PARENTS  # noqa: E402
 from render_motion135_smpl_demo import SMPLRenderer  # noqa: E402
@@ -49,6 +51,47 @@ def _load_raw_pair(data_root: Path, sample_id: str) -> tuple[np.ndarray, np.ndar
         np.stack([value[:n] for value in joints], axis=1),
         np.stack([value[:n] for value in rotations], axis=1),
     )
+
+
+def _load_interx_smplh_pair(
+    data_root: Path,
+    sample_id: str,
+    renderer: SMPLRenderer,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    people = []
+    rotations = []
+    joints = []
+    vertices = []
+    for person in ("P1", "P2"):
+        path = data_root / "smplh_52_2p" / sample_id / f"{person}.npz"
+        if not path.exists():
+            raise FileNotFoundError(path)
+        data = np.load(path)
+        global_orient = np.asarray(data["global_orient"], dtype=np.float32)
+        body_pose = np.asarray(data["body_pose"], dtype=np.float32)
+        transl = np.asarray(data["transl"], dtype=np.float32)
+        n = min(len(global_orient), len(body_pose), len(transl))
+        people.append((global_orient[:n], body_pose[:n], transl[:n]))
+    n = min(len(value[0]) for value in people)
+    for global_orient, body_pose, transl in people:
+        global_orient = global_orient[:n]
+        body_pose = body_pose[:n]
+        transl = transl[:n]
+        body69 = np.zeros((n, 69), dtype=np.float32)
+        body69[:, :63] = body_pose
+
+        with torch.no_grad():
+            result = renderer.model(
+                betas=torch.zeros(n, 10, device=renderer.device),
+                global_orient=torch.from_numpy(global_orient).to(renderer.device),
+                body_pose=torch.from_numpy(body69).to(renderer.device),
+                transl=torch.from_numpy(transl).to(renderer.device),
+            )
+        joints.append(result.joints[:, :22].detach().cpu().numpy().astype(np.float32))
+        vertices.append(result.vertices.detach().cpu().numpy().astype(np.float32))
+        local_axis_angle = body_pose.reshape(n, 21, 3)
+        rotations.append(axis_angle_to_rotation_6d(local_axis_angle, convention="row").astype(np.float32))
+    return np.stack(joints, axis=1), np.stack(rotations, axis=1), np.stack(vertices, axis=1)
 
 
 def _fit_pair_vertices(
@@ -220,8 +263,9 @@ def render_interhuman_skeleton_smpl_mesh(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data-root", type=Path, default=Path("data/interhuman"))
-    parser.add_argument("--sample-id", default="407")
+    parser.add_argument("--source", choices=("interhuman", "interx-smplh"), default="interx-smplh")
+    parser.add_argument("--data-root", type=Path, default=Path("data/motionhub/interx"))
+    parser.add_argument("--sample-id", default="G012T003A016R008")
     parser.add_argument("--model-dir", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, default=Path("assets/motion/interhuman_representation_demo"))
     parser.add_argument("--device", default="cuda")
@@ -234,29 +278,48 @@ def main() -> None:
     parser.add_argument("--write-mp4", action="store_true")
     args = parser.parse_args()
 
-    raw_joints, raw_rotations = _load_raw_pair(args.data_root, args.sample_id)
-    interhuman = joints_pair_to_interhuman262(
-        raw_joints,
-        raw_rotations,
-        feet_threshold=0.001,
-        reference_frame=0,
-        source_coordinates="interhuman_raw",
-    )
-    interhuman = interhuman[: args.frames]
-    joints = interhuman262_to_joints(interhuman)
     args.out_dir.mkdir(parents=True, exist_ok=True)
     renderer = SMPLRenderer(args.model_dir, args.device, args.width, args.height)
-    smpl_rest = load_smpl_rest(args.model_dir, args.device)
-    smpl_vertices, fit_mpjpe_mm = _fit_pair_vertices(
-        joints,
-        renderer,
-        smpl_rest,
-        model_dir=args.model_dir,
-        device=args.device,
-        fps=args.fps,
-        refine_iters=args.refine_iters,
-    )
-    stem = f"interhuman_gt_{args.sample_id}_skeleton_smpl_mesh"
+    if args.source == "interhuman":
+        raw_joints, raw_rotations = _load_raw_pair(args.data_root, args.sample_id)
+        interhuman = joints_pair_to_interhuman262(
+            raw_joints,
+            raw_rotations,
+            feet_threshold=0.001,
+            reference_frame=0,
+            source_coordinates="interhuman_raw",
+        )
+        interhuman = interhuman[: args.frames]
+        joints = interhuman262_to_joints(interhuman)
+        smpl_rest = load_smpl_rest(args.model_dir, args.device)
+        smpl_vertices, fit_mpjpe_mm = _fit_pair_vertices(
+            joints,
+            renderer,
+            smpl_rest,
+            model_dir=args.model_dir,
+            device=args.device,
+            fps=args.fps,
+            refine_iters=args.refine_iters,
+        )
+        source_label = "GT InterHuman motions_processed/person1+person2"
+        route = "raw InterHuman 492D -> joints_pair_to_interhuman262 -> position-IK SMPL mesh"
+    else:
+        raw_joints, raw_rotations, smpl_vertices = _load_interx_smplh_pair(args.data_root, args.sample_id, renderer)
+        interhuman = joints_pair_to_interhuman262(
+            raw_joints,
+            raw_rotations,
+            feet_threshold=0.001,
+            reference_frame=0,
+            source_coordinates="interhuman_y_up",
+        )
+        interhuman = interhuman[: args.frames]
+        joints = interhuman262_to_joints(interhuman)
+        smpl_vertices = smpl_vertices[: len(joints)]
+        fit_mpjpe_mm = 0.0
+        source_label = "GT InterX smplh_52_2p/P1+P2"
+        route = "InterX SMPL-H GT -> InterHuman-262 skeleton decode and same-pose SMPL mesh"
+    stem_sample = str(args.sample_id).replace("/", "_")
+    stem = f"{args.source.replace('-', '_')}_gt_{stem_sample}_skeleton_smpl_mesh"
     gif = args.out_dir / f"{stem}.gif"
     frames = render_interhuman_skeleton_smpl_mesh(
         joints,
@@ -270,9 +333,9 @@ def main() -> None:
     )
     meta = {
         "sample_id": args.sample_id,
-        "source": "GT InterHuman motions_processed/person1+person2",
+        "source": source_label,
         "representation": "InterHuman-262 skeleton to SMPL mesh",
-        "route": "raw InterHuman 492D -> joints_pair_to_interhuman262 -> position-IK SMPL mesh",
+        "route": route,
         "fps": args.fps,
         "frames": len(frames),
         "fit_mpjpe_mm": fit_mpjpe_mm,

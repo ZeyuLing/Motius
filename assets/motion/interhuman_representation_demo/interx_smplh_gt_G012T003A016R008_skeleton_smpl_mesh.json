@@ -1,0 +1,10 @@
+{
+  "sample_id": "G012T003A016R008",
+  "source": "GT InterX smplh_52_2p/P1+P2",
+  "representation": "InterHuman-262 skeleton to SMPL mesh",
+  "route": "InterX SMPL-H GT -> InterHuman-262 skeleton decode and same-pose SMPL mesh",
+  "fps": 30,
+  "frames": 72,
+  "fit_mpjpe_mm": 0.0,
+  "gif": "assets/motion/interhuman_representation_demo/interx_smplh_gt_G012T003A016R008_skeleton_smpl_mesh.gif"
+}
