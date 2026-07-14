@@ -45,8 +45,10 @@ class MotionBricksPipeline(BasePipeline):
         agent = self.build_demo_agent(**overrides)
         agent.full_agent.reset()
         qpos_frames = []
-        for step in range(int(steps)):
-            force_idle = step + 100 > int(steps)
+        steps = int(steps)
+        idle_tail = min(100, max(0, steps // 5))
+        for step in range(steps):
+            force_idle = idle_tail > 0 and step >= steps - idle_tail
             qpos = agent.full_agent.get_next_frame()
             qpos_frames.append(np.asarray(qpos, dtype=np.float32).copy())
             context_qpos = agent.full_agent.get_context_mujoco_qpos()

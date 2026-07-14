@@ -51,6 +51,15 @@ def test_motionbricks_pipeline_from_pretrained_without_loading(tmp_path: Path):
     assert pipe.fps == 30
 
 
+def test_motionbricks_idle_tail_does_not_cover_short_rollout():
+    steps = 60
+    idle_tail = min(100, max(0, steps // 5))
+    force_idle = [idle_tail > 0 and step >= steps - idle_tail for step in range(steps)]
+
+    assert force_idle[: steps - idle_tail] == [False] * (steps - idle_tail)
+    assert force_idle[-idle_tail:] == [True] * idle_tail
+
+
 def test_motionbricks_artifact_roundtrip_without_loading(tmp_path: Path):
     source = tmp_path / "source"
     layout = MotionBricksBundle(checkpoint_dir=source, load_model=False).required_checkpoint_files
