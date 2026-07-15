@@ -45,18 +45,24 @@ positive within its 32-sample recall batch. No interval is removed. MM-Dist
 uses the nearest positive, while FID and Diversity continue to use all 7,285
 intervals.
 
-## Measured Baseline
+## Measured Results
 
 | Method | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Transition FID | Transition Diversity | Peak Jerk | AUJ Gap |
 | ------ | --: | --: | --: | --: | ------: | --------: | -------------: | -------------------: | --------: | ------: |
 | BABEL GT | 0.3947 | 0.5513 | 0.6327 | 0.0000 | 44.5941 | 57.4816 | 0.0000 | 54.5830 | 56.34 | 0.0000 |
 | FlowMDM | 0.2958 | 0.4217 | 0.5018 | 160.3988 | 46.7698 | 56.5743 | 205.8370 | 54.7209 | 335.67 | 34.4040 |
+| MotionStreamer | 0.2087 | 0.3136 | 0.3955 | 221.9376 | 49.3062 | 56.2576 | 299.6140 | 53.8502 | 206.22 | 76.2889 |
+| PRISM (epoch 8) | 0.4710 | 0.6346 | 0.7108 | 964.5307 | 42.8045 | 54.3643 | 1428.3753 | 50.5315 | 942.31 | 214.8047 |
 
 This is a single deterministic seed-42 generation and one retrieval repeat.
 R-Precision uses 32-sample recall batches, covering 7,264 of the 7,285 paired
 segments, and accepts every same-action candidate as a positive. Distribution
 metrics use the full set. `--chunk-size 32` controls the recall candidate set;
 `--batch-size 32` controls only evaluator encoding throughput in this run.
+PRISM is the latest checkpoint available at evaluation time
+(`checkpoint-epoch_8`). Its R-Precision is high, while FID and transition
+metrics remain poor; the leaderboard reports both rather than treating one
+metric family as a complete quality judgment.
 
 Open the [Three.js sequence audit](../../assets/evaluation/babel_sequential_demo/index.html)
 to compare BABEL GT and FlowMDM frame by frame. Every subclip has a fixed color,
@@ -97,26 +103,26 @@ python tools/build_babel_sequential_manifest.py \
   --output-root outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1
 
 python tools/generate_babel_sequential.py \
-  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest.json \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest_actiongroups_v3.json \
   --model ZeyuLing/motius-flowmdm-babel \
   --output-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42 \
   --device cuda --seed 42
 
 python tools/eval_babel_sequential.py \
-  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest.json \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest_actiongroups_v3.json \
   --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/joints66 \
   --method FlowMDM \
   --output outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/metrics.json \
   --device cuda --batch-size 32 --chunk-size 32 --n-repeats 1
 
 python tools/export_babel_retrieval_audit.py \
-  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest.json \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest_actiongroups_v3.json \
   --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/joints66 \
   --output outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/retrieval_audit.json \
   --device cuda --batch-size 128 --chunk-size 32 --top-k 3 --seed 0
 
 python tools/build_babel_sequential_viewer.py \
-  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest.json \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest_actiongroups_v3.json \
   --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/joints66 \
   --retrieval-audit outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/retrieval_audit.json \
   --output-dir outputs/visualization/babel_sequential_audit

@@ -28,6 +28,8 @@ into this leaderboard.
 | ------ | --: | --: | --: | --: | ------: | -------------: | ------: |
 | BABEL GT | 0.3947 | 0.5513 | 0.6327 | 0.0000 | 44.5941 | 0.0000 | 0.0000 |
 | FlowMDM | 0.2958 | 0.4217 | 0.5018 | 160.3988 | 46.7698 | 205.8370 | 34.4040 |
+| MotionStreamer | 0.2087 | 0.3136 | 0.3955 | 221.9376 | 49.3062 | 299.6140 | 76.2889 |
+| PRISM (epoch 8) | 0.4710 | 0.6346 | 0.7108 | 964.5307 | 42.8045 | 1428.3753 | 214.8047 |
 
 R-Precision uses official BABEL `act_cat` action-group multi-positive recall
 batches of 32 (7,264 paired segments). The 7,285 intervals form 1,738 action
@@ -35,6 +37,11 @@ groups; synonymous labels are retained and never treated as false negatives.
 Distribution metrics use all 7,285 segments. The encoder forward batch is 32
 for the measured run and is independent of the recall candidate batch. GT is
 excluded from ranking.
+
+PRISM uses the latest checkpoint available when this evaluation started
+(`checkpoint-epoch_8`). Its strong retrieval score does not imply a strong
+overall result: the distribution and transition metrics expose a substantial
+quality and continuity gap.
 
 The Space also includes a synchronized Three.js GT/FlowMDM sequence audit. For
 every displayed subclip it exposes the actual Motion-to-Text and Text-to-Motion

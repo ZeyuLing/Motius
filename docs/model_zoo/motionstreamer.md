@@ -97,6 +97,19 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 | MotionStreamer Evaluator | Default | 4,042 | 0.630 | 0.786 | 0.850 | 12.211 | 16.581 | 27.464 | Measured |
 | Motius Joint-Position Evaluator | Default | 4,034 | 0.440 | 0.597 | 0.681 | 93.469 | 35.674 | 53.800 | Measured |
 
+### BABEL Sequential Generation
+
+The official MotionStreamer checkpoint is evaluated on all 1,295 processed
+BABEL validation episodes with exact manifest lengths and canonical SMPL-22
+joints. R-Precision uses action-group multi-positive recall batches of 32.
+
+| Segments | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Transition FID | AUJ Gap |
+| -------: | --: | --: | --: | --: | ------: | --------: | -------------: | ------: |
+| 7,285 | 0.2087 | 0.3136 | 0.3955 | 221.9376 | 49.3062 | 56.2576 | 299.6140 | 76.2889 |
+
+See the [BABEL Sequential Generation Leaderboard](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard)
+for the complete transition diagnostics and cross-method comparison.
+
 
 ## TP2M Results
 

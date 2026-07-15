@@ -245,7 +245,9 @@
   <script>
     const rows = Object.freeze([
       {method:"BABEL val", version:"Paired GT · action groups v3", samples:7285, isReference:true, r1:0.3947, r2:0.5513, r3:0.6327, fid:0.0, mmDist:44.5941, diversity:57.4816, transitionFid:0.0, transitionDiversity:54.5830, peakJerk:56.3384, aujGap:0.0},
-      {method:"FlowMDM", version:"Official checkpoint · seed 42 · action groups v3", samples:7285, r1:0.2958, r2:0.4217, r3:0.5018, fid:160.3988, mmDist:46.7698, diversity:56.5743, transitionFid:205.8370, transitionDiversity:54.7209, peakJerk:335.6734, aujGap:34.4040}
+      {method:"FlowMDM", version:"Official checkpoint · seed 42 · action groups v3", samples:7285, r1:0.2958, r2:0.4217, r3:0.5018, fid:160.3988, mmDist:46.7698, diversity:56.5743, transitionFid:205.8370, transitionDiversity:54.7209, peakJerk:335.6734, aujGap:34.4040},
+      {method:"MotionStreamer", version:"Official checkpoint · seed 42 · action groups v3", samples:7285, r1:0.2087, r2:0.3136, r3:0.3955, fid:221.9376, mmDist:49.3062, diversity:56.2576, transitionFid:299.6140, transitionDiversity:53.8502, peakJerk:206.2215, aujGap:76.2889},
+      {method:"PRISM", version:"Latest checkpoint at evaluation · epoch 8 · seed 42", samples:7285, r1:0.4710, r2:0.6346, r3:0.7108, fid:964.5307, mmDist:42.8045, diversity:54.3643, transitionFid:1428.3753, transitionDiversity:50.5315, peakJerk:942.3080, aujGap:214.8047}
     ]);
     const groups = {
       semantic: [
@@ -273,6 +275,10 @@
     let radarChart = null;
 
     function rankable(row) { return !row.isReference && !row.paperOnly && !row.rankExcluded; }
+    function colorFor(row) {
+      const index = rows.filter(rankable).indexOf(row);
+      return colors[(index < 0 ? 0 : index) % colors.length];
+    }
     function metric(key) { return groups[state.view].find(item => item.key === key); }
     function format(value, spec) {
       if (value === null || value === undefined || Number.isNaN(Number(value))) return "-";
@@ -340,8 +346,8 @@
       document.getElementById("bar-note").textContent = `${spec.label}; ${spec.direction === "min" ? "lower" : "higher"} is better.`;
       if (barChart) barChart.destroy();
       if (radarChart) radarChart.destroy();
-      barChart = new Chart(document.getElementById("bar-chart"), {type:"bar", data:{labels:ordered.map(row=>row.method), datasets:[{data:ordered.map(row=>row[spec.key]), backgroundColor:ordered.map((_,i)=>colors[i%colors.length]), borderRadius:4}]}, options:{indexAxis:"y", responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true, grid:{color:"#e7ebe9"}},y:{grid:{display:false},ticks:{font:{size:15,weight:"600"},color:"#34413d"}}}}});
-      radarChart = new Chart(document.getElementById("radar-chart"), {type:"radar", data:{labels:specs.map(item=>item.label), datasets:ranked.map((row,i)=>({label:row.method,data:specs.map(item=>normalized(row,item,ranked)),borderColor:colors[i%colors.length],backgroundColor:colors[i%colors.length]+"18",pointRadius:2,borderWidth:2}))}, options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{display:false},pointLabels:{font:{size:14,weight:"600"},color:"#46534f"},grid:{color:"#e0e6e3"},angleLines:{color:"#e0e6e3"}}},plugins:{legend:{position:"bottom",labels:{boxWidth:14,boxHeight:14,padding:18,font:{size:16,weight:"600"},color:"#34413d"}}}}});
+      barChart = new Chart(document.getElementById("bar-chart"), {type:"bar", data:{labels:ordered.map(row=>row.method), datasets:[{data:ordered.map(row=>row[spec.key]), backgroundColor:ordered.map(colorFor), borderRadius:4}]}, options:{animation:false,indexAxis:"y", responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true, grid:{color:"#e7ebe9"}},y:{grid:{display:false},ticks:{font:{size:15,weight:"600"},color:"#34413d"}}}}});
+      radarChart = new Chart(document.getElementById("radar-chart"), {type:"radar", data:{labels:specs.map(item=>item.label), datasets:ranked.map(row=>({label:row.method,data:specs.map(item=>normalized(row,item,ranked)),borderColor:colorFor(row),backgroundColor:colorFor(row)+"18",pointRadius:2,borderWidth:2}))}, options:{animation:false,responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{display:false},pointLabels:{font:{size:14,weight:"600"},color:"#46534f"},grid:{color:"#e0e6e3"},angleLines:{color:"#e0e6e3"}}},plugins:{legend:{position:"bottom",labels:{boxWidth:14,boxHeight:14,padding:18,font:{size:16,weight:"600"},color:"#34413d"}}}}});
     }
     function configureMetrics() {
       const select = document.getElementById("chart-metric");
