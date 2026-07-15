@@ -31,7 +31,7 @@ llama_configs = {
 
 
 class LLaMAHF(nn.Module):
-    def __init__(self, config: LLaMAHFConfig, num_diffusion_head_layers=9, input_token_dim=16, device=torch.device('cuda'), width=1792) -> None:
+    def __init__(self, config: LLaMAHFConfig, num_diffusion_head_layers=9, input_token_dim=16, device=torch.device('cuda'), width=1792, use_out_proj=True) -> None:
         super().__init__()
         assert config.block_size is not None
         self.config = config
@@ -59,6 +59,7 @@ class LLaMAHF(nn.Module):
             )
         self.diff_loss = self.diff_loss.to(device)
         self.out_proj = nn.Linear(config.n_embd, config.n_embd)
+        self.use_out_proj = bool(use_out_proj)
 
 
     def _tie_or_clone_weights(self, output_embeddings, input_embeddings):
@@ -211,7 +212,6 @@ class LLaMAHF(nn.Module):
 
     def sample_for_eval_CFG_inference2(self, feat_clip_text, empty_feat_clip_text, if_categorial=False, length=312, clip_model=None, device=torch.device('cuda'), tokenizer='clip', unit_length=4, reference_end_token=None, threshold=3, cfg=4.5, temperature=1.0):
 
-        import clip
         max_token_len = length // unit_length
 
         for k in range(max_token_len):
@@ -259,7 +259,6 @@ class LLaMAHF(nn.Module):
 
     def sample_for_eval_CFG_inference_next_one(self, current_token=[], feat_clip_text=None, empty_feat_clip_text=None, if_categorial=False, length=312, clip_model=None, device=torch.device('cuda'), tokenizer='clip', unit_length=4, reference_end_token=None, threshold=3, cfg=4.5, temperature=1.0):
 
-        import clip
         max_token_len = length // unit_length
 
 
@@ -306,10 +305,11 @@ class LLaMAHF(nn.Module):
 
     def sample_for_eval_CFG_babel(self, A_text, B_text, A_motion, if_categorial=False, length=6400, clip_model=None, device=torch.device('cuda'), tokenizer='clip', unit_length=4, reference_end_token=None, cfg=7.0, threshold=3):
 
-        import clip
         B_token_length = length // unit_length - A_motion.shape[0]
 
         if tokenizer == 'clip':
+            import clip
+
             A_text = clip.tokenize(A_text, truncate=True).to(device)
             A_feat_clip_text = clip_model.encode_text(A_text).float()
             B_text = clip.tokenize(B_text, truncate=True).to(device)
@@ -382,10 +382,11 @@ class LLaMAHF(nn.Module):
 
     def sample_for_eval_CFG_babel_inference(self, A_text, B_text, A_motion, if_categorial=False, length=6400, clip_model=None, device=torch.device('cuda'), tokenizer='clip', unit_length=4, reference_end_token=None, cfg=7.0, threshold=3):
 
-        import clip
         B_token_length = length // unit_length - A_motion.shape[0]
 
         if tokenizer == 'clip':
+            import clip
+
             A_text = clip.tokenize(A_text, truncate=True).to(device)
             A_feat_clip_text = clip_model.encode_text(A_text).float()
             B_text = clip.tokenize(B_text, truncate=True).to(device)
@@ -470,10 +471,11 @@ class LLaMAHF(nn.Module):
 
     def sample_for_eval_CFG_babel_inference_new(self, B_text, A_motion, if_categorial=False, length=78, clip_model=None, device=torch.device('cuda'), tokenizer='clip', unit_length=4, reference_end_token=None, cfg=4.5, threshold=3):
 
-        import clip
         B_token_length = length // unit_length
 
         if tokenizer == 'clip':
+            import clip
+
             A_text = clip.tokenize(A_text, truncate=True).to(device)
             A_feat_clip_text = clip_model.encode_text(A_text).float()
             B_text = clip.tokenize(B_text, truncate=True).to(device)
@@ -553,10 +555,11 @@ class LLaMAHF(nn.Module):
 
     def sample_for_eval_CFG_babel_inference_new_demo(self, B_text, A_motion, if_categorial=False, length=312, clip_model=None, device=torch.device('cuda'), tokenizer='clip', unit_length=4, reference_end_token=None, cfg=4.5, threshold=3, temperature=1.0):
 
-        import clip
         B_token_length = length // unit_length - A_motion.shape[0]
 
         if tokenizer == 'clip':
+            import clip
+
             A_text = clip.tokenize(A_text, truncate=True).to(device)
             A_feat_clip_text = clip_model.encode_text(A_text).float()
             B_text = clip.tokenize(B_text, truncate=True).to(device)
@@ -638,9 +641,8 @@ class LLaMAHF(nn.Module):
 
     #--------------Test classification head--------------------
     def sample_for_eval_classification(self, clip_text, if_categorial=False, length=196, clip_model=None, device=torch.device('cuda'), tokenizer='clip', unit_length=4):
-
-        import clip
-
+        if tokenizer == 'clip':
+            import clip
 
         for k in range(51):
             if k == 0:
@@ -703,8 +705,9 @@ class LLaMAHF(nn.Module):
 
     #--------------------Test CFG-----------------------
     def sample_for_eval_CFG_test(self, clip_text, if_categorial=False, length=196, clip_model=None, cfg=1, device=torch.device('cuda'), tokenizer='clip', unit_length=4):
+        if tokenizer == 'clip':
+            import clip
 
-        import clip
         max_token_len = length // unit_length
 
 

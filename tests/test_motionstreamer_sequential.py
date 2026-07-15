@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 import torch
 
+from motius.models.motionstreamer.network.llama_model import LLaMAHF, LLaMAHFConfig
 from motius.pipelines.motionstreamer.pipeline import (
     MotionStreamerPipeline,
     _resample_frames,
@@ -47,6 +48,38 @@ class _FakeBundle:
         return value
 
 
+class _FakeTextEncoder:
+    @staticmethod
+    def encode(_text):
+        return np.ones(768, dtype=np.float32)
+
+
+class _FakeTransformer:
+    @staticmethod
+    def cond_embed(value):
+        return value
+
+    @staticmethod
+    def wte(value):
+        return torch.nn.functional.pad(value, (0, 768 - value.shape[-1]))
+
+
+class _FakeDiffusionLoss:
+    @staticmethod
+    def sample(conditions, **_kwargs):
+        return torch.ones((len(conditions), 16), dtype=torch.float32)
+
+
+class _FakeLlama:
+    def __init__(self):
+        self.transformer = _FakeTransformer()
+        self.diff_loss = _FakeDiffusionLoss()
+
+    @staticmethod
+    def forward_babel_eval(value, return_attention=False):
+        return value
+
+
 def test_exact_length_resampling_preserves_endpoints_and_shape():
     motion = np.arange(8 * 3, dtype=np.float32).reshape(8, 3)
     result = _resample_frames(motion, 5)
@@ -77,3 +110,44 @@ def test_exact_sequential_generation_supports_long_first_segment():
         ("a long first action", 72, 2),
         ("then stop", 72, 2),
     ]
+
+
+def test_t5_continuation_does_not_require_clip(monkeypatch):
+    original_import = __import__
+
+    def guarded_import(name, *args, **kwargs):
+        if name == "clip":
+            raise AssertionError("T5 continuation must not import CLIP")
+        return original_import(name, *args, **kwargs)
+
+    monkeypatch.setattr("builtins.__import__", guarded_import)
+    _, latents = LLaMAHF.sample_for_eval_CFG_babel_inference_new_demo(
+        _FakeLlama(),
+        B_text="then stop",
+        A_motion=torch.zeros((1, 16), dtype=torch.float32),
+        length=8,
+        clip_model=_FakeTextEncoder(),
+        device=torch.device("cpu"),
+        tokenizer="t5-xxl",
+    )
+    assert latents.shape == (1, 1, 16)
+
+
+@pytest.mark.parametrize("use_out_proj", [True, False])
+def test_llama_initializes_babel_projection_mode(use_out_proj):
+    config = LLaMAHFConfig(
+        block_size=8,
+        n_layer=1,
+        n_head=1,
+        n_embd=16,
+        T5_xxl_dim=16,
+    )
+    model = LLaMAHF(
+        config,
+        num_diffusion_head_layers=1,
+        input_token_dim=4,
+        device=torch.device("cpu"),
+        width=16,
+        use_out_proj=use_out_proj,
+    )
+    assert model.use_out_proj is use_out_proj

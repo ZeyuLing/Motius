@@ -71,6 +71,7 @@ _AR_DEFAULTS = {
     "num_diffusion_head_layers": 9,
     "latent_dim": 16,
     "t5_xxl_dim": 768,
+    "use_out_proj": True,
 }
 
 
@@ -159,6 +160,7 @@ class MotionStreamerBundle(ModelBundle):
             ar_cfg["num_diffusion_head_layers"],
             ar_cfg["latent_dim"],
             build_device,
+            use_out_proj=ar_cfg["use_out_proj"],
         )
 
         # --- load weights ---------------------------------------------- #
