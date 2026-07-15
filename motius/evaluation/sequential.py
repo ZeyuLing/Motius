@@ -234,6 +234,7 @@ def evaluate_sequential_cases(
     chunk_size: int = 32,
     n_repeats: int = 1,
     seed: int = 0,
+    protocol: str = "babel-sequential-joints66-v1",
 ) -> dict[str, object]:
     """Evaluate captioned subsequences and their transition neighborhoods."""
 
@@ -283,28 +284,75 @@ def evaluate_sequential_cases(
         subsequence["mm_dist"] = subsequence.pop("matching_score")
 
     semantic_reference = (
-        [canonicalize_smpl22_joints(_as_joints66(item, source="reference segment")) for item in paired_reference_segments]
+        [
+            canonicalize_smpl22_joints(
+                _as_joints66(item, source="reference segment")
+            )
+            for item in paired_reference_segments
+        ]
         if reference_segment_pool is None
-        else [canonicalize_smpl22_joints(_as_joints66(item, source="reference segment")) for item in reference_segment_pool]
+        else [
+            canonicalize_smpl22_joints(
+                _as_joints66(item, source="reference segment")
+            )
+            for item in reference_segment_pool
+        ]
     )
     if not semantic_reference:
         raise ValueError(
             "Sequential FID requires a BABEL val reference segment pool or paired references."
         )
+    reference_subsequence = None
+    if reference_segment_pool is None:
+        if len(semantic_reference) != len(captions):
+            raise ValueError("Paired reference segments must match the caption count.")
+        reference_subsequence = dict(
+            evaluator.evaluate(
+                captions,
+                semantic_reference,
+                None,
+                chunk_size=chunk_size,
+                n_repeats=n_repeats,
+                seed=seed,
+            )
+        )
+        if "matching_score" in reference_subsequence:
+            reference_subsequence["mm_dist"] = reference_subsequence.pop(
+                "matching_score"
+            )
     reference_embeddings = evaluator.encode_motions(semantic_reference)
     predicted_embeddings = evaluator.encode_motions(predicted_segments)
+    reference_diversity = _diversity(reference_embeddings, seed=seed)
     subsequence.update(
         {
             "fid": _frechet_distance(reference_embeddings, predicted_embeddings),
-            "diversity_reference": _diversity(reference_embeddings, seed=seed),
+            "diversity_reference": reference_diversity,
             "diversity_predicted": _diversity(predicted_embeddings, seed=seed),
         }
     )
+    if reference_subsequence is not None:
+        reference_subsequence.update(
+            {
+                "fid": 0.0,
+                "diversity_reference": reference_diversity,
+                "diversity_predicted": reference_diversity,
+            }
+        )
 
     transition_reference = (
-        [canonicalize_smpl22_joints(_as_joints66(item, source="reference transition")) for item in paired_reference_transitions]
+        [
+            canonicalize_smpl22_joints(
+                _as_joints66(item, source="reference transition")
+            )
+            for item in paired_reference_transitions
+        ]
         if reference_transition_pool is None
-        else [canonicalize_smpl22_joints(_as_joints66(item, source="reference transition")) for item in reference_transition_pool]
+        else [
+            canonicalize_smpl22_joints(
+                _as_joints66(item, source="reference transition")
+            )
+            for item in reference_transition_pool
+        ]
     )
     if len(transition_reference) < 2:
         raise ValueError(
@@ -325,7 +373,7 @@ def evaluate_sequential_cases(
         ),
     }
     return {
-        "protocol": "babel-flowmdm-val-joints66-v2",
+        "protocol": str(protocol),
         "motion_representation": "SMPL-22 joints66",
         "evaluator": "Motius Joint-Position Evaluator",
         "fps": float(fps),
@@ -335,6 +383,13 @@ def evaluate_sequential_cases(
         "n_reference_segments": len(semantic_reference),
         "n_transitions": len(predicted_transitions),
         "n_reference_transitions": len(transition_reference),
+        "reference_subsequence": reference_subsequence,
+        "reference_transition": {
+            "fid": 0.0,
+            "diversity": transition["diversity_reference"],
+            "peak_jerk": transition["peak_jerk_reference"],
+            "auj_gap": 0.0,
+        },
         "subsequence": subsequence,
         "transition": transition,
     }

@@ -25,6 +25,7 @@ from motius.motion.skeleton.body_models import (  # noqa: F401
     SMPLSkeletonModel,
     load_smpl_skeleton_model,
     resolve_smpl_model_path,
+    smpl22_rest_offsets,
     smpl_to_joints,
 )
 from motius.motion.skeleton.canonical import canonicalize_smpl22_joints
@@ -41,6 +42,7 @@ __all__ = [
     "SMPLSkeletonModel",
     "load_smpl_skeleton_model",
     "resolve_smpl_model_path",
+    "smpl22_rest_offsets",
     "smpl_to_joints",
     "canonicalize_smpl22_joints",
 ]

@@ -167,20 +167,20 @@
           <h1>BABEL Sequential Generation Leaderboard</h1>
           <p class="lede">Long-form human motion composition from an ordered sequence of text prompts. Every method is retargeted to the same SMPL-22 joints before semantic, distribution, and transition-quality evaluation.</p>
         </div>
-        <span class="status" id="status">Protocol v2</span>
+        <span class="status" id="status">Short-merge protocol v1</span>
       </div>
       <div class="badges">
         <span class="badge">BABEL validation split</span>
-        <span class="badge">64 compositions × 32 prompts</span>
+        <span class="badge">1,295 validation episodes</span>
         <span class="badge">30 fps</span>
         <span class="badge">Motius Joint-Position Evaluator</span>
       </div>
     </header>
     <div class="summary">
       <div class="summary-item"><div class="value" id="method-count">0</div><div class="label">Ranked methods</div></div>
-      <div class="summary-item"><div class="value">64</div><div class="label">Compositions</div></div>
-      <div class="summary-item"><div class="value">2,048</div><div class="label">Captioned segments</div></div>
-      <div class="summary-item"><div class="value">1,984</div><div class="label">Transition boundaries</div></div>
+      <div class="summary-item"><div class="value">1,295</div><div class="label">Episodes</div></div>
+      <div class="summary-item"><div class="value">7,285</div><div class="label">Captioned segments</div></div>
+      <div class="summary-item"><div class="value">5,990</div><div class="label">Transition boundaries</div></div>
     </div>
 
     <section>
@@ -213,9 +213,9 @@
     <section>
       <div class="section-head"><div><h2>Protocol</h2><p class="caption">A single conversion and metric contract for every sequential-generation method.</p></div></div>
       <dl class="protocol">
-        <div><dt>Prompts</dt><dd>FlowMDM's official BABEL validation composition file: 64 sequences and 2,048 ordered action prompts.</dd></div>
-        <div><dt>Reference Pool</dt><dd>Deterministic 2,048-sample pools from eligible BABEL val action segments and independent 30-frame transition windows.</dd></div>
-        <div><dt>Representation</dt><dd>Canonical SMPL-22 joints66, first pelvis at the XZ origin, first-frame body facing +Z.</dd></div>
+        <div><dt>Prompts</dt><dd>All 1,295 eligible processed BABEL validation episodes; 7,285 action intervals after short-action merging and LLM caption rewriting.</dd></div>
+        <div><dt>References</dt><dd>Paired GT subsequences and transition windows from the same episode boundaries; no independent reference pools.</dd></div>
+        <div><dt>Representation</dt><dd>Neutral zero-beta SMPL-22 joints66, first pelvis at the XZ origin, first-frame body facing +Z.</dd></div>
         <div><dt>Semantic Metrics</dt><dd>R-Precision, MM-Dist, and FID from the Motius Joint-Position Evaluator; Diversity is shown as a reference statistic.</dd></div>
         <div><dt>Transition Metrics</dt><dd>Embedding FID and AUJ gap are ranked; Diversity and absolute Peak Jerk are diagnostic reference statistics.</dd></div>
         <div><dt>Ranking</dt><dd>GT/reference and paper-only values are visible but cannot receive best or second-best styling.</dd></div>
@@ -227,8 +227,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script>
     const rows = Object.freeze([
-      {method:"BABEL val", version:"Reference pools", samples:2048, isReference:true, r1:null, r2:null, r3:null, fid:0.0, mmDist:null, diversity:56.0822, transitionFid:0.0, transitionDiversity:55.2796, peakJerk:89.84, aujGap:null},
-      {method:"FlowMDM", version:"Official BABEL", samples:2048, r1:0.2173, r2:0.3389, r3:0.4214, fid:212.3355, mmDist:49.9531, diversity:55.6829, transitionFid:334.7499, transitionDiversity:53.9730, peakJerk:421.20, aujGap:29.2441}
+      {method:"BABEL val", version:"Paired GT reference", samples:7285, isReference:true, r1:0.2939, r2:0.4330, r3:0.5193, fid:0.0, mmDist:46.5581, diversity:57.4818, transitionFid:0.0, transitionDiversity:54.5835, peakJerk:56.3384, aujGap:0.0},
+      {method:"FlowMDM", version:"Official checkpoint · seed 42", samples:7285, r1:0.1032, r2:0.1839, r3:0.2496, fid:2479.8395, mmDist:57.3074, diversity:32.9413, transitionFid:2629.5964, transitionDiversity:31.1648, peakJerk:463.9237, aujGap:55.8724}
     ]);
     const groups = {
       semantic: [

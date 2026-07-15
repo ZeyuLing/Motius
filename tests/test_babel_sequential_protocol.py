@@ -10,66 +10,118 @@ MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
 
 
-def _sample(babel_id="7", frames=90):
-    poses = np.zeros((frames, 52, 3), dtype=np.float32)
-    trans = np.zeros((frames, 3), dtype=np.float32)
-    trans[:, 0] = np.linspace(0, 1, frames)
-    trans[:, 2] = 1.0
-    joints = np.zeros((frames, 73, 3), dtype=np.float32)
-    offsets = np.arange(73, dtype=np.float32)[:, None] * np.array([[0.002, 0.001, 0.004]])
-    joints[:] = trans[:, None] + offsets[None]
+def _record():
     return {
-        "babel_id": babel_id,
-        "fps": 30,
-        "poses": poses.reshape(frames, -1),
-        "trans": trans,
-        "joint_positions": joints,
+        "id": "val_7",
+        "babel_id": "7",
+        "split": "val",
+        "fps": 30.0,
+        "duration_sec_npz": 4.0,
+        "amass_path": "amass/example.npz",
+        "segments": [
+            {"caption": "walk", "raw_label": "walking", "start_t": 0.0, "end_t": 0.6},
+            {"caption": "transition", "start_t": 0.6, "end_t": 1.0, "is_transition": True},
+            {"caption": "turn", "raw_label": "turning", "start_t": 1.0, "end_t": 2.5},
+            {"caption": "transition", "start_t": 2.5, "end_t": 3.0, "is_transition": True},
+            {"caption": "stand", "raw_label": "standing", "start_t": 3.0, "end_t": 4.0},
+        ],
     }
 
 
-def test_reference_segments_follow_official_duration_filter():
-    annotation = {
-        "frame_ann": {
-            "labels": [
-                {"proc_label": "walk", "start_t": 0.0, "end_t": 1.0},
-                {"proc_label": "transition", "start_t": 1.0, "end_t": 2.0},
-                {"proc_label": "too short", "start_t": 2.0, "end_t": 2.5},
-            ]
-        }
-    }
-    assert list(MODULE.extract_reference_segments(_sample(), annotation)) == [
-        ("walk", 0, 30)
-    ]
-
-
-def test_protocol_contains_compositions_and_independent_pools(tmp_path):
-    sample = _sample()
-    annotations = {
-        "7": {
-            "frame_ann": {
-                "labels": [
-                    {"proc_label": "walk", "start_t": 0.0, "end_t": 1.0},
-                    {"proc_label": "turn", "start_t": 1.0, "end_t": 2.5},
-                ]
-            }
-        }
-    }
-    compositions = [
-        {
-            "id": "000",
-            "scenario": "in-distribution",
-            "text": ["walk", "turn"],
-            "lengths": [30, 45],
-        }
-    ]
-    manifest = MODULE.build_protocol(
-        [sample], annotations, compositions, tmp_path, offset_samples=1
+def _motion272(frames=120):
+    motion = np.zeros((frames, 272), dtype=np.float32)
+    motion[:, 2:8] = np.array([1, 0, 0, 0, 1, 0], dtype=np.float32)
+    motion[:, 140:272] = np.tile(
+        np.array([1, 0, 0, 0, 1, 0], dtype=np.float32), 22
     )
-    assert manifest["protocol"] == "babel-flowmdm-val-joints66-v2"
-    assert manifest["cases"][0]["total_frames"] == 75
-    assert len(manifest["reference_segments"]) == 2
-    assert len(manifest["reference_transitions"]) == 3
-    for key in ("reference_segment_pool", "reference_transition_pool"):
-        with np.load(tmp_path / manifest[key]) as pool:
-            assert pool["motions"].ndim == 3 and pool["motions"].shape[2] == 66
-            assert np.all(pool["lengths"] >= 30)
+    time = np.arange(frames, dtype=np.float32)[:, None, None]
+    joint = np.arange(22, dtype=np.float32)[None, :, None]
+    xyz = np.arange(3, dtype=np.float32)[None, None, :]
+    motion[:, 8:74] = (time * 0.001 + joint * 0.01 + xyz * 0.1).reshape(frames, 66)
+    return motion
+
+
+def _smpl22_offsets():
+    offsets = np.zeros((22, 3), dtype=np.float32)
+    offsets[0, 1] = -0.2
+    offsets[1:, 1] = -0.1
+    return offsets
+
+
+def test_transition_midpoints_and_short_action_merge():
+    episode, _ = MODULE.build_official_episode(_record())
+    assert [item["end"] for item in episode["segments"]] == [24, 82, 120]
+    merged, stats = MODULE.merge_short_segments(episode, min_frames=30)
+    assert [(item["start"], item["end"]) for item in merged["segments"]] == [
+        (0, 82),
+        (82, 120),
+    ]
+    assert stats["merged_groups"] == 1
+    assert stats["remaining_short_segments"] == 0
+
+
+def test_protocol_uses_llm_rewrites_and_episode_references(tmp_path):
+    episode, _ = MODULE.build_official_episode(_record())
+    episode, _ = MODULE.merge_short_segments(episode, min_frames=30)
+    cache = {
+        MODULE._rewrite_key(episode["segments"][0], "labels"): "A person walks, then turns.",
+        MODULE._rewrite_key(episode["segments"][1], "labels"): "A person stands.",
+    }
+    motion_dir = tmp_path / "ms272"
+    motion_dir.mkdir()
+    np.savez_compressed(motion_dir / "val_7.npz", motion_272=_motion272())
+    output = tmp_path / "protocol"
+    manifest = MODULE.build_protocol(
+        [_record()],
+        motion272_dir=motion_dir,
+        smpl22_offsets=_smpl22_offsets(),
+        rewrite_cache=cache,
+        output_root=output,
+    )
+    assert manifest["protocol"] == MODULE.PROTOCOL
+    assert manifest["counts"] == {
+        "episodes": 1,
+        "original_action_segments": 3,
+        "captioned_segments": 2,
+        "transition_boundaries": 1,
+        "merged_groups": 1,
+        "rewrite_hits": 2,
+        "rewrite_misses": 0,
+    }
+    case = manifest["cases"][0]
+    assert [item["caption"] for item in case["segments"]] == [
+        "A person walks, then turns.",
+        "A person stands.",
+    ]
+    reference = np.load(output / case["reference_path"])
+    assert reference.shape == (120, 66)
+    assert np.isfinite(reference).all()
+    assert manifest["smpl22_offsets"] == "smpl22_offsets_y.npy"
+
+
+def test_protocol_accepts_preclipped_ms272(tmp_path):
+    record = _record()
+    for segment in record["segments"]:
+        segment["start_t"] += 1.0
+        segment["end_t"] += 1.0
+    record["duration_sec_npz"] = 5.0
+    episode, _ = MODULE.build_official_episode(record)
+    episode, _ = MODULE.merge_short_segments(episode, min_frames=30)
+    cache = {
+        MODULE._rewrite_key(item, "labels"): f"A person performs action {index}."
+        for index, item in enumerate(episode["segments"])
+    }
+    motion_dir = tmp_path / "ms272"
+    motion_dir.mkdir()
+    np.savez_compressed(motion_dir / "val_7.npz", motion_272=_motion272(120))
+    manifest = MODULE.build_protocol(
+        [record],
+        motion272_dir=motion_dir,
+        smpl22_offsets=_smpl22_offsets(),
+        rewrite_cache=cache,
+        output_root=tmp_path / "protocol",
+    )
+    reference = np.load(
+        tmp_path / "protocol" / manifest["cases"][0]["reference_path"]
+    )
+    assert reference.shape == (120, 66)

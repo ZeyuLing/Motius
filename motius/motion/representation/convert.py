@@ -17,10 +17,10 @@ def motion135_to_motion272(motion_135, **kwargs):
     return motion135_to_272(motion_135, **kwargs)
 
 
-def motion272_to_joints(motion_272):
-    from motius.motion.representation.motion272 import motion272_to_joints
+def motion272_to_joints(motion_272, **kwargs):
+    from motius.motion.representation.motion272 import motion272_to_joints as fn
 
-    return motion272_to_joints(motion_272)
+    return fn(motion_272, **kwargs)
 
 
 def motion272_to_motion135(motion_272):

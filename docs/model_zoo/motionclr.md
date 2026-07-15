@@ -80,6 +80,27 @@ the shared neutral-SMPL conversion bridge; lower FID and MM-Dist are better.
 | MotionStreamer Evaluator | 4,042 | 0.3931 | 0.5208 | 0.5960 | 298.9693 | 22.5207 | 20.6074 |
 | Motius Joint-Position Evaluator | 4,034 | 0.3569 | 0.5250 | 0.6250 | 1063.7324 | 44.8058 | 50.4069 |
 
+### Official Protocol Parity
+
+The MotionCLR paper protocol is not the fixed selected-caption protocol above.
+Its official HumanML3D loader randomly selects a caption and expands valid
+time-tagged caption intervals into additional test samples. A one-run audit on
+the 4,402 resulting entries reproduces the paper result closely:
+
+| Source | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Multi-Modality |
+| ------ | --: | --: | --: | --: | ------: | --------: | -------------: |
+| Motius checkpoint with official loader | 0.5447 | 0.7406 | 0.8310 | 0.1076 | 2.8252 | 9.6821 | 1.8293 |
+| MotionCLR paper, DPM-Solver | 0.542 | 0.733 | 0.827 | 0.099 | 2.981 | - | 2.145 |
+
+The paper does not report Diversity in this table.
+
+The released Motius network was also compared against the official EMA runtime
+on identical prompts, lengths, seed, fp16 mode, and DPM-Solver schedule. The
+three denormalized HML263 outputs had RMSE `0.00040`, `0.00539`, and `0.00041`;
+the largest long-sequence discrepancy was concentrated in a foot-contact
+channel. This audit separates implementation parity from caption-protocol
+differences.
+
 The cross-evaluator rows score the released samples after the same
 HumanML3D-to-neutral-SMPL bridge used for every HML263 model. A diagnostic run
 on the decoded pre-IK target joints reached joint-evaluator R@3 0.6468 and FID

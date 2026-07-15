@@ -45,11 +45,33 @@ class FlowMDMPipeline(BasePipeline):
             return length
         return self.clamp_length(int(n_frames))
 
+    def resolve_sequential_length(self, n_frames: int) -> int:
+        """Preserve full BABEL episode spans, including long action labels."""
+
+        if getattr(self.bundle, "dataset", "humanml") != "babel":
+            return self.resolve_length(n_frames)
+        length = int(n_frames)
+        if length < 30:
+            raise ValueError(
+                f"BABEL sequential segment length must be >= 30, got {length}"
+            )
+        return length
+
     @staticmethod
     def _clear_embedding_cache(sampler) -> None:
         model = getattr(sampler, "model", None)
         if model is None:
             return
+        # ClassifierFreeSampleModel delegates attribute reads to its wrapped
+        # model, but normal attribute writes stay on the wrapper. Unwrap it so
+        # the hashes used by TextConditionalModel are actually invalidated.
+        seen = set()
+        while id(model) not in seen:
+            seen.add(id(model))
+            wrapped = vars(model).get("model")
+            if wrapped is None:
+                break
+            model = wrapped
         device = next(model.parameters()).device
         for attr in ("emb_hash", "emb_forcemask_hash"):
             if hasattr(model, attr):
@@ -193,7 +215,7 @@ class FlowMDMPipeline(BasePipeline):
                 )
             if not captions:
                 raise ValueError(f"sample {i} has no captions")
-            seg_lengths = [self.resolve_length(int(n)) for n in lengths]
+            seg_lengths = [self.resolve_sequential_length(int(n)) for n in lengths]
             torch.manual_seed(int(seed) + int(shard_index) * 100000 + int(sample_offset) + i)
             pred_norm = self._sample_sequence(captions, seg_lengths)
             pred = self.bundle.denormalize(pred_norm).detach().cpu().numpy().astype(np.float32)

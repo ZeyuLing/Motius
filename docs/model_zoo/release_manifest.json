@@ -367,20 +367,35 @@
         }
       ],
       "sequential_metrics": {
-        "protocol": "BABEL FlowMDM validation compositions, joints66 v2",
+        "protocol": "babel-official-val-shortmerge30-llm-joints66-v1",
         "evaluator": "Motius Joint-Position Evaluator",
-        "cases": 64,
-        "segments": 2048,
-        "R1": 0.21728515625,
-        "R2": 0.3388671875,
-        "R3": 0.42138671875,
-        "FID": 212.33550149796474,
-        "MM-Dist": 49.9531415104866,
-        "Diversity": 55.68293783352351,
-        "Transition-FID": 334.7498886465228,
-        "Transition-Diversity": 53.97303429293057,
-        "Peak-Jerk": 421.1975402832031,
-        "AUJ-Gap": 29.24412727355957
+        "status": "measured",
+        "cases": 1295,
+        "segments": 7285,
+        "retrieval_samples": 7264,
+        "transitions": 5990,
+        "R1": 0.1032,
+        "R2": 0.1839,
+        "R3": 0.2496,
+        "FID": 2479.8395,
+        "MM-Dist": 57.3074,
+        "Diversity": 32.9413,
+        "Transition-FID": 2629.5964,
+        "Transition-Diversity": 31.1648,
+        "Peak-Jerk": 463.9237,
+        "AUJ-Gap": 55.8724,
+        "reference": {
+          "R1": 0.2939,
+          "R2": 0.433,
+          "R3": 0.5193,
+          "FID": 0.0,
+          "MM-Dist": 46.5581,
+          "Diversity": 57.4818,
+          "Transition-FID": 0.0,
+          "Transition-Diversity": 54.5835,
+          "Peak-Jerk": 56.3384,
+          "AUJ-Gap": 0.0
+        }
       },
       "preview_cases": [
         {
@@ -442,6 +457,27 @@
           "Diversity": 50.4069
         }
       ],
+      "official_protocol_audit": {
+        "protocol": "MotionCLR official HumanML3D loader, one run",
+        "samples": 4402,
+        "motius_checkpoint": {
+          "R1": 0.5447,
+          "R2": 0.7406,
+          "R3": 0.831,
+          "FID": 0.1076,
+          "MM-Dist": 2.8252,
+          "Diversity": 9.6821,
+          "Multi-Modality": 1.8293
+        },
+        "paper_dpm_solver": {
+          "R1": 0.542,
+          "R2": 0.733,
+          "R3": 0.827,
+          "FID": 0.099,
+          "MM-Dist": 2.981,
+          "Multi-Modality": 2.145
+        }
+      },
       "physical_metrics": {
         "samples": 4042,
         "Slide": 3.9074,

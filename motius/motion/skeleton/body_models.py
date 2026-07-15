@@ -38,8 +38,28 @@ def _load_model_data(path: Path) -> Mapping[str, object]:
     if path.suffix.lower() in {".pkl", ".pickle"}:
         import pickle
 
-        with path.open("rb") as handle:
-            data = pickle.load(handle, encoding="latin1")
+        # Legacy SMPL pickle files may unpickle through chumpy, whose last
+        # release still imports NumPy aliases removed in NumPy 1.24.
+        aliases = {
+            "bool": np.bool_,
+            "int": int,
+            "float": float,
+            "complex": complex,
+            "object": object,
+            "unicode": str,
+            "str": str,
+        }
+        added = []
+        for name, value in aliases.items():
+            if name not in np.__dict__:
+                setattr(np, name, value)
+                added.append(name)
+        try:
+            with path.open("rb") as handle:
+                data = pickle.load(handle, encoding="latin1")
+        finally:
+            for name in added:
+                delattr(np, name)
         if not isinstance(data, Mapping):
             raise TypeError(f"expected a mapping in {path}, got {type(data).__name__}")
         return data
@@ -49,7 +69,7 @@ def _load_model_data(path: Path) -> Mapping[str, object]:
 def resolve_smpl_model_path(
     model_path: str | Path,
     *,
-    model_type: str = "smplh",
+    model_type: str = "smpl",
     gender: str = "neutral",
 ) -> Path:
     """Resolve a direct model file or a common SMPL-family directory layout."""
@@ -256,9 +276,48 @@ def smpl_to_joints(
     return joints.astype(np.float32)
 
 
+def smpl22_rest_offsets(
+    model_path: str | Path,
+    *,
+    betas=None,
+    model_type: str = "smplh",
+    gender: str = "neutral",
+    root_origin: str = "model",
+) -> np.ndarray:
+    """Return parent-relative SMPL-22 rest offsets for one body shape.
+
+    ``root_origin='model'`` retains the pelvis offset from the SMPL translation
+    origin and is appropriate for raw SMPL/BABEL translations.
+    ``root_origin='pelvis'`` sets the root offset to zero for representations
+    whose translation channel already stores the pelvis location.
+    """
+
+    model = load_smpl_skeleton_model(
+        model_path, model_type=model_type, gender=gender
+    )
+    shape = (
+        np.zeros(model.num_betas, dtype=np.float64)
+        if betas is None
+        else np.asarray(betas, dtype=np.float64).reshape(-1)
+    )
+    rest = np.asarray(model.rest_joints(shape), dtype=np.float64)
+    if rest.shape != (_NUM_BODY_JOINTS, 3):
+        raise ValueError(f"betas must describe one body shape, got rest joints {rest.shape}")
+    offsets = np.empty_like(rest)
+    offsets[0] = rest[0]
+    for joint, parent in enumerate(model.parents[1:], start=1):
+        offsets[joint] = rest[joint] - rest[parent]
+    if root_origin == "pelvis":
+        offsets[0] = 0.0
+    elif root_origin != "model":
+        raise ValueError("root_origin must be 'model' or 'pelvis'")
+    return offsets.astype(np.float32)
+
+
 __all__ = [
     "SMPLSkeletonModel",
     "resolve_smpl_model_path",
     "load_smpl_skeleton_model",
+    "smpl22_rest_offsets",
     "smpl_to_joints",
 ]

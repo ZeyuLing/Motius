@@ -90,15 +90,23 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 
 ## BABEL Sequential Results
 
-Protocol: 64 official BABEL validation compositions with 32 ordered prompts
-per composition. Generated and reference clips are converted to canonical
-SMPL-22 joints and evaluated with the Motius Joint-Position Evaluator. The
-reference pools contain 2,048 independent BABEL validation segments and 2,048
-30-frame transition windows.
+Protocol: 1,295 eligible episodes from the processed official BABEL validation
+split, containing 7,285 LLM-rewritten action intervals and 5,990 paired
+transitions. Short actions are merged to at least 30 frames. Generated and GT
+motions use the same neutral zero-beta SMPL-22 skeleton.
 
-| Method | Segments | R@1 | R@2 | R@3 | Semantic FID | MM-Dist | Transition FID | AUJ Gap |
-| ------ | -------: | --: | --: | --: | -----------: | ------: | -------------: | ------: |
-| FlowMDM BABEL | 2,048 | 0.2173 | 0.3389 | 0.4214 | 212.3355 | 49.9531 | 334.7499 | 29.2441 |
+The previous 64-composition result used raw FlowMDM composition prompts and
+independent reference pools, so it has been withdrawn. The corrected full-split
+result is:
+
+| Method | Episodes | Segments | R@1 | R@2 | R@3 | Semantic FID | MM-Dist | Transition FID | AUJ Gap |
+| ------ | -------: | -------: | --: | --: | --: | -----------: | ------: | -------------: | ------: |
+| BABEL GT | 1,295 | 7,285 | 0.2939 | 0.4330 | 0.5193 | 0.0000 | 46.5581 | 0.0000 | 0.0000 |
+| FlowMDM BABEL | 1,295 | 7,285 | 0.1032 | 0.1839 | 0.2496 | 2479.8395 | 57.3074 | 2629.5964 | 55.8724 |
+
+R-Precision uses recall batches of 32 and therefore scores 7,264 paired
+segments; FID and diversity use all 7,285 segments. GT is a calibration row and
+is excluded from method ranking.
 
 Full protocol and diagnostic statistics are maintained on the
 [`BABEL Sequential Generation Leaderboard`](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard).

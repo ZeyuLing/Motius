@@ -93,6 +93,7 @@ def main() -> None:
         chunk_size=args.chunk_size,
         n_repeats=args.n_repeats,
         seed=args.seed,
+        protocol=str(manifest["protocol"]),
     )
     summary["method"] = args.method
     summary["split"] = "val"

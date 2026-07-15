@@ -509,10 +509,33 @@ def recover_272_stored_positions(m272: np.ndarray) -> np.ndarray:
     return positions
 
 
-def motion272_to_joints(m272: np.ndarray) -> np.ndarray:
-    """Public alias for the native stored-position decode."""
+def motion272_to_joints(
+    m272: np.ndarray,
+    *,
+    bone_offsets: Optional[np.ndarray] = None,
+) -> np.ndarray:
+    """Decode MS272 joints, optionally on an explicit canonical skeleton.
 
-    return recover_272_stored_positions(m272)
+    Without ``bone_offsets`` this returns the representation's stored joint
+    positions. With offsets it reconstructs local rotations and runs FK. The
+    recovered translation is the pelvis position, so ``bone_offsets[0]`` must
+    be zero in the latter mode.
+    """
+
+    if bone_offsets is None:
+        return recover_272_stored_positions(m272)
+    import torch
+
+    from motius.motion.skeleton.fk import motion135_to_fk
+
+    offsets = np.asarray(bone_offsets, dtype=np.float32)
+    if offsets.shape != (_NJOINT, 3):
+        raise ValueError(f"bone_offsets must have shape (22,3), got {offsets.shape}")
+    if not np.allclose(offsets[0], 0.0, atol=1e-7):
+        raise ValueError("motion272 pelvis-origin FK requires bone_offsets[0] == 0")
+    motion135 = torch.from_numpy(motion272_to_motion135(m272))
+    joints, _, _, _ = motion135_to_fk(motion135, torch.from_numpy(offsets))
+    return joints.detach().cpu().numpy().astype(np.float32)
 
 
 def motion272_to_motion135(m272: np.ndarray) -> np.ndarray:

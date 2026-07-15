@@ -80,13 +80,18 @@ def test_evaluate_sequential_cases_reports_semantic_and_transition_metrics(tmp_p
         cases,
         _Evaluator(),
         transition_frames=20,
+        protocol="babel-official-val-shortmerge30-llm-joints66-v1",
     )
-    assert summary["protocol"] == "babel-flowmdm-val-joints66-v2"
+    assert summary["protocol"] == "babel-official-val-shortmerge30-llm-joints66-v1"
     assert summary["n_cases"] == 2
     assert summary["n_segments"] == 6
     assert summary["n_transitions"] == 4
     assert summary["subsequence"]["mm_dist"] == 1.25
     assert "matching_score" not in summary["subsequence"]
+    assert summary["reference_subsequence"]["mm_dist"] == 1.25
+    assert summary["reference_subsequence"]["fid"] == 0.0
+    assert summary["reference_transition"]["fid"] == 0.0
+    assert summary["reference_transition"]["auj_gap"] == 0.0
     assert np.isfinite(summary["transition"]["fid"])
     assert summary["transition"]["auj_gap"] >= 0
 
@@ -115,4 +120,5 @@ def test_official_style_cases_use_independent_reference_pools(tmp_path):
     )
     assert summary["n_reference_segments"] == 5
     assert summary["n_reference_transitions"] == 4
+    assert summary["reference_subsequence"] is None
     assert np.isfinite(summary["subsequence"]["fid"])

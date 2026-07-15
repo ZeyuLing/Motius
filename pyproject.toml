@@ -54,6 +54,10 @@ intermask = [
 motionclr = [
     "clip @ git+https://github.com/openai/CLIP.git",
 ]
+flowmdm = [
+    "clip @ git+https://github.com/openai/CLIP.git",
+    "einops>=0.6",
+]
 ardy = [
     "einops>=0.7",
     "gradio-client>=1.0",

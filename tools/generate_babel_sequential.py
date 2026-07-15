@@ -18,6 +18,9 @@ from motius.motion import babel135_to_joints
 from motius.pipelines.flowmdm import FlowMDMPipeline
 
 
+SUPPORTED_PROTOCOLS = {"babel-official-val-shortmerge30-llm-joints66-v1"}
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", required=True)
@@ -39,8 +42,10 @@ def main() -> None:
         raise ValueError("Require 0 <= shard-index < num-shards.")
     manifest_path = Path(args.manifest).resolve()
     manifest = json.loads(manifest_path.read_text())
-    if manifest.get("protocol") != "babel-flowmdm-val-joints66-v2":
-        raise ValueError("Unsupported sequential manifest protocol.")
+    if manifest.get("protocol") not in SUPPORTED_PROTOCOLS:
+        raise ValueError(
+            f"Unsupported sequential manifest protocol {manifest.get('protocol')!r}."
+        )
     offset_path = Path(manifest["smpl22_offsets"])
     if not offset_path.is_absolute():
         offset_path = manifest_path.parent / offset_path
