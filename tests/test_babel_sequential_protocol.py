@@ -1,4 +1,5 @@
 import importlib.util
+import json
 from pathlib import Path
 
 import numpy as np
@@ -125,3 +126,22 @@ def test_protocol_accepts_preclipped_ms272(tmp_path):
         tmp_path / "protocol" / manifest["cases"][0]["reference_path"]
     )
     assert reference.shape == (120, 66)
+
+
+def test_public_babel_viewer_has_colored_captioned_subclips():
+    root = Path(__file__).resolve().parents[1] / "assets/evaluation/babel_sequential_demo"
+    manifest = json.loads((root / "manifest.json").read_text())
+    assert manifest["protocol"].endswith("multipositive-v2")
+    assert len(manifest["episodes"]) == 3
+    for episode in manifest["episodes"]:
+        assert len(episode["segments"]) >= 5
+        assert len({segment["color"] for segment in episode["segments"]}) == len(
+            episode["segments"]
+        )
+        for key in ("gt_file", "prediction_file"):
+            path = root / episode[key]
+            assert path.stat().st_size == episode["frames"] * 22 * 3 * 4
+    viewer = (root / "index.html").read_text()
+    assert "three@0.128.0" in viewer
+    assert "Captioned subclips" in viewer
+    assert "addTrajectories" in viewer

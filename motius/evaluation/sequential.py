@@ -7,6 +7,8 @@ transition metrics in this module remain checkpoint-free.
 
 from __future__ import annotations
 
+import re
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Mapping, Sequence
@@ -15,6 +17,12 @@ import numpy as np
 from scipy import linalg
 
 from motius.motion.skeleton.canonical import canonicalize_smpl22_joints
+
+
+def _caption_group_id(caption: str) -> str:
+    """Normalize punctuation and spacing without merging semantic synonyms."""
+
+    return " ".join(re.findall(r"\w+", caption.casefold(), flags=re.UNICODE))
 
 
 @dataclass(frozen=True)
@@ -271,6 +279,8 @@ def evaluate_sequential_cases(
 
     if len(captions) < 3:
         raise ValueError("Sequential semantic evaluation requires at least three segments.")
+    positive_group_ids = [_caption_group_id(caption) for caption in captions]
+    group_counts = Counter(positive_group_ids)
     retrieval = evaluator.evaluate(
         captions,
         predicted_segments,
@@ -278,6 +288,7 @@ def evaluate_sequential_cases(
         chunk_size=chunk_size,
         n_repeats=n_repeats,
         seed=seed,
+        positive_group_ids=positive_group_ids,
     )
     subsequence = dict(retrieval)
     if "matching_score" in subsequence:
@@ -314,6 +325,7 @@ def evaluate_sequential_cases(
                 chunk_size=chunk_size,
                 n_repeats=n_repeats,
                 seed=seed,
+                positive_group_ids=positive_group_ids,
             )
         )
         if "matching_score" in reference_subsequence:
@@ -380,6 +392,15 @@ def evaluate_sequential_cases(
         "transition_frames": int(transition_frames),
         "n_cases": len(cases),
         "n_segments": len(captions),
+        "caption_groups": {
+            "normalization": "unicode_word_casefold",
+            "r_precision_policy": "caption_group_multi_positive",
+            "unique": len(group_counts),
+            "duplicate_groups": sum(count > 1 for count in group_counts.values()),
+            "segments_in_duplicate_groups": sum(
+                count for count in group_counts.values() if count > 1
+            ),
+        },
         "n_reference_segments": len(semantic_reference),
         "n_transitions": len(predicted_transitions),
         "n_reference_transitions": len(transition_reference),

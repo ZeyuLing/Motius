@@ -167,7 +167,7 @@
           <h1>BABEL Sequential Generation Leaderboard</h1>
           <p class="lede">Long-form human motion composition from an ordered sequence of text prompts. Every method is retargeted to the same SMPL-22 joints before semantic, distribution, and transition-quality evaluation.</p>
         </div>
-        <span class="status" id="status">Short-merge protocol v1</span>
+        <span class="status" id="status">Multi-positive protocol v2</span>
       </div>
       <div class="badges">
         <span class="badge">BABEL validation split</span>
@@ -216,7 +216,7 @@
         <div><dt>Prompts</dt><dd>All 1,295 eligible processed BABEL validation episodes; 7,285 action intervals after short-action merging and LLM caption rewriting.</dd></div>
         <div><dt>References</dt><dd>Paired GT subsequences and transition windows from the same episode boundaries; no independent reference pools.</dd></div>
         <div><dt>Representation</dt><dd>Neutral zero-beta SMPL-22 joints66, first pelvis at the XZ origin, first-frame body facing +Z.</dd></div>
-        <div><dt>Semantic Metrics</dt><dd>R-Precision, MM-Dist, and FID from the Motius Joint-Position Evaluator; Diversity is shown as a reference statistic.</dd></div>
+        <div><dt>Semantic Metrics</dt><dd>Caption-group multi-positive R-Precision, nearest-positive MM-Dist, and FID from the Motius Joint-Position Evaluator. Repeated captions are retained.</dd></div>
         <div><dt>Transition Metrics</dt><dd>Embedding FID and AUJ gap are ranked; Diversity and absolute Peak Jerk are diagnostic reference statistics.</dd></div>
         <div><dt>Ranking</dt><dd>GT/reference and paper-only values are visible but cannot receive best or second-best styling.</dd></div>
       </dl>
@@ -227,8 +227,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script>
     const rows = Object.freeze([
-      {method:"BABEL val", version:"Paired GT reference", samples:7285, isReference:true, r1:0.2939, r2:0.4330, r3:0.5193, fid:0.0, mmDist:46.5581, diversity:57.4818, transitionFid:0.0, transitionDiversity:54.5835, peakJerk:56.3384, aujGap:0.0},
-      {method:"FlowMDM", version:"Official checkpoint · seed 42", samples:7285, r1:0.1032, r2:0.1839, r3:0.2496, fid:2479.8395, mmDist:57.3074, diversity:32.9413, transitionFid:2629.5964, transitionDiversity:31.1648, peakJerk:463.9237, aujGap:55.8724}
+      {method:"BABEL val", version:"Paired GT · multi-positive v2", samples:7285, isReference:true, r1:0.3619, r2:0.5131, r3:0.5936, fid:0.0, mmDist:45.2346, diversity:57.4816, transitionFid:0.0, transitionDiversity:54.5830, peakJerk:56.3384, aujGap:0.0},
+      {method:"FlowMDM", version:"Official checkpoint · seed 42 · multi-positive v2", samples:7285, r1:0.1542, r2:0.2713, r3:0.3420, fid:2479.8745, mmDist:56.8611, diversity:32.9451, transitionFid:2629.6531, transitionDiversity:31.1692, peakJerk:463.9237, aujGap:55.8724}
     ]);
     const groups = {
       semantic: [

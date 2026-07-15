@@ -30,7 +30,7 @@ from motius.motion import motion272_to_joints
 from motius.motion.skeleton import smpl22_rest_offsets
 
 
-PROTOCOL = "babel-official-val-shortmerge30-llm-joints66-v1"
+PROTOCOL = "babel-official-val-shortmerge30-llm-joints66-multipositive-v2"
 
 
 def _is_transition(segment: Mapping[str, object]) -> bool:

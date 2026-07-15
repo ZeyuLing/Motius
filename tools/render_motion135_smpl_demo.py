@@ -70,6 +70,13 @@ def _matrix_to_axis_angle(rot: torch.Tensor) -> torch.Tensor:
 def load_motion(path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray, dict]:
     data = np.load(path, allow_pickle=True)
     meta = {"source": str(path), "keys": list(data.files)}
+    if "fit_mpjpe_mm" in data.files:
+        fit_error = np.asarray(data["fit_mpjpe_mm"], dtype=np.float32)
+        meta["fit_mpjpe_mm_mean"] = float(fit_error.mean())
+        meta["fit_mpjpe_mm_p95"] = float(np.percentile(fit_error, 95))
+    for key in ("rotation_init", "source_fps", "target_fps", "refine_iters"):
+        if key in data.files:
+            meta[key] = np.asarray(data[key]).item()
     if {"global_orient", "body_pose", "transl"}.issubset(data.files):
         global_orient = np.asarray(data["global_orient"], dtype=np.float32).reshape(-1, 3)
         body_pose = np.asarray(data["body_pose"], dtype=np.float32).reshape(len(global_orient), -1, 3)
@@ -145,8 +152,9 @@ class SMPLRenderer:
         frames: list[np.ndarray] = []
         all_pts = verts.reshape(-1, 3)
         y_center = float(np.percentile(all_pts[:, 1], 54))
-        span = np.ptp(all_pts[:, [0, 1, 2]], axis=0)
-        radius = max(float(span[0]), float(span[1]), float(span[2]), 1.6)
+        frame_spans = np.ptp(verts, axis=1)
+        body_extent = np.percentile(frame_spans.max(axis=1), 95)
+        radius = max(float(body_extent), 1.6)
         dist = max(2.7, radius * 1.35)
         material = pyrender.MetallicRoughnessMaterial(
             baseColorFactor=(0.25, 0.48, 0.92, 1.0),

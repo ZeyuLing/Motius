@@ -28,16 +28,30 @@ Retrieval and embedding metrics use
 Diversity and absolute Peak Jerk are diagnostic statistics, not ranked quality
 objectives. GT/reference rows do not participate in best/second-best styling.
 
+BABEL captions are not unique. After case-folding and punctuation/whitespace
+normalization, the 7,285 intervals contain 2,924 caption groups; 5,149
+intervals belong to one of 788 repeated groups. The most frequent caption,
+`A person stands.`, occurs 676 times. R-Precision therefore uses
+caption-group-aware multi-positive retrieval: every candidate with the same
+normalized caption is a valid positive within its 32-sample recall batch.
+No interval is removed. MM-Dist uses the nearest positive, while FID and
+Diversity continue to use all 7,285 intervals.
+
 ## Measured Baseline
 
 | Method | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Transition FID | Transition Diversity | Peak Jerk | AUJ Gap |
 | ------ | --: | --: | --: | --: | ------: | --------: | -------------: | -------------------: | --------: | ------: |
-| BABEL GT | 0.2939 | 0.4330 | 0.5193 | 0.0000 | 46.5581 | 57.4818 | 0.0000 | 54.5835 | 56.34 | 0.0000 |
-| FlowMDM | 0.1032 | 0.1839 | 0.2496 | 2479.8395 | 57.3074 | 32.9413 | 2629.5964 | 31.1648 | 463.92 | 55.8724 |
+| BABEL GT | 0.3619 | 0.5131 | 0.5936 | 0.0000 | 45.2346 | 57.4816 | 0.0000 | 54.5830 | 56.34 | 0.0000 |
+| FlowMDM | 0.1542 | 0.2713 | 0.3420 | 2479.8745 | 56.8611 | 32.9451 | 2629.6531 | 31.1692 | 463.92 | 55.8724 |
 
 This is a single deterministic seed-42 generation and one retrieval repeat.
 R-Precision uses 32-sample recall batches, covering 7,264 of the 7,285 paired
-segments. Distribution metrics use the full set.
+segments, and accepts every same-caption candidate as a positive. Distribution
+metrics use the full set.
+
+Open the [Three.js sequence audit](../../assets/evaluation/babel_sequential_demo/index.html)
+to compare BABEL GT and FlowMDM frame by frame. Every subclip has a fixed color,
+and the synchronized caption list exposes its exact half-open frame interval.
 
 ## Data Layout
 
@@ -65,19 +79,19 @@ python tools/build_babel_sequential_manifest.py \
   --motion272-dir data/babel/processed/ms272/val \
   --rewrite-cache data/babel/processed/babel_shortmerge_caption_rewrites.json \
   --smpl-model checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl \
-  --output-root outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1
+  --output-root outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_multipositive_v2
 
 python tools/generate_babel_sequential.py \
-  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest.json \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_multipositive_v2/manifest.json \
   --model ZeyuLing/motius-flowmdm-babel \
-  --output-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42 \
+  --output-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_multipositive_v2/flowmdm_seed42 \
   --device cuda --seed 42
 
 python tools/eval_babel_sequential.py \
-  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest.json \
-  --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/joints66 \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_multipositive_v2/manifest.json \
+  --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_multipositive_v2/flowmdm_seed42/joints66 \
   --method FlowMDM \
-  --output outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/metrics.json \
+  --output outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_multipositive_v2/flowmdm_seed42/metrics.json \
   --device cuda --batch-size 32 --chunk-size 32 --n-repeats 1
 ```
 

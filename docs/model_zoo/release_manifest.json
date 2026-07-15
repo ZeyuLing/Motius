@@ -367,32 +367,32 @@
         }
       ],
       "sequential_metrics": {
-        "protocol": "babel-official-val-shortmerge30-llm-joints66-v1",
+        "protocol": "babel-official-val-shortmerge30-llm-joints66-multipositive-v2",
         "evaluator": "Motius Joint-Position Evaluator",
         "status": "measured",
         "cases": 1295,
         "segments": 7285,
         "retrieval_samples": 7264,
         "transitions": 5990,
-        "R1": 0.1032,
-        "R2": 0.1839,
-        "R3": 0.2496,
-        "FID": 2479.8395,
-        "MM-Dist": 57.3074,
-        "Diversity": 32.9413,
-        "Transition-FID": 2629.5964,
-        "Transition-Diversity": 31.1648,
+        "R1": 0.1542,
+        "R2": 0.2713,
+        "R3": 0.342,
+        "FID": 2479.8745,
+        "MM-Dist": 56.8611,
+        "Diversity": 32.9451,
+        "Transition-FID": 2629.6531,
+        "Transition-Diversity": 31.1692,
         "Peak-Jerk": 463.9237,
         "AUJ-Gap": 55.8724,
         "reference": {
-          "R1": 0.2939,
-          "R2": 0.433,
-          "R3": 0.5193,
+          "R1": 0.3619,
+          "R2": 0.5131,
+          "R3": 0.5936,
           "FID": 0.0,
-          "MM-Dist": 46.5581,
-          "Diversity": 57.4818,
+          "MM-Dist": 45.2346,
+          "Diversity": 57.4816,
           "Transition-FID": 0.0,
-          "Transition-Diversity": 54.5835,
+          "Transition-Diversity": 54.583,
           "Peak-Jerk": 56.3384,
           "AUJ-Gap": 0.0
         }
@@ -489,22 +489,22 @@
       },
       "preview_cases": [
         {
-          "sample_id": "001840",
-          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
-          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_001840_smpl_mesh_512_30fps.gif",
-          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_001840_smpl_mesh.json"
+          "sample_id": "014160",
+          "caption": "a person is waving with their right hand.",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_014160_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_014160_smpl_mesh.json"
+        },
+        {
+          "sample_id": "003424",
+          "caption": "a person hops in place twice.",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_003424_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_003424_smpl_mesh.json"
         },
         {
           "sample_id": "004822",
           "caption": "person walking at an average pace forward, swaying arms and torso with a sense of swagger.",
           "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh_512_30fps.gif",
           "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh.json"
-        },
-        {
-          "sample_id": "014457",
-          "caption": "the person swings a golf club.",
-          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_014457_smpl_mesh_512_30fps.gif",
-          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_014457_smpl_mesh.json"
         }
       ]
     },

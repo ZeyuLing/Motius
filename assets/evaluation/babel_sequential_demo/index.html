@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BABEL Sequence Audit</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17202a;
+      --muted: #687481;
+      --line: #d7dee5;
+      --paper: #f4f6f8;
+      --surface: #ffffff;
+      --control: #e8edf2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+    button, select, input { font: inherit; }
+    header {
+      min-height: 72px;
+      padding: 15px clamp(16px, 3vw, 42px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+    .title { display: flex; align-items: baseline; gap: 13px; min-width: 0; }
+    h1 { margin: 0; font-size: 22px; line-height: 1.1; font-weight: 730; }
+    .protocol {
+      min-width: 0;
+      color: var(--muted);
+      font: 12px/1.2 ui-monospace, monospace;
+      overflow-wrap: anywhere;
+    }
+    .selectors { display: flex; align-items: center; gap: 8px; }
+    select, button {
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--ink);
+      background: var(--surface);
+    }
+    select { min-width: 132px; padding: 0 30px 0 10px; }
+    button { min-width: 38px; padding: 0 11px; cursor: pointer; }
+    button:hover { background: var(--control); }
+    main { width: min(1500px, 100%); margin: 0 auto; padding: 18px clamp(12px, 2vw, 28px) 32px; }
+    .stage {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .viewport { position: relative; height: clamp(360px, 58vh, 650px); overflow: hidden; }
+    .viewport:first-child { border-right: 1px solid var(--line); }
+    .viewport-label {
+      position: absolute;
+      z-index: 2;
+      top: 14px;
+      left: 16px;
+      padding-bottom: 5px;
+      border-bottom: 3px solid currentColor;
+      font-size: 12px;
+      font-weight: 720;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+    .gt-label { color: #0e7490; }
+    .pred-label { color: #c2412d; }
+    canvas { display: block; width: 100%; height: 100%; }
+    .transport {
+      display: grid;
+      grid-template-columns: auto minmax(120px, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 4px 13px;
+    }
+    #scrubber { width: 100%; accent-color: #1f2937; }
+    #frameLabel { min-width: 122px; color: var(--muted); font: 12px/1 ui-monospace, monospace; text-align: right; }
+    .segments { border-top: 1px solid var(--line); background: var(--surface); }
+    .segment {
+      width: 100%;
+      min-height: 58px;
+      display: grid;
+      grid-template-columns: 9px minmax(0, 1fr) 130px;
+      align-items: stretch;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      padding: 0;
+      text-align: left;
+      background: var(--surface);
+    }
+    .segment:last-child { border-bottom: 0; }
+    .segment:hover, .segment.active { background: #f1f4f6; }
+    .segment.active .caption { font-weight: 700; }
+    .stripe { background: var(--segment); }
+    .caption { padding: 11px 16px 10px; font-size: 14px; line-height: 1.35; }
+    .raw { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; font-weight: 400; }
+    .range { padding: 13px 16px; color: var(--muted); font: 11px/1.4 ui-monospace, monospace; text-align: right; }
+    .loading {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      background: rgba(244, 246, 248, .94);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 800px) {
+      header { align-items: flex-start; flex-direction: column; }
+      .title { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .stage { grid-template-columns: 1fr; }
+      .viewport { height: 42vh; min-height: 310px; }
+      .viewport:first-child { border-right: 0; border-bottom: 1px solid var(--line); }
+      .segment { grid-template-columns: 8px minmax(0, 1fr); }
+      .range { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading" id="loading">Loading BABEL episode</div>
+  <header>
+    <div class="title"><h1>BABEL Sequence Audit</h1><span class="protocol" id="protocol"></span></div>
+    <div class="selectors">
+      <select id="episodeSelect" aria-label="Episode"></select>
+      <select id="speedSelect" aria-label="Playback speed">
+        <option value="0.5">0.5x</option><option value="1" selected>1x</option><option value="1.5">1.5x</option><option value="2">2x</option>
+      </select>
+    </div>
+  </header>
+  <main>
+    <section class="stage">
+      <div class="viewport" id="gtView"><div class="viewport-label gt-label">BABEL GT</div></div>
+      <div class="viewport" id="predView"><div class="viewport-label pred-label">FlowMDM</div></div>
+    </section>
+    <div class="transport">
+      <button id="playButton" title="Play or pause" aria-label="Play or pause">❚❚</button>
+      <input id="scrubber" type="range" min="0" max="1" value="0" step="1" aria-label="Frame">
+      <span id="frameLabel">0000 / 0000</span>
+    </div>
+    <section class="segments" id="segments" aria-label="Captioned subclips"></section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script type="module">
+    const manifest = await fetch("manifest.json").then((response) => response.json());
+    const parents = manifest.parents;
+    const episodeSelect = document.getElementById("episodeSelect");
+    const speedSelect = document.getElementById("speedSelect");
+    const scrubber = document.getElementById("scrubber");
+    const frameLabel = document.getElementById("frameLabel");
+    const playButton = document.getElementById("playButton");
+    const segmentRoot = document.getElementById("segments");
+    document.getElementById("protocol").textContent = manifest.protocol;
+    manifest.episodes.forEach((episode, index) => {
+      const option = document.createElement("option");
+      option.value = String(index);
+      option.textContent = episode.case_id;
+      episodeSelect.appendChild(option);
+    });
+
+    function makeScene(container) {
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xf5f7f9);
+      scene.fog = new THREE.Fog(0xf5f7f9, 9, 22);
+      const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.outputEncoding = THREE.sRGBEncoding;
+      renderer.shadowMap.enabled = true;
+      container.appendChild(renderer.domElement);
+      const camera = new THREE.PerspectiveCamera(34, 1, 0.05, 60);
+      camera.position.set(3.5, 2.4, 5.3);
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.target.set(0, 0.9, 0);
+      controls.enableDamping = true;
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x788491, 1.7));
+      const key = new THREE.DirectionalLight(0xffffff, 2.4);
+      key.position.set(3, 6, 4);
+      key.castShadow = true;
+      scene.add(key);
+      const floor = new THREE.Mesh(
+        new THREE.PlaneGeometry(14, 14),
+        new THREE.MeshStandardMaterial({ color: 0xe8edf1, roughness: .96 })
+      );
+      floor.rotation.x = -Math.PI / 2;
+      floor.receiveShadow = true;
+      scene.add(floor);
+      const grid = new THREE.GridHelper(14, 56, 0xaeb8c2, 0xd4dae0);
+      grid.position.y = .002;
+      scene.add(grid);
+      const resize = () => {
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        renderer.setSize(width, height, false);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      };
+      window.addEventListener("resize", resize);
+      resize();
+      return { scene, renderer, camera, controls };
+    }
+
+    function makeSkeleton(env) {
+      const group = new THREE.Group();
+      const material = new THREE.MeshStandardMaterial({ color: 0xe15d44, roughness: .58, metalness: .02 });
+      const jointGeometry = new THREE.SphereGeometry(.035, 12, 9);
+      const joints = parents.map(() => {
+        const mesh = new THREE.Mesh(jointGeometry, material);
+        mesh.castShadow = true;
+        group.add(mesh);
+        return mesh;
+      });
+      const bones = [];
+      for (let joint = 0; joint < parents.length; joint++) {
+        if (parents[joint] < 0) { bones.push(null); continue; }
+        const mesh = new THREE.Mesh(new THREE.CylinderGeometry(.018, .024, 1, 8), material);
+        mesh.castShadow = true;
+        group.add(mesh);
+        bones.push(mesh);
+      }
+      env.scene.add(group);
+      return { group, material, joints, bones };
+    }
+
+    const yAxis = new THREE.Vector3(0, 1, 0);
+    const a = new THREE.Vector3();
+    const b = new THREE.Vector3();
+    const direction = new THREE.Vector3();
+    function updateSkeleton(skeleton, data, frame) {
+      const base = frame * 66;
+      const rootX = data[base];
+      const rootZ = data[base + 2];
+      for (let joint = 0; joint < 22; joint++) {
+        const offset = base + joint * 3;
+        skeleton.joints[joint].position.set(
+          data[offset] - rootX,
+          data[offset + 1],
+          data[offset + 2] - rootZ
+        );
+        const parent = parents[joint];
+        if (parent < 0) continue;
+        a.copy(skeleton.joints[parent].position);
+        b.copy(skeleton.joints[joint].position);
+        direction.subVectors(b, a);
+        const length = direction.length();
+        const bone = skeleton.bones[joint];
+        bone.position.copy(a).add(b).multiplyScalar(.5);
+        bone.scale.set(1, length, 1);
+        bone.quaternion.setFromUnitVectors(yAxis, direction.normalize());
+      }
+    }
+
+    function addTrajectories(env, data, episode) {
+      for (const segment of episode.segments) {
+        const points = [];
+        for (let frame = segment.start_frame; frame < segment.end_frame; frame++) {
+          const base = frame * 66;
+          points.push(new THREE.Vector3(data[base], .018, data[base + 2]));
+        }
+        if (points.length < 2) continue;
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+        env.scene.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: segment.color })));
+      }
+    }
+
+    const gtEnv = makeScene(document.getElementById("gtView"));
+    const predEnv = makeScene(document.getElementById("predView"));
+    const gtSkeleton = makeSkeleton(gtEnv);
+    const predSkeleton = makeSkeleton(predEnv);
+    let episode;
+    let gtData;
+    let predictionData;
+    let frame = 0;
+    let playing = true;
+    let lastTime = performance.now();
+    let accumulator = 0;
+    let activeSegment = -1;
+
+    async function loadFloat32(path) {
+      return new Float32Array(await fetch(path).then((response) => response.arrayBuffer()));
+    }
+
+    function currentSegmentIndex(value) {
+      return episode.segments.findIndex((item) => value >= item.start_frame && value < item.end_frame);
+    }
+
+    function setFrame(value) {
+      frame = Math.max(0, Math.min(episode.frames - 1, Math.round(value)));
+      scrubber.value = String(frame);
+      updateSkeleton(gtSkeleton, gtData, frame);
+      updateSkeleton(predSkeleton, predictionData, frame);
+      frameLabel.textContent = `${String(frame + 1).padStart(4, "0")} / ${String(episode.frames).padStart(4, "0")}`;
+      const index = currentSegmentIndex(frame);
+      if (index !== activeSegment && index >= 0) {
+        activeSegment = index;
+        const color = episode.segments[index].color;
+        gtSkeleton.material.color.set(color);
+        predSkeleton.material.color.set(color);
+        [...segmentRoot.children].forEach((node, nodeIndex) => node.classList.toggle("active", nodeIndex === index));
+      }
+    }
+
+    function renderSegmentRows() {
+      segmentRoot.innerHTML = "";
+      episode.segments.forEach((segment) => {
+        const row = document.createElement("button");
+        row.className = "segment";
+        row.style.setProperty("--segment", segment.color);
+        const seconds = ((segment.end_frame - segment.start_frame) / episode.fps).toFixed(1);
+        row.innerHTML = `<span class="stripe"></span><span class="caption">${segment.caption}<span class="raw">BABEL: ${segment.raw_label}</span></span><span class="range">${segment.start_frame}–${segment.end_frame}<br>${seconds}s</span>`;
+        row.addEventListener("click", () => setFrame(segment.start_frame));
+        segmentRoot.appendChild(row);
+      });
+    }
+
+    async function loadEpisode(index) {
+      document.getElementById("loading").style.display = "grid";
+      episode = manifest.episodes[index];
+      [gtData, predictionData] = await Promise.all([
+        loadFloat32(episode.gt_file),
+        loadFloat32(episode.prediction_file),
+      ]);
+      while (gtEnv.scene.children.length > 5) gtEnv.scene.remove(gtEnv.scene.children[gtEnv.scene.children.length - 1]);
+      while (predEnv.scene.children.length > 5) predEnv.scene.remove(predEnv.scene.children[predEnv.scene.children.length - 1]);
+      gtEnv.scene.add(gtSkeleton.group);
+      predEnv.scene.add(predSkeleton.group);
+      addTrajectories(gtEnv, gtData, episode);
+      addTrajectories(predEnv, predictionData, episode);
+      scrubber.max = String(episode.frames - 1);
+      activeSegment = -1;
+      renderSegmentRows();
+      setFrame(0);
+      document.getElementById("loading").style.display = "none";
+    }
+
+    episodeSelect.addEventListener("change", () => loadEpisode(Number(episodeSelect.value)));
+    scrubber.addEventListener("input", () => { playing = false; playButton.textContent = "▶"; setFrame(Number(scrubber.value)); });
+    playButton.addEventListener("click", () => { playing = !playing; playButton.textContent = playing ? "❚❚" : "▶"; });
+    await loadEpisode(0);
+
+    function animate(now) {
+      requestAnimationFrame(animate);
+      const delta = Math.min((now - lastTime) / 1000, .1);
+      lastTime = now;
+      if (playing) {
+        accumulator += delta * Number(speedSelect.value) * episode.fps;
+        if (accumulator >= 1) {
+          const advance = Math.floor(accumulator);
+          accumulator -= advance;
+          setFrame((frame + advance) % episode.frames);
+        }
+      }
+      gtEnv.controls.update();
+      predEnv.controls.update();
+      gtEnv.renderer.render(gtEnv.scene, gtEnv.camera);
+      predEnv.renderer.render(predEnv.scene, predEnv.camera);
+    }
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

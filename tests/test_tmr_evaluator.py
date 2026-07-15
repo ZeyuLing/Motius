@@ -75,6 +75,21 @@ def test_t2m_metrics_report_perfect_aligned_retrieval() -> None:
     assert abs(metrics["fid"]) < 1e-6
 
 
+def test_r_precision_accepts_repeated_caption_groups_as_multiple_positives() -> None:
+    text = np.asarray([[0.0], [0.0], [10.0]], dtype=np.float32)
+    motion = np.asarray([[1.0], [0.0], [10.0]], dtype=np.float32)
+    paired, paired_matching = r_precision(text, motion, top_k=1)
+    grouped, grouped_matching = r_precision(
+        text,
+        motion,
+        top_k=1,
+        positive_group_ids=["stand", "stand", "walk"],
+    )
+    np.testing.assert_array_equal(paired, [2])
+    np.testing.assert_array_equal(grouped, [3])
+    assert grouped_matching < paired_matching
+
+
 def test_representation_demo_contains_synchronized_routes() -> None:
     source = (ROOT / "assets/motion/representation_demo/data.js").read_text()
     payload = json.loads(source.removeprefix("window.MOTIUS_REPRESENTATION_DEMO=").removesuffix(";\n"))

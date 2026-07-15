@@ -1,0 +1,162 @@
+{
+  "protocol": "babel-official-val-shortmerge30-llm-joints66-multipositive-v2",
+  "method": "FlowMDM",
+  "parents": [
+    -1,
+    0,
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    9,
+    9,
+    12,
+    13,
+    14,
+    16,
+    17,
+    18,
+    19
+  ],
+  "episodes": [
+    {
+      "case_id": "val_919",
+      "frames": 316,
+      "fps": 30.0,
+      "gt_file": "assets/val_919_gt_joints.f32",
+      "prediction_file": "assets/val_919_flowmdm_joints.f32",
+      "segments": [
+        {
+          "caption": "A person walks forward.",
+          "raw_label": "walk forward",
+          "start_frame": 0,
+          "end_frame": 71,
+          "color": "#e15d44"
+        },
+        {
+          "caption": "A person sits down.",
+          "raw_label": "sit down",
+          "start_frame": 71,
+          "end_frame": 158,
+          "color": "#1976d2"
+        },
+        {
+          "caption": "A person rests.",
+          "raw_label": "rest",
+          "start_frame": 158,
+          "end_frame": 201,
+          "color": "#19a974"
+        },
+        {
+          "caption": "A person stands up.",
+          "raw_label": "stand up",
+          "start_frame": 201,
+          "end_frame": 248,
+          "color": "#d69e18"
+        },
+        {
+          "caption": "A person walks back.",
+          "raw_label": "walk back",
+          "start_frame": 248,
+          "end_frame": 316,
+          "color": "#8b5cf6"
+        }
+      ]
+    },
+    {
+      "case_id": "val_4869",
+      "frames": 280,
+      "fps": 30.0,
+      "gt_file": "assets/val_4869_gt_joints.f32",
+      "prediction_file": "assets/val_4869_flowmdm_joints.f32",
+      "segments": [
+        {
+          "caption": "A person walks forward.",
+          "raw_label": "walking forward",
+          "start_frame": 0,
+          "end_frame": 83,
+          "color": "#e15d44"
+        },
+        {
+          "caption": "A person knocks on a door.",
+          "raw_label": "knocking on door",
+          "start_frame": 83,
+          "end_frame": 128,
+          "color": "#1976d2"
+        },
+        {
+          "caption": "A person waits with their arms down.",
+          "raw_label": "waiting with arms down",
+          "start_frame": 128,
+          "end_frame": 191,
+          "color": "#19a974"
+        },
+        {
+          "caption": "A person turns around.",
+          "raw_label": "turning around",
+          "start_frame": 191,
+          "end_frame": 224,
+          "color": "#d69e18"
+        },
+        {
+          "caption": "A person walks forward.",
+          "raw_label": "walking forward",
+          "start_frame": 224,
+          "end_frame": 280,
+          "color": "#8b5cf6"
+        }
+      ]
+    },
+    {
+      "case_id": "val_8738",
+      "frames": 221,
+      "fps": 30.0,
+      "gt_file": "assets/val_8738_gt_joints.f32",
+      "prediction_file": "assets/val_8738_flowmdm_joints.f32",
+      "segments": [
+        {
+          "caption": "A person walks.",
+          "raw_label": "walk",
+          "start_frame": 0,
+          "end_frame": 39,
+          "color": "#e15d44"
+        },
+        {
+          "caption": "A person bends down at the waist, then reaches both hands toward an object, then bends over, then grabs the object.",
+          "raw_label": "bend down at the waist then reach both hands toward object then bend over then grab object",
+          "start_frame": 39,
+          "end_frame": 85,
+          "color": "#1976d2"
+        },
+        {
+          "caption": "A person lifts an object, then puts down the object.",
+          "raw_label": "lift object then put down object",
+          "start_frame": 85,
+          "end_frame": 146,
+          "color": "#19a974"
+        },
+        {
+          "caption": "A person turns around.",
+          "raw_label": "turn around",
+          "start_frame": 146,
+          "end_frame": 179,
+          "color": "#d69e18"
+        },
+        {
+          "caption": "A person walks.",
+          "raw_label": "walk",
+          "start_frame": 179,
+          "end_frame": 221,
+          "color": "#8b5cf6"
+        }
+      ]
+    }
+  ]
+}

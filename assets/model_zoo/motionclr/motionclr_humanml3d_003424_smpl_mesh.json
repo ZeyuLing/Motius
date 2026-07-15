@@ -1,5 +1,5 @@
 {
-  "source": "outputs/evaluation/t2m/humanml3d_official_test/motion135/motionclr/004822.npz",
+  "source": "outputs/evaluation/t2m/humanml3d_official_test/motion135/motionclr/003424.npz",
   "keys": [
     "motion_135",
     "transl",
@@ -19,19 +19,19 @@
     "root_translation_restored",
     "global_orient_locked"
   ],
-  "fit_mpjpe_mm_mean": 21.512939453125,
-  "fit_mpjpe_mm_p95": 25.53259449005127,
+  "fit_mpjpe_mm_mean": 24.644227981567383,
+  "fit_mpjpe_mm_p95": 32.23884057998656,
   "rotation_init": "hml263_init",
   "source_fps": 20.0,
   "target_fps": 30.0,
   "refine_iters": 80,
   "method": "MotionCLR",
-  "sample_id": "004822",
-  "caption": "person walking at an average pace forward, swaying arms and torso with a sense of swagger.",
-  "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh_512_30fps.gif",
+  "sample_id": "003424",
+  "caption": "a person hops in place twice.",
+  "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_003424_smpl_mesh_512_30fps.gif",
   "frames": 120,
   "fps": 30,
   "width": 512,
   "height": 512,
-  "mp4": "assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh.mp4"
+  "mp4": "assets/model_zoo/motionclr/motionclr_humanml3d_003424_smpl_mesh.mp4"
 }

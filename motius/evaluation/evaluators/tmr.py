@@ -197,9 +197,12 @@ class TMRTextMotionEvaluator:
         chunk_size: int = 32,
         n_repeats: int = 1,
         seed: int = 0,
+        positive_group_ids: Optional[Sequence[object]] = None,
     ) -> dict[str, object]:
         if len(captions) != len(predicted_motions):
             raise ValueError("Captions and predicted motions must be paired one-to-one.")
+        if positive_group_ids is not None and len(positive_group_ids) != len(captions):
+            raise ValueError("positive_group_ids must match the caption count.")
         text_embeddings = self.encode_texts(captions)
         predicted_embeddings = self.encode_motions(predicted_motions)
         if reference_motions is not None:
@@ -212,6 +215,7 @@ class TMRTextMotionEvaluator:
                 n_repeats=n_repeats,
                 chunk=chunk_size,
                 seed=seed,
+                positive_group_ids=positive_group_ids,
             )
 
         count = len(captions)
@@ -220,6 +224,11 @@ class TMRTextMotionEvaluator:
         chunk = max(3, min(int(chunk_size), count))
         used = count // chunk * chunk
         rng = np.random.default_rng(seed)
+        group_ids = (
+            np.asarray(positive_group_ids, dtype=object)
+            if positive_group_ids is not None
+            else None
+        )
         precision, matching, div = [], [], []
         for _ in range(int(n_repeats)):
             order = rng.permutation(count)
@@ -227,8 +236,12 @@ class TMRTextMotionEvaluator:
             distance = 0.0
             for start in range(0, used, chunk):
                 indices = order[start : start + chunk]
+                groups = group_ids[indices] if group_ids is not None else None
                 value, score = r_precision(
-                    text_embeddings[indices], predicted_embeddings[indices], top_k=3
+                    text_embeddings[indices],
+                    predicted_embeddings[indices],
+                    top_k=3,
+                    positive_group_ids=groups,
                 )
                 counts += value
                 distance += score
@@ -239,6 +252,16 @@ class TMRTextMotionEvaluator:
         return {
             "n_samples_used": int(used),
             "n_repeats": int(n_repeats),
+            "r_precision_policy": (
+                "caption_group_multi_positive"
+                if positive_group_ids is not None
+                else "paired_diagonal_single_positive"
+            ),
+            "n_positive_groups": (
+                len(set(positive_group_ids))
+                if positive_group_ids is not None
+                else int(count)
+            ),
             "r_precision": precision_array.mean(0).tolist(),
             "r_precision_std": precision_array.std(0).tolist(),
             "matching_score": float(np.mean(matching)),

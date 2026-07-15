@@ -16,6 +16,7 @@ class _Evaluator:
     def evaluate(self, captions, predicted, reference, **_kwargs):
         assert len(captions) == len(predicted)
         assert reference is None
+        assert len(_kwargs["positive_group_ids"]) == len(captions)
         return {
             "n_samples_used": len(captions),
             "r_precision": [0.25, 0.5, 0.75],
@@ -86,6 +87,8 @@ def test_evaluate_sequential_cases_reports_semantic_and_transition_metrics(tmp_p
     assert summary["n_cases"] == 2
     assert summary["n_segments"] == 6
     assert summary["n_transitions"] == 4
+    assert summary["caption_groups"]["unique"] == 3
+    assert summary["caption_groups"]["duplicate_groups"] == 3
     assert summary["subsequence"]["mm_dist"] == 1.25
     assert "matching_score" not in summary["subsequence"]
     assert summary["reference_subsequence"]["mm_dist"] == 1.25

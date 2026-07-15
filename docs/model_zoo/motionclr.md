@@ -23,11 +23,13 @@ import an external MotionCLR checkout at runtime.
 
 | HumanML3D Sample | Selected Input Text | SMPL Preview |
 | ---------------- | ------------------- | ------------ |
-| `001840` | hands in fighting position while the left foot kicks aggressively up and over. | ![MotionCLR HumanML3D 001840 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/motionclr/motionclr_humanml3d_001840_smpl_mesh_512_30fps.gif) |
+| `014160` | a person is waving with their right hand. | ![MotionCLR HumanML3D 014160 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/motionclr/motionclr_humanml3d_014160_smpl_mesh_512_30fps.gif) |
+| `003424` | a person hops in place twice. | ![MotionCLR HumanML3D 003424 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/motionclr/motionclr_humanml3d_003424_smpl_mesh_512_30fps.gif) |
 | `004822` | person walking at an average pace forward, swaying arms and torso with a sense of swagger. | ![MotionCLR HumanML3D 004822 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh_512_30fps.gif) |
-| `014457` | the person swings a golf club. | ![MotionCLR HumanML3D 014457 SMPL demo](https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/motionclr/motionclr_humanml3d_014457_smpl_mesh_512_30fps.gif) |
 
 512px / 30fps GIF previews rendered from the released HumanML3D test outputs.
+The previews use cases whose HumanML3D-to-SMPL fitting MPJPE is below 25 mm;
+the native model output remains HumanML3D-263 rather than SMPL parameters.
 
 ## Release Snapshot
 

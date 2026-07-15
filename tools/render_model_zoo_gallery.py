@@ -67,11 +67,11 @@ MODELS = {
         "method": "MotionCLR",
         "source": "motionclr",
         "prefix": "motionclr",
-        "cases": ("001840", "004822", "014457"),
+        "cases": ("014160", "003424", "004822"),
         "captions": {
-            "001840": "hands in fighting position while the left foot kicks aggressively up and over.",
+            "014160": "a person is waving with their right hand.",
+            "003424": "a person hops in place twice.",
             "004822": "person walking at an average pace forward, swaying arms and torso with a sense of swagger.",
-            "014457": "the person swings a golf club.",
         },
     },
     "motionmillion": {
