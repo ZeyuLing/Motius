@@ -26,6 +26,9 @@ interval and transition window as a defensive boundary check.
 
 Retrieval and embedding metrics use
 [`ZeyuLing/motius-evaluator-universal-smplh-joints66`](https://huggingface.co/ZeyuLing/motius-evaluator-universal-smplh-joints66).
+Every uTMR FID first L2-normalizes each motion embedding, then estimates the
+mean and covariance in that normalized space. Raw latent-space FID is not a
+Motius reporting metric because encoder feature magnitude can dominate it.
 Diversity and absolute Peak Jerk are diagnostic statistics, not ranked quality
 objectives. GT/reference rows do not participate in best/second-best styling.
 
@@ -47,12 +50,12 @@ intervals.
 
 ## Measured Results
 
-| Method | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Transition FID | Transition Diversity | Peak Jerk | AUJ Gap |
+| Method | R@1 | R@2 | R@3 | Normalized FID | MM-Dist | Diversity | Normalized Transition FID | Transition Diversity | Peak Jerk | AUJ Gap |
 | ------ | --: | --: | --: | --: | ------: | --------: | -------------: | -------------------: | --------: | ------: |
 | BABEL GT | 0.3947 | 0.5513 | 0.6327 | 0.0000 | 44.5941 | 57.4816 | 0.0000 | 54.5830 | 56.34 | 0.0000 |
-| FlowMDM | 0.2958 | 0.4217 | 0.5018 | 160.3988 | 46.7698 | 56.5743 | 205.8370 | 54.7209 | 335.67 | 34.4040 |
-| MotionStreamer | 0.2087 | 0.3136 | 0.3955 | 221.9376 | 49.3062 | 56.2576 | 299.6140 | 53.8502 | 206.22 | 76.2889 |
-| PRISM (epoch 8) | 0.4710 | 0.6346 | 0.7108 | 964.5307 | 42.8045 | 54.3643 | 1428.3753 | 50.5315 | 942.31 | 214.8047 |
+| FlowMDM | 0.2958 | 0.4217 | 0.5018 | 0.0843 | 46.7698 | 56.5743 | 0.1092 | 54.7209 | 335.67 | 34.4040 |
+| MotionStreamer | 0.2087 | 0.3136 | 0.3955 | 0.1205 | 49.3062 | 56.2576 | 0.1664 | 53.8502 | 206.22 | 76.2889 |
+| PRISM (epoch 8) | 0.4710 | 0.6346 | 0.7108 | 0.5129 | 42.8045 | 54.3643 | 0.7667 | 50.5315 | 942.31 | 214.8047 |
 
 This is a single deterministic seed-42 generation and one retrieval repeat.
 R-Precision uses 32-sample recall batches, covering 7,264 of the 7,285 paired
@@ -60,13 +63,14 @@ segments, and accepts every same-action candidate as a positive. Distribution
 metrics use the full set. `--chunk-size 32` controls the recall candidate set;
 `--batch-size 32` controls only evaluator encoding throughput in this run.
 PRISM is the latest checkpoint available at evaluation time
-(`checkpoint-epoch_8`). Its R-Precision is high, while FID and transition
-metrics remain poor; the leaderboard reports both rather than treating one
-metric family as a complete quality judgment.
+(`checkpoint-epoch_8`). Its R-Precision is high, while normalized FID, AUJ gap,
+and Peak Jerk remain poor. The discrepancy therefore cannot be explained by
+raw uTMR feature scale alone and should be inspected in the synchronized viewer.
 
-Open the [Three.js sequence audit](../../assets/evaluation/babel_sequential_demo/index.html)
-to compare BABEL GT and FlowMDM frame by frame. Every subclip has a fixed color,
-and the synchronized caption list exposes its exact half-open frame interval.
+Open the [Three.js sequence audit](../leaderboards/hf_space_babel_sequential/audit/index.html)
+to compare BABEL GT, FlowMDM, MotionStreamer, and PRISM frame by frame. Every
+subclip has a fixed color, and the synchronized caption list exposes its exact
+half-open frame interval.
 Each row also reports the nearest three texts for the GT and generated motion,
 plus the exact text-to-motion positive rank in the seed-0, 32-candidate batch
 used by the leaderboard.
@@ -112,7 +116,7 @@ python tools/eval_babel_sequential.py \
   --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest_actiongroups_v3.json \
   --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/joints66 \
   --method FlowMDM \
-  --output outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/metrics.json \
+  --output outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/metrics_actiongroups_v3_normalized_fid.json \
   --device cuda --batch-size 32 --chunk-size 32 --n-repeats 1
 
 python tools/export_babel_retrieval_audit.py \
@@ -124,6 +128,8 @@ python tools/export_babel_retrieval_audit.py \
 python tools/build_babel_sequential_viewer.py \
   --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest_actiongroups_v3.json \
   --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/joints66 \
+  --prediction MotionStreamer=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionstreamer_latest_seed42/joints66 \
+  --prediction 'PRISM (epoch 8)=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/prism_epoch8/joints66' \
   --retrieval-audit outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/retrieval_audit.json \
   --output-dir outputs/visualization/babel_sequential_audit
 ```

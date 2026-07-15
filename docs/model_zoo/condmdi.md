@@ -111,10 +111,9 @@ better.
 | --------- | ------: | --: | --: | --: | --: | ------: | --------: |
 | HumanML3D Official | 3,970 | 0.449 | 0.642 | 0.749 | 0.294 | 3.218 | 9.795 |
 | MotionStreamer Evaluator | 4,032 | 0.453 | 0.611 | 0.702 | 121.837 | 19.970 | 25.464 |
-| Motius Joint-Position Evaluator | 4,034 | 0.430 | 0.604 | 0.702 | 349.987 | 39.127 | 55.795 |
+| Motius Joint-Position Evaluator | 4,034 | 0.430 | 0.604 | 0.702 | 0.1919 | 39.127 | 55.795 |
 
-The Motius row reports raw embedding-space FID for consistency with the public
-T2M leaderboard; its L2-normalized FID is `0.1919`. MotionStreamer and Motius
+The Motius row reports L2-normalized uTMR FID. MotionStreamer and Motius
 evaluation first convert every output through the same SMPL-22 skeleton bridge.
 
 Physical diagnostics use all 4,042 converted SMPL motions. Lower is better for

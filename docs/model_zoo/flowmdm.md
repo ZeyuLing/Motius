@@ -99,13 +99,13 @@ The previous 64-composition result used raw FlowMDM composition prompts and
 independent reference pools, so it has been withdrawn. The corrected full-split
 result is:
 
-| Method | Episodes | Segments | R@1 | R@2 | R@3 | Semantic FID | MM-Dist | Transition FID | AUJ Gap |
+| Method | Episodes | Segments | R@1 | R@2 | R@3 | Normalized Semantic FID | MM-Dist | Normalized Transition FID | AUJ Gap |
 | ------ | -------: | -------: | --: | --: | --: | -----------: | ------: | -------------: | ------: |
 | BABEL GT | 1,295 | 7,285 | 0.3947 | 0.5515 | 0.6327 | 0.0000 | 44.5941 | 0.0000 | 0.0000 |
-| FlowMDM BABEL | 1,295 | 7,285 | 0.2958 | 0.4217 | 0.5018 | 160.3988 | 46.7698 | 205.8370 | 34.4040 |
+| FlowMDM BABEL | 1,295 | 7,285 | 0.2958 | 0.4217 | 0.5018 | 0.0843 | 46.7698 | 0.1092 | 34.4040 |
 
 R-Precision uses official BABEL `act_cat` action-group multi-positive batches
-of 32 and therefore scores 7,264 paired segments; FID and diversity use all
+of 32 and therefore scores 7,264 paired segments; normalized uTMR FID and diversity use all
 7,285 segments. The evaluator encoder forward batch is also 32 in this measured
 run, but it does not define the R-Precision candidate set. GT is a calibration
 row and is excluded from method ranking.

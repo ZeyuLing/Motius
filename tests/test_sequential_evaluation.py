@@ -4,6 +4,7 @@ import pytest
 from motius.evaluation.sequential import (
     SequentialCase,
     SequentialSegment,
+    _frechet_distance,
     evaluate_sequential_cases,
     load_joints66,
 )
@@ -84,6 +85,7 @@ def test_evaluate_sequential_cases_reports_semantic_and_transition_metrics(tmp_p
         protocol="babel-official-val-shortmerge30-llm-joints66-v1",
     )
     assert summary["protocol"] == "babel-official-val-shortmerge30-llm-joints66-v1"
+    assert summary["fid_embedding_space"] == "l2_normalized"
     assert summary["n_cases"] == 2
     assert summary["n_segments"] == 6
     assert summary["n_transitions"] == 4
@@ -125,3 +127,12 @@ def test_official_style_cases_use_independent_reference_pools(tmp_path):
     assert summary["n_reference_transitions"] == 4
     assert summary["reference_subsequence"] is None
     assert np.isfinite(summary["subsequence"]["fid"])
+
+
+def test_sequential_fid_is_invariant_to_per_sample_embedding_scale():
+    embeddings = np.asarray(
+        [[1.0, 0.1], [0.1, 1.0], [0.8, 0.6], [0.3, 0.9]],
+        dtype=np.float32,
+    )
+    scaled = embeddings * np.asarray([[2.0], [4.0], [8.0], [16.0]], dtype=np.float32)
+    assert abs(_frechet_distance(embeddings, scaled)) < 1e-8

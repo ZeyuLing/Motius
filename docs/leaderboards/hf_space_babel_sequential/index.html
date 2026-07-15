@@ -179,11 +179,11 @@
       <div class="title-row">
         <div>
           <h1>BABEL Sequential Generation Leaderboard</h1>
-          <p class="lede">Long-form human motion composition from an ordered sequence of text prompts. Every method is retargeted to the same SMPL-22 joints before semantic, distribution, and transition-quality evaluation.</p>
+          <p class="lede">Long-form human motion composition from an ordered sequence of text prompts. Every method is retargeted to the same SMPL-22 joints; uTMR FID is computed only after per-sample L2 normalization of the motion embeddings.</p>
         </div>
         <div class="header-actions">
-          <span class="status" id="status">Action-group protocol v3</span>
-          <a class="audit-link" href="audit/">Inspect GT &amp; FlowMDM</a>
+          <span class="status" id="status">Normalized uTMR FID</span>
+          <a class="audit-link" href="audit/index.html">Inspect all motions</a>
         </div>
       </div>
       <div class="badges">
@@ -191,6 +191,7 @@
         <span class="badge">1,295 validation episodes</span>
         <span class="badge">30 fps</span>
         <span class="badge">Motius Joint-Position Evaluator</span>
+        <span class="badge">L2-normalized embedding FID</span>
       </div>
     </header>
     <div class="summary">
@@ -233,8 +234,8 @@
         <div><dt>Prompts</dt><dd>All 1,295 eligible processed BABEL validation episodes; 7,285 action intervals after short-action merging and LLM caption rewriting.</dd></div>
         <div><dt>References</dt><dd>Paired GT subsequences and transition windows from the same episode boundaries; no independent reference pools.</dd></div>
         <div><dt>Representation</dt><dd>Neutral zero-beta SMPL-22 joints66, first pelvis at the XZ origin, first-frame body facing +Z.</dd></div>
-        <div><dt>Semantic Metrics</dt><dd>Official BABEL act_cat action-group R-Precision, nearest-positive MM-Dist, and FID from the Motius Joint-Position Evaluator. Synonymous captions are retained without becoming false negatives.</dd></div>
-        <div><dt>Transition Metrics</dt><dd>Embedding FID and AUJ gap are ranked; Diversity and absolute Peak Jerk are diagnostic reference statistics.</dd></div>
+        <div><dt>Semantic Metrics</dt><dd>Official BABEL act_cat action-group R-Precision, nearest-positive MM-Dist, and L2-normalized embedding FID from the Motius Joint-Position Evaluator. Synonymous captions are retained without becoming false negatives.</dd></div>
+        <div><dt>Transition Metrics</dt><dd>L2-normalized embedding FID and AUJ gap are ranked; Diversity and absolute Peak Jerk are diagnostic reference statistics.</dd></div>
         <div><dt>Ranking</dt><dd>GT/reference and paper-only values are visible but cannot receive best or second-best styling.</dd></div>
       </dl>
     </section>
@@ -245,21 +246,21 @@
   <script>
     const rows = Object.freeze([
       {method:"BABEL val", version:"Paired GT · action groups v3", samples:7285, isReference:true, r1:0.3947, r2:0.5513, r3:0.6327, fid:0.0, mmDist:44.5941, diversity:57.4816, transitionFid:0.0, transitionDiversity:54.5830, peakJerk:56.3384, aujGap:0.0},
-      {method:"FlowMDM", version:"Official checkpoint · seed 42 · action groups v3", samples:7285, r1:0.2958, r2:0.4217, r3:0.5018, fid:160.3988, mmDist:46.7698, diversity:56.5743, transitionFid:205.8370, transitionDiversity:54.7209, peakJerk:335.6734, aujGap:34.4040},
-      {method:"MotionStreamer", version:"Official checkpoint · seed 42 · action groups v3", samples:7285, r1:0.2087, r2:0.3136, r3:0.3955, fid:221.9376, mmDist:49.3062, diversity:56.2576, transitionFid:299.6140, transitionDiversity:53.8502, peakJerk:206.2215, aujGap:76.2889},
-      {method:"PRISM", version:"Latest checkpoint at evaluation · epoch 8 · seed 42", samples:7285, r1:0.4710, r2:0.6346, r3:0.7108, fid:964.5307, mmDist:42.8045, diversity:54.3643, transitionFid:1428.3753, transitionDiversity:50.5315, peakJerk:942.3080, aujGap:214.8047}
+      {method:"FlowMDM", version:"Official checkpoint · seed 42 · action groups v3", samples:7285, r1:0.2958, r2:0.4217, r3:0.5018, fid:0.0843, mmDist:46.7698, diversity:56.5743, transitionFid:0.1092, transitionDiversity:54.7209, peakJerk:335.6734, aujGap:34.4040},
+      {method:"MotionStreamer", version:"Official checkpoint · seed 42 · action groups v3", samples:7285, r1:0.2087, r2:0.3136, r3:0.3955, fid:0.1205, mmDist:49.3062, diversity:56.2576, transitionFid:0.1664, transitionDiversity:53.8502, peakJerk:206.2215, aujGap:76.2889},
+      {method:"PRISM", version:"Latest checkpoint at evaluation · epoch 8 · seed 42", samples:7285, r1:0.4710, r2:0.6346, r3:0.7108, fid:0.5129, mmDist:42.8045, diversity:54.3643, transitionFid:0.7667, transitionDiversity:50.5315, peakJerk:942.3080, aujGap:214.8047}
     ]);
     const groups = {
       semantic: [
         {key:"r1", label:"R@1", direction:"max", digits:4},
         {key:"r2", label:"R@2", direction:"max", digits:4},
         {key:"r3", label:"R@3", direction:"max", digits:4},
-        {key:"fid", label:"FID", direction:"min", digits:4},
+        {key:"fid", label:"Normalized FID", direction:"min", digits:4},
         {key:"mmDist", label:"MM-Dist", direction:"min", digits:4},
         {key:"diversity", label:"Diversity", direction:"max", digits:4, referenceStatistic:true}
       ],
       transition: [
-        {key:"transitionFid", label:"Transition FID", direction:"min", digits:4},
+        {key:"transitionFid", label:"Normalized Transition FID", direction:"min", digits:4},
         {key:"transitionDiversity", label:"Transition Diversity", direction:"max", digits:4, referenceStatistic:true},
         {key:"peakJerk", label:"Peak Jerk", direction:"min", digits:2, referenceStatistic:true},
         {key:"aujGap", label:"AUJ Gap", direction:"min", digits:4}

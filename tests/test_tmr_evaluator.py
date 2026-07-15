@@ -6,7 +6,12 @@ import numpy as np
 import torch
 from PIL import Image
 
-from motius.evaluation.metrics import aggregate_t2m_metrics, r_precision, retrieval_audit
+from motius.evaluation.metrics import (
+    aggregate_t2m_metrics,
+    l2_normalize_embeddings,
+    r_precision,
+    retrieval_audit,
+)
 from motius.evaluation.evaluators.tmr import (
     _normalize_tmr_state_dict,
     _resolve_text_model_source,
@@ -73,6 +78,27 @@ def test_t2m_metrics_report_perfect_aligned_retrieval() -> None:
     )
     assert metrics["r_precision"] == [1.0, 1.0, 1.0]
     assert abs(metrics["fid"]) < 1e-6
+    assert metrics["fid_embedding_space"] == "l2_normalized"
+
+
+def test_utmr_fid_is_invariant_to_per_sample_embedding_scale() -> None:
+    embeddings = np.asarray(
+        [[1.0, 0.2, 0.1], [0.1, 1.0, 0.2], [0.2, 0.1, 1.0], [0.7, 0.6, 0.3]],
+        dtype=np.float32,
+    )
+    scaled = embeddings * np.asarray([[2.0], [4.0], [8.0], [16.0]], dtype=np.float32)
+    metrics = aggregate_t2m_metrics(
+        embeddings,
+        embeddings,
+        scaled,
+        n_repeats=1,
+        chunk=4,
+    )
+    assert abs(metrics["fid"]) < 1e-8
+    np.testing.assert_allclose(
+        np.linalg.norm(l2_normalize_embeddings(scaled), axis=1),
+        np.ones(4),
+    )
 
 
 def test_r_precision_accepts_repeated_caption_groups_as_multiple_positives() -> None:

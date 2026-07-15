@@ -103,9 +103,9 @@ The official MotionStreamer checkpoint is evaluated on all 1,295 processed
 BABEL validation episodes with exact manifest lengths and canonical SMPL-22
 joints. R-Precision uses action-group multi-positive recall batches of 32.
 
-| Segments | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Transition FID | AUJ Gap |
+| Segments | R@1 | R@2 | R@3 | Normalized FID | MM-Dist | Diversity | Normalized Transition FID | AUJ Gap |
 | -------: | --: | --: | --: | --: | ------: | --------: | -------------: | ------: |
-| 7,285 | 0.2087 | 0.3136 | 0.3955 | 221.9376 | 49.3062 | 56.2576 | 299.6140 | 76.2889 |
+| 7,285 | 0.2087 | 0.3136 | 0.3955 | 0.1205 | 49.3062 | 56.2576 | 0.1664 | 76.2889 |
 
 See the [BABEL Sequential Generation Leaderboard](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard)
 for the complete transition diagnostics and cross-method comparison.

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -28,6 +29,7 @@ COLORS = (
     "#d9468c",
     "#0f9fa8",
 )
+METHOD_COLORS = ("#c2412d", "#6d4ea2", "#b46900", "#287147", "#9f3f72")
 
 
 def _load_joints(path: Path) -> np.ndarray:
@@ -44,7 +46,18 @@ def _load_joints(path: Path) -> np.ndarray:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", required=True, type=Path)
-    parser.add_argument("--predictions-dir", required=True, type=Path)
+    parser.add_argument(
+        "--predictions-dir",
+        type=Path,
+        help="Legacy FlowMDM prediction directory.",
+    )
+    parser.add_argument(
+        "--prediction",
+        action="append",
+        default=[],
+        metavar="LABEL=DIR",
+        help="Prediction to display; repeat for synchronized multi-method comparison.",
+    )
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--case-ids", nargs="+", default=list(DEFAULT_CASES))
     parser.add_argument(
@@ -55,8 +68,43 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def _method_key(label: str) -> str:
+    key = re.sub(r"[^a-z0-9]+", "_", label.casefold()).strip("_")
+    if not key:
+        raise ValueError(f"Cannot derive a method key from {label!r}.")
+    return key
+
+
+def _prediction_specs(args: argparse.Namespace) -> list[tuple[str, str, Path]]:
+    specs: list[tuple[str, Path]] = []
+    if args.predictions_dir:
+        specs.append(("FlowMDM", args.predictions_dir.resolve()))
+    for value in args.prediction:
+        if "=" not in value:
+            raise ValueError(f"--prediction expects LABEL=DIR, got {value!r}.")
+        label, directory = value.split("=", 1)
+        label = label.strip()
+        if not label:
+            raise ValueError("--prediction labels must not be empty.")
+        specs.append((label, Path(directory).expanduser().resolve()))
+    if not specs:
+        raise ValueError("Provide --predictions-dir or at least one --prediction LABEL=DIR.")
+    keys: set[str] = set()
+    result = []
+    for label, directory in specs:
+        key = _method_key(label)
+        if key in keys:
+            raise ValueError(f"Duplicate prediction key {key!r} for {label!r}.")
+        if not directory.is_dir():
+            raise FileNotFoundError(directory)
+        keys.add(key)
+        result.append((key, label, directory))
+    return result
+
+
 def main() -> None:
     args = parse_args()
+    predictions = _prediction_specs(args)
     manifest_path = args.manifest.resolve()
     source = json.loads(manifest_path.read_text())
     cases = {item["case_id"]: item for item in source["cases"]}
@@ -77,14 +125,24 @@ def main() -> None:
     for case_id in args.case_ids:
         case = cases[case_id]
         reference = _load_joints(manifest_path.parent / case["reference_path"])
-        prediction = _load_joints(args.predictions_dir.resolve() / f"{case_id}.npy")
-        frames = min(len(reference), len(prediction), int(case["total_frames"]))
+        method_motions = {
+            key: _load_joints(directory / f"{case_id}.npy")
+            for key, _label, directory in predictions
+        }
+        frames = min(
+            len(reference),
+            *(len(value) for value in method_motions.values()),
+            int(case["total_frames"]),
+        )
         reference = np.ascontiguousarray(reference[:frames], dtype="<f4")
-        prediction = np.ascontiguousarray(prediction[:frames], dtype="<f4")
         reference_file = assets / f"{case_id}_gt_joints.f32"
-        prediction_file = assets / f"{case_id}_flowmdm_joints.f32"
         reference.tofile(reference_file)
-        prediction.tofile(prediction_file)
+        motion_files = {"gt": reference_file.relative_to(args.output_dir).as_posix()}
+        for key, _label, _directory in predictions:
+            motion = np.ascontiguousarray(method_motions[key][:frames], dtype="<f4")
+            motion_file = assets / f"{case_id}_{key}_joints.f32"
+            motion.tofile(motion_file)
+            motion_files[key] = motion_file.relative_to(args.output_dir).as_posix()
         segments = []
         for index, segment in enumerate(case["segments"]):
             if int(segment["start_frame"]) >= frames:
@@ -112,8 +170,7 @@ def main() -> None:
                 "case_id": case_id,
                 "frames": frames,
                 "fps": float(source.get("fps", 30.0)),
-                "gt_file": reference_file.relative_to(args.output_dir).as_posix(),
-                "prediction_file": prediction_file.relative_to(args.output_dir).as_posix(),
+                "motion_files": motion_files,
                 "segments": segments,
             }
         )
@@ -121,7 +178,17 @@ def main() -> None:
     shutil.copy2(viewer_source, args.output_dir / "index.html")
     payload = {
         "protocol": source["protocol"],
-        "method": "FlowMDM",
+        "methods": [
+            {"key": "gt", "label": "BABEL GT", "accent": "#0e7490"},
+            *[
+                {
+                    "key": key,
+                    "label": label,
+                    "accent": METHOD_COLORS[index % len(METHOD_COLORS)],
+                }
+                for index, (key, label, _directory) in enumerate(predictions)
+            ],
+        ],
         "parents": [-1, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 12, 13, 14, 16, 17, 18, 19],
         "episodes": exported,
     }
@@ -136,7 +203,16 @@ def main() -> None:
     (args.output_dir / "manifest.json").write_text(
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
     )
-    print(json.dumps({"output": str(args.output_dir.resolve()), "cases": args.case_ids}, indent=2))
+    print(
+        json.dumps(
+            {
+                "output": str(args.output_dir.resolve()),
+                "cases": args.case_ids,
+                "methods": [label for _key, label, _directory in predictions],
+            },
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":

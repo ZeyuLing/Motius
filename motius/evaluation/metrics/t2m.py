@@ -164,6 +164,29 @@ def diversity(
     return float(np.linalg.norm(first - second, axis=1).mean())
 
 
+def l2_normalize_embeddings(
+    embeddings: np.ndarray,
+    *,
+    eps: float = 1e-12,
+) -> np.ndarray:
+    """Return one unit-length feature vector per sample.
+
+    uTMR FID is defined in this normalized latent space so that encoder feature
+    scale cannot dominate the distribution distance. Retrieval, MM-Dist, and
+    Diversity continue to use the evaluator's native embeddings.
+    """
+
+    values = np.asarray(embeddings, dtype=np.float64)
+    if values.ndim < 2:
+        raise ValueError(f"Expected batched embeddings, got shape {values.shape}.")
+    values = values.reshape(len(values), -1)
+    norms = np.linalg.norm(values, axis=1, keepdims=True)
+    if np.any(norms <= eps):
+        indices = np.flatnonzero(norms[:, 0] <= eps).tolist()
+        raise ValueError(f"Cannot L2-normalize zero embeddings at indices {indices}.")
+    return values / norms
+
+
 def _activation_stats(values: np.ndarray):
     return values.mean(axis=0), np.cov(values, rowvar=False)
 
@@ -202,6 +225,8 @@ def aggregate_t2m_metrics(
     text_embeddings = text_embeddings[:n]
     real_embeddings = real_embeddings[:n]
     predicted_embeddings = predicted_embeddings[:n]
+    fid_real_embeddings = l2_normalize_embeddings(real_embeddings)
+    fid_predicted_embeddings = l2_normalize_embeddings(predicted_embeddings)
     group_ids = None
     if positive_group_ids is not None:
         if len(positive_group_ids) < n:
@@ -226,8 +251,8 @@ def aggregate_t2m_metrics(
             matching += distance
         r_values.append(counts / used)
         matching_values.append(matching / used)
-        mean_real, cov_real = _activation_stats(real_embeddings[order])
-        mean_pred, cov_pred = _activation_stats(predicted_embeddings[order])
+        mean_real, cov_real = _activation_stats(fid_real_embeddings[order])
+        mean_pred, cov_pred = _activation_stats(fid_predicted_embeddings[order])
         fids.append(_frechet(mean_real, cov_real, mean_pred, cov_pred))
         real_div.append(diversity(real_embeddings, rng=rng))
         pred_div.append(diversity(predicted_embeddings, rng=rng))
@@ -244,9 +269,16 @@ def aggregate_t2m_metrics(
         "r_precision_std": r_array.std(0).tolist(),
         "matching_score": float(np.mean(matching_values)),
         "fid": float(np.mean(fids)),
+        "fid_embedding_space": "l2_normalized",
         "diversity_reference": float(np.mean(real_div)),
         "diversity_predicted": float(np.mean(pred_div)),
     }
 
 
-__all__ = ["aggregate_t2m_metrics", "diversity", "r_precision", "retrieval_audit"]
+__all__ = [
+    "aggregate_t2m_metrics",
+    "diversity",
+    "l2_normalize_embeddings",
+    "r_precision",
+    "retrieval_audit",
+]

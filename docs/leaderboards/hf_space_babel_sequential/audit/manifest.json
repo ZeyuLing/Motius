@@ -1,6 +1,27 @@
 {
   "protocol": "babel-official-val-shortmerge30-llm-joints66-actiongroups-v3",
-  "method": "FlowMDM",
+  "methods": [
+    {
+      "key": "gt",
+      "label": "BABEL GT",
+      "accent": "#0e7490"
+    },
+    {
+      "key": "flowmdm",
+      "label": "FlowMDM",
+      "accent": "#c2412d"
+    },
+    {
+      "key": "motionstreamer",
+      "label": "MotionStreamer",
+      "accent": "#6d4ea2"
+    },
+    {
+      "key": "prism_epoch_8",
+      "label": "PRISM (epoch 8)",
+      "accent": "#b46900"
+    }
+  ],
   "parents": [
     -1,
     0,
@@ -30,8 +51,12 @@
       "case_id": "val_919",
       "frames": 316,
       "fps": 30.0,
-      "gt_file": "assets/val_919_gt_joints.f32",
-      "prediction_file": "assets/val_919_flowmdm_joints.f32",
+      "motion_files": {
+        "gt": "assets/val_919_gt_joints.f32",
+        "flowmdm": "assets/val_919_flowmdm_joints.f32",
+        "motionstreamer": "assets/val_919_motionstreamer_joints.f32",
+        "prism_epoch_8": "assets/val_919_prism_epoch_8_joints.f32"
+      },
       "segments": [
         {
           "caption": "A person walks forward.",
@@ -1453,8 +1478,12 @@
       "case_id": "val_4869",
       "frames": 280,
       "fps": 30.0,
-      "gt_file": "assets/val_4869_gt_joints.f32",
-      "prediction_file": "assets/val_4869_flowmdm_joints.f32",
+      "motion_files": {
+        "gt": "assets/val_4869_gt_joints.f32",
+        "flowmdm": "assets/val_4869_flowmdm_joints.f32",
+        "motionstreamer": "assets/val_4869_motionstreamer_joints.f32",
+        "prism_epoch_8": "assets/val_4869_prism_epoch_8_joints.f32"
+      },
       "segments": [
         {
           "caption": "A person walks forward.",
@@ -2853,8 +2882,12 @@
       "case_id": "val_8738",
       "frames": 221,
       "fps": 30.0,
-      "gt_file": "assets/val_8738_gt_joints.f32",
-      "prediction_file": "assets/val_8738_flowmdm_joints.f32",
+      "motion_files": {
+        "gt": "assets/val_8738_gt_joints.f32",
+        "flowmdm": "assets/val_8738_flowmdm_joints.f32",
+        "motionstreamer": "assets/val_8738_motionstreamer_joints.f32",
+        "prism_epoch_8": "assets/val_8738_prism_epoch_8_joints.f32"
+      },
       "segments": [
         {
           "caption": "A person walks.",

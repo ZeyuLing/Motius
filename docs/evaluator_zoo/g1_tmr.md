@@ -75,6 +75,10 @@ Passing reference motions adds FID to the retrieval, MM-Dist, and Diversity
 results. Without references, the evaluator reports R-Precision, MM-Dist, and
 prediction Diversity only.
 
+As with every Motius uTMR evaluator, FID is measured after per-sample L2
+normalization of the reference and generated embeddings. Raw-space uTMR FID is
+not a supported reporting metric.
+
 ## Command Line
 
 Prepare a JSONL manifest with `id` and `caption` fields. Store one `(T, 38)`

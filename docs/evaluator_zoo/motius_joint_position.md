@@ -63,6 +63,11 @@ metrics = evaluator.evaluate(
 )
 ```
 
+`FID` is computed after independently L2-normalizing every reference and
+generated motion embedding. MM-Dist, R-Precision, and Diversity retain the
+native uTMR embedding scale. Raw-space uTMR FID must not be reported in Motius
+leaderboards or model cards.
+
 For a materialized HumanML3D selected-caption split, the repository CLI loads
 the paired captions and GT joints, enforces one selected caption per sample,
 and writes the complete metric JSON:
@@ -84,7 +89,8 @@ load from a local snapshot with `local_files_only=True` on offline workers.
 
 ## Reporting Rule
 
-Every T2M model card should include this row. If the joint-position evaluator
+Every T2M model card should include this row and label its FID as normalized
+uTMR FID. If the joint-position evaluator
 has not been run for a method yet, the row should be marked `Pending`.
 
 ## Notes

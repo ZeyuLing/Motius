@@ -57,11 +57,11 @@
     .stage {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
       border: 1px solid var(--line);
-      background: var(--surface);
+      background: var(--line);
     }
-    .viewport { position: relative; height: clamp(360px, 58vh, 650px); overflow: hidden; }
-    .viewport:first-child { border-right: 1px solid var(--line); }
+    .viewport { position: relative; height: clamp(300px, 42vh, 470px); overflow: hidden; background: var(--surface); }
     .viewport-label {
       position: absolute;
       z-index: 2;
@@ -74,8 +74,6 @@
       text-transform: uppercase;
       pointer-events: none;
     }
-    .gt-label { color: #0e7490; }
-    .pred-label { color: #c2412d; }
     canvas { display: block; width: 100%; height: 100%; }
     .transport {
       display: grid;
@@ -175,7 +173,6 @@
       .title { align-items: flex-start; flex-direction: column; gap: 5px; }
       .stage { grid-template-columns: 1fr; }
       .viewport { height: 42vh; min-height: 310px; }
-      .viewport:first-child { border-right: 0; border-bottom: 1px solid var(--line); }
       .segment { grid-template-columns: 8px minmax(0, 1fr); }
       .stripe { grid-row: 1 / span 3; }
       .caption, .retrieval-cell { grid-column: 2; }
@@ -196,10 +193,7 @@
     </div>
   </header>
   <main>
-    <section class="stage">
-      <div class="viewport" id="gtView"><div class="viewport-label gt-label">BABEL GT</div></div>
-      <div class="viewport" id="predView"><div class="viewport-label pred-label">FlowMDM</div></div>
-    </section>
+    <section class="stage" id="stage" aria-label="Synchronized motion comparison"></section>
     <div class="transport">
       <button id="playButton" title="Play or pause" aria-label="Play or pause">❚❚</button>
       <input id="scrubber" type="range" min="0" max="1" value="0" step="1" aria-label="Frame">
@@ -255,6 +249,8 @@
       const grid = new THREE.GridHelper(14, 56, 0xaeb8c2, 0xd4dae0);
       grid.position.y = .002;
       scene.add(grid);
+      const trajectoryGroup = new THREE.Group();
+      scene.add(trajectoryGroup);
       const resize = () => {
         const width = container.clientWidth;
         const height = container.clientHeight;
@@ -264,7 +260,7 @@
       };
       window.addEventListener("resize", resize);
       resize();
-      return { scene, renderer, camera, controls };
+      return { scene, renderer, camera, controls, trajectoryGroup };
     }
 
     function makeSkeleton(env) {
@@ -317,6 +313,29 @@
       }
     }
 
+    const stageRoot = document.getElementById("stage");
+    const methodViews = new Map(manifest.methods.map((method) => {
+      const viewport = document.createElement("div");
+      viewport.className = "viewport";
+      const label = document.createElement("div");
+      label.className = "viewport-label";
+      label.style.color = method.accent;
+      label.textContent = method.label;
+      viewport.appendChild(label);
+      stageRoot.appendChild(viewport);
+      const env = makeScene(viewport);
+      return [method.key, { method, env, skeleton: makeSkeleton(env) }];
+    }));
+
+    function clearTrajectories(env) {
+      while (env.trajectoryGroup.children.length) {
+        const line = env.trajectoryGroup.children[env.trajectoryGroup.children.length - 1];
+        env.trajectoryGroup.remove(line);
+        line.geometry.dispose();
+        line.material.dispose();
+      }
+    }
+
     function addTrajectories(env, data, episode) {
       for (const segment of episode.segments) {
         const points = [];
@@ -326,17 +345,12 @@
         }
         if (points.length < 2) continue;
         const geometry = new THREE.BufferGeometry().setFromPoints(points);
-        env.scene.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: segment.color })));
+        env.trajectoryGroup.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: segment.color })));
       }
     }
 
-    const gtEnv = makeScene(document.getElementById("gtView"));
-    const predEnv = makeScene(document.getElementById("predView"));
-    const gtSkeleton = makeSkeleton(gtEnv);
-    const predSkeleton = makeSkeleton(predEnv);
     let episode;
-    let gtData;
-    let predictionData;
+    let motionData = new Map();
     let frame = 0;
     let playing = true;
     let lastTime = performance.now();
@@ -396,15 +410,13 @@
     function setFrame(value) {
       frame = Math.max(0, Math.min(episode.frames - 1, Math.round(value)));
       scrubber.value = String(frame);
-      updateSkeleton(gtSkeleton, gtData, frame);
-      updateSkeleton(predSkeleton, predictionData, frame);
+      methodViews.forEach((view, key) => updateSkeleton(view.skeleton, motionData.get(key), frame));
       frameLabel.textContent = `${String(frame + 1).padStart(4, "0")} / ${String(episode.frames).padStart(4, "0")}`;
       const index = currentSegmentIndex(frame);
       if (index !== activeSegment && index >= 0) {
         activeSegment = index;
         const color = episode.segments[index].color;
-        gtSkeleton.material.color.set(color);
-        predSkeleton.material.color.set(color);
+        methodViews.forEach((view) => view.skeleton.material.color.set(color));
         [...segmentRoot.children].forEach((node, nodeIndex) => node.classList.toggle("active", nodeIndex === index));
       }
     }
@@ -433,16 +445,15 @@
     async function loadEpisode(index) {
       document.getElementById("loading").style.display = "grid";
       episode = manifest.episodes[index];
-      [gtData, predictionData] = await Promise.all([
-        loadFloat32(episode.gt_file),
-        loadFloat32(episode.prediction_file),
-      ]);
-      while (gtEnv.scene.children.length > 5) gtEnv.scene.remove(gtEnv.scene.children[gtEnv.scene.children.length - 1]);
-      while (predEnv.scene.children.length > 5) predEnv.scene.remove(predEnv.scene.children[predEnv.scene.children.length - 1]);
-      gtEnv.scene.add(gtSkeleton.group);
-      predEnv.scene.add(predSkeleton.group);
-      addTrajectories(gtEnv, gtData, episode);
-      addTrajectories(predEnv, predictionData, episode);
+      const loaded = await Promise.all(manifest.methods.map(async (method) => [
+        method.key,
+        await loadFloat32(episode.motion_files[method.key]),
+      ]));
+      motionData = new Map(loaded);
+      methodViews.forEach((view, key) => {
+        clearTrajectories(view.env);
+        addTrajectories(view.env, motionData.get(key), episode);
+      });
       scrubber.max = String(episode.frames - 1);
       activeSegment = -1;
       renderSegmentRows();
@@ -467,10 +478,10 @@
           setFrame((frame + advance) % episode.frames);
         }
       }
-      gtEnv.controls.update();
-      predEnv.controls.update();
-      gtEnv.renderer.render(gtEnv.scene, gtEnv.camera);
-      predEnv.renderer.render(predEnv.scene, predEnv.camera);
+      methodViews.forEach((view) => {
+        view.env.controls.update();
+        view.env.renderer.render(view.env.scene, view.env.camera);
+      });
     }
     requestAnimationFrame(animate);
   </script>

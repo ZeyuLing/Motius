@@ -16,6 +16,7 @@ import numpy as np
 from scipy import linalg
 
 from motius.evaluation.babel import normalize_action_text
+from motius.evaluation.metrics import l2_normalize_embeddings
 from motius.motion.skeleton.canonical import canonicalize_smpl22_joints
 
 
@@ -154,8 +155,8 @@ def _as_joints66(value: np.ndarray, *, source: str = "motion") -> np.ndarray:
 
 
 def _frechet_distance(first: np.ndarray, second: np.ndarray) -> float:
-    first = _embedding_matrix(first)
-    second = _embedding_matrix(second)
+    first = l2_normalize_embeddings(_embedding_matrix(first))
+    second = l2_normalize_embeddings(_embedding_matrix(second))
     if len(first) < 2 or len(second) < 2:
         raise ValueError("Transition FID requires at least two reference and predicted windows.")
     mean_first, mean_second = first.mean(0), second.mean(0)
@@ -418,6 +419,7 @@ def evaluate_sequential_cases(
         "protocol": str(protocol),
         "motion_representation": "SMPL-22 joints66",
         "evaluator": "Motius Joint-Position Evaluator",
+        "fid_embedding_space": "l2_normalized",
         "fps": float(fps),
         "transition_frames": int(transition_frames),
         "n_cases": len(cases),
