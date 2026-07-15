@@ -135,7 +135,7 @@
     .best { color: #08766c; background: #edf8f5; font-weight: 760; }
     .second-best { color: #8a5b00; background: #fff8e8; font-weight: 720; }
     .empty { padding: 36px 18px; color: var(--muted); text-align: center; }
-    .metric-key { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; color: var(--muted); font-size: 12px; }
+    .metric-key { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 12px; color: var(--muted); font-size: 14px; line-height: 1.4; }
     .key { display: inline-flex; align-items: center; gap: 6px; }
     .swatch { width: 12px; height: 12px; border-radius: 3px; background: #edf8f5; border: 1px solid #b9ddd6; }
     .swatch.second { background: #fff8e8; border-color: #ecd598; }
@@ -244,7 +244,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script>
     const rows = Object.freeze([
-      {method:"BABEL val", version:"Paired GT · action groups v3", samples:7285, isReference:true, r1:0.3947, r2:0.5515, r3:0.6327, fid:0.0, mmDist:44.5941, diversity:57.4816, transitionFid:0.0, transitionDiversity:54.5830, peakJerk:56.3384, aujGap:0.0},
+      {method:"BABEL val", version:"Paired GT · action groups v3", samples:7285, isReference:true, r1:0.3947, r2:0.5513, r3:0.6327, fid:0.0, mmDist:44.5941, diversity:57.4816, transitionFid:0.0, transitionDiversity:54.5830, peakJerk:56.3384, aujGap:0.0},
       {method:"FlowMDM", version:"Official checkpoint · seed 42 · action groups v3", samples:7285, r1:0.2958, r2:0.4217, r3:0.5018, fid:160.3988, mmDist:46.7698, diversity:56.5743, transitionFid:205.8370, transitionDiversity:54.7209, peakJerk:335.6734, aujGap:34.4040}
     ]);
     const groups = {
@@ -341,7 +341,7 @@
       if (barChart) barChart.destroy();
       if (radarChart) radarChart.destroy();
       barChart = new Chart(document.getElementById("bar-chart"), {type:"bar", data:{labels:ordered.map(row=>row.method), datasets:[{data:ordered.map(row=>row[spec.key]), backgroundColor:ordered.map((_,i)=>colors[i%colors.length]), borderRadius:4}]}, options:{indexAxis:"y", responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true, grid:{color:"#e7ebe9"}},y:{grid:{display:false}}}}});
-      radarChart = new Chart(document.getElementById("radar-chart"), {type:"radar", data:{labels:specs.map(item=>item.label), datasets:ranked.map((row,i)=>({label:row.method,data:specs.map(item=>normalized(row,item,ranked)),borderColor:colors[i%colors.length],backgroundColor:colors[i%colors.length]+"18",pointRadius:2,borderWidth:2}))}, options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:"#e0e6e3"},angleLines:{color:"#e0e6e3"}}},plugins:{legend:{position:"bottom",labels:{boxWidth:10,boxHeight:10}}}}});
+      radarChart = new Chart(document.getElementById("radar-chart"), {type:"radar", data:{labels:specs.map(item=>item.label), datasets:ranked.map((row,i)=>({label:row.method,data:specs.map(item=>normalized(row,item,ranked)),borderColor:colors[i%colors.length],backgroundColor:colors[i%colors.length]+"18",pointRadius:2,borderWidth:2}))}, options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{display:false},pointLabels:{font:{size:13,weight:"600"},color:"#46534f"},grid:{color:"#e0e6e3"},angleLines:{color:"#e0e6e3"}}},plugins:{legend:{position:"bottom",labels:{boxWidth:12,boxHeight:12,padding:16,font:{size:14,weight:"600"},color:"#34413d"}}}}});
     }
     function configureMetrics() {
       const select = document.getElementById("chart-metric");

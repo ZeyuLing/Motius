@@ -38,6 +38,23 @@ def _to_2d_latents(latents: torch.Tensor) -> torch.Tensor:
     return latents.contiguous()
 
 
+def _resample_frames(motion: np.ndarray, target_frames: int) -> np.ndarray:
+    """Linearly resample one token-aligned segment to an exact frame count."""
+    value = np.asarray(motion, dtype=np.float32)
+    target_frames = int(target_frames)
+    if value.ndim != 2 or not len(value):
+        raise ValueError(f"expected a non-empty (T,D) motion, got {value.shape}")
+    if target_frames < 1:
+        raise ValueError("target_frames must be positive")
+    if len(value) == target_frames:
+        return value.copy()
+    positions = np.linspace(0.0, len(value) - 1, target_frames, dtype=np.float64)
+    left = np.floor(positions).astype(np.int64)
+    right = np.minimum(left + 1, len(value) - 1)
+    alpha = (positions - left).astype(np.float32)[:, None]
+    return ((1.0 - alpha) * value[left] + alpha * value[right]).astype(np.float32)
+
+
 @PIPELINES.register_module()
 class MotionStreamerPipeline(BasePipeline):
     """Inference pipeline for the MotionStreamer bundle."""
@@ -235,6 +252,7 @@ class MotionStreamerPipeline(BasePipeline):
         shard_index: int = 0,
         sample_offset: int = 0,
         progress: bool = False,
+        exact_lengths: bool = False,
     ) -> List[np.ndarray]:
         """Generate one continuous MotionStreamer-272 motion per prompt sequence.
 
@@ -265,7 +283,13 @@ class MotionStreamerPipeline(BasePipeline):
                 )
             if not captions:
                 raise ValueError(f"sample {i} has no captions")
-            seg_lengths = [self.clamp_length(n) for n in raw_lengths]
+            target_lengths = [int(n) for n in raw_lengths]
+            if any(n < 1 for n in target_lengths):
+                raise ValueError(f"sample {i} contains a non-positive segment length")
+            if exact_lengths:
+                seg_lengths = [((n + MS_UNIT_LENGTH - 1) // MS_UNIT_LENGTH) * MS_UNIT_LENGTH for n in target_lengths]
+            else:
+                seg_lengths = [self.clamp_length(n) for n in target_lengths]
 
             if seed is not None:
                 torch.manual_seed(int(seed) + int(shard_index) * 100000 + int(sample_offset) + i)
@@ -274,27 +298,30 @@ class MotionStreamerPipeline(BasePipeline):
                         int(seed) + int(shard_index) * 100000 + int(sample_offset) + i
                     )
 
+            first_tokens = min(seg_lengths[0] // MS_UNIT_LENGTH, MS_MAX_TOKENS)
             first_latent = bundle.ar.sample_for_eval_CFG(
                 [str(captions[0])],
-                length=seg_lengths[0],
+                length=first_tokens * MS_UNIT_LENGTH,
                 tokenize_model=bundle.text_model,
                 device=device,
                 unit_length=MS_UNIT_LENGTH,
                 cfg=scale,
             )
             acc = _to_2d_latents(first_latent)
-            total_len = seg_lengths[0]
+            remaining_first = seg_lengths[0] // MS_UNIT_LENGTH - first_tokens
+            generation_plan = [(str(captions[0]), remaining_first)] + [
+                (str(caption), int(seg_len) // MS_UNIT_LENGTH)
+                for caption, seg_len in zip(captions[1:], seg_lengths[1:])
+            ]
 
-            for caption, seg_len in zip(captions[1:], seg_lengths[1:]):
-                total_len += seg_len
-                remaining = max(1, int(seg_len) // MS_UNIT_LENGTH)
+            for caption, remaining in generation_plan:
                 while remaining > 0:
                     prefix_len = min(int(context_tokens), int(acc.shape[0]))
                     prefix_len = max(1, min(prefix_len, int(block_tokens) - 1))
                     take = min(remaining, max(1, int(block_tokens) - prefix_len))
                     prefix = acc[-prefix_len:].contiguous()
                     _, new_latents = bundle.ar.sample_for_eval_CFG_babel_inference_new_demo(
-                        B_text=str(caption),
+                        B_text=caption,
                         A_motion=prefix,
                         length=(prefix_len + take) * MS_UNIT_LENGTH,
                         clip_model=bundle.text_model,
@@ -314,7 +341,15 @@ class MotionStreamerPipeline(BasePipeline):
                     remaining -= take
 
             motion = bundle.tae.forward_decoder(acc.unsqueeze(0))[0]
+            total_len = sum(seg_lengths)
             motion = bundle.denormalize(motion)[:total_len].cpu().numpy().astype(np.float32)
+            if exact_lengths:
+                segments = []
+                start = 0
+                for aligned_len, target_len in zip(seg_lengths, target_lengths):
+                    segments.append(_resample_frames(motion[start : start + aligned_len], target_len))
+                    start += aligned_len
+                motion = np.concatenate(segments, axis=0)
             outputs.append(motion)
             if progress:
                 print(

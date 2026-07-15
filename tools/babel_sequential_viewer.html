@@ -89,7 +89,7 @@
     .segments { border-top: 1px solid var(--line); background: var(--surface); }
     .segment {
       width: 100%;
-      min-height: 92px;
+      min-height: 108px;
       display: grid;
       grid-template-columns: 9px minmax(190px, 1.08fr) minmax(230px, 1fr) minmax(230px, 1fr) 104px;
       align-items: stretch;
@@ -105,17 +105,17 @@
     .segment:hover, .segment.active { background: #f1f4f6; }
     .segment.active .caption { font-weight: 700; }
     .stripe { background: var(--segment); }
-    .caption { padding: 15px 16px 12px; font-size: 14px; line-height: 1.35; }
-    .raw { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; font-weight: 400; }
-    .range { padding: 16px 12px; color: var(--muted); font: 11px/1.4 ui-monospace, monospace; text-align: right; }
+    .caption { padding: 17px 16px 14px; font-size: 15px; line-height: 1.45; }
+    .raw { display: block; margin-top: 5px; color: var(--muted); font-size: 13px; line-height: 1.35; font-weight: 400; }
+    .range { padding: 18px 12px; color: var(--muted); font: 12px/1.5 ui-monospace, monospace; text-align: right; }
     .retrieval-cell {
       min-width: 0;
-      padding: 12px 14px;
+      padding: 15px 14px;
       border-left: 1px solid var(--line);
       background: #fbfcfd;
     }
     .retrieval-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-    .retrieval-source { color: var(--muted); font-size: 10px; font-weight: 760; text-transform: uppercase; }
+    .retrieval-source { color: var(--muted); font-size: 12px; font-weight: 760; text-transform: uppercase; }
     .rank-status {
       flex: 0 0 auto;
       padding: 2px 5px;
@@ -123,27 +123,27 @@
       border-radius: 4px;
       color: #805d12;
       background: #fff8e5;
-      font: 10px/1.25 ui-monospace, monospace;
+      font: 12px/1.3 ui-monospace, monospace;
     }
     .rank-status.hit { border-color: #62a97e; color: #28623d; background: #eef8f1; }
     .nearest-text {
       margin-top: 7px;
       overflow: hidden;
       color: var(--ink);
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 650;
       line-height: 1.35;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .retrieval-meta { margin-top: 4px; color: var(--muted); font: 10px/1.3 ui-monospace, monospace; }
-    details { margin-top: 5px; color: var(--muted); font-size: 10px; }
+    .retrieval-meta { margin-top: 5px; color: var(--muted); font: 12px/1.4 ui-monospace, monospace; }
+    details { margin-top: 7px; color: var(--muted); font-size: 12px; }
     summary { width: fit-content; cursor: pointer; }
     .ranking-label {
       display: block;
       margin-top: 7px;
       color: var(--muted);
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 760;
       text-transform: uppercase;
     }
@@ -155,7 +155,8 @@
       padding: 3px 0;
       border-top: 1px solid #e7ebef;
       color: var(--ink);
-      line-height: 1.3;
+      font-size: 12px;
+      line-height: 1.4;
     }
     .ranking .distance { color: var(--muted); font-family: ui-monospace, monospace; }
     .ranking .positive { color: #287147; font-weight: 720; }

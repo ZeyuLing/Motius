@@ -13,10 +13,11 @@ conditioned interval contains at least 30 frames. Every resulting caption is
 rewritten by the supplied precomputed LLM rewrite cache. Raw `proc_label` text
 is not used as the evaluation caption.
 
-All reference and generated motions are converted to 30 fps, neutral zero-beta
-SMPL-22 joints66. Each captioned interval is independently canonicalized to
-first-pelvis XZ origin, first-frame body facing +Z, and floor height zero before
-semantic embedding. Transition windows use the same canonicalization.
+All reference and generated motions are stored as 30 fps, neutral zero-beta
+SMPL-22 joints66. The complete episode is canonicalized before it is written:
+first-pelvis XZ origin, first-frame body facing +Z, and floor height zero. The
+evaluator independently reapplies the same transform to every captioned
+interval and transition window as a defensive boundary check.
 
 | Group | Metrics | Reference |
 | ----- | ------- | --------- |
@@ -48,7 +49,7 @@ intervals.
 
 | Method | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Transition FID | Transition Diversity | Peak Jerk | AUJ Gap |
 | ------ | --: | --: | --: | --: | ------: | --------: | -------------: | -------------------: | --------: | ------: |
-| BABEL GT | 0.3947 | 0.5515 | 0.6327 | 0.0000 | 44.5941 | 57.4816 | 0.0000 | 54.5830 | 56.34 | 0.0000 |
+| BABEL GT | 0.3947 | 0.5513 | 0.6327 | 0.0000 | 44.5941 | 57.4816 | 0.0000 | 54.5830 | 56.34 | 0.0000 |
 | FlowMDM | 0.2958 | 0.4217 | 0.5018 | 160.3988 | 46.7698 | 56.5743 | 205.8370 | 54.7209 | 335.67 | 34.4040 |
 
 This is a single deterministic seed-42 generation and one retrieval repeat.
@@ -124,9 +125,23 @@ python tools/build_babel_sequential_viewer.py \
 Both generation and evaluation accept deterministic sharding for cluster runs.
 Generated artifacts and metrics must remain under `outputs/`.
 
+MotionStreamer uses a separate exact-length runner because its latent tokens
+span four frames. Long actions are generated continuously across bounded latent
+blocks; only the zero-to-three-frame token-alignment remainder is linearly
+resampled within each segment, preserving the manifest's original boundaries.
+
+```bash
+python tools/generate_babel_sequential_motionstreamer.py \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest_actiongroups_v3.json \
+  --model ZeyuLing/hftrainer-motionstreamer-humanml272 \
+  --output-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionstreamer_seed42 \
+  --device cuda --seed 42
+```
+
 ## Submission Contract
 
 For another sequential method, write one `joints66/{case_id}.npy` file per
 manifest case. Each array must have shape `(T, 66)`, 30 fps, and cover every
-half-open segment interval listed in the manifest. Evaluation never imports
-the method's original repository at runtime.
+half-open segment interval listed in the manifest. The stored episode must
+already use first-pelvis XZ origin, first-frame `+Z` facing, and floor height
+zero. Evaluation never imports the method's original repository at runtime.

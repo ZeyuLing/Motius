@@ -6,9 +6,16 @@ from __future__ import annotations
 import argparse
 import json
 import shutil
+import sys
 from pathlib import Path
 
 import numpy as np
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from motius.motion import canonicalize_smpl22_joints
 
 
 DEFAULT_CASES = ("val_919", "val_4869", "val_8738")
@@ -31,11 +38,7 @@ def _load_joints(path: Path) -> np.ndarray:
         raise ValueError(f"Expected (T,22,3) joints at {path}, got {value.shape}.")
     if not np.isfinite(value).all():
         raise ValueError(f"Non-finite joints at {path}.")
-    value = value.copy()
-    value[..., 0] -= value[0, 0, 0]
-    value[..., 2] -= value[0, 0, 2]
-    value[..., 1] -= value[..., 1].min()
-    return value
+    return canonicalize_smpl22_joints(value)
 
 
 def parse_args() -> argparse.Namespace:

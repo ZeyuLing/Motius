@@ -132,6 +132,8 @@ def test_protocol_uses_llm_rewrites_and_episode_references(tmp_path):
     reference = np.load(output / case["reference_path"])
     assert reference.shape == (120, 66)
     assert np.isfinite(reference).all()
+    np.testing.assert_allclose(reference[0].reshape(22, 3)[0, (0, 2)], 0.0, atol=1e-6)
+    np.testing.assert_allclose(MODULE.canonicalize_smpl22_joints(reference), reference)
     assert manifest["smpl22_offsets"] == "smpl22_offsets_y.npy"
 
 

@@ -26,7 +26,7 @@ into this leaderboard.
 
 | Method | R@1 | R@2 | R@3 | FID | MM-Dist | Transition FID | AUJ Gap |
 | ------ | --: | --: | --: | --: | ------: | -------------: | ------: |
-| BABEL GT | 0.3947 | 0.5515 | 0.6327 | 0.0000 | 44.5941 | 0.0000 | 0.0000 |
+| BABEL GT | 0.3947 | 0.5513 | 0.6327 | 0.0000 | 44.5941 | 0.0000 | 0.0000 |
 | FlowMDM | 0.2958 | 0.4217 | 0.5018 | 160.3988 | 46.7698 | 205.8370 | 34.4040 |
 
 R-Precision uses official BABEL `act_cat` action-group multi-positive recall

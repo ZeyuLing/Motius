@@ -63,8 +63,15 @@ Sequential streaming generation is exposed through the same pipeline:
 motions = pipe.infer_sequential_t2m(
     [["a person walks forward", "then raises both hands"]],
     [[80, 80]],
+    exact_lengths=True,
 )
 ```
+
+`exact_lengths=True` is intended for fixed-boundary protocols such as BABEL.
+It supports actions longer than one 77-token autoregressive block and returns
+every requested segment boundary exactly. Since one latent token spans four
+frames, the pipeline decodes each segment with at most three alignment frames
+and linearly resamples it back to the exact requested length.
 
 TP2M uses a MotionStreamer-272 prefix:
 

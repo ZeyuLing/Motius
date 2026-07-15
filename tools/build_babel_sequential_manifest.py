@@ -27,7 +27,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from motius.evaluation.babel import enrich_manifest_action_groups
-from motius.motion import motion272_to_joints
+from motius.motion import canonicalize_smpl22_joints, motion272_to_joints
 from motius.motion.skeleton import smpl22_rest_offsets
 
 
@@ -489,7 +489,7 @@ def build_protocol(
                 f"but its MS272 file contains {len(source)} frames"
             )
         joints = motion272_to_joints(episode_motion, bone_offsets=pelvis_offsets)
-        joints = np.asarray(joints, dtype=np.float32).reshape(len(joints), 66)
+        joints = canonicalize_smpl22_joints(joints).reshape(len(joints), 66)
         reference_path = reference_dir / f"{episode['id']}.npy"
         np.save(reference_path, joints)
         return (
