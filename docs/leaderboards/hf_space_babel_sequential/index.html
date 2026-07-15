@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
   <title>BABEL Sequential Generation Leaderboard</title>
   <style>
     :root {
@@ -72,6 +73,18 @@
       font-weight: 700;
     }
     .status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+    .header-actions { flex: none; display: flex; align-items: center; gap: 8px; }
+    .audit-link {
+      padding: 8px 10px;
+      border: 1px solid #cbd5d0;
+      border-radius: 6px;
+      color: #34423d;
+      background: var(--paper);
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .audit-link:hover { border-color: var(--green); color: var(--green); background: var(--green-soft); }
     .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
     .badge { padding: 6px 9px; border: 1px solid var(--line); border-radius: 5px; color: #47544f; background: var(--paper); font-size: 12px; }
     .summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid var(--line); }
@@ -136,6 +149,7 @@
     @media (max-width: 900px) {
       .shell { width: min(100% - 24px, 1480px); }
       .title-row, .section-head { align-items: stretch; flex-direction: column; }
+      .header-actions { align-self: flex-start; }
       .summary { grid-template-columns: repeat(2, 1fr); }
       .summary-item:nth-child(2) { border-right: 0; }
       .summary-item:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
@@ -167,7 +181,10 @@
           <h1>BABEL Sequential Generation Leaderboard</h1>
           <p class="lede">Long-form human motion composition from an ordered sequence of text prompts. Every method is retargeted to the same SMPL-22 joints before semantic, distribution, and transition-quality evaluation.</p>
         </div>
-        <span class="status" id="status">Multi-positive protocol v2</span>
+        <div class="header-actions">
+          <span class="status" id="status">Multi-positive protocol v2</span>
+          <a class="audit-link" href="audit/">Inspect GT &amp; FlowMDM</a>
+        </div>
       </div>
       <div class="badges">
         <span class="badge">BABEL validation split</span>

@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
   <title>BABEL Sequence Audit</title>
   <style>
     :root {
@@ -88,9 +89,9 @@
     .segments { border-top: 1px solid var(--line); background: var(--surface); }
     .segment {
       width: 100%;
-      min-height: 58px;
+      min-height: 92px;
       display: grid;
-      grid-template-columns: 9px minmax(0, 1fr) 130px;
+      grid-template-columns: 9px minmax(190px, 1.08fr) minmax(230px, 1fr) minmax(230px, 1fr) 104px;
       align-items: stretch;
       border: 0;
       border-bottom: 1px solid var(--line);
@@ -98,14 +99,66 @@
       padding: 0;
       text-align: left;
       background: var(--surface);
+      cursor: pointer;
     }
     .segment:last-child { border-bottom: 0; }
     .segment:hover, .segment.active { background: #f1f4f6; }
     .segment.active .caption { font-weight: 700; }
     .stripe { background: var(--segment); }
-    .caption { padding: 11px 16px 10px; font-size: 14px; line-height: 1.35; }
+    .caption { padding: 15px 16px 12px; font-size: 14px; line-height: 1.35; }
     .raw { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; font-weight: 400; }
-    .range { padding: 13px 16px; color: var(--muted); font: 11px/1.4 ui-monospace, monospace; text-align: right; }
+    .range { padding: 16px 12px; color: var(--muted); font: 11px/1.4 ui-monospace, monospace; text-align: right; }
+    .retrieval-cell {
+      min-width: 0;
+      padding: 12px 14px;
+      border-left: 1px solid var(--line);
+      background: #fbfcfd;
+    }
+    .retrieval-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .retrieval-source { color: var(--muted); font-size: 10px; font-weight: 760; text-transform: uppercase; }
+    .rank-status {
+      flex: 0 0 auto;
+      padding: 2px 5px;
+      border: 1px solid #d29b2f;
+      border-radius: 4px;
+      color: #805d12;
+      background: #fff8e5;
+      font: 10px/1.25 ui-monospace, monospace;
+    }
+    .rank-status.hit { border-color: #62a97e; color: #28623d; background: #eef8f1; }
+    .nearest-text {
+      margin-top: 7px;
+      overflow: hidden;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.35;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .retrieval-meta { margin-top: 4px; color: var(--muted); font: 10px/1.3 ui-monospace, monospace; }
+    details { margin-top: 5px; color: var(--muted); font-size: 10px; }
+    summary { width: fit-content; cursor: pointer; }
+    .ranking-label {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 760;
+      text-transform: uppercase;
+    }
+    .ranking { margin: 6px 0 0; padding: 0; list-style: none; }
+    .ranking li {
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr) auto;
+      gap: 5px;
+      padding: 3px 0;
+      border-top: 1px solid #e7ebef;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+    .ranking .distance { color: var(--muted); font-family: ui-monospace, monospace; }
+    .ranking .positive { color: #287147; font-weight: 720; }
     .loading {
       position: fixed;
       inset: 0;
@@ -123,6 +176,9 @@
       .viewport { height: 42vh; min-height: 310px; }
       .viewport:first-child { border-right: 0; border-bottom: 1px solid var(--line); }
       .segment { grid-template-columns: 8px minmax(0, 1fr); }
+      .stripe { grid-row: 1 / span 3; }
+      .caption, .retrieval-cell { grid-column: 2; }
+      .retrieval-cell { border-left: 0; border-top: 1px solid var(--line); }
       .range { display: none; }
     }
   </style>
@@ -294,6 +350,48 @@
       return episode.segments.findIndex((item) => value >= item.start_frame && value < item.end_frame);
     }
 
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function retrievalCell(label, audit) {
+      if (!audit || !audit.evaluated) {
+        return `<div class="retrieval-cell"><span class="retrieval-source">${label}</span><div class="retrieval-meta">Not included in the complete recall batches</div></div>`;
+      }
+      const motionToText = audit.motion_to_text;
+      const textToMotion = audit.text_to_motion;
+      const top = motionToText.top;
+      const rank = textToMotion.positive_rank;
+      const hit = rank !== null && rank <= 3;
+      const rankingRows = (items) => items.map((item, index) => `
+        <li>
+          <span>#${index + 1}</span>
+          <span class="${item.is_positive ? "positive" : ""}">${escapeHtml(item.caption)}</span>
+          <span class="distance">${item.distance.toFixed(2)}</span>
+        </li>`).join("");
+      return `
+        <div class="retrieval-cell">
+          <div class="retrieval-head">
+            <span class="retrieval-source">${label} · Motion→Text</span>
+            <span class="rank-status ${hit ? "hit" : ""}">T→M ${hit ? "hit" : "miss"} · #${rank}</span>
+          </div>
+          <div class="nearest-text" title="${escapeHtml(top[0].caption)}">#1 ${escapeHtml(top[0].caption)}</div>
+          <div class="retrieval-meta">M→T positive #${motionToText.positive_rank} · batch ${audit.batch_index + 1}</div>
+          <details>
+            <summary>Both Top-${top.length} rankings</summary>
+            <span class="ranking-label">Motion→Text</span>
+            <ol class="ranking">${rankingRows(motionToText.top)}</ol>
+            <span class="ranking-label">Text→Motion</span>
+            <ol class="ranking">${rankingRows(textToMotion.top)}</ol>
+          </details>
+        </div>`;
+    }
+
     function setFrame(value) {
       frame = Math.max(0, Math.min(episode.frames - 1, Math.round(value)));
       scrubber.value = String(frame);
@@ -313,12 +411,19 @@
     function renderSegmentRows() {
       segmentRoot.innerHTML = "";
       episode.segments.forEach((segment) => {
-        const row = document.createElement("button");
+        const row = document.createElement("article");
         row.className = "segment";
+        row.tabIndex = 0;
+        row.setAttribute("role", "button");
         row.style.setProperty("--segment", segment.color);
         const seconds = ((segment.end_frame - segment.start_frame) / episode.fps).toFixed(1);
-        row.innerHTML = `<span class="stripe"></span><span class="caption">${segment.caption}<span class="raw">BABEL: ${segment.raw_label}</span></span><span class="range">${segment.start_frame}–${segment.end_frame}<br>${seconds}s</span>`;
-        row.addEventListener("click", () => setFrame(segment.start_frame));
+        row.innerHTML = `<span class="stripe"></span><span class="caption">${escapeHtml(segment.caption)}<span class="raw">BABEL: ${escapeHtml(segment.raw_label)}</span></span>${retrievalCell("BABEL GT", segment.retrieval?.gt)}${retrievalCell("FlowMDM", segment.retrieval?.flowmdm)}<span class="range">${segment.start_frame}–${segment.end_frame}<br>${seconds}s</span>`;
+        row.addEventListener("click", (event) => {
+          if (!event.target.closest("details")) setFrame(segment.start_frame);
+        });
+        row.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") setFrame(segment.start_frame);
+        });
         segmentRoot.appendChild(row);
       });
     }

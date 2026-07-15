@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Optional, Sequence
+from typing import Dict, Iterable, Optional, Sequence
 
 import numpy as np
 
@@ -48,6 +48,106 @@ def r_precision(
     matching = distances.copy()
     matching[~positive] = np.inf
     return counts, float(matching.min(axis=1).sum())
+
+
+def retrieval_audit(
+    text_embeddings: np.ndarray,
+    motion_embeddings: np.ndarray,
+    *,
+    chunk: int = 32,
+    seed: int = 0,
+    top_k: int = 3,
+    positive_group_ids: Optional[Sequence[object]] = None,
+    query_indices: Optional[Iterable[int]] = None,
+) -> dict[int, dict[str, object]]:
+    """Expose the exact candidate batches and rankings used by R-Precision.
+
+    ``text_to_motion`` follows the leaderboard metric. ``motion_to_text`` is
+    also reported because it gives the more intuitive answer to which captions
+    a motion subclip resembles. Samples in the incomplete final batch are
+    marked as unevaluated, matching :func:`aggregate_t2m_metrics`.
+    """
+
+    text = np.asarray(text_embeddings)
+    motion = np.asarray(motion_embeddings)
+    if text.ndim != 2 or motion.ndim != 2 or text.shape != motion.shape:
+        raise ValueError(
+            "text_embeddings and motion_embeddings must have the same two-dimensional "
+            f"shape, got {text.shape} and {motion.shape}."
+        )
+    count = len(text)
+    if count < 3:
+        raise ValueError(f"At least three paired samples are required, got {count}.")
+    chunk = max(3, min(int(chunk), count))
+    top_k = max(1, min(int(top_k), chunk))
+    used = count // chunk * chunk
+    groups = (
+        np.arange(count, dtype=object)
+        if positive_group_ids is None
+        else np.asarray(positive_group_ids, dtype=object)
+    )
+    if groups.ndim != 1 or len(groups) != count:
+        raise ValueError("positive_group_ids must match the embedding count.")
+
+    selected = set(range(count) if query_indices is None else map(int, query_indices))
+    if any(index < 0 or index >= count for index in selected):
+        raise ValueError("query_indices contains an out-of-range sample index.")
+    records: dict[int, dict[str, object]] = {
+        index: {"sample_index": index, "evaluated": False} for index in selected
+    }
+    order = np.random.default_rng(seed).permutation(count)
+
+    def ranked_items(
+        ranking: np.ndarray,
+        distances: np.ndarray,
+        batch_indices: np.ndarray,
+        query_group: object,
+    ) -> tuple[list[dict[str, object]], int | None]:
+        positives = groups[batch_indices[ranking]] == query_group
+        positive_locations = np.flatnonzero(positives)
+        positive_rank = int(positive_locations[0] + 1) if len(positive_locations) else None
+        items = [
+            {
+                "sample_index": int(batch_indices[local_index]),
+                "distance": float(distances[local_index]),
+                "is_positive": bool(groups[batch_indices[local_index]] == query_group),
+            }
+            for local_index in ranking[:top_k]
+        ]
+        return items, positive_rank
+
+    for batch_index, start in enumerate(range(0, used, chunk)):
+        batch_indices = order[start : start + chunk]
+        requested = [local for local, index in enumerate(batch_indices) if int(index) in selected]
+        if not requested:
+            continue
+        distances = euclidean_distance_matrix(text[batch_indices], motion[batch_indices])
+        for local_index in requested:
+            sample_index = int(batch_indices[local_index])
+            query_group = groups[sample_index]
+            t2m_order = np.argsort(distances[local_index])
+            m2t_order = np.argsort(distances[:, local_index])
+            t2m_top, t2m_rank = ranked_items(
+                t2m_order, distances[local_index], batch_indices, query_group
+            )
+            m2t_top, m2t_rank = ranked_items(
+                m2t_order, distances[:, local_index], batch_indices, query_group
+            )
+            records[sample_index] = {
+                "sample_index": sample_index,
+                "evaluated": True,
+                "batch_index": int(batch_index),
+                "batch_size": int(chunk),
+                "text_to_motion": {
+                    "positive_rank": t2m_rank,
+                    "top": t2m_top,
+                },
+                "motion_to_text": {
+                    "positive_rank": m2t_rank,
+                    "top": m2t_top,
+                },
+            }
+    return records
 
 
 def diversity(
@@ -149,4 +249,4 @@ def aggregate_t2m_metrics(
     }
 
 
-__all__ = ["aggregate_t2m_metrics", "diversity", "r_precision"]
+__all__ = ["aggregate_t2m_metrics", "diversity", "r_precision", "retrieval_audit"]

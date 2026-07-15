@@ -19,7 +19,7 @@ from scipy import linalg
 from motius.motion.skeleton.canonical import canonicalize_smpl22_joints
 
 
-def _caption_group_id(caption: str) -> str:
+def caption_group_id(caption: str) -> str:
     """Normalize punctuation and spacing without merging semantic synonyms."""
 
     return " ".join(re.findall(r"\w+", caption.casefold(), flags=re.UNICODE))
@@ -279,7 +279,7 @@ def evaluate_sequential_cases(
 
     if len(captions) < 3:
         raise ValueError("Sequential semantic evaluation requires at least three segments.")
-    positive_group_ids = [_caption_group_id(caption) for caption in captions]
+    positive_group_ids = [caption_group_id(caption) for caption in captions]
     group_counts = Counter(positive_group_ids)
     retrieval = evaluator.evaluate(
         captions,

@@ -35,3 +35,7 @@ repeated action labels are retained and never treated as false negatives.
 Distribution metrics use all 7,285 segments. The encoder forward batch is 32
 for the measured run and is independent of the recall candidate batch. GT is
 excluded from ranking.
+
+The Space also includes a synchronized Three.js GT/FlowMDM sequence audit. For
+every displayed subclip it exposes the actual Motion-to-Text and Text-to-Motion
+Top-3 rankings from the same seed-0, 32-candidate recall batches.

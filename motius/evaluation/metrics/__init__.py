@@ -7,7 +7,7 @@ from .physical import (
     physical_metrics_from_motion,
     table_scaled_physical_metrics,
 )
-from .t2m import aggregate_t2m_metrics, diversity, r_precision
+from .t2m import aggregate_t2m_metrics, diversity, r_precision, retrieval_audit
 
 __all__ = [
     "PhysicalMetricsConfig",
@@ -17,5 +17,6 @@ __all__ = [
     "diversity",
     "physical_metrics_from_motion",
     "r_precision",
+    "retrieval_audit",
     "table_scaled_physical_metrics",
 ]

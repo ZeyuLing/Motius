@@ -53,6 +53,9 @@ metrics use the full set. `--chunk-size 32` controls the recall candidate set;
 Open the [Three.js sequence audit](../../assets/evaluation/babel_sequential_demo/index.html)
 to compare BABEL GT and FlowMDM frame by frame. Every subclip has a fixed color,
 and the synchronized caption list exposes its exact half-open frame interval.
+Each row also reports the nearest three texts for the GT and generated motion,
+plus the exact text-to-motion positive rank in the seed-0, 32-candidate batch
+used by the leaderboard.
 
 ## Data Layout
 
@@ -94,6 +97,18 @@ python tools/eval_babel_sequential.py \
   --method FlowMDM \
   --output outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_multipositive_v2/flowmdm_seed42/metrics.json \
   --device cuda --batch-size 32 --chunk-size 32 --n-repeats 1
+
+python tools/export_babel_retrieval_audit.py \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_multipositive_v2/manifest.json \
+  --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_multipositive_v2/flowmdm_seed42/joints66 \
+  --output outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_multipositive_v2/flowmdm_seed42/retrieval_audit.json \
+  --device cuda --batch-size 128 --chunk-size 32 --top-k 3 --seed 0
+
+python tools/build_babel_sequential_viewer.py \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_multipositive_v2/manifest.json \
+  --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_multipositive_v2/flowmdm_seed42/joints66 \
+  --retrieval-audit outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_multipositive_v2/flowmdm_seed42/retrieval_audit.json \
+  --output-dir outputs/visualization/babel_sequential_audit
 ```
 
 Both generation and evaluation accept deterministic sharding for cluster runs.

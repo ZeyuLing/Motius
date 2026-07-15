@@ -44,6 +44,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--predictions-dir", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--case-ids", nargs="+", default=list(DEFAULT_CASES))
+    parser.add_argument(
+        "--retrieval-audit",
+        type=Path,
+        help="Optional exact R-Precision ranking export from export_babel_retrieval_audit.py.",
+    )
     return parser.parse_args()
 
 
@@ -52,6 +57,16 @@ def main() -> None:
     manifest_path = args.manifest.resolve()
     source = json.loads(manifest_path.read_text())
     cases = {item["case_id"]: item for item in source["cases"]}
+    audit = None
+    retrieval_records = {}
+    if args.retrieval_audit:
+        audit = json.loads(args.retrieval_audit.resolve().read_text())
+        if audit.get("protocol") != source.get("protocol"):
+            raise ValueError("Retrieval audit protocol does not match the sequence manifest.")
+        retrieval_records = {
+            (item["case_id"], int(item["segment_index"])): item
+            for item in audit.get("records", [])
+        }
     args.output_dir.mkdir(parents=True, exist_ok=True)
     assets = args.output_dir / "assets"
     assets.mkdir(exist_ok=True)
@@ -71,15 +86,22 @@ def main() -> None:
         for index, segment in enumerate(case["segments"]):
             if int(segment["start_frame"]) >= frames:
                 continue
-            segments.append(
-                {
-                    "caption": segment["caption"],
-                    "raw_label": segment.get("raw_label", ""),
-                    "start_frame": int(segment["start_frame"]),
-                    "end_frame": min(int(segment["end_frame"]), frames),
-                    "color": COLORS[index % len(COLORS)],
+            exported_segment = {
+                "caption": segment["caption"],
+                "raw_label": segment.get("raw_label", ""),
+                "start_frame": int(segment["start_frame"]),
+                "end_frame": min(int(segment["end_frame"]), frames),
+                "color": COLORS[index % len(COLORS)],
+            }
+            if audit is not None:
+                record = retrieval_records.get((case_id, index))
+                if record is None:
+                    raise ValueError(f"Retrieval audit is missing {case_id} segment {index}.")
+                exported_segment["retrieval"] = {
+                    "gt": record["gt"],
+                    "flowmdm": record["flowmdm"],
                 }
-            )
+            segments.append(exported_segment)
         exported.append(
             {
                 "case_id": case_id,
@@ -98,6 +120,14 @@ def main() -> None:
         "parents": [-1, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 12, 13, 14, 16, 17, 18, 19],
         "episodes": exported,
     }
+    if audit is not None:
+        payload["retrieval"] = {
+            "evaluator": audit["evaluator"],
+            "seed": int(audit["seed"]),
+            "chunk_size": int(audit["chunk_size"]),
+            "top_k": int(audit["top_k"]),
+            "direction_note": audit["direction_note"],
+        }
     (args.output_dir / "manifest.json").write_text(
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
     )

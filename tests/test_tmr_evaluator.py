@@ -6,7 +6,7 @@ import numpy as np
 import torch
 from PIL import Image
 
-from motius.evaluation.metrics import aggregate_t2m_metrics, r_precision
+from motius.evaluation.metrics import aggregate_t2m_metrics, r_precision, retrieval_audit
 from motius.evaluation.evaluators.tmr import (
     _normalize_tmr_state_dict,
     _resolve_text_model_source,
@@ -88,6 +88,42 @@ def test_r_precision_accepts_repeated_caption_groups_as_multiple_positives() -> 
     np.testing.assert_array_equal(paired, [2])
     np.testing.assert_array_equal(grouped, [3])
     assert grouped_matching < paired_matching
+
+
+def test_retrieval_audit_reproduces_batches_and_both_directions() -> None:
+    text = np.asarray([[0.0], [10.0], [20.0], [30.0], [40.0], [50.0]])
+    motion = np.asarray([[9.0], [1.0], [20.0], [30.0], [40.0], [50.0]])
+    records = retrieval_audit(
+        text,
+        motion,
+        chunk=6,
+        seed=7,
+        top_k=3,
+        positive_group_ids=["a", "b", "c", "d", "e", "f"],
+        query_indices=[0, 1],
+    )
+
+    assert records[0]["evaluated"] is True
+    assert records[1]["evaluated"] is True
+    assert records[0]["batch_size"] == 6
+    assert records[0]["text_to_motion"]["top"][0]["sample_index"] == 1
+    assert records[1]["motion_to_text"]["top"][0]["sample_index"] == 0
+    assert records[0]["text_to_motion"]["positive_rank"] > 1
+
+
+def test_retrieval_audit_marks_permutation_tail_unevaluated() -> None:
+    embeddings = np.arange(7, dtype=np.float32)[:, None]
+    order = np.random.default_rng(3).permutation(len(embeddings))
+    tail_index = int(order[-1])
+    records = retrieval_audit(
+        embeddings,
+        embeddings,
+        chunk=3,
+        seed=3,
+        query_indices=[tail_index],
+    )
+
+    assert records[tail_index] == {"sample_index": tail_index, "evaluated": False}
 
 
 def test_representation_demo_contains_synchronized_routes() -> None:
