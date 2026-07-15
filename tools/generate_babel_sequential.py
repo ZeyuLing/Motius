@@ -18,7 +18,10 @@ from motius.motion import babel135_to_joints
 from motius.pipelines.flowmdm import FlowMDMPipeline
 
 
-SUPPORTED_PROTOCOLS = {"babel-official-val-shortmerge30-llm-joints66-v1"}
+SUPPORTED_PROTOCOLS = {
+    "babel-official-val-shortmerge30-llm-joints66-v1",
+    "babel-official-val-shortmerge30-llm-joints66-multipositive-v2",
+}
 
 
 def parse_args() -> argparse.Namespace:

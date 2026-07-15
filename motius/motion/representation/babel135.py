@@ -23,6 +23,11 @@ from motius.motion.skeleton.names import SMPL22_PARENTS
 
 BABEL135_DIM = 135
 
+_Z_UP_TO_Y_UP = np.asarray(
+    [[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]],
+    dtype=np.float64,
+)
+
 
 def _as_float_array(value, *, name: str) -> np.ndarray:
     array = np.asarray(value, dtype=np.float64)
@@ -151,13 +156,12 @@ def decode_babel135(
     rotations = babel_rows6d_to_matrix(value[:, 3:].reshape(len(value), 22, 6))
 
     if target_up_axis == "y":
-        # AMASS/BABEL is Z-up.  Motius' canonical SMPL-22 evaluator is Y-up.
-        basis = np.asarray(
-            [[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]],
-            dtype=np.float64,
-        )
-        translation = translation @ basis.T
-        rotations = basis @ rotations @ basis.T
+        # AMASS/BABEL is Z-up, while the SMPL rest skeleton is Y-up.  Only the
+        # root rotation maps body coordinates into the world frame; all other
+        # rotations remain parent-local and must not be basis-conjugated.
+        translation = translation @ _Z_UP_TO_Y_UP.T
+        rotations = rotations.copy()
+        rotations[:, 0] = _Z_UP_TO_Y_UP @ rotations[:, 0]
     elif target_up_axis != "z":
         raise ValueError(f"target_up_axis must be 'z' or 'y', got {target_up_axis!r}")
 
@@ -178,7 +182,13 @@ def babel135_to_motion135(features, **kwargs) -> np.ndarray:
 
 
 def babel135_to_joints(features, *, bone_offsets, **kwargs) -> np.ndarray:
-    """Decode BABEL-135 to canonical SMPL-22 joints with explicit offsets."""
+    """Decode BABEL-135 to canonical SMPL-22 joints with explicit offsets.
+
+    ``bone_offsets`` must use the native SMPL body frame, as returned by
+    :func:`motius.motion.skeleton.smpl22_rest_offsets`.  For Y-up output, the
+    root model-origin offset is converted to the output world basis while the
+    parent-local child offsets remain unchanged.
+    """
 
     import torch
 
@@ -188,6 +198,9 @@ def babel135_to_joints(features, *, bone_offsets, **kwargs) -> np.ndarray:
     offsets = _as_float_array(bone_offsets, name="bone_offsets")
     if offsets.shape != (22, 3):
         raise ValueError(f"bone_offsets must have shape (22,3), got {offsets.shape}")
+    offsets = offsets.copy()
+    if kwargs.get("target_up_axis", "y") == "y":
+        offsets[0] = _Z_UP_TO_Y_UP @ offsets[0]
     joints, _ = forward_kinematics(
         torch.from_numpy(decoded["local_rotations"]),
         torch.from_numpy(decoded["translation"]),
@@ -234,11 +247,9 @@ def infer_smpl22_offsets(
             offsets[joint] = np.median(local_delta, axis=0)
 
     if target_up_axis == "y":
-        basis = np.asarray(
-            [[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]],
-            dtype=np.float64,
-        )
-        offsets = offsets @ basis.T
+        # Child offsets are parent-local SMPL quantities.  Only the root joint
+        # offset is expressed directly in the source world basis.
+        offsets[0] = _Z_UP_TO_Y_UP @ offsets[0]
     elif target_up_axis != "z":
         raise ValueError(f"target_up_axis must be 'z' or 'y', got {target_up_axis!r}")
     return offsets.astype(np.float32)

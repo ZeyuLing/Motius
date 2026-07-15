@@ -27,9 +27,11 @@ into this leaderboard.
 | Method | R@1 | R@2 | R@3 | FID | MM-Dist | Transition FID | AUJ Gap |
 | ------ | --: | --: | --: | --: | ------: | -------------: | ------: |
 | BABEL GT | 0.3619 | 0.5131 | 0.5936 | 0.0000 | 45.2346 | 0.0000 | 0.0000 |
-| FlowMDM | 0.1542 | 0.2713 | 0.3420 | 2479.8745 | 56.8611 | 2629.6531 | 55.8724 |
+| FlowMDM | 0.2706 | 0.3922 | 0.4708 | 160.3988 | 47.4209 | 205.8370 | 34.4040 |
 
 R-Precision uses caption-group-aware multi-positive recall batches of 32
 (7,264 paired segments). The 7,285 captions form 2,924 normalized groups;
 repeated action labels are retained and never treated as false negatives.
-Distribution metrics use all 7,285 segments. GT is excluded from ranking.
+Distribution metrics use all 7,285 segments. The encoder forward batch is 32
+for the measured run and is independent of the recall candidate batch. GT is
+excluded from ranking.

@@ -42,12 +42,13 @@ Diversity continue to use all 7,285 intervals.
 | Method | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity | Transition FID | Transition Diversity | Peak Jerk | AUJ Gap |
 | ------ | --: | --: | --: | --: | ------: | --------: | -------------: | -------------------: | --------: | ------: |
 | BABEL GT | 0.3619 | 0.5131 | 0.5936 | 0.0000 | 45.2346 | 57.4816 | 0.0000 | 54.5830 | 56.34 | 0.0000 |
-| FlowMDM | 0.1542 | 0.2713 | 0.3420 | 2479.8745 | 56.8611 | 32.9451 | 2629.6531 | 31.1692 | 463.92 | 55.8724 |
+| FlowMDM | 0.2706 | 0.3922 | 0.4708 | 160.3988 | 47.4209 | 56.5743 | 205.8370 | 54.7209 | 335.67 | 34.4040 |
 
 This is a single deterministic seed-42 generation and one retrieval repeat.
 R-Precision uses 32-sample recall batches, covering 7,264 of the 7,285 paired
 segments, and accepts every same-caption candidate as a positive. Distribution
-metrics use the full set.
+metrics use the full set. `--chunk-size 32` controls the recall candidate set;
+`--batch-size 32` controls only evaluator encoding throughput in this run.
 
 Open the [Three.js sequence audit](../../assets/evaluation/babel_sequential_demo/index.html)
 to compare BABEL GT and FlowMDM frame by frame. Every subclip has a fixed color,

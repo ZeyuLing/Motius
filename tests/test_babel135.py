@@ -5,11 +5,12 @@ from motius.motion.representation.babel135 import (
     babel135_to_joints,
     babel135_to_motion135,
     babel_rows6d_to_matrix,
+    decode_babel135,
     encode_babel135,
     infer_smpl22_offsets,
     matrix_to_babel_rows6d,
 )
-from motius.motion.representation.rotation import axis_angle_to_matrix, matrix_to_axis_angle
+from motius.motion.representation.rotation import axis_angle_to_matrix
 from motius.motion.skeleton.fk import forward_kinematics
 from motius.motion.skeleton.names import SMPL22_PARENTS
 
@@ -24,6 +25,7 @@ def _synthetic_sequence(frames=12):
     trans[:, 2] = 0.92 + np.sin(np.linspace(0, np.pi, frames)) * 0.02
 
     offsets = np.zeros((22, 3), dtype=np.float64)
+    offsets[0] = np.asarray([0.02, -0.21, 0.03])
     for joint, parent in enumerate(SMPL22_PARENTS):
         if parent >= 0:
             offsets[joint] = np.asarray(
@@ -49,25 +51,38 @@ def test_babel_rotation_layout_roundtrip():
 
 
 def test_babel135_roundtrip_to_canonical_y_up_joints():
-    poses, trans, offsets_z, joints_z = _synthetic_sequence()
+    poses, trans, offsets_smpl, _ = _synthetic_sequence()
     encoded = encode_babel135(poses, trans)
-    offsets_y = infer_smpl22_offsets(poses, trans, joints_z, target_up_axis="y")
-    predicted = babel135_to_joints(encoded, bone_offsets=offsets_y)
+    decoded_z = decode_babel135(encoded, target_up_axis="z")
 
-    root_matrix = axis_angle_to_matrix(poses[0, 0])
-    root_axis_angle = np.asarray(matrix_to_axis_angle(root_matrix))
-    canonicalizer = axis_angle_to_matrix(
-        np.asarray([0.0, 0.0, root_axis_angle[2] + np.pi / 2])
+    import torch
+
+    official_z, _ = forward_kinematics(
+        torch.from_numpy(decoded_z["local_rotations"]),
+        torch.from_numpy(decoded_z["translation"]),
+        torch.from_numpy(offsets_smpl.astype(np.float32)),
     )
-    origin = np.asarray([trans[0, 0], trans[0, 1], 0.0])
-    canonical_z = (joints_z - origin) @ canonicalizer
-    z_to_y = np.asarray([[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]])
-    expected = canonical_z @ z_to_y.T
+    z_to_y = np.asarray(
+        [[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]]
+    )
+    expected = official_z.numpy() @ z_to_y.T
+    predicted = babel135_to_joints(encoded, bone_offsets=offsets_smpl)
     np.testing.assert_allclose(predicted, expected, atol=2e-5, rtol=0)
 
     motion135 = babel135_to_motion135(encoded)
     assert motion135.shape == (len(poses), 135)
     assert not np.allclose(encoded[:, :3], motion135[:, :3])
+
+
+def test_inferred_smpl_offsets_only_rotate_model_origin():
+    poses, trans, offsets_smpl, joints_z = _synthetic_sequence()
+    inferred_y = infer_smpl22_offsets(poses, trans, joints_z, target_up_axis="y")
+    z_to_y = np.asarray(
+        [[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]]
+    )
+    expected = offsets_smpl.copy()
+    expected[0] = z_to_y @ expected[0]
+    np.testing.assert_allclose(inferred_y, expected, atol=2e-5, rtol=0)
 
 
 def test_babel135_normalization_is_exact():

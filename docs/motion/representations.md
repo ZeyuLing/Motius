@@ -39,7 +39,9 @@ Use `encode_babel135`, `decode_babel135`, or `babel135_to_joints`; never pass a
 BABEL array to a `motion135` converter. The joint decoder requires explicit
 SMPL-22 bone offsets. The public BABEL sequential protocol stores its fixed
 offsets in the generated manifest so every method reaches the same evaluator
-skeleton.
+skeleton. During Z-up to Y-up conversion, only the root world orientation and
+translation change basis; the 21 parent-local body rotations remain in the
+native SMPL body frame.
 
 ## ARDY-330 And Unitree G1 Explicit 414D
 

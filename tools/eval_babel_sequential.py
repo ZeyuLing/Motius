@@ -32,8 +32,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--method", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--device", default="cuda")
-    parser.add_argument("--batch-size", type=int, default=128)
-    parser.add_argument("--chunk-size", type=int, default=32)
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=128,
+        help="Motion/text encoder forward batch size; does not change retrieval candidates.",
+    )
+    parser.add_argument(
+        "--chunk-size",
+        type=int,
+        default=32,
+        help="R-Precision recall candidate batch size.",
+    )
     parser.add_argument("--n-repeats", type=int, default=1)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--fps", type=float, default=30.0)
