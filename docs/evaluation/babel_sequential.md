@@ -94,31 +94,31 @@ python tools/build_babel_sequential_manifest.py \
   --rewrite-cache data/babel/processed/babel_shortmerge_caption_rewrites.json \
   --babel-annotations data/babel/babel-teach/val.json \
   --smpl-model checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl \
-  --output-root outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_actiongroups_v3
+  --output-root outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1
 
 python tools/generate_babel_sequential.py \
-  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_actiongroups_v3/manifest.json \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest.json \
   --model ZeyuLing/motius-flowmdm-babel \
-  --output-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_actiongroups_v3/flowmdm_seed42 \
+  --output-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42 \
   --device cuda --seed 42
 
 python tools/eval_babel_sequential.py \
-  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_actiongroups_v3/manifest.json \
-  --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_actiongroups_v3/flowmdm_seed42/joints66 \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest.json \
+  --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/joints66 \
   --method FlowMDM \
-  --output outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_actiongroups_v3/flowmdm_seed42/metrics.json \
+  --output outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/metrics.json \
   --device cuda --batch-size 32 --chunk-size 32 --n-repeats 1
 
 python tools/export_babel_retrieval_audit.py \
-  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_actiongroups_v3/manifest.json \
-  --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_actiongroups_v3/flowmdm_seed42/joints66 \
-  --output outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_actiongroups_v3/flowmdm_seed42/retrieval_audit.json \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest.json \
+  --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/joints66 \
+  --output outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/retrieval_audit.json \
   --device cuda --batch-size 128 --chunk-size 32 --top-k 3 --seed 0
 
 python tools/build_babel_sequential_viewer.py \
-  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_actiongroups_v3/manifest.json \
-  --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_actiongroups_v3/flowmdm_seed42/joints66 \
-  --retrieval-audit outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_actiongroups_v3/flowmdm_seed42/retrieval_audit.json \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest.json \
+  --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/joints66 \
+  --retrieval-audit outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/retrieval_audit.json \
   --output-dir outputs/visualization/babel_sequential_audit
 ```
 

@@ -135,7 +135,7 @@
     .best { color: #08766c; background: #edf8f5; font-weight: 760; }
     .second-best { color: #8a5b00; background: #fff8e8; font-weight: 720; }
     .empty { padding: 36px 18px; color: var(--muted); text-align: center; }
-    .metric-key { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 12px; color: var(--muted); font-size: 14px; line-height: 1.4; }
+    .metric-key { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 14px; color: var(--muted); font-size: 16px; line-height: 1.4; }
     .key { display: inline-flex; align-items: center; gap: 6px; }
     .swatch { width: 12px; height: 12px; border-radius: 3px; background: #edf8f5; border: 1px solid #b9ddd6; }
     .swatch.second { background: #fff8e8; border-color: #ecd598; }
@@ -182,7 +182,7 @@
           <p class="lede">Long-form human motion composition from an ordered sequence of text prompts. Every method is retargeted to the same SMPL-22 joints before semantic, distribution, and transition-quality evaluation.</p>
         </div>
         <div class="header-actions">
-          <span class="status" id="status">Multi-positive protocol v2</span>
+          <span class="status" id="status">Action-group protocol v3</span>
           <a class="audit-link" href="audit/">Inspect GT &amp; FlowMDM</a>
         </div>
       </div>
@@ -340,8 +340,8 @@
       document.getElementById("bar-note").textContent = `${spec.label}; ${spec.direction === "min" ? "lower" : "higher"} is better.`;
       if (barChart) barChart.destroy();
       if (radarChart) radarChart.destroy();
-      barChart = new Chart(document.getElementById("bar-chart"), {type:"bar", data:{labels:ordered.map(row=>row.method), datasets:[{data:ordered.map(row=>row[spec.key]), backgroundColor:ordered.map((_,i)=>colors[i%colors.length]), borderRadius:4}]}, options:{indexAxis:"y", responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true, grid:{color:"#e7ebe9"}},y:{grid:{display:false}}}}});
-      radarChart = new Chart(document.getElementById("radar-chart"), {type:"radar", data:{labels:specs.map(item=>item.label), datasets:ranked.map((row,i)=>({label:row.method,data:specs.map(item=>normalized(row,item,ranked)),borderColor:colors[i%colors.length],backgroundColor:colors[i%colors.length]+"18",pointRadius:2,borderWidth:2}))}, options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{display:false},pointLabels:{font:{size:13,weight:"600"},color:"#46534f"},grid:{color:"#e0e6e3"},angleLines:{color:"#e0e6e3"}}},plugins:{legend:{position:"bottom",labels:{boxWidth:12,boxHeight:12,padding:16,font:{size:14,weight:"600"},color:"#34413d"}}}}});
+      barChart = new Chart(document.getElementById("bar-chart"), {type:"bar", data:{labels:ordered.map(row=>row.method), datasets:[{data:ordered.map(row=>row[spec.key]), backgroundColor:ordered.map((_,i)=>colors[i%colors.length]), borderRadius:4}]}, options:{indexAxis:"y", responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true, grid:{color:"#e7ebe9"}},y:{grid:{display:false},ticks:{font:{size:15,weight:"600"},color:"#34413d"}}}}});
+      radarChart = new Chart(document.getElementById("radar-chart"), {type:"radar", data:{labels:specs.map(item=>item.label), datasets:ranked.map((row,i)=>({label:row.method,data:specs.map(item=>normalized(row,item,ranked)),borderColor:colors[i%colors.length],backgroundColor:colors[i%colors.length]+"18",pointRadius:2,borderWidth:2}))}, options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{display:false},pointLabels:{font:{size:14,weight:"600"},color:"#46534f"},grid:{color:"#e0e6e3"},angleLines:{color:"#e0e6e3"}}},plugins:{legend:{position:"bottom",labels:{boxWidth:14,boxHeight:14,padding:18,font:{size:16,weight:"600"},color:"#34413d"}}}}});
     }
     function configureMetrics() {
       const select = document.getElementById("chart-metric");
