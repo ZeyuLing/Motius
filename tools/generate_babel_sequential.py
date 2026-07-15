@@ -21,6 +21,7 @@ from motius.pipelines.flowmdm import FlowMDMPipeline
 SUPPORTED_PROTOCOLS = {
     "babel-official-val-shortmerge30-llm-joints66-v1",
     "babel-official-val-shortmerge30-llm-joints66-multipositive-v2",
+    "babel-official-val-shortmerge30-llm-joints66-actiongroups-v3",
 }
 
 

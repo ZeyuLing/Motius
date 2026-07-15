@@ -26,11 +26,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from motius.evaluation.babel import enrich_manifest_action_groups
 from motius.motion import motion272_to_joints
 from motius.motion.skeleton import smpl22_rest_offsets
 
 
-PROTOCOL = "babel-official-val-shortmerge30-llm-joints66-multipositive-v2"
+PROTOCOL = "babel-official-val-shortmerge30-llm-joints66-actiongroups-v3"
 
 
 def _is_transition(segment: Mapping[str, object]) -> bool:
@@ -430,6 +431,7 @@ def build_protocol(
     motion272_dir: str | Path,
     smpl22_offsets: np.ndarray,
     rewrite_cache: Mapping[str, str],
+    babel_annotations: Mapping[str, object],
     output_root: str | Path,
     target_fps: float = 30.0,
     min_frames: int = 30,
@@ -541,6 +543,15 @@ def build_protocol(
         },
         "cases": cases,
     }
+    manifest, action_group_stats = enrich_manifest_action_groups(
+        manifest,
+        babel_annotations,
+        protocol=PROTOCOL,
+    )
+    manifest["counts"]["action_groups"] = int(action_group_stats["unique_groups"])
+    stats.update(
+        {f"action_group_{key}": value for key, value in action_group_stats.items()}
+    )
     output_root.mkdir(parents=True, exist_ok=True)
     (output_root / "manifest.json").write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
@@ -576,6 +587,11 @@ def parse_args() -> argparse.Namespace:
         "--rewrite-cache",
         default="data/babel/processed/babel_shortmerge_caption_rewrites.json",
         help="Precomputed label-sequence to LLM-caption cache.",
+    )
+    parser.add_argument(
+        "--babel-annotations",
+        default="data/babel/babel-teach/val.json",
+        help="Official BABEL val.json containing proc_label and act_cat fields.",
     )
     parser.add_argument(
         "--smpl-model",
@@ -616,6 +632,9 @@ def main() -> None:
             root_origin="model",
         ),
         rewrite_cache=load_rewrite_cache(args.rewrite_cache),
+        babel_annotations=json.loads(
+            Path(args.babel_annotations).read_text(encoding="utf-8")
+        ),
         output_root=args.output_root,
         target_fps=args.target_fps,
         min_frames=args.min_frames,

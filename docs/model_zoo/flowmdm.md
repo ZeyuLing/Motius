@@ -101,14 +101,14 @@ result is:
 
 | Method | Episodes | Segments | R@1 | R@2 | R@3 | Semantic FID | MM-Dist | Transition FID | AUJ Gap |
 | ------ | -------: | -------: | --: | --: | --: | -----------: | ------: | -------------: | ------: |
-| BABEL GT | 1,295 | 7,285 | 0.3619 | 0.5131 | 0.5936 | 0.0000 | 45.2346 | 0.0000 | 0.0000 |
-| FlowMDM BABEL | 1,295 | 7,285 | 0.2706 | 0.3922 | 0.4708 | 160.3988 | 47.4209 | 205.8370 | 34.4040 |
+| BABEL GT | 1,295 | 7,285 | 0.3947 | 0.5515 | 0.6327 | 0.0000 | 44.5941 | 0.0000 | 0.0000 |
+| FlowMDM BABEL | 1,295 | 7,285 | 0.2958 | 0.4217 | 0.5018 | 160.3988 | 46.7698 | 205.8370 | 34.4040 |
 
-R-Precision uses caption-group-aware multi-positive recall batches of 32 and
-therefore scores 7,264 paired segments; FID and diversity use all 7,285
-segments. The evaluator encoder forward batch is also 32 in this measured run,
-but it does not define the R-Precision candidate set. GT is a calibration row
-and is excluded from method ranking.
+R-Precision uses official BABEL `act_cat` action-group multi-positive batches
+of 32 and therefore scores 7,264 paired segments; FID and diversity use all
+7,285 segments. The evaluator encoder forward batch is also 32 in this measured
+run, but it does not define the R-Precision candidate set. GT is a calibration
+row and is excluded from method ranking.
 
 Full protocol and diagnostic statistics are maintained on the
 [`BABEL Sequential Generation Leaderboard`](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard).

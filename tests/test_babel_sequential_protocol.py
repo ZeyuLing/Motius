@@ -49,6 +49,38 @@ def _smpl22_offsets():
     return offsets
 
 
+def _babel_annotations():
+    return {
+        "7": {
+            "seq_ann": {"labels": [{"act_cat": ["walk", "turn", "stand"]}]},
+            "frame_ann": {
+                "labels": [
+                    {
+                        "raw_label": "walking",
+                        "proc_label": "walk",
+                        "act_cat": ["walk"],
+                    },
+                    {
+                        "raw_label": "transition",
+                        "proc_label": "transition",
+                        "act_cat": ["transition"],
+                    },
+                    {
+                        "raw_label": "turning",
+                        "proc_label": "turn",
+                        "act_cat": ["turn"],
+                    },
+                    {
+                        "raw_label": "standing",
+                        "proc_label": "stand",
+                        "act_cat": ["stand"],
+                    },
+                ]
+            },
+        }
+    }
+
+
 def test_transition_midpoints_and_short_action_merge():
     episode, _ = MODULE.build_official_episode(_record())
     assert [item["end"] for item in episode["segments"]] == [24, 82, 120]
@@ -77,6 +109,7 @@ def test_protocol_uses_llm_rewrites_and_episode_references(tmp_path):
         motion272_dir=motion_dir,
         smpl22_offsets=_smpl22_offsets(),
         rewrite_cache=cache,
+        babel_annotations=_babel_annotations(),
         output_root=output,
     )
     assert manifest["protocol"] == MODULE.PROTOCOL
@@ -88,12 +121,14 @@ def test_protocol_uses_llm_rewrites_and_episode_references(tmp_path):
         "merged_groups": 1,
         "rewrite_hits": 2,
         "rewrite_misses": 0,
+        "action_groups": 2,
     }
     case = manifest["cases"][0]
     assert [item["caption"] for item in case["segments"]] == [
         "A person walks, then turns.",
         "A person stands.",
     ]
+    assert all(item["action_group_id"].startswith("babel-act-cat-v1:") for item in case["segments"])
     reference = np.load(output / case["reference_path"])
     assert reference.shape == (120, 66)
     assert np.isfinite(reference).all()
@@ -120,6 +155,7 @@ def test_protocol_accepts_preclipped_ms272(tmp_path):
         motion272_dir=motion_dir,
         smpl22_offsets=_smpl22_offsets(),
         rewrite_cache=cache,
+        babel_annotations=_babel_annotations(),
         output_root=tmp_path / "protocol",
     )
     reference = np.load(
@@ -131,7 +167,7 @@ def test_protocol_accepts_preclipped_ms272(tmp_path):
 def test_public_babel_viewer_has_colored_captioned_subclips():
     root = Path(__file__).resolve().parents[1] / "assets/evaluation/babel_sequential_demo"
     manifest = json.loads((root / "manifest.json").read_text())
-    assert manifest["protocol"].endswith("multipositive-v2")
+    assert manifest["protocol"].endswith("actiongroups-v3")
     assert len(manifest["episodes"]) == 3
     for episode in manifest["episodes"]:
         assert len(episode["segments"]) >= 5

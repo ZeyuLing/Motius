@@ -371,7 +371,7 @@
       const rankingRows = (items) => items.map((item, index) => `
         <li>
           <span>#${index + 1}</span>
-          <span class="${item.is_positive ? "positive" : ""}">${escapeHtml(item.caption)}</span>
+          <span class="${item.is_positive ? "positive" : ""}" title="BABEL: ${escapeHtml(item.raw_label || "")}">${escapeHtml(item.caption)}</span>
           <span class="distance">${item.distance.toFixed(2)}</span>
         </li>`).join("");
       return `
@@ -417,7 +417,8 @@
         row.setAttribute("role", "button");
         row.style.setProperty("--segment", segment.color);
         const seconds = ((segment.end_frame - segment.start_frame) / episode.fps).toFixed(1);
-        row.innerHTML = `<span class="stripe"></span><span class="caption">${escapeHtml(segment.caption)}<span class="raw">BABEL: ${escapeHtml(segment.raw_label)}</span></span>${retrievalCell("BABEL GT", segment.retrieval?.gt)}${retrievalCell("FlowMDM", segment.retrieval?.flowmdm)}<span class="range">${segment.start_frame}–${segment.end_frame}<br>${seconds}s</span>`;
+        const categories = (segment.action_categories || []).map((values) => values.join(" + ")).join(" → ");
+        row.innerHTML = `<span class="stripe"></span><span class="caption">${escapeHtml(segment.caption)}<span class="raw">BABEL: ${escapeHtml(segment.raw_label)}</span><span class="raw">act_cat: ${escapeHtml(categories)}</span></span>${retrievalCell("BABEL GT", segment.retrieval?.gt)}${retrievalCell("FlowMDM", segment.retrieval?.flowmdm)}<span class="range">${segment.start_frame}–${segment.end_frame}<br>${seconds}s</span>`;
         row.addEventListener("click", (event) => {
           if (!event.target.closest("details")) setFrame(segment.start_frame);
         });

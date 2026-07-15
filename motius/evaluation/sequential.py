@@ -7,7 +7,6 @@ transition metrics in this module remain checkpoint-free.
 
 from __future__ import annotations
 
-import re
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
@@ -16,13 +15,14 @@ from typing import Mapping, Sequence
 import numpy as np
 from scipy import linalg
 
+from motius.evaluation.babel import normalize_action_text
 from motius.motion.skeleton.canonical import canonicalize_smpl22_joints
 
 
 def caption_group_id(caption: str) -> str:
     """Normalize punctuation and spacing without merging semantic synonyms."""
 
-    return " ".join(re.findall(r"\w+", caption.casefold(), flags=re.UNICODE))
+    return normalize_action_text(caption)
 
 
 @dataclass(frozen=True)
@@ -32,6 +32,7 @@ class SequentialSegment:
     caption: str
     start_frame: int
     end_frame: int
+    action_group_id: str | None = None
 
     @classmethod
     def from_mapping(cls, value: Mapping[str, object]) -> "SequentialSegment":
@@ -39,6 +40,11 @@ class SequentialSegment:
             caption=str(value["caption"]).strip(),
             start_frame=int(value["start_frame"]),
             end_frame=int(value["end_frame"]),
+            action_group_id=(
+                str(value["action_group_id"]).strip()
+                if value.get("action_group_id")
+                else None
+            ),
         )
         if not segment.caption:
             raise ValueError("Sequential segment captions must not be empty.")
@@ -253,6 +259,7 @@ def evaluate_sequential_cases(
     predicted_segments: list[np.ndarray] = []
     paired_reference_transitions: list[np.ndarray] = []
     predicted_transitions: list[np.ndarray] = []
+    action_group_ids: list[str | None] = []
 
     for case in cases:
         reference = load_joints66(case.reference_path) if case.reference_path else None
@@ -267,6 +274,7 @@ def evaluate_sequential_cases(
         for segment in case.segments:
             region = slice(segment.start_frame, segment.end_frame)
             captions.append(segment.caption)
+            action_group_ids.append(segment.action_group_id)
             if reference is not None:
                 paired_reference_segments.append(reference[region])
             predicted_segments.append(canonicalize_smpl22_joints(predicted[region]))
@@ -279,7 +287,17 @@ def evaluate_sequential_cases(
 
     if len(captions) < 3:
         raise ValueError("Sequential semantic evaluation requires at least three segments.")
-    positive_group_ids = [caption_group_id(caption) for caption in captions]
+    has_action_groups = [value is not None for value in action_group_ids]
+    if any(has_action_groups) and not all(has_action_groups):
+        raise ValueError("Sequential manifests must define action_group_id for every segment.")
+    if all(has_action_groups):
+        positive_group_ids = [str(value) for value in action_group_ids]
+        group_kind = "official_babel_act_cat"
+        group_policy = "action_group_multi_positive"
+    else:
+        positive_group_ids = [caption_group_id(caption) for caption in captions]
+        group_kind = "normalized_caption_fallback"
+        group_policy = "caption_group_multi_positive"
     group_counts = Counter(positive_group_ids)
     retrieval = evaluator.evaluate(
         captions,
@@ -384,7 +402,19 @@ def evaluate_sequential_cases(
             fps=fps,
         ),
     }
-    return {
+    group_summary = {
+        "kind": group_kind,
+        "normalization": (
+            "babel-act-cat-v1" if all(has_action_groups) else "unicode_word_casefold"
+        ),
+        "r_precision_policy": group_policy,
+        "unique": len(group_counts),
+        "duplicate_groups": sum(count > 1 for count in group_counts.values()),
+        "segments_in_duplicate_groups": sum(
+            count for count in group_counts.values() if count > 1
+        ),
+    }
+    result = {
         "protocol": str(protocol),
         "motion_representation": "SMPL-22 joints66",
         "evaluator": "Motius Joint-Position Evaluator",
@@ -392,15 +422,7 @@ def evaluate_sequential_cases(
         "transition_frames": int(transition_frames),
         "n_cases": len(cases),
         "n_segments": len(captions),
-        "caption_groups": {
-            "normalization": "unicode_word_casefold",
-            "r_precision_policy": "caption_group_multi_positive",
-            "unique": len(group_counts),
-            "duplicate_groups": sum(count > 1 for count in group_counts.values()),
-            "segments_in_duplicate_groups": sum(
-                count for count in group_counts.values() if count > 1
-            ),
-        },
+        "retrieval_groups": group_summary,
         "n_reference_segments": len(semantic_reference),
         "n_transitions": len(predicted_transitions),
         "n_reference_transitions": len(transition_reference),
@@ -414,6 +436,9 @@ def evaluate_sequential_cases(
         "subsequence": subsequence,
         "transition": transition,
     }
+    if not all(has_action_groups):
+        result["caption_groups"] = group_summary
+    return result
 
 
 __all__ = [

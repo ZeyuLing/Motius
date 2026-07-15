@@ -20,12 +20,12 @@ def r_precision(
     top_k: int = 3,
     positive_group_ids: Optional[Sequence[object]] = None,
 ):
-    """Compute retrieval recall with optional multi-positive caption groups.
+    """Compute retrieval recall with optional multi-positive semantic groups.
 
     Standard T2M benchmarks pair every text with exactly one motion, so the
-    diagonal is the positive set. BABEL contains many repeated action captions;
-    when ``positive_group_ids`` is provided, every motion sharing the query's
-    group id is accepted as a positive instead of becoming a false negative.
+    diagonal is the positive set. When ``positive_group_ids`` is provided,
+    every motion sharing the query's group id is accepted as a positive instead
+    of becoming a false negative.
     """
 
     distances = euclidean_distance_matrix(text, motion)
@@ -236,7 +236,7 @@ def aggregate_t2m_metrics(
         "n_samples_used": int(used),
         "n_repeats": int(n_repeats),
         "r_precision_policy": (
-            "caption_group_multi_positive"
+            "group_multi_positive"
             if group_ids is not None
             else "paired_diagonal_single_positive"
         ),

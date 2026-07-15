@@ -1,5 +1,5 @@
 {
-  "protocol": "babel-official-val-shortmerge30-llm-joints66-multipositive-v2",
+  "protocol": "babel-official-val-shortmerge30-llm-joints66-actiongroups-v3",
   "method": "FlowMDM",
   "parents": [
     -1,
@@ -36,6 +36,12 @@
         {
           "caption": "A person walks forward.",
           "raw_label": "walk forward",
+          "action_categories": [
+            [
+              "walk"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
           "start_frame": 0,
           "end_frame": 71,
           "color": "#e15d44",
@@ -56,6 +62,21 @@
                     "case_id": "val_7318",
                     "segment_index": 2,
                     "caption": "A person holds a handle with their left hand, then walks, then stands in an A-pose.",
+                    "raw_label": "holding handle with left hand then walking then a-pose",
+                    "action_categories": [
+                      [
+                        "grasp object",
+                        "hand movements",
+                        "interact with use object"
+                      ],
+                      [
+                        "walk"
+                      ],
+                      [
+                        "a pose"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:7c3cd7a7e649e03042cd",
                     "start_frame": 74,
                     "end_frame": 141
                   },
@@ -67,6 +88,13 @@
                     "case_id": "val_919",
                     "segment_index": 0,
                     "caption": "A person walks forward.",
+                    "raw_label": "walk forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 71
                   },
@@ -78,6 +106,16 @@
                     "case_id": "val_8881",
                     "segment_index": 1,
                     "caption": "A person loses balance, then walks.",
+                    "raw_label": "loosing balance then walking",
+                    "action_categories": [
+                      [
+                        "balance"
+                      ],
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:770564e06096688a10e4",
                     "start_frame": 34,
                     "end_frame": 92
                   }
@@ -94,17 +132,31 @@
                     "case_id": "val_919",
                     "segment_index": 0,
                     "caption": "A person walks forward.",
+                    "raw_label": "walk forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 71
                   },
                   {
                     "sample_index": 572,
                     "distance": 46.30349349975586,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 83,
                     "case_id": "val_2053",
                     "segment_index": 0,
                     "caption": "A person walks.",
+                    "raw_label": "walking",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 36
                   },
@@ -116,6 +168,16 @@
                     "case_id": "val_8881",
                     "segment_index": 1,
                     "caption": "A person loses balance, then walks.",
+                    "raw_label": "loosing balance then walking",
+                    "action_categories": [
+                      [
+                        "balance"
+                      ],
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:770564e06096688a10e4",
                     "start_frame": 34,
                     "end_frame": 92
                   }
@@ -138,6 +200,16 @@
                     "case_id": "val_8170",
                     "segment_index": 1,
                     "caption": "A person sits, then walks.",
+                    "raw_label": "sitting then walking",
+                    "action_categories": [
+                      [
+                        "sit"
+                      ],
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:18235a8e781602c4bb09",
                     "start_frame": 33,
                     "end_frame": 156
                   },
@@ -149,6 +221,13 @@
                     "case_id": "val_919",
                     "segment_index": 0,
                     "caption": "A person walks forward.",
+                    "raw_label": "walk forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 71
                   },
@@ -160,6 +239,15 @@
                     "case_id": "val_10780",
                     "segment_index": 4,
                     "caption": "A person waves their right arm left and right.",
+                    "raw_label": "waves right arm left and right",
+                    "action_categories": [
+                      [
+                        "arm movements",
+                        "gesture",
+                        "wave"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:e182a0196e2673ca0302",
                     "start_frame": 1133,
                     "end_frame": 1393
                   }
@@ -176,17 +264,31 @@
                     "case_id": "val_919",
                     "segment_index": 0,
                     "caption": "A person walks forward.",
+                    "raw_label": "walk forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 71
                   },
                   {
                     "sample_index": 572,
                     "distance": 40.49632263183594,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 83,
                     "case_id": "val_2053",
                     "segment_index": 0,
                     "caption": "A person walks.",
+                    "raw_label": "walking",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 36
                   },
@@ -198,6 +300,21 @@
                     "case_id": "val_7318",
                     "segment_index": 2,
                     "caption": "A person holds a handle with their left hand, then walks, then stands in an A-pose.",
+                    "raw_label": "holding handle with left hand then walking then a-pose",
+                    "action_categories": [
+                      [
+                        "grasp object",
+                        "hand movements",
+                        "interact with use object"
+                      ],
+                      [
+                        "walk"
+                      ],
+                      [
+                        "a pose"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:7c3cd7a7e649e03042cd",
                     "start_frame": 74,
                     "end_frame": 141
                   }
@@ -209,6 +326,12 @@
         {
           "caption": "A person sits down.",
           "raw_label": "sit down",
+          "action_categories": [
+            [
+              "sit"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:fea01fc15318b419b927",
           "start_frame": 71,
           "end_frame": 158,
           "color": "#1976d2",
@@ -229,6 +352,13 @@
                     "case_id": "val_919",
                     "segment_index": 1,
                     "caption": "A person sits down.",
+                    "raw_label": "sit down",
+                    "action_categories": [
+                      [
+                        "sit"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:fea01fc15318b419b927",
                     "start_frame": 71,
                     "end_frame": 158
                   },
@@ -240,6 +370,13 @@
                     "case_id": "val_919",
                     "segment_index": 3,
                     "caption": "A person stands up.",
+                    "raw_label": "stand up",
+                    "action_categories": [
+                      [
+                        "stand up"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:d2c33688647fc9facb23",
                     "start_frame": 201,
                     "end_frame": 248
                   },
@@ -251,6 +388,13 @@
                     "case_id": "val_7975",
                     "segment_index": 13,
                     "caption": "A person stands in an A-pose.",
+                    "raw_label": "a-pose",
+                    "action_categories": [
+                      [
+                        "a pose"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:785d39ef3a359044389a",
                     "start_frame": 1956,
                     "end_frame": 2002
                   }
@@ -267,6 +411,13 @@
                     "case_id": "val_919",
                     "segment_index": 1,
                     "caption": "A person sits down.",
+                    "raw_label": "sit down",
+                    "action_categories": [
+                      [
+                        "sit"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:fea01fc15318b419b927",
                     "start_frame": 71,
                     "end_frame": 158
                   },
@@ -278,6 +429,22 @@
                     "case_id": "val_7564",
                     "segment_index": 1,
                     "caption": "A person squats down, then grabs an object with both hands, then squats.",
+                    "raw_label": "squat down then grab object with both hands then squat",
+                    "action_categories": [
+                      [
+                        "squat"
+                      ],
+                      [
+                        "grasp object",
+                        "hand movements",
+                        "interact with use object",
+                        "touch object"
+                      ],
+                      [
+                        "squat"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:b11c3232781e84d8ade6",
                     "start_frame": 34,
                     "end_frame": 67
                   },
@@ -289,6 +456,13 @@
                     "case_id": "val_919",
                     "segment_index": 3,
                     "caption": "A person stands up.",
+                    "raw_label": "stand up",
+                    "action_categories": [
+                      [
+                        "stand up"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:d2c33688647fc9facb23",
                     "start_frame": 201,
                     "end_frame": 248
                   }
@@ -311,6 +485,13 @@
                     "case_id": "val_919",
                     "segment_index": 1,
                     "caption": "A person sits down.",
+                    "raw_label": "sit down",
+                    "action_categories": [
+                      [
+                        "sit"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:fea01fc15318b419b927",
                     "start_frame": 71,
                     "end_frame": 158
                   },
@@ -322,6 +503,22 @@
                     "case_id": "val_7564",
                     "segment_index": 1,
                     "caption": "A person squats down, then grabs an object with both hands, then squats.",
+                    "raw_label": "squat down then grab object with both hands then squat",
+                    "action_categories": [
+                      [
+                        "squat"
+                      ],
+                      [
+                        "grasp object",
+                        "hand movements",
+                        "interact with use object",
+                        "touch object"
+                      ],
+                      [
+                        "squat"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:b11c3232781e84d8ade6",
                     "start_frame": 34,
                     "end_frame": 67
                   },
@@ -333,6 +530,16 @@
                     "case_id": "val_9991",
                     "segment_index": 3,
                     "caption": "A person turns, then walks.",
+                    "raw_label": "turning then walking",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ],
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:0f84509fa5ba0d4dca8a",
                     "start_frame": 120,
                     "end_frame": 172
                   }
@@ -349,6 +556,13 @@
                     "case_id": "val_919",
                     "segment_index": 1,
                     "caption": "A person sits down.",
+                    "raw_label": "sit down",
+                    "action_categories": [
+                      [
+                        "sit"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:fea01fc15318b419b927",
                     "start_frame": 71,
                     "end_frame": 158
                   },
@@ -360,6 +574,22 @@
                     "case_id": "val_7564",
                     "segment_index": 1,
                     "caption": "A person squats down, then grabs an object with both hands, then squats.",
+                    "raw_label": "squat down then grab object with both hands then squat",
+                    "action_categories": [
+                      [
+                        "squat"
+                      ],
+                      [
+                        "grasp object",
+                        "hand movements",
+                        "interact with use object",
+                        "touch object"
+                      ],
+                      [
+                        "squat"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:b11c3232781e84d8ade6",
                     "start_frame": 34,
                     "end_frame": 67
                   },
@@ -371,6 +601,13 @@
                     "case_id": "val_10371",
                     "segment_index": 9,
                     "caption": "A person claims down.",
+                    "raw_label": "claiming down",
+                    "action_categories": [
+                      [
+                        "move up down incline"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:156d9618a7a1a6692abf",
                     "start_frame": 926,
                     "end_frame": 1026
                   }
@@ -382,6 +619,12 @@
         {
           "caption": "A person rests.",
           "raw_label": "rest",
+          "action_categories": [
+            [
+              "relax"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:d84bcfccb446a12aa96b",
           "start_frame": 158,
           "end_frame": 201,
           "color": "#19a974",
@@ -402,6 +645,13 @@
                     "case_id": "val_4624",
                     "segment_index": 1,
                     "caption": "A person stands.",
+                    "raw_label": "stand",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:830fbc0a5efe4d66f65d",
                     "start_frame": 35,
                     "end_frame": 104
                   },
@@ -413,6 +663,13 @@
                     "case_id": "val_5612",
                     "segment_index": 16,
                     "caption": "A person stands in a T-pose.",
+                    "raw_label": "t-pose",
+                    "action_categories": [
+                      [
+                        "t pose"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:068ef9e8ea4b02c89b5b",
                     "start_frame": 3662,
                     "end_frame": 3749
                   },
@@ -424,6 +681,14 @@
                     "case_id": "val_3145",
                     "segment_index": 27,
                     "caption": "A person lifts their arms out to sides.",
+                    "raw_label": "lift arms out to sides",
+                    "action_categories": [
+                      [
+                        "arm movements",
+                        "raising body part"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:c21c66ef585a636d44ff",
                     "start_frame": 2786,
                     "end_frame": 2942
                   }
@@ -440,6 +705,18 @@
                     "case_id": "val_5314",
                     "segment_index": 1,
                     "caption": "A person tosses with their right hand, then kicks with their right foot.",
+                    "raw_label": "toss with right hand then kick with right foot",
+                    "action_categories": [
+                      [
+                        "hand movements",
+                        "throw"
+                      ],
+                      [
+                        "foot movements",
+                        "kick"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:82ee1c24c79919c27b5d",
                     "start_frame": 47,
                     "end_frame": 93
                   },
@@ -451,6 +728,13 @@
                     "case_id": "val_3972",
                     "segment_index": 3,
                     "caption": "A person sits.",
+                    "raw_label": "sit",
+                    "action_categories": [
+                      [
+                        "sit"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:fea01fc15318b419b927",
                     "start_frame": 199,
                     "end_frame": 244
                   },
@@ -462,6 +746,13 @@
                     "case_id": "val_127",
                     "segment_index": 4,
                     "caption": "A person turns left.",
+                    "raw_label": "turn left",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:19ef92ceff07244353e3",
                     "start_frame": 268,
                     "end_frame": 399
                   }
@@ -484,6 +775,15 @@
                     "case_id": "val_600",
                     "segment_index": 4,
                     "caption": "A person draws on a surface with their left hand.",
+                    "raw_label": "draw on surface with left hand",
+                    "action_categories": [
+                      [
+                        "draw",
+                        "hand movements",
+                        "interact with use object"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:e5fd6d5a64ba9efecf8f",
                     "start_frame": 593,
                     "end_frame": 770
                   },
@@ -495,6 +795,17 @@
                     "case_id": "val_13006",
                     "segment_index": 2,
                     "caption": "A person cleans, then stands.",
+                    "raw_label": "cleaning then standing transition",
+                    "action_categories": [
+                      [
+                        "clean something"
+                      ],
+                      [
+                        "stand",
+                        "transition"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:1d5ff080ff0c4ac15f34",
                     "start_frame": 63,
                     "end_frame": 180
                   },
@@ -506,6 +817,14 @@
                     "case_id": "val_6518",
                     "segment_index": 1,
                     "caption": "A person performs a hand gesture series a.",
+                    "raw_label": "hand gesture series a",
+                    "action_categories": [
+                      [
+                        "gesture",
+                        "hand movements"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:c443c8a6a0bf5100beeb",
                     "start_frame": 104,
                     "end_frame": 256
                   }
@@ -522,6 +841,13 @@
                     "case_id": "val_3972",
                     "segment_index": 3,
                     "caption": "A person sits.",
+                    "raw_label": "sit",
+                    "action_categories": [
+                      [
+                        "sit"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:fea01fc15318b419b927",
                     "start_frame": 199,
                     "end_frame": 244
                   },
@@ -533,6 +859,13 @@
                     "case_id": "val_2285",
                     "segment_index": 12,
                     "caption": "A person stands in a T-pose.",
+                    "raw_label": "t-pose",
+                    "action_categories": [
+                      [
+                        "t pose"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:068ef9e8ea4b02c89b5b",
                     "start_frame": 834,
                     "end_frame": 900
                   },
@@ -544,6 +877,13 @@
                     "case_id": "val_5612",
                     "segment_index": 16,
                     "caption": "A person stands in a T-pose.",
+                    "raw_label": "t-pose",
+                    "action_categories": [
+                      [
+                        "t pose"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:068ef9e8ea4b02c89b5b",
                     "start_frame": 3662,
                     "end_frame": 3749
                   }
@@ -555,6 +895,12 @@
         {
           "caption": "A person stands up.",
           "raw_label": "stand up",
+          "action_categories": [
+            [
+              "stand up"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:d2c33688647fc9facb23",
           "start_frame": 201,
           "end_frame": 248,
           "color": "#d69e18",
@@ -575,6 +921,13 @@
                     "case_id": "val_919",
                     "segment_index": 3,
                     "caption": "A person stands up.",
+                    "raw_label": "stand up",
+                    "action_categories": [
+                      [
+                        "stand up"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:d2c33688647fc9facb23",
                     "start_frame": 201,
                     "end_frame": 248
                   },
@@ -586,6 +939,13 @@
                     "case_id": "val_4483",
                     "segment_index": 3,
                     "caption": "A person turns around to the right.",
+                    "raw_label": "turn around to the right",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:19ef92ceff07244353e3",
                     "start_frame": 129,
                     "end_frame": 170
                   },
@@ -597,6 +957,13 @@
                     "case_id": "val_919",
                     "segment_index": 1,
                     "caption": "A person sits down.",
+                    "raw_label": "sit down",
+                    "action_categories": [
+                      [
+                        "sit"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:fea01fc15318b419b927",
                     "start_frame": 71,
                     "end_frame": 158
                   }
@@ -613,6 +980,13 @@
                     "case_id": "val_919",
                     "segment_index": 3,
                     "caption": "A person stands up.",
+                    "raw_label": "stand up",
+                    "action_categories": [
+                      [
+                        "stand up"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:d2c33688647fc9facb23",
                     "start_frame": 201,
                     "end_frame": 248
                   },
@@ -624,6 +998,13 @@
                     "case_id": "val_919",
                     "segment_index": 1,
                     "caption": "A person sits down.",
+                    "raw_label": "sit down",
+                    "action_categories": [
+                      [
+                        "sit"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:fea01fc15318b419b927",
                     "start_frame": 71,
                     "end_frame": 158
                   },
@@ -635,6 +1016,17 @@
                     "case_id": "val_4310",
                     "segment_index": 1,
                     "caption": "A person turns left, then steps up.",
+                    "raw_label": "turn left then step up",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ],
+                      [
+                        "move up down incline",
+                        "step"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:184e04381c2d6ef4711b",
                     "start_frame": 36,
                     "end_frame": 104
                   }
@@ -657,6 +1049,16 @@
                     "case_id": "val_12182",
                     "segment_index": 2,
                     "caption": "A person places something, then stands.",
+                    "raw_label": "place then stand",
+                    "action_categories": [
+                      [
+                        "place something"
+                      ],
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:d3d18a19418ed49db371",
                     "start_frame": 198,
                     "end_frame": 269
                   },
@@ -668,6 +1070,22 @@
                     "case_id": "val_7564",
                     "segment_index": 1,
                     "caption": "A person squats down, then grabs an object with both hands, then squats.",
+                    "raw_label": "squat down then grab object with both hands then squat",
+                    "action_categories": [
+                      [
+                        "squat"
+                      ],
+                      [
+                        "grasp object",
+                        "hand movements",
+                        "interact with use object",
+                        "touch object"
+                      ],
+                      [
+                        "squat"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:b11c3232781e84d8ade6",
                     "start_frame": 34,
                     "end_frame": 67
                   },
@@ -679,6 +1097,14 @@
                     "case_id": "val_6645",
                     "segment_index": 1,
                     "caption": "A person lifts an object.",
+                    "raw_label": "lift object",
+                    "action_categories": [
+                      [
+                        "interact with use object",
+                        "lift something"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:4db9524d5e5681bdbfc6",
                     "start_frame": 96,
                     "end_frame": 169
                   }
@@ -695,6 +1121,16 @@
                     "case_id": "val_9189",
                     "segment_index": 8,
                     "caption": "A person waves their right hand.",
+                    "raw_label": "wave right",
+                    "action_categories": [
+                      [
+                        "gesture",
+                        "greet",
+                        "hand movements",
+                        "wave"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:ba68166e4a36feecf914",
                     "start_frame": 478,
                     "end_frame": 538
                   },
@@ -706,6 +1142,14 @@
                     "case_id": "val_6645",
                     "segment_index": 1,
                     "caption": "A person lifts an object.",
+                    "raw_label": "lift object",
+                    "action_categories": [
+                      [
+                        "interact with use object",
+                        "lift something"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:4db9524d5e5681bdbfc6",
                     "start_frame": 96,
                     "end_frame": 169
                   },
@@ -717,6 +1161,13 @@
                     "case_id": "val_8843",
                     "segment_index": 17,
                     "caption": "A person steps forward.",
+                    "raw_label": "step forward",
+                    "action_categories": [
+                      [
+                        "step"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:e48e6d81afee39436843",
                     "start_frame": 841,
                     "end_frame": 883
                   }
@@ -728,6 +1179,13 @@
         {
           "caption": "A person walks back.",
           "raw_label": "walk back",
+          "action_categories": [
+            [
+              "backwards movement",
+              "walk"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:3221686624afe9294ed1",
           "start_frame": 248,
           "end_frame": 316,
           "color": "#8b5cf6",
@@ -748,6 +1206,14 @@
                     "case_id": "val_3720",
                     "segment_index": 3,
                     "caption": "A person walks back.",
+                    "raw_label": "walking back",
+                    "action_categories": [
+                      [
+                        "backwards movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:3221686624afe9294ed1",
                     "start_frame": 272,
                     "end_frame": 351
                   },
@@ -759,6 +1225,16 @@
                     "case_id": "val_5484",
                     "segment_index": 4,
                     "caption": "A person turns left, then walks straight.",
+                    "raw_label": "turn left then walking straight",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ],
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:0f84509fa5ba0d4dca8a",
                     "start_frame": 307,
                     "end_frame": 394
                   },
@@ -770,6 +1246,13 @@
                     "case_id": "val_11303",
                     "segment_index": 2,
                     "caption": "A person turns around.",
+                    "raw_label": "turn around",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:19ef92ceff07244353e3",
                     "start_frame": 82,
                     "end_frame": 114
                   }
@@ -786,6 +1269,13 @@
                     "case_id": "val_10675",
                     "segment_index": 0,
                     "caption": "A person walks.",
+                    "raw_label": "walking",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 34
                   },
@@ -797,6 +1287,13 @@
                     "case_id": "val_674",
                     "segment_index": 1,
                     "caption": "A person walks.",
+                    "raw_label": "walk",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 46,
                     "end_frame": 142
                   },
@@ -808,6 +1305,14 @@
                     "case_id": "val_919",
                     "segment_index": 4,
                     "caption": "A person walks back.",
+                    "raw_label": "walk back",
+                    "action_categories": [
+                      [
+                        "backwards movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:3221686624afe9294ed1",
                     "start_frame": 248,
                     "end_frame": 316
                   }
@@ -830,6 +1335,14 @@
                     "case_id": "val_3720",
                     "segment_index": 3,
                     "caption": "A person walks back.",
+                    "raw_label": "walking back",
+                    "action_categories": [
+                      [
+                        "backwards movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:3221686624afe9294ed1",
                     "start_frame": 272,
                     "end_frame": 351
                   },
@@ -841,6 +1354,13 @@
                     "case_id": "val_674",
                     "segment_index": 1,
                     "caption": "A person walks.",
+                    "raw_label": "walk",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 46,
                     "end_frame": 142
                   },
@@ -852,6 +1372,13 @@
                     "case_id": "val_10675",
                     "segment_index": 0,
                     "caption": "A person walks.",
+                    "raw_label": "walking",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 34
                   }
@@ -868,6 +1395,13 @@
                     "case_id": "val_674",
                     "segment_index": 1,
                     "caption": "A person walks.",
+                    "raw_label": "walk",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 46,
                     "end_frame": 142
                   },
@@ -879,6 +1413,13 @@
                     "case_id": "val_10675",
                     "segment_index": 0,
                     "caption": "A person walks.",
+                    "raw_label": "walking",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 34
                   },
@@ -890,6 +1431,14 @@
                     "case_id": "val_919",
                     "segment_index": 4,
                     "caption": "A person walks back.",
+                    "raw_label": "walk back",
+                    "action_categories": [
+                      [
+                        "backwards movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:3221686624afe9294ed1",
                     "start_frame": 248,
                     "end_frame": 316
                   }
@@ -910,6 +1459,12 @@
         {
           "caption": "A person walks forward.",
           "raw_label": "walking forward",
+          "action_categories": [
+            [
+              "walk"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
           "start_frame": 0,
           "end_frame": 83,
           "color": "#e15d44",
@@ -920,16 +1475,23 @@
               "batch_index": 173,
               "batch_size": 32,
               "text_to_motion": {
-                "positive_rank": 4,
+                "positive_rank": 1,
                 "top": [
                   {
                     "sample_index": 4797,
                     "distance": 23.809490203857422,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 820,
                     "case_id": "val_4771",
                     "segment_index": 1,
                     "caption": "A person walks quickly.",
+                    "raw_label": "walking quickly",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 62,
                     "end_frame": 165
                   },
@@ -941,6 +1503,18 @@
                     "case_id": "val_11047",
                     "segment_index": 18,
                     "caption": "A person comes down stairs right foot first, then goes upstairs left foot first.",
+                    "raw_label": "coming down strairs( right foot first) then going upstairs (left foot first)",
+                    "action_categories": [
+                      [
+                        "foot movements",
+                        "move up down incline"
+                      ],
+                      [
+                        "foot movements",
+                        "move up down incline"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:b5b482f7bb2dc42813ed",
                     "start_frame": 866,
                     "end_frame": 911
                   },
@@ -952,22 +1526,40 @@
                     "case_id": "val_5026",
                     "segment_index": 10,
                     "caption": "A person steps forward, then extends their right foot forward.",
+                    "raw_label": "step forward then extend right foot forward",
+                    "action_categories": [
+                      [
+                        "step"
+                      ],
+                      [
+                        "foot movements",
+                        "stretch"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:68ce0055ef33ec81d080",
                     "start_frame": 520,
                     "end_frame": 560
                   }
                 ]
               },
               "motion_to_text": {
-                "positive_rank": 2,
+                "positive_rank": 1,
                 "top": [
                   {
                     "sample_index": 4797,
                     "distance": 33.07421112060547,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 820,
                     "case_id": "val_4771",
                     "segment_index": 1,
                     "caption": "A person walks quickly.",
+                    "raw_label": "walking quickly",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 62,
                     "end_frame": 165
                   },
@@ -979,6 +1571,13 @@
                     "case_id": "val_4869",
                     "segment_index": 0,
                     "caption": "A person walks forward.",
+                    "raw_label": "walking forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 83
                   },
@@ -990,6 +1589,13 @@
                     "case_id": "val_5874",
                     "segment_index": 5,
                     "caption": "A person walks forward.",
+                    "raw_label": "walking forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 326,
                     "end_frame": 409
                   }
@@ -1002,16 +1608,23 @@
               "batch_index": 173,
               "batch_size": 32,
               "text_to_motion": {
-                "positive_rank": 4,
+                "positive_rank": 1,
                 "top": [
                   {
                     "sample_index": 5004,
                     "distance": 28.73871612548828,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 864,
                     "case_id": "val_1490",
                     "segment_index": 1,
                     "caption": "A person walks.",
+                    "raw_label": "walking",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 32,
                     "end_frame": 69
                   },
@@ -1023,6 +1636,17 @@
                     "case_id": "val_8178",
                     "segment_index": 0,
                     "caption": "A person stands, then jogs sideways.",
+                    "raw_label": "stand then jog sideway",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ],
+                      [
+                        "jog",
+                        "sideways movement"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:a3dab65a8603c8c54282",
                     "start_frame": 0,
                     "end_frame": 178
                   },
@@ -1034,6 +1658,16 @@
                     "case_id": "val_8702",
                     "segment_index": 0,
                     "caption": "A person stands, then jogs.",
+                    "raw_label": "stand then jog",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ],
+                      [
+                        "jog"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:cc2d5df665945e8d7d0d",
                     "start_frame": 0,
                     "end_frame": 78
                   }
@@ -1050,6 +1684,13 @@
                     "case_id": "val_10931",
                     "segment_index": 4,
                     "caption": "A person turns around.",
+                    "raw_label": "turning around",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:19ef92ceff07244353e3",
                     "start_frame": 250,
                     "end_frame": 298
                   },
@@ -1061,6 +1702,13 @@
                     "case_id": "val_5874",
                     "segment_index": 5,
                     "caption": "A person walks forward.",
+                    "raw_label": "walking forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 326,
                     "end_frame": 409
                   },
@@ -1072,6 +1720,13 @@
                     "case_id": "val_4869",
                     "segment_index": 0,
                     "caption": "A person walks forward.",
+                    "raw_label": "walking forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 83
                   }
@@ -1083,6 +1738,13 @@
         {
           "caption": "A person knocks on a door.",
           "raw_label": "knocking on door",
+          "action_categories": [
+            [
+              "interact with use object",
+              "knock"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:40737c52596dfb0f7341",
           "start_frame": 83,
           "end_frame": 128,
           "color": "#1976d2",
@@ -1103,6 +1765,17 @@
                     "case_id": "val_5576",
                     "segment_index": 2,
                     "caption": "A person reaches their right hand up, then dodges.",
+                    "raw_label": "reaching right hand up then dodging",
+                    "action_categories": [
+                      [
+                        "hand movements",
+                        "raising body part"
+                      ],
+                      [
+                        "evade"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:83453f5fa6288b343b2c",
                     "start_frame": 140,
                     "end_frame": 355
                   },
@@ -1114,6 +1787,16 @@
                     "case_id": "val_10887",
                     "segment_index": 0,
                     "caption": "A person leans forward, then dashes forward.",
+                    "raw_label": "lean forward then dash forward",
+                    "action_categories": [
+                      [
+                        "lean"
+                      ],
+                      [
+                        "forward movement"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:32cecc5d4495a24766dd",
                     "start_frame": 0,
                     "end_frame": 62
                   },
@@ -1125,6 +1808,15 @@
                     "case_id": "val_7191",
                     "segment_index": 2,
                     "caption": "A person catches the ball.",
+                    "raw_label": "catch the ball",
+                    "action_categories": [
+                      [
+                        "action with ball",
+                        "catch",
+                        "interact with use object"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:d51f7109770c7ea9ed23",
                     "start_frame": 108,
                     "end_frame": 168
                   }
@@ -1141,6 +1833,14 @@
                     "case_id": "val_8786",
                     "segment_index": 1,
                     "caption": "A person picks up with their right hand.",
+                    "raw_label": "pick up with right hand",
+                    "action_categories": [
+                      [
+                        "hand movements",
+                        "take pick something up"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:ecbac8e2744f8e9740e7",
                     "start_frame": 30,
                     "end_frame": 66
                   },
@@ -1152,6 +1852,14 @@
                     "case_id": "val_12805",
                     "segment_index": 17,
                     "caption": "A person steps backwards.",
+                    "raw_label": "step backwards",
+                    "action_categories": [
+                      [
+                        "backwards movement",
+                        "step"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:0ecfa8765c0b51ec37fe",
                     "start_frame": 985,
                     "end_frame": 1024
                   },
@@ -1163,6 +1871,13 @@
                     "case_id": "val_10505",
                     "segment_index": 4,
                     "caption": "A person about faces left.",
+                    "raw_label": "about face left",
+                    "action_categories": [
+                      [
+                        "head movements"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:cd565be867da81fd9f40",
                     "start_frame": 233,
                     "end_frame": 269
                   }
@@ -1185,6 +1900,14 @@
                     "case_id": "val_4869",
                     "segment_index": 1,
                     "caption": "A person knocks on a door.",
+                    "raw_label": "knocking on door",
+                    "action_categories": [
+                      [
+                        "interact with use object",
+                        "knock"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:40737c52596dfb0f7341",
                     "start_frame": 83,
                     "end_frame": 128
                   },
@@ -1196,6 +1919,14 @@
                     "case_id": "val_11530",
                     "segment_index": 2,
                     "caption": "A person pours a drink.",
+                    "raw_label": "pouring drink",
+                    "action_categories": [
+                      [
+                        "interact with use object",
+                        "misc abstract action"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:ce7573bd0fa226a2ede0",
                     "start_frame": 153,
                     "end_frame": 271
                   },
@@ -1207,6 +1938,13 @@
                     "case_id": "val_8980",
                     "segment_index": 3,
                     "caption": "A person stands.",
+                    "raw_label": "stand",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:830fbc0a5efe4d66f65d",
                     "start_frame": 190,
                     "end_frame": 402
                   }
@@ -1223,6 +1961,14 @@
                     "case_id": "val_8786",
                     "segment_index": 1,
                     "caption": "A person picks up with their right hand.",
+                    "raw_label": "pick up with right hand",
+                    "action_categories": [
+                      [
+                        "hand movements",
+                        "take pick something up"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:ecbac8e2744f8e9740e7",
                     "start_frame": 30,
                     "end_frame": 66
                   },
@@ -1234,6 +1980,14 @@
                     "case_id": "val_4869",
                     "segment_index": 1,
                     "caption": "A person knocks on a door.",
+                    "raw_label": "knocking on door",
+                    "action_categories": [
+                      [
+                        "interact with use object",
+                        "knock"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:40737c52596dfb0f7341",
                     "start_frame": 83,
                     "end_frame": 128
                   },
@@ -1245,6 +1999,15 @@
                     "case_id": "val_7191",
                     "segment_index": 2,
                     "caption": "A person catches the ball.",
+                    "raw_label": "catch the ball",
+                    "action_categories": [
+                      [
+                        "action with ball",
+                        "catch",
+                        "interact with use object"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:d51f7109770c7ea9ed23",
                     "start_frame": 108,
                     "end_frame": 168
                   }
@@ -1256,6 +2019,13 @@
         {
           "caption": "A person waits with their arms down.",
           "raw_label": "waiting with arms down",
+          "action_categories": [
+            [
+              "arm movements",
+              "wait"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:8464b3ac66d43aae8787",
           "start_frame": 128,
           "end_frame": 191,
           "color": "#19a974",
@@ -1276,6 +2046,13 @@
                     "case_id": "val_6066",
                     "segment_index": 0,
                     "caption": "A person stands in a T-pose.",
+                    "raw_label": "t-pose",
+                    "action_categories": [
+                      [
+                        "t pose"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:068ef9e8ea4b02c89b5b",
                     "start_frame": 0,
                     "end_frame": 98
                   },
@@ -1287,6 +2064,13 @@
                     "case_id": "val_5778",
                     "segment_index": 0,
                     "caption": "A person stands in a T-pose.",
+                    "raw_label": "t-pose",
+                    "action_categories": [
+                      [
+                        "t pose"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:068ef9e8ea4b02c89b5b",
                     "start_frame": 0,
                     "end_frame": 98
                   },
@@ -1298,6 +2082,14 @@
                     "case_id": "val_4024",
                     "segment_index": 6,
                     "caption": "A person rotates their torso.",
+                    "raw_label": "rotate torso",
+                    "action_categories": [
+                      [
+                        "circular movement",
+                        "upper body movements"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:5541bcb2c8594fcafc25",
                     "start_frame": 1143,
                     "end_frame": 1345
                   }
@@ -1314,6 +2106,14 @@
                     "case_id": "val_5171",
                     "segment_index": 9,
                     "caption": "A person steps backwards.",
+                    "raw_label": "steping backwards",
+                    "action_categories": [
+                      [
+                        "backwards movement",
+                        "step"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:0ecfa8765c0b51ec37fe",
                     "start_frame": 671,
                     "end_frame": 713
                   },
@@ -1325,6 +2125,14 @@
                     "case_id": "val_4869",
                     "segment_index": 2,
                     "caption": "A person waits with their arms down.",
+                    "raw_label": "waiting with arms down",
+                    "action_categories": [
+                      [
+                        "arm movements",
+                        "wait"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:8464b3ac66d43aae8787",
                     "start_frame": 128,
                     "end_frame": 191
                   },
@@ -1336,6 +2144,13 @@
                     "case_id": "val_9511",
                     "segment_index": 4,
                     "caption": "A person catches something.",
+                    "raw_label": "catch",
+                    "action_categories": [
+                      [
+                        "catch"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:8a98792191906d0bbb40",
                     "start_frame": 222,
                     "end_frame": 263
                   }
@@ -1358,6 +2173,18 @@
                     "case_id": "val_9110",
                     "segment_index": 1,
                     "caption": "A person sets down with their right hand, then stands.",
+                    "raw_label": "set down with right hand then stand",
+                    "action_categories": [
+                      [
+                        "hand movements",
+                        "interact with use object",
+                        "place something"
+                      ],
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:47f452c1be5bfe06214a",
                     "start_frame": 65,
                     "end_frame": 132
                   },
@@ -1369,6 +2196,13 @@
                     "case_id": "val_5778",
                     "segment_index": 0,
                     "caption": "A person stands in a T-pose.",
+                    "raw_label": "t-pose",
+                    "action_categories": [
+                      [
+                        "t pose"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:068ef9e8ea4b02c89b5b",
                     "start_frame": 0,
                     "end_frame": 98
                   },
@@ -1380,6 +2214,14 @@
                     "case_id": "val_4024",
                     "segment_index": 6,
                     "caption": "A person rotates their torso.",
+                    "raw_label": "rotate torso",
+                    "action_categories": [
+                      [
+                        "circular movement",
+                        "upper body movements"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:5541bcb2c8594fcafc25",
                     "start_frame": 1143,
                     "end_frame": 1345
                   }
@@ -1396,6 +2238,14 @@
                     "case_id": "val_5171",
                     "segment_index": 9,
                     "caption": "A person steps backwards.",
+                    "raw_label": "steping backwards",
+                    "action_categories": [
+                      [
+                        "backwards movement",
+                        "step"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:0ecfa8765c0b51ec37fe",
                     "start_frame": 671,
                     "end_frame": 713
                   },
@@ -1407,6 +2257,14 @@
                     "case_id": "val_4869",
                     "segment_index": 2,
                     "caption": "A person waits with their arms down.",
+                    "raw_label": "waiting with arms down",
+                    "action_categories": [
+                      [
+                        "arm movements",
+                        "wait"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:8464b3ac66d43aae8787",
                     "start_frame": 128,
                     "end_frame": 191
                   },
@@ -1418,6 +2276,14 @@
                     "case_id": "val_11793",
                     "segment_index": 2,
                     "caption": "A person walks backwards.",
+                    "raw_label": "walking backwards",
+                    "action_categories": [
+                      [
+                        "backwards movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:3221686624afe9294ed1",
                     "start_frame": 363,
                     "end_frame": 434
                   }
@@ -1429,6 +2295,12 @@
         {
           "caption": "A person turns around.",
           "raw_label": "turning around",
+          "action_categories": [
+            [
+              "turn"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:19ef92ceff07244353e3",
           "start_frame": 191,
           "end_frame": 224,
           "color": "#d69e18",
@@ -1449,6 +2321,16 @@
                     "case_id": "val_9086",
                     "segment_index": 5,
                     "caption": "A person turns around, then walks forward.",
+                    "raw_label": "turn around then walk forward",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ],
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:0f84509fa5ba0d4dca8a",
                     "start_frame": 596,
                     "end_frame": 652
                   },
@@ -1460,6 +2342,13 @@
                     "case_id": "val_8000",
                     "segment_index": 5,
                     "caption": "A person walks.",
+                    "raw_label": "walk",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 480,
                     "end_frame": 595
                   },
@@ -1471,6 +2360,14 @@
                     "case_id": "val_11494",
                     "segment_index": 0,
                     "caption": "A person walks 90 degrees right.",
+                    "raw_label": "walk 90 degrees right",
+                    "action_categories": [
+                      [
+                        "turn",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:7ead28e877adf6f195b3",
                     "start_frame": 0,
                     "end_frame": 86
                   }
@@ -1487,6 +2384,16 @@
                     "case_id": "val_9086",
                     "segment_index": 5,
                     "caption": "A person turns around, then walks forward.",
+                    "raw_label": "turn around then walk forward",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ],
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:0f84509fa5ba0d4dca8a",
                     "start_frame": 596,
                     "end_frame": 652
                   },
@@ -1498,6 +2405,17 @@
                     "case_id": "val_10148",
                     "segment_index": 0,
                     "caption": "A person stands, then walks in a circle.",
+                    "raw_label": "standing then walking in a circle",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ],
+                      [
+                        "circular movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:cdd83918fea9998340e5",
                     "start_frame": 0,
                     "end_frame": 439
                   },
@@ -1509,6 +2427,13 @@
                     "case_id": "val_4869",
                     "segment_index": 3,
                     "caption": "A person turns around.",
+                    "raw_label": "turning around",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:19ef92ceff07244353e3",
                     "start_frame": 191,
                     "end_frame": 224
                   }
@@ -1531,6 +2456,17 @@
                     "case_id": "val_10148",
                     "segment_index": 0,
                     "caption": "A person stands, then walks in a circle.",
+                    "raw_label": "standing then walking in a circle",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ],
+                      [
+                        "circular movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:cdd83918fea9998340e5",
                     "start_frame": 0,
                     "end_frame": 439
                   },
@@ -1542,6 +2478,14 @@
                     "case_id": "val_11494",
                     "segment_index": 0,
                     "caption": "A person walks 90 degrees right.",
+                    "raw_label": "walk 90 degrees right",
+                    "action_categories": [
+                      [
+                        "turn",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:7ead28e877adf6f195b3",
                     "start_frame": 0,
                     "end_frame": 86
                   },
@@ -1553,6 +2497,13 @@
                     "case_id": "val_8000",
                     "segment_index": 5,
                     "caption": "A person walks.",
+                    "raw_label": "walk",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 480,
                     "end_frame": 595
                   }
@@ -1569,6 +2520,16 @@
                     "case_id": "val_9086",
                     "segment_index": 5,
                     "caption": "A person turns around, then walks forward.",
+                    "raw_label": "turn around then walk forward",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ],
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:0f84509fa5ba0d4dca8a",
                     "start_frame": 596,
                     "end_frame": 652
                   },
@@ -1580,6 +2541,13 @@
                     "case_id": "val_4869",
                     "segment_index": 3,
                     "caption": "A person turns around.",
+                    "raw_label": "turning around",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:19ef92ceff07244353e3",
                     "start_frame": 191,
                     "end_frame": 224
                   },
@@ -1591,6 +2559,17 @@
                     "case_id": "val_10148",
                     "segment_index": 0,
                     "caption": "A person stands, then walks in a circle.",
+                    "raw_label": "standing then walking in a circle",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ],
+                      [
+                        "circular movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:cdd83918fea9998340e5",
                     "start_frame": 0,
                     "end_frame": 439
                   }
@@ -1602,6 +2581,12 @@
         {
           "caption": "A person walks forward.",
           "raw_label": "walking forward",
+          "action_categories": [
+            [
+              "walk"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
           "start_frame": 224,
           "end_frame": 280,
           "color": "#8b5cf6",
@@ -1622,28 +2607,49 @@
                     "case_id": "val_3149",
                     "segment_index": 0,
                     "caption": "A person walks forward.",
+                    "raw_label": "walk forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 52
                   },
                   {
                     "sample_index": 3968,
                     "distance": 35.83250045776367,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 674,
                     "case_id": "val_5336",
                     "segment_index": 0,
                     "caption": "A person walks straight.",
+                    "raw_label": "walk straight",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 50
                   },
                   {
                     "sample_index": 2210,
                     "distance": 39.787113189697266,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 363,
                     "case_id": "val_5210",
                     "segment_index": 1,
                     "caption": "A person walks left.",
+                    "raw_label": "walk left",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 94,
                     "end_frame": 209
                   }
@@ -1660,6 +2666,13 @@
                     "case_id": "val_3149",
                     "segment_index": 0,
                     "caption": "A person walks forward.",
+                    "raw_label": "walk forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 52
                   },
@@ -1671,17 +2684,31 @@
                     "case_id": "val_4869",
                     "segment_index": 4,
                     "caption": "A person walks forward.",
+                    "raw_label": "walking forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 224,
                     "end_frame": 280
                   },
                   {
                     "sample_index": 3968,
                     "distance": 48.5324821472168,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 674,
                     "case_id": "val_5336",
                     "segment_index": 0,
                     "caption": "A person walks straight.",
+                    "raw_label": "walk straight",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 50
                   }
@@ -1704,6 +2731,13 @@
                     "case_id": "val_3149",
                     "segment_index": 0,
                     "caption": "A person walks forward.",
+                    "raw_label": "walk forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 52
                   },
@@ -1715,6 +2749,13 @@
                     "case_id": "val_4869",
                     "segment_index": 4,
                     "caption": "A person walks forward.",
+                    "raw_label": "walking forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 224,
                     "end_frame": 280
                   },
@@ -1726,6 +2767,19 @@
                     "case_id": "val_10675",
                     "segment_index": 21,
                     "caption": "A person turns left, then climbs in the steps, then climbs down from the steps.",
+                    "raw_label": "turn left then climb in the steps then climb down from the steps",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ],
+                      [
+                        "move up down incline"
+                      ],
+                      [
+                        "move up down incline"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:eadc40e6ae0d168987cf",
                     "start_frame": 888,
                     "end_frame": 950
                   }
@@ -1742,6 +2796,13 @@
                     "case_id": "val_3149",
                     "segment_index": 0,
                     "caption": "A person walks forward.",
+                    "raw_label": "walk forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 52
                   },
@@ -1753,17 +2814,31 @@
                     "case_id": "val_4869",
                     "segment_index": 4,
                     "caption": "A person walks forward.",
+                    "raw_label": "walking forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 224,
                     "end_frame": 280
                   },
                   {
                     "sample_index": 3968,
                     "distance": 33.23644256591797,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 674,
                     "case_id": "val_5336",
                     "segment_index": 0,
                     "caption": "A person walks straight.",
+                    "raw_label": "walk straight",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 50
                   }
@@ -1784,6 +2859,12 @@
         {
           "caption": "A person walks.",
           "raw_label": "walk",
+          "action_categories": [
+            [
+              "walk"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
           "start_frame": 0,
           "end_frame": 39,
           "color": "#e15d44",
@@ -1804,6 +2885,13 @@
                     "case_id": "val_8738",
                     "segment_index": 0,
                     "caption": "A person walks.",
+                    "raw_label": "walk",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 39
                   },
@@ -1815,6 +2903,15 @@
                     "case_id": "val_5367",
                     "segment_index": 13,
                     "caption": "A person walks sideways in a half circle.",
+                    "raw_label": "walk sideways in half circle",
+                    "action_categories": [
+                      [
+                        "circular movement",
+                        "sideways movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:c839c1dfdc1fadbc449a",
                     "start_frame": 948,
                     "end_frame": 1018
                   },
@@ -1826,22 +2923,36 @@
                     "case_id": "val_11500",
                     "segment_index": 14,
                     "caption": "A person turns left.",
+                    "raw_label": "turn lefts",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:19ef92ceff07244353e3",
                     "start_frame": 3170,
                     "end_frame": 3208
                   }
                 ]
               },
               "motion_to_text": {
-                "positive_rank": 2,
+                "positive_rank": 1,
                 "top": [
                   {
                     "sample_index": 2472,
                     "distance": 22.24753189086914,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 407,
                     "case_id": "val_11254",
                     "segment_index": 12,
                     "caption": "A person walks forward.",
+                    "raw_label": "walk forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 691,
                     "end_frame": 761
                   },
@@ -1853,6 +2964,13 @@
                     "case_id": "val_12835",
                     "segment_index": 0,
                     "caption": "A person walks.",
+                    "raw_label": "walk",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 75
                   },
@@ -1864,6 +2982,13 @@
                     "case_id": "val_2062",
                     "segment_index": 9,
                     "caption": "A person walks.",
+                    "raw_label": "walk",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 1648,
                     "end_frame": 1738
                   }
@@ -1886,6 +3011,13 @@
                     "case_id": "val_2062",
                     "segment_index": 9,
                     "caption": "A person walks.",
+                    "raw_label": "walk",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 1648,
                     "end_frame": 1738
                   },
@@ -1897,6 +3029,13 @@
                     "case_id": "val_12835",
                     "segment_index": 0,
                     "caption": "A person walks.",
+                    "raw_label": "walk",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 75
                   },
@@ -1908,13 +3047,23 @@
                     "case_id": "val_318",
                     "segment_index": 1,
                     "caption": "A person walks, then stands.",
+                    "raw_label": "walk then stand",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ],
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:fc08c43ab415d9c03068",
                     "start_frame": 47,
                     "end_frame": 321
                   }
                 ]
               },
               "motion_to_text": {
-                "positive_rank": 22,
+                "positive_rank": 12,
                 "top": [
                   {
                     "sample_index": 1068,
@@ -1924,6 +3073,13 @@
                     "case_id": "val_10281",
                     "segment_index": 4,
                     "caption": "A person catches something.",
+                    "raw_label": "catching",
+                    "action_categories": [
+                      [
+                        "catch"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:8a98792191906d0bbb40",
                     "start_frame": 180,
                     "end_frame": 221
                   },
@@ -1935,6 +3091,13 @@
                     "case_id": "val_6134",
                     "segment_index": 19,
                     "caption": "A person stands.",
+                    "raw_label": "standing",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:830fbc0a5efe4d66f65d",
                     "start_frame": 1733,
                     "end_frame": 1970
                   },
@@ -1946,6 +3109,14 @@
                     "case_id": "val_13122",
                     "segment_index": 4,
                     "caption": "A person rotates their shoulders.",
+                    "raw_label": "rotate shoulders",
+                    "action_categories": [
+                      [
+                        "circular movement",
+                        "shoulder movements"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:1fc0f4bd6a048333e1b3",
                     "start_frame": 932,
                     "end_frame": 1030
                   }
@@ -1957,6 +3128,26 @@
         {
           "caption": "A person bends down at the waist, then reaches both hands toward an object, then bends over, then grabs the object.",
           "raw_label": "bend down at the waist then reach both hands toward object then bend over then grab object",
+          "action_categories": [
+            [
+              "bend",
+              "waist movements"
+            ],
+            [
+              "hand movements",
+              "interact with use object",
+              "stretch"
+            ],
+            [
+              "bend"
+            ],
+            [
+              "grasp object",
+              "interact with use object",
+              "touch object"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:244739af47f38f6756ae",
           "start_frame": 39,
           "end_frame": 85,
           "color": "#1976d2",
@@ -1977,6 +3168,16 @@
                     "case_id": "val_12182",
                     "segment_index": 2,
                     "caption": "A person places something, then stands.",
+                    "raw_label": "place then stand",
+                    "action_categories": [
+                      [
+                        "place something"
+                      ],
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:d3d18a19418ed49db371",
                     "start_frame": 198,
                     "end_frame": 269
                   },
@@ -1988,6 +3189,14 @@
                     "case_id": "val_8441",
                     "segment_index": 6,
                     "caption": "A person joins their hands.",
+                    "raw_label": "joining hands",
+                    "action_categories": [
+                      [
+                        "hand movements",
+                        "touching body part"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:91b669052cff3e664b09",
                     "start_frame": 395,
                     "end_frame": 459
                   },
@@ -1999,6 +3208,16 @@
                     "case_id": "val_3142",
                     "segment_index": 0,
                     "caption": "A person stands in an A-pose, then stands.",
+                    "raw_label": "a-pose then standing",
+                    "action_categories": [
+                      [
+                        "a pose"
+                      ],
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:62537c200c66b195af88",
                     "start_frame": 0,
                     "end_frame": 53
                   }
@@ -2015,6 +3234,16 @@
                     "case_id": "val_1008",
                     "segment_index": 0,
                     "caption": "A person stands, then climbs down stairs.",
+                    "raw_label": "stand then climb down stairs",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ],
+                      [
+                        "move up down incline"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:8ba86987dea25b27d686",
                     "start_frame": 0,
                     "end_frame": 30
                   },
@@ -2026,6 +3255,27 @@
                     "case_id": "val_8738",
                     "segment_index": 1,
                     "caption": "A person bends down at the waist, then reaches both hands toward an object, then bends over, then grabs the object.",
+                    "raw_label": "bend down at the waist then reach both hands toward object then bend over then grab object",
+                    "action_categories": [
+                      [
+                        "bend",
+                        "waist movements"
+                      ],
+                      [
+                        "hand movements",
+                        "interact with use object",
+                        "stretch"
+                      ],
+                      [
+                        "bend"
+                      ],
+                      [
+                        "grasp object",
+                        "interact with use object",
+                        "touch object"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:244739af47f38f6756ae",
                     "start_frame": 39,
                     "end_frame": 85
                   },
@@ -2037,6 +3287,14 @@
                     "case_id": "val_6645",
                     "segment_index": 1,
                     "caption": "A person lifts an object.",
+                    "raw_label": "lift object",
+                    "action_categories": [
+                      [
+                        "interact with use object",
+                        "lift something"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:4db9524d5e5681bdbfc6",
                     "start_frame": 96,
                     "end_frame": 169
                   }
@@ -2059,6 +3317,16 @@
                     "case_id": "val_12182",
                     "segment_index": 2,
                     "caption": "A person places something, then stands.",
+                    "raw_label": "place then stand",
+                    "action_categories": [
+                      [
+                        "place something"
+                      ],
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:d3d18a19418ed49db371",
                     "start_frame": 198,
                     "end_frame": 269
                   },
@@ -2070,6 +3338,14 @@
                     "case_id": "val_6645",
                     "segment_index": 1,
                     "caption": "A person lifts an object.",
+                    "raw_label": "lift object",
+                    "action_categories": [
+                      [
+                        "interact with use object",
+                        "lift something"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:4db9524d5e5681bdbfc6",
                     "start_frame": 96,
                     "end_frame": 169
                   },
@@ -2081,6 +3357,16 @@
                     "case_id": "val_3142",
                     "segment_index": 0,
                     "caption": "A person stands in an A-pose, then stands.",
+                    "raw_label": "a-pose then standing",
+                    "action_categories": [
+                      [
+                        "a pose"
+                      ],
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:62537c200c66b195af88",
                     "start_frame": 0,
                     "end_frame": 53
                   }
@@ -2097,6 +3383,14 @@
                     "case_id": "val_5996",
                     "segment_index": 2,
                     "caption": "A person moves their head right and left.",
+                    "raw_label": "move head right and left",
+                    "action_categories": [
+                      [
+                        "head movements",
+                        "side to side movement"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:f8ac7b1bdd357919dcab",
                     "start_frame": 295,
                     "end_frame": 329
                   },
@@ -2108,6 +3402,13 @@
                     "case_id": "val_1008",
                     "segment_index": 2,
                     "caption": "A person stands.",
+                    "raw_label": "stand",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:830fbc0a5efe4d66f65d",
                     "start_frame": 129,
                     "end_frame": 169
                   },
@@ -2119,6 +3420,13 @@
                     "case_id": "val_7975",
                     "segment_index": 13,
                     "caption": "A person stands in an A-pose.",
+                    "raw_label": "a-pose",
+                    "action_categories": [
+                      [
+                        "a pose"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:785d39ef3a359044389a",
                     "start_frame": 1956,
                     "end_frame": 2002
                   }
@@ -2130,6 +3438,18 @@
         {
           "caption": "A person lifts an object, then puts down the object.",
           "raw_label": "lift object then put down object",
+          "action_categories": [
+            [
+              "interact with use object",
+              "lift something"
+            ],
+            [
+              "interact with use object",
+              "place something",
+              "touch object"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:1fa13c7a0b711a39be4c",
           "start_frame": 85,
           "end_frame": 146,
           "color": "#19a974",
@@ -2150,6 +3470,16 @@
                     "case_id": "val_9411",
                     "segment_index": 13,
                     "caption": "A person performs a swim movement, then stands.",
+                    "raw_label": "swiming movemnt then standing",
+                    "action_categories": [
+                      [
+                        "swim"
+                      ],
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:e2ea44ab5ec1d5e3913b",
                     "start_frame": 802,
                     "end_frame": 914
                   },
@@ -2161,6 +3491,13 @@
                     "case_id": "val_12772",
                     "segment_index": 4,
                     "caption": "A person performs a right hand movement.",
+                    "raw_label": "right hand movement",
+                    "action_categories": [
+                      [
+                        "hand movements"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:2c7b7d50c6ca1600cd96",
                     "start_frame": 267,
                     "end_frame": 332
                   },
@@ -2172,6 +3509,14 @@
                     "case_id": "val_10473",
                     "segment_index": 2,
                     "caption": "A person lifts their hand waist high.",
+                    "raw_label": "lift hand waist high",
+                    "action_categories": [
+                      [
+                        "hand movements",
+                        "raising body part"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:287ff77792211bd00421",
                     "start_frame": 188,
                     "end_frame": 247
                   }
@@ -2188,6 +3533,13 @@
                     "case_id": "val_11040",
                     "segment_index": 4,
                     "caption": "A person kicks.",
+                    "raw_label": "kicking",
+                    "action_categories": [
+                      [
+                        "kick"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:24ec74b9a54b2e44c351",
                     "start_frame": 272,
                     "end_frame": 309
                   },
@@ -2199,6 +3551,14 @@
                     "case_id": "val_9422",
                     "segment_index": 2,
                     "caption": "A person prepares to jump.",
+                    "raw_label": "prepare to jump",
+                    "action_categories": [
+                      [
+                        "jump",
+                        "prepare"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:d91684f3850a34b38230",
                     "start_frame": 126,
                     "end_frame": 169
                   },
@@ -2210,6 +3570,13 @@
                     "case_id": "val_2831",
                     "segment_index": 5,
                     "caption": "A person stumbles.",
+                    "raw_label": "stumble",
+                    "action_categories": [
+                      [
+                        "stumble"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:63c5e3a5ba77b18512c2",
                     "start_frame": 634,
                     "end_frame": 746
                   }
@@ -2232,6 +3599,18 @@
                     "case_id": "val_3392",
                     "segment_index": 1,
                     "caption": "A person picks something with their right hand, then walks back.",
+                    "raw_label": "picking something with right hand then walking back",
+                    "action_categories": [
+                      [
+                        "hand movements",
+                        "take pick something up"
+                      ],
+                      [
+                        "backwards movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:851ba669c10dff413761",
                     "start_frame": 84,
                     "end_frame": 185
                   },
@@ -2243,6 +3622,13 @@
                     "case_id": "val_5706",
                     "segment_index": 4,
                     "caption": "A person stands.",
+                    "raw_label": "stand",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:830fbc0a5efe4d66f65d",
                     "start_frame": 555,
                     "end_frame": 596
                   },
@@ -2254,6 +3640,13 @@
                     "case_id": "val_1451",
                     "segment_index": 3,
                     "caption": "A person stands.",
+                    "raw_label": "stand",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:830fbc0a5efe4d66f65d",
                     "start_frame": 164,
                     "end_frame": 196
                   }
@@ -2270,6 +3663,18 @@
                     "case_id": "val_3845",
                     "segment_index": 12,
                     "caption": "A person stands, then looks at the floor.",
+                    "raw_label": "stand then look at floor",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ],
+                      [
+                        "face direction",
+                        "head movements",
+                        "look"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:5533a6a79ee03632a233",
                     "start_frame": 593,
                     "end_frame": 641
                   },
@@ -2281,6 +3686,13 @@
                     "case_id": "val_1451",
                     "segment_index": 3,
                     "caption": "A person stands.",
+                    "raw_label": "stand",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:830fbc0a5efe4d66f65d",
                     "start_frame": 164,
                     "end_frame": 196
                   },
@@ -2292,6 +3704,13 @@
                     "case_id": "val_7634",
                     "segment_index": 4,
                     "caption": "A person stands.",
+                    "raw_label": "standing",
+                    "action_categories": [
+                      [
+                        "stand"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:830fbc0a5efe4d66f65d",
                     "start_frame": 211,
                     "end_frame": 246
                   }
@@ -2303,6 +3722,12 @@
         {
           "caption": "A person turns around.",
           "raw_label": "turn around",
+          "action_categories": [
+            [
+              "turn"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:19ef92ceff07244353e3",
           "start_frame": 146,
           "end_frame": 179,
           "color": "#d69e18",
@@ -2323,6 +3748,14 @@
                     "case_id": "val_10473",
                     "segment_index": 9,
                     "caption": "A person walks in a circle.",
+                    "raw_label": "walk in circle",
+                    "action_categories": [
+                      [
+                        "circular movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:f8cc754e7432a92ad02a",
                     "start_frame": 917,
                     "end_frame": 1114
                   },
@@ -2334,6 +3767,14 @@
                     "case_id": "val_7525",
                     "segment_index": 5,
                     "caption": "A person looks at their wrist.",
+                    "raw_label": "looking at wrist",
+                    "action_categories": [
+                      [
+                        "look",
+                        "wrist movements"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:eea6e136116292a7167b",
                     "start_frame": 407,
                     "end_frame": 480
                   },
@@ -2345,6 +3786,14 @@
                     "case_id": "val_1495",
                     "segment_index": 6,
                     "caption": "A person walks right sideways.",
+                    "raw_label": "walk right sideways",
+                    "action_categories": [
+                      [
+                        "sideways movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:6d08934146dd7bd0788e",
                     "start_frame": 586,
                     "end_frame": 776
                   }
@@ -2361,6 +3810,14 @@
                     "case_id": "val_4310",
                     "segment_index": 18,
                     "caption": "A person steps up.",
+                    "raw_label": "step up",
+                    "action_categories": [
+                      [
+                        "move up down incline",
+                        "step"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:af067eb68e96b6323687",
                     "start_frame": 908,
                     "end_frame": 946
                   },
@@ -2372,6 +3829,14 @@
                     "case_id": "val_7982",
                     "segment_index": 2,
                     "caption": "A person walks back.",
+                    "raw_label": "walk back",
+                    "action_categories": [
+                      [
+                        "backwards movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:3221686624afe9294ed1",
                     "start_frame": 137,
                     "end_frame": 196
                   },
@@ -2383,6 +3848,14 @@
                     "case_id": "val_8708",
                     "segment_index": 2,
                     "caption": "A person cleans with their left hand.",
+                    "raw_label": "cleaning with left hand",
+                    "action_categories": [
+                      [
+                        "clean something",
+                        "hand movements"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:832777980ebae52bc901",
                     "start_frame": 851,
                     "end_frame": 1298
                   }
@@ -2405,6 +3878,14 @@
                     "case_id": "val_10473",
                     "segment_index": 9,
                     "caption": "A person walks in a circle.",
+                    "raw_label": "walk in circle",
+                    "action_categories": [
+                      [
+                        "circular movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:f8cc754e7432a92ad02a",
                     "start_frame": 917,
                     "end_frame": 1114
                   },
@@ -2416,6 +3897,17 @@
                     "case_id": "val_6738",
                     "segment_index": 8,
                     "caption": "A person steps to the side, then steps forward.",
+                    "raw_label": "step to the side then step forward",
+                    "action_categories": [
+                      [
+                        "sideways movement",
+                        "step"
+                      ],
+                      [
+                        "step"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:560869b3d94851b15c04",
                     "start_frame": 385,
                     "end_frame": 441
                   },
@@ -2427,6 +3919,14 @@
                     "case_id": "val_1495",
                     "segment_index": 6,
                     "caption": "A person walks right sideways.",
+                    "raw_label": "walk right sideways",
+                    "action_categories": [
+                      [
+                        "sideways movement",
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:6d08934146dd7bd0788e",
                     "start_frame": 586,
                     "end_frame": 776
                   }
@@ -2443,6 +3943,14 @@
                     "case_id": "val_7980",
                     "segment_index": 7,
                     "caption": "A person rotates their right ankle.",
+                    "raw_label": "rotate right ankle",
+                    "action_categories": [
+                      [
+                        "circular movement",
+                        "leg movements"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:82652a37bfed35403da0",
                     "start_frame": 795,
                     "end_frame": 1028
                   },
@@ -2454,6 +3962,15 @@
                     "case_id": "val_8283",
                     "segment_index": 8,
                     "caption": "A person rolls their head side to side.",
+                    "raw_label": "rolls head side to side",
+                    "action_categories": [
+                      [
+                        "head movements",
+                        "rolling movement",
+                        "sideways movement"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:29146e2f7b738c3a7fd5",
                     "start_frame": 1342,
                     "end_frame": 1380
                   },
@@ -2465,6 +3982,15 @@
                     "case_id": "val_3430",
                     "segment_index": 1,
                     "caption": "A person steps up with their left leg.",
+                    "raw_label": "step up with left leg",
+                    "action_categories": [
+                      [
+                        "leg movements",
+                        "move up down incline",
+                        "step"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:0008e8b48418cf1c8307",
                     "start_frame": 43,
                     "end_frame": 81
                   }
@@ -2476,6 +4002,12 @@
         {
           "caption": "A person walks.",
           "raw_label": "walk",
+          "action_categories": [
+            [
+              "walk"
+            ]
+          ],
+          "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
           "start_frame": 179,
           "end_frame": 221,
           "color": "#8b5cf6",
@@ -2486,16 +4018,23 @@
               "batch_index": 188,
               "batch_size": 32,
               "text_to_motion": {
-                "positive_rank": 5,
+                "positive_rank": 1,
                 "top": [
                   {
                     "sample_index": 3103,
                     "distance": 38.47408676147461,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 526,
                     "case_id": "val_5443",
                     "segment_index": 0,
                     "caption": "A person walks briskly.",
+                    "raw_label": "walk briskly",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 32
                   },
@@ -2507,6 +4046,17 @@
                     "case_id": "val_7810",
                     "segment_index": 14,
                     "caption": "A person walks forwards, then leans forwards.",
+                    "raw_label": "walk forwards then lean forwards",
+                    "action_categories": [
+                      [
+                        "forward movement",
+                        "walk"
+                      ],
+                      [
+                        "lean"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:55abc3acd9c602f23901",
                     "start_frame": 1162,
                     "end_frame": 1338
                   },
@@ -2518,33 +4068,57 @@
                     "case_id": "val_2969",
                     "segment_index": 2,
                     "caption": "A person walks forward, then turns around left.",
+                    "raw_label": "walk forward then turn around left",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ],
+                      [
+                        "turn"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:a4a4d58ddf5e63931f0c",
                     "start_frame": 163,
                     "end_frame": 280
                   }
                 ]
               },
               "motion_to_text": {
-                "positive_rank": 3,
+                "positive_rank": 1,
                 "top": [
                   {
                     "sample_index": 775,
                     "distance": 38.25376892089844,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 117,
                     "case_id": "val_8158",
                     "segment_index": 0,
                     "caption": "A person walks forward.",
+                    "raw_label": "walking forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 38
                   },
                   {
                     "sample_index": 3103,
                     "distance": 39.08893966674805,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 526,
                     "case_id": "val_5443",
                     "segment_index": 0,
                     "caption": "A person walks briskly.",
+                    "raw_label": "walk briskly",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 32
                   },
@@ -2556,6 +4130,13 @@
                     "case_id": "val_8738",
                     "segment_index": 4,
                     "caption": "A person walks.",
+                    "raw_label": "walk",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 179,
                     "end_frame": 221
                   }
@@ -2568,7 +4149,7 @@
               "batch_index": 188,
               "batch_size": 32,
               "text_to_motion": {
-                "positive_rank": 5,
+                "positive_rank": 3,
                 "top": [
                   {
                     "sample_index": 793,
@@ -2578,6 +4159,17 @@
                     "case_id": "val_7810",
                     "segment_index": 14,
                     "caption": "A person walks forwards, then leans forwards.",
+                    "raw_label": "walk forwards then lean forwards",
+                    "action_categories": [
+                      [
+                        "forward movement",
+                        "walk"
+                      ],
+                      [
+                        "lean"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:55abc3acd9c602f23901",
                     "start_frame": 1162,
                     "end_frame": 1338
                   },
@@ -2589,44 +4181,72 @@
                     "case_id": "val_6618",
                     "segment_index": 2,
                     "caption": "A person turns right.",
+                    "raw_label": "turn right",
+                    "action_categories": [
+                      [
+                        "turn"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:19ef92ceff07244353e3",
                     "start_frame": 101,
                     "end_frame": 255
                   },
                   {
                     "sample_index": 3103,
                     "distance": 39.0799674987793,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 526,
                     "case_id": "val_5443",
                     "segment_index": 0,
                     "caption": "A person walks briskly.",
+                    "raw_label": "walk briskly",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 32
                   }
                 ]
               },
               "motion_to_text": {
-                "positive_rank": 3,
+                "positive_rank": 1,
                 "top": [
                   {
                     "sample_index": 775,
                     "distance": 44.92416763305664,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 117,
                     "case_id": "val_8158",
                     "segment_index": 0,
                     "caption": "A person walks forward.",
+                    "raw_label": "walking forward",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 38
                   },
                   {
                     "sample_index": 3103,
                     "distance": 45.36100387573242,
-                    "is_positive": false,
+                    "is_positive": true,
                     "case_index": 526,
                     "case_id": "val_5443",
                     "segment_index": 0,
                     "caption": "A person walks briskly.",
+                    "raw_label": "walk briskly",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 0,
                     "end_frame": 32
                   },
@@ -2638,6 +4258,13 @@
                     "case_id": "val_8738",
                     "segment_index": 4,
                     "caption": "A person walks.",
+                    "raw_label": "walk",
+                    "action_categories": [
+                      [
+                        "walk"
+                      ]
+                    ],
+                    "action_group_id": "babel-act-cat-v1:11fe50794aee1f22f6d5",
                     "start_frame": 179,
                     "end_frame": 221
                   }

@@ -89,6 +89,8 @@ def main() -> None:
             exported_segment = {
                 "caption": segment["caption"],
                 "raw_label": segment.get("raw_label", ""),
+                "action_categories": segment.get("action_categories", []),
+                "action_group_id": segment.get("action_group_id"),
                 "start_frame": int(segment["start_frame"]),
                 "end_frame": min(int(segment["end_frame"]), frames),
                 "color": COLORS[index % len(COLORS)],

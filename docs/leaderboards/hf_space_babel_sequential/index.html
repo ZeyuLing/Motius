@@ -233,7 +233,7 @@
         <div><dt>Prompts</dt><dd>All 1,295 eligible processed BABEL validation episodes; 7,285 action intervals after short-action merging and LLM caption rewriting.</dd></div>
         <div><dt>References</dt><dd>Paired GT subsequences and transition windows from the same episode boundaries; no independent reference pools.</dd></div>
         <div><dt>Representation</dt><dd>Neutral zero-beta SMPL-22 joints66, first pelvis at the XZ origin, first-frame body facing +Z.</dd></div>
-        <div><dt>Semantic Metrics</dt><dd>Caption-group multi-positive R-Precision, nearest-positive MM-Dist, and FID from the Motius Joint-Position Evaluator. Repeated captions are retained.</dd></div>
+        <div><dt>Semantic Metrics</dt><dd>Official BABEL act_cat action-group R-Precision, nearest-positive MM-Dist, and FID from the Motius Joint-Position Evaluator. Synonymous captions are retained without becoming false negatives.</dd></div>
         <div><dt>Transition Metrics</dt><dd>Embedding FID and AUJ gap are ranked; Diversity and absolute Peak Jerk are diagnostic reference statistics.</dd></div>
         <div><dt>Ranking</dt><dd>GT/reference and paper-only values are visible but cannot receive best or second-best styling.</dd></div>
       </dl>
@@ -244,8 +244,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script>
     const rows = Object.freeze([
-      {method:"BABEL val", version:"Paired GT · multi-positive v2", samples:7285, isReference:true, r1:0.3619, r2:0.5131, r3:0.5936, fid:0.0, mmDist:45.2346, diversity:57.4816, transitionFid:0.0, transitionDiversity:54.5830, peakJerk:56.3384, aujGap:0.0},
-      {method:"FlowMDM", version:"Official checkpoint · seed 42 · multi-positive v2", samples:7285, r1:0.2706, r2:0.3922, r3:0.4708, fid:160.3988, mmDist:47.4209, diversity:56.5743, transitionFid:205.8370, transitionDiversity:54.7209, peakJerk:335.6734, aujGap:34.4040}
+      {method:"BABEL val", version:"Paired GT · action groups v3", samples:7285, isReference:true, r1:0.3947, r2:0.5515, r3:0.6327, fid:0.0, mmDist:44.5941, diversity:57.4816, transitionFid:0.0, transitionDiversity:54.5830, peakJerk:56.3384, aujGap:0.0},
+      {method:"FlowMDM", version:"Official checkpoint · seed 42 · action groups v3", samples:7285, r1:0.2958, r2:0.4217, r3:0.5018, fid:160.3988, mmDist:46.7698, diversity:56.5743, transitionFid:205.8370, transitionDiversity:54.7209, peakJerk:335.6734, aujGap:34.4040}
     ]);
     const groups = {
       semantic: [

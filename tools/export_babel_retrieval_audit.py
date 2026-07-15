@@ -16,7 +16,8 @@ if str(REPO_ROOT) not in sys.path:
 
 from motius.evaluation.evaluators.tmr import TMRTextMotionEvaluator
 from motius.evaluation.metrics import retrieval_audit
-from motius.evaluation.sequential import caption_group_id, load_joints66
+from motius.evaluation.babel import positive_group_id
+from motius.evaluation.sequential import load_joints66
 from motius.motion.skeleton.canonical import canonicalize_smpl22_joints
 
 
@@ -56,6 +57,9 @@ def _metadata(cases: list[dict]) -> list[dict[str, object]]:
                     "case_id": str(case["case_id"]),
                     "segment_index": int(segment_index),
                     "caption": str(segment["caption"]),
+                    "raw_label": str(segment.get("raw_label") or ""),
+                    "action_categories": segment.get("action_categories", []),
+                    "action_group_id": segment.get("action_group_id"),
                     "start_frame": int(segment["start_frame"]),
                     "end_frame": int(segment["end_frame"]),
                 }
@@ -147,7 +151,12 @@ def main() -> None:
     text_embeddings[ordered_candidate_indices] = encoded_text
     reference_embeddings[ordered_candidate_indices] = encoded_reference
     predicted_embeddings[ordered_candidate_indices] = encoded_predicted
-    group_ids = [caption_group_id(caption) for caption in captions]
+    group_ids = [
+        positive_group_id(
+            cases[int(item["case_index"])]["segments"][int(item["segment_index"])]
+        )
+        for item in metadata
+    ]
     common = {
         "chunk": args.chunk_size,
         "seed": args.seed,
