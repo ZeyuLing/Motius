@@ -1124,6 +1124,144 @@
         }
       ]
     },
+    "prism_1_0": {
+      "method": "PRISM 1.0",
+      "task": "T2M, TP2M, Sequential Generation",
+      "motion_representation": "PRISM Motion-138",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-prism-1.0-humanml3d",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "PRISM 1.0",
+          "samples": 3970,
+          "R1": 0.556,
+          "R2": 0.7465,
+          "R3": 0.8366,
+          "FID": 0.1992,
+          "MM-Dist": 2.8057,
+          "Diversity": 9.6033
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "PRISM 1.0",
+          "samples": 4042,
+          "R1": 0.7463,
+          "R2": 0.8832,
+          "R3": 0.9241,
+          "FID": 19.0359,
+          "MM-Dist": 15.5135,
+          "Diversity": 27.4151
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "PRISM 1.0",
+          "samples": 4034,
+          "R1": 0.6483,
+          "R2": 0.8065,
+          "R3": 0.8725,
+          "FID": 146.1266,
+          "MM-Dist": 30.9335,
+          "Diversity": 57.4521
+        }
+      ],
+      "physical_metrics": {
+        "samples": 4042,
+        "Slide": 3.6746,
+        "Float": 7.8379,
+        "Jitter": 6.1307,
+        "Dynamic": 27.7158,
+        "PoseQ": 1.6854
+      },
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "prism_kt": {
+      "method": "PRISM-KT",
+      "task": "T2M, TP2M, Sequential Generation",
+      "motion_representation": "PRISM Motion-138",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-prism-kt-humanml3d",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "KT-RoPE + KAFS",
+          "samples": 3970,
+          "R1": 0.5448,
+          "R2": 0.7308,
+          "R3": 0.8176,
+          "FID": 0.2081,
+          "MM-Dist": 2.9067,
+          "Diversity": 9.4802
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "KT-RoPE + KAFS",
+          "samples": 4042,
+          "R1": 0.7408,
+          "R2": 0.8619,
+          "R3": 0.905,
+          "FID": 19.9682,
+          "MM-Dist": 15.8072,
+          "Diversity": 27.2536
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "KT-RoPE + KAFS",
+          "samples": 4034,
+          "R1": 0.6629,
+          "R2": 0.8105,
+          "R3": 0.8656,
+          "FID": 123.8378,
+          "MM-Dist": 30.5957,
+          "Diversity": 56.6863
+        }
+      ],
+      "physical_metrics": {
+        "samples": 4042,
+        "Slide": 3.4524,
+        "Float": 7.7084,
+        "Jitter": 6.4377,
+        "Dynamic": 27.6258,
+        "PoseQ": 1.6807
+      },
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/prism_kt/prism_kt_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_kt/prism_kt_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/prism_kt/prism_kt_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_kt/prism_kt_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/prism_kt/prism_kt_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_kt/prism_kt_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
     "intergen": {
       "method": "InterGen",
       "task": "Two-Person T2M",

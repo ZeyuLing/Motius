@@ -126,6 +126,16 @@ MODELS = {
             "006944": "the person who does arms straight out and then it's doing something with their right hand in front of their face.",
         },
     },
+    "prism_1_0": {
+        "method": "PRISM 1.0",
+        "source": "prism_1_0",
+        "prefix": "prism_1_0",
+    },
+    "prism_kt": {
+        "method": "PRISM-KT",
+        "source": "prism_epoch43_cfg5_kafs",
+        "prefix": "prism_kt",
+    },
 }
 
 

@@ -1,0 +1,14 @@
+{
+  "source": "../hf_trainer/outputs/evaluation/t2m/humanml3d_official_test/ms272/prism_1_0/006944.npz",
+  "keys": [
+    "motion_135"
+  ],
+  "method": "PRISM 1.0",
+  "sample_id": "006944",
+  "caption": "a person moves their right hand left, right, up, and down.",
+  "gif": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_006944_smpl_mesh_512_30fps.gif",
+  "frames": 120,
+  "fps": 30,
+  "width": 512,
+  "height": 512
+}

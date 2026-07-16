@@ -375,6 +375,52 @@
           "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh.json"
         }
       ]
+    },
+    "prism_1_0": {
+      "method": "PRISM 1.0",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "prism_kt": {
+      "method": "PRISM-KT",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/prism_kt/prism_kt_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_kt/prism_kt_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/prism_kt/prism_kt_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_kt/prism_kt_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/prism_kt/prism_kt_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_kt/prism_kt_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
     }
   }
 }
