@@ -1,9 +1,20 @@
+import hashlib
+import json
 from pathlib import Path
 
 import numpy as np
 import pytest
 
-from motius.motion.fbx import SMPLAnimation, SMPL_TO_BLENDER
+from motius.motion.fbx import (
+    BUILTIN_MIXAMO_CHARACTERS,
+    SMPLAnimation,
+    SMPL_TO_BLENDER,
+    g1_joints_to_smpl22_joints,
+    list_mixamo_characters,
+    motion_to_smpl_animation,
+    resolve_mixamo_character,
+)
+from motius.motion.fbx.bridge import _G1_ALIASES, _motion_rep_joints
 from motius.motion.fbx._mapping import SMPL22_BONE_NAMES, resolve_bone_map
 from motius.motion.fbx.api import _prepare_payload
 from motius.motion.representation.rotation import matrix_to_rotation_6d
@@ -113,3 +124,111 @@ def test_mapping_requires_complete_unambiguous_target_by_default() -> None:
     assert resolve_bone_map(["Pelvis"], strict=False) == {"Pelvis": "Pelvis"}
     with pytest.raises(ValueError, match="do not exist"):
         resolve_bone_map(SMPL22_BONE_NAMES, {"Pelvis": "missing"})
+
+
+def test_packaged_mixamo_characters_match_manifest() -> None:
+    assert list_mixamo_characters() == BUILTIN_MIXAMO_CHARACTERS
+    directory = resolve_mixamo_character("atlas").parent
+    manifest = json.loads((directory / "manifest.json").read_text())
+    for slug in BUILTIN_MIXAMO_CHARACTERS:
+        path = resolve_mixamo_character(slug)
+        assert path.stat().st_size > 100_000
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        assert manifest["characters"][slug]["sha256"] == digest
+        assert manifest["characters"][slug]["license"] == "CC0-1.0"
+
+
+def test_motion_bridge_decodes_exact_rotation_representations() -> None:
+    motion = _identity_motion135(5)
+    motion[:, :3] = np.arange(15, dtype=np.float64).reshape(5, 3) / 100.0
+    native = motion_to_smpl_animation(
+        motion,
+        "motion135",
+        model_path="unused-for-rotation-bridge.pkl",
+    )
+    np.testing.assert_allclose(native.animation.translations, motion[:, :3])
+    assert native.bridge == "native motion135"
+    assert not native.lossy
+
+    hymotion = np.zeros((5, 201), dtype=np.float64)
+    hymotion[:, :135] = motion
+    hymotion_result = motion_to_smpl_animation(
+        hymotion,
+        "HY-Motion-201",
+        model_path="unused-for-rotation-bridge.pkl",
+    )
+    np.testing.assert_allclose(
+        hymotion_result.animation.local_rotations,
+        native.animation.local_rotations,
+    )
+    np.testing.assert_allclose(hymotion_result.animation.translations, motion[:, :3])
+    assert hymotion_result.bridge == "exact HY-Motion prefix"
+
+
+def test_motion_bridge_resamples_rotations_and_translation() -> None:
+    motion = _identity_motion135(3)
+    motion[:, 0] = [0.0, 0.5, 1.0]
+    result = motion_to_smpl_animation(
+        motion,
+        "motion135",
+        model_path="unused-for-rotation-bridge.pkl",
+        source_fps=2,
+        output_fps=4,
+    )
+    assert result.animation.frames == 5
+    np.testing.assert_allclose(result.animation.translations[:, 0], np.linspace(0, 1, 5))
+    np.testing.assert_allclose(
+        result.animation.local_rotations,
+        np.broadcast_to(np.eye(3), result.animation.local_rotations.shape),
+        atol=1e-7,
+    )
+
+
+def test_interhuman_pair_requires_person_selection() -> None:
+    motion = np.zeros((2, 2, 262), dtype=np.float32)
+    with pytest.raises(ValueError, match="person_index"):
+        motion_to_smpl_animation(
+            motion,
+            "interhuman262",
+            model_path="unused.pkl",
+        )
+
+
+def test_named_g1_joint_bridge_builds_smpl22_target() -> None:
+    names = [aliases[0] for aliases in _G1_ALIASES.values()] + ["head_link"]
+    joints = np.arange(len(names) * 3, dtype=np.float32).reshape(1, len(names), 3)
+    output = g1_joints_to_smpl22_joints(joints, names)
+    assert output.shape == (1, 22, 3)
+    np.testing.assert_array_equal(output[:, 0], joints[:, names.index("pelvis")])
+    np.testing.assert_array_equal(output[:, 15], joints[:, names.index("head_link")])
+
+
+def test_motionbricks_dual_rep_selects_requested_subset() -> None:
+    import torch
+
+    class Skeleton:
+        bone_order_names = ("pelvis",)
+
+    class Subset:
+        motion_rep_dim = 414
+        skeleton = Skeleton()
+
+        def inverse(self, features, **kwargs):
+            assert kwargs["return_numpy"] is False
+            return {"posed_joints": torch.zeros(2, 1, 3)}
+
+    class Dual:
+        motion_rep_dim = 418
+
+        def get_motion_rep_subset(self, mode):
+            assert mode == "global"
+            return Subset()
+
+    joints, names = _motion_rep_joints(
+        np.zeros((2, 414), dtype=np.float32),
+        Dual(),
+        "motionbricks_g1_414",
+        is_normalized=True,
+    )
+    assert joints.shape == (2, 1, 3)
+    assert names == ("pelvis",)

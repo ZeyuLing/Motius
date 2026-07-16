@@ -46,13 +46,15 @@ def _as_device(device: str | torch.device | None) -> torch.device:
 def load_smpl_rest(
     model_dir: str | Path | None = None,
     device: str | torch.device | None = None,
+    gender: str = "neutral",
 ) -> tuple[Any, np.ndarray, np.ndarray]:
-    """Load the neutral SMPL model, rest joints, and parent chain.
+    """Load a zero-shape SMPL model, rest joints, and parent chain.
 
     Args:
         model_dir: SMPL model directory. When omitted, reads
             ``MOTIUS_SMPL_MODEL_DIR``.
         device: Torch device for the SMPL layer.
+        gender: SMPL body-model gender to load.
     """
 
     resolved = model_dir or os.environ.get("MOTIUS_SMPL_MODEL_DIR")
@@ -60,7 +62,7 @@ def load_smpl_rest(
         raise FileNotFoundError(
             "SMPL model assets are required; pass model_dir=... or set MOTIUS_SMPL_MODEL_DIR"
         )
-    return _load_smpl_rest(Path(resolved), _as_device(device))
+    return _load_smpl_rest(Path(resolved), _as_device(device), gender=gender)
 
 
 def retarget_hml263_clip(
@@ -69,6 +71,7 @@ def retarget_hml263_clip(
     smpl_rest: tuple[Any, np.ndarray, np.ndarray] | None = None,
     model_dir: str | Path | None = None,
     device: str | torch.device | None = None,
+    gender: str = "neutral",
     source_fps: float = 20.0,
     target_fps: float = 30.0,
     batch_size: int = 256,
@@ -112,7 +115,9 @@ def retarget_hml263_clip(
         raise ValueError(f"unsupported rotation_init: {rotation_init}")
 
     device_t = _as_device(device)
-    model, rest_joints, parents = smpl_rest or load_smpl_rest(model_dir, device_t)
+    model, rest_joints, parents = smpl_rest or load_smpl_rest(
+        model_dir, device_t, gender=gender
+    )
 
     arr = np.asarray(feats, dtype=np.float32)
     hml_local_r = None

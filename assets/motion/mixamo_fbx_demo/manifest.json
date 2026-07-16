@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "sample_id": "004822",
+  "source_representation": "hml263",
+  "source_fps": 20,
+  "output_fps": 30,
+  "render_start_frame": 20,
+  "render_frames": 90,
+  "characters": ["atlas", "nova", "gear"],
+  "bridge": "HumanML3D joints plus SMPL position IK",
+  "fit_mpjpe_mm_mean": 24.5349292755,
+  "gif": {
+    "file": "hml263_to_mixamo.gif",
+    "width": 1280,
+    "fps": 30,
+    "sha256": "d3479b6d7d67bb0933e1f842e8114219750bff43802b61ad3d75042492fdb31b"
+  },
+  "mp4": {
+    "file": "hml263_to_mixamo.mp4",
+    "width": 1600,
+    "height": 450,
+    "fps": 30,
+    "sha256": "de1282733f416ffbc1d088eebc9177abe0e43eaa40b02fff6e61e225126bef42"
+  }
+}

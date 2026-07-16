@@ -503,7 +503,11 @@ def _resolve_smplx_model_root(model_dir: Path) -> Path:
     return model_dir
 
 
-def load_smpl_rest(model_dir: Path, device: torch.device):
+def load_smpl_rest(
+    model_dir: Path,
+    device: torch.device,
+    gender: str = "neutral",
+):
     if model_dir.name == "body_models":
         nochumpy = model_dir.with_name("body_models_nochumpy")
         if (nochumpy / "smpl" / "SMPL_NEUTRAL.pkl").exists():
@@ -511,7 +515,7 @@ def load_smpl_rest(model_dir: Path, device: torch.device):
     model = smplx.create(
         str(_resolve_smplx_model_root(model_dir)),
         model_type="smpl",
-        gender="neutral",
+        gender=gender,
         ext="pkl",
         batch_size=1,
     ).to(device)

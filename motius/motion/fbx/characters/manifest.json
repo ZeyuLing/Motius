@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "generator": "tools/build_mixamo_characters.py",
+  "characters": {
+    "atlas": {
+      "file": "atlas.fbx",
+      "sha256": "1281317e4412f5d7dadc4b384ff38eecfe54d092779f677872cf0fca1e14b07b",
+      "bone_namespace": "mixamorig:",
+      "license": "CC0-1.0"
+    },
+    "nova": {
+      "file": "nova.fbx",
+      "sha256": "fac2634177277bd69d0fc45d0a2525930b878df2aa59094b07a76ca4b171583d",
+      "bone_namespace": "mixamorig:",
+      "license": "CC0-1.0"
+    },
+    "gear": {
+      "file": "gear.fbx",
+      "sha256": "7c33446b5dc6c91bf24c8163f5ccde5d5b230382896161761e21d15ae740d3eb",
+      "bone_namespace": "mixamorig:",
+      "license": "CC0-1.0"
+    }
+  }
+}

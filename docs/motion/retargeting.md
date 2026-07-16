@@ -135,10 +135,13 @@ The default result is Z-up, joint-limit-clamped, smoothed, and ground-aligned.
 Set `mujoco_zup=False` and `ground_align=False` only when you need GMR's raw
 solver frame.
 
-## SMPL To FBX Character
+## Any Representation To FBX Character
 
-`motius.motion.fbx` exports a skinned SMPL FBX or bakes SMPL animation onto an
-already rigged and skinned character FBX. Common Mixamo bone names are detected
-automatically; other rigs accept an explicit SMPL-22 bone map. See the
-[FBX export and character-retargeting guide](fbx.md) for Python and CLI usage,
-coordinate conventions, root-motion scaling, and target-rig requirements.
+`export_motion_to_fbx` accepts all public Motius representations, bridges them
+to SMPL-22 body motion, and bakes the result onto an already rigged and skinned
+character FBX. Common Mixamo bone names are detected automatically; other rigs
+accept an explicit SMPL-22 bone map. Position-only routes report per-frame IK
+fit error in the FBX sidecar manifest. See the
+[representation-to-FBX guide](fbx.md) for the route matrix, Python and CLI
+usage, coordinate conventions, root-motion scaling, and target-rig
+requirements.

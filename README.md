@@ -49,6 +49,7 @@ cards rather than treated as separate tasks.
 | MotionCLR | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/motius-motionclr-humanml3d) | [Model Card](docs/model_zoo/motionclr.md) | [Paper](https://arxiv.org/abs/2410.18977) / [Code](https://github.com/IDEA-Research/MotionCLR) |
 | MotionMillion | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | MotionStreamer-272 | [7B](https://huggingface.co/ZeyuLing/hftrainer-gotozero-7b-train-humanml272) / [3B](https://huggingface.co/ZeyuLing/hftrainer-gotozero-3b-train-humanml272) | [Model Card](docs/model_zoo/motionmillion.md) | [Paper](https://arxiv.org/abs/2507.07095) / [Code](https://github.com/VankouF/MotionMillion-Codes) |
 | MotionStreamer | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard), [TP2M](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) | MotionStreamer-272 | [HF](https://huggingface.co/ZeyuLing/hftrainer-motionstreamer-humanml272) | [Model Card](docs/model_zoo/motionstreamer.md) | [Paper](https://arxiv.org/abs/2503.15451) / [Code](https://github.com/zju3dv/MotionStreamer) |
+| PRISM | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [TP2M](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard), [Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) | PRISM Motion-138 | [1.0](https://huggingface.co/ZeyuLing/motius-prism-1.0-humanml3d) / [KT](https://huggingface.co/ZeyuLing/motius-prism-kt-humanml3d) | [Model Card](docs/model_zoo/prism.md) | [Code](https://github.com/ZeyuLing/Motius) |
 | HY-Motion T2M | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HY-Motion-201 | [Full](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0) / [Lite](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0-lite) | [Model Card](docs/model_zoo/hymotion_t2m.md) | [Paper](https://arxiv.org/abs/2512.23464) / [Code](https://github.com/Tencent-Hunyuan/HY-Motion-1.0) |
 | KIMODO | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard), [TP2M](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard), Kinematic Control | SOMA / G1 / SMPL-X | [SOMA-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-soma-rp) / [G1-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-rp) / [G1-SEED](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-seed) / [SMPLX-RP](https://huggingface.co/ZeyuLing/hftrainer-kimodo-smplx-rp) | [Model Card](docs/model_zoo/kimodo.md) | [Paper](https://arxiv.org/abs/2603.15546) / [Code](https://github.com/nv-tlabs/kimodo) |
 | ARDY | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), Kinematic Control | ARDY-330 / Unitree G1 explicit 414D | [Core](https://huggingface.co/nvidia/ARDY-Core-RP-20FPS-Horizon40) / [G1](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon52) | [Model Card](docs/model_zoo/ardy.md) | [Paper](https://arxiv.org/abs/2607.08741) / [Code](https://github.com/nv-tlabs/ardy) |
@@ -165,7 +166,7 @@ motion_hml263 = smpl_to_humanml263(
     betas=betas,
     gender="female",
     model_type="smplh",
-    model_path="checkpoints/smpl_models",
+    model_path="checkpoints/body_models",
     src_fps=20,
     coordinate_system="amass",
 )
@@ -188,48 +189,49 @@ python tools/convert_motion.py input.npy output.npy \
   --src hymotion201 --dst ms272
 ```
 
-### FBX Export And Character Retargeting
+### Any Representation To A Character FBX
 
-Motius can export an animated, skinned SMPL FBX or bake the same motion onto an
-existing rigged character FBX. The latter preserves the character mesh,
-materials, hierarchy, and authored skin weights. Canonical SMPL and common
-Mixamo bone names are recognized automatically; custom rigs accept an explicit
-SMPL-22 bone map.
+Every public Motius representation can be exported onto a rigged
+Mixamo-compatible character through the SMPL-22 bridge. Exact rotation routes
+stay exact; joint-only and robot routes use position IK and record their fit
+error in the sidecar manifest. Motius includes three original CC0 characters,
+`atlas`, `nova`, and `gear`, so the API works immediately after Blender and an
+SMPL body model are configured.
+
+![HumanML3D-263 motion retargeted to three Mixamo-compatible FBX characters](assets/motion/mixamo_fbx_demo/hml263_to_mixamo.gif)
+
+[Open the MP4 source](assets/motion/mixamo_fbx_demo/hml263_to_mixamo.mp4)
 
 ```python
-from motius.motion import (
-    SMPLAnimation,
-    export_smpl_fbx,
-    retarget_smpl_to_fbx,
-)
+from motius.motion import export_motion_to_fbx
 
-animation = SMPLAnimation.from_motion135(motion135, betas=betas, fps=30)
-
-export_smpl_fbx(
-    animation,
-    "outputs/fbx/walk_smpl.fbx",
+result = export_motion_to_fbx(
+    motion_hml263,
+    source_representation="hml263",
+    character_fbx="atlas",  # built-in slug or any rigged .fbx path
+    output_path="outputs/fbx/atlas_walk.fbx",
     model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
+    output_fps=30,
 )
-
-retarget_smpl_to_fbx(
-    animation,
-    character_fbx="checkpoints/characters/hero.fbx",
-    output_path="outputs/fbx/hero_walk.fbx",
-    model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
-    root_motion_scale="auto",
-)
+print(result.metadata["motion_source"])
 ```
 
-The target character must already be rigged and skinned; this API does not
-auto-rig a static mesh. Blender 3.6+ is required as the FBX backend. See the
-[FBX export and character-retargeting guide](docs/motion/fbx.md) for setup,
-raw-SMPL input, CLI usage, bone maps, coordinates, and deformation limits.
+Put separately licensed Mixamo downloads under
+`checkpoints/characters/mixamo/<character_slug>/character.fbx`, or pass any
+other rigged FBX path plus an explicit bone map. Blender 3.6+ is the FBX
+backend. See the [representation-to-FBX guide](docs/motion/fbx.md) for the full
+support matrix, checkpoint-native ARDY/MotionBricks examples, CLI usage,
+coordinates, diagnostics, and target-rig requirements.
 
 ### SMPL Body-Model Setup
 
 `model_path` is a local filesystem path, not a remote URL. SMPL+H parameters
 cannot be redistributed with Motius, so download them from the
 [official MANO / SMPL+H download page](https://mano.is.tue.mpg.de/download.php):
+
+The repository tracks the complete local-asset layout under
+[`checkpoints/`](checkpoints/README.md). Licensed body-model files belong under
+[`checkpoints/body_models/`](checkpoints/body_models/README.md).
 
 1. Register or sign in and accept the model license. Redirecting to the sign-in
    page before authentication is expected.
@@ -239,7 +241,7 @@ cannot be redistributed with Motius, so download them from the
 3. Extract the archive and arrange the files in either supported layout:
 
 ```text
-checkpoints/smpl_models/
+checkpoints/body_models/
 └── smplh/
     ├── female/model.npz
     ├── male/model.npz
@@ -249,14 +251,14 @@ checkpoints/smpl_models/
 The standard `smplx` layout is also accepted:
 
 ```text
-checkpoints/smpl_models/
+checkpoints/body_models/
 └── smplh/
     ├── SMPLH_FEMALE.pkl
     ├── SMPLH_MALE.pkl
     └── SMPLH_NEUTRAL.pkl       # if available
 ```
 
-Pass the directory root as `model_path="checkpoints/smpl_models"`, or pass one model
+Pass the directory root as `model_path="checkpoints/body_models"`, or pass one model
 file directly. Verify the installation before conversion:
 
 ```bash
@@ -264,7 +266,7 @@ python - <<'PY'
 from motius.motion.skeleton import resolve_smpl_model_path
 
 path = resolve_smpl_model_path(
-    "checkpoints/smpl_models", model_type="smplh", gender="female"
+    "checkpoints/body_models", model_type="smplh", gender="female"
 )
 print(path)
 PY
@@ -329,6 +331,7 @@ the formal documentation:
 - [Architecture](docs/architecture.md)
 - [Getting Started](docs/getting_started.md)
 - [Development Guide](docs/development.md)
+- [Checkpoints and runtime assets](checkpoints/README.md)
 - [Motion representations and retargeting](docs/motion/README.md)
 - [BABEL sequential generation evaluation](docs/evaluation/babel_sequential.md)
 - [Physical motion metrics](docs/evaluation/physical_metrics.md)

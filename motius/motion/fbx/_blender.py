@@ -29,6 +29,16 @@ def _load_mapping_module():
 MAPPING = _load_mapping_module()
 
 
+_REST_POSE_DIRECTION_CHILD = {
+    "L_Collar": "L_Shoulder",
+    "R_Collar": "R_Shoulder",
+    "L_Shoulder": "L_Elbow",
+    "R_Shoulder": "R_Elbow",
+    "L_Elbow": "L_Wrist",
+    "R_Elbow": "R_Wrist",
+}
+
+
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--job", type=Path, required=True)
@@ -240,7 +250,7 @@ def _skeleton_height(points: np.ndarray) -> float:
     return extent
 
 
-def _retarget_animation(target, payload, bone_map, fps: float, root_scale) -> float:
+def _retarget_animation(target, payload, bone_map, fps: float, root_scale):
     joint_names = [str(value) for value in payload["joint_names"]]
     source_index = {name: index for index, name in enumerate(joint_names)}
     joints = np.asarray(payload["joints"])
@@ -284,8 +294,19 @@ def _retarget_animation(target, payload, bone_map, fps: float, root_scale) -> fl
             source_joint = source_index[source_name]
             data_bone = target.data.bones[target_name]
             pose_bone = target.pose.bones[target_name]
-            rest_basis = data_bone.matrix_local.to_3x3()
-            rotation = Matrix(global_rotations[index, source_joint].tolist()) @ rest_basis
+            rotation = Matrix(global_rotations[index, source_joint].tolist()) @ (
+                data_bone.matrix_local.to_3x3()
+            )
+            child_name = _REST_POSE_DIRECTION_CHILD.get(source_name)
+            if child_name is not None:
+                child_joint = source_index[child_name]
+                desired = Vector(joints[index, child_joint] - joints[index, source_joint])
+                current = rotation @ Vector((0.0, 1.0, 0.0))
+                if desired.length > 1e-6 and current.length > 1e-6:
+                    rotation = (
+                        current.normalized().rotation_difference(desired.normalized()).to_matrix()
+                        @ rotation
+                    )
             location = pose_bone.head.copy()
             if source_name == root_source:
                 displacement = (
@@ -300,8 +321,31 @@ def _retarget_animation(target, payload, bone_map, fps: float, root_scale) -> fl
     if target.animation_data and target.animation_data.action:
         target.animation_data.action.name = "Motius_Retargeted_SMPL_Animation"
         _linearize_action(target.animation_data.action)
+    direction_errors = []
+    for index in range(frames):
+        scene.frame_set(index + 1)
+        for source_name, child_name in _REST_POSE_DIRECTION_CHILD.items():
+            if source_name not in bone_map or child_name not in bone_map:
+                continue
+            source_axis = Vector(
+                joints[index, source_index[child_name]]
+                - joints[index, source_index[source_name]]
+            )
+            target_axis = (
+                target.pose.bones[bone_map[child_name]].head
+                - target.pose.bones[bone_map[source_name]].head
+            )
+            if source_axis.length > 1e-6 and target_axis.length > 1e-6:
+                direction_errors.append(
+                    source_axis.normalized().angle(target_axis.normalized()) * 180.0 / np.pi
+                )
     scene.frame_set(1)
-    return root_scale
+    diagnostics = {
+        "arm_chain_direction_error_deg_mean": float(np.mean(direction_errors)),
+        "arm_chain_direction_error_deg_p95": float(np.percentile(direction_errors, 95)),
+        "arm_chain_direction_error_deg_max": float(np.max(direction_errors)),
+    }
+    return root_scale, diagnostics
 
 
 def _select_objects(objects) -> None:
@@ -350,6 +394,7 @@ def _main() -> None:
 
     bone_map = {}
     root_scale = None
+    retarget_diagnostics = {}
     mesh_names = []
     if job["mode"] == "smpl_export":
         armature = _create_armature(payload)
@@ -369,7 +414,7 @@ def _main() -> None:
         )
         if "Pelvis" not in bone_map:
             raise ValueError("The target bone map must include Pelvis for root motion.")
-        root_scale = _retarget_animation(
+        root_scale, retarget_diagnostics = _retarget_animation(
             armature,
             payload,
             bone_map,
@@ -393,8 +438,16 @@ def _main() -> None:
         "fps": float(job["fps"]),
         "armature_name": armature.name,
         "mesh_names": mesh_names,
+        "character_fbx": job.get("character_fbx"),
         "bone_map": bone_map,
         "root_motion_scale": root_scale,
+        "retarget_diagnostics": retarget_diagnostics,
+        "rest_pose_alignment": (
+            "rotation transfer with posed arm-chain direction alignment"
+            if job["mode"] == "character_retarget"
+            else None
+        ),
+        "motion_source": job.get("source_metadata", {}),
         "coordinates": {
             "input": "SMPL Y-up, +Z forward",
             "blender_scene": "Z-up, -Y forward",

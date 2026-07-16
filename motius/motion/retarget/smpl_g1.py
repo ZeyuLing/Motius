@@ -170,7 +170,7 @@ _REPO_ROOT = pathlib.Path(__file__).resolve().parents[3]
 # only the SMPL-X body models are user data, resolved from the repo checkpoints.
 _VENDOR_DIR = pathlib.Path(__file__).resolve().parent / '_gmr'
 _DEFAULT_SMPLX_MODEL_DIR = pathlib.Path(
-    os.environ.get('MOTIUS_SMPL_MODEL_DIR', _REPO_ROOT / 'checkpoints' / 'smpl_models')
+    os.environ.get('MOTIUS_SMPL_MODEL_DIR', _REPO_ROOT / 'checkpoints' / 'body_models')
 )
 
 # Rotation (xyzw) that maps GMR's SMPL-X (Y-up, with the pelvis facing offset
@@ -270,7 +270,7 @@ class GMRSMPLToG1Retargeter:
         - GMR deps (``mink``, ``daqp``, ``smplx``, ``mujoco``) are imported lazily.
           A clear ``ImportError`` is raised if they're missing.
         - SMPL-X body models are user data, resolved from ``smplx_model_dir``
-          (default ``<repo>/checkpoints/smpl_models``; smplx looks under ``smplx/``).
+          (default ``<repo>/checkpoints/body_models``; smplx looks under ``smplx/``).
         - ``mujoco_zup=True`` + ``ground_align=True`` (defaults) make the output a
           drop-in qpos for a standard Z-up G1 MuJoCo model. Set both False to get
           GMR's raw solver frame.

@@ -25,6 +25,10 @@ dependencies = [
 dev = [
     "pytest>=7.4",
 ]
+prism = [
+    "einops>=0.6",
+    "sentencepiece>=0.1",
+]
 vimogen = [
     "ftfy>=6.1",
     "regex>=2023.0",
@@ -95,6 +99,11 @@ namespaces = false
     "retarget/_gmr/LICENSE",
     "retarget/_gmr/assets/unitree_g1/*.xml",
     "retarget/_gmr/ik_configs/*.json",
+]
+"motius.motion.fbx" = [
+    "characters/*.fbx",
+    "characters/*.json",
+    "characters/*.md",
 ]
 "motius.models.kimodo" = [
     "network/assets/skeletons/g1skel34/meshes/g1/*.STL",

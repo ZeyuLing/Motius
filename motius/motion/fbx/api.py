@@ -309,6 +309,7 @@ def _run_export(
     target_armature: str | None,
     strict_bone_map: bool,
     root_motion_scale: float | str,
+    source_metadata: Mapping[str, object] | None,
 ) -> FBXExportResult:
     output = Path(output_path).expanduser().resolve()
     if output.suffix.casefold() != ".fbx":
@@ -357,6 +358,7 @@ def _run_export(
             "target_armature": target_armature,
             "strict_bone_map": bool(strict_bone_map),
             "root_motion_scale": root_motion_scale,
+            "source_metadata": dict(source_metadata or {}),
         }
         job_path.write_text(json.dumps(job, indent=2) + "\n")
         command = [
@@ -408,6 +410,7 @@ def export_smpl_fbx(
     model_type: str = "smpl",
     gender: str = "neutral",
     blender_executable: str | Path | None = None,
+    source_metadata: Mapping[str, object] | None = None,
 ) -> FBXExportResult:
     """Export an animated, skinned SMPL-family FBX through Blender."""
 
@@ -423,6 +426,7 @@ def export_smpl_fbx(
         target_armature=None,
         strict_bone_map=True,
         root_motion_scale=1.0,
+        source_metadata=source_metadata,
     )
 
 
@@ -439,6 +443,7 @@ def retarget_smpl_to_fbx(
     strict_bone_map: bool = True,
     root_motion_scale: float | str = "auto",
     blender_executable: str | Path | None = None,
+    source_metadata: Mapping[str, object] | None = None,
 ) -> FBXExportResult:
     """Bake SMPL motion onto an already rigged and skinned character FBX."""
 
@@ -454,6 +459,7 @@ def retarget_smpl_to_fbx(
         target_armature=target_armature,
         strict_bone_map=strict_bone_map,
         root_motion_scale=root_motion_scale,
+        source_metadata=source_metadata,
     )
 
 

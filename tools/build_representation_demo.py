@@ -743,7 +743,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--hml-fixture", type=Path, required=True)
     parser.add_argument("--motion135", type=Path, required=True)
-    parser.add_argument("--smpl-model-dir", type=Path, default=Path("checkpoints/smpl_models"))
+    parser.add_argument("--smpl-model-dir", type=Path, default=Path("checkpoints/body_models"))
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/representation_demo/004822"))
     parser.add_argument("--case-id", default="004822")
     parser.add_argument("--fps", type=float, default=30.0)
