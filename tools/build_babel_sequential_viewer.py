@@ -17,6 +17,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from motius.motion import canonicalize_smpl22_joints
+from motius.motion.retarget.hml263_smpl import load_smpl_rest, retarget_hml263_clip
 
 
 DEFAULT_CASES = ("val_919", "val_4869", "val_8738")
@@ -30,6 +31,66 @@ COLORS = (
     "#0f9fa8",
 )
 METHOD_COLORS = ("#c2412d", "#6d4ea2", "#b46900", "#287147", "#9f3f72")
+
+
+def _keyframe_indices(frames: int, maximum: int) -> np.ndarray:
+    if frames <= maximum:
+        return np.arange(frames, dtype=np.int64)
+    return np.unique(np.round(np.linspace(0, frames - 1, maximum)).astype(np.int64))
+
+
+def _quantize_vertices(vertices: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    minimum = vertices.min(axis=(0, 1)).astype(np.float32)
+    maximum = vertices.max(axis=(0, 1)).astype(np.float32)
+    scale = np.maximum((maximum - minimum) / 65535.0, 1e-8).astype(np.float32)
+    quantized = np.rint((vertices - minimum) / scale).clip(0, 65535).astype("<u2")
+    return quantized, minimum, scale
+
+
+class _SMPLMeshFitter:
+    def __init__(self, model_dir: Path, device: str):
+        import torch
+
+        self.torch = torch
+        self.device = torch.device(device)
+        self.smpl_rest = load_smpl_rest(model_dir, self.device, gender="neutral")
+        self.model = self.smpl_rest[0]
+        self.faces = np.asarray(self.model.faces, dtype="<u4")
+
+    def fit(self, joints: np.ndarray, keep: np.ndarray) -> tuple[np.ndarray, float]:
+        torch = self.torch
+        selected = np.asarray(joints[keep], dtype=np.float32)
+        fitted = retarget_hml263_clip(
+            selected,
+            smpl_rest=self.smpl_rest,
+            device=self.device,
+            gender="neutral",
+            source_fps=30.0,
+            target_fps=30.0,
+            rotation_init="position_ik",
+            floor_align=False,
+            refine_iters=0,
+        )
+        global_orient = np.asarray(fitted["global_orient"], dtype=np.float32).reshape(-1, 3)
+        body_pose = np.asarray(fitted["body_pose"], dtype=np.float32).reshape(len(keep), -1)
+        transl = np.asarray(fitted["transl"], dtype=np.float32).reshape(len(keep), 3)
+        chunks = []
+        with torch.no_grad():
+            for start in range(0, len(keep), 96):
+                end = min(start + 96, len(keep))
+                count = end - start
+                body69 = np.zeros((count, 69), dtype=np.float32)
+                body69[:, :63] = body_pose[start:end, :63]
+                result = self.model(
+                    betas=torch.zeros(count, 10, device=self.device),
+                    body_pose=torch.from_numpy(body69).to(self.device),
+                    global_orient=torch.from_numpy(global_orient[start:end]).to(self.device),
+                    transl=torch.from_numpy(transl[start:end]).to(self.device),
+                )
+                chunks.append(result.vertices.detach().cpu().numpy().astype(np.float32))
+        vertices = np.concatenate(chunks, axis=0)
+        vertices[..., 1] -= float(vertices[..., 1].min())
+        return vertices, float(np.asarray(fitted["fit_mpjpe_mm"]).mean())
 
 
 def _load_joints(path: Path) -> np.ndarray:
@@ -65,6 +126,14 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         help="Optional exact R-Precision ranking export from export_babel_retrieval_audit.py.",
     )
+    parser.add_argument(
+        "--smpl-model-dir",
+        type=Path,
+        default=REPO_ROOT / "checkpoints" / "body_models",
+        help="Directory containing the licensed neutral SMPL body model.",
+    )
+    parser.add_argument("--mesh-keyframes", type=int, default=120)
+    parser.add_argument("--device", default="cuda")
     return parser.parse_args()
 
 
@@ -121,6 +190,9 @@ def main() -> None:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     assets = args.output_dir / "assets"
     assets.mkdir(exist_ok=True)
+    mesh_fitter = _SMPLMeshFitter(args.smpl_model_dir.resolve(), args.device)
+    faces_file = assets / "smpl_faces.u32"
+    mesh_fitter.faces.tofile(faces_file)
     exported = []
     for case_id in args.case_ids:
         case = cases[case_id]
@@ -143,6 +215,23 @@ def main() -> None:
             motion_file = assets / f"{case_id}_{key}_joints.f32"
             motion.tofile(motion_file)
             motion_files[key] = motion_file.relative_to(args.output_dir).as_posix()
+        mesh_files = {}
+        keep = _keyframe_indices(frames, args.mesh_keyframes)
+        all_joints = {"gt": reference, **method_motions}
+        for key, joints in all_joints.items():
+            vertices, fit_mpjpe_mm = mesh_fitter.fit(joints[:frames], keep)
+            quantized, minimum, scale = _quantize_vertices(vertices)
+            mesh_file = assets / f"{case_id}_{key}_smpl_vertices.u16"
+            quantized.tofile(mesh_file)
+            mesh_files[key] = {
+                "vertices_file": mesh_file.relative_to(args.output_dir).as_posix(),
+                "keyframe_indices": keep.astype(int).tolist(),
+                "keyframe_count": int(len(keep)),
+                "vertex_count": int(vertices.shape[1]),
+                "quantization_min": minimum.tolist(),
+                "quantization_scale": scale.tolist(),
+                "fit_mpjpe_mm": fit_mpjpe_mm,
+            }
         segments = []
         for index, segment in enumerate(case["segments"]):
             if int(segment["start_frame"]) >= frames:
@@ -171,6 +260,7 @@ def main() -> None:
                 "frames": frames,
                 "fps": float(source.get("fps", 30.0)),
                 "motion_files": motion_files,
+                "mesh_files": mesh_files,
                 "segments": segments,
             }
         )
@@ -190,6 +280,13 @@ def main() -> None:
             ],
         ],
         "parents": [-1, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 12, 13, 14, 16, 17, 18, 19],
+        "mesh": {
+            "body_model": "neutral SMPL",
+            "vertex_count": 6890,
+            "faces_file": faces_file.relative_to(args.output_dir).as_posix(),
+            "face_count": int(len(mesh_fitter.faces)),
+            "source": "position IK from the canonical SMPL-22 joints used by evaluation",
+        },
         "episodes": exported,
     }
     if audit is not None:

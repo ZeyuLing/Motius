@@ -30,6 +30,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--smplx-model", required=True, type=Path)
     parser.add_argument("--shard-index", type=int, default=0)
     parser.add_argument("--num-shards", type=int, default=1)
+    parser.add_argument("--ids", nargs="*", default=[])
+    parser.add_argument("--skip-missing", action="store_true")
     parser.add_argument("--overwrite", action="store_true")
     return parser.parse_args()
 
@@ -52,13 +54,21 @@ def main() -> None:
     output_dir = args.output_dir.resolve()
     model_path = args.smplx_model.resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
-    generated = skipped = 0
+    requested_ids = set(args.ids)
+    generated = skipped = missing = 0
     for index, case in enumerate(manifest.get("cases", [])):
         if index % args.num_shards != args.shard_index:
             continue
         case_id = str(case["case_id"])
+        if requested_ids and case_id not in requested_ids:
+            continue
         source_path = predictions_dir / f"{case_id}.npz"
         output_path = output_dir / f"{case_id}.npy"
+        if not source_path.is_file():
+            if args.skip_missing:
+                missing += 1
+                continue
+            raise FileNotFoundError(source_path)
         if output_path.is_file() and not args.overwrite:
             skipped += 1
             continue
@@ -88,7 +98,7 @@ def main() -> None:
         np.save(output_path, joints.astype(np.float32))
         generated += 1
         print(f"[{index + 1}/{len(manifest['cases'])}] materialized {case_id}", flush=True)
-    print(json.dumps({"generated": generated, "skipped": skipped}, indent=2))
+    print(json.dumps({"generated": generated, "skipped": skipped, "missing": missing}, indent=2))
 
 
 if __name__ == "__main__":

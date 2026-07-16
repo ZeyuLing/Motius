@@ -135,10 +135,15 @@ python tools/build_babel_sequential_viewer.py \
   --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest_actiongroups_v3.json \
   --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/joints66 \
   --prediction MotionStreamer=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionstreamer_latest_seed42/joints66 \
-  --prediction 'PRISM (epoch 8)=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/prism_epoch8/joints66' \
+  --prediction 'PRISM (epoch 12)=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/prism_epoch12_fixed360_actiongroups_v3/joints66' \
   --retrieval-audit outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/retrieval_audit.json \
   --output-dir outputs/visualization/babel_sequential_audit
 ```
+
+The audit viewer fits the exact canonical SMPL-22 joints used by evaluation to
+a neutral SMPL body and renders synchronized SMPL meshes in Three.js. Each
+method retains its own global XZ trajectory; the floor, trajectory trace, and
+first-frame facing marker make canonicalization and displacement errors visible.
 
 Both generation and evaluation accept deterministic sharding for cluster runs.
 Generated artifacts and metrics must remain under `outputs/`.
@@ -155,6 +160,21 @@ python tools/generate_babel_sequential_motionstreamer.py \
   --output-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionstreamer_seed42 \
   --device cuda --seed 42
 ```
+
+Methods that emit MotionStreamer-272 features, including MotionLab after its
+native sequential inference, use the same public materialization step:
+
+```bash
+python tools/materialize_motion272_joints.py \
+  --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest_actiongroups_v3.json \
+  --source-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v3/motion272 \
+  --output-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v3/joints66 \
+  --skip-missing
+```
+
+This conversion uses the manifest's SMPL-22 bone offsets, canonicalizes the
+complete episode once, and verifies the exact official frame count before
+writing evaluator input.
 
 ## Submission Contract
 

@@ -249,6 +249,16 @@
       const grid = new THREE.GridHelper(14, 56, 0xaeb8c2, 0xd4dae0);
       grid.position.y = .002;
       scene.add(grid);
+
+      const facingArrow = new THREE.ArrowHelper(
+        new THREE.Vector3(0, 0, 1),
+        new THREE.Vector3(0, .025, 0),
+        .75,
+        0x137f72,
+        .16,
+        .09
+      );
+      scene.add(facingArrow);
       const trajectoryGroup = new THREE.Group();
       scene.add(trajectoryGroup);
       const resize = () => {
@@ -260,86 +270,82 @@
       };
       window.addEventListener("resize", resize);
       resize();
-      return { scene, renderer, camera, controls, floor, grid, trajectoryGroup };
+      return { scene, renderer, camera, controls, floor, grid, facingArrow, trajectoryGroup };
     }
 
-    function makeSkeleton(env) {
-      const group = new THREE.Group();
-      const material = new THREE.MeshStandardMaterial({ color: 0xe15d44, roughness: .58, metalness: .02 });
-      const jointGeometry = new THREE.SphereGeometry(.035, 12, 9);
-      const joints = parents.map(() => {
-        const mesh = new THREE.Mesh(jointGeometry, material);
-        mesh.castShadow = true;
-        group.add(mesh);
-        return mesh;
+    const faces = new Uint32Array(await fetch(manifest.mesh.faces_file).then((response) => response.arrayBuffer()));
+
+    function makeBodyMesh(env, color) {
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute("position", new THREE.BufferAttribute(new Float32Array(manifest.mesh.vertex_count * 3), 3));
+      geometry.setIndex(new THREE.BufferAttribute(faces, 1));
+      const material = new THREE.MeshStandardMaterial({
+        color,
+        roughness: .62,
+        metalness: .02,
+        side: THREE.DoubleSide,
       });
-      const bones = [];
-      for (let joint = 0; joint < parents.length; joint++) {
-        if (parents[joint] < 0) { bones.push(null); continue; }
-        const mesh = new THREE.Mesh(new THREE.CylinderGeometry(.018, .024, 1, 8), material);
-        mesh.castShadow = true;
-        group.add(mesh);
-        bones.push(mesh);
+      const body = new THREE.Mesh(geometry, material);
+      body.castShadow = true;
+      body.receiveShadow = true;
+      env.scene.add(body);
+      return { body, geometry, material };
+    }
+
+    function updateBodyMesh(view, asset, frame) {
+      const indices = asset.keyframeIndices;
+      let hi = 0;
+      while (hi < indices.length && indices[hi] < frame) hi++;
+      if (hi >= indices.length) hi = indices.length - 1;
+      const lo = Math.max(0, hi - (indices[hi] > frame ? 1 : 0));
+      const span = Math.max(1, indices[hi] - indices[lo]);
+      const alpha = hi === lo ? 0 : (frame - indices[lo]) / span;
+      const width = asset.vertexCount * 3;
+      const loBase = lo * width;
+      const hiBase = hi * width;
+      const position = view.mesh.geometry.attributes.position.array;
+      for (let index = 0; index < width; index++) {
+        const axis = index % 3;
+        const q = asset.quantized[loBase + index] * (1 - alpha) + asset.quantized[hiBase + index] * alpha;
+        position[index] = asset.minimum[axis] + q * asset.scale[axis];
       }
-      const facingArrow = new THREE.ArrowHelper(
-        new THREE.Vector3(0, 0, 1),
-        new THREE.Vector3(0, .025, 0),
-        .52,
-        0x172033,
-        .12,
-        .07
-      );
-      group.add(facingArrow);
-      env.scene.add(group);
-      return { group, material, joints, bones, facingArrow };
+      view.mesh.geometry.attributes.position.needsUpdate = true;
+      view.mesh.geometry.computeVertexNormals();
+      view.mesh.geometry.computeBoundingSphere();
     }
 
     const yAxis = new THREE.Vector3(0, 1, 0);
-    const a = new THREE.Vector3();
-    const b = new THREE.Vector3();
-    const direction = new THREE.Vector3();
     const facingRight = new THREE.Vector3();
     const facingAcrossShoulders = new THREE.Vector3();
     const facingForward = new THREE.Vector3();
     const facingOrigin = new THREE.Vector3();
-    function updateSkeleton(skeleton, data, frame) {
+    function updateFacingArrow(env, data, frame) {
       const base = frame * 66;
       const originX = data[0];
       const originZ = data[2];
-      for (let joint = 0; joint < 22; joint++) {
-        const offset = base + joint * 3;
-        skeleton.joints[joint].position.set(
+      const joint = (index, target) => {
+        const offset = base + index * 3;
+        return target.set(
           data[offset] - originX,
           data[offset + 1],
           data[offset + 2] - originZ
         );
-        const parent = parents[joint];
-        if (parent < 0) continue;
-        a.copy(skeleton.joints[parent].position);
-        b.copy(skeleton.joints[joint].position);
-        direction.subVectors(b, a);
-        const length = direction.length();
-        const bone = skeleton.bones[joint];
-        bone.position.copy(a).add(b).multiplyScalar(.5);
-        bone.scale.set(1, length, 1);
-        bone.quaternion.setFromUnitVectors(yAxis, direction.normalize());
-      }
+      };
+      const leftHip = joint(1, new THREE.Vector3());
+      const rightHip = joint(2, new THREE.Vector3());
+      const leftShoulder = joint(16, new THREE.Vector3());
+      const rightShoulder = joint(17, new THREE.Vector3());
       facingRight
-        .subVectors(skeleton.joints[2].position, skeleton.joints[1].position)
-        .add(
-          facingAcrossShoulders.subVectors(
-            skeleton.joints[17].position,
-            skeleton.joints[16].position
-          )
-        );
+        .subVectors(rightHip, leftHip)
+        .add(facingAcrossShoulders.subVectors(rightShoulder, leftShoulder));
       facingRight.y = 0;
       if (facingRight.lengthSq() < 1e-10) facingRight.set(1, 0, 0);
       else facingRight.normalize();
       facingForward.crossVectors(facingRight, yAxis).normalize();
-      facingOrigin.copy(skeleton.joints[0].position);
+      joint(0, facingOrigin);
       facingOrigin.y = .025;
-      skeleton.facingArrow.position.copy(facingOrigin);
-      skeleton.facingArrow.setDirection(facingForward);
+      env.facingArrow.position.copy(facingOrigin);
+      env.facingArrow.setDirection(facingForward);
     }
 
     const stageRoot = document.getElementById("stage");
@@ -353,7 +359,7 @@
       viewport.appendChild(label);
       stageRoot.appendChild(viewport);
       const env = makeScene(viewport);
-      return [method.key, { method, env, skeleton: makeSkeleton(env) }];
+      return [method.key, { method, env, mesh: makeBodyMesh(env, method.accent) }];
     }));
 
     function clearTrajectories(env) {
@@ -419,6 +425,7 @@
 
     let episode;
     let motionData = new Map();
+    let meshData = new Map();
     let frame = 0;
     // Keep the audit on the actual canonical frame until the user starts it.
     let playing = false;
@@ -428,6 +435,16 @@
 
     async function loadFloat32(path) {
       return new Float32Array(await fetch(path).then((response) => response.arrayBuffer()));
+    }
+
+    async function loadMeshAsset(spec) {
+      return {
+        quantized: new Uint16Array(await fetch(spec.vertices_file).then((response) => response.arrayBuffer())),
+        keyframeIndices: spec.keyframe_indices,
+        vertexCount: spec.vertex_count,
+        minimum: spec.quantization_min,
+        scale: spec.quantization_scale,
+      };
     }
 
     function currentSegmentIndex(value) {
@@ -479,13 +496,16 @@
     function setFrame(value) {
       frame = Math.max(0, Math.min(episode.frames - 1, Math.round(value)));
       scrubber.value = String(frame);
-      methodViews.forEach((view, key) => updateSkeleton(view.skeleton, motionData.get(key), frame));
+      methodViews.forEach((view, key) => {
+        updateBodyMesh(view, meshData.get(key), frame);
+        updateFacingArrow(view.env, motionData.get(key), frame);
+      });
       frameLabel.textContent = `${String(frame + 1).padStart(4, "0")} / ${String(episode.frames).padStart(4, "0")}`;
       const index = currentSegmentIndex(frame);
       if (index !== activeSegment && index >= 0) {
         activeSegment = index;
         const color = episode.segments[index].color;
-        methodViews.forEach((view) => view.skeleton.material.color.set(color));
+        methodViews.forEach((view) => view.mesh.material.color.set(color));
         [...segmentRoot.children].forEach((node, nodeIndex) => node.classList.toggle("active", nodeIndex === index));
       }
     }
@@ -519,6 +539,11 @@
         await loadFloat32(episode.motion_files[method.key]),
       ]));
       motionData = new Map(loaded);
+      const loadedMeshes = await Promise.all(manifest.methods.map(async (method) => [
+        method.key,
+        await loadMeshAsset(episode.mesh_files[method.key]),
+      ]));
+      meshData = new Map(loadedMeshes);
       methodViews.forEach((view, key) => {
         clearTrajectories(view.env);
         const data = motionData.get(key);

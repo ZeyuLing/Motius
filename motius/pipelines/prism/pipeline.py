@@ -116,11 +116,6 @@ class PRISMPipeline(BasePipeline):
                 "segment_frames must contain one length for every prompt; "
                 f"got {len(frame_list)} lengths for {len(prompts)} prompts"
             )
-        if max(frame_list, default=0) > int(pad_to_frames):
-            raise ValueError(
-                "PRISM fixed-canvas sequential generation requires every "
-                f"segment to be <= {pad_to_frames} frames; got {frame_list!r}"
-            )
         kwargs.setdefault(
             "generation_num_frames_per_segment",
             [int(pad_to_frames)] * len(prompts),

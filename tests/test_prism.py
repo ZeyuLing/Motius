@@ -139,7 +139,7 @@ def test_prism_fixed_canvas_never_expands_360_for_carried_prefix():
     ]
 
 
-def test_prism_public_sequential_api_enables_fixed_canvas(monkeypatch):
+def test_prism_public_sequential_api_enables_fixed_canvas_for_long_segments(monkeypatch):
     captured = {}
 
     def fake_generate(self, prompts, segment_frames, **kwargs):
@@ -148,10 +148,10 @@ def test_prism_public_sequential_api_enables_fixed_canvas(monkeypatch):
 
     monkeypatch.setattr(PRISMPipeline, "generate", fake_generate)
     pipeline = object.__new__(PRISMPipeline)
-    result = pipeline.sequential_generation(["walk", "turn"], [360, 120])
+    result = pipeline.sequential_generation(["dance", "turn"], [1657, 120])
 
-    assert result == (["walk", "turn"], [360, 120])
+    assert result == (["dance", "turn"], [1657, 120])
     assert captured["generation_num_frames_per_segment"] == [360, 360]
-    assert captured["valid_num_frames_per_segment"] == [360, 120]
+    assert captured["valid_num_frames_per_segment"] == [1657, 120]
     assert captured["fixed_generation_canvas"] is True
     assert captured["allow_segment_padding"] is False

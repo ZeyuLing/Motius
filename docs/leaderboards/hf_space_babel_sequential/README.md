@@ -44,7 +44,8 @@ PRISM uses the latest checkpoint available when this evaluation started
 overall result: the distribution and transition metrics expose a substantial
 quality and continuity gap.
 
-The Space also includes a synchronized Three.js comparison of BABEL GT,
-FlowMDM, MotionStreamer, and PRISM. For every displayed subclip it preserves the
-actual GT/FlowMDM Motion-to-Text and Text-to-Motion Top-3 rankings from the same
-seed-0, 32-candidate recall batches.
+The Space also includes a synchronized Three.js neutral-SMPL-mesh comparison
+of BABEL GT, FlowMDM, MotionStreamer, PRISM, and MotionLab. Every viewport preserves the
+method's global XZ trajectory and exposes its first-frame facing direction. For
+every displayed subclip it preserves the actual GT/FlowMDM Motion-to-Text and
+Text-to-Motion Top-3 rankings from the same seed-0, 32-candidate recall batches.
