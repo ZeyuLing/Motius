@@ -413,22 +413,14 @@ def _run_export(
     fbxsdk_runtime = None
     selected_backend = backend
     if selected_backend == "auto":
-        if target is not None:
-            try:
-                fbxsdk_runtime = resolve_fbxsdk_runtime(
-                    fbxsdk_python, fbxsdk_module_path
-                )
-                selected_backend = "fbxsdk"
-            except (FileNotFoundError, ImportError, subprocess.SubprocessError):
-                selected_backend = "blender"
-        else:
+        try:
+            fbxsdk_runtime = resolve_fbxsdk_runtime(
+                fbxsdk_python, fbxsdk_module_path
+            )
+            selected_backend = "fbxsdk"
+        except (FileNotFoundError, ImportError, subprocess.SubprocessError):
             selected_backend = "blender"
     if selected_backend == "fbxsdk":
-        if target is None:
-            raise ValueError(
-                "The FBX SDK backend animates an existing character FBX. "
-                "Direct skinned-SMPL FBX construction currently uses backend='blender'."
-            )
         if fbxsdk_runtime is None:
             fbxsdk_runtime = resolve_fbxsdk_runtime(
                 fbxsdk_python, fbxsdk_module_path

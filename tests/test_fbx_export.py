@@ -1,12 +1,16 @@
+import hashlib
+import json
 from pathlib import Path
 
 import numpy as np
 import pytest
 
 from motius.motion.fbx import (
+    CharacterAsset,
     SMPLAnimation,
     SMPL_TO_BLENDER,
     g1_joints_to_smpl22_joints,
+    list_character_assets,
     motion_to_smpl_animation,
     resolve_character_fbx,
 )
@@ -131,6 +135,39 @@ def test_character_resolver_requires_an_existing_fbx(tmp_path: Path) -> None:
         resolve_character_fbx(tmp_path / "character.obj")
     with pytest.raises(FileNotFoundError, match="does not exist"):
         resolve_character_fbx(tmp_path / "missing.fbx")
+
+
+def test_character_resolver_discovers_checkpoint_slugs(tmp_path: Path) -> None:
+    remy = tmp_path / "mixamo" / "remy" / "character.fbx"
+    remy.parent.mkdir(parents=True)
+    remy.write_bytes(b"Kaydara FBX Binary")
+
+    assert list_character_assets(tmp_path) == (
+        CharacterAsset("mixamo", "remy", remy.resolve()),
+    )
+    assert resolve_character_fbx("remy", root=tmp_path) == remy.resolve()
+    assert resolve_character_fbx("mixamo/remy", root=tmp_path) == remy.resolve()
+    with pytest.raises(FileNotFoundError, match="is not installed"):
+        resolve_character_fbx("mixamo/missing", root=tmp_path)
+    with pytest.raises(ValueError, match="identifier"):
+        resolve_character_fbx("../remy", root=tmp_path)
+
+
+def test_fbx_character_demo_is_reproducible_and_documented() -> None:
+    root = Path(__file__).resolve().parents[1]
+    asset_dir = root / "assets/motion/fbx_character_demo"
+    manifest = json.loads((asset_dir / "manifest.json").read_text())
+    artifact = asset_dir / manifest["artifact"]
+    digest = hashlib.sha256(artifact.read_bytes()).hexdigest()
+
+    assert manifest["frames"] == 90
+    assert manifest["capture_fps"] == 30
+    assert manifest["fbx_assets_committed"] is False
+    assert digest == manifest["sha256"]
+    assert str(artifact.relative_to(root)) in (root / "README.md").read_text()
+    viewer = (root / "tools/fbx_character_demo_viewer.html").read_text()
+    assert 'from "three/addons/loaders/FBXLoader.js"' in viewer
+    assert "window.__MOTIUS_DEMO__" in viewer
 
 
 def test_motion_bridge_decodes_exact_rotation_representations() -> None:

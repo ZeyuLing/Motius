@@ -7,3 +7,8 @@ receive their own directory, mapping contract, and license notes.
 Motius does not bundle Adobe Mixamo characters or substitute procedural
 characters under Mixamo branding. Separately licensed and user-provided
 characters stay in this directory and are not committed.
+
+The default root is `checkpoints/characters/`. Set `MOTIUS_CHARACTER_DIR` to
+use a shared asset location. Each installed asset follows
+`<provider>/<slug>/character.fbx` and can be passed to the API as
+`provider/slug`.

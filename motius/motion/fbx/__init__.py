@@ -17,7 +17,12 @@ from .bridge import (
     g1_joints_to_smpl22_joints,
     motion_to_smpl_animation,
 )
-from .characters import resolve_character_fbx
+from .characters import (
+    CharacterAsset,
+    list_character_assets,
+    resolve_character_fbx,
+    resolve_character_root,
+)
 
 __all__ = [
     "FBXExportError",
@@ -33,5 +38,8 @@ __all__ = [
     "export_motion_to_mixamo_fbx",
     "g1_joints_to_smpl22_joints",
     "motion_to_smpl_animation",
+    "CharacterAsset",
+    "list_character_assets",
     "resolve_character_fbx",
+    "resolve_character_root",
 ]

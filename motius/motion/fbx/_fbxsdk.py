@@ -249,7 +249,16 @@ def _set_curve(property_value, layer, component: str, values: np.ndarray, fps: f
     curve.KeyModifyEnd()
 
 
-def _animate(scene, payload, nodes_by_name, bone_map, fps: float, root_scale):
+def _animate(
+    scene,
+    payload,
+    nodes_by_name,
+    bone_map,
+    fps: float,
+    root_scale,
+    *,
+    align_root_start: bool = True,
+):
     source_names = [str(value) for value in payload["joint_names"]]
     source_index = {name: index for index, name in enumerate(source_names)}
     joints = np.asarray(payload["joints"], dtype=np.float64)
@@ -382,9 +391,17 @@ def _animate(scene, payload, nodes_by_name, bone_map, fps: float, root_scale):
     root_rest_local_effective = _matrix4(root_node.EvaluateLocalTransform())[:3, 3]
     root_lcl = root_node.LclTranslation.Get()
     root_lcl_rest = np.asarray([root_lcl[0], root_lcl[1], root_lcl[2]], dtype=np.float64)
-    desired_root_global = root_rest_global + (
-        joints[:, source_index[root_source]] - joints[0, source_index[root_source]]
-    ) * root_scale
+    if align_root_start:
+        root_delta = (
+            joints[:, source_index[root_source]]
+            - joints[0, source_index[root_source]]
+        )
+    else:
+        root_delta = (
+            joints[:, source_index[root_source]]
+            - source_rest[source_index[root_source]]
+        )
+    desired_root_global = root_rest_global + root_delta * root_scale
     homogeneous = np.concatenate(
         [desired_root_global, np.ones((frames, 1), dtype=np.float64)], axis=1
     )
@@ -450,6 +467,106 @@ def _animate(scene, payload, nodes_by_name, bone_map, fps: float, root_scale):
     return stack, root_scale, diagnostics
 
 
+def _create_smpl_scene(scene, payload):
+    vertices = np.asarray(payload["vertices"], dtype=np.float64)
+    faces = np.asarray(payload["faces"], dtype=np.int64)
+    weights = np.asarray(payload["weights"], dtype=np.float64)
+    rest_joints = np.asarray(payload["rest_joints"], dtype=np.float64)
+    parents = np.asarray(payload["parents"], dtype=np.int64)
+    joint_names = [str(value) for value in payload["joint_names"]]
+
+    scene.GetGlobalSettings().SetAxisSystem(fbx.FbxAxisSystem.MayaZUp)
+    scene.GetGlobalSettings().SetSystemUnit(fbx.FbxSystemUnit.m)
+    skeleton_nodes = []
+    for joint, name in enumerate(joint_names):
+        attribute = fbx.FbxSkeleton.Create(scene, f"{name}_Skeleton")
+        skeleton_type = (
+            fbx.FbxSkeleton.EType.eRoot
+            if parents[joint] < 0
+            else fbx.FbxSkeleton.EType.eLimbNode
+        )
+        attribute.SetSkeletonType(skeleton_type)
+        node = fbx.FbxNode.Create(scene, name)
+        node.SetNodeAttribute(attribute)
+        parent = int(parents[joint])
+        offset = rest_joints[joint] if parent < 0 else rest_joints[joint] - rest_joints[parent]
+        node.LclTranslation.Set(
+            fbx.FbxDouble3(float(offset[0]), float(offset[1]), float(offset[2]))
+        )
+        if parent < 0:
+            scene.GetRootNode().AddChild(node)
+        else:
+            skeleton_nodes[parent].AddChild(node)
+        skeleton_nodes.append(node)
+
+    mesh = fbx.FbxMesh.Create(scene, "SMPL_Mesh")
+    mesh.InitControlPoints(len(vertices))
+    for index, vertex in enumerate(vertices):
+        mesh.SetControlPointAt(
+            fbx.FbxVector4(float(vertex[0]), float(vertex[1]), float(vertex[2])),
+            index,
+        )
+    for face in faces:
+        mesh.BeginPolygon(0)
+        for index in face:
+            mesh.AddPolygon(int(index))
+        mesh.EndPolygon()
+
+    face_vertices = vertices[faces]
+    face_normals = np.cross(
+        face_vertices[:, 1] - face_vertices[:, 0],
+        face_vertices[:, 2] - face_vertices[:, 0],
+    )
+    vertex_normals = np.zeros_like(vertices)
+    for corner in range(faces.shape[1]):
+        np.add.at(vertex_normals, faces[:, corner], face_normals)
+    lengths = np.linalg.norm(vertex_normals, axis=1, keepdims=True)
+    vertex_normals /= np.maximum(lengths, 1e-12)
+    normal_element = fbx.FbxLayerElementNormal.Create(mesh, "SMPL_Normals")
+    normal_element.SetMappingMode(fbx.FbxLayerElement.EMappingMode.eByControlPoint)
+    normal_element.SetReferenceMode(fbx.FbxLayerElement.EReferenceMode.eDirect)
+    for normal in vertex_normals:
+        normal_element.GetDirectArray().Add(
+            fbx.FbxVector4(float(normal[0]), float(normal[1]), float(normal[2]))
+        )
+    if mesh.GetLayer(0) is None:
+        mesh.CreateLayer()
+    mesh.GetLayer(0).SetNormals(normal_element)
+
+    mesh_node = fbx.FbxNode.Create(scene, "SMPL_Mesh")
+    mesh_node.SetNodeAttribute(mesh)
+    material = fbx.FbxSurfacePhong.Create(scene, "SMPL_Material")
+    material.Diffuse.Set(fbx.FbxDouble3(0.72, 0.46, 0.34))
+    material.Specular.Set(fbx.FbxDouble3(0.08, 0.08, 0.08))
+    material.Shininess.Set(12.0)
+    mesh_node.AddMaterial(material)
+    scene.GetRootNode().AddChild(mesh_node)
+
+    skin = fbx.FbxSkin.Create(scene, "SMPL_Skin")
+    mesh_transform = mesh_node.EvaluateGlobalTransform()
+    for joint, node in enumerate(skeleton_nodes):
+        cluster = fbx.FbxCluster.Create(scene, f"{joint_names[joint]}_Cluster")
+        cluster.SetLink(node)
+        cluster.SetLinkMode(fbx.FbxCluster.ELinkMode.eNormalize)
+        indices = np.flatnonzero(weights[:, joint] > 1e-8)
+        for vertex in indices:
+            cluster.AddControlPointIndex(int(vertex), float(weights[vertex, joint]))
+        cluster.SetTransformMatrix(mesh_transform)
+        cluster.SetTransformLinkMatrix(node.EvaluateGlobalTransform())
+        skin.AddCluster(cluster)
+    mesh.AddDeformer(skin)
+
+    bind_pose = fbx.FbxPose.Create(scene, "SMPL_BindPose")
+    bind_pose.SetIsBindPose(True)
+    bind_pose.Add(mesh_node, fbx.FbxMatrix(mesh_node.EvaluateGlobalTransform()))
+    for node in skeleton_nodes:
+        bind_pose.Add(node, fbx.FbxMatrix(node.EvaluateGlobalTransform()))
+    scene.AddPose(bind_pose)
+
+    nodes_by_name = {node.GetName(): [node] for node in skeleton_nodes}
+    return nodes_by_name, skeleton_nodes, [mesh_node], "SMPL_Armature"
+
+
 def _save_scene(manager, scene, output: Path) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     settings = manager.GetIOSettings()
@@ -472,37 +589,65 @@ def _save_scene(manager, scene, output: Path) -> None:
 def _main() -> None:
     args = _parse_args()
     job = json.loads(args.job.read_text())
-    if job["mode"] != "character_retarget":
-        raise ValueError("The FBX SDK backend currently requires a target character FBX.")
     payload = np.load(job["payload_path"], allow_pickle=False)
     manager, scene = FbxCommon.InitializeSdkObjects()
     try:
-        character = Path(job["character_fbx"])
-        if not FbxCommon.LoadScene(manager, scene, str(character)):
-            raise RuntimeError(f"Failed to load target character FBX: {character}.")
-        original_axis = scene.GetGlobalSettings().GetAxisSystem()
-        original_axis_description = _axis_description(original_axis)
-        fbx.FbxAxisSystem.MayaZUp.ConvertScene(scene)
-        nodes_by_name, skeleton_nodes, mesh_nodes, armature_name = _collect_scene(
-            scene, job.get("target_armature")
-        )
-        bone_map = MAPPING.resolve_bone_map(
-            [node.GetName() for node in skeleton_nodes],
-            job.get("bone_map"),
-            strict=bool(job.get("strict_bone_map", True)),
-        )
-        if "Pelvis" not in bone_map:
-            raise ValueError("The target bone map must include Pelvis for root motion.")
-        _, root_scale, diagnostics = _animate(
-            scene,
-            payload,
-            nodes_by_name,
-            bone_map,
-            float(job["fps"]),
-            job.get("root_motion_scale", "auto"),
-        )
+        if job["mode"] == "character_retarget":
+            character = Path(job["character_fbx"])
+            if not FbxCommon.LoadScene(manager, scene, str(character)):
+                raise RuntimeError(f"Failed to load target character FBX: {character}.")
+            original_axis = scene.GetGlobalSettings().GetAxisSystem()
+            original_axis_description = _axis_description(original_axis)
+            fbx.FbxAxisSystem.MayaZUp.ConvertScene(scene)
+            nodes_by_name, skeleton_nodes, mesh_nodes, armature_name = _collect_scene(
+                scene, job.get("target_armature")
+            )
+            bone_map = MAPPING.resolve_bone_map(
+                [node.GetName() for node in skeleton_nodes],
+                job.get("bone_map"),
+                strict=bool(job.get("strict_bone_map", True)),
+            )
+            if "Pelvis" not in bone_map:
+                raise ValueError("The target bone map must include Pelvis for root motion.")
+            _, root_scale, diagnostics = _animate(
+                scene,
+                payload,
+                nodes_by_name,
+                bone_map,
+                float(job["fps"]),
+                job.get("root_motion_scale", "auto"),
+            )
+            output_axis = original_axis
+            character_value = str(character)
+            skin_description = (
+                "target character mesh, materials, hierarchy, and skin weights preserved"
+            )
+        elif job["mode"] == "smpl_export":
+            nodes_by_name, skeleton_nodes, mesh_nodes, armature_name = _create_smpl_scene(
+                scene, payload
+            )
+            bone_map = {
+                name: name
+                for name in MAPPING.SMPL22_BONE_NAMES
+                if name in nodes_by_name
+            }
+            _, root_scale, diagnostics = _animate(
+                scene,
+                payload,
+                nodes_by_name,
+                bone_map,
+                float(job["fps"]),
+                1.0,
+                align_root_start=False,
+            )
+            output_axis = fbx.FbxAxisSystem.MayaYUp
+            original_axis_description = None
+            character_value = None
+            skin_description = "SMPL mesh, skeleton, bind pose, and model skin weights"
+        else:
+            raise ValueError(f"Unsupported FBX SDK mode: {job['mode']!r}.")
         output = Path(job["output_path"])
-        original_axis.ConvertScene(scene)
+        output_axis.ConvertScene(scene)
         _save_scene(manager, scene, output)
         manifest = {
             "schema_version": 1,
@@ -516,7 +661,7 @@ def _main() -> None:
             "fps": float(job["fps"]),
             "armature_name": armature_name,
             "mesh_names": [node.GetName() for node in mesh_nodes],
-            "character_fbx": str(character),
+            "character_fbx": character_value,
             "bone_map": bone_map,
             "root_motion_scale": root_scale,
             "retarget_diagnostics": diagnostics,
@@ -526,9 +671,14 @@ def _main() -> None:
                 "input": "SMPL Y-up, +Z forward",
                 "retarget_internal": "FBX SDK Maya Z-up, right-handed",
                 "target_original_axis": original_axis_description,
-                "fbx_export": "target character original FBX axis system",
+                "output_axis": _axis_description(output_axis),
+                "fbx_export": (
+                    "target character original FBX axis system"
+                    if job["mode"] == "character_retarget"
+                    else "FBX SDK Maya Y-up, right-handed"
+                ),
             },
-            "skin": "target character mesh, materials, hierarchy, and skin weights preserved",
+            "skin": skin_description,
         }
         Path(job["manifest_path"]).write_text(json.dumps(manifest, indent=2) + "\n")
     finally:

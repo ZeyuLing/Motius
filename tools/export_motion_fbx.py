@@ -34,10 +34,10 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--source", required=True, help="public representation name")
     parser.add_argument(
         "--character",
-        type=Path,
         required=True,
-        help="path to a rigged and skinned character .fbx",
+        help="rigged character FBX path or installed provider/slug",
     )
+    parser.add_argument("--character-root", type=Path)
     parser.add_argument("--model-path", type=Path, required=True)
     parser.add_argument("--model-type", choices=("smpl", "smplh", "smplx"), default="smpl")
     parser.add_argument("--gender", choices=("neutral", "male", "female"), default="neutral")
@@ -142,6 +142,7 @@ def main() -> None:
         target_armature=args.target_armature,
         strict_bone_map=not args.allow_partial_map,
         root_motion_scale=_root_scale(args.root_motion_scale),
+        character_root=args.character_root,
         backend=args.backend,
         blender_executable=args.blender,
         fbxsdk_python=args.fbxsdk_python,

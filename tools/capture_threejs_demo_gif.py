@@ -38,8 +38,10 @@ def capture(args: argparse.Namespace) -> None:
         with tempfile.TemporaryDirectory() as tmpdir, sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
             page = browser.new_page(viewport={"width": args.width, "height": args.height}, device_scale_factor=1)
-            page.goto(url, wait_until="networkidle")
-            page.wait_for_function("window.__MOTIUS_READY__ === true", timeout=30000)
+            page.goto(url, wait_until="domcontentloaded", timeout=args.timeout_ms)
+            page.wait_for_function(
+                "window.__MOTIUS_READY__ === true", timeout=args.timeout_ms
+            )
             page.evaluate(
                 """
                 () => {
@@ -48,10 +50,11 @@ def capture(args: argparse.Namespace) -> None:
                 }
                 """
             )
-            for frame in range(args.frames):
+            for offset in range(args.frames):
+                frame = args.start_frame + offset
                 page.evaluate("frame => window.__MOTIUS_DEMO__.setFrame(frame)", frame)
                 page.evaluate("() => new Promise(requestAnimationFrame)")
-                png = Path(tmpdir) / f"{frame:04d}.png"
+                png = Path(tmpdir) / f"{offset:04d}.png"
                 page.screenshot(path=str(png), type="png")
                 image = Image.open(png).convert("RGB")
                 frames.append(np.asarray(image))
@@ -60,7 +63,12 @@ def capture(args: argparse.Namespace) -> None:
         server.shutdown()
         server.server_close()
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    imageio.mimsave(args.output, frames, fps=args.fps, loop=0)
+    boundaries = [round(index * 100 / args.fps) * 10 for index in range(len(frames) + 1)]
+    durations = [
+        max(10, boundaries[index + 1] - boundaries[index])
+        for index in range(len(frames))
+    ]
+    imageio.mimsave(args.output, frames, duration=durations, loop=0)
 
 
 def parse_args() -> argparse.Namespace:
@@ -70,7 +78,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--width", type=int, default=1024)
     parser.add_argument("--height", type=int, default=576)
     parser.add_argument("--frames", type=int, default=72)
+    parser.add_argument("--start-frame", type=int, default=0)
     parser.add_argument("--fps", type=int, default=30)
+    parser.add_argument("--timeout-ms", type=int, default=180000)
     return parser.parse_args()
 
 

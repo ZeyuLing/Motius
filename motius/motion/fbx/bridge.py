@@ -575,6 +575,7 @@ def export_motion_to_fbx(
     target_armature: str | None = None,
     strict_bone_map: bool = True,
     root_motion_scale: float | str = "auto",
+    character_root: str | Path | None = None,
     backend: str = "auto",
     blender_executable: str | Path | None = None,
     fbxsdk_python: str | Path | None = None,
@@ -598,7 +599,7 @@ def export_motion_to_fbx(
     )
     return retarget_smpl_to_fbx(
         bridge.animation,
-        resolve_character_fbx(character_fbx),
+        resolve_character_fbx(character_fbx, root=character_root),
         output_path,
         model_path=model_path,
         model_type=model_type,

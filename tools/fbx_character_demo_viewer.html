@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Motius FBX Character Binding Demo</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      background: #edf1f4;
+      color: #18202b;
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+    body { background: #edf1f4; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      width: 100%;
+      height: 100%;
+      gap: 1px;
+      background: #c8d0d8;
+    }
+    .panel {
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      background: #f5f7f8;
+    }
+    .panel canvas { display: block; width: 100%; height: 100%; }
+    .label {
+      position: absolute;
+      z-index: 3;
+      top: 16px;
+      left: 18px;
+      margin: 0;
+      color: #18202b;
+      font-size: 16px;
+      font-weight: 720;
+      letter-spacing: 0;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+      pointer-events: none;
+    }
+    .kind {
+      display: inline-block;
+      margin-left: 7px;
+      color: #637080;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      vertical-align: 2px;
+    }
+    .loading {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: #edf1f4;
+      color: #435063;
+      font-size: 14px;
+      transition: opacity 180ms ease;
+    }
+    .loading[hidden] { opacity: 0; pointer-events: none; }
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); }
+      .label { top: 10px; left: 11px; font-size: 12px; }
+      .kind { display: none; }
+    }
+  </style>
+  <script src="data.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main id="grid" class="grid" aria-label="Synchronized skeleton, SMPL FBX, and Mixamo character comparison"></main>
+  <div id="loading" class="loading">Loading exported FBX scenes...</div>
+  <script type="module">
+    import * as THREE from "three";
+    import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+
+    const demo = window.MOTIUS_FBX_CHARACTER_DEMO;
+    if (!demo) throw new Error("FBX demo data is missing.");
+    window.__MOTIUS_READY__ = false;
+
+    const grid = document.querySelector("#grid");
+    const loading = document.querySelector("#loading");
+    const Y_AXIS = new THREE.Vector3(0, 1, 0);
+    const tempA = new THREE.Vector3();
+    const tempB = new THREE.Vector3();
+    const tempDirection = new THREE.Vector3();
+
+    function makeEnvironment(panel) {
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xf5f7f8);
+      scene.fog = new THREE.Fog(0xf5f7f8, 5.8, 10.5);
+      const camera = new THREE.PerspectiveCamera(31, 1, 0.03, 40);
+      camera.position.set(0, 1.18, 3.95);
+      camera.lookAt(0, 0.88, 0);
+      const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: false,
+        powerPreference: "high-performance",
+        preserveDrawingBuffer: true,
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.04;
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      panel.appendChild(renderer.domElement);
+
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x718092, 2.35));
+      const key = new THREE.DirectionalLight(0xffffff, 3.4);
+      key.position.set(-2.8, 5.2, 4.2);
+      key.castShadow = true;
+      key.shadow.mapSize.set(1024, 1024);
+      key.shadow.camera.left = -2.5;
+      key.shadow.camera.right = 2.5;
+      key.shadow.camera.top = 3;
+      key.shadow.camera.bottom = -1;
+      scene.add(key);
+      const rim = new THREE.DirectionalLight(0xc8e1ff, 1.15);
+      rim.position.set(3, 2.6, -3.6);
+      scene.add(rim);
+
+      const floor = new THREE.Mesh(
+        new THREE.PlaneGeometry(5.4, 5.4),
+        new THREE.MeshStandardMaterial({ color: 0xe7ebef, roughness: 0.96, metalness: 0 })
+      );
+      floor.rotation.x = -Math.PI / 2;
+      floor.receiveShadow = true;
+      scene.add(floor);
+      const gridHelper = new THREE.GridHelper(5.4, 27, 0xb7c1cc, 0xd5dce3);
+      gridHelper.position.y = 0.002;
+      gridHelper.material.opacity = 0.38;
+      gridHelper.material.transparent = true;
+      scene.add(gridHelper);
+
+      function resize() {
+        const width = Math.max(panel.clientWidth, 1);
+        const height = Math.max(panel.clientHeight, 1);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height, false);
+      }
+      new ResizeObserver(resize).observe(panel);
+      resize();
+      return { scene, camera, renderer };
+    }
+
+    function makePanel(meta) {
+      const panel = document.createElement("section");
+      panel.className = "panel";
+      const label = document.createElement("h2");
+      label.className = "label";
+      label.textContent = meta.label;
+      const kind = document.createElement("span");
+      kind.className = "kind";
+      kind.textContent = meta.kind === "skeleton" ? "joints" : "fbx";
+      label.appendChild(kind);
+      panel.appendChild(label);
+      grid.appendChild(panel);
+      return { panel, environment: makeEnvironment(panel) };
+    }
+
+    function makeSkeleton(meta, environment) {
+      const group = new THREE.Group();
+      environment.scene.add(group);
+      const joints = [];
+      const bones = [];
+      const jointGeometry = new THREE.SphereGeometry(0.032, 14, 10);
+      const jointMaterial = new THREE.MeshStandardMaterial({ color: 0x0e8fa6, roughness: 0.52 });
+      const boneMaterial = new THREE.MeshStandardMaterial({ color: 0x1564c0, roughness: 0.58 });
+      meta.parents.forEach((parent) => {
+        const joint = new THREE.Mesh(jointGeometry, jointMaterial);
+        joint.castShadow = true;
+        group.add(joint);
+        joints.push(joint);
+        if (parent < 0) {
+          bones.push(null);
+          return;
+        }
+        const bone = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 1, 9), boneMaterial);
+        bone.castShadow = true;
+        group.add(bone);
+        bones.push(bone);
+      });
+      const first = meta.positions[0];
+      const floor = Math.min(...first.map((point) => point[1]));
+      group.position.set(-first[0][0], -floor, -first[0][2]);
+      function update(frame) {
+        const positions = meta.positions[frame % meta.positions.length];
+        positions.forEach((position, index) => joints[index].position.fromArray(position));
+        meta.parents.forEach((parent, index) => {
+          if (parent < 0) return;
+          tempA.fromArray(positions[parent]);
+          tempB.fromArray(positions[index]);
+          tempDirection.subVectors(tempB, tempA);
+          const length = Math.max(tempDirection.length(), 0.0001);
+          const bone = bones[index];
+          bone.position.copy(tempA).add(tempB).multiplyScalar(0.5);
+          bone.quaternion.setFromUnitVectors(Y_AXIS, tempDirection.normalize());
+          bone.scale.set(0.019, length, 0.019);
+        });
+      }
+      return { update };
+    }
+
+    async function makeFbx(meta, environment) {
+      const loader = new FBXLoader();
+      const object = await loader.loadAsync(meta.file);
+      object.traverse((child) => {
+        if (!child.isMesh) return;
+        child.castShadow = true;
+        child.receiveShadow = true;
+        child.frustumCulled = false;
+        if (child.material) {
+          const materials = Array.isArray(child.material) ? child.material : [child.material];
+          materials.forEach((material) => {
+            if (material.map) material.map.colorSpace = THREE.SRGBColorSpace;
+            material.needsUpdate = true;
+          });
+        }
+      });
+      const wrapper = new THREE.Group();
+      wrapper.add(object);
+      environment.scene.add(wrapper);
+      const mixer = new THREE.AnimationMixer(object);
+      const clip = object.animations[0];
+      if (!clip) throw new Error(`${meta.label} has no FBX animation clip.`);
+      const action = mixer.clipAction(clip);
+      action.play();
+      mixer.setTime(0);
+      object.updateMatrixWorld(true);
+      let bounds = new THREE.Box3().setFromObject(object, true);
+      const height = Math.max(bounds.max.y - bounds.min.y, 1e-5);
+      wrapper.scale.setScalar(1.72 / height);
+      wrapper.updateMatrixWorld(true);
+      bounds = new THREE.Box3().setFromObject(object, true);
+      const center = bounds.getCenter(new THREE.Vector3());
+      wrapper.position.set(-center.x, -bounds.min.y, -center.z);
+      wrapper.updateMatrixWorld(true);
+      return {
+        update(frame) {
+          mixer.setTime((frame % demo.frames) / demo.fps);
+          object.updateMatrixWorld(true);
+        },
+      };
+    }
+
+    const entries = demo.panels.map((meta) => ({ meta, ...makePanel(meta) }));
+    const rigs = [];
+    for (const entry of entries) {
+      rigs.push(
+        entry.meta.kind === "skeleton"
+          ? makeSkeleton(entry.meta, entry.environment)
+          : await makeFbx(entry.meta, entry.environment)
+      );
+    }
+
+    let currentFrame = 0;
+    let playing = true;
+    let previousTime = performance.now();
+    let accumulator = 0;
+    function setFrame(frame) {
+      currentFrame = ((Math.round(frame) % demo.frames) + demo.frames) % demo.frames;
+      rigs.forEach((rig) => rig.update(currentFrame));
+    }
+    function render(time) {
+      const elapsed = Math.min((time - previousTime) / 1000, 0.1);
+      previousTime = time;
+      if (playing) {
+        accumulator += elapsed * demo.fps;
+        if (accumulator >= 1) {
+          const advance = Math.floor(accumulator);
+          accumulator -= advance;
+          setFrame(currentFrame + advance);
+        }
+      }
+      entries.forEach(({ environment }) => {
+        environment.renderer.render(environment.scene, environment.camera);
+      });
+      requestAnimationFrame(render);
+    }
+    setFrame(0);
+    loading.hidden = true;
+    window.__MOTIUS_DEMO__ = {
+      setFrame,
+      setPlaying(value) { playing = Boolean(value); },
+    };
+    window.__MOTIUS_READY__ = true;
+    requestAnimationFrame(render);
+  </script>
+</body>
+</html>

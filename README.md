@@ -205,14 +205,20 @@ from motius.motion import export_motion_to_fbx
 result = export_motion_to_fbx(
     motion_hml263,
     source_representation="hml263",
-    character_fbx="checkpoints/characters/mixamo/x_bot/character.fbx",
-    output_path="outputs/fbx/x_bot_walk.fbx",
+    character_fbx="mixamo/remy",
+    output_path="outputs/fbx/remy_walk.fbx",
     model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
     output_fps=30,
     backend="fbxsdk",
 )
 print(result.metadata["retarget_diagnostics"])
 ```
+
+![The same motion as an SMPL-22 skeleton, an SDK-exported SMPL FBX, and four Mixamo characters](assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_30fps.gif)
+
+This synchronized Three.js render uses the same HumanML3D test motion in every
+panel: decoded SMPL-22 joints, a skinned SMPL FBX created by Motius, and the
+same animation retargeted to Amy, Maria, Michelle, and Remy.
 
 Motius does not bundle or relabel Adobe Mixamo characters. Download a character
 through your Adobe account and store it under
@@ -222,7 +228,8 @@ rigged FBX path plus an explicit bone map. Follow the
 [representation-to-FBX guide](docs/motion/fbx.md) for backend selection, the
 full support matrix, checkpoint-native ARDY/MotionBricks examples, CLI usage,
 coordinates, diagnostics, and target-rig requirements. Blender remains an
-optional backend for direct skinned-SMPL construction and preview rendering.
+optional alternative backend and preview renderer; Autodesk FBX SDK supports
+both character retargeting and direct skinned-SMPL FBX construction.
 
 ### SMPL Body-Model Setup
 

@@ -15,14 +15,16 @@ characters remain subject to Adobe's terms and stay outside the Python package.
 
 | Backend | Character retarget | Direct SMPL mesh export | Runtime |
 | ------- | :----------------: | :---------------------: | ------- |
-| `fbxsdk` | Yes | No | Autodesk FBX SDK Python wheel, normally CPython 3.10 |
+| `fbxsdk` | Yes | Yes | Autodesk FBX SDK Python wheel, normally CPython 3.10 |
 | `blender` | Yes | Yes | Blender 3.6 or newer |
-| `auto` | Prefers `fbxsdk`, falls back to Blender | Uses Blender | Resolves installed runtimes |
+| `auto` | Prefers `fbxsdk`, falls back to Blender | Prefers `fbxsdk`, falls back to Blender | Resolves installed runtimes |
 
-The Autodesk backend loads the original FBX scene and writes animation curves
-directly. It does not reconstruct the character mesh or skin. Blender is not
-required for this route. Blender remains useful when creating a new skinned
-SMPL FBX from body-model arrays and when rendering previews.
+For an existing character, the Autodesk backend loads the original FBX scene
+and writes animation curves directly without reconstructing its mesh or skin.
+For direct SMPL export it creates the mesh, normals, skeleton, bind pose, skin
+clusters, material, and animation curves from licensed body-model arrays.
+Neither route requires Blender. Blender remains an optional backend and preview
+renderer.
 
 ## Setup
 
@@ -37,7 +39,7 @@ For a character downloaded separately through an Adobe account:
 
 ```text
 checkpoints/characters/mixamo/
-└── x_bot/
+└── remy/
     ├── character.fbx
     └── bone_map.json        # optional for non-standard names
 ```
@@ -47,6 +49,17 @@ documentation are tracked, while downloaded character files remain ignored.
 Review the official [Mixamo FAQ](https://helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)
 and [additional terms](https://wwwimages2.adobe.com/content/dam/cc/en/legal/servicetou/Mixamo-Addl-Terms-en_US-20210623.pdf)
 for assets obtained from that service.
+
+Download a T-pose with skin when possible. The rest-basis solver also handles
+A-pose and authored original poses, but a T-pose minimizes shoulder correction.
+Installed assets are addressed as `provider/slug` and can be listed without
+loading their FBX contents:
+
+```python
+from motius.motion import list_character_assets
+
+print([asset.identifier for asset in list_character_assets()])
+```
 
 ## Supported Inputs
 
@@ -81,8 +94,8 @@ from motius.motion import export_motion_to_fbx
 result = export_motion_to_fbx(
     motion_hml263,
     source_representation="hml263",
-    character_fbx="checkpoints/characters/mixamo/x_bot/character.fbx",
-    output_path="outputs/fbx/x_bot_walk.fbx",
+    character_fbx="mixamo/remy",
+    output_path="outputs/fbx/remy_walk.fbx",
     model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
     model_type="smpl",
     gender="neutral",
@@ -97,9 +110,25 @@ print(result.metadata["backend"])
 print(result.metadata["retarget_diagnostics"])
 ```
 
-`backend="auto"` is the default. It prefers Autodesk FBX SDK for an existing
-character and falls back to Blender only when the SDK runtime cannot be
-resolved. Set `backend="fbxsdk"` to prohibit that fallback.
+`backend="auto"` is the default. It prefers Autodesk FBX SDK for both character
+retargeting and direct SMPL export, and falls back to Blender only when the SDK
+runtime cannot be resolved. Set `backend="fbxsdk"` to prohibit that fallback.
+
+### Direct SMPL FBX
+
+```python
+from motius.motion import SMPLAnimation, export_smpl_fbx
+
+result = export_smpl_fbx(
+    SMPLAnimation.from_motion135(motion135, fps=30),
+    "outputs/fbx/smpl.fbx",
+    model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
+    backend="fbxsdk",
+)
+```
+
+The resulting FBX contains a polygon mesh with vertex normals, SMPL skeleton,
+bind pose, normalized skin weights, material, and one animation stack.
 
 The runtime can also be selected per call:
 
@@ -107,8 +136,8 @@ The runtime can also be selected per call:
 result = export_motion_to_fbx(
     motion_hy201,
     "hymotion201",
-    "checkpoints/characters/mixamo/x_bot/character.fbx",
-    "outputs/fbx/x_bot_motion.fbx",
+    "mixamo/remy",
+    "outputs/fbx/remy_motion.fbx",
     model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
     backend="fbxsdk",
     fbxsdk_python="/path/to/python3.10",
@@ -129,8 +158,8 @@ with the pipeline:
 result = export_motion_to_fbx(
     ardy_features,
     "ardy_330",
-    "checkpoints/characters/mixamo/x_bot/character.fbx",
-    "outputs/fbx/ardy_x_bot.fbx",
+    "mixamo/remy",
+    "outputs/fbx/ardy_remy.fbx",
     model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
     motion_rep=ardy_pipe.bundle.motion_rep,
     is_normalized=True,
@@ -164,9 +193,9 @@ for person_index, character in enumerate(characters):
 Array-only representations can be exported without constructing a pipeline:
 
 ```bash
-python tools/export_motion_fbx.py motion.npy outputs/fbx/x_bot_walk.fbx \
+python tools/export_motion_fbx.py motion.npy outputs/fbx/remy_walk.fbx \
   --source hml263 \
-  --character checkpoints/characters/mixamo/x_bot/character.fbx \
+  --character mixamo/remy \
   --model-path checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl \
   --backend fbxsdk \
   --output-fps 30 \
@@ -209,10 +238,11 @@ restored before export.
 
 ## Coordinates And Manifest
 
-Canonical input is SMPL Y-up and +Z-forward. The Autodesk backend temporarily
+Canonical input is SMPL Y-up and +Z-forward. For character retargeting, the Autodesk backend temporarily
 converts the target scene to Maya Z-up/right-handed coordinates for retargeting,
 then converts the complete animated scene back to the target FBX's original axis
-system before saving. The Blender backend uses its Z-up scene and exports
+system before saving. Direct SMPL export writes a meter-scale Maya Y-up,
+right-handed FBX. The Blender backend uses its Z-up scene and exports
 Y-up/-Z-forward FBX. Both routes use explicit basis changes and preserve body
 heading.
 

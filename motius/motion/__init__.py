@@ -26,6 +26,7 @@ from .representation import (
 )
 from .skeleton.canonical import canonicalize_smpl22_joints
 from .fbx import (
+    CharacterAsset,
     FBXExportError,
     FBXExportResult,
     MotionBridgeResult,
@@ -33,8 +34,10 @@ from .fbx import (
     export_motion_to_fbx,
     export_motion_to_mixamo_fbx,
     export_smpl_fbx,
+    list_character_assets,
     motion_to_smpl_animation,
     resolve_character_fbx,
+    resolve_character_root,
     resolve_fbxsdk_runtime,
     retarget_smpl_to_fbx,
 )
@@ -69,9 +72,12 @@ __all__ = [
     "export_smpl_fbx",
     "retarget_smpl_to_fbx",
     "MotionBridgeResult",
+    "CharacterAsset",
     "export_motion_to_fbx",
     "export_motion_to_mixamo_fbx",
     "motion_to_smpl_animation",
+    "list_character_assets",
     "resolve_character_fbx",
+    "resolve_character_root",
     "resolve_fbxsdk_runtime",
 ]
