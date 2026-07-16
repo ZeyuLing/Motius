@@ -48,6 +48,12 @@ condmdi = [
     "tqdm>=4.65",
     "clip @ git+https://github.com/openai/CLIP.git",
 ]
+omnicontrol = [
+    "ftfy>=6.1",
+    "regex>=2023.0",
+    "tqdm>=4.65",
+    "clip @ git+https://github.com/openai/CLIP.git",
+]
 intergen = [
     "clip @ git+https://github.com/openai/CLIP.git",
     "yacs>=0.1.8",
@@ -109,6 +115,7 @@ namespaces = false
 ]
 "motius.models.tmr" = ["LICENSE"]
 "motius.models.condmdi" = ["LICENSE"]
+"motius.models.omnicontrol" = ["LICENSE", "assets/*.npy"]
 "motius.models.intergen" = ["NOTICE", "network/configs/*.yaml"]
 "motius.models.intermask" = ["LICENSE"]
 "motius.models.motionclr" = ["LICENSE", "ATTRIBUTIONS.md"]
