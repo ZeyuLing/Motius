@@ -61,20 +61,24 @@ intervals.
 | BABEL GT | 0.3947 | 0.5513 | 0.6327 | 0.0000 | 44.5941 | 57.4816 | 0.0000 | 54.5830 | 56.34 | 0.0000 |
 | FlowMDM | 0.2958 | 0.4217 | 0.5018 | 0.0843 | 46.7698 | 56.5743 | 0.1092 | 54.7209 | 335.67 | 34.4040 |
 | MotionStreamer | 0.2087 | 0.3136 | 0.3955 | 0.1205 | 49.3062 | 56.2576 | 0.1664 | 53.8502 | 206.22 | 76.2889 |
-| PRISM (epoch 8) | 0.4710 | 0.6346 | 0.7108 | 0.5129 | 42.8045 | 54.3643 | 0.7667 | 50.5315 | 942.31 | 214.8047 |
+| MotionLab | 0.1242 | 0.2036 | 0.2647 | 1.3760 | 59.4449 | 27.7897 | 1.4963 | 26.9868 | 1451.40 | 176.6814 |
+| PRISM (epoch 12) | 0.4656 | 0.6448 | 0.7249 | 0.5205 | 41.4004 | 53.0154 | 0.8037 | 47.7878 | 540.00 | 138.7236 |
 
 This is a single deterministic seed-42 generation and one retrieval repeat.
 R-Precision uses 32-sample recall batches, covering 7,264 of the 7,285 paired
 segments, and accepts every same-action candidate as a positive. Distribution
 metrics use the full set. `--chunk-size 32` controls the recall candidate set;
 `--batch-size 32` controls only evaluator encoding throughput in this run.
-PRISM is the latest checkpoint available at evaluation time
-(`checkpoint-epoch_8`). Its R-Precision is high, while normalized FID, AUJ gap,
-and Peak Jerk remain poor. The discrepancy therefore cannot be explained by
-raw uTMR feature scale alone and should be inspected in the synchronized viewer.
+PRISM uses `checkpoint-epoch_12` and fixes every internal model call to a
+360-frame canvas; all 1,295 outputs passed exact-length and fixed-canvas
+validation. MotionLab uses its native five-frame autoregressive context and
+converts the resulting MotionStreamer-272 episodes through the same canonical
+SMPL-22 joint route. Both rows use all 1,295 episodes. PRISM improves R@2,
+R@3, MM-Dist, Peak Jerk, and AUJ gap over the superseded epoch-8 run, while
+R@1 and normalized FID remain broadly unchanged.
 
 Open the [Three.js sequence audit](../leaderboards/hf_space_babel_sequential/audit/index.html)
-to compare BABEL GT, FlowMDM, MotionStreamer, and PRISM frame by frame. Every
+to compare BABEL GT, FlowMDM, MotionStreamer, PRISM, and MotionLab frame by frame. Every
 subclip has a fixed color, and the synchronized caption list exposes its exact
 half-open frame interval.
 Each row also reports the nearest three texts for the GT and generated motion,
@@ -135,6 +139,7 @@ python tools/build_babel_sequential_viewer.py \
   --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest_actiongroups_v3.json \
   --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/joints66 \
   --prediction MotionStreamer=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionstreamer_latest_seed42/joints66 \
+  --prediction MotionLab=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v3/joints66 \
   --prediction 'PRISM (epoch 12)=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/prism_epoch12_fixed360_actiongroups_v3/joints66' \
   --retrieval-audit outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/retrieval_audit.json \
   --output-dir outputs/visualization/babel_sequential_audit

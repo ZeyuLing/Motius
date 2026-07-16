@@ -30,7 +30,8 @@ into this leaderboard.
 | BABEL GT | 0.3947 | 0.5513 | 0.6327 | 0.0000 | 44.5941 | 0.0000 | 0.0000 |
 | FlowMDM | 0.2958 | 0.4217 | 0.5018 | 0.0843 | 46.7698 | 0.1092 | 34.4040 |
 | MotionStreamer | 0.2087 | 0.3136 | 0.3955 | 0.1205 | 49.3062 | 0.1664 | 76.2889 |
-| PRISM (epoch 8) | 0.4710 | 0.6346 | 0.7108 | 0.5129 | 42.8045 | 0.7667 | 214.8047 |
+| MotionLab | 0.1242 | 0.2036 | 0.2647 | 1.3760 | 59.4449 | 1.4963 | 176.6814 |
+| PRISM (epoch 12) | 0.4656 | 0.6448 | 0.7249 | 0.5205 | 41.4004 | 0.8037 | 138.7236 |
 
 R-Precision uses official BABEL `act_cat` action-group multi-positive recall
 batches of 32 (7,264 paired segments). The 7,285 intervals form 1,738 action
@@ -39,10 +40,10 @@ Distribution metrics use all 7,285 segments. The encoder forward batch is 32
 for the measured run and is independent of the recall candidate batch. GT is
 excluded from ranking.
 
-PRISM uses the latest checkpoint available when this evaluation started
-(`checkpoint-epoch_8`). Its strong retrieval score does not imply a strong
-overall result: the distribution and transition metrics expose a substantial
-quality and continuity gap.
+PRISM uses `checkpoint-epoch_12` with a fixed 360-frame canvas for every model
+call; the complete 1,295-episode run contains no legacy 365-frame calls.
+MotionLab uses its official five-frame autoregressive context. Both rows are
+converted to the same canonical SMPL-22 joints before evaluation.
 
 The Space also includes a synchronized Three.js neutral-SMPL-mesh comparison
 of BABEL GT, FlowMDM, MotionStreamer, PRISM, and MotionLab. Every viewport preserves the

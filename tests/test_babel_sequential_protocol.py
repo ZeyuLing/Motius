@@ -204,3 +204,23 @@ def test_sequential_audit_starts_on_canonical_frame_with_facing_marker():
         assert "data[offset] - originX" in viewer
         assert "data[offset] - rootX" not in viewer
         assert "fitTrajectoryCamera" in viewer
+
+
+def test_public_sequential_leaderboard_uses_fixed_canvas_results_and_normalized_fid():
+    root = Path(__file__).resolve().parents[1]
+    page = (
+        root
+        / "docs"
+        / "leaderboards"
+        / "hf_space_babel_sequential"
+        / "index.html"
+    ).read_text()
+    protocol = (root / "docs" / "evaluation" / "babel_sequential.md").read_text()
+
+    assert 'method:"MotionLab"' in page
+    assert 'version:"Epoch 12 · fixed 360 canvas · seed 42"' in page
+    assert "Normalized FID" in page
+    assert "Normalized Transition FID" in page
+    assert "epoch 8" not in page
+    assert "checkpoint-epoch_8" not in protocol
+    assert "--prediction MotionLab=" in protocol
