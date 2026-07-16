@@ -429,6 +429,7 @@ def _main() -> None:
     _export_fbx(output, exported_objects)
     manifest = {
         "schema_version": 1,
+        "backend": "blender",
         "mode": job["mode"],
         "output_path": str(output),
         "source_model_path": job["source_model_path"],

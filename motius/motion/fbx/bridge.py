@@ -1,4 +1,4 @@
-"""Bridge every public Motius representation to Mixamo-compatible FBX."""
+"""Bridge every public Motius representation to a rigged character FBX."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation, Slerp
 
 from motius.motion.fbx.api import FBXExportResult, SMPLAnimation, retarget_smpl_to_fbx
-from motius.motion.fbx.characters import resolve_mixamo_character
+from motius.motion.fbx.characters import resolve_character_fbx
 from motius.motion.representation import get_spec
 
 
@@ -575,7 +575,10 @@ def export_motion_to_fbx(
     target_armature: str | None = None,
     strict_bone_map: bool = True,
     root_motion_scale: float | str = "auto",
+    backend: str = "auto",
     blender_executable: str | Path | None = None,
+    fbxsdk_python: str | Path | None = None,
+    fbxsdk_module_path: str | Path | None = None,
 ) -> FBXExportResult:
     """Export any supported Motius representation onto a character FBX."""
 
@@ -595,7 +598,7 @@ def export_motion_to_fbx(
     )
     return retarget_smpl_to_fbx(
         bridge.animation,
-        resolve_mixamo_character(character_fbx),
+        resolve_character_fbx(character_fbx),
         output_path,
         model_path=model_path,
         model_type=model_type,
@@ -604,7 +607,10 @@ def export_motion_to_fbx(
         target_armature=target_armature,
         strict_bone_map=strict_bone_map,
         root_motion_scale=root_motion_scale,
+        backend=backend,
         blender_executable=blender_executable,
+        fbxsdk_python=fbxsdk_python,
+        fbxsdk_module_path=fbxsdk_module_path,
         source_metadata=bridge.metadata,
     )
 

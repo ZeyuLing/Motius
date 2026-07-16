@@ -1,37 +1,39 @@
-# Representation-To-FBX Export
+# Representation-To-Character FBX Export
 
-Motius exports every public motion representation onto a rigged
-Mixamo-compatible FBX through one API:
+Motius exports every public motion representation onto a caller-provided,
+rigged character FBX through one API:
 
 ```text
-model-native tensor -> SMPL-22 animation -> target character armature -> FBX
+model-native tensor -> SMPL-22 animation -> target character skeleton -> FBX
 ```
 
-The target mesh, materials, hierarchy, and authored skin weights are
-preserved. Blender is used as the headless FBX import, animation, and export
-backend; model pipelines do not import Blender.
+The target mesh, materials, hierarchy, and authored skin weights are preserved.
+Motius does not bundle or relabel Adobe Mixamo characters. Downloaded Mixamo
+characters remain subject to Adobe's terms and stay outside the Python package.
 
-![HumanML3D-263 source and three character FBX outputs](../../assets/motion/mixamo_fbx_demo/hml263_to_mixamo.gif)
+## Backends
 
-[Open the 1600x450 MP4 source](../../assets/motion/mixamo_fbx_demo/hml263_to_mixamo.mp4)
+| Backend | Character retarget | Direct SMPL mesh export | Runtime |
+| ------- | :----------------: | :---------------------: | ------- |
+| `fbxsdk` | Yes | No | Autodesk FBX SDK Python wheel, normally CPython 3.10 |
+| `blender` | Yes | Yes | Blender 3.6 or newer |
+| `auto` | Prefers `fbxsdk`, falls back to Blender | Uses Blender | Resolves installed runtimes |
+
+The Autodesk backend loads the original FBX scene and writes animation curves
+directly. It does not reconstruct the character mesh or skin. Blender is not
+required for this route. Blender remains useful when creating a new skinned
+SMPL FBX from body-model arrays and when rendering previews.
 
 ## Setup
 
-1. Install [Blender](https://www.blender.org/download/) 3.6 or newer.
-2. Install a licensed SMPL-family body model using the
-   [body-model setup](../../README.md#smpl-body-model-setup).
-3. Pass the Blender executable or configure it once:
+1. Install a licensed SMPL-family body model using the
+   [body-model setup](../../checkpoints/body_models/README.md).
+2. Install Autodesk FBX SDK using the
+   [FBX SDK setup](../../checkpoints/fbxsdk/README.md), or install Blender if
+   that backend is preferred.
+3. Place the rigged target character at a stable local path.
 
-```bash
-export MOTIUS_BLENDER=/opt/blender/blender
-```
-
-The built-in `atlas`, `nova`, and `gear` characters are original procedural
-CC0 assets packaged with Motius. They use `mixamorig:*` body-bone names but do
-not contain Adobe Mixamo meshes, textures, or animation data.
-
-For a character downloaded separately through an Adobe account, keep the file
-outside the Python package:
+For a character downloaded separately through an Adobe account:
 
 ```text
 checkpoints/characters/mixamo/
@@ -42,8 +44,7 @@ checkpoints/characters/mixamo/
 
 The [`checkpoints/`](../../checkpoints/README.md) directory scaffold and setup
 documentation are tracked, while downloaded character files remain ignored.
-Motius does not redistribute Adobe-provided Mixamo assets; review the official
-[Mixamo FAQ](https://helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)
+Review the official [Mixamo FAQ](https://helpx.adobe.com/creative-cloud/faq/mixamo-faq.html)
 and [additional terms](https://wwwimages2.adobe.com/content/dam/cc/en/legal/servicetou/Mixamo-Addl-Terms-en_US-20210623.pdf)
 for assets obtained from that service.
 
@@ -68,36 +69,39 @@ for assets obtained from that service.
 "No shape" means the source preserves rotations and root motion but not SMPL
 shape coefficients. Pass `betas` when a specific output body shape is known.
 Position IK is solved on the selected-gender, zero-beta SMPL skeleton; supplied
-betas are then applied to the exported skin and are identified separately in
-the manifest.
-Every IK route records mean, p95, and maximum per-frame MPJPE in
-`result.metadata["motion_source"]` and in `<output>.fbx.json`.
+betas are applied to direct SMPL skin export and identified separately in the
+manifest. Every IK route records mean, p95, and maximum per-frame MPJPE in
+`result.metadata["motion_source"]` and `<output>.fbx.json`.
 
 ## Python API
-
-Use a packaged character slug or an arbitrary FBX path:
 
 ```python
 from motius.motion import export_motion_to_fbx
 
 result = export_motion_to_fbx(
-    motion_hml263,                       # (T, 263)
+    motion_hml263,
     source_representation="hml263",
-    character_fbx="atlas",              # atlas, nova, gear, or a .fbx path
-    output_path="outputs/fbx/atlas_walk.fbx",
+    character_fbx="checkpoints/characters/mixamo/x_bot/character.fbx",
+    output_path="outputs/fbx/x_bot_walk.fbx",
     model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
     model_type="smpl",
     gender="neutral",
     output_fps=30,
+    backend="fbxsdk",
     bridge_kwargs={"floor_align": True},
 )
 
 print(result.output_path)
 print(result.manifest_path)
-print(result.metadata["motion_source"])
+print(result.metadata["backend"])
+print(result.metadata["retarget_diagnostics"])
 ```
 
-For a separately downloaded character:
+`backend="auto"` is the default. It prefers Autodesk FBX SDK for an existing
+character and falls back to Blender only when the SDK runtime cannot be
+resolved. Set `backend="fbxsdk"` to prohibit that fallback.
+
+The runtime can also be selected per call:
 
 ```python
 result = export_motion_to_fbx(
@@ -106,8 +110,9 @@ result = export_motion_to_fbx(
     "checkpoints/characters/mixamo/x_bot/character.fbx",
     "outputs/fbx/x_bot_motion.fbx",
     model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
-    betas=betas,
-    root_motion_scale="auto",
+    backend="fbxsdk",
+    fbxsdk_python="/path/to/python3.10",
+    fbxsdk_module_path="checkpoints/fbxsdk/cp310",
 )
 ```
 
@@ -124,8 +129,8 @@ with the pipeline:
 result = export_motion_to_fbx(
     ardy_features,
     "ardy_330",
-    "nova",
-    "outputs/fbx/ardy_nova.fbx",
+    "checkpoints/characters/mixamo/x_bot/character.fbx",
+    "outputs/fbx/ardy_x_bot.fbx",
     model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
     motion_rep=ardy_pipe.bundle.motion_rep,
     is_normalized=True,
@@ -138,13 +143,14 @@ or 414D global subset when needed.
 
 ### Two-Person Motion
 
-An InterHuman sample contains two synchronized people. Export each track to a
-separate FBX while keeping the shared world frame:
+An InterHuman sample contains two synchronized people. Export each track while
+keeping the shared world frame:
 
 ```python
-for person_index, character in enumerate(("atlas", "nova")):
+characters = ("characters/person_a.fbx", "characters/person_b.fbx")
+for person_index, character in enumerate(characters):
     export_motion_to_fbx(
-        motion_interhuman,               # (T, 2, 262)
+        motion_interhuman,
         "interhuman262",
         character,
         f"outputs/fbx/person_{person_index}.fbx",
@@ -158,22 +164,23 @@ for person_index, character in enumerate(("atlas", "nova")):
 Array-only representations can be exported without constructing a pipeline:
 
 ```bash
-python tools/export_motion_fbx.py motion.npy outputs/fbx/atlas_walk.fbx \
+python tools/export_motion_fbx.py motion.npy outputs/fbx/x_bot_walk.fbx \
   --source hml263 \
-  --character atlas \
+  --character checkpoints/characters/mixamo/x_bot/character.fbx \
   --model-path checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl \
+  --backend fbxsdk \
   --output-fps 30 \
   --floor-align
 ```
 
-For a user-provided character:
+For a custom rig mapping:
 
 ```bash
-python tools/export_motion_fbx.py motion.npy outputs/fbx/x_bot_walk.fbx \
+python tools/export_motion_fbx.py motion.npy outputs/fbx/character.fbx \
   --source hymotion201 \
-  --character checkpoints/characters/mixamo/x_bot/character.fbx \
+  --character checkpoints/characters/custom/character.fbx \
   --model-path checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl \
-  --bone-map checkpoints/characters/mixamo/x_bot/bone_map.json
+  --bone-map checkpoints/characters/custom/bone_map.json
 ```
 
 Checkpoint-native ARDY and MotionBricks tensors use the Python API so their
@@ -183,8 +190,8 @@ available for raw SMPL archives and direct skinned-SMPL export.
 
 ## Target Rig Contract
 
-The target FBX must contain exactly one armature and at least one mesh with an
-Armature modifier. It must already be rigged and skinned; Motius does not
+The target FBX must contain a skeleton and at least one mesh connected to an
+FBX skin deformer. It must already be rigged and skinned; Motius does not
 auto-rig a static mesh.
 
 Common Mixamo and canonical SMPL names, including namespace prefixes such as
@@ -193,26 +200,29 @@ Common Mixamo and canonical SMPL names, including namespace prefixes such as
 Strict mapping is enabled by default: every body bone must resolve, `Pelvis`
 must exist for root motion, and no two source bones may share one target.
 
-Motius transfers global rotation deltas in the target rest basis and applies a
-posed arm-chain direction correction for A-pose/T-pose compatibility. The
-manifest records arm-chain direction-error diagnostics after animation baking.
+The Autodesk backend transfers source global rotations in the target's rest
+basis, solves each target bone's local Euler channels using its FBX rotation
+order and pre/post rotations, and aligns arm-chain directions across A/T pose
+differences. Existing animation stacks are replaced by one
+`Motius_Retargeted_Animation` stack. The target's original FBX axis system is
+restored before export.
 
 ## Coordinates And Manifest
 
-Canonical input is SMPL Y-up and +Z-forward. The Blender scene is Z-up and
--Y-forward; FBX is written with Y-up and -Z-forward axes. These are basis
-changes, so body heading is preserved.
+Canonical input is SMPL Y-up and +Z-forward. The Autodesk backend temporarily
+converts the target scene to Maya Z-up/right-handed coordinates for retargeting,
+then converts the complete animated scene back to the target FBX's original axis
+system before saving. The Blender backend uses its Z-up scene and exports
+Y-up/-Z-forward FBX. Both routes use explicit basis changes and preserve body
+heading.
 
 Each export writes `<output>.fbx.json` with:
 
-- source representation, route, FPS, and whether the bridge is lossy;
+- selected backend, source representation, route, FPS, and lossiness;
 - position-IK fit MPJPE when applicable;
 - source body-model path, type, gender, and target-character path;
-- resolved 22-bone map and root-motion scale;
-- post-bake arm-chain direction diagnostics;
-- input, Blender-scene, and FBX coordinate conventions.
+- resolved bone map and root-motion scale;
+- rest-basis and post-bake arm-chain diagnostics;
+- input, working-scene, and output coordinate conventions.
 
-FBX armatures do not reproduce SMPL pose-dependent corrective blend shapes by
-default. Direct SMPL export uses the shaped rest mesh and official LBS weights;
-character retargeting uses the target's authored deformation. Write generated
-artifacts under `outputs/`.
+Write generated FBX, videos, and evaluation artifacts under `outputs/`.

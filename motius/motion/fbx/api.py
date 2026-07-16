@@ -1,4 +1,4 @@
-"""Public Blender-backed SMPL FBX export and character retargeting API."""
+"""Public FBX export and rigged-character retargeting API."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import tempfile
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 from typing import Mapping
 
@@ -32,7 +33,7 @@ SMPL_TO_BLENDER = np.asarray(
 
 
 class FBXExportError(RuntimeError):
-    """Raised when Blender cannot build or export the requested FBX artifact."""
+    """Raised when an FBX backend cannot create the requested artifact."""
 
 
 @dataclass(frozen=True)
@@ -179,6 +180,74 @@ def resolve_blender_executable(value: str | Path | None = None) -> Path:
     return path.resolve()
 
 
+def _fbxsdk_environment(module_path: Path | None) -> dict[str, str]:
+    environment = os.environ.copy()
+    if module_path is not None:
+        current = environment.get("PYTHONPATH")
+        environment["PYTHONPATH"] = (
+            f"{module_path}{os.pathsep}{current}" if current else str(module_path)
+        )
+    return environment
+
+
+@lru_cache(maxsize=8)
+def _probe_fbxsdk_runtime(python: str, module_path: str | None) -> None:
+    root = Path(module_path) if module_path else None
+    completed = subprocess.run(
+        [python, "-c", "import fbx, FbxCommon, numpy, scipy"],
+        check=False,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        env=_fbxsdk_environment(root),
+        timeout=120,
+    )
+    if completed.returncode != 0:
+        detail = "\n".join(completed.stdout.splitlines()[-20:])
+        raise ImportError(
+            f"Python runtime {python} cannot import Autodesk FBX SDK dependencies:\n{detail}"
+        )
+
+
+def resolve_fbxsdk_runtime(
+    python_executable: str | Path | None = None,
+    module_path: str | Path | None = None,
+) -> tuple[Path, Path | None]:
+    """Resolve and validate a Python runtime containing Autodesk FBX SDK."""
+
+    candidate = (
+        python_executable
+        or os.environ.get("MOTIUS_FBXSDK_PYTHON")
+        or shutil.which("python3.10")
+    )
+    if not candidate:
+        raise FileNotFoundError(
+            "No FBX SDK Python runtime was found. Pass fbxsdk_python= or set "
+            "MOTIUS_FBXSDK_PYTHON."
+        )
+    resolved_command = shutil.which(str(candidate))
+    python = Path(resolved_command or candidate).expanduser()
+    if not python.is_file() or not os.access(python, os.X_OK):
+        raise FileNotFoundError(f"FBX SDK Python executable does not exist: {python}.")
+
+    root_value = module_path or os.environ.get("MOTIUS_FBXSDK_PYTHONPATH")
+    if root_value is None:
+        standard = (
+            Path(__file__).resolve().parents[3]
+            / "checkpoints"
+            / "fbxsdk"
+            / "cp310"
+        )
+        root = standard if standard.is_dir() else None
+    else:
+        root = Path(root_value).expanduser().resolve()
+        if not root.is_dir():
+            raise FileNotFoundError(f"FBX SDK Python module path does not exist: {root}.")
+    python = python.resolve()
+    _probe_fbxsdk_runtime(str(python), str(root) if root else None)
+    return python, root
+
+
 def _model_joint_names(count: int) -> tuple[str, ...]:
     names = list(SMPL22_BONE_NAMES[: min(count, len(SMPL22_BONE_NAMES))])
     if count == 24:
@@ -303,7 +372,10 @@ def _run_export(
     model_path: str | Path,
     model_type: str,
     gender: str,
+    backend: str,
     blender_executable: str | Path | None,
+    fbxsdk_python: str | Path | None,
+    fbxsdk_module_path: str | Path | None,
     character_fbx: str | Path | None,
     bone_map: Mapping[str, str] | None,
     target_armature: str | None,
@@ -315,7 +387,6 @@ def _run_export(
     if output.suffix.casefold() != ".fbx":
         raise ValueError(f"output_path must end in .fbx, got {output}.")
     output.parent.mkdir(parents=True, exist_ok=True)
-    blender = resolve_blender_executable(blender_executable)
     payload, resolved_model = _prepare_payload(
         animation,
         model_path=model_path,
@@ -336,7 +407,36 @@ def _run_export(
 
     manifest = Path(f"{output}.json")
     mode = "character_retarget" if target else "smpl_export"
-    script = Path(__file__).with_name("_blender.py").resolve()
+    backend = str(backend).casefold()
+    if backend not in {"auto", "fbxsdk", "blender"}:
+        raise ValueError("backend must be 'auto', 'fbxsdk', or 'blender'.")
+    fbxsdk_runtime = None
+    selected_backend = backend
+    if selected_backend == "auto":
+        if target is not None:
+            try:
+                fbxsdk_runtime = resolve_fbxsdk_runtime(
+                    fbxsdk_python, fbxsdk_module_path
+                )
+                selected_backend = "fbxsdk"
+            except (FileNotFoundError, ImportError, subprocess.SubprocessError):
+                selected_backend = "blender"
+        else:
+            selected_backend = "blender"
+    if selected_backend == "fbxsdk":
+        if target is None:
+            raise ValueError(
+                "The FBX SDK backend animates an existing character FBX. "
+                "Direct skinned-SMPL FBX construction currently uses backend='blender'."
+            )
+        if fbxsdk_runtime is None:
+            fbxsdk_runtime = resolve_fbxsdk_runtime(
+                fbxsdk_python, fbxsdk_module_path
+            )
+        script = Path(__file__).with_name("_fbxsdk.py").resolve()
+    else:
+        blender = resolve_blender_executable(blender_executable)
+        script = Path(__file__).with_name("_blender.py").resolve()
     with tempfile.TemporaryDirectory(prefix=".motius_fbx_", dir=output.parent) as tmp:
         tmp_dir = Path(tmp)
         payload_path = tmp_dir / "animation.npz"
@@ -344,6 +444,7 @@ def _run_export(
         np.savez_compressed(payload_path, **payload)
         job = {
             "schema_version": 1,
+            "backend": selected_backend,
             "mode": mode,
             "payload_path": str(payload_path),
             "output_path": str(output),
@@ -361,34 +462,46 @@ def _run_export(
             "source_metadata": dict(source_metadata or {}),
         }
         job_path.write_text(json.dumps(job, indent=2) + "\n")
-        command = [
-            str(blender),
-            "--background",
-            "--factory-startup",
-            "--python-exit-code",
-            "1",
-            "--python",
-            str(script),
-            "--",
-            "--job",
-            str(job_path),
-        ]
+        if selected_backend == "fbxsdk":
+            python, module_root = fbxsdk_runtime
+            command = [str(python), str(script), "--job", str(job_path)]
+            environment = _fbxsdk_environment(module_root)
+        else:
+            command = [
+                str(blender),
+                "--background",
+                "--factory-startup",
+                "--python-exit-code",
+                "1",
+                "--python",
+                str(script),
+                "--",
+                "--job",
+                str(job_path),
+            ]
+            environment = None
         completed = subprocess.run(
             command,
             check=False,
             text=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
+            env=environment,
         )
         if completed.returncode != 0:
             tail = "\n".join(completed.stdout.splitlines()[-80:])
             raise FBXExportError(
-                f"Blender FBX {mode} failed with exit code {completed.returncode}:\n{tail}"
+                f"{selected_backend} FBX {mode} failed with exit code "
+                f"{completed.returncode}:\n{tail}"
             )
     if not output.is_file() or output.stat().st_size == 0:
-        raise FBXExportError(f"Blender did not create a non-empty FBX at {output}.")
+        raise FBXExportError(
+            f"{selected_backend} did not create a non-empty FBX at {output}."
+        )
     if not manifest.is_file():
-        raise FBXExportError(f"Blender did not create the export manifest at {manifest}.")
+        raise FBXExportError(
+            f"{selected_backend} did not create the export manifest at {manifest}."
+        )
     metadata = json.loads(manifest.read_text())
     return FBXExportResult(
         output_path=output,
@@ -409,10 +522,13 @@ def export_smpl_fbx(
     model_path: str | Path,
     model_type: str = "smpl",
     gender: str = "neutral",
+    backend: str = "auto",
     blender_executable: str | Path | None = None,
+    fbxsdk_python: str | Path | None = None,
+    fbxsdk_module_path: str | Path | None = None,
     source_metadata: Mapping[str, object] | None = None,
 ) -> FBXExportResult:
-    """Export an animated, skinned SMPL-family FBX through Blender."""
+    """Export an animated, skinned SMPL-family FBX."""
 
     return _run_export(
         animation,
@@ -420,7 +536,10 @@ def export_smpl_fbx(
         model_path=model_path,
         model_type=model_type,
         gender=gender,
+        backend=backend,
         blender_executable=blender_executable,
+        fbxsdk_python=fbxsdk_python,
+        fbxsdk_module_path=fbxsdk_module_path,
         character_fbx=None,
         bone_map=None,
         target_armature=None,
@@ -442,7 +561,10 @@ def retarget_smpl_to_fbx(
     target_armature: str | None = None,
     strict_bone_map: bool = True,
     root_motion_scale: float | str = "auto",
+    backend: str = "auto",
     blender_executable: str | Path | None = None,
+    fbxsdk_python: str | Path | None = None,
+    fbxsdk_module_path: str | Path | None = None,
     source_metadata: Mapping[str, object] | None = None,
 ) -> FBXExportResult:
     """Bake SMPL motion onto an already rigged and skinned character FBX."""
@@ -453,7 +575,10 @@ def retarget_smpl_to_fbx(
         model_path=model_path,
         model_type=model_type,
         gender=gender,
+        backend=backend,
         blender_executable=blender_executable,
+        fbxsdk_python=fbxsdk_python,
+        fbxsdk_module_path=fbxsdk_module_path,
         character_fbx=character_fbx,
         bone_map=bone_map,
         target_armature=target_armature,
@@ -470,5 +595,6 @@ __all__ = [
     "SMPL_TO_BLENDER",
     "export_smpl_fbx",
     "resolve_blender_executable",
+    "resolve_fbxsdk_runtime",
     "retarget_smpl_to_fbx",
 ]

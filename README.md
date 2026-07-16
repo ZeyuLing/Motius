@@ -193,15 +193,11 @@ python tools/convert_motion.py input.npy output.npy \
 ### Any Representation To A Character FBX
 
 Every public Motius representation can be exported onto a rigged
-Mixamo-compatible character through the SMPL-22 bridge. Exact rotation routes
-stay exact; joint-only and robot routes use position IK and record their fit
-error in the sidecar manifest. Motius includes three original CC0 characters,
-`atlas`, `nova`, and `gear`, so the API works immediately after Blender and an
-SMPL body model are configured.
-
-![HumanML3D-263 motion retargeted to three Mixamo-compatible FBX characters](assets/motion/mixamo_fbx_demo/hml263_to_mixamo.gif)
-
-[Open the MP4 source](assets/motion/mixamo_fbx_demo/hml263_to_mixamo.mp4)
+and skinned character through the SMPL-22 bridge. Exact rotation routes stay
+exact; joint-only and robot routes use position IK and record their fit error
+in the sidecar manifest. Autodesk FBX SDK writes animation curves directly
+into the original character scene, preserving its mesh, materials, hierarchy,
+and skin without requiring Blender.
 
 ```python
 from motius.motion import export_motion_to_fbx
@@ -209,20 +205,24 @@ from motius.motion import export_motion_to_fbx
 result = export_motion_to_fbx(
     motion_hml263,
     source_representation="hml263",
-    character_fbx="atlas",  # built-in slug or any rigged .fbx path
-    output_path="outputs/fbx/atlas_walk.fbx",
+    character_fbx="checkpoints/characters/mixamo/x_bot/character.fbx",
+    output_path="outputs/fbx/x_bot_walk.fbx",
     model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
     output_fps=30,
+    backend="fbxsdk",
 )
-print(result.metadata["motion_source"])
+print(result.metadata["retarget_diagnostics"])
 ```
 
-Put separately licensed Mixamo downloads under
-`checkpoints/characters/mixamo/<character_slug>/character.fbx`, or pass any
-other rigged FBX path plus an explicit bone map. Blender 3.6+ is the FBX
-backend. See the [representation-to-FBX guide](docs/motion/fbx.md) for the full
-support matrix, checkpoint-native ARDY/MotionBricks examples, CLI usage,
-coordinates, diagnostics, and target-rig requirements.
+Motius does not bundle or relabel Adobe Mixamo characters. Download a character
+through your Adobe account and store it under
+`checkpoints/characters/mixamo/<character_slug>/character.fbx`, or pass another
+rigged FBX path plus an explicit bone map. Follow the
+[FBX SDK setup](checkpoints/fbxsdk/README.md) and
+[representation-to-FBX guide](docs/motion/fbx.md) for backend selection, the
+full support matrix, checkpoint-native ARDY/MotionBricks examples, CLI usage,
+coordinates, diagnostics, and target-rig requirements. Blender remains an
+optional backend for direct skinned-SMPL construction and preview rendering.
 
 ### SMPL Body-Model Setup
 
@@ -296,7 +296,7 @@ representation interchange formats.
 | `motius.datasets` | Dataset bases and reusable transform primitives. |
 | `motius.hooks` | Checkpoint, EMA, logging, and learning-rate scheduler hooks. |
 | `motius.evaluation` | Evaluator interfaces plus semantic and physical metric APIs. |
-| `motius.motion` | Representation specs/converters, SMPL-22 FK, SOMA/G1 retargeting, and Blender-backed FBX export. |
+| `motius.motion` | Representation specs/converters, SMPL-22 FK, SOMA/G1 retargeting, and Autodesk/Blender FBX export. |
 | `motius.visualization` | File and TensorBoard visualization bases. |
 | `configs/_base_` | Minimal runtime config templates. |
 | `tools/` | Command-line training entry points. |

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export a Motius motion representation onto a Mixamo-compatible FBX rig."""
+"""Export a Motius motion representation onto a rigged character FBX."""
 
 from __future__ import annotations
 
@@ -34,8 +34,9 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--source", required=True, help="public representation name")
     parser.add_argument(
         "--character",
+        type=Path,
         required=True,
-        help="packaged character slug (atlas/nova/gear) or a rigged .fbx path",
+        help="path to a rigged and skinned character .fbx",
     )
     parser.add_argument("--model-path", type=Path, required=True)
     parser.add_argument("--model-type", choices=("smpl", "smplh", "smplx"), default="smpl")
@@ -55,7 +56,10 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--target-armature")
     parser.add_argument("--allow-partial-map", action="store_true")
     parser.add_argument("--root-motion-scale", default="auto")
+    parser.add_argument("--backend", choices=("auto", "fbxsdk", "blender"), default="auto")
     parser.add_argument("--blender", type=Path)
+    parser.add_argument("--fbxsdk-python", type=Path)
+    parser.add_argument("--fbxsdk-module-path", type=Path)
     return parser
 
 
@@ -138,7 +142,10 @@ def main() -> None:
         target_armature=args.target_armature,
         strict_bone_map=not args.allow_partial_map,
         root_motion_scale=_root_scale(args.root_motion_scale),
+        backend=args.backend,
         blender_executable=args.blender,
+        fbxsdk_python=args.fbxsdk_python,
+        fbxsdk_module_path=args.fbxsdk_module_path,
     )
     print(json.dumps(result.metadata, indent=2))
 

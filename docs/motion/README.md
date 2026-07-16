@@ -20,8 +20,8 @@ with:
 - [Retargeting guide](retargeting.md): HML263 to SMPL, SMPL to SOMA, and SMPL
   to Unitree G1.
 - [Representation-to-FBX export](fbx.md): export every public representation
-  to built-in or user-provided Mixamo-compatible characters through the
-  SMPL-22 bridge.
+  to a user-provided rigged character through the SMPL-22 bridge, using
+  Autodesk FBX SDK without Blender or Blender as an optional backend.
 - [Physical evaluation](../evaluation/physical_metrics.md): checkpoint-free
   Slide, Float, Jitter, Dynamic, and Penet metrics on canonical SMPL-22 joints.
 

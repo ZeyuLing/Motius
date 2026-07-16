@@ -1,18 +1,14 @@
-import hashlib
-import json
 from pathlib import Path
 
 import numpy as np
 import pytest
 
 from motius.motion.fbx import (
-    BUILTIN_MIXAMO_CHARACTERS,
     SMPLAnimation,
     SMPL_TO_BLENDER,
     g1_joints_to_smpl22_joints,
-    list_mixamo_characters,
     motion_to_smpl_animation,
-    resolve_mixamo_character,
+    resolve_character_fbx,
 )
 from motius.motion.fbx.bridge import _G1_ALIASES, _motion_rep_joints
 from motius.motion.fbx._mapping import SMPL22_BONE_NAMES, resolve_bone_map
@@ -122,20 +118,19 @@ def test_mapping_requires_complete_unambiguous_target_by_default() -> None:
     with pytest.raises(ValueError, match="missing required"):
         resolve_bone_map(["Pelvis"])
     assert resolve_bone_map(["Pelvis"], strict=False) == {"Pelvis": "Pelvis"}
+    assert resolve_bone_map(["Spine1"], strict=False) == {"Spine1": "Spine1"}
     with pytest.raises(ValueError, match="do not exist"):
         resolve_bone_map(SMPL22_BONE_NAMES, {"Pelvis": "missing"})
 
 
-def test_packaged_mixamo_characters_match_manifest() -> None:
-    assert list_mixamo_characters() == BUILTIN_MIXAMO_CHARACTERS
-    directory = resolve_mixamo_character("atlas").parent
-    manifest = json.loads((directory / "manifest.json").read_text())
-    for slug in BUILTIN_MIXAMO_CHARACTERS:
-        path = resolve_mixamo_character(slug)
-        assert path.stat().st_size > 100_000
-        digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        assert manifest["characters"][slug]["sha256"] == digest
-        assert manifest["characters"][slug]["license"] == "CC0-1.0"
+def test_character_resolver_requires_an_existing_fbx(tmp_path: Path) -> None:
+    character = tmp_path / "character.fbx"
+    character.write_bytes(b"Kaydara FBX Binary")
+    assert resolve_character_fbx(character) == character.resolve()
+    with pytest.raises(ValueError, match="must be an .fbx"):
+        resolve_character_fbx(tmp_path / "character.obj")
+    with pytest.raises(FileNotFoundError, match="does not exist"):
+        resolve_character_fbx(tmp_path / "missing.fbx")
 
 
 def test_motion_bridge_decodes_exact_rotation_representations() -> None:

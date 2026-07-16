@@ -7,6 +7,7 @@ from .api import (
     SMPL_TO_BLENDER,
     export_smpl_fbx,
     resolve_blender_executable,
+    resolve_fbxsdk_runtime,
     retarget_smpl_to_fbx,
 )
 from .bridge import (
@@ -16,11 +17,7 @@ from .bridge import (
     g1_joints_to_smpl22_joints,
     motion_to_smpl_animation,
 )
-from .characters import (
-    BUILTIN_MIXAMO_CHARACTERS,
-    list_mixamo_characters,
-    resolve_mixamo_character,
-)
+from .characters import resolve_character_fbx
 
 __all__ = [
     "FBXExportError",
@@ -29,13 +26,12 @@ __all__ = [
     "SMPL_TO_BLENDER",
     "export_smpl_fbx",
     "resolve_blender_executable",
+    "resolve_fbxsdk_runtime",
     "retarget_smpl_to_fbx",
-    "BUILTIN_MIXAMO_CHARACTERS",
     "MotionBridgeResult",
     "export_motion_to_fbx",
     "export_motion_to_mixamo_fbx",
     "g1_joints_to_smpl22_joints",
-    "list_mixamo_characters",
     "motion_to_smpl_animation",
-    "resolve_mixamo_character",
+    "resolve_character_fbx",
 ]

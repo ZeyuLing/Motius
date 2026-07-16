@@ -34,6 +34,9 @@ checkpoints/models/*
 !checkpoints/evaluators/
 checkpoints/evaluators/*
 !checkpoints/evaluators/README.md
+!checkpoints/fbxsdk/
+checkpoints/fbxsdk/*
+!checkpoints/fbxsdk/README.md
 outputs/
 output/
 work_dirs/
@@ -55,7 +58,6 @@ temp/
 *.h5
 *.hdf5
 *.mp4
-!assets/motion/mixamo_fbx_demo/*.mp4
 *.mov
 *.avi
 *.tar

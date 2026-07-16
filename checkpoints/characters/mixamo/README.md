@@ -1,11 +1,7 @@
 # Mixamo Character Setup
 
-Motius includes the original CC0 character slugs `atlas`, `nova`, and `gear`.
-Their FBX files are packaged under `motius/motion/fbx/characters/`, so no
-checkpoint setup is needed to use them.
-
-Adobe-provided Mixamo characters are not redistributed. To use a specific
-character:
+Adobe-provided Mixamo characters are not redistributed or replaced by
+look-alike built-ins. To use a specific character:
 
 1. Sign in at [Mixamo](https://www.mixamo.com/), select a character, and
    download a rigged FBX with skin.
@@ -29,6 +25,7 @@ export_motion_to_fbx(
     character_fbx="checkpoints/characters/mixamo/x_bot/character.fbx",
     output_path="outputs/fbx/x_bot.fbx",
     model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
+    backend="fbxsdk",
 )
 ```
 

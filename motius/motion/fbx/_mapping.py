@@ -105,6 +105,9 @@ def resolve_bone_map(
             candidates = list(
                 dict.fromkeys(normalized.get(normalize_bone_name(alias), ()))
             )
+            candidates = [
+                candidate for candidate in candidates if candidate not in result.values()
+            ]
             if len(candidates) == 1:
                 result[source] = candidates[0]
                 matched = True

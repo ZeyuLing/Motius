@@ -141,7 +141,10 @@ solver frame.
 to SMPL-22 body motion, and bakes the result onto an already rigged and skinned
 character FBX. Common Mixamo bone names are detected automatically; other rigs
 accept an explicit SMPL-22 bone map. Position-only routes report per-frame IK
-fit error in the FBX sidecar manifest. See the
+fit error in the FBX sidecar manifest. Autodesk FBX SDK writes animation
+curves directly into the original character scene and does not require
+Blender; Blender remains an optional backend for direct SMPL mesh creation and
+preview rendering. See the
 [representation-to-FBX guide](fbx.md) for the route matrix, Python and CLI
 usage, coordinate conventions, root-motion scaling, and target-rig
 requirements.
