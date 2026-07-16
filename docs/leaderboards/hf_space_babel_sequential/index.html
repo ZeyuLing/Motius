@@ -233,7 +233,7 @@
       <dl class="protocol">
         <div><dt>Prompts</dt><dd>All 1,295 eligible processed BABEL validation episodes; 7,285 action intervals after short-action merging and LLM caption rewriting.</dd></div>
         <div><dt>References</dt><dd>Paired GT subsequences and transition windows from the same episode boundaries; no independent reference pools.</dd></div>
-        <div><dt>Representation</dt><dd>Neutral zero-beta SMPL-22 joints66, first pelvis at the XZ origin, first-frame body facing +Z.</dd></div>
+        <div><dt>Representation</dt><dd>Neutral zero-beta SMPL-22 joints66. Every semantic subclip is independently first-frame canonicalized before uTMR; each transition window is canonicalized once so its cross-boundary gap remains intact.</dd></div>
         <div><dt>Semantic Metrics</dt><dd>Official BABEL act_cat action-group R-Precision, nearest-positive MM-Dist, and L2-normalized embedding FID from the Motius Joint-Position Evaluator. Synonymous captions are retained without becoming false negatives.</dd></div>
         <div><dt>Transition Metrics</dt><dd>L2-normalized embedding FID and AUJ gap are ranked; Diversity and absolute Peak Jerk are diagnostic reference statistics.</dd></div>
         <div><dt>Ranking</dt><dd>GT/reference and paper-only values are visible but cannot receive best or second-best styling.</dd></div>

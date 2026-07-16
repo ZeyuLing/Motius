@@ -29,6 +29,12 @@ Retrieval and embedding metrics use
 Every uTMR FID first L2-normalizes each motion embedding, then estimates the
 mean and covariance in that normalized space. Raw latent-space FID is not a
 Motius reporting metric because encoder feature magnitude can dominate it.
+Each captioned action interval is sliced first and independently canonicalized
+from that subclip's first frame before it enters uTMR. This removes the global
+position and heading inherited from the preceding action. Transition metrics
+use one 30-frame window spanning both sides of a boundary and canonicalize that
+window only once; the relative position, heading, velocity, and acceleration
+gap across the boundary therefore remains measurable.
 Diversity and absolute Peak Jerk are diagnostic statistics, not ranked quality
 objectives. GT/reference rows do not participate in best/second-best styling.
 

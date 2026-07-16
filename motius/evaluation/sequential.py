@@ -419,6 +419,11 @@ def evaluate_sequential_cases(
         "protocol": str(protocol),
         "motion_representation": "SMPL-22 joints66",
         "evaluator": "Motius Joint-Position Evaluator",
+        "canonicalization": {
+            "semantic": "independent_per_subclip_first_frame",
+            "transition": "independent_per_boundary_window_first_frame",
+            "transition_gap_policy": "preserved_within_window",
+        },
         "fid_embedding_space": "l2_normalized",
         "fps": float(fps),
         "transition_frames": int(transition_frames),
