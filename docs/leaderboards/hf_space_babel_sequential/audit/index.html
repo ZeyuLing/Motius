@@ -195,7 +195,7 @@
   <main>
     <section class="stage" id="stage" aria-label="Synchronized motion comparison"></section>
     <div class="transport">
-      <button id="playButton" title="Play or pause" aria-label="Play or pause">❚❚</button>
+      <button id="playButton" title="Play or pause" aria-label="Play or pause">▶</button>
       <input id="scrubber" type="range" min="0" max="1" value="0" step="1" aria-label="Frame">
       <span id="frameLabel">0000 / 0000</span>
     </div>
@@ -281,14 +281,27 @@
         group.add(mesh);
         bones.push(mesh);
       }
+      const facingArrow = new THREE.ArrowHelper(
+        new THREE.Vector3(0, 0, 1),
+        new THREE.Vector3(0, .025, 0),
+        .52,
+        0x172033,
+        .12,
+        .07
+      );
+      group.add(facingArrow);
       env.scene.add(group);
-      return { group, material, joints, bones };
+      return { group, material, joints, bones, facingArrow };
     }
 
     const yAxis = new THREE.Vector3(0, 1, 0);
     const a = new THREE.Vector3();
     const b = new THREE.Vector3();
     const direction = new THREE.Vector3();
+    const facingRight = new THREE.Vector3();
+    const facingAcrossShoulders = new THREE.Vector3();
+    const facingForward = new THREE.Vector3();
+    const facingOrigin = new THREE.Vector3();
     function updateSkeleton(skeleton, data, frame) {
       const base = frame * 66;
       const rootX = data[base];
@@ -311,6 +324,22 @@
         bone.scale.set(1, length, 1);
         bone.quaternion.setFromUnitVectors(yAxis, direction.normalize());
       }
+      facingRight
+        .subVectors(skeleton.joints[2].position, skeleton.joints[1].position)
+        .add(
+          facingAcrossShoulders.subVectors(
+            skeleton.joints[17].position,
+            skeleton.joints[16].position
+          )
+        );
+      facingRight.y = 0;
+      if (facingRight.lengthSq() < 1e-10) facingRight.set(1, 0, 0);
+      else facingRight.normalize();
+      facingForward.crossVectors(facingRight, yAxis).normalize();
+      facingOrigin.copy(skeleton.joints[0].position);
+      facingOrigin.y = .025;
+      skeleton.facingArrow.position.copy(facingOrigin);
+      skeleton.facingArrow.setDirection(facingForward);
     }
 
     const stageRoot = document.getElementById("stage");
@@ -352,7 +381,8 @@
     let episode;
     let motionData = new Map();
     let frame = 0;
-    let playing = true;
+    // Keep the audit on the actual canonical frame until the user starts it.
+    let playing = false;
     let lastTime = performance.now();
     let accumulator = 0;
     let activeSegment = -1;

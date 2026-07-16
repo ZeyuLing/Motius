@@ -183,3 +183,20 @@ def test_public_babel_viewer_has_colored_captioned_subclips():
     assert "three@0.128.0" in viewer
     assert "Captioned subclips" in viewer
     assert "addTrajectories" in viewer
+
+
+def test_sequential_audit_starts_on_canonical_frame_with_facing_marker():
+    root = Path(__file__).resolve().parents[1]
+    for viewer_path in (
+        root / "tools" / "babel_sequential_viewer.html",
+        root
+        / "docs"
+        / "leaderboards"
+        / "hf_space_babel_sequential"
+        / "audit"
+        / "index.html",
+    ):
+        viewer = viewer_path.read_text()
+        assert "let playing = false;" in viewer
+        assert "new THREE.ArrowHelper" in viewer
+        assert "facingForward.crossVectors(facingRight, yAxis)" in viewer
