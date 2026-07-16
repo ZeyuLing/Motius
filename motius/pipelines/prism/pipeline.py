@@ -103,8 +103,33 @@ class PRISMPipeline(BasePipeline):
         self,
         prompts: Sequence[str],
         segment_frames: Union[int, Sequence[int]] = 129,
+        pad_to_frames: int = 360,
         **kwargs,
     ) -> dict:
+        frame_list = (
+            [int(segment_frames)] * len(prompts)
+            if isinstance(segment_frames, int)
+            else [int(value) for value in segment_frames]
+        )
+        if len(frame_list) != len(prompts):
+            raise ValueError(
+                "segment_frames must contain one length for every prompt; "
+                f"got {len(frame_list)} lengths for {len(prompts)} prompts"
+            )
+        if max(frame_list, default=0) > int(pad_to_frames):
+            raise ValueError(
+                "PRISM fixed-canvas sequential generation requires every "
+                f"segment to be <= {pad_to_frames} frames; got {frame_list!r}"
+            )
+        kwargs.setdefault(
+            "generation_num_frames_per_segment",
+            [int(pad_to_frames)] * len(prompts),
+        )
+        kwargs.setdefault("valid_num_frames_per_segment", frame_list)
+        kwargs.setdefault("preserve_segment_lengths", True)
+        kwargs.setdefault("fixed_generation_canvas", True)
+        kwargs.setdefault("align_generation_frames", False)
+        kwargs.setdefault("allow_segment_padding", False)
         return self.generate(prompts, segment_frames, **kwargs)
 
     def infer_t2m(self, captions, lengths, **kwargs):

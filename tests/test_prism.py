@@ -9,6 +9,8 @@ import numpy as np
 import torch
 
 from motius.models.prism import PRISMBundle, PRISMMotionProcessor
+from motius.pipelines.prism.backend import PrismARPipeline
+from motius.pipelines.prism.pipeline import PRISMPipeline
 
 
 def _write_stats(path: Path) -> Path:
@@ -71,3 +73,85 @@ def test_prism_smpl_output_is_body22_at_30fps():
     assert smpl["poses"].shape == (frames, 165)
     assert smpl["body_pose"].shape == (frames, 63)
     assert smpl["mocap_framerate"] == 30.0
+
+
+def test_prism_fixed_canvas_never_expands_360_for_carried_prefix():
+    calls = []
+
+    class Progress:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        def update(self):
+            pass
+
+    class Backend:
+        vae_scale_factor_temporal = 4
+
+        def progress_bar(self, total):
+            assert total == 2
+            return Progress()
+
+        def generate_single_segment(
+            self, *, first_frame_motion, num_frames, valid_num_frames, **_kwargs
+        ):
+            calls.append(
+                (
+                    int(num_frames),
+                    int(valid_num_frames),
+                    0 if first_frame_motion is None else first_frame_motion.shape[1],
+                )
+            )
+            # A nominal 360-frame PRISM canvas decodes to 357 frames.
+            return torch.zeros(1, 357, 23, 6)
+
+        def extract_last_frame_motion(self, motion, num_frames):
+            return motion[:, -min(num_frames, motion.shape[1]) :]
+
+        def post_process_motion(self, motion, **_kwargs):
+            return {"transl": np.zeros((motion.shape[1], 3), dtype=np.float32)}
+
+    result = PrismARPipeline.__call__(
+        Backend(),
+        prompts=["walk", "turn"],
+        num_frames_per_segment=[360, 360],
+        generation_num_frames_per_segment=[360, 360],
+        valid_num_frames_per_segment=[360, 360],
+        preserve_segment_lengths=True,
+        fixed_generation_canvas=True,
+        align_generation_frames=False,
+        use_blend=False,
+        return_motion_vec=True,
+    )
+
+    assert [num_frames for num_frames, _, _ in calls] == [360, 360, 360, 360]
+    assert calls == [(360, 357, 0), (360, 8, 5), (360, 357, 5), (360, 13, 5)]
+    assert result["motion_vec"].shape[1] == 720
+    assert result["smplx_dict"]["_prism_generation_num_frames"].tolist() == [360, 360]
+    assert result["smplx_dict"]["_prism_generation_chunk_num_frames"].tolist() == [
+        360,
+        360,
+        360,
+        360,
+    ]
+
+
+def test_prism_public_sequential_api_enables_fixed_canvas(monkeypatch):
+    captured = {}
+
+    def fake_generate(self, prompts, segment_frames, **kwargs):
+        captured.update(kwargs)
+        return prompts, segment_frames
+
+    monkeypatch.setattr(PRISMPipeline, "generate", fake_generate)
+    pipeline = object.__new__(PRISMPipeline)
+    result = pipeline.sequential_generation(["walk", "turn"], [360, 120])
+
+    assert result == (["walk", "turn"], [360, 120])
+    assert captured["generation_num_frames_per_segment"] == [360, 360]
+    assert captured["valid_num_frames_per_segment"] == [360, 120]
+    assert captured["fixed_generation_canvas"] is True
+    assert captured["allow_segment_padding"] is False

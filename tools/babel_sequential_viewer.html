@@ -260,7 +260,7 @@
       };
       window.addEventListener("resize", resize);
       resize();
-      return { scene, renderer, camera, controls, trajectoryGroup };
+      return { scene, renderer, camera, controls, floor, grid, trajectoryGroup };
     }
 
     function makeSkeleton(env) {
@@ -304,14 +304,14 @@
     const facingOrigin = new THREE.Vector3();
     function updateSkeleton(skeleton, data, frame) {
       const base = frame * 66;
-      const rootX = data[base];
-      const rootZ = data[base + 2];
+      const originX = data[0];
+      const originZ = data[2];
       for (let joint = 0; joint < 22; joint++) {
         const offset = base + joint * 3;
         skeleton.joints[joint].position.set(
-          data[offset] - rootX,
+          data[offset] - originX,
           data[offset + 1],
-          data[offset + 2] - rootZ
+          data[offset + 2] - originZ
         );
         const parent = parents[joint];
         if (parent < 0) continue;
@@ -366,16 +366,55 @@
     }
 
     function addTrajectories(env, data, episode) {
+      const originX = data[0];
+      const originZ = data[2];
       for (const segment of episode.segments) {
         const points = [];
         for (let frame = segment.start_frame; frame < segment.end_frame; frame++) {
           const base = frame * 66;
-          points.push(new THREE.Vector3(data[base], .018, data[base + 2]));
+          points.push(new THREE.Vector3(
+            data[base] - originX,
+            .018,
+            data[base + 2] - originZ
+          ));
         }
         if (points.length < 2) continue;
         const geometry = new THREE.BufferGeometry().setFromPoints(points);
         env.trajectoryGroup.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: segment.color })));
       }
+    }
+
+    function fitTrajectoryCamera(env, data, frames) {
+      const originX = data[0];
+      const originZ = data[2];
+      let minX = 0;
+      let maxX = 0;
+      let minZ = 0;
+      let maxZ = 0;
+      for (let frame = 0; frame < frames; frame++) {
+        const base = frame * 66;
+        const x = data[base] - originX;
+        const z = data[base + 2] - originZ;
+        minX = Math.min(minX, x);
+        maxX = Math.max(maxX, x);
+        minZ = Math.min(minZ, z);
+        maxZ = Math.max(maxZ, z);
+      }
+      const centerX = (minX + maxX) * .5;
+      const centerZ = (minZ + maxZ) * .5;
+      const span = Math.max(maxX - minX, maxZ - minZ, 3.2);
+      const distance = Math.max(6.5, span * 1.8);
+      env.controls.target.set(centerX, .9, centerZ);
+      env.camera.position.set(
+        centerX + distance * .46,
+        Math.max(2.4, distance * .34),
+        centerZ + distance * .82
+      );
+      const floorSize = Math.max(14, span * 1.45);
+      const floorScale = floorSize / 14;
+      env.floor.scale.set(floorScale, floorScale, 1);
+      env.grid.scale.set(floorScale, 1, floorScale);
+      env.controls.update();
     }
 
     let episode;
@@ -482,7 +521,9 @@
       motionData = new Map(loaded);
       methodViews.forEach((view, key) => {
         clearTrajectories(view.env);
-        addTrajectories(view.env, motionData.get(key), episode);
+        const data = motionData.get(key);
+        addTrajectories(view.env, data, episode);
+        fitTrajectoryCamera(view.env, data, episode.frames);
       });
       scrubber.max = String(episode.frames - 1);
       activeSegment = -1;

@@ -200,3 +200,7 @@ def test_sequential_audit_starts_on_canonical_frame_with_facing_marker():
         assert "let playing = false;" in viewer
         assert "new THREE.ArrowHelper" in viewer
         assert "facingForward.crossVectors(facingRight, yAxis)" in viewer
+        assert "const originX = data[0];" in viewer
+        assert "data[offset] - originX" in viewer
+        assert "data[offset] - rootX" not in viewer
+        assert "fitTrajectoryCamera" in viewer

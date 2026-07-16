@@ -615,6 +615,7 @@ class PrismARPipeline(DiffusionPipeline):
         valid_num_frames_per_segment: Optional[Union[int, List[int]]] = None,
         allow_segment_padding: bool = True,
         align_generation_frames: bool = True,
+        fixed_generation_canvas: bool = False,
         return_motion_vec: bool = False,
     ) -> Dict:
         """Generate long motion autoregressively from multiple prompts.
@@ -659,6 +660,10 @@ class PrismARPipeline(DiffusionPipeline):
                 historical PRISM VAE alignment heuristic before preparing
                 latents. Benchmark protocols set this false to pass exact
                 official/padded frame counts into ``prepare_latents``.
+            fixed_generation_canvas: Keep every autoregressive model call on the
+                requested generation canvas. If the decoded canvas cannot hold
+                the requested contribution after removing the carried prefix,
+                continue with another call using the same prompt and canvas.
             return_motion_vec: When true, return both the SMPL-X dictionary and
                 the decoded normalized motion tensor before translation
                 post-processing. This is used by decode-only ablations so the
@@ -717,7 +722,7 @@ class PrismARPipeline(DiffusionPipeline):
         k_carry = max(1, int(ar_condition_frames))
         k_carry = ((k_carry - 1) // scale) * scale + 1
 
-        if preserve_segment_lengths:
+        if preserve_segment_lengths and not fixed_generation_canvas:
             num_frames_per_segment_list = [
                 int(n) + (k_carry if i > 0 else 0)
                 for i, n in enumerate(generation_requested_lengths)
@@ -734,10 +739,13 @@ class PrismARPipeline(DiffusionPipeline):
                     _round_frames(n) for n in num_frames_per_segment_list
                 ]
 
-        valid_num_frames_list = [
-            int(n) + (k_carry if preserve_segment_lengths and i > 0 else 0)
-            for i, n in enumerate(valid_requested_lengths)
-        ]
+        if fixed_generation_canvas:
+            valid_num_frames_list = [int(n) for n in valid_requested_lengths]
+        else:
+            valid_num_frames_list = [
+                int(n) + (k_carry if preserve_segment_lengths and i > 0 else 0)
+                for i, n in enumerate(valid_requested_lengths)
+            ]
 
         # Load first frame condition if provided
         first_frame_motion = None
@@ -751,6 +759,10 @@ class PrismARPipeline(DiffusionPipeline):
         all_motion_segments = []
         raw_decoded_segment_lengths = []
         pretrim_segment_lengths = []
+        generation_chunk_frames = []
+        valid_chunk_frames = []
+        generation_chunk_segment_indices = []
+        has_external_prefix = first_frame_motion is not None
 
         # Generate each segment
         with self.progress_bar(total=num_segments) as progress_bar:
@@ -759,9 +771,90 @@ class PrismARPipeline(DiffusionPipeline):
                     f"Generating segment {seg_idx + 1}/{num_segments}: {prompt[:50]}..."
                 )
 
-                # Generate single segment
                 num_frames_this = num_frames_per_segment_list[seg_idx]
                 valid_num_frames_this = valid_num_frames_list[seg_idx]
+
+                if fixed_generation_canvas:
+                    target_len = int(requested_segment_lengths[seg_idx])
+                    remaining = target_len
+                    segment_pieces = []
+                    segment_raw_decoded = 0
+
+                    while remaining > 0:
+                        prefix_len = (
+                            int(first_frame_motion.shape[1])
+                            if first_frame_motion is not None
+                            else 0
+                        )
+                        include_external_prefix = (
+                            seg_idx == 0
+                            and not segment_pieces
+                            and has_external_prefix
+                        )
+                        skip = 0 if include_external_prefix else prefix_len
+                        decoded_capacity = (
+                            (int(num_frames_this) - 1) // scale
+                        ) * scale + 1
+                        contribution_capacity = decoded_capacity - skip
+                        if contribution_capacity <= 0:
+                            raise ValueError(
+                                "PRISM fixed generation canvas cannot retain any "
+                                f"new frames: canvas={num_frames_this}, "
+                                f"prefix={prefix_len}, scale={scale}"
+                            )
+
+                        planned_contribution = min(remaining, contribution_capacity)
+                        valid_num_frames_this = skip + planned_contribution
+                        motion_vec = self.generate_single_segment(
+                            prompt=prompt,
+                            negative_prompt=negative_prompt,
+                            first_frame_motion=first_frame_motion,
+                            num_frames=num_frames_this,
+                            valid_num_frames=valid_num_frames_this,
+                            num_joints=num_joints,
+                            num_inference_steps=num_inference_steps,
+                            guidance_scale=guidance_scale,
+                            max_sequence_length=max_sequence_length,
+                            attention_kwargs=attention_kwargs,
+                        )
+                        raw_len = int(motion_vec.shape[1])
+                        segment_raw_decoded += raw_len
+                        generation_chunk_frames.append(int(num_frames_this))
+                        valid_chunk_frames.append(int(valid_num_frames_this))
+                        generation_chunk_segment_indices.append(seg_idx)
+
+                        actual_skip = min(skip, max(0, raw_len - 1))
+                        candidate = motion_vec[:, actual_skip:]
+                        take = min(remaining, int(candidate.shape[1]))
+                        if take <= 0:
+                            raise ValueError(
+                                "PRISM fixed generation canvas decoded no usable "
+                                f"frames: segment={seg_idx}, canvas={num_frames_this}, "
+                                f"decoded={raw_len}, prefix={actual_skip}"
+                            )
+                        contribution = candidate[:, :take]
+                        segment_pieces.append(contribution)
+                        remaining -= take
+
+                        retained = motion_vec[:, : actual_skip + take]
+                        first_frame_motion = self.extract_last_frame_motion(
+                            retained, k_carry
+                        )
+
+                    segment_motion = torch.cat(segment_pieces, dim=1)
+                    if int(segment_motion.shape[1]) != target_len:
+                        raise AssertionError(
+                            "PRISM fixed-canvas chunking changed the requested "
+                            f"segment length: segment={seg_idx}, "
+                            f"requested={target_len}, actual={segment_motion.shape[1]}"
+                        )
+                    all_motion_segments.append(segment_motion)
+                    raw_decoded_segment_lengths.append(segment_raw_decoded)
+                    pretrim_segment_lengths.append(int(segment_motion.shape[1]))
+                    progress_bar.update()
+                    continue
+
+                # Legacy variable-canvas path.
                 motion_vec = self.generate_single_segment(
                     prompt=prompt,
                     negative_prompt=negative_prompt,
@@ -775,6 +868,9 @@ class PrismARPipeline(DiffusionPipeline):
                     attention_kwargs=attention_kwargs,
                 )
                 raw_decoded_segment_lengths.append(int(motion_vec.shape[1]))
+                generation_chunk_frames.append(int(num_frames_this))
+                valid_chunk_frames.append(int(valid_num_frames_this))
+                generation_chunk_segment_indices.append(seg_idx)
 
                 # Store segment. For seg>0 the first k_carry frames reproduce the
                 # carried tail of the previous segment (the prefix condition), so
@@ -877,6 +973,15 @@ class PrismARPipeline(DiffusionPipeline):
         )
         smplx_dict["_prism_valid_num_frames"] = np.asarray(
             valid_num_frames_list, dtype=np.int32
+        )
+        smplx_dict["_prism_generation_chunk_num_frames"] = np.asarray(
+            generation_chunk_frames, dtype=np.int32
+        )
+        smplx_dict["_prism_generation_chunk_valid_num_frames"] = np.asarray(
+            valid_chunk_frames, dtype=np.int32
+        )
+        smplx_dict["_prism_generation_chunk_segment_indices"] = np.asarray(
+            generation_chunk_segment_indices, dtype=np.int32
         )
         smplx_dict["_prism_raw_decoded_num_frames"] = np.asarray(
             raw_decoded_segment_lengths, dtype=np.int32
