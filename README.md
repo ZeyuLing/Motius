@@ -33,7 +33,7 @@ coordinate, FPS, and 6D rotation conventions for every route.
 ## Model Zoo
 
 Task labels use a controlled vocabulary: [`T2M`](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), `M2T`,
-[`TP2M`](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard),
+[`Temporal Condition`](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard),
 `Two-Person T2M`, [`Sequential Generation`](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard), `Motion Control`, and `Kinematic Control`. Properties such
 as zero-shot, streaming, latent, or autoregressive are described in the model
 cards rather than treated as separate tasks.
@@ -68,7 +68,7 @@ cards rather than treated as separate tasks.
 | Leaderboard | Scope | Public Page |
 | ----------- | ----- | ----------- |
 | [T2M HumanML3D](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | Text-to-motion generation on the HumanML3D official test split | [Source](docs/leaderboards/hf_space_t2m_humanml3d) |
-| [Temporal Condition](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) | Caption plus observed-prefix continuation on HumanML3D | [Source](docs/leaderboards/hf_space_temporal_condition) |
+| [Temporal Condition](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) | Prediction, motion in-betweening, sparse-keyframe control, and TP2M prefix continuation on HumanML3D | [Source](docs/leaderboards/hf_space_temporal_condition) |
 | [BABEL Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) | Ordered multi-prompt composition with semantic and transition evaluation | [Source](docs/leaderboards/hf_space_babel_sequential) |
 
 ## Evaluator Zoo

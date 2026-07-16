@@ -11,22 +11,27 @@ license: mit
 
 # Temporal Condition Leaderboard
 
-Static leaderboard page for temporal-conditioned human motion generation.
+Unified public leaderboard for temporal-conditioned human motion generation on
+the HumanML3D official test split. The page exposes two protocols:
 
-The current public protocol covers HumanML3D TP2M prefix-conditioned generation:
-given the text prompt and the first `N` ground-truth motion frames, a method
-generates the continuation. Results are reported for 1, 5, and 9 condition
-frames. The current measured snapshot uses the MotionStreamer-272 evaluator.
-Multi-prompt temporal composition is maintained separately on the BABEL
-Sequential Generation leaderboard, where all methods use the Motius
-Joint-Position Evaluator.
+- **Temporal Control:** prediction, motion in-betweening, and adaptive sparse
+  keyframe control, with text-on and text-off settings where applicable.
+- **TP2M Prefix:** caption-guided continuation from 1, 5, or 9 observed motion
+  frames, evaluated in MotionStreamer-272 space.
 
-The page is driven by a single structured result set and provides per-condition
-filtering, method search, sortable metrics, generated-method ranking highlights,
-bar and radar comparisons, protocol details, and navigation to the T2M
-HumanML3D and BABEL Sequential Generation leaderboards. Reference, paper-only,
-and explicitly excluded rows do
-not participate in rankings.
+Every setting includes a visible **GT** reference row. GT semantic metrics are
+reused from the matching T2M HumanML3D leaderboard rather than recomputed. For
+Temporal Control, condition error and failure rates are zero by identity, and
+foot skating is measured with one deterministic pass over the 4,012 temporal
+test clips. GT is excluded from ranks, best/second highlighting, and chart
+normalization.
 
-Internal result paths, rendered examples, and debugging notes stay in the
-repository documentation and experiment logs.
+The page supports task filtering, method search, sortable metrics, bar and radar
+comparisons, and protocol-specific details. Ordered multi-prompt composition is
+maintained separately on the BABEL Sequential Generation leaderboard.
+
+The static Space is defined by:
+
+- `index.html`: page structure and responsive styling.
+- `leaderboard.js`: interaction, ranking, and chart logic.
+- `temporal_control_results.json`: structured Temporal Control result snapshot.
