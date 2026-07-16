@@ -19,6 +19,8 @@ with:
   matrix, including shape-aware SMPL to HumanML3D conversion.
 - [Retargeting guide](retargeting.md): HML263 to SMPL, SMPL to SOMA, and SMPL
   to Unitree G1.
+- [FBX export and character retargeting](fbx.md): export an animated, skinned
+  SMPL FBX or bake SMPL motion onto an existing rigged character.
 - [Physical evaluation](../evaluation/physical_metrics.md): checkpoint-free
   Slide, Float, Jitter, Dynamic, and Penet metrics on canonical SMPL-22 joints.
 

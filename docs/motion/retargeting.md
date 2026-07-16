@@ -134,3 +134,11 @@ retargeter.save_pkl(g1, "outputs/retarget/walk_g1.pkl")
 The default result is Z-up, joint-limit-clamped, smoothed, and ground-aligned.
 Set `mujoco_zup=False` and `ground_align=False` only when you need GMR's raw
 solver frame.
+
+## SMPL To FBX Character
+
+`motius.motion.fbx` exports a skinned SMPL FBX or bakes SMPL animation onto an
+already rigged and skinned character FBX. Common Mixamo bone names are detected
+automatically; other rigs accept an explicit SMPL-22 bone map. See the
+[FBX export and character-retargeting guide](fbx.md) for Python and CLI usage,
+coordinate conventions, root-motion scaling, and target-rig requirements.

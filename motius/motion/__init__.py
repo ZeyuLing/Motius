@@ -25,6 +25,13 @@ from .representation import (
     smpl22_joints_to_ardy_core27_joints,
 )
 from .skeleton.canonical import canonicalize_smpl22_joints
+from .fbx import (
+    FBXExportError,
+    FBXExportResult,
+    SMPLAnimation,
+    export_smpl_fbx,
+    retarget_smpl_to_fbx,
+)
 
 __all__ = [
     "BABEL135",
@@ -50,4 +57,9 @@ __all__ = [
     "smpl_to_hml263",
     "smpl_to_humanml263",
     "canonicalize_smpl22_joints",
+    "FBXExportError",
+    "FBXExportResult",
+    "SMPLAnimation",
+    "export_smpl_fbx",
+    "retarget_smpl_to_fbx",
 ]

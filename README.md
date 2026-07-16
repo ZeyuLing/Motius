@@ -188,6 +188,43 @@ python tools/convert_motion.py input.npy output.npy \
   --src hymotion201 --dst ms272
 ```
 
+### FBX Export And Character Retargeting
+
+Motius can export an animated, skinned SMPL FBX or bake the same motion onto an
+existing rigged character FBX. The latter preserves the character mesh,
+materials, hierarchy, and authored skin weights. Canonical SMPL and common
+Mixamo bone names are recognized automatically; custom rigs accept an explicit
+SMPL-22 bone map.
+
+```python
+from motius.motion import (
+    SMPLAnimation,
+    export_smpl_fbx,
+    retarget_smpl_to_fbx,
+)
+
+animation = SMPLAnimation.from_motion135(motion135, betas=betas, fps=30)
+
+export_smpl_fbx(
+    animation,
+    "outputs/fbx/walk_smpl.fbx",
+    model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
+)
+
+retarget_smpl_to_fbx(
+    animation,
+    character_fbx="checkpoints/characters/hero.fbx",
+    output_path="outputs/fbx/hero_walk.fbx",
+    model_path="checkpoints/body_models/smpl/SMPL_NEUTRAL.pkl",
+    root_motion_scale="auto",
+)
+```
+
+The target character must already be rigged and skinned; this API does not
+auto-rig a static mesh. Blender 3.6+ is required as the FBX backend. See the
+[FBX export and character-retargeting guide](docs/motion/fbx.md) for setup,
+raw-SMPL input, CLI usage, bone maps, coordinates, and deformation limits.
+
 ### SMPL Body-Model Setup
 
 `model_path` is a local filesystem path, not a remote URL. SMPL+H parameters
@@ -256,7 +293,7 @@ representation interchange formats.
 | `motius.datasets` | Dataset bases and reusable transform primitives. |
 | `motius.hooks` | Checkpoint, EMA, logging, and learning-rate scheduler hooks. |
 | `motius.evaluation` | Evaluator interfaces plus semantic and physical metric APIs. |
-| `motius.motion` | Representation specs/converters, SMPL-22 FK, and optional SOMA/G1 retargeting. |
+| `motius.motion` | Representation specs/converters, SMPL-22 FK, SOMA/G1 retargeting, and Blender-backed FBX export. |
 | `motius.visualization` | File and TensorBoard visualization bases. |
 | `configs/_base_` | Minimal runtime config templates. |
 | `tools/` | Command-line training entry points. |
