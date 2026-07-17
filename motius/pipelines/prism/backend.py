@@ -85,12 +85,15 @@ class PrismARPipeline(DiffusionPipeline):
             joint_pos_mode = getattr(transformer.config, 'joint_pos_mode', 'sequential')
             print_log(f"[PRISM Pipeline] Loaded transformer with joint_pos_mode='{joint_pos_mode}'")
 
-            if joint_pos_mode == "spectral":
+            if joint_pos_mode in {"spectral", "spectral_unified"}:
                 num_spectral_modes = getattr(transformer.config, 'num_spectral_modes', 4)
                 spectral_scale = getattr(transformer.config, 'spectral_scale', None)
                 print_log(f"  ├─ num_spectral_modes={num_spectral_modes}")
                 print_log(f"  └─ spectral_scale={spectral_scale}")
-                print_log(f"[PRISM Pipeline] Spectral KT-RoPE mode ACTIVE - inference will use kinematic tree embeddings")
+                print_log(
+                    f"[PRISM Pipeline] {joint_pos_mode} KT-RoPE mode ACTIVE - "
+                    "inference will use kinematic tree embeddings"
+                )
             elif joint_pos_mode == "dfs":
                 print_log(f"[PRISM Pipeline] DFS mode ACTIVE - inference will use depth-first-search joint ordering")
             else:

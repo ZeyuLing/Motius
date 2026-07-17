@@ -38,6 +38,32 @@ def _load_model_data(path: Path) -> Mapping[str, object]:
     if path.suffix.lower() in {".pkl", ".pickle"}:
         import pickle
 
+        class _LegacyChumpyArray:
+            """Minimal stand-in for arrays serialized as ``chumpy.ch.Ch``."""
+
+            @property
+            def r(self):
+                return np.asarray(self.x)
+
+            @property
+            def shape(self):
+                return self.r.shape
+
+            def __array__(self, dtype=None):
+                return np.asarray(self.r, dtype=dtype)
+
+            def __getitem__(self, item):
+                return self.r[item]
+
+            def __len__(self):
+                return len(self.r)
+
+        class _SMPLUnpickler(pickle.Unpickler):
+            def find_class(self, module, name):
+                if module == "chumpy.ch" and name == "Ch":
+                    return _LegacyChumpyArray
+                return super().find_class(module, name)
+
         # Legacy SMPL pickle files may unpickle through chumpy, whose last
         # release still imports NumPy aliases removed in NumPy 1.24.
         aliases = {
@@ -56,7 +82,7 @@ def _load_model_data(path: Path) -> Mapping[str, object]:
                 added.append(name)
         try:
             with path.open("rb") as handle:
-                data = pickle.load(handle, encoding="latin1")
+                data = _SMPLUnpickler(handle, encoding="latin1").load()
         finally:
             for name in added:
                 delattr(np, name)

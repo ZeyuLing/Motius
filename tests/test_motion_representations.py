@@ -1,5 +1,7 @@
+import pickle
 import subprocess
 import sys
+import types
 from pathlib import Path
 
 import numpy as np
@@ -37,6 +39,7 @@ from motius.motion.representation.rotation import (
     rotation_6d_to_matrix,
 )
 from motius.motion.skeleton.fk import motion135_to_fk
+from motius.motion.skeleton.body_models import _dense_array, _load_model_data
 from motius.motion.skeleton.names import SMPL22_PARENTS
 from tools.convert_hml263_predictions import _relative_offsets
 
@@ -55,6 +58,30 @@ def test_smpl_loader_accepts_root_or_direct_smpl_directory(tmp_path: Path) -> No
     (direct / "SMPL_NEUTRAL.pkl").touch()
     assert _resolve_smplx_model_root(direct) == direct.parent
     assert _resolve_smplx_model_root(direct.parent) == direct.parent
+
+
+def test_legacy_smpl_pickle_loads_without_chumpy(
+    tmp_path: Path, monkeypatch
+) -> None:
+    chumpy_module = types.ModuleType("chumpy")
+    chumpy_ch_module = types.ModuleType("chumpy.ch")
+    legacy_type = type("Ch", (), {})
+    legacy_type.__module__ = "chumpy.ch"
+    chumpy_ch_module.Ch = legacy_type
+    chumpy_module.ch = chumpy_ch_module
+    monkeypatch.setitem(sys.modules, "chumpy", chumpy_module)
+    monkeypatch.setitem(sys.modules, "chumpy.ch", chumpy_ch_module)
+
+    legacy_array = legacy_type()
+    legacy_array.x = np.arange(6, dtype=np.float32).reshape(2, 3)
+    model_path = tmp_path / "legacy_smpl.pkl"
+    with model_path.open("wb") as handle:
+        pickle.dump({"v_template": legacy_array}, handle)
+
+    monkeypatch.delitem(sys.modules, "chumpy.ch")
+    monkeypatch.delitem(sys.modules, "chumpy")
+    loaded = _load_model_data(model_path)
+    np.testing.assert_array_equal(_dense_array(loaded["v_template"]), legacy_array.x)
 
 
 def test_relative_smpl_offsets_preserve_root_and_parent_differences() -> None:

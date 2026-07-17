@@ -92,6 +92,72 @@ class _SMPLMeshFitter:
         vertices[..., 1] -= float(vertices[..., 1].min())
         return vertices, float(np.asarray(fitted["fit_mpjpe_mm"]).mean())
 
+    def render_parameters(
+        self, path: Path, keep: np.ndarray
+    ) -> tuple[np.ndarray, None]:
+        torch = self.torch
+        with np.load(path, allow_pickle=False) as source:
+            global_orient = np.asarray(source["global_orient"], dtype=np.float32).reshape(-1, 3)
+            body_pose = np.asarray(source["body_pose"], dtype=np.float32).reshape(
+                len(global_orient), -1
+            )
+            transl_key = "transl" if "transl" in source.files else "trans"
+            transl = np.asarray(source[transl_key], dtype=np.float32).reshape(-1, 3)
+            betas = (
+                np.asarray(source["betas"], dtype=np.float32)
+                if "betas" in source.files
+                else np.zeros(10, dtype=np.float32)
+            )
+        if not (len(global_orient) == len(body_pose) == len(transl)):
+            raise ValueError(f"Mismatched SMPL parameter lengths in {path}")
+        if keep[-1] >= len(global_orient):
+            raise ValueError(
+                f"SMPL parameters in {path} have {len(global_orient)} frames, "
+                f"but viewer requested frame {int(keep[-1])}"
+            )
+        selected_betas = (
+            np.repeat(betas.reshape(1, -1)[:, :10], len(keep), axis=0)
+            if betas.ndim == 1
+            else betas[keep, :10]
+        )
+        chunks = []
+        joint_chunks = []
+        with torch.no_grad():
+            for start in range(0, len(keep), 96):
+                indices = keep[start : start + 96]
+                count = len(indices)
+                body69 = np.zeros((count, 69), dtype=np.float32)
+                body69[:, : min(63, body_pose.shape[1])] = body_pose[
+                    indices, :63
+                ]
+                result = self.model(
+                    betas=torch.from_numpy(selected_betas[start : start + count]).to(
+                        self.device
+                    ),
+                    body_pose=torch.from_numpy(body69).to(self.device),
+                    global_orient=torch.from_numpy(global_orient[indices]).to(self.device),
+                    transl=torch.from_numpy(transl[indices]).to(self.device),
+                )
+                chunks.append(result.vertices.detach().cpu().numpy().astype(np.float32))
+                joint_chunks.append(
+                    result.joints[:, :22].detach().cpu().numpy().astype(np.float32)
+                )
+        vertices = np.concatenate(chunks, axis=0)
+        joints = np.concatenate(joint_chunks, axis=0)
+        origin = joints[0, 0, [0, 2]].copy()
+        left = (joints[0, 1] - joints[0, 2]) + (joints[0, 16] - joints[0, 17])
+        left[1] = 0.0
+        norm = float(np.linalg.norm(left))
+        left = left / norm if norm > 1e-8 else np.asarray([1.0, 0.0, 0.0])
+        up = np.asarray([0.0, 1.0, 0.0])
+        forward = np.cross(left, up)
+        basis = np.stack((left, up, forward), axis=-1).astype(np.float32)
+        vertices[..., 0] -= origin[0]
+        vertices[..., 2] -= origin[1]
+        vertices = vertices @ basis
+        vertices[..., 1] -= float(vertices[..., 1].min())
+        return vertices.astype(np.float32), None
+
 
 def _load_joints(path: Path) -> np.ndarray:
     value = np.asarray(np.load(path), dtype=np.float32)
@@ -118,6 +184,17 @@ def parse_args() -> argparse.Namespace:
         default=[],
         metavar="LABEL=DIR",
         help="Prediction to display; repeat for synchronized multi-method comparison.",
+    )
+    parser.add_argument(
+        "--smpl-parameters",
+        action="append",
+        default=[],
+        metavar="LABEL=DIR",
+        help=(
+            "Optional native/fitted SMPL parameter directory for a prediction. "
+            "When supplied, the mesh preserves that method's body pose instead "
+            "of solving position IK from joints66."
+        ),
     )
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--case-ids", nargs="+", default=list(DEFAULT_CASES))
@@ -171,9 +248,33 @@ def _prediction_specs(args: argparse.Namespace) -> list[tuple[str, str, Path]]:
     return result
 
 
+def _smpl_parameter_specs(
+    args: argparse.Namespace, predictions: list[tuple[str, str, Path]]
+) -> dict[str, Path]:
+    prediction_keys = {key for key, _label, _directory in predictions}
+    result: dict[str, Path] = {}
+    for value in args.smpl_parameters:
+        if "=" not in value:
+            raise ValueError(f"--smpl-parameters expects LABEL=DIR, got {value!r}.")
+        label, directory = value.split("=", 1)
+        key = _method_key(label.strip())
+        if key not in prediction_keys:
+            raise ValueError(
+                f"SMPL parameter label {label!r} does not match any --prediction."
+            )
+        path = Path(directory).expanduser().resolve()
+        if not path.is_dir():
+            raise FileNotFoundError(path)
+        if key in result:
+            raise ValueError(f"Duplicate SMPL parameter directory for {label!r}.")
+        result[key] = path
+    return result
+
+
 def main() -> None:
     args = parse_args()
     predictions = _prediction_specs(args)
+    smpl_parameters = _smpl_parameter_specs(args, predictions)
     manifest_path = args.manifest.resolve()
     source = json.loads(manifest_path.read_text())
     cases = {item["case_id"]: item for item in source["cases"]}
@@ -219,7 +320,21 @@ def main() -> None:
         keep = _keyframe_indices(frames, args.mesh_keyframes)
         all_joints = {"gt": reference, **method_motions}
         for key, joints in all_joints.items():
-            vertices, fit_mpjpe_mm = mesh_fitter.fit(joints[:frames], keep)
+            parameter_path = (
+                smpl_parameters[key] / f"{case_id}.npz"
+                if key in smpl_parameters
+                else None
+            )
+            if parameter_path is not None:
+                if not parameter_path.is_file():
+                    raise FileNotFoundError(parameter_path)
+                vertices, fit_mpjpe_mm = mesh_fitter.render_parameters(
+                    parameter_path, keep
+                )
+                mesh_source = "SMPL pose parameters"
+            else:
+                vertices, fit_mpjpe_mm = mesh_fitter.fit(joints[:frames], keep)
+                mesh_source = "position IK from joints66"
             quantized, minimum, scale = _quantize_vertices(vertices)
             mesh_file = assets / f"{case_id}_{key}_smpl_vertices.u16"
             quantized.tofile(mesh_file)
@@ -231,6 +346,7 @@ def main() -> None:
                 "quantization_min": minimum.tolist(),
                 "quantization_scale": scale.tolist(),
                 "fit_mpjpe_mm": fit_mpjpe_mm,
+                "source": mesh_source,
             }
         segments = []
         for index, segment in enumerate(case["segments"]):
@@ -285,7 +401,7 @@ def main() -> None:
             "vertex_count": 6890,
             "faces_file": faces_file.relative_to(args.output_dir).as_posix(),
             "face_count": int(len(mesh_fitter.faces)),
-            "source": "position IK from the canonical SMPL-22 joints used by evaluation",
+            "source": "method SMPL pose when available; otherwise position IK from canonical joints66",
         },
         "episodes": exported,
     }

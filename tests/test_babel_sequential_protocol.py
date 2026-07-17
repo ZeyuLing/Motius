@@ -199,7 +199,10 @@ def test_sequential_audit_starts_on_canonical_frame_with_facing_marker():
         viewer = viewer_path.read_text()
         assert "let playing = false;" in viewer
         assert "new THREE.ArrowHelper" in viewer
-        assert "facingForward.crossVectors(facingRight, yAxis)" in viewer
+        assert "facingForward.crossVectors(facingLeft, yAxis)" in viewer
+        assert "subVectors(leftHip, rightHip)" in viewer
+        assert 'facingLabel.textContent = "Body facing"' in viewer
+        assert "this is not root velocity" in viewer
         assert "const originX = data[0];" in viewer
         assert "data[offset] - originX" in viewer
         assert "data[offset] - rootX" not in viewer
@@ -218,9 +221,11 @@ def test_public_sequential_leaderboard_uses_fixed_canvas_results_and_normalized_
     protocol = (root / "docs" / "evaluation" / "babel_sequential.md").read_text()
 
     assert 'method:"MotionLab"' in page
-    assert 'version:"Epoch 12 · fixed 360 canvas · seed 42"' in page
+    assert 'version:"Epoch 14 · fixed 360 canvas · seed 42"' in page
     assert "Normalized FID" in page
     assert "Normalized Transition FID" in page
     assert "epoch 8" not in page
     assert "checkpoint-epoch_8" not in protocol
     assert "--prediction MotionLab=" in protocol
+    assert "--smpl-parameters MotionLab=" in protocol
+    assert "--smpl-parameters 'PRISM (epoch 14)=" in protocol

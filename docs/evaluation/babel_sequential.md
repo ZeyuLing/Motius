@@ -58,24 +58,23 @@ intervals.
 
 | Method | R@1 | R@2 | R@3 | Normalized FID | MM-Dist | Diversity | Normalized Transition FID | Transition Diversity | Peak Jerk | AUJ Gap |
 | ------ | --: | --: | --: | --: | ------: | --------: | -------------: | -------------------: | --------: | ------: |
-| BABEL GT | 0.3947 | 0.5513 | 0.6327 | 0.0000 | 44.5941 | 57.4816 | 0.0000 | 54.5830 | 56.34 | 0.0000 |
-| FlowMDM | 0.2958 | 0.4217 | 0.5018 | 0.0843 | 46.7698 | 56.5743 | 0.1092 | 54.7209 | 335.67 | 34.4040 |
-| MotionStreamer | 0.2087 | 0.3136 | 0.3955 | 0.1205 | 49.3062 | 56.2576 | 0.1664 | 53.8502 | 206.22 | 76.2889 |
-| MotionLab | 0.1242 | 0.2036 | 0.2647 | 1.3760 | 59.4449 | 27.7897 | 1.4963 | 26.9868 | 1451.40 | 176.6814 |
-| PRISM (epoch 12) | 0.4656 | 0.6448 | 0.7249 | 0.5205 | 41.4004 | 53.0154 | 0.8037 | 47.7878 | 540.00 | 138.7236 |
+| BABEL GT | 0.3614 | 0.5284 | 0.6317 | 0.0000 | 47.8378 | 49.2886 | 0.0000 | 43.7889 | 56.34 | 0.0000 |
+| FlowMDM | 0.2504 | 0.3925 | 0.4818 | 0.0467 | 50.8503 | 50.3880 | 0.0555 | 44.9407 | 335.67 | 34.4040 |
+| MotionStreamer | 0.2130 | 0.3303 | 0.4175 | 0.0610 | 52.0339 | 46.5873 | 0.0702 | 40.8189 | 206.22 | 76.2889 |
+| MotionLab | 0.2580 | 0.3793 | 0.4536 | 0.2011 | 51.3873 | 41.6184 | 0.2499 | 34.3793 | 204.67 | 25.7259 |
+| PRISM (epoch 14) | 0.2453 | 0.3716 | 0.4555 | 0.0574 | 51.8148 | 50.2988 | 0.0732 | 47.2516 | 392.99 | 106.4423 |
 
 This is a single deterministic seed-42 generation and one retrieval repeat.
 R-Precision uses 32-sample recall batches, covering 7,264 of the 7,285 paired
 segments, and accepts every same-action candidate as a positive. Distribution
 metrics use the full set. `--chunk-size 32` controls the recall candidate set;
-`--batch-size 32` controls only evaluator encoding throughput in this run.
-PRISM uses `checkpoint-epoch_12` and fixes every internal model call to a
+`--batch-size` controls only evaluator encoding throughput and does not alter
+the metric. PRISM uses `checkpoint-epoch_14` and fixes every internal model call to a
 360-frame canvas; all 1,295 outputs passed exact-length and fixed-canvas
 validation. MotionLab uses its native five-frame autoregressive context and
-converts the resulting MotionStreamer-272 episodes through the same canonical
-SMPL-22 joint route. Both rows use all 1,295 episodes. PRISM improves R@2,
-R@3, MM-Dist, Peak Jerk, and AUJ gap over the superseded epoch-8 run, while
-R@1 and normalized FID remain broadly unchanged.
+emits HML263. Its SMPL-22 evaluation input is recovered from the HML263 position
+channels and fitted to neutral SMPL; HML263 rotations are not passed directly
+into SMPL FK. Both rows use all 1,295 episodes.
 
 Open the [Three.js sequence audit](../leaderboards/hf_space_babel_sequential/audit/index.html)
 to compare BABEL GT, FlowMDM, MotionStreamer, PRISM, and MotionLab frame by frame. Every
@@ -139,16 +138,23 @@ python tools/build_babel_sequential_viewer.py \
   --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest_actiongroups_v3.json \
   --predictions-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/joints66 \
   --prediction MotionStreamer=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionstreamer_latest_seed42/joints66 \
-  --prediction MotionLab=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v3/joints66 \
-  --prediction 'PRISM (epoch 12)=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/prism_epoch12_fixed360_actiongroups_v3/joints66' \
+  --prediction MotionLab=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v4_smplfit/joints66 \
+  --smpl-parameters MotionLab=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v4_smplfit/smpl \
+  --prediction 'PRISM (epoch 14)=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/prism_epoch14_actiongroups_v4/joints66' \
+  --smpl-parameters 'PRISM (epoch 14)=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/prism_epoch14_actiongroups_v4/smplx' \
   --retrieval-audit outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/retrieval_audit.json \
   --output-dir outputs/visualization/babel_sequential_audit
 ```
 
-The audit viewer fits the exact canonical SMPL-22 joints used by evaluation to
-a neutral SMPL body and renders synchronized SMPL meshes in Three.js. Each
-method retains its own global XZ trajectory; the floor, trajectory trace, and
-first-frame facing marker make canonicalization and displacement errors visible.
+The audit viewer renders native or fitted SMPL parameters when a method exposes
+them; otherwise it fits the exact canonical SMPL-22 joints used by evaluation
+to a neutral SMPL body. This avoids inventing unobservable head and terminal
+joint twists from positions alone. Each method retains its own global XZ
+trajectory; the floor, trajectory trace, and per-frame body-facing arrow make
+canonicalization and displacement errors visible.
+The cyan `Body facing` arrow is estimated from the current hips and shoulders; it is
+not the root-velocity direction. It aligns with forward locomotion, but can
+legitimately oppose backward motion or differ during sideways motion.
 
 Both generation and evaluation accept deterministic sharding for cluster runs.
 Generated artifacts and metrics must remain under `outputs/`.
@@ -166,20 +172,25 @@ python tools/generate_babel_sequential_motionstreamer.py \
   --device cuda --seed 42
 ```
 
-Methods that emit MotionStreamer-272 features, including MotionLab after its
-native sequential inference, use the same public materialization step:
+MotionLab emits HumanML3D-263 features. Materialize them through the dedicated
+position-driven SMPL fitting route:
 
 ```bash
-python tools/materialize_motion272_joints.py \
+python tools/materialize_hml263_smpl_joints.py \
   --manifest outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/manifest_actiongroups_v3.json \
-  --source-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v3/motion272 \
-  --output-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v3/joints66 \
-  --skip-missing
+  --hml263-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v3/motion272/_hml263 \
+  --output-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v4_smplfit \
+  --smpl-model-dir checkpoints/body_models/smpl \
+  --device cuda --refine-iters 80 --rotation-init hml263_end_effectors \
+  --max-fit-mpjpe-mm 50
 ```
 
-This conversion uses the manifest's SMPL-22 bone offsets, canonicalizes the
-complete episode once, and verifies the exact official frame count before
-writing evaluator input.
+This conversion resamples 20-fps HML263 to the manifest's 30-fps frame count,
+fits neutral SMPL against recovered joint positions, writes the fitted SMPL
+parameters alongside joints66, canonicalizes the complete episode once, and
+records per-case fitting error. The measured mean fit MPJPE over all 1,295
+episodes is 16.4 mm. A case whose mean fitting error exceeds 50 mm is rejected
+before any SMPL parameters or joints are published.
 
 ## Submission Contract
 

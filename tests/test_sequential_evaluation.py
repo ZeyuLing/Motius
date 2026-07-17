@@ -206,12 +206,12 @@ def test_tmr_semantics_recanonicalize_each_subclip_and_preserve_transition_gap(
     for clip in semantic_clips:
         shaped = clip.reshape(-1, 22, 3)
         np.testing.assert_allclose(shaped[0, 0, (0, 2)], 0.0, atol=1e-6)
-        right = (shaped[0, 2] - shaped[0, 1]) + (
-            shaped[0, 17] - shaped[0, 16]
+        left = (shaped[0, 1] - shaped[0, 2]) + (
+            shaped[0, 16] - shaped[0, 17]
         )
-        right[1] = 0.0
-        right /= np.linalg.norm(right)
-        forward = np.cross(right, np.asarray([0.0, 1.0, 0.0]))
+        left[1] = 0.0
+        left /= np.linalg.norm(left)
+        forward = np.cross(left, np.asarray([0.0, 1.0, 0.0]))
         np.testing.assert_allclose(forward, [0.0, 0.0, 1.0], atol=1e-6)
 
     predicted_transition_windows = evaluator.encoded_motions[-1]

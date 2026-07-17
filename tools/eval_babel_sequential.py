@@ -48,6 +48,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--fps", type=float, default=30.0)
     parser.add_argument("--transition-frames", type=int, default=30)
+    parser.add_argument(
+        "--io-workers",
+        type=int,
+        default=8,
+        help="Bounded worker count for loading case files from shared storage.",
+    )
     parser.add_argument("--local-files-only", action="store_true")
     return parser.parse_args()
 
@@ -103,6 +109,7 @@ def main() -> None:
         chunk_size=args.chunk_size,
         n_repeats=args.n_repeats,
         seed=args.seed,
+        io_workers=args.io_workers,
         protocol=str(manifest["protocol"]),
     )
     summary["method"] = args.method

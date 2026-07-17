@@ -27,26 +27,30 @@ into this leaderboard.
 
 | Method | R@1 | R@2 | R@3 | Normalized FID | MM-Dist | Normalized Transition FID | AUJ Gap |
 | ------ | --: | --: | --: | --: | ------: | -------------: | ------: |
-| BABEL GT | 0.3947 | 0.5513 | 0.6327 | 0.0000 | 44.5941 | 0.0000 | 0.0000 |
-| FlowMDM | 0.2958 | 0.4217 | 0.5018 | 0.0843 | 46.7698 | 0.1092 | 34.4040 |
-| MotionStreamer | 0.2087 | 0.3136 | 0.3955 | 0.1205 | 49.3062 | 0.1664 | 76.2889 |
-| MotionLab | 0.1242 | 0.2036 | 0.2647 | 1.3760 | 59.4449 | 1.4963 | 176.6814 |
-| PRISM (epoch 12) | 0.4656 | 0.6448 | 0.7249 | 0.5205 | 41.4004 | 0.8037 | 138.7236 |
+| BABEL GT | 0.3614 | 0.5284 | 0.6317 | 0.0000 | 47.8378 | 0.0000 | 0.0000 |
+| FlowMDM | 0.2504 | 0.3925 | 0.4818 | 0.0467 | 50.8503 | 0.0555 | 34.4040 |
+| MotionStreamer | 0.2130 | 0.3303 | 0.4175 | 0.0610 | 52.0339 | 0.0702 | 76.2889 |
+| MotionLab | 0.2580 | 0.3793 | 0.4536 | 0.2011 | 51.3873 | 0.2499 | 25.7259 |
+| PRISM (epoch 14) | 0.2453 | 0.3716 | 0.4555 | 0.0574 | 51.8148 | 0.0732 | 106.4423 |
 
 R-Precision uses official BABEL `act_cat` action-group multi-positive recall
 batches of 32 (7,264 paired segments). The 7,285 intervals form 1,738 action
 groups; synonymous labels are retained and never treated as false negatives.
-Distribution metrics use all 7,285 segments. The encoder forward batch is 32
-for the measured run and is independent of the recall candidate batch. GT is
+Distribution metrics use all 7,285 segments. Encoder forward batch size is a
+throughput setting independent of the 32-sample recall candidate batch. GT is
 excluded from ranking.
 
-PRISM uses `checkpoint-epoch_12` with a fixed 360-frame canvas for every model
+PRISM uses `checkpoint-epoch_14` with a fixed 360-frame canvas for every model
 call; the complete 1,295-episode run contains no legacy 365-frame calls.
 MotionLab uses its official five-frame autoregressive context. Both rows are
 converted to the same canonical SMPL-22 joints before evaluation.
 
 The Space also includes a synchronized Three.js neutral-SMPL-mesh comparison
-of BABEL GT, FlowMDM, MotionStreamer, PRISM, and MotionLab. Every viewport preserves the
-method's global XZ trajectory and exposes its first-frame facing direction. For
+of BABEL GT, FlowMDM, MotionStreamer, PRISM, and MotionLab. PRISM and MotionLab
+use their native or fitted SMPL parameters so the viewer does not invent head
+or terminal-joint twists from positions alone. Every viewport preserves the
+method's global XZ trajectory and exposes its current body-facing direction,
+estimated from the hips and shoulders. The cyan arrow is not root velocity, so
+backward and sideways actions need not align with it. For
 every displayed subclip it preserves the actual GT/FlowMDM Motion-to-Text and
 Text-to-Motion Top-3 rankings from the same seed-0, 32-candidate recall batches.

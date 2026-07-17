@@ -15,10 +15,11 @@ def canonicalize_smpl22_joints(
 ) -> np.ndarray:
     """Place the first pelvis at XZ origin and make the body face ``+Z``.
 
-    The first-frame left-to-right hip/shoulder axis defines canonical ``+X``;
-    the corresponding forward axis is ``cross(+X, +Y)``. The transform is one
-    rigid yaw and translation per clip, so velocity, acceleration, and jerk
-    magnitudes are preserved.
+    The first-frame right-to-left hip/shoulder axis defines canonical ``+X``.
+    SMPL joint indices 1/16 are the left hip/shoulder and 2/17 are the right
+    hip/shoulder, so the anatomical forward axis is ``cross(+X, +Y) = +Z``.
+    The transform is one rigid yaw and translation per clip, so velocity,
+    acceleration, and jerk magnitudes are preserved.
     """
 
     value = np.asarray(joints, dtype=np.float64)
@@ -33,16 +34,16 @@ def canonicalize_smpl22_joints(
     output = value.copy()
     output[..., 0] -= output[0, 0, 0]
     output[..., 2] -= output[0, 0, 2]
-    right = (output[0, 2] - output[0, 1]) + (output[0, 17] - output[0, 16])
-    right[1] = 0.0
-    norm = float(np.linalg.norm(right))
+    left = (output[0, 1] - output[0, 2]) + (output[0, 16] - output[0, 17])
+    left[1] = 0.0
+    norm = float(np.linalg.norm(left))
     if norm <= eps:
-        right = np.asarray([1.0, 0.0, 0.0])
+        left = np.asarray([1.0, 0.0, 0.0])
     else:
-        right /= norm
+        left /= norm
     up = np.asarray([0.0, 1.0, 0.0])
-    forward = np.cross(right, up)
-    basis = np.stack((right, up, forward), axis=-1)
+    forward = np.cross(left, up)
+    basis = np.stack((left, up, forward), axis=-1)
     output = output @ basis
     if floor_align:
         output[..., 1] -= float(output[:, SMPL22_FOOT_JOINTS, 1].min())

@@ -8,6 +8,7 @@ transition metrics in this module remain checkpoint-free.
 from __future__ import annotations
 
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Mapping, Sequence
@@ -249,12 +250,15 @@ def evaluate_sequential_cases(
     chunk_size: int = 32,
     n_repeats: int = 1,
     seed: int = 0,
+    io_workers: int = 1,
     protocol: str = "babel-sequential-joints66-v1",
 ) -> dict[str, object]:
     """Evaluate captioned subsequences and their transition neighborhoods."""
 
     if not cases:
         raise ValueError("At least one sequential case is required.")
+    if io_workers < 1:
+        raise ValueError("io_workers must be at least 1.")
     captions: list[str] = []
     paired_reference_segments: list[np.ndarray] = []
     predicted_segments: list[np.ndarray] = []
@@ -262,29 +266,39 @@ def evaluate_sequential_cases(
     predicted_transitions: list[np.ndarray] = []
     action_group_ids: list[str | None] = []
 
-    for case in cases:
+    def load_case(case: SequentialCase) -> tuple[np.ndarray | None, np.ndarray]:
         reference = load_joints66(case.reference_path) if case.reference_path else None
-        predicted = load_joints66(case.prediction_path)
-        required = max(segment.end_frame for segment in case.segments)
-        if len(predicted) < required or (reference is not None and len(reference) < required):
-            raise ValueError(
-                f"Case {case.case_id!r} requires {required} frames, got "
-                f"reference={len(reference) if reference is not None else 'none'} "
-                f"and prediction={len(predicted)}."
-            )
-        for segment in case.segments:
-            region = slice(segment.start_frame, segment.end_frame)
-            captions.append(segment.caption)
-            action_group_ids.append(segment.action_group_id)
-            if reference is not None:
-                paired_reference_segments.append(reference[region])
-            predicted_segments.append(canonicalize_smpl22_joints(predicted[region]))
-        for segment in case.segments[:-1]:
-            region = _transition_slice(segment.end_frame, required, transition_frames)
-            if region is not None:
+        return reference, load_joints66(case.prediction_path)
+
+    with ThreadPoolExecutor(max_workers=io_workers) as executor:
+        loaded_cases = executor.map(load_case, cases)
+        for case, (reference, predicted) in zip(cases, loaded_cases):
+            required = max(segment.end_frame for segment in case.segments)
+            if len(predicted) < required or (
+                reference is not None and len(reference) < required
+            ):
+                raise ValueError(
+                    f"Case {case.case_id!r} requires {required} frames, got "
+                    f"reference={len(reference) if reference is not None else 'none'} "
+                    f"and prediction={len(predicted)}."
+                )
+            for segment in case.segments:
+                region = slice(segment.start_frame, segment.end_frame)
+                captions.append(segment.caption)
+                action_group_ids.append(segment.action_group_id)
                 if reference is not None:
-                    paired_reference_transitions.append(reference[region])
-                predicted_transitions.append(canonicalize_smpl22_joints(predicted[region]))
+                    paired_reference_segments.append(reference[region])
+                predicted_segments.append(canonicalize_smpl22_joints(predicted[region]))
+            for segment in case.segments[:-1]:
+                region = _transition_slice(
+                    segment.end_frame, required, transition_frames
+                )
+                if region is not None:
+                    if reference is not None:
+                        paired_reference_transitions.append(reference[region])
+                    predicted_transitions.append(
+                        canonicalize_smpl22_joints(predicted[region])
+                    )
 
     if len(captions) < 3:
         raise ValueError("Sequential semantic evaluation requires at least three segments.")

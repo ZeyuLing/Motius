@@ -74,6 +74,18 @@
       text-transform: uppercase;
       pointer-events: none;
     }
+    .facing-label {
+      position: absolute;
+      z-index: 2;
+      right: 14px;
+      bottom: 12px;
+      color: #137f72;
+      font-size: 11px;
+      font-weight: 720;
+      text-transform: uppercase;
+      cursor: help;
+      pointer-events: auto;
+    }
     canvas { display: block; width: 100%; height: 100%; }
     .transport {
       display: grid;
@@ -315,7 +327,7 @@
     }
 
     const yAxis = new THREE.Vector3(0, 1, 0);
-    const facingRight = new THREE.Vector3();
+    const facingLeft = new THREE.Vector3();
     const facingAcrossShoulders = new THREE.Vector3();
     const facingForward = new THREE.Vector3();
     const facingOrigin = new THREE.Vector3();
@@ -335,13 +347,13 @@
       const rightHip = joint(2, new THREE.Vector3());
       const leftShoulder = joint(16, new THREE.Vector3());
       const rightShoulder = joint(17, new THREE.Vector3());
-      facingRight
-        .subVectors(rightHip, leftHip)
-        .add(facingAcrossShoulders.subVectors(rightShoulder, leftShoulder));
-      facingRight.y = 0;
-      if (facingRight.lengthSq() < 1e-10) facingRight.set(1, 0, 0);
-      else facingRight.normalize();
-      facingForward.crossVectors(facingRight, yAxis).normalize();
+      facingLeft
+        .subVectors(leftHip, rightHip)
+        .add(facingAcrossShoulders.subVectors(leftShoulder, rightShoulder));
+      facingLeft.y = 0;
+      if (facingLeft.lengthSq() < 1e-10) facingLeft.set(1, 0, 0);
+      else facingLeft.normalize();
+      facingForward.crossVectors(facingLeft, yAxis).normalize();
       joint(0, facingOrigin);
       facingOrigin.y = .025;
       env.facingArrow.position.copy(facingOrigin);
@@ -357,6 +369,11 @@
       label.style.color = method.accent;
       label.textContent = method.label;
       viewport.appendChild(label);
+      const facingLabel = document.createElement("div");
+      facingLabel.className = "facing-label";
+      facingLabel.textContent = "Body facing";
+      facingLabel.title = "Current body-facing direction estimated from the hips and shoulders; this is not root velocity.";
+      viewport.appendChild(facingLabel);
       stageRoot.appendChild(viewport);
       const env = makeScene(viewport);
       return [method.key, { method, env, mesh: makeBodyMesh(env, method.accent) }];
@@ -406,21 +423,30 @@
         minZ = Math.min(minZ, z);
         maxZ = Math.max(maxZ, z);
       }
-      const centerX = (minX + maxX) * .5;
-      const centerZ = (minZ + maxZ) * .5;
       const span = Math.max(maxX - minX, maxZ - minZ, 3.2);
-      const distance = Math.max(6.5, span * 1.8);
-      env.controls.target.set(centerX, .9, centerZ);
-      env.camera.position.set(
-        centerX + distance * .46,
-        Math.max(2.4, distance * .34),
-        centerZ + distance * .82
-      );
+      env.controls.target.set(0, .9, 0);
+      env.camera.position.set(3.2, 2.45, 5.6);
+      env.followRoot = new THREE.Vector2(0, 0);
       const floorSize = Math.max(14, span * 1.45);
       const floorScale = floorSize / 14;
       env.floor.scale.set(floorScale, floorScale, 1);
       env.grid.scale.set(floorScale, 1, floorScale);
       env.controls.update();
+    }
+
+    function updateFollowCamera(env, data, frame) {
+      const base = frame * 66;
+      const rootX = data[base] - data[0];
+      const rootZ = data[base + 2] - data[2];
+      const previous = env.followRoot || new THREE.Vector2(0, 0);
+      const dx = rootX - previous.x;
+      const dz = rootZ - previous.y;
+      env.camera.position.x += dx;
+      env.camera.position.z += dz;
+      env.controls.target.x += dx;
+      env.controls.target.z += dz;
+      previous.set(rootX, rootZ);
+      env.followRoot = previous;
     }
 
     let episode;
@@ -497,6 +523,7 @@
       frame = Math.max(0, Math.min(episode.frames - 1, Math.round(value)));
       scrubber.value = String(frame);
       methodViews.forEach((view, key) => {
+        updateFollowCamera(view.env, motionData.get(key), frame);
         updateBodyMesh(view, meshData.get(key), frame);
         updateFacingArrow(view.env, motionData.get(key), frame);
       });
