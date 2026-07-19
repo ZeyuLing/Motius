@@ -144,6 +144,7 @@
     .protocol div { padding: 16px; background: var(--paper); }
     .protocol dt { color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; }
     .protocol dd { margin: 6px 0 0; line-height: 1.5; }
+    .explorer-frame { width: 100%; height: min(790px, 88vh); min-height: 640px; border: 1px solid var(--line); border-radius: 8px; background: var(--soft); }
     footer { padding: 22px 0 34px; color: var(--muted); font-size: 12px; }
     footer a { color: var(--green); }
     @media (max-width: 900px) {
@@ -171,9 +172,10 @@
   <div class="shell">
     <nav class="leaderboard-nav" aria-label="Motius leaderboards">
       <span class="nav-label">Leaderboards</span>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard">T2M HumanML3D</a>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard">Temporal Condition</a>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard" aria-current="page">BABEL Sequential</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard" target="_blank" rel="noopener noreferrer">T2M HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard" target="_blank" rel="noopener noreferrer">M2T HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard" target="_blank" rel="noopener noreferrer">Temporal Condition</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard" target="_blank" rel="noopener noreferrer" aria-current="page">BABEL Sequential</a>
     </nav>
     <header>
       <div class="title-row">
@@ -183,7 +185,7 @@
         </div>
         <div class="header-actions">
           <span class="status" id="status">Normalized uTMR FID</span>
-          <a class="audit-link" href="audit/index.html">Inspect all motions</a>
+          <a class="audit-link" href="#case-explorer">Compare all 1,295 episodes</a>
         </div>
       </div>
       <div class="badges">
@@ -213,6 +215,11 @@
         <article class="chart-panel"><h3>Ranked Values</h3><p class="chart-note" id="bar-note"></p><div class="canvas-wrap"><canvas id="bar-chart"></canvas></div></article>
         <article class="chart-panel"><h3>Normalized Profile</h3><p class="chart-note">100 is the best generated-method value on each axis.</p><div class="canvas-wrap"><canvas id="radar-chart"></canvas></div></article>
       </div>
+    </section>
+
+    <section id="case-explorer">
+      <div class="section-head"><div><h2>All-Case Comparison</h2><p class="caption">Search every processed validation episode, switch between all measured methods, and inspect the exact caption active at each frame.</p></div></div>
+      <iframe class="explorer-frame" src="cases/index.html" title="BABEL sequential all-case comparison" loading="lazy"></iframe>
     </section>
 
     <section>
@@ -249,7 +256,7 @@
       {method:"FlowMDM", version:"Official checkpoint · seed 42 · action groups v3", samples:7285, r1:0.2504, r2:0.3925, r3:0.4818, fid:0.0467, mmDist:50.8503, diversity:50.3880, transitionFid:0.0555, transitionDiversity:44.9407, peakJerk:335.6733, aujGap:34.4040},
       {method:"MotionStreamer", version:"Official checkpoint · seed 42 · action groups v3", samples:7285, r1:0.2130, r2:0.3303, r3:0.4175, fid:0.0610, mmDist:52.0339, diversity:46.5873, transitionFid:0.0702, transitionDiversity:40.8189, peakJerk:206.2215, aujGap:76.2889},
       {method:"MotionLab", version:"Official checkpoint · context 5 · seed 42", samples:7285, r1:0.2580, r2:0.3793, r3:0.4536, fid:0.2011, mmDist:51.3873, diversity:41.6184, transitionFid:0.2499, transitionDiversity:34.3793, peakJerk:204.6691, aujGap:25.7259},
-      {method:"PRISM", version:"Epoch 14 · fixed 360 canvas · seed 42", samples:7285, r1:0.2453, r2:0.3716, r3:0.4555, fid:0.0574, mmDist:51.8148, diversity:50.2988, transitionFid:0.0732, transitionDiversity:47.2516, peakJerk:392.9879, aujGap:106.4423}
+      {method:"PRISM", version:"Epoch 18 · CFG 1.5 · AR9 · seed 42", samples:7285, r1:0.1933, r2:0.3106, r3:0.3908, fid:0.0680, mmDist:53.5178, diversity:48.4755, transitionFid:0.0645, transitionDiversity:44.3111, peakJerk:249.7794, aujGap:62.3776}
     ]);
     const groups = {
       semantic: [

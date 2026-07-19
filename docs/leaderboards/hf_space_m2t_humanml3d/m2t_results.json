@@ -1,0 +1,199 @@
+{
+  "benchmark": {
+    "name": "M2T HumanML3D",
+    "protocol": "humanml3d_tm2t_v2",
+    "split": "official test",
+    "num_samples": 4400,
+    "num_full_motions": 3969,
+    "num_temporal_subclips": 431,
+    "reference_count": 3,
+    "semantic_chunk_size": 32,
+    "semantic_repeats": 1,
+    "updated_at": "2026-07-19",
+    "status": "complete"
+  },
+  "methods": [
+    {
+      "id": "tm2t",
+      "name": "TM2T",
+      "kind": "method",
+      "status": "measured",
+      "paper": "https://arxiv.org/abs/2207.01696",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-TM2T-HumanML3D",
+      "metrics": {
+        "bleu1": 0.610541,
+        "bleu4": 0.221345,
+        "rougeL": 0.491068,
+        "cider": 0.725252,
+        "bertF1": 0.372068,
+        "bertRaw": 0.894021,
+        "r1": 0.51802,
+        "r2": 0.717838,
+        "r3": 0.807938,
+        "matching": 2.958356
+      },
+      "rawReferenceMetrics": {
+        "bleu1": 0.491238,
+        "bleu4": 0.075974,
+        "rougeL": 0.380794,
+        "cider": 0.171853,
+        "bertF1": 0.321457,
+        "bertRaw": 0.885479
+      }
+    },
+    {
+      "id": "motiongpt",
+      "name": "MotionGPT",
+      "kind": "method",
+      "status": "measured",
+      "paper": "https://arxiv.org/abs/2306.14795",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-MotionGPT-HumanML3D",
+      "metrics": {
+        "bleu1": 0.397138,
+        "bleu4": 0.046039,
+        "rougeL": 0.336467,
+        "cider": 0.078166,
+        "bertF1": 0.319308,
+        "bertRaw": 0.885117,
+        "r1": 0.508668,
+        "r2": 0.687956,
+        "r3": 0.7776,
+        "matching": 3.11213
+      },
+      "rawReferenceMetrics": {
+        "bleu1": 0.460494,
+        "bleu4": 0.121049,
+        "rougeL": 0.384904,
+        "cider": 0.34093,
+        "bertF1": 0.33882,
+        "bertRaw": 0.888410
+      }
+    },
+    {
+      "id": "motiongpt3",
+      "name": "MotionGPT3",
+      "kind": "method",
+      "status": "measured",
+      "paper": "https://arxiv.org/abs/2506.24086",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-MotionGPT3-HumanML3D",
+      "metrics": {
+        "bleu1": 0.463456,
+        "bleu4": 0.065093,
+        "rougeL": 0.367182,
+        "cider": 0.106294,
+        "bertF1": 0.300697,
+        "bertRaw": 0.881976,
+        "r1": 0.533303,
+        "r2": 0.717838,
+        "r3": 0.804288,
+        "matching": 2.853271
+      },
+      "rawReferenceMetrics": {
+        "bleu1": 0.538316,
+        "bleu4": 0.160503,
+        "rougeL": 0.416454,
+        "cider": 0.407711,
+        "bertF1": 0.34252,
+        "bertRaw": 0.889034
+      }
+    },
+    {
+      "id": "vermo",
+      "name": "VerMo",
+      "kind": "method",
+      "status": "measured",
+      "paper": null,
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-VerMo-HumanML3D",
+      "metrics": {
+        "bleu1": 0.450089,
+        "bleu4": 0.057937,
+        "rougeL": 0.370287,
+        "cider": 0.094762,
+        "bertF1": 0.334982,
+        "bertRaw": 0.887762,
+        "r1": 0.505474,
+        "r2": 0.702099,
+        "r3": 0.797217,
+        "matching": 2.941853
+      },
+      "rawReferenceMetrics": {
+        "bleu1": 0.525433,
+        "bleu4": 0.16089,
+        "rougeL": 0.422328,
+        "cider": 0.400626,
+        "bertF1": 0.374776,
+        "bertRaw": 0.894478
+      }
+    },
+    {
+      "id": "gt",
+      "name": "GT captions",
+      "kind": "reference",
+      "status": "measured",
+      "paper": null,
+      "checkpoint": null,
+      "metrics": {
+        "bleu1": 0.721565,
+        "bleu4": 0.407056,
+        "rougeL": 0.711339,
+        "cider": 1.120938,
+        "bertF1": 0.775591,
+        "bertRaw": 0.962126,
+        "r1": 0.506843,
+        "r2": 0.706432,
+        "r3": 0.80406,
+        "matching": 2.978443
+      },
+      "rawReferenceMetrics": {
+        "bleu1": 1.0,
+        "bleu4": 1.0,
+        "rougeL": 1.0,
+        "cider": 4.516524,
+        "bertF1": 1.0,
+        "bertRaw": 1.0
+      }
+    }
+  ],
+  "qualitative": [
+    {
+      "sample_id": "000000",
+      "reference": "a man kicks something or someone with his left leg.",
+      "outputs": {
+        "TM2T": "a person kick something with their left foot",
+        "MotionGPT": "a person kicks with his left hand.",
+        "MotionGPT3": "a person kicks with left leg.",
+        "VerMo": "a person kicks with their left leg."
+      }
+    },
+    {
+      "sample_id": "000019",
+      "reference": "person jogs around to the left and right",
+      "outputs": {
+        "TM2T": "a person jog in place then jog to the right then jog to the left",
+        "MotionGPT": "a person jogs to the right and then to the left",
+        "MotionGPT3": "a person runs to the right, then back to where they started.",
+        "VerMo": "a person jogs in a half a circle"
+      }
+    },
+    {
+      "sample_id": "001840",
+      "reference": "someone execures a roundhouse kick with their left foot.",
+      "outputs": {
+        "TM2T": "a person kick with their right foot",
+        "MotionGPT": "a man hilds both hands up in a defensive stance. he kicks with his left leg in an upward motion and then goes back to a defensive position",
+        "MotionGPT3": "a person in a defensive stance does a kick with his left leg.",
+        "VerMo": "a person kicks with their left leg."
+      }
+    },
+    {
+      "sample_id": "004545",
+      "reference": "a person jumping while rasing both hands, and move apart legs",
+      "outputs": {
+        "TM2T": "a person is do jump jack",
+        "MotionGPT": "a person doing jumping jacks.",
+        "MotionGPT3": "a person performs jumping jacks.",
+        "VerMo": "a person does jumping jacks."
+      }
+    }
+  ]
+}

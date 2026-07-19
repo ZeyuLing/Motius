@@ -32,6 +32,10 @@
       box-sizing: border-box;
     }
 
+    [hidden] {
+      display: none !important;
+    }
+
     body {
       margin: 0;
       background: var(--canvas);
@@ -444,6 +448,39 @@
       background: var(--paper);
     }
 
+    .table-pair {
+      display: grid;
+      gap: 14px;
+    }
+
+    .table-block {
+      min-width: 0;
+      background: var(--paper);
+    }
+
+    .table-heading {
+      display: flex;
+      min-height: 52px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 11px 14px;
+      border: 1px solid var(--line);
+      border-bottom: 0;
+      background: var(--paper);
+    }
+
+    .table-heading h3 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .table-heading span {
+      color: var(--muted);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+    }
+
     table {
       width: 100%;
       min-width: 1180px;
@@ -568,6 +605,23 @@
 
     .result-meta p {
       margin: 0;
+    }
+
+    .case-explorer {
+      margin: 18px 0;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+    }
+
+    .case-explorer iframe {
+      width: 100%;
+      height: min(760px, 78vh);
+      min-height: 580px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
     }
 
     .protocol {
@@ -726,9 +780,10 @@
   <main class="page">
     <nav class="leaderboard-nav" aria-label="Motius leaderboards">
       <span class="nav-label">Leaderboards</span>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard">T2M HumanML3D</a>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard" aria-current="page">Temporal Condition</a>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard">BABEL Sequential</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard" target="_blank" rel="noopener noreferrer">T2M HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard" target="_blank" rel="noopener noreferrer">M2T HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard" target="_blank" rel="noopener noreferrer" aria-current="page">Temporal Condition</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard" target="_blank" rel="noopener noreferrer">BABEL Sequential</a>
     </nav>
 
     <header>
@@ -809,13 +864,60 @@
       </div>
     </section>
 
+    <section class="case-explorer" id="case-explorer" aria-labelledby="case-explorer-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="case-explorer-title">All-case motion comparison</h2>
+          <p class="chart-note">All 4,012 official HumanML3D cases; the explorer follows the selected Temporal Control setting.</p>
+        </div>
+        <div class="field">
+          <label for="case-explorer-setting">Displayed setting</label>
+          <select id="case-explorer-setting">
+            <option value="start_1f">Prediction · first frame</option>
+            <option value="pre20">Prediction · first 20%</option>
+            <option value="pre20_uncond">Prediction · first 20% · no text</option>
+            <option value="both_1f">MIB · first and last frame</option>
+            <option value="mid80">MIB · middle 80%</option>
+            <option value="mid80_uncond">MIB · middle 80% · no text</option>
+          </select>
+        </div>
+      </div>
+      <iframe id="case-explorer-frame" src="cases/start_1f/index.html" title="Temporal Condition all-case motion comparison" loading="lazy"></iframe>
+    </section>
+
     <section class="controls" aria-label="table controls">
       <div class="tabs" id="group-tabs" role="tablist"></div>
       <input class="search" id="search" type="search" placeholder="Filter method or setting" aria-label="Filter results">
     </section>
 
     <section aria-label="Temporal Condition results">
-      <div class="table-shell">
+      <div id="control-table-pair" class="table-pair" hidden>
+        <section class="table-block" aria-labelledby="text-table-title">
+          <div class="table-heading">
+            <h3 id="text-table-title">Text-conditioned</h3>
+            <span>Motion constraints + caption</span>
+          </div>
+          <div class="table-shell">
+            <table data-table="control-text">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="table-block" aria-labelledby="motion-table-title">
+          <div class="table-heading">
+            <h3 id="motion-table-title">Motion-only</h3>
+            <span>Motion constraints, no caption</span>
+          </div>
+          <div class="table-shell">
+            <table data-table="control-motion">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+      <div id="single-table-shell" class="table-shell">
         <table data-table="temporal">
           <thead></thead>
           <tbody></tbody>

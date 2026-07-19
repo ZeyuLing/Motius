@@ -562,6 +562,22 @@
       height: 340px;
     }
 
+    .case-explorer {
+      margin: 24px 0 20px;
+      padding: 20px 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .case-explorer iframe {
+      width: 100%;
+      height: min(760px, 78vh);
+      min-height: 580px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
     @media (max-width: 880px) {
       .page {
         width: min(100vw - 20px, 1440px);
@@ -627,9 +643,10 @@
   <main class="page">
     <nav class="leaderboard-nav" aria-label="Motius leaderboards">
       <span class="nav-label">Leaderboards</span>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard" aria-current="page">T2M HumanML3D</a>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard">Temporal Condition</a>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard">BABEL Sequential</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard" target="_blank" rel="noopener noreferrer" aria-current="page">T2M HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard" target="_blank" rel="noopener noreferrer">M2T HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard" target="_blank" rel="noopener noreferrer">Temporal Condition</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard" target="_blank" rel="noopener noreferrer">BABEL Sequential</a>
     </nav>
     <section class="topbar" aria-labelledby="title">
       <div>
@@ -650,7 +667,7 @@
       </div>
       <div class="updated">
         <strong>Current Public Snapshot</strong>
-        Updated from verified internal metric JSONs. PRISM 1.0 is the no-KT/no-KAFS baseline rerun with pad360/crop; PRISM KAFS cfg5 is the latest submitted checkpoint.
+        Updated from verified internal metric JSONs. PRISM 1.0 is the no-KT/no-KAFS baseline rerun with pad360/crop; PRISM KAFS cfg5 uses the epoch-12 new-VAE checkpoint.
       </div>
     </section>
 
@@ -717,6 +734,14 @@
       </div>
     </section>
 
+    <section class="case-explorer" aria-labelledby="case-explorer-title">
+      <div class="section-heading">
+        <h2 id="case-explorer-title">All-case motion comparison</h2>
+        <span class="caption">4,042 selected-caption cases · lazy loaded</span>
+      </div>
+      <iframe src="cases/index.html" title="T2M all-case motion comparison" loading="lazy"></iframe>
+    </section>
+
     <section class="controls" aria-label="table controls">
       <div class="tabs" role="tablist" aria-label="leaderboard sections">
         <button class="tab" role="tab" aria-selected="true" data-view="semantic">Semantic</button>
@@ -734,7 +759,7 @@
           <tbody></tbody>
         </table>
       </div>
-      <p class="caption">MS = MotionStreamer-272 evaluator. uTMR = universal SMPL-22 joints66 TMR evaluator. Lower FID and MM are better; higher R-Precision is better. Diversity is a reference statistic and is not ranked.</p>
+      <p class="caption">MS = MotionStreamer-272 evaluator. uTMR = universal SMPL-22 joints66 TMR evaluator. The uTMR FID column keeps the legacy raw-embedding scale for cross-row compatibility; canonical L2-normalized FID is stored with new evaluation artifacts and is not mixed into this snapshot. MaskControl therefore leaves this legacy FID cell empty and reports normalized FID in its Model Card. Lower FID and MM are better; higher R-Precision is better. Diversity is a reference statistic and is not ranked.</p>
     </section>
 
     <section id="physical" class="view hidden" aria-label="physical metrics">
@@ -774,7 +799,7 @@
       {method: "GT", version: "0 beta", ref: "raw/refk", isReference: true, msN: 4042, msR1: 0.7703, msR2: 0.9030, msR3: 0.9442, msFID: 0.0000, msMM: 14.8785, msDiv: 27.7705, utmrN: 4034, utmrR1: 0.6873, utmrR2: 0.8485, utmrR3: 0.9058, utmrFID: 0.0000, utmrMM: 27.6009, utmrDiv: 53.9410},
       {method: "HYMotion", version: "1.0B", ref: "raw/refk", msN: 4042, msR1: 0.7847, msR2: 0.9172, msR3: 0.9509, msFID: 13.8030, msMM: 14.8196, msDiv: 27.4339, utmrN: 4034, utmrR1: 0.5722, utmrR2: 0.7406, utmrR3: 0.8170, utmrFID: 28.3024, utmrMM: 30.5147, utmrDiv: 54.1295},
       {method: "HYMotion", version: "0.46B", ref: "raw/refk", msN: 4042, msR1: 0.7939, msR2: 0.9152, msR3: 0.9524, msFID: 10.4512, msMM: 14.8361, msDiv: 27.4712, utmrN: 4034, utmrR1: 0.5940, utmrR2: 0.7463, utmrR3: 0.8135, utmrFID: 32.0689, utmrMM: 30.6713, utmrDiv: 55.4210},
-      {method: "PRISM", version: "KAFS cfg5", ref: "raw/refk", msN: 4042, msR1: 0.7408, msR2: 0.8619, msR3: 0.9050, msFID: 19.9682, msMM: 15.8072, msDiv: 27.2536, utmrN: 4034, utmrR1: 0.6629, utmrR2: 0.8105, utmrR3: 0.8656, utmrFID: 123.8378, utmrMM: 30.5957, utmrDiv: 56.6863},
+      {method: "PRISM", version: "KAFS cfg5 · e12", ref: "raw/refk", msN: 4042, msR1: 0.7835, msR2: 0.9050, msR3: 0.9435, msFID: 13.9937, msMM: 14.8265, msDiv: 27.3813, utmrN: 4034, utmrR1: 0.7267, utmrR2: 0.8713, utmrR3: 0.9228, utmrFID: 34.0209, utmrMM: 26.7113, utmrDiv: 53.5815},
       {method: "PRISM", version: "1.0", ref: "raw/refk", msN: 4042, msR1: 0.7463, msR2: 0.8832, msR3: 0.9241, msFID: 19.0359, msMM: 15.5135, msDiv: 27.4151, utmrN: 4034, utmrR1: 0.6483, utmrR2: 0.8065, utmrR3: 0.8725, utmrFID: 146.1266, utmrMM: 30.9335, utmrDiv: 57.4521},
       {method: "MotionStreamer", version: "official", ref: "raw/refk", msN: 4042, msR1: 0.6303, msR2: 0.7865, msR3: 0.8498, msFID: 12.2110, msMM: 16.5810, msDiv: 27.4637, utmrN: 4034, utmrR1: 0.4400, utmrR2: 0.5967, utmrR3: 0.6811, utmrFID: 93.4685, utmrMM: 35.6739, utmrDiv: 53.8000},
       {method: "GoToZero", version: "7B-train", ref: "raw/refk", msN: 4042, msR1: 0.7403, msR2: 0.8777, msR3: 0.9236, msFID: 3.0807, msMM: 15.3706, msDiv: 27.5748, utmrN: 4034, utmrR1: 0.6277, utmrR2: 0.7904, utmrR3: 0.8579, utmrFID: 33.6025, utmrMM: 29.9675, utmrDiv: 53.4788},
@@ -785,6 +810,7 @@
       {method: "CondMDI", version: "official", ref: "HML263 round-trip", msN: 4032, msR1: 0.4526, msR2: 0.6111, msR3: 0.7016, msFID: 121.8374, msMM: 19.9702, msDiv: 25.4639, utmrN: 4034, utmrR1: 0.4296, utmrR2: 0.6039, utmrR3: 0.7024, utmrFID: 349.9873, utmrMM: 39.1271, utmrDiv: 55.7954},
       {method: "FlowMDM", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.4737, msR2: 0.6496, msR3: 0.7312, msFID: 36.3767, msMM: 20.0018, msDiv: 25.1783, utmrN: 4034, utmrR1: 0.4390, utmrR2: 0.6153, utmrR3: 0.7111, utmrFID: 227.4945, utmrMM: 37.4096, utmrDiv: 55.5127},
       {method: "MotionCLR", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.3931, msR2: 0.5208, msR3: 0.5960, msFID: 298.9693, msMM: 22.5207, msDiv: 20.6074, utmrN: 4034, utmrR1: 0.3569, utmrR2: 0.5250, utmrR3: 0.6250, utmrFID: 1063.7324, utmrMM: 44.8058, utmrDiv: 50.4069},
+      {method: "MaskControl", version: "official", ref: "position-IK SMPL bridge", msN: 4000, msR1: 0.6352, msR2: 0.7863, msR3: 0.8475, msFID: 107.8315, msMM: 18.3837, msDiv: 25.5946, utmrN: 4000, utmrR1: 0.3930, utmrR2: 0.5688, utmrR3: 0.6708, utmrFID: null, utmrMM: 45.3203, utmrDiv: 49.7564},
       {method: "MotionLab", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.6367, msR2: 0.7882, msR3: 0.8529, msFID: 25.4469, msMM: 17.9756, msDiv: 25.5355, utmrN: 4034, utmrR1: 0.5873, utmrR2: 0.7480, utmrR3: 0.8162, utmrFID: 174.8632, utmrMM: 33.1142, utmrDiv: 55.2916},
       {method: "T2M-GPT", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.5516, msR2: 0.7056, msR3: 0.7788, msFID: 25.4913, msMM: 19.0912, msDiv: 25.5949, utmrN: 4034, utmrR1: 0.4869, utmrR2: 0.6520, utmrR3: 0.7359, utmrFID: 209.9396, utmrMM: 36.3177, utmrDiv: 55.5376},
       {method: "MDM", version: "official", ref: "HML263 round-trip", msN: 4042, msR1: 0.5208, msR2: 0.6937, msR3: 0.7701, msFID: 35.5169, msMM: 19.4246, msDiv: 25.3383, utmrN: 4034, utmrR1: 0.4501, utmrR2: 0.6290, utmrR3: 0.7262, utmrFID: 263.3581, utmrMM: 37.5544, utmrDiv: 56.3969},
@@ -801,7 +827,7 @@
       {method: "GT", version: "0 beta", isReference: true, n: 4042, slide: 0.0020, float: 0.0264, jitter: 0.0055, dynamic: 0.0232, poseq: 1.4300},
       {method: "HYMotion", version: "1.0B", n: 4042, slide: 3.0803, float: 6.6387, jitter: 5.4315, dynamic: 25.0297, poseq: 1.7040},
       {method: "HYMotion", version: "0.46B", n: 4042, slide: 3.5416, float: 8.0197, jitter: 5.9834, dynamic: 26.3973, poseq: 1.6875},
-      {method: "PRISM", version: "KAFS cfg5", n: 4042, slide: 3.4524, float: 7.7084, jitter: 6.4377, dynamic: 27.6258, poseq: 1.6807},
+      {method: "PRISM", version: "KAFS cfg5 · e12", n: 4042, slide: 3.8226, float: 7.4881, jitter: 7.8631, dynamic: 26.8256, poseq: 1.7539},
       {method: "PRISM", version: "1.0", n: 4042, slide: 3.6746, float: 7.8379, jitter: 6.1307, dynamic: 27.7158, poseq: 1.6854},
       {method: "MotionStreamer", version: "official", n: 4042, slide: 5.0011, float: 17.0663, jitter: 11.0975, dynamic: 23.6778, poseq: 1.2656},
       {method: "GoToZero", version: "7B-train", n: 4042, slide: 4.4411, float: 20.0600, jitter: 9.9057, dynamic: 21.3236, poseq: 1.2388},
@@ -811,6 +837,7 @@
       {method: "CondMDI", version: "official", n: 4042, slide: 4.2218, float: 18.6892, jitter: 6.9367, dynamic: 21.5089, poseq: 1.8304},
       {method: "FlowMDM", version: "official", n: 4042, slide: 3.0452, float: 7.4055, jitter: 5.0130, dynamic: 22.3205, poseq: 1.8526},
       {method: "MotionCLR", version: "official", n: 4042, slide: 3.9074, float: 10.1052, jitter: 8.7418, dynamic: 23.4910, poseq: 3.1287},
+      {method: "MaskControl", version: "official", n: 4012, slide: 3.3457, float: 8.6182, jitter: 5.2911, dynamic: 22.1083, poseq: null},
       {method: "MotionLab", version: "official", n: 4042, slide: 2.4231, float: 4.0795, jitter: 5.8493, dynamic: 24.3519, poseq: 1.8781},
       {method: "T2M-GPT", version: "official", n: 4042, slide: 3.7598, float: 11.1799, jitter: 4.9000, dynamic: 19.3651, poseq: 1.8004},
       {method: "MDM", version: "official", n: 4042, slide: 2.5318, float: 4.9987, jitter: 4.7034, dynamic: 22.1361, poseq: 1.9613},

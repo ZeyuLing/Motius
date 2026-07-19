@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Motius HumanML3D motion-to-text leaderboard.">
+  <link rel="icon" href="data:,">
+  <title>M2T HumanML3D Leaderboard · Motius</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #17231f;
+      --muted: #5f6d68;
+      --line: #d9e1dd;
+      --line-strong: #b9c7c1;
+      --paper: #ffffff;
+      --canvas: #f2f5f3;
+      --teal: #087d72;
+      --blue: #315f9d;
+      --rust: #a5412e;
+      --gold: #956000;
+      --green: #176b48;
+      --shadow: 0 10px 28px rgba(20, 44, 36, 0.07);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: "IBM Plex Sans", sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    button, input { color: inherit; font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    .page {
+      width: min(1480px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 24px 0 42px;
+    }
+    .leaderboard-nav {
+      display: flex;
+      min-height: 42px;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 14px;
+      padding: 4px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+    .nav-label {
+      padding: 0 12px;
+      color: var(--muted);
+      font: 600 11px "IBM Plex Mono", monospace;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .nav-link {
+      flex: 0 0 auto;
+      padding: 7px 11px;
+      border-radius: 4px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .nav-link:hover { color: var(--ink); background: var(--canvas); }
+    .nav-link[aria-current="page"] { color: #fff; background: var(--ink); }
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(230px, 310px);
+      gap: 30px;
+      align-items: end;
+      padding: 30px 32px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 8px; font-size: 34px; line-height: 1.15; letter-spacing: 0; }
+    h2 { margin-bottom: 4px; font-size: 18px; letter-spacing: 0; }
+    .subtitle { max-width: 850px; margin-bottom: 16px; color: var(--muted); font-size: 16px; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .badge {
+      padding: 4px 8px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: var(--canvas);
+      color: #485650;
+      font: 600 10px "IBM Plex Mono", monospace;
+    }
+    .snapshot { padding-left: 20px; border-left: 3px solid var(--teal); color: var(--muted); }
+    .snapshot strong { display: block; margin-bottom: 6px; color: var(--ink); font-size: 15px; }
+    .score-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .score-card {
+      min-width: 0;
+      min-height: 112px;
+      padding: 17px 18px;
+      border: 1px solid var(--line);
+      border-top: 3px solid var(--teal);
+      border-radius: 6px;
+      background: var(--paper);
+    }
+    .score-card:nth-child(2) { border-top-color: var(--blue); }
+    .score-card:nth-child(3) { border-top-color: var(--gold); }
+    .score-card:nth-child(4) { border-top-color: var(--rust); }
+    .score-card .label { color: var(--muted); font: 600 10px "IBM Plex Mono", monospace; text-transform: uppercase; }
+    .score-card .value { margin: 7px 0 3px; font-size: 24px; font-weight: 700; }
+    .score-card .note { color: var(--muted); font-size: 12px; }
+    .comparison {
+      margin-bottom: 14px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+    }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 16px; }
+    .section-heading p { margin-bottom: 0; color: var(--muted); }
+    .section-controls { display: grid; justify-items: end; gap: 7px; }
+    .metric-tabs, .reference-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      padding: 3px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--canvas);
+    }
+    .metric-tab, .reference-tab {
+      min-width: 66px;
+      min-height: 34px;
+      padding: 7px 10px;
+      border: 0;
+      border-radius: 4px;
+      background: transparent;
+      color: var(--muted);
+      font: 600 11px "IBM Plex Mono", monospace;
+    }
+    .metric-tab[aria-selected="true"], .reference-tab[aria-selected="true"] { color: #fff; background: var(--ink); }
+    .reference-tab { min-width: 118px; }
+    .chart-frame { position: relative; width: 100%; height: 310px; border-top: 1px solid var(--line); padding-top: 14px; }
+    #metric-chart { display: block; width: 100%; height: 296px; }
+    .chart-empty {
+      position: absolute;
+      inset: 14px 0 0;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      pointer-events: none;
+    }
+
+    .chart-empty[hidden] { display: none; }
+    .legend { display: flex; flex-wrap: wrap; gap: 14px; min-height: 24px; margin-top: 10px; color: var(--muted); font-size: 12px; }
+    .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+    .legend-swatch { width: 10px; height: 10px; border-radius: 2px; }
+    .table-band {
+      margin-bottom: 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+      overflow: hidden;
+    }
+    .table-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+    .table-heading p { margin: 0; color: var(--muted); font-size: 12px; }
+    .table-shell { overflow-x: auto; }
+    table { width: 100%; min-width: 1120px; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 11px 10px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+    th { color: #46534f; background: #f4f7f5; font: 600 11px "IBM Plex Mono", monospace; }
+    th:first-child, td:first-child { position: sticky; left: 0; z-index: 1; text-align: left; background: inherit; }
+    th:first-child { z-index: 2; background: #f4f7f5; }
+    tbody tr { background: var(--paper); }
+    tbody tr:hover { background: #f7f9f8; }
+    tbody tr.reference { background: #eef4f1; }
+    tbody tr:last-child td { border-bottom: 0; }
+    .method-name { font-weight: 700; }
+    .method-links { margin-left: 7px; color: var(--teal); font-size: 11px; }
+    .status {
+      display: inline-flex;
+      min-width: 70px;
+      justify-content: center;
+      padding: 3px 7px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--muted);
+      font: 600 10px "IBM Plex Mono", monospace;
+      text-transform: uppercase;
+    }
+    .status.measured { border-color: #9fc4b2; color: var(--green); background: #eaf4ef; }
+    .status.running { border-color: #d8c28a; color: var(--gold); background: #faf4e5; }
+    .best { color: var(--teal); font-weight: 700; }
+    .second { color: var(--blue); font-weight: 700; }
+    .protocol-band {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-bottom: 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+      overflow: hidden;
+    }
+    .protocol-item { min-height: 118px; padding: 18px; border-right: 1px solid var(--line); }
+    .protocol-item:last-child { border-right: 0; }
+    .protocol-item .key { margin-bottom: 8px; color: var(--muted); font: 600 10px "IBM Plex Mono", monospace; text-transform: uppercase; }
+    .protocol-item strong { display: block; margin-bottom: 5px; font-size: 17px; }
+    .protocol-item p { margin-bottom: 0; color: var(--muted); font-size: 12px; }
+    .audit-band { padding: 20px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); }
+    .explorer-band { scroll-margin-top: 18px; }
+    .explorer-frame { width: 100%; height: min(780px, 88vh); min-height: 620px; margin-top: 16px; border: 1px solid var(--line); border-radius: 6px; background: var(--wash); }
+    .audit-grid { display: grid; gap: 10px; margin-top: 16px; }
+    .audit-case { display: grid; grid-template-columns: 110px minmax(240px, 1fr) minmax(0, 2fr); gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); }
+    .audit-id { font: 600 12px "IBM Plex Mono", monospace; }
+    .audit-ref { color: var(--muted); }
+    .audit-output { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; }
+    .audit-output strong { display: block; color: var(--muted); font: 600 10px "IBM Plex Mono", monospace; text-transform: uppercase; }
+    .audit-empty { padding: 22px 0 4px; border-top: 1px solid var(--line); color: var(--muted); }
+    @media (max-width: 900px) {
+      .page { width: min(100% - 20px, 1480px); padding-top: 10px; }
+      .topbar { grid-template-columns: 1fr; padding: 24px 20px; }
+      .snapshot { padding: 12px 0 0; border-top: 1px solid var(--line); border-left: 0; }
+      .score-strip, .protocol-band { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .protocol-item:nth-child(2) { border-right: 0; }
+      .protocol-item:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .section-heading { align-items: stretch; flex-direction: column; }
+      .audit-case { grid-template-columns: 1fr; gap: 7px; }
+    }
+    @media (max-width: 560px) {
+      h1 { font-size: 28px; }
+      .score-strip, .protocol-band, .audit-output { grid-template-columns: 1fr; }
+      .explorer-frame { min-height: 760px; }
+      .protocol-item { border-right: 0; border-bottom: 1px solid var(--line); }
+      .protocol-item:last-child { border-bottom: 0; }
+      .comparison { padding: 16px; }
+      .metric-tab { min-width: 58px; }
+      .section-controls { justify-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="leaderboard-nav" aria-label="Motius leaderboards">
+      <span class="nav-label">Leaderboards</span>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard" target="_blank" rel="noopener noreferrer" aria-current="page">M2T HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard" target="_blank" rel="noopener noreferrer">T2M HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard" target="_blank" rel="noopener noreferrer">Temporal Condition</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard" target="_blank" rel="noopener noreferrer">BABEL Sequential</a>
+    </nav>
+
+    <header class="topbar">
+      <div>
+        <h1>M2T HumanML3D</h1>
+        <p class="subtitle">Motion captioning under one population, one reference policy, and one semantic candidate protocol.</p>
+        <div class="badge-row">
+          <span class="badge">OFFICIAL TEST</span>
+          <span class="badge">HUMANML3D-263</span>
+          <span class="badge">20 FPS</span>
+          <span class="badge">MOTION → TEXT</span>
+        </div>
+      </div>
+      <div class="snapshot">
+        <strong id="snapshot-status">Loading snapshot</strong>
+        <span id="snapshot-date">Protocol humanml3d_tm2t_v2</span>
+      </div>
+    </header>
+
+    <section class="score-strip" aria-label="Protocol summary">
+      <article class="score-card"><div class="label">Evaluation clips</div><div class="value" id="sample-count">-</div><div class="note">Full motions and tagged subclips</div></article>
+      <article class="score-card"><div class="label">Baselines</div><div class="value" id="method-count">-</div><div class="note">GT is not ranked</div></article>
+      <article class="score-card"><div class="label">References</div><div class="value" id="reference-count">-</div><div class="note">Fixed captions per clip</div></article>
+      <article class="score-card"><div class="label">Candidate group</div><div class="value" id="chunk-size">-</div><div class="note">Semantic R-Precision</div></article>
+    </section>
+
+    <section class="comparison">
+      <div class="section-heading">
+        <div><h2>Method comparison</h2><p id="chart-direction">Higher is better</p></div>
+        <div class="section-controls">
+          <div class="reference-tabs" id="reference-tabs" role="tablist" aria-label="Language reference protocol"></div>
+          <div class="metric-tabs" id="metric-tabs" role="tablist" aria-label="Comparison metric"></div>
+        </div>
+      </div>
+      <div class="chart-frame">
+        <canvas id="metric-chart" aria-label="Method metric bar chart"></canvas>
+        <div class="chart-empty" id="chart-empty" hidden>No completed full-protocol results yet.</div>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+
+    <section class="table-band">
+      <div class="table-heading"><div><h2>Complete results</h2><p id="table-protocol-note">Best and second-best styling excludes GT and incomplete runs.</p></div></div>
+      <div class="table-shell">
+        <table>
+          <thead><tr><th>Method</th><th>Status</th><th>BLEU-1 ↑</th><th>BLEU-4 ↑</th><th>ROUGE-L ↑</th><th>CIDEr ↑</th><th>BERT raw ↑</th><th>BERT rescaled ↑</th><th>R@1 ↑</th><th>R@2 ↑</th><th>R@3 ↑</th><th>Matching ↓</th></tr></thead>
+          <tbody id="results-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="protocol-band" aria-label="Evaluation protocol">
+      <div class="protocol-item"><div class="key">Population</div><strong>3,969 + 431</strong><p>Full motions plus tagged subclips under the released TM2T loader semantics.</p></div>
+      <div class="protocol-item"><div class="key">Frame policy</div><strong>[40, 200) → 196</strong><p>TM2T source acceptance with evaluator-side truncation.</p></div>
+      <div class="protocol-item"><div class="key">Language metrics</div><strong>Two explicit tracks</strong><p>TM2T token references reproduce its paper; raw captions expose reference-style sensitivity.</p></div>
+      <div class="protocol-item"><div class="key">Semantic metrics</div><strong>32 × 1 pass</strong><p>Generated text queries against motion candidates with the official HumanML3D matching network.</p></div>
+    </section>
+
+    <section class="explorer-band" id="case-explorer">
+      <div class="section-heading"><div><h2>All-case comparison</h2><p>Search, play, and compare every one of the 4,400 evaluated clips. Motion assets load only for the selected case.</p></div></div>
+      <iframe class="explorer-frame" src="cases/index.html" title="HumanML3D M2T all-case explorer" loading="lazy"></iframe>
+    </section>
+
+    <section class="audit-band">
+      <div class="section-heading"><div><h2>Quick caption audit</h2><p>Four fixed records for a compact first look; use the all-case comparison above for the complete population.</p></div></div>
+      <div class="audit-grid" id="audit-grid"></div>
+    </section>
+  </main>
+  <script src="leaderboard.js"></script>
+</body>
+</html>

@@ -30,8 +30,17 @@ The page supports task filtering, method search, sortable metrics, bar and radar
 comparisons, and protocol-specific details. Ordered multi-prompt composition is
 maintained separately on the BABEL Sequential Generation leaderboard.
 
+Temporal Control also provides six all-case Three.js explorers. Each contains
+all 4,012 official cases and the aligned GT, CondMDI, FlowMDM, KIMODO,
+MotionLab, and MotionCanvas motions as synchronized neutral SMPL meshes rather
+than joint-only skeletons. The selected setting can be switched
+without loading unrelated motion chunks; large assets live in the public
+[`ZeyuLing/Motius-Leaderboard-Cases`](https://huggingface.co/datasets/ZeyuLing/Motius-Leaderboard-Cases)
+dataset.
+
 The static Space is defined by:
 
 - `index.html`: page structure and responsive styling.
 - `leaderboard.js`: interaction, ranking, and chart logic.
 - `temporal_control_results.json`: structured Temporal Control result snapshot.
+- `cases/`: one lightweight manifest and viewer per Temporal Control setting.

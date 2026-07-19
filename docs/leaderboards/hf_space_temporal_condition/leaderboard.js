@@ -5,17 +5,17 @@ const TP2M_ROWS = Object.freeze([
   {method: "FlowMDM", settingId: "c1", settingLabel: "1-frame prefix", group: "c1", samples: 3968, r1: 0.4490, r2: 0.6300, r3: 0.7060, fid: 83.7730, mmDist: 19.8720, diversity: 26.3650},
   {method: "MotionStreamer", settingId: "c1", settingLabel: "1-frame prefix", group: "c1", samples: 3904, r1: 0.6170, r2: 0.7800, r3: 0.8500, fid: 12.4790, mmDist: 16.8490, diversity: 27.1340},
   {method: "KIMODO", settingId: "c1", settingLabel: "1-frame prefix", group: "c1", samples: 3968, r1: 0.5250, r2: 0.6900, r3: 0.7690, fid: 82.5600, mmDist: 19.3010, diversity: 26.1580},
-  {method: "PRISM-KT", settingId: "c1", settingLabel: "1-frame prefix", group: "c1", samples: 3968, r1: 0.7467, r2: 0.8813, r3: 0.9214, fid: 48.4399, mmDist: 16.2216, diversity: 26.7002},
+  {method: "PRISM-KT", settingId: "c1", settingLabel: "1-frame prefix", group: "c1", samples: 4042, r1: 0.7798, r2: 0.9087, r3: 0.9482, fid: 16.2756, mmDist: 14.9304, diversity: 27.5360},
   {method: "GT", settingId: "c5", settingLabel: "5-frame prefix", group: "c5", samples: 4042, r1: 0.7703, r2: 0.9030, r3: 0.9442, fid: 0.0000, mmDist: 14.8785, diversity: 27.7705, isReference: true},
   {method: "FlowMDM", settingId: "c5", settingLabel: "5-frame prefix", group: "c5", samples: 3968, r1: 0.4810, r2: 0.6540, r3: 0.7290, fid: 75.8530, mmDist: 19.4560, diversity: 26.4670},
   {method: "MotionStreamer", settingId: "c5", settingLabel: "5-frame prefix", group: "c5", samples: 3904, r1: 0.6280, r2: 0.7860, r3: 0.8530, fid: 11.2140, mmDist: 16.5860, diversity: 27.1440},
   {method: "KIMODO", settingId: "c5", settingLabel: "5-frame prefix", group: "c5", samples: 3968, r1: 0.5380, r2: 0.6990, r3: 0.7750, fid: 80.3810, mmDist: 19.1990, diversity: 26.1540},
-  {method: "PRISM-KT", settingId: "c5", settingLabel: "5-frame prefix", group: "c5", samples: 3968, r1: 0.7588, r2: 0.8957, r3: 0.9330, fid: 38.8512, mmDist: 15.8599, diversity: 26.8676},
+  {method: "PRISM-KT", settingId: "c5", settingLabel: "5-frame prefix", group: "c5", samples: 4042, r1: 0.7912, r2: 0.9107, r3: 0.9489, fid: 13.5449, mmDist: 14.7900, diversity: 27.4694},
   {method: "GT", settingId: "c9", settingLabel: "9-frame prefix", group: "c9", samples: 4042, r1: 0.7703, r2: 0.9030, r3: 0.9442, fid: 0.0000, mmDist: 14.8785, diversity: 27.7705, isReference: true},
   {method: "FlowMDM", settingId: "c9", settingLabel: "9-frame prefix", group: "c9", samples: 3968, r1: 0.4900, r2: 0.6640, r3: 0.7420, fid: 71.3380, mmDist: 19.2620, diversity: 26.6250},
   {method: "MotionStreamer", settingId: "c9", settingLabel: "9-frame prefix", group: "c9", samples: 3904, r1: 0.6330, r2: 0.7880, r3: 0.8560, fid: 11.0770, mmDist: 16.4860, diversity: 27.3810},
   {method: "KIMODO", settingId: "c9", settingLabel: "9-frame prefix", group: "c9", samples: 3968, r1: 0.5310, r2: 0.7040, r3: 0.7720, fid: 79.1220, mmDist: 19.1660, diversity: 26.2020},
-  {method: "PRISM-KT", settingId: "c9", settingLabel: "9-frame prefix", group: "c9", samples: 3968, r1: 0.7649, r2: 0.8942, r3: 0.9367, fid: 36.4133, mmDist: 15.7691, diversity: 26.9763}
+  {method: "PRISM-KT", settingId: "c9", settingLabel: "9-frame prefix", group: "c9", samples: 4042, r1: 0.7867, r2: 0.9144, r3: 0.9529, fid: 12.5467, mmDist: 14.7775, diversity: 27.5227}
 ]);
 
 const COMMON_COLUMNS = [
@@ -41,13 +41,15 @@ const CONTROL_COLUMNS = [
   COMMON_COLUMNS[8]
 ];
 
+const CONTROL_TABLE_COLUMNS = CONTROL_COLUMNS.filter((column) => !["settingLabel", "text"].includes(column.key));
+
 const PROTOCOLS = {
   control: {
     label: "Temporal Control",
     subtitle: "Prediction, motion in-betweening, and sparse-keyframe control on the HumanML3D official test split.",
     badges: ["Prediction / MIB / Keyframe", "4,012 temporal cases", "Selected captions", "Joint-position evaluator", "Normalized-space FID"],
     columns: CONTROL_COLUMNS,
-    defaultSetting: "temporal_pre20",
+    defaultSetting: "Prediction::pre20",
     groups: [
       {id: "all", label: "All tasks"},
       {id: "Prediction", label: "Prediction"},
@@ -89,6 +91,17 @@ const chartColors = ["#087d72", "#315f9d", "#c7563f", "#ad6d00"];
 let barChart = null;
 let radarChart = null;
 
+function renderCaseExplorer() {
+  const section = document.getElementById("case-explorer");
+  const select = document.getElementById("case-explorer-setting");
+  section.hidden = state.protocol !== "control";
+  if (section.hidden) return;
+  const selectedRows = selectedSettingRows();
+  const textSetting = selectedRows.find((row) => row.text && !row.isReference)?.settingId;
+  if (textSetting) select.value = textSetting.replace(/^temporal_/, "");
+  document.getElementById("case-explorer-frame").src = `cases/${select.value}/index.html`;
+}
+
 function isRankable(row) {
   return !row.isReference && !row.paperOnly && !row.rankExcluded;
 }
@@ -107,8 +120,29 @@ function activeColumns() {
 
 function activeSettings() {
   const seen = new Map();
-  activeRows().forEach((row) => seen.set(row.settingId, row.settingLabel));
-  return Array.from(seen, ([id, label]) => ({id, label}));
+  activeRows().forEach((row) => {
+    const id = state.protocol === "control" ? row.settingGroupId : row.settingId;
+    const label = state.protocol === "control" ? row.settingGroupLabel : row.settingLabel;
+    if (!seen.has(id)) seen.set(id, {id, label, group: row.group});
+  });
+  return Array.from(seen.values());
+}
+
+function selectableSettings() {
+  return activeSettings().filter((setting) => state.activeGroup === "all" || setting.group === state.activeGroup);
+}
+
+function selectedSettingRows() {
+  return activeRows().filter((row) => state.protocol === "control"
+    ? row.settingGroupId === state.chartSetting
+    : row.settingId === state.chartSetting);
+}
+
+function chartRows() {
+  const rows = selectedSettingRows();
+  if (state.protocol !== "control") return rows;
+  const textRows = rows.filter((row) => row.text);
+  return textRows.length ? textRows : rows;
 }
 
 function generatedMethods() {
@@ -120,10 +154,14 @@ function controlRows(data) {
   return data.settings.flatMap((setting) => {
     const suffix = setting.text ? "Text" : "No text";
     const label = `${setting.task} · ${setting.constraint} · ${suffix}`;
+    const settingGroupId = `${setting.task}::${setting.condition_mode}`;
+    const settingGroupLabel = `${setting.task} · ${setting.constraint}`;
     const reference = {
       method: gt.method,
       settingId: setting.id,
       settingLabel: label,
+      settingGroupId,
+      settingGroupLabel,
       group: setting.task,
       text: setting.text,
       samples: gt.samples,
@@ -144,6 +182,8 @@ function controlRows(data) {
       method: entry.method,
       settingId: setting.id,
       settingLabel: label,
+      settingGroupId,
+      settingGroupLabel,
       group: setting.task,
       text: setting.text,
       samples: entry.samples,
@@ -209,9 +249,9 @@ function rankMetric() {
 function settingRankMap() {
   const ranks = new Map();
   const metric = rankMetric();
-  activeSettings().forEach((setting) => {
+  new Set(activeRows().map((row) => row.settingId)).forEach((settingId) => {
     activeRows()
-      .filter((row) => row.settingId === setting.id && isRankable(row) && typeof row[metric.key] === "number")
+      .filter((row) => row.settingId === settingId && isRankable(row) && typeof row[metric.key] === "number")
       .slice()
       .sort((a, b) => compareRows(a, b, metric.key, metric.lower ? "asc" : "desc"))
       .forEach((row, index) => ranks.set(rowId(row), index + 1));
@@ -231,9 +271,9 @@ function bestClass(row, column) {
   return "";
 }
 
-function filteredRows() {
+function filteredRows(rows = activeRows()) {
   const query = state.query.trim().toLowerCase();
-  return activeRows()
+  return rows
     .filter((row) => state.activeGroup === "all" || row.group === state.activeGroup)
     .filter((row) => `${row.method} ${row.settingLabel}`.toLowerCase().includes(query))
     .slice()
@@ -261,17 +301,17 @@ function renderGroupTabs() {
   tabs.querySelectorAll("button").forEach((button) => {
     button.addEventListener("click", () => {
       state.activeGroup = button.dataset.group;
+      const settings = selectableSettings();
+      if (!settings.some((setting) => setting.id === state.chartSetting)) state.chartSetting = settings[0]?.id ?? null;
       renderGroupTabs();
+      renderChartControls();
       renderTable();
+      renderCharts();
     });
   });
 }
 
-function renderTable() {
-  const table = document.querySelector('[data-table="temporal"]');
-  const columns = activeColumns();
-  const rows = filteredRows();
-  const ranks = settingRankMap();
+function renderOneTable(table, rows, columns, ranks) {
   table.querySelector("thead").innerHTML = `<tr>${columns.map((column) => {
     const active = state.sortKey === column.key;
     const indicator = active ? (state.sortDir === "asc" ? "↑" : "↓") : "";
@@ -284,7 +324,6 @@ function renderTable() {
       return `<td class="${bestClass(row, column)}">${formatCell(row, column)}</td>`;
     }).join("")}</tr>`
   ).join("") : `<tr><td class="empty" colspan="${columns.length}">No rows match the current filters.</td></tr>`;
-  document.getElementById("result-status").textContent = `${rows.length} of ${activeRows().length} rows`;
   table.querySelectorAll("button.sortable").forEach((button) => {
     button.addEventListener("click", () => {
       const column = columns.find((item) => item.key === button.dataset.key);
@@ -298,13 +337,35 @@ function renderTable() {
   });
 }
 
+function renderTable() {
+  const ranks = settingRankMap();
+  const pair = document.getElementById("control-table-pair");
+  const single = document.getElementById("single-table-shell");
+  if (state.protocol === "control") {
+    pair.hidden = false;
+    single.hidden = true;
+    const selectedRows = filteredRows(selectedSettingRows());
+    const textRows = selectedRows.filter((row) => row.text);
+    const motionRows = selectedRows.filter((row) => !row.text);
+    renderOneTable(document.querySelector('[data-table="control-text"]'), textRows, CONTROL_TABLE_COLUMNS, ranks);
+    renderOneTable(document.querySelector('[data-table="control-motion"]'), motionRows, CONTROL_TABLE_COLUMNS, ranks);
+    document.getElementById("result-status").textContent = `${textRows.length} text-conditioned · ${motionRows.length} motion-only rows`;
+    return;
+  }
+  pair.hidden = true;
+  single.hidden = false;
+  const rows = filteredRows();
+  renderOneTable(document.querySelector('[data-table="temporal"]'), rows, activeColumns(), ranks);
+  document.getElementById("result-status").textContent = `${rows.length} of ${activeRows().length} rows`;
+}
+
 function bestRow(rows, key, lower) {
   return rows.filter((row) => isRankable(row) && typeof row[key] === "number")
     .slice().sort((a, b) => lower ? a[key] - b[key] : b[key] - a[key])[0];
 }
 
 function renderSummaries() {
-  const rows = activeRows().filter((row) => row.settingId === state.chartSetting);
+  const rows = chartRows();
   const bestR3 = bestRow(rows, "r3", false);
   const bestFid = bestRow(rows, "fid", true);
   const setting = activeSettings().find((item) => item.id === state.chartSetting);
@@ -319,7 +380,7 @@ function renderSummaries() {
 }
 
 function renderChartControls() {
-  const settings = activeSettings();
+  const settings = selectableSettings();
   const settingSelect = document.getElementById("chart-setting");
   settingSelect.innerHTML = settings.map((setting) => `<option value="${setting.id}">${setting.label}</option>`).join("");
   settingSelect.value = state.chartSetting;
@@ -372,12 +433,13 @@ function renderCharts() {
   const columns = activeColumns();
   const metricKey = document.getElementById("bar-metric").value || "r3";
   const metric = columns.find((column) => column.key === metricKey);
-  const rows = activeRows().filter((row) => row.settingId === state.chartSetting);
+  const rows = chartRows();
   const ranked = rows.filter((row) => isRankable(row) && typeof row[metric.key] === "number")
     .slice().sort((a, b) => compareRows(a, b, metric.key, metric.lower ? "asc" : "desc"));
   const setting = activeSettings().find((item) => item.id === state.chartSetting);
   document.getElementById("bar-title").textContent = `${metric.label} · ${setting?.label ?? ""}`;
-  document.getElementById("bar-note").textContent = `Generated methods only · ${metric.lower ? "lower" : "higher"} is better`;
+  const conditionNote = state.protocol === "control" ? " · text-conditioned chart; both variants are tabulated below" : "";
+  document.getElementById("bar-note").textContent = `Generated methods only · ${metric.lower ? "lower" : "higher"} is better${conditionNote}`;
   if (barChart) barChart.destroy();
   barChart = new Chart(document.getElementById("bar-chart"), {
     type: "bar",
@@ -449,6 +511,7 @@ function resetProtocolState() {
   renderProtocolDetails();
   renderTable();
   renderCharts();
+  renderCaseExplorer();
 }
 
 async function initialize() {
@@ -467,7 +530,12 @@ async function initialize() {
   });
   document.getElementById("chart-setting").addEventListener("change", (event) => {
     state.chartSetting = event.target.value;
+    renderTable();
     renderCharts();
+    renderCaseExplorer();
+  });
+  document.getElementById("case-explorer-setting").addEventListener("change", (event) => {
+    document.getElementById("case-explorer-frame").src = `cases/${event.target.value}/index.html`;
   });
   document.getElementById("bar-metric").addEventListener("change", renderCharts);
   resetProtocolState();
