@@ -3,7 +3,7 @@
   "benchmark": "Temporal Condition Motion Generation Benchmark",
   "dataset": "HumanML3D official test split",
   "num_cases": 4012,
-  "updated": "2026-07-16",
+  "updated": "2026-07-20",
   "metric_protocol": {
     "semantic": "Motius Joint-Position Evaluator; normalized embedding-space FID",
     "condition": "Pelvis-relative SMPL-22 error on constrained frames",
@@ -126,6 +126,40 @@
             "foot_skating": 0.138,
             "diversity": 54.0449
           }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5627,
+            "r_precision_top2": 0.734,
+            "r_precision_top3": 0.8143,
+            "fid": 0.0491,
+            "mm_dist": 32.3544,
+            "constraint_error_cm": 3.5609624186171973,
+            "fail_20": 0.00448654037886341,
+            "fail_50": 0.0024925224327018943,
+            "foot_skating": 0.1475035753342188,
+            "diversity": 55.4882
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4345,
+            "r_precision_top2": 0.5785,
+            "r_precision_top3": 0.6548,
+            "fid": 0.1626,
+            "mm_dist": 38.5584,
+            "constraint_error_cm": 12.56448453308055,
+            "fail_20": 0.15628115653040878,
+            "fail_50": 0.005732801595214357,
+            "foot_skating": 0.09122470450115931,
+            "diversity": 57.654
+          }
         }
       ]
     },
@@ -220,6 +254,40 @@
             "fail_50": 0.0,
             "foot_skating": 0.084,
             "diversity": 53.6818
+          }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5905,
+            "r_precision_top2": 0.7618,
+            "r_precision_top3": 0.83,
+            "fid": 0.0489,
+            "mm_dist": 31.7072,
+            "constraint_error_cm": 3.7535673379362255,
+            "fail_20": 0.0053723931366981776,
+            "fail_50": 0.00270011468528354,
+            "foot_skating": 0.14778166609553733,
+            "diversity": 55.325
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.3915,
+            "r_precision_top2": 0.5363,
+            "r_precision_top3": 0.6122,
+            "fid": 0.1809,
+            "mm_dist": 40.0146,
+            "constraint_error_cm": 5.420352868464301,
+            "fail_20": 0.028543274209172596,
+            "fail_50": 0.0029506407901036622,
+            "foot_skating": 0.13814627083678857,
+            "diversity": 55.6316
           }
         }
       ]
@@ -316,6 +384,40 @@
             "foot_skating": 0.096,
             "diversity": 52.3568
           }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.3327,
+            "r_precision_top2": 0.4695,
+            "r_precision_top3": 0.5497,
+            "fid": 0.0798,
+            "mm_dist": 40.4863,
+            "constraint_error_cm": 3.73281721410893,
+            "fail_20": 0.005428065604435982,
+            "fail_50": 0.0026500094643195156,
+            "foot_skating": 0.11582375990258295,
+            "diversity": 54.6372
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.204,
+            "r_precision_top2": 0.3127,
+            "r_precision_top3": 0.3887,
+            "fid": 0.4044,
+            "mm_dist": 48.6065,
+            "constraint_error_cm": 6.697243907440181,
+            "fail_20": 0.06952377771097082,
+            "fail_50": 0.0036409793900524434,
+            "foot_skating": 0.07299979646218303,
+            "diversity": 50.2717
+          }
         }
       ]
     },
@@ -410,6 +512,40 @@
             "fail_50": 0.0,
             "foot_skating": 0.184,
             "diversity": 53.9671
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.382,
+            "r_precision_top2": 0.5292,
+            "r_precision_top3": 0.6122,
+            "fid": 0.1913,
+            "mm_dist": 39.9154,
+            "constraint_error_cm": 9.500756301486888,
+            "fail_20": 0.09546360917248255,
+            "fail_50": 0.0032402791625124627,
+            "foot_skating": 0.24940406306273302,
+            "diversity": 56.3401
+          }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5873,
+            "r_precision_top2": 0.7535,
+            "r_precision_top3": 0.83,
+            "fid": 0.0402,
+            "mm_dist": 31.2923,
+            "constraint_error_cm": 4.325384793620466,
+            "fail_20": 0.006231306081754736,
+            "fail_50": 0.0016201395812562313,
+            "foot_skating": 0.15706595715238783,
+            "diversity": 55.3465
           }
         }
       ]
@@ -506,6 +642,40 @@
             "foot_skating": 0.11,
             "diversity": 53.8369
           }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.402,
+            "r_precision_top2": 0.541,
+            "r_precision_top3": 0.627,
+            "fid": 0.1591,
+            "mm_dist": 38.7989,
+            "constraint_error_cm": 7.906330620433731,
+            "fail_20": 0.06968527447250851,
+            "fail_50": 0.0024771088600875836,
+            "foot_skating": 0.3429816141427733,
+            "diversity": 56.1377
+          }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6218,
+            "r_precision_top2": 0.7823,
+            "r_precision_top3": 0.8538,
+            "fid": 0.041,
+            "mm_dist": 30.9639,
+            "constraint_error_cm": 4.483368834285305,
+            "fail_20": 0.00770778962268324,
+            "fail_50": 0.001874419427610917,
+            "foot_skating": 0.15463304965490607,
+            "diversity": 55.1793
+          }
         }
       ]
     },
@@ -601,6 +771,23 @@
             "foot_skating": 0.125,
             "diversity": 52.3345
           }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.1898,
+            "r_precision_top2": 0.2878,
+            "r_precision_top3": 0.361,
+            "fid": 0.2627,
+            "mm_dist": 47.2423,
+            "constraint_error_cm": 8.949666688586284,
+            "fail_20": 0.10231344273897465,
+            "fail_50": 0.004058477462732782,
+            "foot_skating": 0.3827799243957549,
+            "diversity": 54.0509
+          }
         }
       ]
     },
@@ -678,6 +865,23 @@
             "fail_50": 0.0,
             "foot_skating": 0.11844043130032456,
             "diversity": 53.4264
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4265,
+            "r_precision_top2": 0.5795,
+            "r_precision_top3": 0.663,
+            "fid": 0.1818,
+            "mm_dist": 38.3565,
+            "constraint_error_cm": 11.117579698018124,
+            "fail_20": 0.1217058357538949,
+            "fail_50": 0.004198574069184051,
+            "foot_skating": 0.47643587762036055,
+            "diversity": 56.2984
           }
         }
       ]
