@@ -788,6 +788,23 @@
             "foot_skating": 0.3827799243957549,
             "diversity": 54.0509
           }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.3847,
+            "r_precision_top2": 0.5413,
+            "r_precision_top3": 0.6345,
+            "fid": 0.0936,
+            "mm_dist": 38.8152,
+            "constraint_error_cm": 4.493447907787573,
+            "fail_20": 0.007785199274560977,
+            "fail_50": 0.001846773123368868,
+            "foot_skating": 0.1246322941564817,
+            "diversity": 53.998
+          }
         }
       ]
     },
@@ -883,6 +900,23 @@
             "foot_skating": 0.47643587762036055,
             "diversity": 56.2984
           }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6372,
+            "r_precision_top2": 0.8007,
+            "r_precision_top3": 0.8692,
+            "fid": 0.0426,
+            "mm_dist": 30.4901,
+            "constraint_error_cm": 4.790374445742263,
+            "fail_20": 0.007789807235278585,
+            "fail_50": 0.0018484288354898336,
+            "foot_skating": 0.17239635988081475,
+            "diversity": 55.001
+          }
         }
       ]
     },
@@ -960,6 +994,40 @@
             "fail_50": 0.0,
             "foot_skating": 0.13582135940610346,
             "diversity": 53.6
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.2427,
+            "r_precision_top2": 0.3485,
+            "r_precision_top3": 0.4295,
+            "fid": 0.2969,
+            "mm_dist": 45.7091,
+            "constraint_error_cm": 13.246771003609467,
+            "fail_20": 0.19133879059941908,
+            "fail_50": 0.014496963295484552,
+            "foot_skating": 0.5417631163366142,
+            "diversity": 54.5594
+          }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6015,
+            "r_precision_top2": 0.7742,
+            "r_precision_top3": 0.8488,
+            "fid": 0.043,
+            "mm_dist": 31.6811,
+            "constraint_error_cm": 4.680132820436112,
+            "fail_20": 0.007710588856614735,
+            "fail_50": 0.001795616583047267,
+            "foot_skating": 0.14905900315156914,
+            "diversity": 54.708
           }
         }
       ]

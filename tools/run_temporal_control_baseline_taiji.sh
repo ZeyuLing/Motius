@@ -81,6 +81,22 @@ SETTINGS=(
     "temporal_adaptive_keyframes_uncond:adaptive_keyframes:blank"
 )
 
+if [[ -n "${SETTING_IDS:-}" ]]; then
+    requested=" ${SETTING_IDS//,/ } "
+    filtered=()
+    for spec in "${SETTINGS[@]}"; do
+        setting_id="${spec%%:*}"
+        if [[ "${requested}" == *" ${setting_id} "* ]]; then
+            filtered+=("${spec}")
+        fi
+    done
+    if (( ${#filtered[@]} == 0 )); then
+        echo "SETTING_IDS did not match a supported setting: ${SETTING_IDS}" >&2
+        exit 2
+    fi
+    SETTINGS=("${filtered[@]}")
+fi
+
 run_shard() {
     local gpu="$1"
     local global_shard="$2"

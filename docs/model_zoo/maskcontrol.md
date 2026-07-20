@@ -209,6 +209,47 @@ tail is excluded consistently from R-Precision and MM-Dist, while FID and
 Diversity use all 4,012 samples. Across 879,012 fitted frames, the
 HML263-to-SMPL joint error is `17.85 mm` on average and `23.56 mm` at P95.
 
+### Temporal Condition Benchmark
+
+All eight HumanML3D Temporal Condition settings use the complete 4,012-sample
+official test split. Retrieval uses batches of 32 and a single deterministic
+repeat. FID is measured in the normalized Motius joint-position evaluator
+space; condition error is pelvis-relative SMPL-22 error on constrained frames.
+
+| Condition | Text | R@1 | R@2 | R@3 | FID | MM-Dist | Error (cm) | Fail@20 | Fail@50 | Foot skate | Diversity |
+| --------- | :--: | --: | --: | --: | --: | ------: | ---------: | ------: | ------: | ---------: | --------: |
+| First frame | On | 0.5627 | 0.7340 | 0.8143 | 0.0491 | 32.3544 | 3.5610 | 0.0045 | 0.0025 | 0.1475 | 55.4882 |
+| First 20% | On | 0.5905 | 0.7618 | 0.8300 | 0.0489 | 31.7072 | 3.7536 | 0.0054 | 0.0027 | 0.1478 | 55.3250 |
+| First 20% | Off | 0.3327 | 0.4695 | 0.5497 | 0.0798 | 40.4863 | 3.7328 | 0.0054 | 0.0027 | 0.1158 | 54.6372 |
+| First + last frame | On | 0.5873 | 0.7535 | 0.8300 | 0.0402 | 31.2923 | 4.3254 | 0.0062 | 0.0016 | 0.1571 | 55.3465 |
+| First + last 10% | On | 0.6218 | 0.7823 | 0.8538 | 0.0410 | 30.9639 | 4.4834 | 0.0077 | 0.0019 | 0.1546 | 55.1793 |
+| First + last 10% | Off | 0.3847 | 0.5413 | 0.6345 | 0.0936 | 38.8152 | 4.4934 | 0.0078 | 0.0018 | 0.1246 | 53.9980 |
+| Adaptive sparse frames | On | 0.6372 | 0.8007 | 0.8692 | 0.0426 | 30.4901 | 4.7904 | 0.0078 | 0.0018 | 0.1724 | 55.0010 |
+| Adaptive sparse frames | Off | 0.6015 | 0.7742 | 0.8488 | 0.0430 | 31.6811 | 4.6801 | 0.0077 | 0.0018 | 0.1491 | 54.7080 |
+
+The canonical result records are maintained in the
+[Temporal Condition leaderboard](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard).
+
+### Body-Part Position Benchmark
+
+The complete 4,012-sample HumanML3D official test split is evaluated with
+world-space joint evidence. Retrieval uses 125 complete batches of 32; FID is
+computed over all samples in the normalized Motius joint-position evaluator
+space. Control error is pelvis-relative SMPL-22 error on constrained channels.
+
+| Condition | Evidence | R@1 | R@2 | R@3 | FID | MM-Dist | Error (cm) | Hit@5cm | Hit@10cm | Foot skate | Diversity |
+| --------- | -------- | --: | --: | --: | --: | ------: | ---------: | ------: | -------: | ---------: | --------: |
+| Both wrists, sparse | XYZ | 0.6517 | 0.8124 | 0.8775 | 0.0154 | 29.0003 | 11.23 | 0.3596 | 0.6241 | 0.3089 | 54.0030 |
+| Both wrists, dense | XYZ | 0.6496 | 0.8095 | 0.8746 | 0.0130 | 29.1476 | 9.88 | 0.3872 | 0.6741 | 0.3111 | 53.9773 |
+| Both feet, sparse | XZ diagnostic | 0.6180 | 0.7827 | 0.8519 | 0.0223 | 30.3893 | 9.01 | 0.4608 | 0.7165 | 0.3749 | 54.4594 |
+| Both feet, dense | XZ diagnostic | 0.6206 | 0.7847 | 0.8553 | 0.0190 | 30.0977 | 8.05 | 0.4846 | 0.7616 | 0.3492 | 54.2639 |
+
+The wrist rows follow the native released control protocol. The foot-XZ rows
+are explicitly labeled diagnostics because they exercise partial-axis evidence
+outside the native Table-4 release contract. Lower is better for FID, MM-Dist,
+control error, and foot skate; higher is better for retrieval, hit rate, and
+diversity is interpreted relative to GT.
+
 ### Physical Metrics
 
 | Samples | Slide | Float | Jitter | Dynamic | Penetration |
