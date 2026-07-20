@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+import shutil
 from pathlib import Path
 import sys
 
@@ -79,3 +81,47 @@ def motion_path(directory: Path, case_id: str) -> Path:
         if path.is_file():
             return path
     raise FileNotFoundError(f"No motion135 file for {case_id!r} under {directory}")
+
+
+def write_chunked_manifest(
+    output_dir: Path,
+    manifest: dict,
+    *,
+    chunk_size: int,
+    descriptor_dir_name: str = "descriptors",
+) -> None:
+    """Write a lightweight case index plus lazily loaded motion descriptors."""
+
+    output = Path(output_dir)
+    descriptor_dir = output / descriptor_dir_name
+    if descriptor_dir.exists():
+        shutil.rmtree(descriptor_dir)
+    descriptor_dir.mkdir(parents=True)
+
+    cases = manifest.get("cases")
+    if not isinstance(cases, list):
+        raise ValueError("manifest cases must be a list")
+    size = max(1, int(chunk_size))
+    for start in range(0, len(cases), size):
+        chunk = cases[start : start + size]
+        motions = []
+        for item in chunk:
+            value = item.pop("motions", None)
+            if not isinstance(value, dict):
+                raise ValueError(f"case {item.get('case_id')!r} has no motion descriptors")
+            motions.append(value)
+        payload = {"start": start, "motions": motions}
+        (descriptor_dir / f"{start // size:03d}.json").write_text(
+            json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n",
+            encoding="utf-8",
+        )
+
+    manifest["schema_version"] = max(3, int(manifest.get("schema_version", 0)))
+    manifest["case_descriptor_chunks"] = {
+        "size": size,
+        "path": f"{descriptor_dir_name}/{{chunk}}.json",
+    }
+    (output / "manifest.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, separators=(",", ":")) + "\n",
+        encoding="utf-8",
+    )

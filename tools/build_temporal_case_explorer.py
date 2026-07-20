@@ -18,7 +18,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT / "tools") not in sys.path:
     sys.path.insert(0, str(REPO_ROOT / "tools"))
 
-from smpl_gallery_assets import encode_motion135
+from smpl_gallery_assets import encode_motion135, write_chunked_manifest
 
 
 SETTINGS = (
@@ -28,6 +28,8 @@ SETTINGS = (
     ("both_1f", "In-betweening: first and last frame"),
     ("mid80", "In-betweening: middle 80%"),
     ("mid80_uncond", "In-betweening: middle 80%, motion-only"),
+    ("adaptive_keyframes", "Keyframe: adaptive sparse frames"),
+    ("adaptive_keyframes_uncond", "Keyframe: adaptive sparse frames, motion-only"),
 )
 
 
@@ -49,8 +51,24 @@ METHODS = (
     Method("ours", "MotionCanvas", "#087d72"),
 )
 
+KEYFRAME_METHOD_KEYS = {
+    "gt",
+    "condmdi",
+    "kimodo",
+    "maskcontrol",
+    "motionlab",
+    "omnicontrol",
+    "ours",
+}
 
-def condition_intervals(setting: str, length: int) -> list[list[int]]:
+
+def condition_intervals(
+    setting: str,
+    length: int,
+    *,
+    case_id: str = "",
+    keyframes: dict[str, dict] | None = None,
+) -> list[list[int]]:
     """Return half-open frame intervals that are supplied to the generator."""
 
     frames = max(1, int(length))
@@ -67,6 +85,23 @@ def condition_intervals(setting: str, length: int) -> list[list[int]]:
         if count * 2 >= frames:
             return [[0, frames]]
         return [[0, count], [frames - count, frames]]
+    if mode == "adaptive_keyframes":
+        if keyframes is None or case_id not in keyframes:
+            raise KeyError(f"No adaptive keyframes for case {case_id!r}")
+        record = keyframes[case_id]
+        source_length = max(1, int(record.get("T", frames)))
+        indices = record.get("keyframe_indices")
+        if not isinstance(indices, list):
+            raise ValueError(f"Invalid adaptive keyframes for case {case_id!r}")
+        if source_length == frames:
+            mapped = [int(index) for index in indices]
+        else:
+            denominator = max(1, source_length - 1)
+            mapped = [round(int(index) * (frames - 1) / denominator) for index in indices]
+        return [
+            [index, index + 1]
+            for index in sorted({max(0, min(frames - 1, value)) for value in mapped})
+        ]
     raise ValueError(f"Unsupported temporal setting: {setting}")
 
 
@@ -76,6 +111,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--source-root", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--asset-base-url", required=True)
+    parser.add_argument("--keyframe-file", type=Path)
     parser.add_argument("--body-model-url", default="../smpl_model/")
     parser.add_argument("--stride", type=int, default=2)
     parser.add_argument("--chunk-size", type=int, default=64)
@@ -99,7 +135,24 @@ def load_motion(
 ) -> np.ndarray:
     setting_root = temporal_root / f"temporal_{setting}"
     if method == "ours":
-        path = setting_root / method / "eval_npz" / f"{sample_index:05d}.npz"
+        direct = setting_root / method / "eval_npz" / f"{sample_index:05d}.npz"
+        shard_manifest = setting_root / method / "eval_npz_shards.json"
+        if direct.is_file():
+            path = direct
+        elif shard_manifest.is_file():
+            shard_spec = json.loads(shard_manifest.read_text())
+            outputs_root = next(
+                (parent for parent in temporal_root.parents if parent.name == "outputs"),
+                None,
+            )
+            repository_root = outputs_root.parent if outputs_root else Path.cwd()
+            directories = [
+                value if value.is_absolute() else repository_root / value
+                for value in map(Path, shard_spec["directories"])
+            ]
+            path = directories[sample_index % len(directories)] / f"{sample_index:05d}.npz"
+        else:
+            path = direct
         key = "motion_135"
     elif method == "gt":
         path = setting_root / "condmdi" / "eval_npz" / f"{case_id}.npz"
@@ -116,9 +169,47 @@ def load_motion(
     return np.ascontiguousarray(motion)
 
 
+def load_source_manifest(path: Path) -> dict:
+    manifest = json.loads(path.read_text())
+    spec = manifest.get("case_descriptor_chunks")
+    if not spec:
+        return manifest
+    size = max(1, int(spec["size"]))
+    for chunk in range((len(manifest["cases"]) + size - 1) // size):
+        chunk_path = path.parent / spec["path"].replace("{chunk}", f"{chunk:03d}")
+        payload = json.loads(chunk_path.read_text())
+        for offset, motions in enumerate(payload["motions"]):
+            manifest["cases"][payload["start"] + offset]["motions"] = motions
+    return manifest
+
+
+def display_references(references: object, setting_label: str) -> object:
+    if not isinstance(references, list):
+        return references
+    values = [
+        value
+        for value in references
+        if not (isinstance(value, str) and value.startswith("Condition: "))
+    ]
+    return [*values, f"Condition: {setting_label}"]
+
+
 def build_setting(args: argparse.Namespace, setting: str, setting_label: str) -> None:
     source_path = args.source_root.expanduser().resolve() / setting / "manifest.json"
-    source_manifest = json.loads(source_path.read_text())
+    if not source_path.is_file() and setting.startswith("adaptive_keyframes"):
+        source_path = args.source_root.expanduser().resolve() / "start_1f" / "manifest.json"
+    source_manifest = load_source_manifest(source_path)
+    keyframes = None
+    if setting.startswith("adaptive_keyframes"):
+        if args.keyframe_file is None:
+            raise ValueError("Adaptive keyframe galleries require --keyframe-file")
+        keyframe_payload = json.loads(args.keyframe_file.expanduser().resolve().read_text())
+        keyframes = keyframe_payload.get("data_list", keyframe_payload)
+    methods = tuple(
+        method
+        for method in METHODS
+        if not setting.startswith("adaptive_keyframes") or method.key in KEYFRAME_METHOD_KEYS
+    )
     output_dir = args.output_dir.expanduser().resolve() / setting
     assets_dir = output_dir / "assets"
     if assets_dir.exists():
@@ -131,14 +222,21 @@ def build_setting(args: argparse.Namespace, setting: str, setting_label: str) ->
         descriptor = next(iter(item["motions"].values()))
         duration = float(descriptor["display_frames"]) / float(descriptor["fps"])
         max_frames = max(1, round(duration * 30.0))
-        cases.append({
-            "case_id": str(item["case_id"]),
-            "sample_id": str(item.get("sample_id") or item["case_id"]),
-            "references": item.get("references"),
-            "condition_intervals": condition_intervals(setting, max_frames),
-            "motions": {},
-            "_max_frames": max_frames,
-        })
+        cases.append(
+            {
+                "case_id": str(item["case_id"]),
+                "sample_id": str(item.get("sample_id") or item["case_id"]),
+                "references": display_references(item.get("references"), setting_label),
+                "condition_intervals": condition_intervals(
+                    setting,
+                    max_frames,
+                    case_id=str(item["case_id"]),
+                    keyframes=keyframes,
+                ),
+                "motions": {},
+                "_max_frames": max_frames,
+            }
+        )
 
     stride = max(1, args.stride)
     chunk_size = max(1, args.chunk_size)
@@ -156,22 +254,25 @@ def build_setting(args: argparse.Namespace, setting: str, setting_label: str) ->
                     start + index,
                     item["_max_frames"],
                 )
-                for method in METHODS
+                for method in methods
                 for index, item in enumerate(chunk)
             }
-            for method in METHODS:
+            for method in methods:
                 payload = bytearray()
                 asset_name = f"{method.key}_{start // chunk_size:03d}.smpl"
                 for index, item in enumerate(chunk):
                     motion = futures[(method.key, index)].result()
                     encoded, descriptor = encode_motion135(motion, stride=stride)
                     byte_offset = len(payload)
-                    descriptor.update({
-                        "asset": f"assets/{asset_name}",
-                        "translation_offset": byte_offset,
-                        "rotation_offset": byte_offset + descriptor["translation_count"] * 2,
-                        "fps": 30.0,
-                    })
+                    descriptor.update(
+                        {
+                            "asset": f"assets/{asset_name}",
+                            "translation_offset": byte_offset,
+                            "rotation_offset": byte_offset
+                            + descriptor["translation_count"] * 2,
+                            "fps": 30.0,
+                        }
+                    )
                     item["motions"][method.key] = descriptor
                     payload.extend(encoded)
                 (assets_dir / asset_name).write_bytes(payload)
@@ -195,15 +296,12 @@ def build_setting(args: argparse.Namespace, setting: str, setting_label: str) ->
             "ground": "per_clip_global_smpl_mesh_minimum",
             "transform": "single_rigid_vertical_translation",
         },
-        "motion_methods": [method.__dict__ for method in METHODS],
+        "motion_methods": [method.__dict__ for method in methods],
         "cases": cases,
     }
     for item in manifest["cases"]:
         item.pop("_max_frames")
-    (output_dir / "manifest.json").write_text(
-        json.dumps(manifest, ensure_ascii=False, separators=(",", ":")) + "\n",
-        encoding="utf-8",
-    )
+    write_chunked_manifest(output_dir, manifest, chunk_size=chunk_size)
 
 
 def main() -> None:

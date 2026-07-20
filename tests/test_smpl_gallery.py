@@ -2,7 +2,11 @@ from pathlib import Path
 
 import pytest
 
-from tools.build_temporal_case_explorer import condition_intervals
+from tools.build_temporal_case_explorer import (
+    condition_intervals,
+    display_references,
+)
+from tools.smpl_gallery_assets import write_chunked_manifest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,6 +29,46 @@ def test_temporal_condition_intervals(setting, length, expected):
     assert condition_intervals(setting, length) == expected
 
 
+def test_adaptive_keyframes_are_rescaled_to_display_frames():
+    assert condition_intervals(
+        "adaptive_keyframes",
+        51,
+        case_id="case",
+        keyframes={
+            "case": {
+                "T": 101,
+                "keyframe_indices": [0, 50, 100],
+            }
+        },
+    ) == [[0, 1], [25, 26], [50, 51]]
+
+
+def test_display_references_replace_stale_condition_label():
+    references = ["a person walks", "Condition: Prediction: first frame"]
+
+    assert display_references(references, "Keyframe: adaptive sparse frames") == [
+        "a person walks",
+        "Condition: Keyframe: adaptive sparse frames",
+    ]
+
+
+def test_chunked_manifest_moves_only_motion_descriptors(tmp_path):
+    manifest = {
+        "cases": [
+            {"case_id": "a", "references": ["walk"], "motions": {"gt": {"frames": 10}}},
+            {"case_id": "b", "references": ["run"], "motions": {"gt": {"frames": 20}}},
+        ]
+    }
+
+    write_chunked_manifest(tmp_path, manifest, chunk_size=1)
+
+    assert manifest["schema_version"] == 3
+    assert manifest["cases"][0] == {"case_id": "a", "references": ["walk"]}
+    assert (tmp_path / "descriptors" / "000.json").read_text().startswith(
+        '{"start":0,"motions":[{"gt":{"frames":10}}]}'
+    )
+
+
 def test_smpl_gallery_uses_rigid_mesh_floor_alignment():
     page = GALLERY_TEMPLATE.read_text()
 
@@ -44,3 +88,7 @@ def test_smpl_gallery_exposes_condition_colors_and_local_exports():
     assert "motion_135.npy" in page
     assert "condition_mask.npy" in page
     assert "new FBXExporter().parseSync" in page
+    assert 'headers:{Range:' in page
+    assert 'await import("fflate")' in page
+    assert "views.slice(0,eager)" in page
+    assert "mesh.frustumCulled=false" in page

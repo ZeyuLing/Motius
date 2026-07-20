@@ -46,6 +46,7 @@ runs/
 tmp/
 temp/
 docs/leaderboards/hf_space_*/cases/**/assets/
+docs/leaderboards/hf_space_*/cases/**/descriptors/
 
 *.pt
 *.pth

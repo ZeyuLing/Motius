@@ -99,7 +99,9 @@ function renderCaseExplorer() {
   const selectedRows = selectedSettingRows();
   const textSetting = selectedRows.find((row) => row.text && !row.isReference)?.settingId;
   if (textSetting) select.value = textSetting.replace(/^temporal_/, "");
-  document.getElementById("case-explorer-frame").src = `cases/${select.value}/index.html`;
+  const frame = document.getElementById("case-explorer-frame");
+  const source = `cases/${select.value}/index.html`;
+  if (frame.getAttribute("src") !== source) frame.src = source;
 }
 
 function isRankable(row) {

@@ -19,8 +19,6 @@ for path in (REPO_ROOT, REPO_ROOT / "tools"):
     if str(path) not in sys.path:
         sys.path.insert(0, str(path))
 
-from motius.motion.representation.babel135 import babel135_to_motion135
-from motius.motion.representation.motion272 import motion272_to_motion135
 from motius.motion.representation.rotation import (
     axis_angle_to_matrix,
     matrix_to_rotation_6d,
@@ -31,7 +29,7 @@ from motius.motion.retarget._hml263_smpl_impl import (
     matrix_to_rot6d_rowmajor,
 )
 from motius.motion.retarget.hml263_smpl import load_smpl_rest
-from smpl_gallery_assets import encode_motion135
+from smpl_gallery_assets import encode_motion135, write_chunked_manifest
 
 
 @dataclass(frozen=True)
@@ -46,7 +44,7 @@ METHODS = (
     Method("flowmdm", "FlowMDM", "#315f9d"),
     Method("motionstreamer", "MotionStreamer", "#a5412e"),
     Method("motionlab", "MotionLab", "#287147"),
-    Method("prism", "PRISM", "#6d4ea2"),
+    Method("prism", "PRISM (epoch 26)", "#6d4ea2"),
 )
 
 
@@ -58,6 +56,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--asset-base-url", required=True)
     parser.add_argument("--body-model-url", default="smpl_model/")
+    parser.add_argument(
+        "--prism-directory",
+        default="prism_epoch26_fixed360_cfg5_ar5_h20x8_resched",
+    )
     parser.add_argument("--stride", type=int, default=2)
     parser.add_argument("--chunk-size", type=int, default=64)
     parser.add_argument("--io-workers", type=int, default=32)
@@ -70,21 +72,31 @@ def smpl_params_to_motion135(path: Path, max_frames: int) -> np.ndarray:
         body_pose = np.asarray(source["body_pose"], dtype=np.float32).reshape(len(global_orient), -1, 3)
         translation_key = "transl" if "transl" in source.files else "trans"
         translation = np.asarray(source[translation_key], dtype=np.float32).reshape(-1, 3)
+    if min(len(global_orient), len(body_pose), len(translation)) < max_frames:
+        raise ValueError(f"Short SMPL sequence in {path}: expected {max_frames} frames")
     axis_angle = np.concatenate((global_orient, body_pose[:, :21]), axis=1)[:max_frames]
     rotations = axis_angle_to_matrix(axis_angle.reshape(-1, 3)).reshape(len(axis_angle), 22, 3, 3)
     rotation6d = matrix_to_rotation_6d(rotations, convention="row").reshape(len(axis_angle), 132)
-    return np.concatenate((translation[:len(axis_angle)], rotation6d), axis=1).astype(np.float32)
+    motion = np.concatenate((translation[:len(axis_angle)], rotation6d), axis=1).astype(np.float32)
+    if not np.isfinite(motion).all():
+        raise ValueError(f"Non-finite SMPL parameters in {path}")
+    return motion
 
 
-def fit_gt_joints(
+def fit_joints(
     path: Path,
     max_frames: int,
     rest_joints: np.ndarray,
     parents: np.ndarray,
 ) -> np.ndarray:
-    """Run the same refine=0 position IK without an unnecessary SMPL forward."""
+    """Fit native SMPL-22 joints with the shared refine=0 position IK."""
 
-    joints = np.asarray(np.load(path), dtype=np.float32).reshape(-1, 22, 3)[:max_frames]
+    joints = np.asarray(np.load(path), dtype=np.float32).reshape(-1, 22, 3)
+    if len(joints) < max_frames:
+        raise ValueError(f"Short joints66 sequence in {path}: {len(joints)} < {max_frames}")
+    joints = joints[:max_frames]
+    if not np.isfinite(joints).all():
+        raise ValueError(f"Non-finite joints66 values in {path}")
     local_rotations = estimate_local_rotations(joints, rest_joints, parents)
     translation = joints[:, 0] - rest_joints[0]
     rotation6d = matrix_to_rot6d_rowmajor(local_rotations).reshape(len(joints), 132)
@@ -115,23 +127,31 @@ def canonicalize_motion135(motion: np.ndarray) -> np.ndarray:
     return value
 
 
+def display_segments(segments: object) -> list[dict] | None:
+    if not isinstance(segments, list):
+        return None
+    return [
+        {
+            "caption": str(segment["caption"]),
+            "start_frame": int(segment["start_frame"]),
+            "end_frame": int(segment["end_frame"]),
+        }
+        for segment in segments
+    ]
+
+
 def load_method_motion(
     root: Path,
     method: str,
     case_id: str,
     max_frames: int,
+    prism_directory: str,
 ) -> np.ndarray:
-    if method == "flowmdm":
-        features = np.load(root / "flowmdm_seed42" / "babel135" / f"{case_id}.npy")
-        return babel135_to_motion135(features)[:max_frames]
-    if method == "motionstreamer":
-        features = np.load(root / "motionstreamer_latest_seed42" / "motion272" / f"{case_id}.npy")
-        return motion272_to_motion135(features)[:max_frames]
     if method == "motionlab":
         path = root / "motionlab_f5_actiongroups_v4_smplfit" / "smpl" / f"{case_id}.npz"
         return smpl_params_to_motion135(path, max_frames)
     if method == "prism":
-        path = root / "prism_epoch18_cfg1p5_ar9_actiongroups_v7" / "smplx" / f"{case_id}.npz"
+        path = root / prism_directory / "smplx" / f"{case_id}.npz"
         return smpl_params_to_motion135(path, max_frames)
     raise KeyError(method)
 
@@ -153,10 +173,13 @@ def main() -> None:
     cases = [{
         "case_id": str(item["case_id"]),
         "sample_id": str(item.get("sample_id") or item["case_id"]),
-        "segments": item.get("segments"),
+        "segments": display_segments(item.get("segments")),
         "references": item.get("references"),
         "motions": {},
-        "_frames": int(next(iter(item["motions"].values()))["display_frames"]),
+        "_frames": int(
+            item.get("total_frames")
+            or next(iter(item.get("motions", {}).values()))["display_frames"]
+        ),
     } for item in source["cases"]]
     stride = max(1, args.stride)
     chunk_size = max(1, args.chunk_size)
@@ -168,7 +191,7 @@ def main() -> None:
             end = min(start + chunk_size, len(cases))
             chunk = cases[start:end]
             gt_loaded = ik_executor.map(
-                fit_gt_joints,
+                fit_joints,
                 [root / "references" / "joints66" / f"{item['case_id']}.npy" for item in chunk],
                 [item["_frames"] for item in chunk],
                 [rest_joints] * len(chunk),
@@ -177,10 +200,27 @@ def main() -> None:
             for method in METHODS:
                 if method.key == "gt":
                     loaded = gt_loaded
+                elif method.key in {"flowmdm", "motionstreamer"}:
+                    directory = (
+                        root / "flowmdm_seed42" / "joints66"
+                        if method.key == "flowmdm"
+                        else root / "motionstreamer_latest_seed42" / "joints66"
+                    )
+                    loaded = ik_executor.map(
+                        fit_joints,
+                        [directory / f"{item['case_id']}.npy" for item in chunk],
+                        [item["_frames"] for item in chunk],
+                        [rest_joints] * len(chunk),
+                        [parents] * len(chunk),
+                    )
                 else:
                     loaded = executor.map(
                         lambda item, method=method: load_method_motion(
-                            root, method.key, item["case_id"], item["_frames"]
+                            root,
+                            method.key,
+                            item["case_id"],
+                            item["_frames"],
+                            args.prism_directory,
                         ),
                         chunk,
                     )
@@ -207,6 +247,11 @@ def main() -> None:
         "task": "sequential_motion_generation",
         "title": "BABEL Sequential Generation: SMPL Mesh Comparison",
         "protocol": source.get("protocol"),
+        "provenance": {
+            "flowmdm_visualization": "native joints66 fitted to the shared SMPL-22 body",
+            "motionstreamer_visualization": "native joints66 fitted to the shared SMPL-22 body",
+            "prism_checkpoint": args.prism_directory,
+        },
         "population": len(cases),
         "asset_base_url": args.asset_base_url,
         "body_model_url": args.body_model_url,
@@ -216,9 +261,10 @@ def main() -> None:
     }
     for item in cases:
         item.pop("_frames")
-    (output / "manifest.json").write_text(
-        json.dumps(manifest, ensure_ascii=False, separators=(",", ":")) + "\n",
-        encoding="utf-8",
+    write_chunked_manifest(
+        output,
+        manifest,
+        chunk_size=chunk_size,
     )
     print(json.dumps({"output": str(output), "cases": len(cases), "methods": len(METHODS)}, indent=2))
 
