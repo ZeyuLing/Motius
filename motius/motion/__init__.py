@@ -1,6 +1,7 @@
 """Motion representations, skeleton utilities, and retargeting APIs."""
 
 from .representation import (
+    AISTPP_SMPL24_JOINTS,
     BABEL135,
     SPECS,
     convert_motion,
@@ -25,6 +26,10 @@ from .representation import (
     encode_babel135,
     infer_smpl22_offsets,
     smpl22_joints_to_ardy_core27_joints,
+    aistpp_smpl24_to_motion135,
+    aistpp_smpl24_to_smpl22_joints,
+    aistpp_smpl24_fk,
+    as_aistpp_smpl24_joints,
 )
 from .skeleton.canonical import canonicalize_smpl22_joints
 from .fbx import (
@@ -45,6 +50,7 @@ from .fbx import (
 )
 
 __all__ = [
+    "AISTPP_SMPL24_JOINTS",
     "BABEL135",
     "SPECS",
     "get_spec",
@@ -65,6 +71,10 @@ __all__ = [
     "motion272_to_motion135",
     "ardy_core27_to_smpl22_joints",
     "smpl22_joints_to_ardy_core27_joints",
+    "as_aistpp_smpl24_joints",
+    "aistpp_smpl24_to_smpl22_joints",
+    "aistpp_smpl24_to_motion135",
+    "aistpp_smpl24_fk",
     "smpl_to_joints",
     "smpl_to_motion135",
     "smpl_to_hml263",

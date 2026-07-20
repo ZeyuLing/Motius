@@ -1,6 +1,7 @@
 """Public motion representation library."""
 
 from .specs import (
+    AISTPP_SMPL24_JOINTS,
     ARDY_330,
     ARDY_CORE330,
     ARDY_G1_414,
@@ -17,6 +18,15 @@ from .specs import (
     MS272,
     SPECS,
     MotionRepresentationSpec,
+)
+from .aistpp import (
+    AISTPP_MOTION_FPS,
+    AISTPP_SMPL24_JOINT_DIM,
+    AISTPP_SMPL24_PARENTS,
+    aistpp_smpl24_fk,
+    aistpp_smpl24_to_motion135,
+    aistpp_smpl24_to_smpl22_joints,
+    as_aistpp_smpl24_joints,
 )
 from .babel135 import (
     BABEL135_DIM,
@@ -71,10 +81,19 @@ from motius.motion.retarget.ardy_core import (
 def get_spec(name: str) -> MotionRepresentationSpec:
     """Return a representation spec from a normalized public alias."""
 
-    key = name.lower().replace("-", "").replace("_", "")
+    key = (
+        name.lower()
+        .replace("+", "p")
+        .replace("-", "")
+        .replace("_", "")
+        .replace(" ", "")
+    )
     aliases = {
         "humanml3d263": "hml263",
         "humanml263": "hml263",
+        "aistppsmpl24": "aistpp_smpl24_joints",
+        "aistppsmpl24joints": "aistpp_smpl24_joints",
+        "aistppjoints72": "aistpp_smpl24_joints",
         "babel135": "babel135",
         "flowmdmbabel135": "babel135",
         "motionstreamer272": "ms272",
@@ -104,6 +123,10 @@ def get_spec(name: str) -> MotionRepresentationSpec:
 
 __all__ = [
     "MotionRepresentationSpec",
+    "AISTPP_SMPL24_JOINTS",
+    "AISTPP_MOTION_FPS",
+    "AISTPP_SMPL24_JOINT_DIM",
+    "AISTPP_SMPL24_PARENTS",
     "HML263",
     "BABEL135",
     "BABEL135_DIM",
@@ -136,6 +159,10 @@ __all__ = [
     "ardy_feature_slices",
     "split_ardy_features",
     "decode_ardy_features",
+    "as_aistpp_smpl24_joints",
+    "aistpp_smpl24_fk",
+    "aistpp_smpl24_to_smpl22_joints",
+    "aistpp_smpl24_to_motion135",
     "ARDY_CORE27_NAMES",
     "SMPL22_FROM_ARDY_CORE27",
     "ardy_core27_to_smpl22_joints",

@@ -25,7 +25,7 @@ released method will ship with a model card, checkpoint path, evaluation
 results, and qualitative SMPL renders.
 
 Motius also ships an explicit [Motion Toolkit](docs/motion/README.md) for
-converting HML263, MotionStreamer-272, HY-Motion-201, DART276,
+converting HML263, AIST++ SMPL-24 joints, MotionStreamer-272, HY-Motion-201, DART276,
 InterHuman-262, ARDY-330, Unitree G1, and SMPL
 `motion135`, plus SMPL/SOMA/G1 retargeting. Its documentation records skeleton,
 coordinate, FPS, and 6D rotation conventions for every route.
@@ -34,7 +34,7 @@ coordinate, FPS, and 6D rotation conventions for every route.
 
 Task labels use a controlled vocabulary: [`T2M`](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [`M2T`](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard),
 [`Temporal Condition`](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard),
-`Body-Part Condition`, `Two-Person T2M`, [`Sequential Generation`](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard), `Motion Control`, and `Kinematic Control`. Properties such
+`Body-Part Condition`, `Two-Person T2M`, [`Sequential Generation`](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard), [`Music-to-Dance`](docs/tasks/music_to_dance.md), `Motion Control`, and `Kinematic Control`. Properties such
 as zero-shot, streaming, latent, or autoregressive are described in the model
 cards rather than treated as separate tasks.
 
@@ -47,6 +47,7 @@ cards rather than treated as separate tasks.
 | TM2T | [M2T](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/Motius-TM2T-HumanML3D) | [Model Card](docs/model_zoo/tm2t.md) | [Paper](https://arxiv.org/abs/2207.01696) / [Code](https://github.com/EricGuo5513/TM2T) |
 | MotionGPT | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [M2T](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/Motius-MotionGPT-HumanML3D) | [Model Card](docs/model_zoo/motiongpt.md) | [Paper](https://arxiv.org/abs/2306.14795) / [Code](https://github.com/OpenMotionLab/MotionGPT) |
 | MotionGPT3 | [M2T](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/Motius-MotionGPT3-HumanML3D) | [Model Card](docs/model_zoo/motiongpt3.md) | [Paper](https://arxiv.org/abs/2506.24086) / [Code](https://github.com/OpenMotionLab/MotionGPT3) |
+| Bailando | [Music-to-Dance](docs/tasks/music_to_dance.md) | AIST++ SMPL-24 joints | [HF](https://huggingface.co/ZeyuLing/Motius-Bailando-AISTPP) | [Model Card](docs/model_zoo/bailando.md) | [Paper](https://arxiv.org/abs/2203.13055) / [Code](https://github.com/lisiyao21/Bailando) |
 | VerMo | [M2T](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | VerMo-138 via SMPL-22 | [HF](https://huggingface.co/ZeyuLing/Motius-VerMo-HumanML3D) | [Model Card](docs/model_zoo/vermo.md) | [Motius Code](https://github.com/ZeyuLing/Motius/tree/main/motius/models/vermo) |
 | FlowMDM | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard), [TP2M](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) | HumanML3D-263 / BABEL-135 | [HML3D](https://huggingface.co/ZeyuLing/hftrainer-flowmdm-humanml3d) / [BABEL](https://huggingface.co/ZeyuLing/motius-flowmdm-babel) | [Model Card](docs/model_zoo/flowmdm.md) | [Paper](https://arxiv.org/abs/2402.15509) / [Code](https://github.com/BarqueroGerman/FlowMDM) |
 | MotionCLR | [T2M](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | HumanML3D-263 | [HF](https://huggingface.co/ZeyuLing/motius-motionclr-humanml3d) | [Model Card](docs/model_zoo/motionclr.md) | [Paper](https://arxiv.org/abs/2410.18977) / [Code](https://github.com/IDEA-Research/MotionCLR) |
@@ -91,6 +92,7 @@ G1-native methods additionally use the robot-specific TMR-G1 evaluator.
 | Motius Joint-Position Evaluator | Motius-trained TMR reproduction for unified SMPL-22 joint positions | SMPL-22 joints66 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-universal-smplh-joints66) | [Evaluator Card](docs/evaluator_zoo/motius_joint_position.md) | [TMR Paper](https://arxiv.org/abs/2305.00976) / [TMR Code](https://github.com/Mathux/TMR) |
 | Motius TMR-G1 Evaluator | Robot-native text-motion evaluator for Unitree G1 generation | G1-38D | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-g1-38d-tmr) | [Evaluator Card](docs/evaluator_zoo/g1_tmr.md) | [TMR Paper](https://arxiv.org/abs/2305.00976) / [TMR Code](https://github.com/Mathux/TMR) |
 | InterCLIP | Official text-interaction evaluator used by InterGen and InterMask | paired InterHuman-262 | [HF](https://huggingface.co/ZeyuLing/motius-evaluator-interhuman-interclip) | [Evaluator Card](docs/evaluator_zoo/interclip.md) | [InterGen Paper](https://arxiv.org/abs/2304.05684) / [Code](https://github.com/tr3e/InterGen) |
+| AIST++ Music-to-Dance | Kinetic/geometric FID, diversity, and music-beat alignment | AIST++ SMPL-24 joints | [HF Protocol Artifact](https://huggingface.co/ZeyuLing/Motius-Evaluator-AISTPP-Music-to-Dance) | [Evaluator Card](docs/evaluator_zoo/aistpp_music_to_dance.md) | [Bailando Paper](https://arxiv.org/abs/2203.13055) / [Code](https://github.com/lisiyao21/Bailando) |
 
 Checkpoint-free [physical motion metrics](docs/evaluation/physical_metrics.md)
 are also available for SMPL-22 joints, `motion135`, and MotionStreamer-272.
@@ -111,6 +113,7 @@ validated retargeting route before crossing skeletons.
 | -------------- | ----: | ------- | --------------------------------- |
 | **SMPL-22 `motion135`** | `(T, 135)` | Canonical interchange, FK, mesh rendering | Central bridge: translation + 22 local 6D rotations |
 | **HumanML3D-263** | `(T, 263)` | HumanML3D-based T2M models | Native decode plus official SMPL-22 joint encoder |
+| **AIST++ SMPL-24 joints** | `(T, 24, 3)` | Bailando and music-to-dance evaluation | Native global positions at 60 fps; exact SMPL-22 subset, position-IK mesh bridge |
 | **BABEL-135** | `(T, 135)` | FlowMDM sequential generation | Z-up root height/velocity plus 22 local rotations; converts to canonical SMPL-22 joints with explicit offsets |
 | **MotionStreamer-272** | `(T, 272)` | MotionStreamer and MotionMillion | Converts to and from SMPL-22 motion |
 | **HY-Motion-201** | `(T, 201)` | HY-Motion models | Contains `motion135` as an exact prefix plus 22 joint positions |

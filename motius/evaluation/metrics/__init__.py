@@ -7,6 +7,7 @@ from .physical import (
     physical_metrics_from_motion,
     table_scaled_physical_metrics,
 )
+from .dance_features import extract_geometric_features, extract_kinetic_features
 from .t2m import (
     aggregate_t2m_metrics,
     diversity,
@@ -21,6 +22,8 @@ __all__ = [
     "aggregate_t2m_metrics",
     "compute_physical_metrics",
     "diversity",
+    "extract_geometric_features",
+    "extract_kinetic_features",
     "l2_normalize_embeddings",
     "physical_metrics_from_motion",
     "r_precision",

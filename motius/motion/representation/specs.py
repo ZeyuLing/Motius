@@ -44,6 +44,22 @@ HML263 = MotionRepresentationSpec(
 )
 
 
+AISTPP_SMPL24_JOINTS = MotionRepresentationSpec(
+    name="aistpp_smpl24_joints",
+    dim=72,
+    fps=60.0,
+    coordinate_frame="AIST++ SMPL Y-up world frame with absolute translation",
+    rotation_convention="position-only; no joint rotations are stored",
+    layout=(
+        ("global_joint_positions", 0, 72, "24 SMPL joints * XYZ in metres"),
+    ),
+    notes=(
+        "Native Bailando representation. Joints 0:22 are the common SMPL body "
+        "chain; recovering motion135 rotations requires position IK and is lossy."
+    ),
+)
+
+
 BABEL135 = MotionRepresentationSpec(
     name="babel135",
     dim=135,
@@ -286,6 +302,7 @@ SPECS = {
     spec.name: spec
     for spec in (
         HML263,
+        AISTPP_SMPL24_JOINTS,
         BABEL135,
         MS272,
         MOTION135,
@@ -308,6 +325,7 @@ SPECS["ardy_core330"] = ARDY_330
 __all__ = [
     "MotionRepresentationSpec",
     "HML263",
+    "AISTPP_SMPL24_JOINTS",
     "BABEL135",
     "MS272",
     "MOTION135",

@@ -14,6 +14,7 @@ materialize joints or meshes.
 | Name | Shape | Native FPS | Layout | 6D rotation convention |
 | ---- | ----: | ---------: | ------ | ---------------------- |
 | `hml263` | `(T, 263)` | 20 | root velocity/height, RIC joints, local rotations, velocities, contacts | HumanML3D feature protocol |
+| `aistpp_smpl24_joints` | `(T, 24, 3)` | 60 | global SMPL-24 XYZ joint positions in metres | position-only; no rotations stored |
 | `babel135` | `(T, 135)` | 30 | Z-up root height/planar velocity + 22 local rotations | first two **rows**, `R[:2, :].reshape(6)` |
 | `ms272` | `(T, 272)` | 30 | root velocity, heading delta, joints, velocities, local rotations | first two **rows**, `R[:2, :].reshape(6)` |
 | `motion135` | `(T, 135)` | usually 30 | root translation + 22 local rotations | first two **columns** flattened row-wise, `R[:, :2].reshape(6)` |
@@ -23,6 +24,28 @@ materialize joints or meshes.
 | `g1_38` | `(T, 38)` | 30 | Unitree G1 root XY velocity/height, root rotation, 29 joint angles | first two **columns** flattened row-wise |
 | `ardy_330` | `(T, 330)` | 20 | ARDY-27 root, heading, positions, rotations, velocities, contacts | global rotations via ARDY `matrix_to_cont6d` |
 | `ardy_g1_414` | `(T, 414)` | 25 | Unitree G1 explicit root, heading, positions, rotations, velocities, contacts | global rotations via ARDY `matrix_to_cont6d` |
+
+## AIST++ SMPL-24 Joints
+
+Bailando generates 24 global SMPL joint positions at 60 fps. The first 22
+joints are the standard SMPL body chain used by Motius, so selection to
+`smpl22_joints` is exact. AIST++ does not retain local rotations, body shape, or
+gender; conversion to `motion135` and SMPL mesh therefore uses position IK and
+is lossy.
+
+```python
+from motius.motion import convert_motion
+
+smpl22 = convert_motion(dance, "aistpp_smpl24_joints", "smpl22_joints")
+motion135 = convert_motion(
+    dance,
+    "aistpp_smpl24_joints",
+    "motion135",
+    model_dir="checkpoints/body_models/smpl",
+    source_fps=60,
+    target_fps=30,
+)
+```
 
 ## BABEL-135
 

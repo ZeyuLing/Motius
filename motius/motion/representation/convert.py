@@ -473,10 +473,19 @@ def convert_motion(data, source: str, target: str, **kwargs):
     """
 
     def normalize(name: str) -> str:
-        key = name.lower().replace("-", "").replace("_", "")
+        key = (
+            name.lower()
+            .replace("+", "p")
+            .replace("-", "")
+            .replace("_", "")
+            .replace(" ", "")
+        )
         aliases = {
             "humanml3d263": "hml263",
             "humanml263": "hml263",
+            "aistppsmpl24": "aistpp_smpl24_joints",
+            "aistppsmpl24joints": "aistpp_smpl24_joints",
+            "aistppjoints72": "aistpp_smpl24_joints",
             "motionstreamer272": "ms272",
             "motion272": "ms272",
             "hymotion201": "hymotion201",
@@ -509,6 +518,40 @@ def convert_motion(data, source: str, target: str, **kwargs):
     target = normalize(target)
     if source == target:
         return data
+
+    if source == "aistpp_smpl24_joints":
+        from motius.motion.representation.aistpp import (
+            aistpp_smpl24_to_motion135,
+            aistpp_smpl24_to_smpl22_joints,
+            as_aistpp_smpl24_joints,
+        )
+
+        if target == "joints":
+            return as_aistpp_smpl24_joints(data)
+        if target == "smpl22_joints":
+            return aistpp_smpl24_to_smpl22_joints(data)
+        accepted = {
+            key: kwargs[key]
+            for key in (
+                "model_dir",
+                "source_fps",
+                "target_fps",
+                "gender",
+                "device",
+                "batch_size",
+                "floor_align",
+                "refine_iters",
+                "refine_lr",
+                "orientation_mode",
+                "parent_ref_weight",
+                "pose_keep_weight",
+                "pose_l2_weight",
+                "angle_prior_weight",
+            )
+            if key in kwargs
+        }
+        data = aistpp_smpl24_to_motion135(data, **accepted)
+        source = "motion135"
 
     if source in {"ardy_330", "ardy_core330", "ardy_g1_414"}:
         motion_rep = kwargs.get("motion_rep")

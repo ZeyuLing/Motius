@@ -12,6 +12,11 @@ from motius.evaluation.m2t import (
     load_humanml3d_m2t_samples,
     write_humanml3d_m2t_manifest,
 )
+from motius.evaluation.music_to_dance import (
+    AISTPPMusicDanceEvaluator,
+    BailandoEvaluator,
+    MusicDanceSample,
+)
 from motius.evaluation.sequential import (
     SequentialCase,
     SequentialSegment,
@@ -19,9 +24,12 @@ from motius.evaluation.sequential import (
 )
 
 __all__ = [
+    "AISTPPMusicDanceEvaluator",
     "BaseEvaluator",
+    "BailandoEvaluator",
     "HumanML3DM2TSample",
     "HumanMLM2TEvaluator",
+    "MusicDanceSample",
     "SequentialCase",
     "SequentialSegment",
     "TMRG1Evaluator",

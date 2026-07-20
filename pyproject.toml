@@ -64,6 +64,10 @@ intermask = [
 motionclr = [
     "clip @ git+https://github.com/openai/CLIP.git",
 ]
+music-to-dance = [
+    "librosa>=0.9",
+    "soundfile>=0.10",
+]
 m2t = [
     "bert-score>=0.3.13",
     "pycocoevalcap>=1.2",
@@ -132,6 +136,7 @@ namespaces = false
 "motius.models.intergen" = ["NOTICE", "network/configs/*.yaml"]
 "motius.models.intermask" = ["LICENSE"]
 "motius.models.motionclr" = ["LICENSE", "ATTRIBUTIONS.md"]
+"motius.models.bailando" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.models.maskcontrol" = ["ATTRIBUTIONS.md"]
 "motius.models.ardy" = [
     "LICENSE",
