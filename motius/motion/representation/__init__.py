@@ -47,6 +47,7 @@ from .g1 import (
 )
 from .convert import (
     convert_motion,
+    hml263_to_motion272,
     joints_to_hml263,
     motion135_to_hml263,
     motion135_to_interhuman262,
@@ -147,6 +148,7 @@ __all__ = [
     "joints_pair_to_interhuman262",
     "joints_to_interhuman262",
     "convert_motion",
+    "hml263_to_motion272",
     "joints_to_hml263",
     "motion135_to_hml263",
     "motion135_to_interhuman262",

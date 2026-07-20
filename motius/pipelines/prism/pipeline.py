@@ -49,7 +49,7 @@ class PRISMPipeline(BasePipeline):
         prefix_motion_path: Optional[str] = None,
         condition_num_frames: int = 1,
         num_inference_steps: int = 50,
-        guidance_scale: float = 5.0,
+        guidance_scale: float = 1.5,
         kafs_mode: Optional[str] = None,
         canonicalize: bool = False,
         use_blend: bool = True,
@@ -125,6 +125,7 @@ class PRISMPipeline(BasePipeline):
         kwargs.setdefault("fixed_generation_canvas", True)
         kwargs.setdefault("align_generation_frames", False)
         kwargs.setdefault("allow_segment_padding", False)
+        kwargs.setdefault("ar_condition_frames", 9)
         return self.generate(prompts, segment_frames, **kwargs)
 
     def infer_t2m(self, captions, lengths, **kwargs):

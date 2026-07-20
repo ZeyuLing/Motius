@@ -1,0 +1,12 @@
+record_id,title,tier,reason,read_priority,must_cite,novelty_risk
+P01,TM2T,core,Defines current official M2T metrics,1,yes,protocol mismatch
+P02,MotionGPT,core,Shows published protocol divergence,1,yes,cross-paper incomparability
+P03,G-Eval,core,Rubric-based direct scoring,2,yes,judge self-bias
+P04,MT-Bench and Chatbot Arena,core,Pairwise and human preference benchmark,1,yes,position/verbosity bias
+P05,CLAIR,core,Reference-based LLM caption judge,1,yes,reference incompleteness
+P06,Length-Controlled AlpacaEval,core,Length-controlled win rate,1,yes,length bias
+P07,Arena-Hard,core,Leaderboard ranking and separation,2,yes,automatic judge gaming
+P08,Prometheus 2,core,Open rubric judge,2,yes,domain transfer
+P09,FLEUR,core,Source-grounded multimodal caption score,1,yes,render/model bias
+P10,JudgeBench,core,Judge reliability audit,1,yes,judge validity
+P11,VideoJudge,core,Video-grounded judge evidence,1,yes,motion rendering fidelity

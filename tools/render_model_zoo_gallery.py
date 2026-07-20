@@ -74,6 +74,12 @@ MODELS = {
             "004822": "person walking at an average pace forward, swaying arms and torso with a sense of swagger.",
         },
     },
+    "maskcontrol": {
+        "method": "MaskControl",
+        "source": "maskcontrol",
+        "prefix": "maskcontrol",
+        "cases": ("001840", "014457", "006944"),
+    },
     "motionmillion": {
         "method": "MotionMillion-7B",
         "source": "gotozero_7b_train",

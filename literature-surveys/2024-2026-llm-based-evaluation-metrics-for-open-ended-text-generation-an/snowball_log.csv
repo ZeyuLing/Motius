@@ -1,0 +1,3 @@
+anchor_id,anchor_title,direction,pass,new_candidates,new_core,source,notes
+P04,MT-Bench and Chatbot Arena,forward,1,3,3,arXiv,"AlpacaEval LC; Arena-Hard; JudgeBench"
+P05,CLAIR,forward,1,3,2,"ACL/arXiv","FLEUR; VideoJudge; VELA screened"

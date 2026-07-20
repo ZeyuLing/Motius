@@ -30,3 +30,16 @@ def test_condmdi_pipeline_import_and_registration():
     assert CondMDIPipeline.BUNDLE_CLS == "motius.models.condmdi.CondMDIBundle"
     assert PIPELINES.get("CondMDIPipeline") is CondMDIPipeline
     assert MODEL_BUNDLES.get("CondMDIBundle") is CondMDIBundle
+
+
+def test_omnicontrol_pipeline_import_and_registration():
+    import pytest
+
+    pytest.importorskip("clip")
+    from motius.models.omnicontrol import OmniControlBundle
+    from motius.pipelines.omnicontrol import OmniControlPipeline
+    from motius.registry import MODEL_BUNDLES, PIPELINES
+
+    assert OmniControlPipeline.BUNDLE_CLS == "motius.models.omnicontrol.OmniControlBundle"
+    assert PIPELINES.get("OmniControlPipeline") is OmniControlPipeline
+    assert MODEL_BUNDLES.get("OmniControlBundle") is OmniControlBundle

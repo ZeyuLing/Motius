@@ -26,7 +26,7 @@ def test_load_protocol_uses_selected_caption_and_short_prediction_name(tmp_path)
     np.save(predictions / "001840.npy", prediction)
 
     captions, predicted, references, keyids = load_protocol(
-        dataset, "humanml3d_test", predictions
+        dataset, "humanml3d_test", predictions, num_workers=2
     )
 
     assert captions == ["a selected caption"]

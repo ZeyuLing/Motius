@@ -32,9 +32,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--transformer-dtype", default="bf16")
     parser.add_argument("--text-dtype", default="bf16")
     parser.add_argument("--num-inference-steps", type=int, default=50)
-    parser.add_argument("--guidance-scale", type=float, default=5.0)
+    parser.add_argument("--guidance-scale", type=float, default=1.5)
     parser.add_argument("--pad-to-frames", type=int, default=360)
-    parser.add_argument("--ar-condition-frames", type=int, default=5)
+    parser.add_argument("--ar-condition-frames", type=int, default=9)
     parser.add_argument(
         "--kafs-mode",
         choices=("none", "depth_driven", "uniform", "random"),

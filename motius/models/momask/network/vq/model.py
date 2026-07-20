@@ -1,5 +1,6 @@
 import random
 
+import torch
 import torch.nn as nn
 from .encdec import Encoder, Decoder
 from .residual_vq import ResidualVQ
@@ -78,9 +79,14 @@ class RVQVAE(nn.Module):
         return x_out, commit_loss, perplexity
 
     def forward_decoder(self, x):
-        x_d = self.quantizer.get_codes_from_indices(x)
-        # x_d = x_d.view(1, -1, self.code_dim).permute(0, 2, 1).contiguous()
-        x = x_d.sum(dim=0).permute(0, 2, 1)
+        # MoMask passes integer token grids ``(B,N,Q)`` while MaskControl's
+        # differentiable expectation sampling passes continuous codebook
+        # embeddings ``(B,N,D)``. Both are native inputs of the released VQ
+        # decoder and must share exactly the same convolutional path.
+        if not torch.is_floating_point(x) or x.shape[-1] <= self.quantizer.num_quantizers:
+            x_d = self.quantizer.get_codes_from_indices(x)
+            x = x_d.sum(dim=0)
+        x = x.permute(0, 2, 1)
 
         # decoder
         x_out = self.decoder(x)

@@ -27,10 +27,7 @@ def _load_openai_clip_model(clip_version, device):
             state = torch.load(str(clip_path), map_location="cpu")
         build_state = dict(state)
         clip_model = clip.model.build_model(build_state)
-        if str(device) == "cpu" and any(
-            torch.is_floating_point(v) and v.dtype == torch.float32
-            for v in state.values()
-        ):
+        if str(device) == "cpu":
             clip_model = clip_model.float()
             clip_model.load_state_dict(state, strict=True)
         return clip_model

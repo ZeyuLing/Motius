@@ -1262,6 +1262,75 @@
         }
       ]
     },
+    "maskcontrol": {
+      "method": "MaskControl",
+      "task": "T2M, Temporal Condition, Body-Part Condition, Sequential Generation",
+      "motion_representation": "HumanML3D-263",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-maskcontrol-humanml3d",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "selected caption",
+          "samples": 3970,
+          "R1": 0.5381,
+          "R2": 0.7349,
+          "R3": 0.8271,
+          "FID": 0.1303,
+          "MM-Dist": 2.8631,
+          "Diversity": 9.6476
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "neutral-SMPL bridge, refk FID",
+          "samples": 4042,
+          "R1": 0.5866,
+          "R2": 0.7433,
+          "R3": 0.8073,
+          "FID": 135.276,
+          "MM-Dist": 19.4647,
+          "Diversity": 25.5291
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "neutral-SMPL bridge, normalized FID",
+          "samples": 4034,
+          "R1": 0.3906,
+          "R2": 0.5774,
+          "R3": 0.6706,
+          "FID": 0.6066,
+          "MM-Dist": 45.338,
+          "Diversity": 50.1422
+        }
+      ],
+      "physical_metrics": {
+        "samples": 4042,
+        "Slide": 3.4631,
+        "Float": 8.6615,
+        "Jitter": 5.2908,
+        "Dynamic": 22.4043,
+        "Penetration": 0.0
+      },
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "014457",
+          "caption": "the person swings a golf club.",
+          "gif": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_014457_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_014457_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
     "intergen": {
       "method": "InterGen",
       "task": "Two-Person T2M",

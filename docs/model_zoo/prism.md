@@ -113,10 +113,15 @@ sequence = pipe.sequential_generation(
         "the person sits down",
     ],
     segment_frames=[121, 91, 121],
-    ar_condition_frames=5,
+    ar_condition_frames=9,
     seed=42,
 )
 ```
+
+Sequential generation carries 9 causal context frames across subclip
+boundaries. The training protocol samples observed prefixes of 1, 5, or 9
+frames, so the public API stays within that distribution. TP2M independently
+accepts any of those trained observed-prefix lengths.
 
 Set `model_name="1.0"` or pass `"1.0"` to load the baseline. On the KT
 checkpoint, `kafs_mode="none"` disables KAFS for a shared-schedule ablation.
@@ -161,6 +166,30 @@ on the first 1, 5, or 9 frames.
 | 1 frame | 3,968 | 0.7467 | 0.8813 | 0.9214 | 48.4399 | 16.2216 | 26.7002 |
 | 5 frames | 3,968 | 0.7588 | 0.8957 | 0.9330 | 38.8512 | 15.8599 | 26.8676 |
 | 9 frames | 3,968 | 0.7649 | 0.8942 | 0.9367 | 36.4133 | 15.7691 | 26.9763 |
+
+### Sequential Generation
+
+The BABEL benchmark uses all 1,295 eligible validation episodes and 7,285
+captioned subclips. PRISM runs the epoch-18 checkpoint with CFG `1.5`, seed
+`42`, and 9 carried context frames, one of the prefix lengths used during
+training. Each generated episode has exactly the requested duration; semantic
+subclips are independently canonicalized before evaluation. FID values use
+L2-normalized uTMR embeddings. R-Precision and MM-Dist use 227 complete
+batches of 32 (`7,264` subclips); FID and Diversity use all `7,285` subclips.
+
+| Scope | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
+| ----- | --: | --: | --: | --: | ------: | --------: |
+| 7,285 semantic subclips | 0.1933 | 0.3106 | 0.3908 | 0.0680 | 53.5178 | 48.4755 |
+
+| Transition FID | Transition Diversity | Peak Jerk | AUJ Gap |
+| -------------: | -------------------: | --------: | ------: |
+| 0.0645 | 44.3111 | 249.7794 | 62.3776 |
+
+[Inspect 24 GT/PRISM sequences](https://knights-ser-moment-work.trycloudflare.com/visualization/babel_prism_epoch18_cfg1p5_ar9_full24/),
+including 12 regular samples and 12 automatically selected quality-tail
+samples. The viewer renders the native SMPL output, segment captions, floor,
+trajectory, and first-frame body facing; it does not pass PRISM through the
+HumanML3D-to-SMPL fitting route.
 
 ## Motion Representation
 

@@ -1,10 +1,10 @@
 """HumanML3D-263 to SMPL ``motion_135`` retargeting API.
 
 This module exposes the public library wrapper for the repository's validated
-HML263 -> SMPL chain.  When full HML263 features are available, the conversion
-maps HumanML3D's canonical-skeleton rotation block onto the SMPL rest skeleton
-as pose initialization, then refines against the recovered 22 joints.
-``position_ik`` is reserved for raw joint-only input or explicit diagnostics.
+HML263 -> SMPL chain. The conversion recovers HumanML3D joint positions, solves
+the articulated SMPL chain from those positions, and refines against all
+recovered 22 joints. HumanML3D local rotations can be requested explicitly as
+an initialization, but are not mixed into the default SMPL mesh path.
 
 The implementation shares one in-package IK/FK backend with the public API so
 that evaluation and standalone conversion use identical math.
@@ -78,7 +78,7 @@ def retarget_hml263_clip(
     floor_align: bool = False,
     refine_iters: int = 0,
     refine_lr: float = 2e-2,
-    rotation_init: str = "auto",
+    rotation_init: str = "position_ik",
     orientation_mode: str = "bone",
     parent_ref_weight: float = 0.25,
     pose_keep_weight: float = 1e-4,
@@ -99,10 +99,12 @@ def retarget_hml263_clip(
     ``[root_translation(3), 22 * rot6d_row(132)]`` at ``target_fps``.
 
     Args:
-        rotation_init: ``"auto"`` (default) maps the HumanML3D rotation block
-            onto the SMPL rest skeleton for HML263 feature input and falls back
-            to ``"position_ik"`` only when the input is already raw
-            ``(T, 22, 3)`` joints.
+        rotation_init: ``"position_ik"`` (default) derives the complete SMPL
+            articulated chain from recovered HumanML3D joint positions. This
+            avoids malformed meshes caused by mixing HumanML3D local rotations
+            with a different SMPL rest skeleton. ``"auto"`` is retained as an
+            alias for ``"position_ik"``. The HML rotation initializers are
+            available only through explicit opt-in.
     """
 
     if rot6d_convention != "row":
@@ -122,7 +124,7 @@ def retarget_hml263_clip(
     arr = np.asarray(feats, dtype=np.float32)
     hml_local_r = None
     hml_feature_input = False
-    use_hml_rot = rotation_init in {"auto", "hml263", "hml263_end_effectors", "hml263_init"}
+    use_hml_rot = rotation_init in {"hml263", "hml263_end_effectors", "hml263_init"}
     if arr.ndim == 3 and arr.shape[1:] == (N_JOINTS, 3):
         target = resample_linear(arr, source_fps, target_fps)
         if rotation_init == "auto":
@@ -132,7 +134,7 @@ def retarget_hml263_clip(
             raise ValueError(f"expected (T,263) or (T,{N_JOINTS},3), got {arr.shape}")
         hml_feature_input = True
         if rotation_init == "auto":
-            rotation_init = "hml263_init"
+            rotation_init = "position_ik"
         if mean is not None and std is not None:
             arr = arr * std + mean
         if use_hml_rot:

@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>M2T Caption Audit</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17211d;
+      --muted: #64706b;
+      --line: #d8dfdb;
+      --paper: #edf1ef;
+      --surface: #fff;
+      --accent: #087e72;
+      --soft: #f4f7f5;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "IBM Plex Sans", "Aptos", "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+    button, select, input { font: inherit; }
+    header {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 clamp(16px, 2.5vw, 36px);
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .brand { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
+    h1 { margin: 0; font-size: 20px; line-height: 1; }
+    .protocol { color: var(--muted); font: 11px/1.2 ui-monospace, monospace; }
+    .case-meta { display: flex; align-items: center; gap: 8px; }
+    .pill {
+      padding: 5px 7px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--muted);
+      background: var(--soft);
+      font: 11px/1 ui-monospace, monospace;
+      text-transform: uppercase;
+    }
+    .workspace {
+      min-height: calc(100vh - 64px);
+      display: grid;
+      grid-template-columns: 190px minmax(480px, 1.25fr) minmax(390px, .9fr);
+      gap: 1px;
+      background: var(--line);
+    }
+    .rail, .viewer-panel, .caption-panel { min-width: 0; background: var(--surface); }
+    .rail { padding: 14px 10px; }
+    .rail-label, .section-label {
+      margin: 0 8px 9px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 760;
+      text-transform: uppercase;
+    }
+    .case-list { display: grid; gap: 4px; }
+    .case-button {
+      width: 100%;
+      min-height: 56px;
+      padding: 9px 10px;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      color: var(--ink);
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+    }
+    .case-button:hover { background: var(--soft); }
+    .case-button.active { border-color: #a8cfc8; background: #eaf5f2; }
+    .case-id { display: block; font: 700 13px/1.2 ui-monospace, monospace; }
+    .case-tag { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; }
+    .viewer-panel { position: relative; display: grid; grid-template-rows: minmax(440px, 1fr) auto; }
+    #viewport { position: relative; min-height: 440px; overflow: hidden; background: #f1f4f2; }
+    #viewport canvas { display: block; width: 100%; height: 100%; }
+    .mesh-label {
+      position: absolute;
+      z-index: 3;
+      top: 16px;
+      left: 18px;
+      padding-bottom: 5px;
+      border-bottom: 3px solid var(--accent);
+      font-size: 11px;
+      font-weight: 780;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+    .fit-label {
+      position: absolute;
+      z-index: 3;
+      right: 16px;
+      top: 16px;
+      color: var(--muted);
+      font: 10px/1.4 ui-monospace, monospace;
+      pointer-events: none;
+    }
+    .transport {
+      display: grid;
+      grid-template-columns: 38px minmax(100px, 1fr) auto 74px;
+      align-items: center;
+      gap: 10px;
+      min-height: 58px;
+      padding: 10px 14px;
+      border-top: 1px solid var(--line);
+    }
+    .icon-button, select {
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      color: var(--ink);
+      background: var(--surface);
+    }
+    .icon-button { width: 38px; padding: 0; cursor: pointer; }
+    .icon-button:hover, select:hover { background: var(--soft); }
+    #scrubber { width: 100%; accent-color: var(--accent); }
+    #frameLabel { color: var(--muted); font: 11px/1 ui-monospace, monospace; white-space: nowrap; }
+    select { padding: 0 8px; }
+    .caption-panel { overflow: auto; }
+    .caption-head { padding: 20px 22px 15px; border-bottom: 1px solid var(--line); }
+    .caption-head h2 { margin: 0; font-size: 19px; }
+    .caption-head p { margin: 7px 0 0; color: var(--muted); font-size: 12px; }
+    .reference-block { padding: 18px 22px; border-bottom: 1px solid var(--line); background: var(--soft); }
+    .references { margin: 0; padding: 0; list-style: none; counter-reset: refs; }
+    .references li {
+      counter-increment: refs;
+      position: relative;
+      padding: 9px 0 9px 31px;
+      border-top: 1px solid var(--line);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .references li:first-child { border-top: 0; }
+    .references li::before {
+      content: counter(refs);
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 19px;
+      height: 19px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #aeb8b3;
+      border-radius: 50%;
+      color: var(--muted);
+      font: 10px/1 ui-monospace, monospace;
+    }
+    .outputs { padding: 0 22px 22px; }
+    .method-row { padding: 17px 0; border-bottom: 1px solid var(--line); }
+    .method-row:last-child { border-bottom: 0; }
+    .method-name { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+    .method-swatch { width: 9px; height: 9px; background: var(--method); }
+    .method-caption { margin: 8px 0 0; font-size: 15px; font-weight: 620; line-height: 1.45; }
+    .loading {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      background: rgba(237, 241, 239, .96);
+      font: 12px/1 ui-monospace, monospace;
+    }
+    @media (max-width: 1080px) {
+      header { height: auto; min-height: 64px; padding-top: 12px; padding-bottom: 12px; }
+      .workspace { grid-template-columns: 150px minmax(430px, 1fr); }
+      .caption-panel { grid-column: 1 / -1; }
+    }
+    @media (max-width: 720px) {
+      header { align-items: flex-start; flex-direction: column; }
+      .brand { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .workspace { display: block; }
+      .rail { overflow-x: auto; }
+      .rail-label { display: none; }
+      .case-list { display: flex; width: max-content; }
+      .case-button { width: 132px; }
+      .viewer-panel { grid-template-rows: 58vh auto; }
+      #viewport { min-height: 360px; }
+      .caption-head, .reference-block, .outputs { padding-left: 16px; padding-right: 16px; }
+      .transport { grid-template-columns: 38px minmax(90px, 1fr) auto; }
+      .transport select { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading" id="loading">Loading SMPL audit</div>
+  <header>
+    <div class="brand"><h1 id="title">M2T Caption Audit</h1><span class="protocol" id="protocol"></span></div>
+    <div class="case-meta"><span class="pill" id="samplePill">-</span><span class="pill" id="tagPill">-</span></div>
+  </header>
+  <main class="workspace">
+    <aside class="rail"><p class="rail-label">Audit cases</p><div class="case-list" id="caseList"></div></aside>
+    <section class="viewer-panel">
+      <div id="viewport"><span class="mesh-label">HumanML3D → SMPL</span><span class="fit-label" id="fitLabel"></span></div>
+      <div class="transport">
+        <button class="icon-button" id="playButton" title="Play or pause" aria-label="Play or pause">▶</button>
+        <input id="scrubber" type="range" min="0" max="1" value="0" step="1" aria-label="Frame">
+        <span id="frameLabel">000 / 000</span>
+        <select id="speedSelect" title="Playback speed" aria-label="Playback speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option><option value="2">2×</option></select>
+      </div>
+    </section>
+    <aside class="caption-panel">
+      <div class="caption-head"><h2 id="caseTitle">Sample</h2><p id="duration"></p></div>
+      <section class="reference-block"><p class="section-label">Ground-truth references</p><ol class="references" id="references"></ol></section>
+      <section class="outputs" id="outputs"></section>
+    </aside>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script>
+    (async () => {
+      const manifest = await fetch("manifest.json").then((response) => response.json());
+      document.title = manifest.title;
+      document.getElementById("title").textContent = manifest.title;
+      document.getElementById("protocol").textContent = manifest.protocol;
+      const viewport = document.getElementById("viewport");
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xf1f4f2);
+      scene.fog = new THREE.Fog(0xf1f4f2, 10, 28);
+      const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.outputEncoding = THREE.sRGBEncoding;
+      renderer.shadowMap.enabled = true;
+      viewport.appendChild(renderer.domElement);
+      const camera = new THREE.PerspectiveCamera(34, 1, .05, 80);
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x6c7872, 1.65));
+      const key = new THREE.DirectionalLight(0xffffff, 2.25);
+      key.position.set(4, 7, 5);
+      key.castShadow = true;
+      scene.add(key);
+      const floor = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshStandardMaterial({ color: 0xe3e8e5, roughness: .97 }));
+      floor.rotation.x = -Math.PI / 2;
+      floor.receiveShadow = true;
+      scene.add(floor);
+      const grid = new THREE.GridHelper(1, 20, 0x9ba9a2, 0xcbd3cf);
+      grid.position.y = .003;
+      scene.add(grid);
+      const arrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, .025, 0), .75, 0x087e72, .15, .08);
+      scene.add(arrow);
+      const trajectoryMaterial = new THREE.LineBasicMaterial({ color: 0x087e72, transparent: true, opacity: .75 });
+      let trajectory = null;
+      const faces = new Uint32Array(await fetch(manifest.mesh.faces_file).then((response) => response.arrayBuffer()));
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute("position", new THREE.BufferAttribute(new Float32Array(manifest.mesh.vertex_count * 3), 3));
+      geometry.setIndex(new THREE.BufferAttribute(faces, 1));
+      const body = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: 0x177f75, roughness: .58, metalness: .02, side: THREE.DoubleSide }));
+      body.castShadow = true;
+      body.receiveShadow = true;
+      scene.add(body);
+
+      const cache = new Map();
+      let activeIndex = 0;
+      let activeAsset = null;
+      let frame = 0;
+      let playing = true;
+      let lastTime = performance.now();
+      const caseList = document.getElementById("caseList");
+      const scrubber = document.getElementById("scrubber");
+      const frameLabel = document.getElementById("frameLabel");
+      const playButton = document.getElementById("playButton");
+      const speedSelect = document.getElementById("speedSelect");
+
+      function resize() {
+        const width = viewport.clientWidth;
+        const height = viewport.clientHeight;
+        renderer.setSize(width, height, false);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      }
+      window.addEventListener("resize", resize);
+      resize();
+
+      async function loadAsset(item) {
+        if (cache.has(item.sample_id)) return cache.get(item.sample_id);
+        const quantized = new Uint16Array(await fetch(item.mesh.vertices_file).then((response) => response.arrayBuffer()));
+        const value = {
+          quantized,
+          minimum: item.mesh.quantization_min,
+          scale: item.mesh.quantization_scale,
+          indices: item.mesh.keyframe_indices,
+          vertexCount: item.mesh.vertex_count,
+        };
+        cache.set(item.sample_id, value);
+        return value;
+      }
+
+      function updateMesh(targetFrame) {
+        if (!activeAsset) return;
+        const indices = activeAsset.indices;
+        let hi = 0;
+        while (hi < indices.length && indices[hi] < targetFrame) hi++;
+        if (hi >= indices.length) hi = indices.length - 1;
+        const lo = Math.max(0, hi - (indices[hi] > targetFrame ? 1 : 0));
+        const span = Math.max(1, indices[hi] - indices[lo]);
+        const alpha = hi === lo ? 0 : (targetFrame - indices[lo]) / span;
+        const width = activeAsset.vertexCount * 3;
+        const positions = geometry.attributes.position.array;
+        for (let index = 0; index < width; index++) {
+          const axis = index % 3;
+          const value = activeAsset.quantized[lo * width + index] * (1 - alpha) + activeAsset.quantized[hi * width + index] * alpha;
+          positions[index] = activeAsset.minimum[axis] + value * activeAsset.scale[axis];
+        }
+        geometry.attributes.position.needsUpdate = true;
+        geometry.computeVertexNormals();
+        geometry.computeBoundingSphere();
+      }
+
+      function setCamera(item) {
+        const min = item.mesh.bounds_min;
+        const max = item.mesh.bounds_max;
+        const center = new THREE.Vector3((min[0] + max[0]) / 2, Math.max(.8, (min[1] + max[1]) / 2), (min[2] + max[2]) / 2);
+        const width = Math.max(max[0] - min[0], max[2] - min[2], 2.2);
+        const distance = Math.max(4.5, width * 1.35 + 2.5);
+        controls.target.copy(center);
+        camera.position.set(center.x + distance * .55, center.y + distance * .35, center.z + distance);
+        controls.update();
+        const floorSize = Math.max(12, width * 2.5 + 4);
+        floor.scale.set(floorSize, floorSize, 1);
+        floor.position.set(center.x, 0, center.z);
+        grid.scale.set(floorSize, floorSize, floorSize);
+        grid.position.set(center.x, .003, center.z);
+        arrow.position.set(0, .025, 0);
+        if (trajectory) scene.remove(trajectory);
+        const points = item.mesh.root_path.map((point) => new THREE.Vector3(point[0], .018, point[2]));
+        trajectory = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), trajectoryMaterial);
+        scene.add(trajectory);
+      }
+
+      function renderCaptions(item) {
+        document.getElementById("samplePill").textContent = item.sample_id;
+        document.getElementById("tagPill").textContent = item.tag;
+        document.getElementById("caseTitle").textContent = `Sample ${item.sample_id}`;
+        document.getElementById("duration").textContent = `${item.frames} frames · ${(item.frames / item.fps).toFixed(1)} seconds · ${item.fps.toFixed(0)} fps`;
+        document.getElementById("fitLabel").textContent = `fit ${item.mesh.fit_mpjpe_mm_mean.toFixed(1)} mm`;
+        const references = document.getElementById("references");
+        references.replaceChildren(...item.references.map((text) => { const li = document.createElement("li"); li.textContent = text; return li; }));
+        const outputs = document.getElementById("outputs");
+        outputs.replaceChildren(...manifest.methods.map((method) => {
+          const row = document.createElement("article");
+          row.className = "method-row";
+          row.style.setProperty("--method", method.accent);
+          row.innerHTML = `<div class="method-name"><span class="method-swatch"></span>${method.label}</div><p class="method-caption"></p>`;
+          row.querySelector("p").textContent = item.outputs[method.key] || "No caption returned";
+          return row;
+        }));
+      }
+
+      async function selectCase(index) {
+        activeIndex = index;
+        const item = manifest.cases[index];
+        [...caseList.children].forEach((button, buttonIndex) => button.classList.toggle("active", buttonIndex === index));
+        activeAsset = await loadAsset(item);
+        frame = 0;
+        scrubber.max = String(item.frames - 1);
+        scrubber.value = "0";
+        setCamera(item);
+        renderCaptions(item);
+        updateMesh(frame);
+        frameLabel.textContent = `001 / ${String(item.frames).padStart(3, "0")}`;
+      }
+
+      manifest.cases.forEach((item, index) => {
+        const button = document.createElement("button");
+        button.className = "case-button";
+        button.innerHTML = `<span class="case-id"></span><span class="case-tag"></span>`;
+        button.querySelector(".case-id").textContent = item.sample_id;
+        button.querySelector(".case-tag").textContent = item.tag;
+        button.addEventListener("click", () => selectCase(index));
+        caseList.appendChild(button);
+      });
+      playButton.addEventListener("click", () => { playing = !playing; playButton.textContent = playing ? "Ⅱ" : "▶"; });
+      scrubber.addEventListener("input", () => { frame = Number(scrubber.value); updateMesh(frame); });
+
+      function animate(now) {
+        requestAnimationFrame(animate);
+        const item = manifest.cases[activeIndex];
+        if (activeAsset && playing) {
+          const elapsed = (now - lastTime) / 1000;
+          const advance = elapsed * item.fps * Number(speedSelect.value);
+          if (advance >= 1) {
+            frame = (frame + Math.floor(advance)) % item.frames;
+            lastTime = now;
+            scrubber.value = String(frame);
+            updateMesh(frame);
+          }
+        } else {
+          lastTime = now;
+        }
+        frameLabel.textContent = `${String(frame + 1).padStart(3, "0")} / ${String(item.frames).padStart(3, "0")}`;
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      await selectCase(0);
+      playButton.textContent = "Ⅱ";
+      document.getElementById("loading").remove();
+      requestAnimationFrame(animate);
+    })().catch((error) => {
+      const loading = document.getElementById("loading");
+      loading.textContent = `Viewer error: ${error.message}`;
+      console.error(error);
+    });
+  </script>
+</body>
+</html>

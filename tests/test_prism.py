@@ -11,6 +11,7 @@ import torch
 from motius.models.prism import PRISMBundle, PRISMMotionProcessor
 from motius.pipelines.prism.backend import PrismARPipeline
 from motius.pipelines.prism.pipeline import PRISMPipeline
+from tools.generate_babel_sequential_prism import parse_args
 
 
 def _write_stats(path: Path) -> Path:
@@ -155,3 +156,50 @@ def test_prism_public_sequential_api_enables_fixed_canvas_for_long_segments(monk
     assert captured["valid_num_frames_per_segment"] == [1657, 120]
     assert captured["fixed_generation_canvas"] is True
     assert captured["allow_segment_padding"] is False
+    assert captured["ar_condition_frames"] == 9
+
+
+def test_prism_public_default_guidance_is_conservative(monkeypatch):
+    captured = {}
+
+    class Backend:
+        def __call__(self, **kwargs):
+            captured.update(kwargs)
+            return {
+                "smplx_dict": {
+                    "global_orient": np.zeros((1, 3), dtype=np.float32),
+                    "body_pose": np.zeros((1, 63), dtype=np.float32),
+                    "transl": np.zeros((1, 3), dtype=np.float32),
+                },
+                "motion_vec": torch.zeros(1, 1, 23, 6),
+            }
+
+    class Bundle:
+        variant = "kt"
+        processor = None
+
+        def load_model(self):
+            return Backend()
+
+    pipeline = object.__new__(PRISMPipeline)
+    pipeline.bundle = Bundle()
+    monkeypatch.setattr(pipeline, "_format_output", lambda result: result)
+    pipeline.generate("walk", num_frames=81)
+
+    assert captured["guidance_scale"] == 1.5
+
+
+def test_prism_babel_runner_default_guidance_is_conservative(monkeypatch):
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "generate_babel_sequential_prism.py",
+            "--manifest",
+            "manifest.json",
+            "--output-dir",
+            "outputs",
+        ],
+    )
+    args = parse_args()
+    assert args.guidance_scale == 1.5
+    assert args.ar_condition_frames == 9

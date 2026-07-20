@@ -198,6 +198,10 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--case-ids", nargs="+", default=list(DEFAULT_CASES))
+    parser.add_argument("--viewer-title", default="BABEL Sequence Audit")
+    parser.add_argument("--reference-label", default="BABEL GT")
+    parser.add_argument("--raw-label", default="BABEL")
+    parser.add_argument("--category-label", default="act_cat")
     parser.add_argument(
         "--retrieval-audit",
         type=Path,
@@ -383,9 +387,14 @@ def main() -> None:
     viewer_source = Path(__file__).with_name("babel_sequential_viewer.html")
     shutil.copy2(viewer_source, args.output_dir / "index.html")
     payload = {
+        "title": args.viewer_title,
         "protocol": source["protocol"],
+        "segment_labels": {
+            "raw": args.raw_label,
+            "categories": args.category_label,
+        },
         "methods": [
-            {"key": "gt", "label": "BABEL GT", "accent": "#0e7490"},
+            {"key": "gt", "label": args.reference_label, "accent": "#0e7490"},
             *[
                 {
                     "key": key,

@@ -1,3 +1,4 @@
+import inspect
 import pickle
 import subprocess
 import sys
@@ -7,8 +8,10 @@ from pathlib import Path
 import numpy as np
 import torch
 
+from motius.motion import smpl_to_motion135 as public_smpl_to_motion135
 from motius.motion.retarget import GMR_Y_UP_FROM_Z_UP, GMR_Z_UP_FROM_Y_UP
 from motius.motion.retarget._hml263_smpl_impl import _resolve_smplx_model_root
+from motius.motion.retarget.hml263_smpl import retarget_hml263_clip
 
 from motius.motion.representation.convert import (
     convert_motion,
@@ -29,6 +32,7 @@ from motius.motion.representation.hymotion import (
 )
 from motius.motion.representation.motion272 import (
     encode_smpl_to_272,
+    motion135_to_272,
     motion272_to_motion135,
     recover_272_stored_positions,
     recover_local_rotations_and_root,
@@ -42,6 +46,11 @@ from motius.motion.skeleton.fk import motion135_to_fk
 from motius.motion.skeleton.body_models import _dense_array, _load_model_data
 from motius.motion.skeleton.names import SMPL22_PARENTS
 from tools.convert_hml263_predictions import _relative_offsets
+
+
+def test_hml263_smpl_defaults_to_position_ik() -> None:
+    signature = inspect.signature(retarget_hml263_clip)
+    assert signature.parameters["rotation_init"].default == "position_ik"
 
 
 def _identity_motion135(frames: int) -> np.ndarray:
@@ -160,10 +169,45 @@ def test_ms272_native_decode_and_motion135_repack():
     )
 
 
+def test_public_smpl_to_motion135_and_packaged_canon272_offsets():
+    frames = 4
+    motion135 = public_smpl_to_motion135(
+        np.zeros((frames, 3), dtype=np.float32),
+        np.zeros((frames, 63), dtype=np.float32),
+        np.zeros((frames, 3), dtype=np.float32),
+    )
+    motion272 = motion135_to_272(motion135)
+    assert motion135.shape == (frames, 135)
+    assert motion272.shape == (frames, 272)
+    assert np.isfinite(motion272).all()
+
+
 def test_hml263_to_joints_dispatch_shape():
     motion = np.zeros((7, 263), dtype=np.float32)
     joints = convert_motion(motion, "humanml3d-263", "joints")
     assert joints.shape == (7, 22, 3)
+
+
+def test_hml263_to_motion272_native_bridge_avoids_smpl_assets():
+    frames = 7
+    motion = np.zeros((frames, 263), dtype=np.float32)
+    motion[:, 3] = 1.0
+    identity_6d = np.asarray([1, 0, 0, 0, 1, 0], dtype=np.float32)
+    rotation_start = 4 + 21 * 3
+    motion[:, rotation_start : rotation_start + 21 * 6] = np.tile(
+        identity_6d, 21
+    )
+
+    converted = convert_motion(
+        motion,
+        "humanml3d-263",
+        "motionstreamer-272",
+        source_fps=20.0,
+        target_fps=30.0,
+    )
+
+    assert converted.shape == (10, 272)
+    assert np.isfinite(converted).all()
 
 
 def test_native_hml263_encoder_matches_official_sample():

@@ -5,9 +5,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import time
+import zipfile
 from pathlib import Path
+from typing import Optional
 
 import numpy as np
 
@@ -19,9 +22,48 @@ from motius.motion import canonicalize_smpl22_joints
 from motius.motion.retarget.hml263_smpl import load_smpl_rest, retarget_hml263_clip
 
 
+def _valid_materialization(smpl_path: Path, joints_path: Path) -> bool:
+    """Return true only for a complete, readable SMPL/joints output pair."""
+
+    try:
+        with np.load(smpl_path, allow_pickle=False) as payload:
+            required = (
+                "motion_135",
+                "global_orient",
+                "body_pose",
+                "transl",
+                "fit_mpjpe_mm",
+            )
+            arrays = {key: np.asarray(payload[key]) for key in required}
+        frames = len(arrays["transl"])
+        if frames < 2 or arrays["motion_135"].shape != (frames, 135):
+            return False
+        if arrays["global_orient"].shape != (frames, 3):
+            return False
+        if arrays["body_pose"].shape != (frames, 63):
+            return False
+        if arrays["fit_mpjpe_mm"].size != frames:
+            return False
+        if not all(np.isfinite(value).all() for value in arrays.values()):
+            return False
+        joints = np.asarray(np.load(joints_path, allow_pickle=False))
+        return joints.shape == (frames, 66) and bool(np.isfinite(joints).all())
+    except (EOFError, OSError, ValueError, KeyError, zipfile.BadZipFile):
+        return False
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--manifest", required=True, type=Path)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--manifest", type=Path)
+    source.add_argument(
+        "--ids-file",
+        type=Path,
+        help=(
+            "Newline-delimited motion ids. Output lengths are derived from each "
+            "HML263 clip and the source/target frame rates."
+        ),
+    )
     parser.add_argument("--hml263-dir", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument(
@@ -42,7 +84,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--rotation-init",
-        default="hml263_end_effectors",
+        default="position_ik",
         choices=("hml263_end_effectors", "position_ik", "hml263_init"),
     )
     parser.add_argument("--shard-index", type=int, default=0)
@@ -56,13 +98,37 @@ def parse_args() -> argparse.Namespace:
     return args
 
 
+def _load_cases(args: argparse.Namespace, hml263_dir: Path) -> tuple[str, list[dict]]:
+    if args.manifest is not None:
+        manifest = json.loads(args.manifest.resolve().read_text())
+        return str(manifest.get("protocol") or args.manifest.stem), list(
+            manifest.get("cases", [])
+        )
+
+    case_ids = [
+        line.strip()
+        for line in args.ids_file.resolve().read_text().splitlines()
+        if line.strip()
+    ]
+    cases = []
+    for index, case_id in enumerate(case_ids):
+        if index % args.num_shards != args.shard_index:
+            cases.append({"case_id": case_id, "total_frames": 0})
+            continue
+        # The source is loaded once inside materialize_case. Deferring the
+        # derived target length avoids a separate small-file read for every
+        # item before GPU work can begin.
+        cases.append({"case_id": case_id, "total_frames": None})
+    return f"ids:{args.ids_file.resolve()}", cases
+
+
 def materialize_case(
     source_path: Path,
     smpl_path: Path,
     joints_path: Path,
     *,
     smpl_rest,
-    expected_frames: int,
+    expected_frames: Optional[int],
     device: str,
     source_fps: float,
     target_fps: float,
@@ -74,6 +140,10 @@ def materialize_case(
     features = np.asarray(np.load(source_path), dtype=np.float32)
     if features.ndim != 2 or features.shape[1] != 263:
         raise ValueError(f"Expected [T, 263] in {source_path}, got {features.shape}")
+    if expected_frames is None:
+        expected_frames = max(
+            2, int(round(len(features) * target_fps / source_fps))
+        )
     converted = retarget_hml263_clip(
         features,
         smpl_rest=smpl_rest,
@@ -111,19 +181,29 @@ def materialize_case(
 
     smpl_path.parent.mkdir(parents=True, exist_ok=True)
     joints_path.parent.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(
-        smpl_path,
-        global_orient=np.asarray(converted["global_orient"], dtype=np.float32),
-        body_pose=np.asarray(converted["body_pose"], dtype=np.float32),
-        transl=np.asarray(converted["transl"], dtype=np.float32),
-        betas=np.zeros(10, dtype=np.float32),
-        gender=np.asarray("neutral"),
-        mocap_framerate=np.asarray(target_fps, dtype=np.float32),
-        fit_mpjpe_mm=np.asarray(converted["fit_mpjpe_mm"], dtype=np.float32),
-        rotation_init=np.asarray(str(converted["rotation_init"])),
-        source_hml263=np.asarray(str(source_path)),
-    )
-    np.save(joints_path, joints.reshape(expected_frames, 66).astype(np.float32))
+    token = f"{os.getpid()}-{time.time_ns()}"
+    smpl_tmp = smpl_path.with_name(f".{smpl_path.stem}.{token}.tmp.npz")
+    joints_tmp = joints_path.with_name(f".{joints_path.stem}.{token}.tmp.npy")
+    try:
+        np.savez_compressed(
+            smpl_tmp,
+            motion_135=np.asarray(converted["motion_135"], dtype=np.float32),
+            global_orient=np.asarray(converted["global_orient"], dtype=np.float32),
+            body_pose=np.asarray(converted["body_pose"], dtype=np.float32),
+            transl=np.asarray(converted["transl"], dtype=np.float32),
+            betas=np.zeros(10, dtype=np.float32),
+            gender=np.asarray("neutral"),
+            mocap_framerate=np.asarray(target_fps, dtype=np.float32),
+            fit_mpjpe_mm=np.asarray(converted["fit_mpjpe_mm"], dtype=np.float32),
+            rotation_init=np.asarray(str(converted["rotation_init"])),
+            source_hml263=np.asarray(str(source_path)),
+        )
+        np.save(joints_tmp, joints.reshape(expected_frames, 66).astype(np.float32))
+        os.replace(smpl_tmp, smpl_path)
+        os.replace(joints_tmp, joints_path)
+    finally:
+        smpl_tmp.unlink(missing_ok=True)
+        joints_tmp.unlink(missing_ok=True)
     return {
         "fit_mpjpe_mm_mean": mean_error,
         "fit_mpjpe_mm_p95": float(np.percentile(errors, 95)),
@@ -133,8 +213,8 @@ def materialize_case(
 
 def main() -> None:
     args = parse_args()
-    manifest = json.loads(args.manifest.resolve().read_text())
     hml263_dir = args.hml263_dir.resolve()
+    protocol, cases = _load_cases(args, hml263_dir)
     output_dir = args.output_dir.resolve()
     smpl_dir = output_dir / "smpl"
     joints_dir = output_dir / "joints66"
@@ -149,7 +229,6 @@ def main() -> None:
     generated = skipped = missing = failed = 0
     fit_means: list[float] = []
     failures: list[dict[str, str]] = []
-    cases = manifest.get("cases", [])
     for index, case in enumerate(cases):
         if index % args.num_shards != args.shard_index:
             continue
@@ -163,11 +242,8 @@ def main() -> None:
             missing += 1
             failures.append({"case_id": case_id, "error": "missing HML263 source"})
             continue
-        if (
-            args.skip_existing
-            and not args.overwrite
-            and smpl_path.is_file()
-            and joints_path.is_file()
+        if args.skip_existing and not args.overwrite and _valid_materialization(
+            smpl_path, joints_path
         ):
             skipped += 1
             continue
@@ -177,7 +253,7 @@ def main() -> None:
                 smpl_path,
                 joints_path,
                 smpl_rest=smpl_rest,
-                expected_frames=int(case["total_frames"]),
+                expected_frames=case["total_frames"],
                 device=args.device,
                 source_fps=args.source_fps,
                 target_fps=args.target_fps,
@@ -200,7 +276,7 @@ def main() -> None:
             )
 
     summary = {
-        "protocol": manifest.get("protocol"),
+        "protocol": protocol,
         "source_representation": "HumanML3D-263",
         "target_representation": "SMPL-22 joints66",
         "rotation_init": args.rotation_init,

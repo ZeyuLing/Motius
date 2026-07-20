@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from concurrent.futures import ThreadPoolExecutor
+from functools import partial
 from pathlib import Path
 from typing import Mapping
 
@@ -19,7 +21,10 @@ from motius.evaluation.evaluators.tmr import TMRTextMotionEvaluator
 
 
 def _load_joints66(path: Path) -> np.ndarray:
-    motion = np.asarray(np.load(path), dtype=np.float32)
+    try:
+        motion = np.asarray(np.load(path, allow_pickle=False), dtype=np.float32)
+    except (EOFError, OSError, ValueError) as exc:
+        raise ValueError(f"Failed to load joints66 file {path}: {exc}") from exc
     if motion.ndim == 3 and motion.shape[1:] == (22, 3):
         motion = motion.reshape(len(motion), 66)
     if motion.ndim != 2 or motion.shape[1] != 66:
@@ -42,6 +47,8 @@ def load_protocol(
     dataset_dir: str | Path,
     split: str,
     predictions_dir: str | Path,
+    *,
+    num_workers: int = 1,
 ) -> tuple[list[str], list[np.ndarray], list[np.ndarray], list[str]]:
     """Load paired selected captions, predictions, and references."""
 
@@ -53,43 +60,64 @@ def load_protocol(
         for line in (dataset_dir / "splits" / f"{split}.txt").read_text().splitlines()
         if line.strip()
     ]
-    captions: list[str] = []
-    predictions: list[np.ndarray] = []
-    references: list[np.ndarray] = []
-    used_keyids: list[str] = []
-    for keyid in keyids:
-        annotation = annotations.get(keyid)
-        if not isinstance(annotation, Mapping):
-            raise KeyError(f"Missing annotation for split key {keyid!r}.")
-        text_items = annotation.get("annotations")
-        if not isinstance(text_items, list) or len(text_items) != 1:
-            raise ValueError(
-                f"{keyid!r} must contain exactly one selected caption, got {text_items!r}."
-            )
-        caption = str(text_items[0].get("text", "")).strip()
-        if not caption:
-            raise ValueError(f"Selected caption for {keyid!r} is empty.")
-
-        reference_stem = str(annotation.get("path", keyid))
-        reference_path = dataset_dir / "motions" / f"{reference_stem}.npy"
-        prediction_path = next(
-            (
-                predictions_dir / f"{stem}.npy"
-                for stem in _prediction_candidates(keyid, annotation)
-                if (predictions_dir / f"{stem}.npy").is_file()
-            ),
-            None,
-        )
-        if prediction_path is None:
-            raise FileNotFoundError(
-                f"No prediction for {keyid!r}; tried "
-                f"{_prediction_candidates(keyid, annotation)} under {predictions_dir}."
-            )
-        captions.append(caption)
-        predictions.append(_load_joints66(prediction_path))
-        references.append(_load_joints66(reference_path))
-        used_keyids.append(keyid)
+    loader = partial(
+        _load_protocol_item,
+        annotations=annotations,
+        dataset_dir=dataset_dir,
+        predictions_dir=predictions_dir,
+    )
+    if num_workers > 1:
+        with ThreadPoolExecutor(max_workers=num_workers) as executor:
+            rows = list(executor.map(loader, keyids))
+    else:
+        rows = [loader(keyid) for keyid in keyids]
+    used_keyids = [row[0] for row in rows]
+    captions = [row[1] for row in rows]
+    predictions = [row[2] for row in rows]
+    references = [row[3] for row in rows]
     return captions, predictions, references, used_keyids
+
+
+def _load_protocol_item(
+    keyid: str,
+    *,
+    annotations: Mapping[str, object],
+    dataset_dir: Path,
+    predictions_dir: Path,
+) -> tuple[str, str, np.ndarray, np.ndarray]:
+    annotation = annotations.get(keyid)
+    if not isinstance(annotation, Mapping):
+        raise KeyError(f"Missing annotation for split key {keyid!r}.")
+    text_items = annotation.get("annotations")
+    if not isinstance(text_items, list) or len(text_items) != 1:
+        raise ValueError(
+            f"{keyid!r} must contain exactly one selected caption, got {text_items!r}."
+        )
+    caption = str(text_items[0].get("text", "")).strip()
+    if not caption:
+        raise ValueError(f"Selected caption for {keyid!r} is empty.")
+
+    reference_stem = str(annotation.get("path", keyid))
+    reference_path = dataset_dir / "motions" / f"{reference_stem}.npy"
+    candidates = _prediction_candidates(keyid, annotation)
+    prediction_path = next(
+        (
+            predictions_dir / f"{stem}.npy"
+            for stem in candidates
+            if (predictions_dir / f"{stem}.npy").is_file()
+        ),
+        None,
+    )
+    if prediction_path is None:
+        raise FileNotFoundError(
+            f"No prediction for {keyid!r}; tried {candidates} under {predictions_dir}."
+        )
+    return (
+        keyid,
+        caption,
+        _load_joints66(prediction_path),
+        _load_joints66(reference_path),
+    )
 
 
 def parse_args() -> argparse.Namespace:
@@ -105,6 +133,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", required=True)
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--batch-size", type=int, default=256)
+    parser.add_argument("--num-workers", type=int, default=32)
     parser.add_argument("--chunk-size", type=int, default=32)
     parser.add_argument("--n-repeats", type=int, default=1)
     parser.add_argument("--seed", type=int, default=0)
@@ -118,6 +147,7 @@ def main() -> None:
         args.dataset_dir,
         args.split,
         args.predictions_dir,
+        num_workers=max(1, args.num_workers),
     )
     evaluator = TMRTextMotionEvaluator.from_pretrained(
         args.evaluator,

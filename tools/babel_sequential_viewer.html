@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="data:,">
-  <title>BABEL Sequence Audit</title>
+  <title>Motion Sequence Audit</title>
   <style>
     :root {
       color-scheme: light;
@@ -101,7 +101,7 @@
       width: 100%;
       min-height: 108px;
       display: grid;
-      grid-template-columns: 9px minmax(190px, 1.08fr) minmax(230px, 1fr) minmax(230px, 1fr) 104px;
+      grid-template-columns: 9px minmax(190px, 1fr) 104px;
       align-items: stretch;
       border: 0;
       border-bottom: 1px solid var(--line);
@@ -110,6 +110,9 @@
       text-align: left;
       background: var(--surface);
       cursor: pointer;
+    }
+    body.has-retrieval .segment {
+      grid-template-columns: 9px minmax(190px, 1.08fr) minmax(230px, 1fr) minmax(230px, 1fr) 104px;
     }
     .segment:last-child { border-bottom: 0; }
     .segment:hover, .segment.active { background: #f1f4f6; }
@@ -196,7 +199,7 @@
 <body>
   <div class="loading" id="loading">Loading BABEL episode</div>
   <header>
-    <div class="title"><h1>BABEL Sequence Audit</h1><span class="protocol" id="protocol"></span></div>
+    <div class="title"><h1 id="viewerTitle">Motion Sequence Audit</h1><span class="protocol" id="protocol"></span></div>
     <div class="selectors">
       <select id="episodeSelect" aria-label="Episode"></select>
       <select id="speedSelect" aria-label="Playback speed">
@@ -217,6 +220,10 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <script type="module">
     const manifest = await fetch("manifest.json").then((response) => response.json());
+    const viewerTitle = manifest.title || "Motion Sequence Audit";
+    document.title = viewerTitle;
+    document.getElementById("viewerTitle").textContent = viewerTitle;
+    document.body.classList.toggle("has-retrieval", Boolean(manifest.retrieval));
     const parents = manifest.parents;
     const episodeSelect = document.getElementById("episodeSelect");
     const speedSelect = document.getElementById("speedSelect");
@@ -547,7 +554,12 @@
         row.style.setProperty("--segment", segment.color);
         const seconds = ((segment.end_frame - segment.start_frame) / episode.fps).toFixed(1);
         const categories = (segment.action_categories || []).map((values) => values.join(" + ")).join(" → ");
-        row.innerHTML = `<span class="stripe"></span><span class="caption">${escapeHtml(segment.caption)}<span class="raw">BABEL: ${escapeHtml(segment.raw_label)}</span><span class="raw">act_cat: ${escapeHtml(categories)}</span></span>${retrievalCell("BABEL GT", segment.retrieval?.gt)}${retrievalCell("FlowMDM", segment.retrieval?.flowmdm)}<span class="range">${segment.start_frame}–${segment.end_frame}<br>${seconds}s</span>`;
+        const retrieval = manifest.retrieval
+          ? `${retrievalCell("BABEL GT", segment.retrieval?.gt)}${retrievalCell("FlowMDM", segment.retrieval?.flowmdm)}`
+          : "";
+        const rawLabel = manifest.segment_labels?.raw || "BABEL";
+        const categoryLabel = manifest.segment_labels?.categories || "act_cat";
+        row.innerHTML = `<span class="stripe"></span><span class="caption">${escapeHtml(segment.caption)}<span class="raw">${escapeHtml(rawLabel)}: ${escapeHtml(segment.raw_label)}</span><span class="raw">${escapeHtml(categoryLabel)}: ${escapeHtml(categories)}</span></span>${retrieval}<span class="range">${segment.start_frame}–${segment.end_frame}<br>${seconds}s</span>`;
         row.addEventListener("click", (event) => {
           if (!event.target.closest("details")) setFrame(segment.start_frame);
         });

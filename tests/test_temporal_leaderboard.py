@@ -77,9 +77,13 @@ def test_frontend_keeps_gt_out_of_rankings_and_exposes_both_protocols():
 
     assert 'data-protocol="control"' in page
     assert 'data-protocol="tp2m"' in page
+    assert 'data-table="control-text"' in page
+    assert 'data-table="control-motion"' in page
     assert 'src="leaderboard.js"' in page
     assert 'fetch("temporal_control_results.json")' in script
     assert "!row.isReference" in script
     assert "activeRows().filter(isRankable)" in script
     assert "GT is visible but excluded from all ranks and charts" in script
+    assert "settingGroupId" in script
+    assert "text-conditioned chart; both variants are tabulated below" in script
     assert script.count('method: "GT", settingId: "c') == 3

@@ -43,9 +43,31 @@ METHODS = (
     Method("condmdi", "CondMDI", "#315f9d"),
     Method("flowmdm", "FlowMDM", "#a5412e"),
     Method("kimodo", "KIMODO", "#6d4ea2"),
+    Method("maskcontrol", "MaskControl", "#d95f02"),
     Method("motionlab", "MotionLab", "#287147"),
+    Method("omnicontrol", "OmniControl", "#b34b8c"),
     Method("ours", "MotionCanvas", "#087d72"),
 )
+
+
+def condition_intervals(setting: str, length: int) -> list[list[int]]:
+    """Return half-open frame intervals that are supplied to the generator."""
+
+    frames = max(1, int(length))
+    mode = setting.removesuffix("_uncond")
+    if mode == "start_1f":
+        return [[0, 1]]
+    if mode == "both_1f":
+        return [[0, 1]] if frames == 1 else [[0, 1], [frames - 1, frames]]
+    if mode == "pre20":
+        count = max(1, int(round(frames * 0.2)))
+        return [[0, min(count, frames)]]
+    if mode == "mid80":
+        count = min(frames, max(1, int(round(frames * 0.1))))
+        if count * 2 >= frames:
+            return [[0, frames]]
+        return [[0, count], [frames - count, frames]]
+    raise ValueError(f"Unsupported temporal setting: {setting}")
 
 
 def parse_args() -> argparse.Namespace:
@@ -108,12 +130,14 @@ def build_setting(args: argparse.Namespace, setting: str, setting_label: str) ->
     for item in source_manifest["cases"]:
         descriptor = next(iter(item["motions"].values()))
         duration = float(descriptor["display_frames"]) / float(descriptor["fps"])
+        max_frames = max(1, round(duration * 30.0))
         cases.append({
             "case_id": str(item["case_id"]),
             "sample_id": str(item.get("sample_id") or item["case_id"]),
             "references": item.get("references"),
+            "condition_intervals": condition_intervals(setting, max_frames),
             "motions": {},
-            "_max_frames": max(1, round(duration * 30.0)),
+            "_max_frames": max_frames,
         })
 
     stride = max(1, args.stride)
@@ -163,6 +187,14 @@ def build_setting(args: argparse.Namespace, setting: str, setting_label: str) ->
         "asset_base_url": f"{args.asset_base_url.rstrip('/')}/{setting}/",
         "body_model_url": args.body_model_url,
         "reference_label": "Text and temporal condition",
+        "condition_legend": {
+            "conditioned": {"label": "Condition frame", "color": "#d95f02"},
+            "generated": {"label": "Generated frame"},
+        },
+        "display_canonicalization": {
+            "ground": "per_clip_global_smpl_mesh_minimum",
+            "transform": "single_rigid_vertical_translation",
+        },
         "motion_methods": [method.__dict__ for method in METHODS],
         "cases": cases,
     }

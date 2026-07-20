@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Materialize canonical joints66 from SMPL-X BABEL predictions."""
+"""Materialize canonical joints66 from SMPL-family BABEL predictions."""
 
 from __future__ import annotations
 
@@ -28,6 +28,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--predictions-dir", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--smplx-model", required=True, type=Path)
+    parser.add_argument(
+        "--model-type", choices=("smpl", "smplh", "smplx"), default="smplx"
+    )
     parser.add_argument("--shard-index", type=int, default=0)
     parser.add_argument("--num-shards", type=int, default=1)
     parser.add_argument("--ids", nargs="*", default=[])
@@ -52,7 +55,7 @@ def main() -> None:
         raise ValueError(f"Unsupported protocol {manifest.get('protocol')!r}.")
     predictions_dir = args.predictions_dir.resolve()
     output_dir = args.output_dir.resolve()
-    model_path = args.smplx_model.resolve()
+    model_path = args.smplx_model.expanduser()
     output_dir.mkdir(parents=True, exist_ok=True)
     requested_ids = set(args.ids)
     generated = skipped = missing = 0
@@ -91,7 +94,7 @@ def main() -> None:
             transl,
             betas=betas,
             gender=gender,
-            model_type="smplx",
+            model_type=args.model_type,
             model_path=model_path,
         )
         joints = canonicalize_smpl22_joints(joints).reshape(expected, 66)

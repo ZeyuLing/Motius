@@ -1,0 +1,24 @@
+{
+  "source": "outputs/evaluation/t2m/humanml3d_official_test/motion135/maskcontrol/006944.npz",
+  "keys": [
+    "global_orient",
+    "body_pose",
+    "transl",
+    "betas",
+    "gender",
+    "mocap_framerate",
+    "fit_mpjpe_mm",
+    "source_hml263"
+  ],
+  "fit_mpjpe_mm_mean": 18.085376739501953,
+  "fit_mpjpe_mm_p95": 20.57094078063965,
+  "method": "MaskControl",
+  "sample_id": "006944",
+  "caption": "a person moves their right hand left, right, up, and down.",
+  "gif": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_006944_smpl_mesh_512_30fps.gif",
+  "frames": 120,
+  "fps": 30,
+  "width": 512,
+  "height": 512,
+  "mp4": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_006944_smpl_mesh.mp4"
+}

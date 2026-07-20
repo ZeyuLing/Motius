@@ -29,6 +29,8 @@ TASK_LABELS = {
     "T2M",
     "M2T",
     "TP2M",
+    "Temporal Condition",
+    "Body-Part Condition",
     "Multi-Prompt T2M",
     "Sequential Generation",
     "Motion Control",
@@ -37,6 +39,7 @@ TASK_LABELS = {
 TASK_LEADERBOARDS = {
     "T2M": "https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard",
     "TP2M": "https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard",
+    "Temporal Condition": "https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard",
     "Sequential Generation": "https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard",
 }
 

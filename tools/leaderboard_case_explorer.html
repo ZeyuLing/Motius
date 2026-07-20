@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Motius case explorer</title>
+  <style>
+    :root { color-scheme: light; --ink:#17231f; --muted:#68756f; --line:#d9e1dd; --paper:#fff; --wash:#f5f7f6; --accent:#087d72; }
+    * { box-sizing:border-box; }
+    body { margin:0; overflow:hidden; color:var(--ink); background:var(--wash); font:14px/1.5 Inter,ui-sans-serif,system-ui,sans-serif; letter-spacing:0; }
+    button,input,select { font:inherit; letter-spacing:0; }
+    .app { height:100vh; min-height:560px; display:grid; grid-template-rows:auto minmax(0,1fr); }
+    .toolbar { display:grid; grid-template-columns:minmax(220px,1fr) minmax(150px,auto) auto minmax(150px,auto) auto; gap:8px; align-items:end; padding:14px 16px; border-bottom:1px solid var(--line); background:var(--paper); }
+    .field { display:grid; gap:5px; min-width:0; }
+    .field label { color:var(--muted); font-size:11px; font-weight:700; text-transform:uppercase; }
+    input,select,.icon-button { height:36px; border:1px solid var(--line); border-radius:4px; color:var(--ink); background:var(--paper); }
+    input,select { width:100%; padding:0 10px; }
+    .icon-button { width:36px; display:grid; place-items:center; cursor:pointer; font-size:18px; }
+    .icon-button:hover { border-color:var(--accent); color:var(--accent); }
+    .content { min-height:0; display:grid; grid-template-columns:minmax(0,1.45fr) minmax(300px,.85fr); }
+    .stage { position:relative; min-height:520px; background:#e8eeeb; overflow:hidden; }
+    #canvas { width:100%; height:100%; display:block; }
+    .playback { position:absolute; left:14px; right:14px; bottom:14px; display:grid; grid-template-columns:36px minmax(0,1fr) auto; gap:9px; align-items:center; padding:8px; border:1px solid rgba(255,255,255,.65); border-radius:5px; background:rgba(255,255,255,.92); backdrop-filter:blur(8px); }
+    .playback input { height:22px; padding:0; accent-color:var(--accent); }
+    .frame { min-width:86px; text-align:right; color:var(--muted); font:12px ui-monospace,SFMono-Regular,monospace; }
+    .loading { position:absolute; inset:0; display:grid; place-items:center; color:var(--muted); background:rgba(245,247,246,.86); font-weight:700; }
+    .loading[hidden] { display:none; }
+    .detail { min-height:0; overflow:auto; padding:18px; border-left:1px solid var(--line); background:var(--paper); }
+    .eyebrow { color:var(--accent); font:700 11px ui-monospace,SFMono-Regular,monospace; text-transform:uppercase; }
+    h1 { margin:3px 0 4px; font-size:22px; line-height:1.2; }
+    .meta { color:var(--muted); font:12px ui-monospace,SFMono-Regular,monospace; }
+    .section { padding:16px 0; border-top:1px solid var(--line); }
+    .section:first-of-type { margin-top:18px; }
+    .section h2 { margin:0 0 10px; font-size:12px; text-transform:uppercase; }
+    .reference-list { margin:0; padding-left:20px; color:#42504a; }
+    .reference-list li { padding:3px 5px; border-left:3px solid transparent; }
+    .reference-list li.active { border-left-color:var(--accent); background:#edf7f4; color:var(--ink); font-weight:650; }
+    .output { display:grid; grid-template-columns:4px minmax(0,1fr); gap:10px; margin:11px 0; }
+    .swatch { border-radius:2px; }
+    .output strong { display:block; margin-bottom:2px; font-size:12px; }
+    .output p { margin:0; color:#3e4a46; }
+    .result-count { align-self:center; padding-bottom:8px; color:var(--muted); font:12px ui-monospace,SFMono-Regular,monospace; white-space:nowrap; }
+    @media (max-width:860px) {
+      body { overflow:auto; }
+      .app { height:auto; min-height:100vh; }
+      .toolbar { grid-template-columns:minmax(0,1fr) minmax(130px,auto) auto auto; }
+      .result-count { grid-column:1/-1; padding:0; }
+      .content { grid-template-columns:1fr; grid-template-rows:58vh auto; }
+      .stage { min-height:360px; }
+      .detail { border-left:0; border-top:1px solid var(--line); }
+    }
+  </style>
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js"}}</script>
+</head>
+<body>
+  <div class="app">
+    <header class="toolbar">
+      <div class="field"><label for="search">Case ID or caption</label><input id="search" type="search" placeholder="Search all evaluated cases"></div>
+      <div class="field" id="method-field" hidden><label for="method-select">Motion</label><select id="method-select"></select></div>
+      <button class="icon-button" id="previous" type="button" title="Previous case" aria-label="Previous case">‹</button>
+      <div class="field"><label for="case-select">Case</label><select id="case-select"></select></div>
+      <button class="icon-button" id="next" type="button" title="Next case" aria-label="Next case">›</button>
+      <div class="result-count" id="result-count">Loading manifest</div>
+    </header>
+    <main class="content">
+      <section class="stage">
+        <canvas id="canvas"></canvas>
+        <div class="loading" id="loading">Loading motion</div>
+        <div class="playback">
+          <button class="icon-button" id="play" type="button" title="Play or pause" aria-label="Play or pause">Ⅱ</button>
+          <input id="timeline" type="range" min="0" max="1" value="0" aria-label="Animation frame">
+          <span class="frame" id="frame">0 / 0</span>
+        </div>
+      </section>
+      <aside class="detail">
+        <div class="eyebrow" id="position">Complete evaluation population</div>
+        <h1 id="case-id">Loading</h1>
+        <div class="meta" id="case-meta"></div>
+        <section class="section"><h2 id="references-title">Human references</h2><ol class="reference-list" id="references"></ol></section>
+        <section class="section"><h2 id="outputs-title">Method outputs</h2><div id="outputs"></div></section>
+      </aside>
+    </main>
+  </div>
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.166.1/examples/jsm/controls/OrbitControls.js";
+
+    const canvas=document.querySelector("#canvas"), loading=document.querySelector("#loading");
+    const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
+    renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.setClearColor(0xe8eeeb,1); renderer.shadowMap.enabled=true;
+    const scene=new THREE.Scene(); scene.fog=new THREE.Fog(0xe8eeeb,8,19);
+    const camera=new THREE.PerspectiveCamera(42,1,.05,80); camera.position.set(4.4,2.8,6.8);
+    const controls=new OrbitControls(camera,canvas); controls.target.set(0,.8,0); controls.enableDamping=true; controls.maxDistance=24; controls.minDistance=2; camera.lookAt(controls.target); controls.update();
+    scene.add(new THREE.HemisphereLight(0xffffff,0x68756f,2.4));
+    const key=new THREE.DirectionalLight(0xffffff,3); key.position.set(3,6,4); key.castShadow=true; scene.add(key);
+    const ground=new THREE.Mesh(new THREE.PlaneGeometry(24,24),new THREE.MeshStandardMaterial({color:0xf8faf9,roughness:1})); ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
+    const grid=new THREE.GridHelper(24,48,0xa9b8b1,0xd4ddd9); grid.position.y=.002; scene.add(grid);
+
+    let manifest, filtered=[], selected=0, selectedMethod=null, joints=null, currentMotion=null, frame=0, playing=true, lastTime=0, chunkCache=new Map();
+    const parents=[-1,0,0,1,2,3,4,5,6,7,8,9,9,9,12,13,14,12,16,17,18,19];
+    const jointMeshes=[], boneMeshes=[];
+    const jointMaterial=new THREE.MeshStandardMaterial({color:0x087d72,roughness:.55,metalness:.03});
+    const boneMaterial=new THREE.MeshStandardMaterial({color:0x1c756c,roughness:.68,metalness:.02});
+    const headMaterial=new THREE.MeshStandardMaterial({color:0xd8a17d,roughness:.72});
+    for(let i=0;i<22;i++){
+      const radius=i===15?.12:(i===0?.09:.055);
+      const mesh=new THREE.Mesh(new THREE.SphereGeometry(radius,14,10),i===15?headMaterial:jointMaterial); mesh.castShadow=true; scene.add(mesh); jointMeshes.push(mesh);
+      if(parents[i]>=0){const bone=new THREE.Mesh(new THREE.CylinderGeometry(.045,.06,1,10),boneMaterial); bone.castShadow=true; scene.add(bone); boneMeshes.push({joint:i,mesh:bone});}
+    }
+    const up=new THREE.Vector3(0,1,0), a=new THREE.Vector3(), b=new THREE.Vector3(), mid=new THREE.Vector3();
+
+    function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(canvas.width!==Math.round(w*renderer.getPixelRatio())||canvas.height!==Math.round(h*renderer.getPixelRatio()))renderer.setSize(w,h,false);camera.aspect=w/Math.max(h,1);camera.updateProjectionMatrix();}
+    function updateAvatar(){if(!joints||!currentMotion)return;const stride=currentMotion.stride||1,source=frame/stride,lo=Math.floor(source),hi=Math.min(lo+1,currentMotion.frames-1),alpha=source-lo,base0=lo*66,base1=hi*66;for(let i=0;i<22;i++){const j=i*3;jointMeshes[i].position.set(THREE.MathUtils.lerp(joints[base0+j],joints[base1+j],alpha),THREE.MathUtils.lerp(joints[base0+j+1],joints[base1+j+1],alpha),THREE.MathUtils.lerp(joints[base0+j+2],joints[base1+j+2],alpha));}const root=jointMeshes[0].position,dx=root.x-controls.target.x,dz=root.z-controls.target.z;camera.position.x+=dx;camera.position.z+=dz;controls.target.x=root.x;controls.target.z=root.z;for(const item of boneMeshes){a.copy(jointMeshes[parents[item.joint]].position);b.copy(jointMeshes[item.joint].position);mid.copy(a).add(b).multiplyScalar(.5);item.mesh.position.copy(mid);const length=a.distanceTo(b);item.mesh.scale.set(1,length,1);item.mesh.quaternion.setFromUnitVectors(up,b.clone().sub(a).normalize());}const displayFrames=currentMotion.display_frames||currentMotion.frames;document.querySelector("#timeline").value=frame;document.querySelector("#frame").textContent=`${frame+1} / ${displayFrames}`;document.querySelectorAll("#references li[data-start]").forEach(li=>li.classList.toggle("active",frame>=Number(li.dataset.start)&&frame<Number(li.dataset.end)));}
+    function assetUrl(path){return manifest.asset_base_url?new URL(path,manifest.asset_base_url).href:path;}
+    async function chunk(path){const url=assetUrl(path);if(!chunkCache.has(url))chunkCache.set(url,fetch(url).then(r=>{if(!r.ok)throw new Error(`Asset ${r.status}`);return r.arrayBuffer();}));return chunkCache.get(url);}
+    function motionDescriptor(item){return item.motions?(item.motions[selectedMethod]||Object.values(item.motions)[0]):item;}
+    async function loadMotion(item){loading.hidden=false;const motion=motionDescriptor(item);const buffer=await chunk(motion.asset);const raw=new Uint16Array(buffer,motion.offset*2,motion.count);const values=new Float32Array(motion.count);for(let i=0;i<raw.length;i++)values[i]=motion.minimum[i%3]+raw[i]*motion.scale[i%3];joints=values;currentMotion=motion;frame=0;document.querySelector("#timeline").max=(motion.display_frames||motion.frames)-1;updateAvatar();loading.hidden=true;}
+    function renderDetails(item,absoluteIndex){const motion=motionDescriptor(item);document.querySelector("#position").textContent=`Case ${absoluteIndex+1} of ${manifest.population}`;document.querySelector("#case-id").textContent=item.sample_id||item.case_id;document.querySelector("#case-meta").textContent=`${motion.display_frames||motion.frames} frames · ${motion.fps||item.fps} fps · ${item.case_key||item.case_id}`;const refs=item.segments||item.references||[];document.querySelector("#references").replaceChildren(...refs.map(value=>{const li=document.createElement("li");if(typeof value==="string"){li.textContent=value;}else{li.textContent=`[${value.start_frame}, ${value.end_frame}) ${value.caption}`;li.dataset.start=value.start_frame;li.dataset.end=value.end_frame;}return li;}));const methods=manifest.motion_methods||manifest.methods||[];document.querySelector("#outputs").replaceChildren(...methods.map(method=>{const row=document.createElement("div");row.className="output";row.innerHTML=`<span class="swatch" style="background:${method.accent}"></span><div><strong>${method.label}</strong><p></p></div>`;row.querySelector("p").textContent=item.outputs?.[method.key]||(method.key===selectedMethod?"Displayed motion":"Select from the Motion menu");return row;}));}
+    async function choose(index){if(!filtered.length)return;selected=Math.max(0,Math.min(index,filtered.length-1));const absoluteIndex=filtered[selected],item=manifest.cases[absoluteIndex];document.querySelector("#case-select").value=String(absoluteIndex);renderDetails(item,absoluteIndex);history.replaceState(null,"",`?case=${encodeURIComponent(item.case_key||item.case_id)}`);await loadMotion(item);}
+    function searchable(item){const refs=(item.references||item.segments||[]).map(x=>typeof x==="string"?x:x.caption);return `${item.case_key||item.case_id} ${refs.join(" ")} ${Object.values(item.outputs||{}).join(" ")}`.toLowerCase();}
+    function applyFilter(){const query=document.querySelector("#search").value.trim().toLowerCase();filtered=manifest.cases.map((_,i)=>i).filter(i=>!query||searchable(manifest.cases[i]).includes(query));const select=document.querySelector("#case-select");select.replaceChildren(...filtered.map(i=>{const item=manifest.cases[i],option=document.createElement("option");option.value=String(i);option.textContent=`${i+1}. ${item.sample_id||item.case_id}`;return option;}));document.querySelector("#result-count").textContent=`${filtered.length.toLocaleString()} / ${manifest.population.toLocaleString()} cases`;choose(0);}
+    document.querySelector("#search").addEventListener("input",applyFilter);
+    document.querySelector("#case-select").addEventListener("change",e=>choose(filtered.indexOf(Number(e.target.value))));
+    document.querySelector("#method-select").addEventListener("change",async e=>{selectedMethod=e.target.value;const item=manifest.cases[filtered[selected]];renderDetails(item,filtered[selected]);await loadMotion(item);});
+    document.querySelector("#previous").addEventListener("click",()=>choose(selected-1));document.querySelector("#next").addEventListener("click",()=>choose(selected+1));
+    document.querySelector("#play").addEventListener("click",e=>{playing=!playing;e.currentTarget.textContent=playing?"Ⅱ":"▶";});
+    document.querySelector("#timeline").addEventListener("input",e=>{frame=Number(e.target.value);updateAvatar();});
+    async function init(){const response=await fetch("manifest.json",{cache:"no-store"});if(!response.ok)throw new Error(`Manifest ${response.status}`);manifest=await response.json();document.querySelector("#references-title").textContent=manifest.reference_label||"Human references";document.querySelector("#outputs-title").textContent=manifest.output_label||"Method outputs";if(manifest.motion_methods?.length){selectedMethod=manifest.motion_methods[0].key;const methodSelect=document.querySelector("#method-select");methodSelect.replaceChildren(...manifest.motion_methods.map(method=>{const option=document.createElement("option");option.value=method.key;option.textContent=method.label;return option;}));document.querySelector("#method-field").hidden=false;}filtered=manifest.cases.map((_,i)=>i);const select=document.querySelector("#case-select");select.replaceChildren(...filtered.map(i=>{const item=manifest.cases[i],option=document.createElement("option");option.value=String(i);option.textContent=`${i+1}. ${item.sample_id||item.case_id}`;return option;}));document.querySelector("#result-count").textContent=`${manifest.population.toLocaleString()} cases`;const requested=new URLSearchParams(location.search).get("case");const start=Math.max(0,manifest.cases.findIndex(item=>(item.case_key||item.case_id)===requested||item.sample_id===requested));await choose(start);}
+    function animate(time){requestAnimationFrame(animate);resize();if(playing&&joints&&currentMotion&&time-lastTime>1000/(currentMotion.fps||20)){frame=(frame+1)%(currentMotion.display_frames||currentMotion.frames);lastTime=time;updateAvatar();}controls.update();renderer.render(scene,camera);}requestAnimationFrame(animate);
+    init().catch(error=>{loading.hidden=false;loading.textContent=error.message;});
+  </script>
+</body>
+</html>

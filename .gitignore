@@ -45,6 +45,7 @@ wandb/
 runs/
 tmp/
 temp/
+docs/leaderboards/hf_space_*/cases/**/assets/
 
 *.pt
 *.pth

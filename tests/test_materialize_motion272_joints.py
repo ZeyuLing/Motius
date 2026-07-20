@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+from argparse import Namespace
 from pathlib import Path
 
 import numpy as np
@@ -22,6 +23,31 @@ HML_SPEC = importlib.util.spec_from_file_location(
 assert HML_SPEC and HML_SPEC.loader
 HML_MODULE = importlib.util.module_from_spec(HML_SPEC)
 HML_SPEC.loader.exec_module(HML_MODULE)
+
+
+def test_hml263_ids_loader_defers_lengths_and_reads_only_its_shard(
+    tmp_path: Path, monkeypatch
+) -> None:
+    ids_file = tmp_path / "ids.txt"
+    ids_file.write_text("a\nb\nc\nd\n")
+    loaded = []
+
+    def fail_if_loaded(*args, **kwargs):
+        loaded.append((args, kwargs))
+        raise AssertionError("The ids loader must not open motion arrays")
+
+    monkeypatch.setattr(HML_MODULE.np, "load", fail_if_loaded)
+    args = Namespace(
+        manifest=None,
+        ids_file=ids_file,
+        shard_index=1,
+        num_shards=2,
+    )
+
+    _protocol, cases = HML_MODULE._load_cases(args, tmp_path)
+
+    assert loaded == []
+    assert [case["total_frames"] for case in cases] == [0, None, 0, None]
 
 
 def test_load_motion272_supports_npy_and_npz(tmp_path: Path) -> None:
@@ -59,6 +85,7 @@ def test_hml263_materializer_preserves_positions_via_smpl_fit(
             "global_orient": np.zeros((frames, 3), dtype=np.float32),
             "body_pose": np.zeros((frames, 63), dtype=np.float32),
             "transl": np.zeros((frames, 3), dtype=np.float32),
+            "motion_135": np.zeros((frames, 135), dtype=np.float32),
             "fitted_joints": joints,
             "fit_mpjpe_mm": np.full(frames, 12.0, dtype=np.float32),
             "rotation_init": np.asarray("hml263_end_effectors"),
@@ -84,6 +111,63 @@ def test_hml263_materializer_preserves_positions_via_smpl_fit(
     assert np.load(tmp_path / "joints66" / "case.npy").shape == (7, 66)
     with np.load(tmp_path / "smpl" / "case.npz", allow_pickle=False) as smpl:
         assert smpl["rotation_init"].item() == "hml263_end_effectors"
+
+
+def test_hml263_materializer_derives_target_length_from_source(
+    tmp_path: Path, monkeypatch
+) -> None:
+    source = tmp_path / "case.npy"
+    np.save(source, np.zeros((8, 263), dtype=np.float32))
+
+    def fake_retarget(_features, **kwargs):
+        frames = int(kwargs["target_len"])
+        return {
+            "global_orient": np.zeros((frames, 3), dtype=np.float32),
+            "body_pose": np.zeros((frames, 63), dtype=np.float32),
+            "transl": np.zeros((frames, 3), dtype=np.float32),
+            "motion_135": np.zeros((frames, 135), dtype=np.float32),
+            "fitted_joints": np.zeros((frames, 22, 3), dtype=np.float32),
+            "fit_mpjpe_mm": np.full(frames, 10.0, dtype=np.float32),
+            "rotation_init": np.asarray("position_ik"),
+        }
+
+    monkeypatch.setattr(HML_MODULE, "retarget_hml263_clip", fake_retarget)
+    HML_MODULE.materialize_case(
+        source,
+        tmp_path / "smpl" / "case.npz",
+        tmp_path / "joints66" / "case.npy",
+        smpl_rest=object(),
+        expected_frames=None,
+        device="cpu",
+        source_fps=20.0,
+        target_fps=30.0,
+        refine_iters=80,
+        refine_lr=0.02,
+        rotation_init="position_ik",
+    )
+
+    assert np.load(tmp_path / "joints66" / "case.npy").shape == (12, 66)
+
+
+def test_hml263_materialization_validation_rejects_truncated_output(
+    tmp_path: Path,
+) -> None:
+    frames = 7
+    smpl_path = tmp_path / "case.npz"
+    joints_path = tmp_path / "case.npy"
+    np.savez_compressed(
+        smpl_path,
+        motion_135=np.zeros((frames, 135), dtype=np.float32),
+        global_orient=np.zeros((frames, 3), dtype=np.float32),
+        body_pose=np.zeros((frames, 63), dtype=np.float32),
+        transl=np.zeros((frames, 3), dtype=np.float32),
+        fit_mpjpe_mm=np.zeros(frames, dtype=np.float32),
+    )
+    np.save(joints_path, np.zeros((frames, 66), dtype=np.float32))
+
+    assert HML_MODULE._valid_materialization(smpl_path, joints_path)
+    joints_path.write_bytes(b"\x93NUMPY")
+    assert not HML_MODULE._valid_materialization(smpl_path, joints_path)
 
 
 def test_hml263_materializer_rejects_bad_smpl_fit(

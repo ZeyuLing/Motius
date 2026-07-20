@@ -58,6 +58,7 @@ class MotionGPTPipeline(BasePipeline):
         motions: Sequence[Union[np.ndarray, torch.Tensor]],
         lengths: Optional[Sequence[int]] = None,
         with_len: bool = False,
+        pad_to_batch_max: bool = False,
         progress: bool = False,
     ) -> List[str]:
         """Generate text descriptions from HML3D-263 motions.
@@ -65,7 +66,8 @@ class MotionGPTPipeline(BasePipeline):
         ``motions`` are expected to be denormalized HumanML3D-263 features, the
         same format saved by the T2M baseline scripts. MotionGPT's VQ-VAE was
         trained on normalized features, so normalization is applied here before
-        tokenization.
+        tokenization. Set ``pad_to_batch_max=True`` only to reproduce the
+        released evaluator's batch-dependent zero-padding behavior.
         """
         if lengths is None:
             lengths = [int(m.shape[0]) for m in motions]
@@ -73,20 +75,44 @@ class MotionGPTPipeline(BasePipeline):
             raise ValueError("motions and lengths must have equal length")
 
         bundle = self.bundle
-        motion_tokens = []
-        token_lengths = []
+        normalized = []
         mean = bundle.mean.to(self.device)
         std = bundle.std.to(self.device)
         for motion, length in zip(motions, lengths):
-            motion_t = torch.as_tensor(motion, dtype=torch.float32, device=self.device)
+            if isinstance(motion, torch.Tensor):
+                motion_t = motion.detach().to(self.device, dtype=torch.float32)
+            else:
+                motion_t = torch.from_numpy(
+                    np.array(motion, dtype=np.float32, copy=True)
+                ).to(self.device)
             if motion_t.ndim != 2 or motion_t.shape[-1] != 263:
                 raise ValueError(f"expected HML3D-263 motion shape (T,263), got {tuple(motion_t.shape)}")
             length = max(1, min(int(length), int(motion_t.shape[0])))
             motion_t = motion_t[:length]
             motion_norm = (motion_t - mean) / std.clamp_min(1e-8)
-            token, _ = bundle.vae.encode(motion_norm.unsqueeze(0))
-            motion_tokens.append(token[0])
-            token_lengths.append(int(token.shape[1]))
+            normalized.append(motion_norm)
+
+        if pad_to_batch_max:
+            # MotionGPT's released M2T evaluator collates normalized motions
+            # into a zero-padded batch and encodes the padded tensor without
+            # passing the original lengths to the VQ-VAE. Reproduce that
+            # behavior because the resulting motion tokens are batch-dependent.
+            maximum = max(int(value.shape[0]) for value in normalized)
+            motion_batch = normalized[0].new_zeros(
+                (len(normalized), maximum, normalized[0].shape[-1])
+            )
+            for index, value in enumerate(normalized):
+                motion_batch[index, : value.shape[0]] = value
+            tokens, _ = bundle.vae.encode(motion_batch)
+            motion_tokens = [tokens[index] for index in range(len(normalized))]
+            token_lengths = [int(tokens.shape[1])] * len(normalized)
+        else:
+            motion_tokens = []
+            token_lengths = []
+            for motion_norm in normalized:
+                token, _ = bundle.vae.encode(motion_norm.unsqueeze(0))
+                motion_tokens.append(token[0])
+                token_lengths.append(int(token.shape[1]))
 
         texts = bundle.lm.generate_conditional(
             motion_tokens=motion_tokens,

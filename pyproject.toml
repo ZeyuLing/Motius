@@ -29,10 +29,6 @@ prism = [
     "einops>=0.6",
     "sentencepiece>=0.1",
 ]
-prism = [
-    "einops>=0.6",
-    "sentencepiece>=0.1",
-]
 vimogen = [
     "ftfy>=6.1",
     "regex>=2023.0",
@@ -43,6 +39,12 @@ retarget = [
 ]
 condmdi = [
     "einops>=0.6",
+    "ftfy>=6.1",
+    "regex>=2023.0",
+    "tqdm>=4.65",
+    "clip @ git+https://github.com/openai/CLIP.git",
+]
+omnicontrol = [
     "ftfy>=6.1",
     "regex>=2023.0",
     "tqdm>=4.65",
@@ -61,6 +63,22 @@ intermask = [
 ]
 motionclr = [
     "clip @ git+https://github.com/openai/CLIP.git",
+]
+m2t = [
+    "bert-score>=0.3.13",
+    "pycocoevalcap>=1.2",
+    "spacy>=3.7",
+]
+motiongpt3 = [
+    "einops>=0.6",
+    "matplotlib>=3.5",
+    "omegaconf>=2.3",
+    "pytorch-lightning>=2.0",
+    "torchmetrics>=1.0",
+]
+maskcontrol = [
+    "clip @ git+https://github.com/openai/CLIP.git",
+    "einops>=0.6",
 ]
 flowmdm = [
     "clip @ git+https://github.com/openai/CLIP.git",
@@ -108,10 +126,13 @@ namespaces = false
     "network/assets/skeletons/g1skel34/meshes/g1/*.STL",
 ]
 "motius.models.tmr" = ["LICENSE"]
+"motius.models.tm2t" = ["LICENSE"]
 "motius.models.condmdi" = ["LICENSE"]
+"motius.models.omnicontrol" = ["LICENSE", "assets/*.npy"]
 "motius.models.intergen" = ["NOTICE", "network/configs/*.yaml"]
 "motius.models.intermask" = ["LICENSE"]
 "motius.models.motionclr" = ["LICENSE", "ATTRIBUTIONS.md"]
+"motius.models.maskcontrol" = ["ATTRIBUTIONS.md"]
 "motius.models.ardy" = [
     "LICENSE",
     "ATTRIBUTIONS.md",
@@ -128,6 +149,7 @@ namespaces = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 markers = [
     "smoke: startup smoke tests for training and inference entry points",
     "gpu: tests that require CUDA-capable hardware and local pretrained checkpoints",

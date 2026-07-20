@@ -19,10 +19,17 @@ motion135 = result["motion_135"]
 fit_mpjpe_mm = result["fit_mpjpe_mm"]
 ```
 
-This route maps the HML263 local-rotation block onto the SMPL rest skeleton,
-then optionally refines it against recovered joints. It is inherently lossy:
-HML263 does not uniquely determine body shape or twist. Inspect mesh output as
-well as joint MPJPE before using converted data for evaluation.
+This route first recovers the official HML263 joint positions, solves the
+articulated SMPL chain from those positions, retains compatible end-effector
+orientations, then optionally refines all 22 joints. The HML263 local-rotation
+block is defined on the HumanML3D canonical skeleton and must not be treated as
+directly interchangeable with SMPL local rotations; doing so can produce
+malformed limbs and torsos even when the source positions are valid.
+
+The conversion is inherently lossy because HML263 does not uniquely determine
+body shape or twist. Inspect the rendered SMPL mesh as well as joint MPJPE before
+using converted data for evaluation. The default `rotation_init="auto"` selects
+the position-driven path for HML263 features.
 
 ## InterHuman To SMPL
 
