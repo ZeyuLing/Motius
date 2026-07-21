@@ -219,7 +219,7 @@ def test_hml263_materializer_rejects_bad_smpl_fit(
         )
 
 
-def test_hml263_materializer_falls_back_when_stable_twist_deforms_mesh(
+def test_hml263_materializer_uses_minimum_twist_fit(
     tmp_path: Path, monkeypatch
 ) -> None:
     source = tmp_path / "case.npy"
@@ -260,7 +260,7 @@ def test_hml263_materializer_falls_back_when_stable_twist_deforms_mesh(
         rotation_init="position_ik",
     )
 
-    assert calls == [True, False]
+    assert calls == [False]
     assert stats["mesh_edge_ratio_p99"] == 1.35
     assert stats["temporal_twist_stabilization"] == 0.0
     with np.load(destination, allow_pickle=False) as payload:

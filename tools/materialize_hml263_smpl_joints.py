@@ -173,7 +173,7 @@ def materialize_case(
             compute_mesh_metrics=True,
         )
 
-    converted = convert(stabilize_twist=True)
+    converted = convert(stabilize_twist=False)
     joints = canonicalize_smpl22_joints(converted["fitted_joints"])
     if joints.shape != (expected_frames, 22, 3):
         raise RuntimeError(
@@ -204,35 +204,9 @@ def materialize_case(
             min_mesh_edge_ratio_p01=min_mesh_edge_ratio_p01,
         )
     except ValueError as exc:
-        fallback = convert(stabilize_twist=False)
-        fallback_errors = np.asarray(fallback["fit_mpjpe_mm"], dtype=np.float64)
-        fallback_mean = float(fallback_errors.mean())
-        fallback_integrity = dict(fallback.get("mesh_integrity") or {})
-        try:
-            if (
-                fallback_errors.size != expected_frames
-                or not np.isfinite(fallback_errors).all()
-                or fallback_mean > float(max_fit_mpjpe_mm)
-            ):
-                raise ValueError(
-                    f"fallback SMPL fit MPJPE is invalid or exceeds {max_fit_mpjpe_mm:.2f} mm"
-                )
-            validate_smpl_motion_integrity(
-                fallback_integrity,
-                max_rotation_jump_p99_deg=max_rotation_jump_p99_deg,
-                max_mesh_edge_ratio_p99=max_mesh_edge_ratio_p99,
-                min_mesh_edge_ratio_p01=min_mesh_edge_ratio_p01,
-            )
-        except ValueError as fallback_exc:
-            raise RuntimeError(
-                f"SMPL mesh integrity gate failed for {source_path}: "
-                f"stable={exc}; raw={fallback_exc}"
-            ) from fallback_exc
-        converted = fallback
-        errors = fallback_errors
-        mean_error = fallback_mean
-        integrity = fallback_integrity
-        joints = canonicalize_smpl22_joints(converted["fitted_joints"])
+        raise RuntimeError(
+            f"SMPL mesh integrity gate failed for {source_path}: {exc}"
+        ) from exc
 
     smpl_path.parent.mkdir(parents=True, exist_ok=True)
     joints_path.parent.mkdir(parents=True, exist_ok=True)
@@ -269,7 +243,7 @@ def materialize_case(
             temporal_twist_stabilization=np.asarray(
                 bool(
                     np.asarray(
-                        converted.get("temporal_twist_stabilization", True)
+                        converted.get("temporal_twist_stabilization", False)
                     ).item()
                 )
             ),
@@ -288,7 +262,7 @@ def materialize_case(
         "temporal_twist_stabilization": float(
             bool(
                 np.asarray(
-                    converted.get("temporal_twist_stabilization", True)
+                    converted.get("temporal_twist_stabilization", False)
                 ).item()
             )
         ),

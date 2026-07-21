@@ -28,7 +28,37 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model-dir", type=Path, default=Path("checkpoints/body_models"))
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--pose-corrective-rank",
+        type=int,
+        default=64,
+        help="Low-rank SMPL pose-corrective basis size; use 0 to omit it.",
+    )
     return parser.parse_args()
+
+
+def low_rank_pose_correctives(
+    posedirs: np.ndarray, rank: int
+) -> tuple[np.ndarray, np.ndarray, float]:
+    """Factor SMPL pose blend shapes for compact browser-side reconstruction."""
+
+    matrix = np.asarray(posedirs, dtype=np.float32)
+    if matrix.ndim != 2:
+        raise ValueError(f"posedirs must be a matrix, got {matrix.shape}")
+    if not 1 <= rank <= min(matrix.shape):
+        raise ValueError(f"rank must be in [1,{min(matrix.shape)}], got {rank}")
+    basis, singular_values, projection = np.linalg.svd(matrix, full_matrices=False)
+    retained_basis = basis[:, :rank] * singular_values[:rank]
+    retained_projection = projection[:rank]
+    energy = float(
+        np.square(singular_values[:rank]).sum()
+        / np.maximum(np.square(singular_values).sum(), 1e-12)
+    )
+    return (
+        retained_basis.astype(np.float32),
+        retained_projection.astype(np.float32),
+        energy,
+    )
 
 
 def main() -> None:
@@ -76,8 +106,30 @@ def main() -> None:
     faces.tofile(output / "faces.u16")
     top.tofile(output / "skin_indices.u8")
     quantized_weights.tofile(output / "skin_weights.u16")
+    corrective_metadata = None
+    if args.pose_corrective_rank:
+        posedirs = model.posedirs.detach().cpu().numpy().T.astype(np.float32)
+        basis, projection, energy = low_rank_pose_correctives(
+            posedirs, args.pose_corrective_rank
+        )
+        rank = int(args.pose_corrective_rank)
+        basis = basis.reshape(len(vertices), 3, rank).transpose(2, 0, 1)
+        packed_basis = np.zeros((rank, len(vertices), 4), dtype="<f2")
+        packed_basis[..., :3] = basis.astype("<f2")
+        packed_basis.tofile(output / "pose_corrective_basis.rgba16f")
+        projection.astype("<f4").tofile(output / "pose_corrective_projection.f32")
+        corrective_metadata = {
+            "rank": rank,
+            "feature_dimensions": int(projection.shape[1]),
+            "basis_layout": "rank,vertex,rgba",
+            "retained_energy": energy,
+            "files": {
+                "basis": "pose_corrective_basis.rgba16f",
+                "projection": "pose_corrective_projection.f32",
+            },
+        }
     metadata = {
-        "schema_version": 1,
+        "schema_version": 2 if corrective_metadata else 1,
         "model": "SMPL neutral beta=0",
         "vertices": int(len(vertices)),
         "faces": int(len(faces)),
@@ -96,6 +148,8 @@ def main() -> None:
             "p01": float(np.percentile(retained, 1)),
         },
     }
+    if corrective_metadata:
+        metadata["pose_correctives"] = corrective_metadata
     (output / "model.json").write_text(json.dumps(metadata, indent=2) + "\n")
     print(json.dumps({"output": str(output), **metadata}, indent=2))
 

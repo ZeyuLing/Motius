@@ -77,6 +77,7 @@ def materialize_case(
         floor_align=True,
         refine_iters=0,
         rotation_init="position_ik",
+        temporal_twist_stabilization=True,
         compute_mesh_metrics=True,
     )
     errors = np.asarray(converted["fit_mpjpe_mm"], dtype=np.float32)

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "model": "SMPL neutral beta=0",
   "vertices": 6890,
   "faces": 13776,
@@ -41,5 +41,15 @@
     "mean": 1.0,
     "minimum": 0.9999998807907104,
     "p01": 0.9999999403953552
+  },
+  "pose_correctives": {
+    "rank": 64,
+    "feature_dimensions": 207,
+    "basis_layout": "rank,vertex,rgba",
+    "retained_energy": 0.9739207251398746,
+    "files": {
+      "basis": "pose_corrective_basis.rgba16f",
+      "projection": "pose_corrective_projection.f32"
+    }
   }
 }

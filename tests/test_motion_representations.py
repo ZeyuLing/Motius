@@ -58,6 +58,7 @@ from tools.convert_hml263_predictions import _relative_offsets
 def test_hml263_smpl_defaults_to_position_ik() -> None:
     signature = inspect.signature(retarget_hml263_clip)
     assert signature.parameters["rotation_init"].default == "position_ik"
+    assert signature.parameters["temporal_twist_stabilization"].default is False
 
 
 def test_one_bone_twist_stabilization_preserves_swing() -> None:

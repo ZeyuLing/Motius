@@ -121,3 +121,34 @@ def test_smpl_gallery_exposes_condition_colors_and_local_exports():
     assert 'await import("fflate")' in page
     assert "views.slice(0,eager)" in page
     assert "mesh.frustumCulled=false" in page
+
+
+def test_smpl_gallery_retries_throttled_assets_without_poisoning_cache():
+    page = GALLERY_TEMPLATE.read_text()
+
+    assert "response.status===429||response.status>=500" in page
+    assert "retry-after" in page
+    assert "if(assetCache.get(key)===pending)assetCache.delete(key)" in page
+    assert "Promise.allSettled" in page
+
+
+def test_smpl_gallery_lazily_hydrates_and_isolates_failed_tiles():
+    page = GALLERY_TEMPLATE.read_text()
+
+    assert "new IntersectionObserver" in page
+    assert 'rootMargin:"600px 0px"' in page
+    assert "for(const view of views.slice(eager))observer.observe(view.tile)" in page
+    assert 'view.tile.dataset.loadState="error"' in page
+    assert 'view.retryButton.hidden=false' in page
+    assert "Motion load failed for" in page
+    assert "for(let start=eager" not in page
+
+
+def test_smpl_gallery_applies_low_rank_smpl_pose_correctives():
+    page = GALLERY_TEMPLATE.read_text()
+
+    assert "meta.pose_correctives" in page
+    assert "THREE.HalfFloatType" in page
+    assert "motiusPoseCorrective" in page
+    assert "updatePoseCorrectives(view)" in page
+    assert "applyPoseCorrective(view,vertex,position)" in page

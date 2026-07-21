@@ -83,7 +83,7 @@ def retarget_hml263_clip(
     rotation_init: str = "position_ik",
     orientation_mode: str = "bone",
     parent_ref_weight: float = 0.25,
-    temporal_twist_stabilization: bool = True,
+    temporal_twist_stabilization: bool = False,
     pose_keep_weight: float = 1e-4,
     pose_l2_weight: float = 0.0,
     angle_prior_weight: float = 0.0,
