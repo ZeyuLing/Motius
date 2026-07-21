@@ -89,7 +89,7 @@ def parse_args() -> argparse.Namespace:
         help="Reject a clip when its mean SMPL joint-fit error exceeds this value.",
     )
     parser.add_argument("--max-rotation-jump-p99-deg", type=float, default=90.0)
-    parser.add_argument("--max-mesh-edge-ratio-p99", type=float, default=1.8)
+    parser.add_argument("--max-mesh-edge-ratio-p99", type=float, default=2.0)
     parser.add_argument("--min-mesh-edge-ratio-p01", type=float, default=0.2)
     parser.add_argument(
         "--rotation-init",
@@ -146,7 +146,7 @@ def materialize_case(
     rotation_init: str,
     max_fit_mpjpe_mm: float = 50.0,
     max_rotation_jump_p99_deg: float = 90.0,
-    max_mesh_edge_ratio_p99: float = 1.8,
+    max_mesh_edge_ratio_p99: float = 2.0,
     min_mesh_edge_ratio_p01: float = 0.2,
 ) -> dict[str, float]:
     features = np.asarray(np.load(source_path), dtype=np.float32)

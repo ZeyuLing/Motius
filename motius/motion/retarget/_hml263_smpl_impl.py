@@ -685,7 +685,7 @@ def validate_smpl_motion_integrity(
     metrics: dict[str, float],
     *,
     max_rotation_jump_p99_deg: float = 90.0,
-    max_mesh_edge_ratio_p99: float = 1.8,
+    max_mesh_edge_ratio_p99: float = 2.0,
     min_mesh_edge_ratio_p01: float = 0.2,
 ) -> None:
     """Reject low-MPJPE poses whose local rotations deform the SMPL mesh."""

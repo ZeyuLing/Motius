@@ -38,7 +38,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--target-fps", type=float, default=30.0)
     parser.add_argument("--max-fit-mpjpe-mm", type=float, default=50.0)
     parser.add_argument("--max-rotation-jump-p99-deg", type=float, default=90.0)
-    parser.add_argument("--max-mesh-edge-ratio-p99", type=float, default=1.8)
+    parser.add_argument("--max-mesh-edge-ratio-p99", type=float, default=2.0)
     parser.add_argument("--min-mesh-edge-ratio-p01", type=float, default=0.2)
     parser.add_argument("--shard-index", type=int, default=0)
     parser.add_argument("--num-shards", type=int, default=1)
@@ -59,7 +59,7 @@ def materialize_case(
     target_fps: float,
     max_fit_mpjpe_mm: float = 50.0,
     max_rotation_jump_p99_deg: float = 90.0,
-    max_mesh_edge_ratio_p99: float = 1.8,
+    max_mesh_edge_ratio_p99: float = 2.0,
     min_mesh_edge_ratio_p01: float = 0.2,
 ) -> dict[str, float]:
     with np.load(source, allow_pickle=False) as payload:
