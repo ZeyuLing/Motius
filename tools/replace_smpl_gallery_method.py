@@ -58,6 +58,7 @@ def replace_method_assets(
     method_key: str,
     motion_dir: Path,
     output_dir: Path,
+    descriptor_root: Path | None = None,
 ) -> dict:
     methods = {method["key"] for method in manifest.get("motion_methods", [])}
     if method_key not in methods:
@@ -66,20 +67,48 @@ def replace_method_assets(
     if not isinstance(cases, list) or not cases:
         raise ValueError("manifest must contain inline cases")
 
-    groups: dict[str, list[dict]] = {}
-    for case in cases:
-        descriptor = case.get("motions", {}).get(method_key)
+    motion_records: list[dict]
+    descriptor_chunks: list[tuple[Path, dict]] = []
+    chunk_config = manifest.get("case_descriptor_chunks")
+    if chunk_config:
+        if descriptor_root is None:
+            raise ValueError("descriptor_root is required for a chunked manifest")
+        chunk_size = int(chunk_config["size"])
+        path_template = str(chunk_config["path"])
+        motion_records = []
+        for start in range(0, len(cases), chunk_size):
+            relative = Path(
+                path_template.format(chunk=f"{start // chunk_size:03d}")
+            )
+            payload = json.loads((descriptor_root / relative).read_text())
+            if int(payload.get("start", -1)) != start:
+                raise ValueError(f"descriptor chunk {relative} has the wrong start")
+            values = payload.get("motions")
+            if not isinstance(values, list):
+                raise ValueError(f"descriptor chunk {relative} has no motions list")
+            motion_records.extend(values)
+            descriptor_chunks.append((relative, payload))
+        if len(motion_records) != len(cases):
+            raise ValueError(
+                f"loaded {len(motion_records)} descriptors for {len(cases)} cases"
+            )
+    else:
+        motion_records = [case.get("motions", {}) for case in cases]
+
+    groups: dict[str, list[tuple[dict, dict]]] = {}
+    for case, motions in zip(cases, motion_records):
+        descriptor = motions.get(method_key)
         if not isinstance(descriptor, dict) or "asset" not in descriptor:
             raise KeyError(f"case {case.get('case_id')!r} has no {method_key!r} motion")
-        groups.setdefault(str(descriptor["asset"]), []).append(case)
+        groups.setdefault(str(descriptor["asset"]), []).append((case, motions))
 
     assets_dir = output_dir / "assets"
     assets_dir.mkdir(parents=True, exist_ok=True)
-    for asset, grouped_cases in groups.items():
+    for asset, grouped_records in groups.items():
         packed = bytearray()
-        for case in grouped_cases:
+        for case, motions in grouped_records:
             case_id = str(case.get("case_id") or case.get("sample_id"))
-            old = case["motions"][method_key]
+            old = motions[method_key]
             source = motion_path(motion_dir, case_id)
             expected_frames = int(old.get("display_frames") or old["frames"])
             motion = load_motion135(source, max_frames=expected_frames)
@@ -101,11 +130,21 @@ def replace_method_assets(
                     **_scalar_metadata(source),
                 }
             )
-            case["motions"][method_key] = descriptor
+            motions[method_key] = descriptor
             packed.extend(encoded)
         destination = output_dir / asset
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_bytes(packed)
+
+    for relative, payload in descriptor_chunks:
+        start = int(payload["start"])
+        payload["motions"] = motion_records[start : start + len(payload["motions"])]
+        destination = output_dir / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text(
+            json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n",
+            encoding="utf-8",
+        )
 
     (output_dir / "manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, separators=(",", ":")) + "\n",
@@ -127,6 +166,7 @@ def main() -> None:
         method_key=args.method_key,
         motion_dir=args.motion_dir.expanduser().resolve(),
         output_dir=args.output_dir.expanduser().resolve(),
+        descriptor_root=args.manifest.expanduser().resolve().parent,
     )
     print(json.dumps(summary, indent=2))
 

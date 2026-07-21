@@ -61,3 +61,41 @@ def test_replace_method_preserves_grouping_and_rewrites_offsets(tmp_path: Path) 
     assert first["motions"]["tm2d"]["rotation_jump_deg_p99"] == 10.0
     assert (output / "assets" / "tm2d_000.smpl").is_file()
     assert (output / "manifest.json").is_file()
+
+
+def test_replace_method_supports_chunked_descriptors(tmp_path: Path) -> None:
+    source = tmp_path / "source"
+    source.mkdir()
+    for case_id in ("a", "b"):
+        np.save(source / f"{case_id}.npy", _motion(4))
+    descriptors = tmp_path / "descriptors"
+    descriptors.mkdir()
+    for index in range(2):
+        (descriptors / f"{index:03d}.json").write_text(
+            '{"start":%d,"motions":[{"tm2d":{"asset":"assets/tm2d_%03d.smpl",'
+            '"display_frames":4,"frames":2,"stride":2,"fps":30.0}}]}\n'
+            % (index, index)
+        )
+    manifest = {
+        "motion_methods": [{"key": "tm2d", "label": "TM2D"}],
+        "cases": [{"case_id": "a"}, {"case_id": "b"}],
+        "case_descriptor_chunks": {
+            "size": 1,
+            "path": "descriptors/{chunk}.json",
+        },
+    }
+    output = tmp_path / "gallery"
+    summary = MODULE.replace_method_assets(
+        manifest,
+        method_key="tm2d",
+        motion_dir=source,
+        output_dir=output,
+        descriptor_root=tmp_path,
+    )
+
+    assert summary["assets"] == 2
+    assert (output / "assets" / "tm2d_000.smpl").is_file()
+    updated = __import__("json").loads(
+        (output / "descriptors" / "001.json").read_text()
+    )
+    assert updated["motions"][0]["tm2d"]["translation_offset"] == 0
