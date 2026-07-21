@@ -36,11 +36,11 @@ runtime.
 ## Preview
 
 [Open the audio-synchronized 40-case GT/Bailando comparison](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html).
-The viewer places the native 30 fps AIST++ SMPL-24 skeleton beside the neutral
-SMPL Mesh fit for both GT and Bailando. Native skeletons never pass through IK;
-the mesh panels report position-IK MPJPE so generation artifacts can be separated
-from fitting artifacts. Audio, timeline seeking, and all four views remain
-synchronized, with free 3D orbit, zoom, and view reset.
+Each GT/Bailando scene overlays the native 30 fps AIST++ SMPL-24 skeleton in
+coral on the neutral SMPL Mesh fit. Native skeletons never pass through IK; each
+scene reports position-IK MPJPE so generation artifacts can be separated from
+fitting artifacts. Audio and timeline seeking remain synchronized, with free
+3D orbit, zoom, and view reset.
 
 ## Release Snapshot
 
@@ -150,8 +150,9 @@ smpl22 = convert_motion(
 ```
 
 Conversion to `motion135` and SMPL mesh uses position IK because the generated
-tensor stores joint positions rather than local rotations. The three preview
-reports expose the resulting fit errors instead of hiding this lossy step.
+tensor stores joint positions rather than local rotations. The preview exposes
+the resulting fit error and overlays the native skeleton instead of hiding this
+lossy step.
 
 ## Reproduction Audit
 

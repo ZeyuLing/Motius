@@ -78,6 +78,17 @@ def test_smpl_gallery_uses_rigid_mesh_floor_alignment():
     assert "per-frame ground" not in page
 
 
+def test_smpl_gallery_overlays_native_skeleton_on_matching_mesh():
+    page = GALLERY_TEMPLATE.read_text()
+
+    assert 'views=manifest.motion_methods.map((method,index)=>makeView(method,index))' in page
+    assert 'skeletonMethod=(manifest.skeleton_methods||[]).find(value=>value.key===method.key)' in page
+    assert "alignSkeletonToMesh(view)" in page
+    assert "meshRoot.x-nativeRoot[0]" in page
+    assert "computeSkeletonGroundOffset" not in page
+    assert "-minimum+.04" not in page
+
+
 def test_smpl_gallery_exposes_condition_colors_and_local_exports():
     page = GALLERY_TEMPLATE.read_text()
 

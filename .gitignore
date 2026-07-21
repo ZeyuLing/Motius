@@ -31,6 +31,9 @@ checkpoints/characters/mixamo/*
 !checkpoints/models/
 checkpoints/models/*
 !checkpoints/models/README.md
+!checkpoints/models/edge/
+checkpoints/models/edge/*
+!checkpoints/models/edge/README.md
 !checkpoints/evaluators/
 checkpoints/evaluators/*
 !checkpoints/evaluators/README.md

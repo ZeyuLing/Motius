@@ -3,14 +3,16 @@
 Motius exposes music-to-dance methods through one audio/feature input contract
 and a shared SMPL motion bridge. Bailando's native output is 60 fps AIST++
 SMPL-24 joints; cross-method Motius metrics use canonical 30 fps SMPL-22
-joints. Bailando is the first released baseline.
+joints. EDGE uses a 30 fps contact/root/SMPL-rotation representation and is
+available as a checkpoint-verified integration while its full common-protocol
+benchmark run is being completed.
 
 [Open the public Music-to-Dance Leaderboard](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard),
-including the audio-synchronized all-case GT/Bailando SMPL Mesh comparison.
+including the audio-synchronized all-case GT/Bailando 3D comparison.
 Its Three.js viewer supports free orbit, zoom, view reset, timeline seeking,
-and synchronized playback for all 40 cases. Every case shows native SMPL-24
-joint positions beside the position-IK SMPL Mesh fit; only the latter is affected
-by IK ambiguity.
+and synchronized playback for all 40 cases. Each method is one scene: its
+native SMPL-24 skeleton is drawn as a coral X-ray overlay on the position-IK
+SMPL Mesh. Only the mesh is affected by IK ambiguity.
 
 ## Task Contract
 
@@ -53,6 +55,29 @@ python tools/infer_bailando_aistpp.py \
 
 Each case is stored independently and existing cases are skipped, so the
 command can resume after interruption or elastic-worker eviction.
+
+### EDGE
+
+EDGE consumes raw audio through the released Jukebox layer-66 frontend, or
+precomputed feature windows shaped `(N,150,4800)`. Its native 151D output is
+converted directly to Y-up SMPL joints and `motion135`; no position IK is used.
+
+```python
+from motius.pipelines.edge import EDGEPipeline
+
+pipeline = EDGEPipeline.from_pretrained(
+    "ZeyuLing/Motius-EDGE-AISTPP",
+    device="cuda",
+)
+result = pipeline(
+    "music.wav",
+    seed=7,
+    jukebox_cache_dir="checkpoints/models/edge/jukebox_cache",
+)
+```
+
+See the [EDGE model card](../model_zoo/edge.md) for exact Jukebox hashes,
+representation conventions, and the interactive skeleton/mesh overlay.
 
 The public viewer uses motion-length MP3 clips derived from the official
 [AIST Dance Video Database audio release](https://aistdancedb.ongaaccel.jp/database_download/).
@@ -98,19 +123,35 @@ This second route is lossy and reports fit errors when called through the lower-
 level `retarget_hml263_clip` API. It is intended for SMPL mesh rendering and
 cross-representation tools; official Bailando metrics consume native joints.
 
-The public four-view comparison can be rebuilt from the native 60 fps outputs
-and fitted 30 fps SMPL parameters with:
+The public two-scene overlay can be rebuilt from the native 60 fps outputs and
+fitted 30 fps SMPL parameters with:
 
 ```bash
 python tools/build_smpl_motion_gallery.py \
   --source-manifest outputs/bailando/leaderboard_gallery_source.json \
-  --motion 'gt=GT SMPL Mesh=outputs/bailando/leaderboard_smpl/gt' \
-  --motion 'bailando=Bailando SMPL Mesh=outputs/bailando/leaderboard_smpl/bailando' \
-  --skeleton 'gt=GT Native Skeleton=path/to/aistpp_test_full_wav' \
-  --skeleton 'bailando=Bailando Native Skeleton=outputs/bailando/aistpp_official_epoch10' \
+  --motion 'gt=GT=outputs/bailando/leaderboard_smpl/gt' \
+  --motion 'bailando=Bailando=outputs/bailando/leaderboard_smpl/bailando' \
+  --skeleton 'gt=GT native joints=path/to/aistpp_test_full_wav' \
+  --skeleton 'bailando=Bailando native joints=outputs/bailando/aistpp_official_epoch10' \
   --skeleton-fps 60 --fps 30 --stride 2 \
   --output-dir docs/leaderboards/hf_space_music_to_dance/cases
 ```
+
+### Coordinate and floor rules
+
+The generation output and qualitative viewer preserve the native AIST++ world
+heading and XZ trajectory. They do not move the first pelvis to the origin or
+rotate the first pose to face `+Z`. The SMPL preview applies one clip-wide
+vertical translation, then aligns the native skeleton to the fitted mesh with
+one fixed frame-0 root transform. It never grounds individual frames. A jump or
+model-predicted vertical root drift therefore remains visible instead of being
+hidden by per-frame foot locking.
+
+The uTMR evaluation path is intentionally different. After 30 fps resampling,
+it applies one rigid transform per clip: first-frame pelvis XZ to the origin,
+first-frame hip/shoulder facing to `+Z`, and the clip-wide SMPL foot-joint
+minimum to `Y=0`. This transform preserves relative trajectory, velocity,
+acceleration, and timing.
 
 ## Evaluation
 

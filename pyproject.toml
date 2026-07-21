@@ -137,6 +137,7 @@ namespaces = false
 "motius.models.intermask" = ["LICENSE"]
 "motius.models.motionclr" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.models.bailando" = ["LICENSE", "ATTRIBUTIONS.md"]
+"motius.models.edge" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.models.maskcontrol" = ["ATTRIBUTIONS.md"]
 "motius.models.ardy" = [
     "LICENSE",

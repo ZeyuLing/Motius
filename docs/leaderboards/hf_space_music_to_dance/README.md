@@ -16,10 +16,10 @@ official 40-case AIST++ cross-modal evaluation package.
 
 The table keeps the released Bailando `FID_k`, `FID_g`, diversity, and beat
 protocol for paper comparability, and adds Motius normalized uTMR FID on
-canonical 30 fps SMPL-22 joints. The qualitative explorer compares every GT
-and generated clip twice: its native AIST++ SMPL-24 joint positions and its
-position-IK SMPL Mesh fit. Both are synchronized to the official AIST music,
-and the mesh panels expose per-case IK MPJPE. Every viewport supports
+canonical 30 fps SMPL-22 joints. The qualitative explorer gives each GT and
+generated clip one scene with its native AIST++ SMPL-24 skeleton overlaid on
+the position-IK SMPL Mesh. Both are synchronized to the official AIST music,
+and each scene exposes per-case IK MPJPE. Every viewport supports
 drag-to-orbit, wheel zoom, and view reset.
 
 ## Files
