@@ -1398,6 +1398,74 @@
           "metadata": "assets/model_zoo/intermask/intermask_interhuman_gentle_push_smpl_pair.json"
         }
       ]
+    },
+    "tm2d": {
+      "method": "TM2D",
+      "tasks": [
+        "T2M",
+        "Music-to-Dance"
+      ],
+      "motion_representation": "TM2D-287, 24 joints at 60 fps",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-TM2D-HumanML3D-AISTPP",
+      "upstream_checkpoint": "Garfield-kh/TM2D@98bef9571419b6459927630d5d96f8450898687e, E0190 VQ-VAE and E0020 joint Transformer",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "selected caption",
+          "samples": 3970,
+          "R1": 0.1817,
+          "R2": 0.3004,
+          "R3": 0.3944,
+          "FID": 2.5038,
+          "MM-Dist": 5.1678,
+          "Diversity": 8.6228
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "selected caption, position-IK bridge",
+          "samples": 4032,
+          "R1": 0.1324,
+          "R2": 0.2073,
+          "R3": 0.2674,
+          "FID": 548.5562,
+          "MM-Dist": 25.3085,
+          "Diversity": 12.2421
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "selected caption, normalized embedding FID",
+          "samples": 4032,
+          "R1": 0.2163,
+          "R2": 0.3529,
+          "R3": 0.4427,
+          "FID": 0.6703,
+          "MM-Dist": 49.0229,
+          "Diversity": 46.6538
+        },
+        {
+          "evaluator": "AIST++ Music-to-Dance",
+          "variant": "reference-free VQ seed, 40-case protocol",
+          "samples": 40,
+          "FID_k": 43.4186,
+          "FID_g": 20.4244,
+          "FID_uTMR": 0.2623,
+          "Diversity_k": 3.7742,
+          "Diversity_g": 3.1335,
+          "BeatAlign": 0.1903
+        }
+      ],
+      "preview": "https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html",
+      "secondary_preview": "https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html",
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "viewer": "https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html"
+        },
+        {
+          "sample_id": "gBR_sBM_cAll_d04_mBR0_ch01",
+          "viewer": "https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html"
+        }
+      ]
     }
   }
 }

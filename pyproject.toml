@@ -68,6 +68,11 @@ music-to-dance = [
     "librosa>=0.9",
     "soundfile>=0.10",
 ]
+tm2d = [
+    "librosa>=0.9",
+    "soundfile>=0.10",
+    "spacy>=3.7",
+]
 m2t = [
     "bert-score>=0.3.13",
     "pycocoevalcap>=1.2",
@@ -139,6 +144,7 @@ namespaces = false
 "motius.models.bailando" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.models.edge" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.models.maskcontrol" = ["ATTRIBUTIONS.md"]
+"motius.models.tm2d" = ["ATTRIBUTIONS.md"]
 "motius.models.ardy" = [
     "LICENSE",
     "ATTRIBUTIONS.md",

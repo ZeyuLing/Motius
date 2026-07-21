@@ -33,6 +33,7 @@ TASK_LABELS = {
     "Body-Part Condition",
     "Multi-Prompt T2M",
     "Sequential Generation",
+    "Music-to-Dance",
     "Motion Control",
     "Kinematic Control",
 }
@@ -41,6 +42,7 @@ TASK_LEADERBOARDS = {
     "TP2M": "https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard",
     "Temporal Condition": "https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard",
     "Sequential Generation": "https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard",
+    "Music-to-Dance": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard",
 }
 
 
@@ -157,6 +159,9 @@ def _demo_status(card_text: str) -> tuple[str, str]:
     media = [ref for ref in refs if ref.lower().endswith((".gif", ".mp4", ".png", ".jpg", ".jpeg", ".webp"))]
     if len(media) >= 3:
         return "present", f"{len(media)} media refs"
+    interactive = re.findall(r"https?://[^)\s]+/cases/index\.html", card_text)
+    if interactive:
+        return "present", f"{len(set(interactive))} interactive all-case viewer(s)"
     if media:
         return "missing", f"only {len(media)} media refs"
     if "Validated" in card_text and "will be added" in card_text:

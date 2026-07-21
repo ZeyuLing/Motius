@@ -65,6 +65,26 @@
       "jitter": 0.0054084838,
       "float": 0.3264906018,
       "slide": 0.0047935049
+    },
+    {
+      "method": "TM2D",
+      "version": "official E0190/E0020, reference-free seed",
+      "reference": false,
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-TM2D-HumanML3D-AISTPP",
+      "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/tm2d.md",
+      "paper": "https://openaccess.thecvf.com/content/ICCV2023/papers/Gong_TM2D_Bimodality_Driven_3D_Dance_Generation_via_Music-Text_Integration_ICCV_2023_paper.pdf",
+      "fid_k": 43.4185764625,
+      "fid_g": 20.4244023724,
+      "diversity_k": 3.7742080819,
+      "diversity_g": 3.1334611477,
+      "beat_align": 0.1903462898,
+      "beat_align_30fps": 0.1903462898,
+      "fid_utmr": 0.2623113914,
+      "jitter": 0.0137089298,
+      "dynamic": 0.0217306901,
+      "penetration": 0.0,
+      "float": 0.2637316529,
+      "slide": 0.0060531974
     }
   ],
   "paper_parity": [

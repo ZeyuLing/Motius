@@ -760,7 +760,7 @@
           <tbody></tbody>
         </table>
       </div>
-      <p class="caption">MS = MotionStreamer-272 evaluator. uTMR = universal SMPL-22 joints66 TMR evaluator. The uTMR FID column keeps the legacy raw-embedding scale for cross-row compatibility; canonical L2-normalized FID is stored with new evaluation artifacts and is not mixed into this snapshot. MaskControl therefore leaves this legacy FID cell empty and reports normalized FID in its Model Card. Lower FID and MM are better; higher R-Precision is better. Diversity is a reference statistic and is not ranked.</p>
+      <p class="caption">MS = MotionStreamer-272 evaluator. uTMR = universal SMPL-22 joints66 TMR evaluator. Legacy uTMR FID retains the historical raw-embedding scale; all newly evaluated methods report canonical per-sample L2-normalized FID in the separate uTMR FID (norm) column. Values from the two spaces are never ranked against each other. Lower FID and MM are better; higher R-Precision is better. Diversity is a reference statistic and is not ranked.</p>
     </section>
 
     <section id="physical" class="view hidden" aria-label="physical metrics">
@@ -797,12 +797,13 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script>
     const semanticRows = [
-      {method: "GT", version: "0 beta", ref: "raw/refk", isReference: true, msN: 4042, msR1: 0.7703, msR2: 0.9030, msR3: 0.9442, msFID: 0.0000, msMM: 14.8785, msDiv: 27.7705, utmrN: 4034, utmrR1: 0.6873, utmrR2: 0.8485, utmrR3: 0.9058, utmrFID: 0.0000, utmrMM: 27.6009, utmrDiv: 53.9410},
+      {method: "GT", version: "0 beta", ref: "raw/refk", isReference: true, msN: 4042, msR1: 0.7703, msR2: 0.9030, msR3: 0.9442, msFID: 0.0000, msMM: 14.8785, msDiv: 27.7705, utmrN: 4034, utmrR1: 0.6873, utmrR2: 0.8485, utmrR3: 0.9058, utmrFID: 0.0000, utmrFIDNorm: 0.0000, utmrMM: 27.6009, utmrDiv: 53.9410},
       {method: "HYMotion", version: "1.0B", ref: "raw/refk", msN: 4042, msR1: 0.7847, msR2: 0.9172, msR3: 0.9509, msFID: 13.8030, msMM: 14.8196, msDiv: 27.4339, utmrN: 4034, utmrR1: 0.5722, utmrR2: 0.7406, utmrR3: 0.8170, utmrFID: 28.3024, utmrMM: 30.5147, utmrDiv: 54.1295},
       {method: "HYMotion", version: "0.46B", ref: "raw/refk", msN: 4042, msR1: 0.7939, msR2: 0.9152, msR3: 0.9524, msFID: 10.4512, msMM: 14.8361, msDiv: 27.4712, utmrN: 4034, utmrR1: 0.5940, utmrR2: 0.7463, utmrR3: 0.8135, utmrFID: 32.0689, utmrMM: 30.6713, utmrDiv: 55.4210},
-      {method: "PRISM", version: "KAFS cfg5 · e12", ref: "raw/refk", msN: 4042, msR1: 0.7835, msR2: 0.9050, msR3: 0.9435, msFID: 13.9937, msMM: 14.8265, msDiv: 27.3813, utmrN: 4034, utmrR1: 0.7267, utmrR2: 0.8713, utmrR3: 0.9228, utmrFID: 34.0209, utmrMM: 26.7113, utmrDiv: 53.5815},
+      {method: "PRISM", version: "KAFS cfg5 · e20", ref: "raw/refk", msN: 4042, msR1: 0.8003, msR2: 0.9137, msR3: 0.9477, msFID: 11.8101, msMM: 14.5998, msDiv: 27.3849, utmrN: 4034, utmrR1: 0.7197, utmrR2: 0.8669, utmrR3: 0.9192, utmrFID: null, utmrFIDNorm: 0.0162, utmrMM: 27.0247, utmrDiv: 53.8865},
       {method: "PRISM", version: "1.0", ref: "raw/refk", msN: 4042, msR1: 0.7463, msR2: 0.8832, msR3: 0.9241, msFID: 19.0359, msMM: 15.5135, msDiv: 27.4151, utmrN: 4034, utmrR1: 0.6483, utmrR2: 0.8065, utmrR3: 0.8725, utmrFID: 146.1266, utmrMM: 30.9335, utmrDiv: 57.4521},
       {method: "MotionStreamer", version: "official", ref: "raw/refk", msN: 4042, msR1: 0.6303, msR2: 0.7865, msR3: 0.8498, msFID: 12.2110, msMM: 16.5810, msDiv: 27.4637, utmrN: 4034, utmrR1: 0.4400, utmrR2: 0.5967, utmrR3: 0.6811, utmrFID: 93.4685, utmrMM: 35.6739, utmrDiv: 53.8000},
+      {method: "TM2D", version: "official E0190/E0020", ref: "position-IK SMPL bridge", msN: 4032, msR1: 0.1324, msR2: 0.2073, msR3: 0.2674, msFID: 548.5562, msMM: 25.3085, msDiv: 12.2421, utmrN: 4032, utmrR1: 0.2163, utmrR2: 0.3529, utmrR3: 0.4427, utmrFID: null, utmrFIDNorm: 0.6703, utmrMM: 49.0229, utmrDiv: 46.6538},
       {method: "GoToZero", version: "7B-train", ref: "raw/refk", msN: 4042, msR1: 0.7403, msR2: 0.8777, msR3: 0.9236, msFID: 3.0807, msMM: 15.3706, msDiv: 27.5748, utmrN: 4034, utmrR1: 0.6277, utmrR2: 0.7904, utmrR3: 0.8579, utmrFID: 33.6025, utmrMM: 29.9675, utmrDiv: 53.4788},
       {method: "GoToZero", version: "3B-train", ref: "raw/refk", msN: 4042, msR1: 0.7401, msR2: 0.8772, msR3: 0.9229, msFID: 3.0658, msMM: 15.3806, msDiv: 27.5604, utmrN: 4034, utmrR1: 0.6228, utmrR2: 0.7860, utmrR3: 0.8569, utmrFID: 34.4144, utmrMM: 29.9661, utmrDiv: 54.6241},
       {method: "ViMoGen", version: "1.3B prompt-rewrite", ref: "HML263 round-trip", msN: 4042, msR1: 0.4291, msR2: 0.5687, msR3: 0.6518, msFID: 152.2095, msMM: 21.0737, msDiv: 24.1803, utmrN: 4034, utmrR1: 0.3041, utmrR2: 0.4330, utmrR3: 0.5198, utmrFID: 922.4709, utmrMM: 47.0574, utmrDiv: 55.6162},
@@ -828,9 +829,10 @@
       {method: "GT", version: "0 beta", isReference: true, n: 4042, slide: 0.0020, float: 0.0264, jitter: 0.0055, dynamic: 0.0232, poseq: 1.4300},
       {method: "HYMotion", version: "1.0B", n: 4042, slide: 3.0803, float: 6.6387, jitter: 5.4315, dynamic: 25.0297, poseq: 1.7040},
       {method: "HYMotion", version: "0.46B", n: 4042, slide: 3.5416, float: 8.0197, jitter: 5.9834, dynamic: 26.3973, poseq: 1.6875},
-      {method: "PRISM", version: "KAFS cfg5 · e12", n: 4042, slide: 3.8226, float: 7.4881, jitter: 7.8631, dynamic: 26.8256, poseq: 1.7539},
+      {method: "PRISM", version: "KAFS cfg5 · e20", n: 4042, slide: 4.1117, float: 8.9465, jitter: 8.0934, dynamic: 26.5481, poseq: 1.6888},
       {method: "PRISM", version: "1.0", n: 4042, slide: 3.6746, float: 7.8379, jitter: 6.1307, dynamic: 27.7158, poseq: 1.6854},
       {method: "MotionStreamer", version: "official", n: 4042, slide: 5.0011, float: 17.0663, jitter: 11.0975, dynamic: 23.6778, poseq: 1.2656},
+      {method: "TM2D", version: "official E0190/E0020", n: 4042, slide: 5.9729, float: 23.9826, jitter: 10.9913, dynamic: 23.6826, poseq: null},
       {method: "GoToZero", version: "7B-train", n: 4042, slide: 4.4411, float: 20.0600, jitter: 9.9057, dynamic: 21.3236, poseq: 1.2388},
       {method: "GoToZero", version: "3B-train", n: 4042, slide: 4.4398, float: 20.0928, jitter: 9.8859, dynamic: 21.3268, poseq: 1.2377},
       {method: "ViMoGen", version: "1.3B prompt-rewrite", n: 4042, slide: 6.9485, float: 23.7270, jitter: 4.4370, dynamic: 16.3838, poseq: 2.0434},
@@ -876,7 +878,8 @@
           {key: "utmrR1", label: "uTMR R1", numeric: true, higher: true},
           {key: "utmrR2", label: "uTMR R2", numeric: true, higher: true},
           {key: "utmrR3", label: "uTMR R3", numeric: true, higher: true},
-          {key: "utmrFID", label: "uTMR FID", numeric: true, lower: true},
+          {key: "utmrFID", label: "uTMR FID (legacy/raw)", numeric: true, lower: true},
+          {key: "utmrFIDNorm", label: "uTMR FID (norm)", numeric: true, lower: true},
           {key: "utmrMM", label: "uTMR MM", numeric: true, lower: true},
           {key: "utmrDiv", label: "uTMR Div", numeric: true, referenceStatistic: true}
         ]
@@ -938,7 +941,8 @@
           {key: "msMM", label: "MS MM-Dist", lower: true},
           {key: "utmrR1", label: "uTMR R@1", higher: true},
           {key: "utmrR3", label: "uTMR R@3", higher: true},
-          {key: "utmrFID", label: "uTMR FID", lower: true},
+          {key: "utmrFID", label: "uTMR FID (legacy/raw)", lower: true},
+          {key: "utmrFIDNorm", label: "uTMR FID (norm)", lower: true},
           {key: "utmrMM", label: "uTMR MM-Dist", lower: true}
         ]
       },
