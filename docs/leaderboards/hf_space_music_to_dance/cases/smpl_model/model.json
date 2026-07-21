@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "model": "SMPL neutral beta=0",
+  "vertices": 6890,
+  "faces": 13776,
+  "joints": 24,
+  "parents": [
+    -1,
+    0,
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    9,
+    9,
+    12,
+    13,
+    14,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21
+  ],
+  "files": {
+    "vertices": "vertices.f32",
+    "joints": "joints.f32",
+    "faces": "faces.u16",
+    "skin_indices": "skin_indices.u8",
+    "skin_weights": "skin_weights.u16"
+  },
+  "top4_retained_weight": {
+    "mean": 1.0,
+    "minimum": 0.9999998807907104,
+    "p01": 0.9999999403953552
+  }
+}

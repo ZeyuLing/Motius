@@ -1,8 +1,12 @@
 # Music-to-Dance on AIST++
 
 Motius exposes music-to-dance methods through one audio/feature input contract
-and one 60 fps AIST++ SMPL-24 joint output contract. Bailando is the first
-released baseline.
+and a shared SMPL motion bridge. Bailando's native output is 60 fps AIST++
+SMPL-24 joints; cross-method Motius metrics use canonical 30 fps SMPL-22
+joints. Bailando is the first released baseline.
+
+[Open the public Music-to-Dance Leaderboard](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard),
+including the all-case GT/Bailando SMPL Mesh comparison.
 
 ## Task Contract
 
@@ -97,13 +101,24 @@ python tools/build_aistpp_reference_features.py \
   --ignore-list /path/to/aist_plusplus_final/ignore_list.txt \
   --output outputs/music_to_dance/aistpp_reference_features.npz
 
+python tools/build_aistpp_utmr_reference_embeddings.py \
+  --motions-root /path/to/aist_plusplus_final/motions \
+  --smpl-skeleton outputs/music_to_dance/aistpp_smpl24_skeleton.npz \
+  --ignore-list /path/to/aist_plusplus_final/ignore_list.txt \
+  --output outputs/music_to_dance/aistpp_reference_utmr_embeddings.npy \
+  --device cuda
+
 python tools/eval_music_to_dance.py \
   --data-root /path/to/data/aistpp_test_full_wav \
   --music-feature-root /path/to/data/aistpp_music_feat_7.5fps \
   --pred-root outputs/music_to_dance/bailando/aistpp \
-  --reference-features outputs/music_to_dance/aistpp_reference_features.npz \
+  --joint-fid \
+  --evaluator-artifact ZeyuLing/Motius-Evaluator-AISTPP-Music-to-Dance \
   --output outputs/music_to_dance/bailando/metrics.json
 ```
 
 The evaluator reports `FID_k`, `FID_g`, `Diversity_k`, `Diversity_g`, and
-`BeatAlign`, plus Motius physical diagnostics on the common SMPL-22 subset.
+`BeatAlign`, plus normalized `FID_uTMR` and Motius physical diagnostics on the
+common SMPL-22 subset. The released evaluator artifact already contains both
+1,320-motion reference pools; the two build commands document how they are
+reproduced rather than being required for normal use.

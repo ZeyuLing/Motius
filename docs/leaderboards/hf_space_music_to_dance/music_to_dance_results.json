@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "task": "music_to_dance",
+  "dataset": "AIST++ official crossmodal test+validation package",
+  "population": 40,
+  "updated": "2026-07-21",
+  "protocol": {
+    "official_reference_pool": 1320,
+    "official_motion_fps": 60,
+    "motius_motion_fps": 30,
+    "utmr_evaluator": "ZeyuLing/motius-evaluator-universal-smplh-joints66",
+    "utmr_embedding_normalization": "per-sample L2",
+    "beat_tolerance_seconds": 0.05,
+    "beat_smoothing_seconds": 0.08333333333333333
+  },
+  "rows": [
+    {
+      "method": "GT",
+      "version": "AIST++ public release",
+      "reference": true,
+      "checkpoint": null,
+      "fid_k": 17.1589,
+      "fid_g": 10.6618,
+      "diversity_k": 8.1666,
+      "diversity_g": 7.4893,
+      "beat_align": 0.2247035,
+      "beat_align_30fps": 0.2293111383,
+      "fid_utmr": 0.1828786786,
+      "jitter": 0.00676682,
+      "float": 0.1065803,
+      "slide": 0.00329768
+    },
+    {
+      "method": "Bailando",
+      "version": "official epoch 10",
+      "reference": false,
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-Bailando-AISTPP",
+      "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/bailando.md",
+      "paper": "https://arxiv.org/abs/2203.13055",
+      "fid_k": 28.1072,
+      "fid_g": 9.7006,
+      "diversity_k": 7.7272,
+      "diversity_g": 6.3092,
+      "beat_align": 0.2268095553,
+      "beat_align_30fps": 0.2270610403,
+      "fid_utmr": 0.3137569122,
+      "jitter": 0.00558251,
+      "float": 0.21803125,
+      "slide": 0.00427675
+    }
+  ],
+  "paper_parity": [
+    {
+      "row": "GT paper",
+      "fid_k": 17.1,
+      "fid_g": 10.6,
+      "diversity_k": 8.19,
+      "diversity_g": 7.45,
+      "beat_align": 0.2374
+    },
+    {
+      "row": "Bailando paper",
+      "fid_k": 28.16,
+      "fid_g": 9.62,
+      "diversity_k": 7.83,
+      "diversity_g": 6.34,
+      "beat_align": 0.2332
+    }
+  ]
+}

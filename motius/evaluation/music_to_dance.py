@@ -23,6 +23,10 @@ from motius.evaluation.metrics.physical import (
     aggregate_physical_metrics,
     compute_physical_metrics,
 )
+from motius.evaluation.metrics import l2_normalize_embeddings
+from motius.motion.representation.aistpp import aistpp_smpl24_to_smpl22_joints
+from motius.motion.representation.humanml import linear_resample_joints
+from motius.motion.skeleton.canonical import canonicalize_smpl22_joints
 from motius.registry import EVALUATORS
 
 
@@ -32,11 +36,16 @@ MUSIC_TO_DANCE_METRIC_KEYS = (
     "Diversity_k",
     "Diversity_g",
     "BeatAlign",
+    "FID_uTMR",
 )
 AISTPP_MUSIC_DANCE_EVALUATOR_REPO_ID = (
     "ZeyuLing/Motius-Evaluator-AISTPP-Music-to-Dance"
 )
-AISTPP_MUSIC_DANCE_EVALUATOR_FORMAT = "motius-aistpp-music-dance-evaluator-v1"
+AISTPP_MUSIC_DANCE_EVALUATOR_FORMAT = "motius-aistpp-music-dance-evaluator-v2"
+_SUPPORTED_AISTPP_EVALUATOR_FORMATS = {
+    "motius-aistpp-music-dance-evaluator-v1",
+    AISTPP_MUSIC_DANCE_EVALUATOR_FORMAT,
+}
 
 
 @dataclass(frozen=True)
@@ -112,12 +121,19 @@ def average_pairwise_distance(features: np.ndarray) -> float:
     return float(pdist(values, metric="euclidean").mean())
 
 
-def motion_beat_frames(joints: np.ndarray) -> np.ndarray:
-    """Detect motion beats as local minima of smoothed mean joint speed."""
+def motion_beat_frames(
+    joints: np.ndarray,
+    *,
+    motion_fps: float = 60.0,
+    smoothing_seconds: float = 5.0 / 60.0,
+) -> np.ndarray:
+    """Detect motion beats with a frame-rate-invariant smoothing window."""
 
     values = _validate_joints(joints, "joints")
+    if motion_fps <= 0 or smoothing_seconds <= 0:
+        raise ValueError("motion_fps and smoothing_seconds must be positive")
     velocity = np.linalg.norm(values[1:] - values[:-1], axis=2).mean(axis=1)
-    smoothed = gaussian_filter(velocity, 5)
+    smoothed = gaussian_filter(velocity, float(smoothing_seconds) * float(motion_fps))
     return argrelextrema(smoothed, np.less)[0]
 
 
@@ -127,20 +143,44 @@ def beat_alignment_score(
     *,
     music_fps: float = 60.0,
     motion_fps: float = 60.0,
+    tolerance_seconds: float = 3.0 / 60.0,
 ) -> float:
-    """Compute Bailando BeatAlign with explicit music/motion frame rates."""
+    """Compute BeatAlign in time, preserving Bailando's 50 ms tolerance."""
 
     music = np.asarray(music_beats)
     if music.ndim != 1:
         raise ValueError(f"music_beats must be one-dimensional, got {music.shape}")
+    if music_fps <= 0 or motion_fps <= 0 or tolerance_seconds <= 0:
+        raise ValueError("frame rates and tolerance_seconds must be positive")
     if music.dtype == np.bool_ or np.array_equal(music, music.astype(bool)):
         music = np.flatnonzero(music)
-    music = music.astype(np.float64) * float(motion_fps) / float(music_fps)
-    motion = np.asarray(motion_beats, dtype=np.float64).reshape(-1)
+    music = music.astype(np.float64) / float(music_fps)
+    motion = (
+        np.asarray(motion_beats, dtype=np.float64).reshape(-1) / float(motion_fps)
+    )
     if not len(music) or not len(motion):
         return 0.0
     nearest_squared = np.min((music[:, None] - motion[None]) ** 2, axis=1)
-    return float(np.exp(-nearest_squared / (2.0 * 9.0)).mean())
+    return float(
+        np.exp(-nearest_squared / (2.0 * float(tolerance_seconds) ** 2)).mean()
+    )
+
+
+def prepare_utmr_dance_motion(
+    joints: np.ndarray,
+    *,
+    source_fps: float,
+    target_fps: float = 30.0,
+    max_seconds: float = 20.0,
+) -> np.ndarray:
+    """Convert AIST++ joints to canonical SMPL-22 joints66 for uTMR."""
+
+    if source_fps <= 0 or target_fps <= 0 or max_seconds <= 0:
+        raise ValueError("frame rates and max_seconds must be positive")
+    smpl22 = aistpp_smpl24_to_smpl22_joints(joints)
+    smpl22 = linear_resample_joints(smpl22, source_fps, target_fps)
+    smpl22 = smpl22[: max(2, int(round(max_seconds * target_fps)))]
+    return canonicalize_smpl22_joints(smpl22).reshape(len(smpl22), 66)
 
 
 def _truncate_music_beats(
@@ -198,6 +238,10 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
         physical: bool = True,
         reference_features: Mapping[str, np.ndarray] | None = None,
         reference_feature_path: str | Path | None = None,
+        joint_position_evaluator=None,
+        joint_reference_embeddings: np.ndarray | None = None,
+        joint_fid_fps: float = 30.0,
+        joint_fid_max_seconds: float = 20.0,
     ):
         super().__init__()
         self.max_frames = int(max_frames)
@@ -237,6 +281,18 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
             if reference_features is not None
             else None
         )
+        if joint_position_evaluator is not None and joint_reference_embeddings is None:
+            raise ValueError(
+                "joint_reference_embeddings are required with joint_position_evaluator"
+            )
+        self.joint_position_evaluator = joint_position_evaluator
+        self.joint_reference_embeddings = (
+            np.asarray(joint_reference_embeddings, dtype=np.float32)
+            if joint_reference_embeddings is not None
+            else None
+        )
+        self.joint_fid_fps = float(joint_fid_fps)
+        self.joint_fid_max_seconds = float(joint_fid_max_seconds)
 
     @classmethod
     def from_pretrained(
@@ -244,6 +300,10 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
         pretrained_model_name_or_path: str | Path = AISTPP_MUSIC_DANCE_EVALUATOR_REPO_ID,
         *,
         physical: bool = True,
+        joint_fid: bool = False,
+        joint_evaluator: str | Path | None = None,
+        device: str = "cuda",
+        batch_size: int = 32,
         local_files_only: bool = False,
         revision: str | None = None,
     ) -> "AISTPPMusicDanceEvaluator":
@@ -263,6 +323,7 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
                     allow_patterns=[
                         "evaluator_config.json",
                         "aistpp_reference_features.npz",
+                        "aistpp_reference_utmr_embeddings.npy",
                         "README.md",
                         "LICENSE*",
                         "ATTRIBUTIONS.md",
@@ -270,16 +331,43 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
                 )
             )
         config = json.loads((artifact / "evaluator_config.json").read_text())
-        if config.get("artifact_format") != AISTPP_MUSIC_DANCE_EVALUATOR_FORMAT:
+        if config.get("artifact_format") not in _SUPPORTED_AISTPP_EVALUATOR_FORMATS:
             raise ValueError(
                 "Unsupported AIST++ evaluator artifact format: "
                 f"{config.get('artifact_format')!r}"
             )
+        joint_position_evaluator = None
+        joint_reference_embeddings = None
+        if joint_fid:
+            reference_name = config.get("joint_reference_embeddings")
+            if not reference_name:
+                raise ValueError(
+                    "This artifact does not contain the AIST++ uTMR reference pool"
+                )
+            from motius.evaluation.evaluators.tmr import TMRTextMotionEvaluator
+
+            joint_position_evaluator = TMRTextMotionEvaluator.from_pretrained(
+                joint_evaluator
+                or config.get(
+                    "joint_evaluator",
+                    "ZeyuLing/motius-evaluator-universal-smplh-joints66",
+                ),
+                device=device,
+                batch_size=batch_size,
+                local_files_only=local_files_only,
+            )
+            joint_reference_embeddings = np.load(artifact / reference_name)
         return cls(
             max_frames=int(config.get("max_frames", 1_200)),
             physical=physical,
             reference_feature_path=artifact / config.get(
                 "reference_features", "aistpp_reference_features.npz"
+            ),
+            joint_position_evaluator=joint_position_evaluator,
+            joint_reference_embeddings=joint_reference_embeddings,
+            joint_fid_fps=float(config.get("joint_fid_fps", 30.0)),
+            joint_fid_max_seconds=float(
+                config.get("joint_fid_max_seconds", 20.0)
             ),
         )
 
@@ -296,6 +384,11 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
             **self.reference_audit,
         }
         np.savez_compressed(output / "aistpp_reference_features.npz", **feature_payload)
+        if self.joint_reference_embeddings is not None:
+            np.save(
+                output / "aistpp_reference_utmr_embeddings.npy",
+                self.joint_reference_embeddings.astype(np.float32),
+            )
         config = {
             "artifact_format": AISTPP_MUSIC_DANCE_EVALUATOR_FORMAT,
             "evaluator_class": "motius.evaluation.AISTPPMusicDanceEvaluator",
@@ -315,6 +408,23 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
             "source_repository": "https://github.com/lisiyao21/Bailando",
             "source_revision": "cc90b98bff81c9709570db413c9610c2562e27ca",
         }
+        if self.joint_reference_embeddings is not None:
+            config.update(
+                {
+                    "joint_evaluator": (
+                        "ZeyuLing/motius-evaluator-universal-smplh-joints66"
+                    ),
+                    "joint_reference_embeddings": (
+                        "aistpp_reference_utmr_embeddings.npy"
+                    ),
+                    "joint_reference_samples": int(
+                        len(self.joint_reference_embeddings)
+                    ),
+                    "joint_fid_fps": self.joint_fid_fps,
+                    "joint_fid_max_seconds": self.joint_fid_max_seconds,
+                    "joint_fid_normalization": "per_sample_l2",
+                }
+            )
         (output / "evaluator_config.json").write_text(
             json.dumps(config, indent=2) + "\n", encoding="utf-8"
         )
@@ -337,6 +447,7 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
         alignments = []
         pred_physical = []
         gt_physical = []
+        pred_joint_motions = []
         for sample in self._results:
             pred_full = root_anchor_motion(sample.pred_joints)
             gt_full = root_anchor_motion(sample.gt_joints)
@@ -347,7 +458,9 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
             if self.reference_features is None:
                 gt_kinetic.append(extract_kinetic_features(gt))
                 gt_geometric.append(extract_geometric_features(gt))
-            pred_motion_beats = motion_beat_frames(pred_full)
+            pred_motion_beats = motion_beat_frames(
+                pred_full, motion_fps=sample.motion_fps
+            )
             alignments.append(
                 beat_alignment_score(
                     _truncate_music_beats(
@@ -364,6 +477,15 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
             if self.physical:
                 pred_physical.append(compute_physical_metrics(pred[:, :22]))
                 gt_physical.append(compute_physical_metrics(gt[:, :22]))
+            if self.joint_position_evaluator is not None:
+                pred_joint_motions.append(
+                    prepare_utmr_dance_motion(
+                        pred_full,
+                        source_fps=sample.motion_fps,
+                        target_fps=self.joint_fid_fps,
+                        max_seconds=self.joint_fid_max_seconds,
+                    )
+                )
 
         pred_k = np.stack(pred_kinetic)
         pred_g = np.stack(pred_geometric)
@@ -396,6 +518,17 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
             for key in PHYSICAL_METRIC_KEYS:
                 metrics[f"Physical/{key}"] = float(pred_values[key])
                 metrics[f"GT_Physical/{key}"] = float(gt_values[key])
+        if self.joint_position_evaluator is not None:
+            predicted_embeddings = self.joint_position_evaluator.encode_motions(
+                pred_joint_motions
+            )
+            metrics["FID_uTMR"] = frechet_distance(
+                l2_normalize_embeddings(predicted_embeddings),
+                l2_normalize_embeddings(self.joint_reference_embeddings),
+            )
+            metrics["num_uTMR_reference_samples"] = int(
+                len(self.joint_reference_embeddings)
+            )
         return metrics
 
 
@@ -413,5 +546,6 @@ __all__ = [
     "beat_alignment_score",
     "frechet_distance",
     "motion_beat_frames",
+    "prepare_utmr_dance_motion",
     "root_anchor_motion",
 ]

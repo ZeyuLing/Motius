@@ -229,6 +229,7 @@ def test_music_to_dance_evaluator_artifact_round_trip(tmp_path: Path):
     evaluator = AISTPPMusicDanceEvaluator(
         physical=False,
         reference_features=reference,
+        joint_reference_embeddings=np.eye(4, dtype=np.float32),
     )
     artifact = tmp_path / "evaluator"
     evaluator.save_pretrained(artifact)
@@ -242,6 +243,10 @@ def test_music_to_dance_evaluator_artifact_round_trip(tmp_path: Path):
     np.testing.assert_array_equal(
         restored.reference_features["geometric"], reference["geometric"]
     )
+    np.testing.assert_array_equal(
+        np.load(artifact / "aistpp_reference_utmr_embeddings.npy"),
+        np.eye(4, dtype=np.float32),
+    )
 
 
 def test_beat_alignment_rescales_7p5_fps_music_frames():
@@ -250,6 +255,28 @@ def test_beat_alignment_rescales_7p5_fps_music_frames():
     assert beat_alignment_score(
         music, motion, music_fps=7.5, motion_fps=60.0
     ) == pytest.approx(1.0)
+
+
+def test_beat_alignment_tolerance_is_frame_rate_invariant():
+    music_60 = np.array([60, 120, 180])
+    motion_60 = np.array([64, 116, 186])
+    music_30 = music_60 // 2
+    motion_30 = motion_60 // 2
+    score_60 = beat_alignment_score(
+        music_60, motion_60, music_fps=60.0, motion_fps=60.0
+    )
+    score_30 = beat_alignment_score(
+        music_30, motion_30, music_fps=30.0, motion_fps=30.0
+    )
+    assert score_30 == pytest.approx(score_60)
+
+
+def test_beat_alignment_60fps_is_exact_official_formula():
+    music = np.array([4, 12, 31], dtype=np.float64)
+    motion = np.array([7, 10, 35], dtype=np.float64)
+    nearest = np.min((music[:, None] - motion[None]) ** 2, axis=1)
+    expected = np.exp(-nearest / 18.0).mean()
+    assert beat_alignment_score(music, motion) == pytest.approx(expected, abs=1e-15)
 
 
 def test_evaluator_uses_full_motion_and_truncates_music_for_beat_alignment():

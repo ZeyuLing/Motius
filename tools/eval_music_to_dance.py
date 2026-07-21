@@ -35,6 +35,22 @@ def parse_args() -> argparse.Namespace:
         help="Evaluate GT against itself as a protocol sanity check.",
     )
     parser.add_argument("--no-physical", action="store_true")
+    parser.add_argument(
+        "--joint-fid",
+        action="store_true",
+        help="Also compute normalized uTMR FID with the Motius joint evaluator.",
+    )
+    parser.add_argument(
+        "--joint-evaluator",
+        default="ZeyuLing/motius-evaluator-universal-smplh-joints66",
+    )
+    parser.add_argument(
+        "--evaluator-artifact",
+        default="ZeyuLing/Motius-Evaluator-AISTPP-Music-to-Dance",
+        help="AIST++ protocol artifact containing official and uTMR reference pools.",
+    )
+    parser.add_argument("--device", default="cuda")
+    parser.add_argument("--batch-size", type=int, default=32)
     args = parser.parse_args()
     if not args.ground_truth and args.pred_root is None:
         parser.error("--pred-root is required unless --ground-truth is set")
@@ -48,11 +64,22 @@ def main() -> None:
         args.music_feature_root,
         max_samples=args.max_samples,
     )
-    evaluator = AISTPPMusicDanceEvaluator(
-        max_frames=args.max_frames,
-        physical=not args.no_physical,
-        reference_feature_path=args.reference_features,
-    )
+    if args.joint_fid:
+        evaluator = AISTPPMusicDanceEvaluator.from_pretrained(
+            args.evaluator_artifact,
+            physical=not args.no_physical,
+            joint_fid=True,
+            joint_evaluator=args.joint_evaluator,
+            device=args.device,
+            batch_size=args.batch_size,
+        )
+        evaluator.max_frames = args.max_frames
+    else:
+        evaluator = AISTPPMusicDanceEvaluator(
+            max_frames=args.max_frames,
+            physical=not args.no_physical,
+            reference_feature_path=args.reference_features,
+        )
     evaluated = []
     for sample in dataset:
         if args.ground_truth:

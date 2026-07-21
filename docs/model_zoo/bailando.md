@@ -117,15 +117,17 @@ PKLs in the AIST++ v1 reference archive. Generated features use the first 1,200
 frames; reference features use complete sequences; BeatAlign uses the complete
 generated sequence and the paired 60 fps music-beat stream.
 
-| Result | FID_k | FID_g | Diversity_k | Diversity_g | BeatAlign |
-| ------ | ----: | ----: | ----------: | ----------: | --------: |
-| Motius reproduction | 28.11 | 9.70 | 7.73 | 6.31 | 0.2268 |
-| Bailando paper | 28.16 | 9.62 | 7.83 | 6.34 | 0.2332 |
-| Motius GT | 17.16 | 10.66 | 8.17 | 7.49 | 0.2247 |
-| GT paper | 17.10 | 10.60 | 8.19 | 7.45 | 0.2374 |
+| Result | FID_k | FID_g | uTMR FID | Diversity_k | Diversity_g | BeatAlign |
+| ------ | ----: | ----: | --------: | ----------: | ----------: | --------: |
+| Motius reproduction | 28.11 | 9.70 | 0.3138 | 7.73 | 6.31 | 0.2268 |
+| Bailando paper | 28.16 | 9.62 | - | 7.83 | 6.34 | 0.2332 |
+| Motius GT | 17.16 | 10.66 | 0.1829 | 8.17 | 7.49 | 0.2247 |
+| GT paper | 17.10 | 10.60 | - | 8.19 | 7.45 | 0.2374 |
 
 Lower is better for FID, higher is better for BeatAlign, and diversity is
-interpreted relative to GT. The paper values are shown as parity targets and
+interpreted relative to GT. uTMR FID uses canonical 30 fps SMPL-22 joints and
+per-sample L2-normalized embeddings against the same 1,320-motion reference
+pool. The paper values are shown as parity targets and
 are not copied into the reproduced row.
 
 ### Physical Diagnostics

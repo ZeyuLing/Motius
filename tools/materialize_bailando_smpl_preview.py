@@ -23,12 +23,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--input-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--ids", required=True, help="Comma-separated AIST++ sequence ids")
+    parser.add_argument(
+        "--input-format",
+        choices=("prediction_npz", "aistpp_json"),
+        default="prediction_npz",
+    )
     parser.add_argument("--smpl-model-dir", type=Path, required=True)
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--max-source-frames", type=int, default=1_200)
     parser.add_argument("--target-fps", type=float, default=30.0)
     parser.add_argument("--refine-iters", type=int, default=40)
     parser.add_argument("--refine-lr", type=float, default=0.02)
+    parser.add_argument("--manifest-name", default="manifest.json")
     return parser.parse_args()
 
 
@@ -40,9 +46,16 @@ def main() -> None:
     for sequence_id in (value.strip() for value in args.ids.split(",")):
         if not sequence_id:
             continue
-        source = args.input_dir / f"{sequence_id}.npz"
-        with np.load(source, allow_pickle=False) as payload:
-            joints = np.asarray(payload["joints"], dtype=np.float32)
+        if args.input_format == "prediction_npz":
+            source = args.input_dir / f"{sequence_id}.npz"
+            with np.load(source, allow_pickle=False) as payload:
+                joints = np.asarray(payload["joints"], dtype=np.float32)
+        else:
+            source = args.input_dir / f"{sequence_id}.json"
+            payload = json.loads(source.read_text(encoding="utf-8"))
+            joints = np.asarray(payload["dance_array"], dtype=np.float32).reshape(
+                -1, 24, 3
+            )
         joints = joints[: args.max_source_frames, :22]
         result = retarget_hml263_clip(
             joints,
@@ -79,7 +92,7 @@ def main() -> None:
         }
         records.append(record)
         print(json.dumps(record), flush=True)
-    (args.output_dir / "manifest.json").write_text(
+    (args.output_dir / args.manifest_name).write_text(
         json.dumps({"records": records}, indent=2) + "\n", encoding="utf-8"
     )
 

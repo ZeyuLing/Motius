@@ -10,6 +10,8 @@ from pathlib import Path
 import shutil
 import sys
 
+import numpy as np
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from motius.evaluation.music_to_dance import AISTPPMusicDanceEvaluator  # noqa: E402
@@ -34,6 +36,7 @@ def _sha256_tree(root: Path) -> str:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--reference-features", type=Path, required=True)
+    parser.add_argument("--joint-reference-embeddings", type=Path)
     parser.add_argument("--smpl-skeleton", type=Path, required=True)
     parser.add_argument("--calibration-report", type=Path, required=True)
     source = parser.add_mutually_exclusive_group(required=True)
@@ -59,6 +62,11 @@ def main() -> None:
     evaluator = AISTPPMusicDanceEvaluator(
         physical=False,
         reference_feature_path=args.reference_features,
+        joint_reference_embeddings=(
+            np.load(args.joint_reference_embeddings)
+            if args.joint_reference_embeddings is not None
+            else None
+        ),
     )
     evaluator.save_pretrained(args.output)
     shutil.copy2(args.smpl_skeleton, args.output / "aistpp_smpl24_skeleton.npz")
@@ -90,6 +98,15 @@ def main() -> None:
                 str(motion_source.name): motion_hash,
                 "ignore_list.txt": _sha256(args.ignore_list),
                 "reference_features": _sha256(args.reference_features),
+                **(
+                    {
+                        "joint_reference_embeddings": _sha256(
+                            args.joint_reference_embeddings
+                        )
+                    }
+                    if args.joint_reference_embeddings is not None
+                    else {}
+                ),
             },
         }
     )
