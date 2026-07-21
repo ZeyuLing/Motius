@@ -128,6 +128,8 @@ def test_smpl_gallery_retries_throttled_assets_without_poisoning_cache():
 
     assert "response.status===429||response.status>=500" in page
     assert "retry-after" in page
+    assert "MAX_FETCHES=3" in page
+    assert "fetchWithSlot(path,init)" in page
     assert "if(assetCache.get(key)===pending)assetCache.delete(key)" in page
     assert "Promise.allSettled" in page
 
