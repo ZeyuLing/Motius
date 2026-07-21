@@ -14,12 +14,13 @@ license: mit
 Static Motius leaderboard for music-conditioned dance generation on the
 official 40-case AIST++ cross-modal evaluation package.
 
-The table keeps the released Bailando `FID_k`, `FID_g`, diversity, and beat
-protocol for paper comparability, and adds Motius normalized uTMR FID on
-canonical 30 fps SMPL-22 joints. The qualitative explorer gives each GT and
-generated clip one scene with its native AIST++ SMPL-24 skeleton overlaid on
-the position-IK SMPL Mesh. Both are synchronized to the official AIST music,
-and each scene exposes per-case IK MPJPE. Every viewport supports
+The table evaluates Bailando and EDGE with the released Bailando `FID_k`,
+`FID_g`, diversity, and beat protocol, and adds Motius normalized uTMR FID on
+canonical 30 fps SMPL-22 joints. The qualitative explorer compares GT,
+Bailando, and EDGE across all 40 cases. Each scene overlays its native AIST++
+SMPL-24 skeleton on the corresponding SMPL Mesh and synchronizes playback to
+the official AIST music. Joint-only outputs expose position-IK MPJPE; EDGE's
+rotation-native mesh decode does not use IK. Every viewport supports
 drag-to-orbit, wheel zoom, and view reset.
 
 ## Files

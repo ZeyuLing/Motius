@@ -2,8 +2,12 @@ import numpy as np
 import pytest
 import torch
 from torch import nn
+import json
 
-from motius.models.edge.audio import validate_edge_music_features
+from motius.models.edge.audio import (
+    edge_audio_window_count,
+    validate_edge_music_features,
+)
 from motius.models.edge.network.motion import (
     EDGE_REPR_DIM,
     EDGE_SMPL24_OFFSETS,
@@ -15,6 +19,7 @@ from motius.models.edge.network.motion import (
 )
 from motius.models.edge.network.sampler import edge_ddim_sample, stitch_edge_windows
 from motius.motion.representation.rotation import rotation_6d_to_matrix as motius_rot6d_to_matrix
+from tools.infer_edge_aistpp import _load_cases
 
 
 def test_edge_rotation_6d_uses_pytorch3d_row_convention():
@@ -72,6 +77,40 @@ def test_edge_feature_contract():
     assert value.shape == (1, 150, 4800)
     with pytest.raises(ValueError, match="4800"):
         validate_edge_music_features(np.zeros((150, 438), dtype=np.float32))
+
+
+@pytest.mark.parametrize(
+    ("duration", "windows"),
+    [(5.0, 1), (7.1, 2), (7.5, 2), (9.6, 3), (12.0, 4)],
+)
+def test_edge_audio_windows_cover_full_clip(duration, windows):
+    assert edge_audio_window_count(duration) == windows
+    covered_seconds = 5.0 + (windows - 1) * 2.5
+    assert covered_seconds + 1e-6 >= duration
+
+
+def test_edge_case_manifest_accepts_public_gallery_descriptors(tmp_path):
+    path = tmp_path / "manifest.json"
+    path.write_text(
+        json.dumps(
+            {
+                "cases": [
+                    {
+                        "case_id": "gBR_test_mBR0_ch01",
+                        "audio": "audio/mBR0.mp3",
+                        "audio_end_seconds": 12.0,
+                        "motions": {"gt": {"display_frames": 360, "fps": 30.0}},
+                    }
+                ]
+            }
+        )
+    )
+
+    records = _load_cases(path)
+
+    assert records[0]["case_id"] == "gBR_test_mBR0_ch01"
+    assert records[0]["music_id"] == "mBR0"
+    assert records[0]["frames"] == 360
 
 
 def _identity_edge_windows(count: int) -> torch.Tensor:

@@ -7,6 +7,9 @@ from tools.build_temporal_case_explorer import (
     display_references,
 )
 from tools.smpl_gallery_assets import write_chunked_manifest
+from tools.build_smpl_motion_gallery import load_skeleton_record
+
+import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -87,6 +90,21 @@ def test_smpl_gallery_overlays_native_skeleton_on_matching_mesh():
     assert "meshRoot.x-nativeRoot[0]" in page
     assert "computeSkeletonGroundOffset" not in page
     assert "-minimum+.04" not in page
+
+
+def test_gallery_uses_npz_native_skeleton_fps(tmp_path):
+    path = tmp_path / "edge.npz"
+    joints = np.arange(6 * 24 * 3, dtype=np.float32).reshape(6, 24, 3)
+    np.savez(path, joints=joints, fps=np.float32(30.0))
+
+    loaded = load_skeleton_record(
+        path,
+        source_fps=60.0,
+        target_fps=30.0,
+        target_frames=6,
+    )
+
+    np.testing.assert_array_equal(loaded, joints)
 
 
 def test_smpl_gallery_exposes_condition_colors_and_local_exports():

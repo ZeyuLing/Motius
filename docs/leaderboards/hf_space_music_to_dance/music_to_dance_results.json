@@ -47,6 +47,24 @@
       "jitter": 0.00558251,
       "float": 0.21803125,
       "slide": 0.00427675
+    },
+    {
+      "method": "EDGE",
+      "version": "official checkpoint, seed 20260721",
+      "reference": false,
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-EDGE-AISTPP",
+      "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/edge.md",
+      "paper": "https://arxiv.org/abs/2211.10658",
+      "fid_k": 38.0560680096,
+      "fid_g": 20.6396604185,
+      "diversity_k": 3.9274952337,
+      "diversity_g": 3.4717558798,
+      "beat_align": 0.2562344061,
+      "beat_align_30fps": 0.2562344061,
+      "fid_utmr": 0.2502915807,
+      "jitter": 0.0054084838,
+      "float": 0.3264906018,
+      "slide": 0.0047935049
     }
   ],
   "paper_parity": [

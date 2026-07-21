@@ -89,6 +89,10 @@ def load_skeleton_record(
     target_fps: float,
     target_frames: int,
 ) -> np.ndarray:
+    if path.suffix == ".npz":
+        with np.load(path, allow_pickle=False) as payload:
+            if "fps" in payload.files:
+                source_fps = float(np.asarray(payload["fps"]).item())
     return resample_joint_positions(
         load_joint_positions(path),
         source_fps=source_fps,

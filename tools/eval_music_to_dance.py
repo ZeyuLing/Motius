@@ -81,9 +81,11 @@ def main() -> None:
             reference_feature_path=args.reference_features,
         )
     evaluated = []
+    prediction_fps = {}
     for sample in dataset:
         if args.ground_truth:
             pred_joints = sample["gt_joints"]
+            pred_fps = float(sample["motion_fps"])
         else:
             pred_path = args.pred_root / f"{sample['name']}.npz"
             if not pred_path.is_file():
@@ -91,6 +93,11 @@ def main() -> None:
                 continue
             with np.load(pred_path, allow_pickle=False) as payload:
                 pred_joints = payload["joints"]
+                pred_fps = float(
+                    np.asarray(payload["fps"]).item()
+                    if "fps" in payload.files
+                    else sample["motion_fps"]
+                )
         evaluator.process(
             {
                 "name": sample["name"],
@@ -99,9 +106,12 @@ def main() -> None:
                 "music_beats": sample["music_beats"],
                 "music_fps": sample["music_fps"],
                 "motion_fps": sample["motion_fps"],
+                "pred_motion_fps": pred_fps,
+                "gt_motion_fps": sample["motion_fps"],
             }
         )
         evaluated.append(sample["name"])
+        prediction_fps[sample["name"]] = pred_fps
 
     metrics = evaluator.compute()
     report = {
@@ -115,6 +125,7 @@ def main() -> None:
             str(args.reference_features) if args.reference_features else None
         ),
         "samples": evaluated,
+        "prediction_fps": prediction_fps,
         "metrics": metrics,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)

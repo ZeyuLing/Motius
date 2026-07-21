@@ -19,6 +19,7 @@ from motius.evaluation.music_to_dance import (
 from motius.models.bailando.audio import extract_bailando_audio_features
 from motius.motion import aistpp_smpl24_fk, convert_motion, get_spec
 from motius.motion.representation.aistpp import AISTPP_SMPL24_PARENTS
+from motius.motion.representation.humanml import linear_resample_joints
 from motius.models.bailando.bundle import BailandoBundle, DEFAULT_BAILANDO_CONFIG
 from motius.pipelines.bailando import BailandoPipeline
 from motius.registry import EVALUATORS, MODEL_BUNDLES, PIPELINES
@@ -178,6 +179,25 @@ def test_music_to_dance_gt_identity_metrics_are_consistent():
     assert metrics["Diversity_g"] == pytest.approx(metrics["GT_Diversity_g"])
     assert metrics["num_samples"] == 3
     assert "Physical/Slide" in metrics
+
+
+def test_music_to_dance_evaluator_resamples_30fps_predictions_for_official_features():
+    evaluator = AISTPPMusicDanceEvaluator(physical=False)
+    for index in range(3):
+        motion_30 = _dance(index + 50, index * 0.2)[::3]
+        motion_60 = linear_resample_joints(motion_30, 30.0, 60.0)
+        evaluator.process(
+            {
+                "pred_joints": motion_30,
+                "gt_joints": motion_60,
+                "music_beats": np.zeros(len(motion_60), dtype=bool),
+                "pred_motion_fps": 30.0,
+                "gt_motion_fps": 60.0,
+            }
+        )
+    metrics = evaluator.compute()
+    assert metrics["FID_k"] == pytest.approx(0.0, abs=1e-6)
+    assert metrics["FID_g"] == pytest.approx(0.0, abs=1e-6)
 
 
 def test_music_to_dance_evaluator_accepts_full_reference_pool():

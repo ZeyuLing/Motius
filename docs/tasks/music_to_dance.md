@@ -4,15 +4,15 @@ Motius exposes music-to-dance methods through one audio/feature input contract
 and a shared SMPL motion bridge. Bailando's native output is 60 fps AIST++
 SMPL-24 joints; cross-method Motius metrics use canonical 30 fps SMPL-22
 joints. EDGE uses a 30 fps contact/root/SMPL-rotation representation and is
-available as a checkpoint-verified integration while its full common-protocol
-benchmark run is being completed.
+evaluated on the same public 40-case package.
 
 [Open the public Music-to-Dance Leaderboard](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard),
-including the audio-synchronized all-case GT/Bailando 3D comparison.
+including the audio-synchronized all-case GT/Bailando/EDGE 3D comparison.
 Its Three.js viewer supports free orbit, zoom, view reset, timeline seeking,
 and synchronized playback for all 40 cases. Each method is one scene: its
-native SMPL-24 skeleton is drawn as a coral X-ray overlay on the position-IK
-SMPL Mesh. Only the mesh is affected by IK ambiguity.
+native SMPL-24 skeleton is drawn as a coral X-ray overlay on the corresponding
+SMPL Mesh. Bailando's position-only mesh bridge uses IK; EDGE's rotation-native
+mesh decode does not.
 
 ## Task Contract
 
@@ -20,7 +20,9 @@ SMPL Mesh. Only the mesh is affected by IK ambiguity.
 | ---- | ---------- |
 | Audio input | File path or mono waveform with an explicit sample rate |
 | Bailando feature input | `(T, 438)` at 7.5 fps: MFCC, delta MFCC, chroma, onset, beat, and tempogram |
-| Motion output | `(T * 8, 24, 3)` global AIST++ SMPL joint positions at 60 fps |
+| EDGE feature input | `(N, 150, 4800)` Jukebox layer-66 windows at 30 fps |
+| Bailando motion output | `(T * 8, 24, 3)` global AIST++ SMPL joint positions at 60 fps |
+| EDGE motion output | EDGE-151 plus global AIST++ SMPL-24 joints and SMPL-22 `motion135` at 30 fps |
 | Coordinate system | SMPL Y-up world frame, positions in metres |
 | Unconditioned start | Released Bailando code pair `(423, 12)` |
 | Official AIST++ start | First upper/lower VQ token encoded from the paired GT motion |
@@ -79,6 +81,20 @@ result = pipeline(
 See the [EDGE model card](../model_zoo/edge.md) for exact Jukebox hashes,
 representation conventions, and the interactive skeleton/mesh overlay.
 
+The formal 40-case run consumes the public gallery manifest so repeated music
+ids produce distinct, deterministic case outputs instead of overwriting one
+another. It also pads only the final Jukebox window, then crops generated motion
+to the manifest's exact frame count:
+
+```bash
+python tools/infer_edge_aistpp.py \
+  --checkpoint ZeyuLing/Motius-EDGE-AISTPP \
+  --case-manifest docs/leaderboards/hf_space_music_to_dance/cases/manifest.json \
+  --feature-root outputs/edge/aistpp_jukebox_features \
+  --output outputs/edge/aistpp_official_40 \
+  --seed 20260721
+```
+
 The public viewer uses motion-length MP3 clips derived from the official
 [AIST Dance Video Database audio release](https://aistdancedb.ongaaccel.jp/database_download/).
 Rebuild the clips and provenance manifest with:
@@ -123,16 +139,18 @@ This second route is lossy and reports fit errors when called through the lower-
 level `retarget_hml263_clip` API. It is intended for SMPL mesh rendering and
 cross-representation tools; official Bailando metrics consume native joints.
 
-The public two-scene overlay can be rebuilt from the native 60 fps outputs and
-fitted 30 fps SMPL parameters with:
+The public three-scene overlay can be rebuilt from the native outputs, fitted
+GT/Bailando SMPL parameters, and EDGE's directly decoded `motion135` with:
 
 ```bash
 python tools/build_smpl_motion_gallery.py \
   --source-manifest outputs/bailando/leaderboard_gallery_source.json \
   --motion 'gt=GT=outputs/bailando/leaderboard_smpl/gt' \
   --motion 'bailando=Bailando=outputs/bailando/leaderboard_smpl/bailando' \
+  --motion 'edge=EDGE=outputs/edge/aistpp_official_40' \
   --skeleton 'gt=GT native joints=path/to/aistpp_test_full_wav' \
   --skeleton 'bailando=Bailando native joints=outputs/bailando/aistpp_official_epoch10' \
+  --skeleton 'edge=EDGE native joints=outputs/edge/aistpp_official_40' \
   --skeleton-fps 60 --fps 30 --stride 2 \
   --output-dir docs/leaderboards/hf_space_music_to_dance/cases
 ```
@@ -188,6 +206,9 @@ python tools/eval_music_to_dance.py \
 
 The evaluator reports `FID_k`, `FID_g`, `Diversity_k`, `Diversity_g`, and
 `BeatAlign`, plus normalized `FID_uTMR` and Motius physical diagnostics on the
-common SMPL-22 subset. The released evaluator artifact already contains both
-1,320-motion reference pools; the two build commands document how they are
-reproduced rather than being required for normal use.
+common SMPL-22 subset. A 30 fps method such as EDGE is phase-aligned to the
+official 60 fps feature timeline for `FID_k/FID_g`; BeatAlign remains on its
+native timeline in seconds and uTMR canonicalizes directly at 30 fps. The
+released evaluator artifact already contains both 1,320-motion reference pools;
+the two build commands document how they are reproduced rather than being
+required for normal use.

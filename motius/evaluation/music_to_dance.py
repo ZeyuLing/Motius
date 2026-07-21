@@ -57,6 +57,8 @@ class MusicDanceSample:
     music_beats: np.ndarray
     music_fps: float = 60.0
     motion_fps: float = 60.0
+    pred_motion_fps: float | None = None
+    gt_motion_fps: float | None = None
     name: str = ""
 
 
@@ -214,6 +216,8 @@ def _rows_from_output(output: Mapping) -> list[MusicDanceSample]:
     names = output.get("names") or [output.get("name", "")] * pred.shape[0]
     music_fps = float(output.get("music_fps", 60.0))
     motion_fps = float(output.get("motion_fps", 60.0))
+    pred_motion_fps = float(output.get("pred_motion_fps", motion_fps))
+    gt_motion_fps = float(output.get("gt_motion_fps", motion_fps))
     return [
         MusicDanceSample(
             pred_joints=pred[index],
@@ -221,6 +225,8 @@ def _rows_from_output(output: Mapping) -> list[MusicDanceSample]:
             music_beats=beats[index],
             music_fps=music_fps,
             motion_fps=motion_fps,
+            pred_motion_fps=pred_motion_fps,
+            gt_motion_fps=gt_motion_fps,
             name=str(names[index]),
         )
         for index in range(pred.shape[0])
@@ -242,6 +248,7 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
         joint_reference_embeddings: np.ndarray | None = None,
         joint_fid_fps: float = 30.0,
         joint_fid_max_seconds: float = 20.0,
+        official_feature_fps: float = 60.0,
     ):
         super().__init__()
         self.max_frames = int(max_frames)
@@ -293,6 +300,9 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
         )
         self.joint_fid_fps = float(joint_fid_fps)
         self.joint_fid_max_seconds = float(joint_fid_max_seconds)
+        self.official_feature_fps = float(official_feature_fps)
+        if self.official_feature_fps <= 0:
+            raise ValueError("official_feature_fps must be positive")
 
     @classmethod
     def from_pretrained(
@@ -369,6 +379,7 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
             joint_fid_max_seconds=float(
                 config.get("joint_fid_max_seconds", 20.0)
             ),
+            official_feature_fps=float(config.get("official_feature_fps", 60.0)),
         )
 
     def save_pretrained(self, save_directory: str | Path) -> str:
@@ -407,6 +418,7 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
             ],
             "source_repository": "https://github.com/lisiyao21/Bailando",
             "source_revision": "cc90b98bff81c9709570db413c9610c2562e27ca",
+            "official_feature_fps": self.official_feature_fps,
         }
         if self.joint_reference_embeddings is not None:
             config.update(
@@ -449,8 +461,16 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
         gt_physical = []
         pred_joint_motions = []
         for sample in self._results:
-            pred_full = root_anchor_motion(sample.pred_joints)
-            gt_full = root_anchor_motion(sample.gt_joints)
+            pred_fps = float(sample.pred_motion_fps or sample.motion_fps)
+            gt_fps = float(sample.gt_motion_fps or sample.motion_fps)
+            pred_native = root_anchor_motion(sample.pred_joints)
+            gt_native = root_anchor_motion(sample.gt_joints)
+            pred_full = linear_resample_joints(
+                pred_native, pred_fps, self.official_feature_fps
+            )
+            gt_full = linear_resample_joints(
+                gt_native, gt_fps, self.official_feature_fps
+            )
             pred = pred_full[: self.max_frames]
             gt = gt_full[: self.max_frames]
             pred_kinetic.append(extract_kinetic_features(pred))
@@ -459,19 +479,19 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
                 gt_kinetic.append(extract_kinetic_features(gt))
                 gt_geometric.append(extract_geometric_features(gt))
             pred_motion_beats = motion_beat_frames(
-                pred_full, motion_fps=sample.motion_fps
+                pred_native, motion_fps=pred_fps
             )
             alignments.append(
                 beat_alignment_score(
                     _truncate_music_beats(
                         sample.music_beats,
-                        motion_velocity_frames=len(pred_full) - 1,
+                        motion_velocity_frames=len(pred_native) - 1,
                         music_fps=sample.music_fps,
-                        motion_fps=sample.motion_fps,
+                        motion_fps=pred_fps,
                     ),
                     pred_motion_beats,
                     music_fps=sample.music_fps,
-                    motion_fps=sample.motion_fps,
+                    motion_fps=pred_fps,
                 )
             )
             if self.physical:
@@ -480,8 +500,8 @@ class AISTPPMusicDanceEvaluator(BaseEvaluator):
             if self.joint_position_evaluator is not None:
                 pred_joint_motions.append(
                     prepare_utmr_dance_motion(
-                        pred_full,
-                        source_fps=sample.motion_fps,
+                        pred_native,
+                        source_fps=pred_fps,
                         target_fps=self.joint_fid_fps,
                         max_seconds=self.joint_fid_max_seconds,
                     )

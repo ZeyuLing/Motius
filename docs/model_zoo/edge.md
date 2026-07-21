@@ -19,7 +19,7 @@ tags:
   <a href="https://edge-dance.github.io/">Project Page</a> |
   <a href="https://github.com/Stanford-TML/EDGE">Original GitHub</a> |
   <a href="https://huggingface.co/ZeyuLing/Motius-EDGE-AISTPP">Motius Checkpoint</a> |
-  <a href="https://zeyuling-edge-aistpp-preview.static.hf.space/">Interactive Preview</a>
+  <a href="https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html">M2D Leaderboard + Preview</a>
 </p>
 
 EDGE is the CVPR 2023 work *EDGE: Editable Dance Generation From Music*.
@@ -30,9 +30,10 @@ checkout at runtime.
 
 ## Preview
 
-[Open the audio-synchronized Three.js preview](https://zeyuling-edge-aistpp-preview.static.hf.space/).
-The scene overlays EDGE's native SMPL-24 skeleton on the SMPL mesh decoded from
-the same local rotations. It supports orbit, zoom, timeline seeking, audio
+[Open the unified audio-synchronized 40-case M2D comparison](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html).
+Every case shows GT, Bailando, and EDGE in one comparison page. The EDGE scene
+overlays its native SMPL-24 skeleton on the SMPL mesh decoded from the same
+local rotations. It supports orbit, zoom, timeline seeking, audio
 synchronization, NPZ export, and FBX export.
 
 The viewer preserves the generated heading and XZ trajectory. It applies one
@@ -99,6 +100,68 @@ loading Jukebox:
 result = pipe(music_features=features, seed=7)
 ```
 
+Reproduce the public 40-case package with resumable per-case outputs. Extract
+the ten unique music tracks once:
+
+```bash
+python tools/infer_edge_aistpp.py \
+  --checkpoint ZeyuLing/Motius-EDGE-AISTPP \
+  --case-manifest docs/leaderboards/hf_space_music_to_dance/cases/manifest.json \
+  --audio-root docs/leaderboards/hf_space_music_to_dance/cases \
+  --feature-root outputs/edge/aistpp_jukebox_features \
+  --output outputs/edge/aistpp_official_40 \
+  --extract-features-only \
+  --jukebox-cache-dir checkpoints/models/edge/jukebox_cache
+```
+
+Then generate all 40 cases:
+
+```bash
+python tools/infer_edge_aistpp.py \
+  --checkpoint ZeyuLing/Motius-EDGE-AISTPP \
+  --case-manifest docs/leaderboards/hf_space_music_to_dance/cases/manifest.json \
+  --feature-root outputs/edge/aistpp_jukebox_features \
+  --output outputs/edge/aistpp_official_40 \
+  --seed 20260721
+```
+
+The manifest mode uses each case's exact duration, assigns a unique deterministic
+seed, and preserves EDGE's native 30 fps timeline. Jukebox features are shared
+by music id, so the four cases associated with one song do not recompute the
+10.3 GB frontend.
+
+## Evaluation
+
+Motius evaluates the released checkpoint on the same 40 AIST++ cross-modal
+cases used by the public Bailando row. Official kinetic/geometric features are
+computed after phase-aligned interpolation from EDGE's native 30 fps output to
+the Bailando 60 fps feature timeline. BeatAlign uses the native 30 fps timing;
+uTMR uses canonical 30 fps SMPL-22 joints and per-sample L2-normalized
+embeddings against the fixed 1,320-motion reference pool.
+
+| Result | FID_k | FID_g | uTMR FID | Diversity_k | Diversity_g | BeatAlign |
+| ------ | ----: | ----: | --------: | ----------: | ----------: | --------: |
+| EDGE official checkpoint | 38.06 | 20.64 | 0.2503 | 3.93 | 3.47 | 0.2562 |
+| Bailando reproduction | 28.11 | 9.70 | 0.3138 | 7.73 | 6.31 | 0.2271 |
+| Motius GT | 17.16 | 10.66 | 0.1829 | 8.17 | 7.49 | 0.2293 |
+
+Lower is better for FID, higher is better for BeatAlign, and diversity should
+be interpreted relative to GT. These are Motius common-protocol measurements,
+not values copied from the EDGE paper. EDGE's paper evaluates its own generated
+sample population and introduces PFC; its published protocol is not presented
+as if it were the same 40-case Bailando benchmark.
+
+### Physical Diagnostics
+
+| Result | Jitter | Dynamic | Penetration | Float | Slide |
+| ------ | -----: | ------: | ----------: | ----: | ----: |
+| EDGE | 0.00541 | 0.02030 | 0.00000 | 0.32649 | 0.00479 |
+| Paired GT | 0.00677 | 0.02276 | 0.00000 | 0.10658 | 0.00330 |
+
+These diagnostics use the shared SMPL-22 subset on the common 60 fps metric
+timeline. `Dynamic` measures expressiveness relative to GT rather than an
+error to minimize.
+
 ## Motion Representation
 
 `EDGE-151` is
@@ -121,14 +184,13 @@ fixed joint offsets when a different SMPL gender or beta is selected.
 | Official checkpoint load | Zero missing and zero unexpected tensors |
 | Official checkpoint SHA-256 | `28ca4ce167bb17c36869b4d021af8762a34c6df034002f61b3bc1c1d0b1b02c7` |
 | Raw-audio smoke inference | 225 frames from 7.5 seconds, all finite |
+| Common-protocol generation | 40/40 cases, exact manifest lengths, all finite |
+| Seeds | 40/40 unique and deterministic from base seed `20260721` |
 | Native FK bone-length temporal deviation | below `0.001 mm` |
 | EDGE-to-motion135 fixed-skeleton agreement | below `0.001 mm` maximum |
 | Three.js overlay root agreement | below `0.0002 mm` at audited frames |
-| Unit/browser tests | 20 passed |
-
-The complete 40-case AIST++ leaderboard run is not reported in this initial
-integration card. It will be added only after the common cross-frame-rate
-protocol is fixed and the generated set is complete.
+| Unified Three.js viewer | 40 cases, GT/Bailando/EDGE, zero browser errors |
+| Unit/browser tests | 43 passed |
 
 ## Citation
 
