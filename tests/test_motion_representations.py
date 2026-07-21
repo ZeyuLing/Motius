@@ -6,12 +6,19 @@ import types
 from pathlib import Path
 
 import numpy as np
+import pytest
 import torch
 
 from motius.motion import smpl_to_motion135 as public_smpl_to_motion135
 from motius.motion.retarget import GMR_Y_UP_FROM_Z_UP, GMR_Z_UP_FROM_Y_UP
-from motius.motion.retarget._hml263_smpl_impl import _resolve_smplx_model_root
-from motius.motion.retarget.hml263_smpl import retarget_hml263_clip
+from motius.motion.retarget._hml263_smpl_impl import (
+    _preserve_twist_continuity,
+    _resolve_smplx_model_root,
+)
+from motius.motion.retarget.hml263_smpl import (
+    retarget_hml263_clip,
+    validate_smpl_motion_integrity,
+)
 
 from motius.motion.representation.convert import (
     convert_motion,
@@ -51,6 +58,30 @@ from tools.convert_hml263_predictions import _relative_offsets
 def test_hml263_smpl_defaults_to_position_ik() -> None:
     signature = inspect.signature(retarget_hml263_clip)
     assert signature.parameters["rotation_init"].default == "position_ik"
+
+
+def test_one_bone_twist_stabilization_preserves_swing() -> None:
+    axis = np.array([0.0, 0.0, 1.0])
+    current = axis_angle_to_matrix(np.array([np.pi, 0.0, 0.0]))
+    previous = axis_angle_to_matrix(np.array([0.0, np.pi, 0.0]))
+    stabilized = _preserve_twist_continuity(current, previous, axis)
+
+    np.testing.assert_allclose(stabilized @ axis, current @ axis, atol=1e-6)
+    before = axis_angle_to_matrix(np.zeros(3)).T @ (current.T @ previous)
+    after = stabilized.T @ previous
+    before_angle = np.arccos(np.clip((np.trace(before) - 1.0) / 2.0, -1.0, 1.0))
+    after_angle = np.arccos(np.clip((np.trace(after) - 1.0) / 2.0, -1.0, 1.0))
+    assert after_angle < before_angle
+
+
+def test_smpl_mesh_integrity_gate_rejects_low_mpjpe_twist_failure() -> None:
+    metrics = {
+        "rotation_jump_deg_p99": 179.0,
+        "mesh_edge_ratio_p01": 0.6,
+        "mesh_edge_ratio_p99": 2.3,
+    }
+    with pytest.raises(ValueError, match="rotation jump"):
+        validate_smpl_motion_integrity(metrics)
 
 
 def _identity_motion135(frames: int) -> np.ndarray:

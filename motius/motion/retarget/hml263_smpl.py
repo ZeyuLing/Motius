@@ -35,6 +35,8 @@ from ._hml263_smpl_impl import (
     resample_rotations,
     resample_linear,
     smpl_forward_22,
+    smpl_motion_integrity_metrics,
+    validate_smpl_motion_integrity,
 )
 
 def _as_device(device: str | torch.device | None) -> torch.device:
@@ -81,6 +83,7 @@ def retarget_hml263_clip(
     rotation_init: str = "position_ik",
     orientation_mode: str = "bone",
     parent_ref_weight: float = 0.25,
+    temporal_twist_stabilization: bool = True,
     pose_keep_weight: float = 1e-4,
     pose_l2_weight: float = 0.0,
     angle_prior_weight: float = 0.0,
@@ -92,7 +95,9 @@ def retarget_hml263_clip(
     rot6d_convention: str = "row",
     lock_global_orient: bool | None = None,
     lock_body_joint_ids: Iterable[int] | None = None,
-) -> dict[str, np.ndarray]:
+    compute_mesh_metrics: bool = False,
+    mesh_metric_samples: int = 16,
+) -> dict[str, Any]:
     """Retarget one un-normalized HML263 clip to SMPL ``motion_135``.
 
     The returned ``motion_135`` is ROW-major rot6d:
@@ -156,6 +161,7 @@ def retarget_hml263_clip(
         parents,
         orientation_mode=orientation_mode,
         parent_ref_weight=parent_ref_weight,
+        temporal_twist_stabilization=temporal_twist_stabilization,
     )
     if rotation_init == "hml263":
         local_r = hml_local_r
@@ -217,7 +223,7 @@ def retarget_hml263_clip(
         [transl, matrix_to_rot6d_rowmajor(local_r).reshape(len(target), N_JOINTS * 6)],
         axis=-1,
     ).astype(np.float32)
-    return {
+    result = {
         "motion_135": motion_135,
         "transl": transl.astype(np.float32),
         "canonical_transl": canonical_transl.astype(np.float32),
@@ -236,6 +242,15 @@ def retarget_hml263_clip(
         "root_translation_restored": np.array(root_translation_restored),
         "global_orient_locked": np.array(bool(lock_global_orient)),
     }
+    if compute_mesh_metrics:
+        result["mesh_integrity"] = smpl_motion_integrity_metrics(
+            model,
+            global_orient,
+            body_pose,
+            device_t,
+            sample_count=mesh_metric_samples,
+        )
+    return result
 
 
 def hml263_to_motion135(feats: np.ndarray, **kwargs: Any) -> np.ndarray:
@@ -244,4 +259,10 @@ def hml263_to_motion135(feats: np.ndarray, **kwargs: Any) -> np.ndarray:
     return retarget_hml263_clip(feats, **kwargs)["motion_135"]
 
 
-__all__ = ["load_smpl_rest", "retarget_hml263_clip", "hml263_to_motion135"]
+__all__ = [
+    "load_smpl_rest",
+    "retarget_hml263_clip",
+    "hml263_to_motion135",
+    "smpl_motion_integrity_metrics",
+    "validate_smpl_motion_integrity",
+]

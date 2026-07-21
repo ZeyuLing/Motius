@@ -308,12 +308,45 @@ def _safe_normalize(v: np.ndarray, eps: float = 1e-8) -> tuple[np.ndarray, np.nd
     return v / np.maximum(n, eps), valid
 
 
+def _preserve_twist_continuity(
+    current: np.ndarray,
+    previous: np.ndarray,
+    bone_axis: np.ndarray,
+) -> np.ndarray:
+    """Choose the one-bone IK twist closest to the preceding frame.
+
+    Aligning one rest bone to one observed bone determines swing but leaves
+    rotation around the rest bone unconstrained. Right-multiplying by a twist
+    around that rest axis preserves the observed child position. Projecting the
+    current-to-previous relative quaternion onto that axis selects the smoothest
+    member of this equivalent family without changing the positional fit.
+    """
+
+    axis = np.asarray(bone_axis, dtype=np.float64)
+    norm = float(np.linalg.norm(axis))
+    if norm <= 1e-8:
+        return current
+    axis /= norm
+    relative = np.asarray(current, dtype=np.float64).T @ np.asarray(
+        previous, dtype=np.float64
+    )
+    quat = R.from_matrix(relative).as_quat()
+    projected = axis * float(np.dot(quat[:3], axis))
+    twist = np.concatenate([projected, quat[3:4]])
+    twist_norm = float(np.linalg.norm(twist))
+    if twist_norm <= 1e-8:
+        return current
+    twist /= twist_norm
+    return np.asarray(current, dtype=np.float64) @ R.from_quat(twist).as_matrix()
+
+
 def estimate_local_rotations(
     target_joints: np.ndarray,
     rest_joints: np.ndarray,
     parents: np.ndarray,
     orientation_mode: str = "bone",
     parent_ref_weight: float = 0.25,
+    temporal_twist_stabilization: bool = True,
 ) -> np.ndarray:
     """Estimate local rotations by aligning SMPL rest bones to target bones."""
     target_joints = np.asarray(target_joints, dtype=np.float64)
@@ -368,6 +401,17 @@ def estimate_local_rotations(
                     rot_local = R.align_vectors(dst_local, src, weights=valid_weights)[0].as_matrix()
                 except Exception:
                     rot_local = np.eye(3)
+            if (
+                temporal_twist_stabilization
+                and t > 0
+                and orientation_mode == "bone"
+                and len(child_ids) == 1
+            ):
+                rot_local = _preserve_twist_continuity(
+                    rot_local,
+                    local[t - 1, j],
+                    offsets[child_ids[0]],
+                )
             local[t, j] = rot_local
             global_r[t, j] = parent_global @ rot_local
     return local.astype(np.float32)
@@ -557,6 +601,124 @@ def smpl_forward_22(
             )
         chunks.append(out.joints[:, :N_JOINTS].detach().cpu().numpy().astype(np.float32))
     return np.concatenate(chunks, axis=0)
+
+
+def smpl_motion_integrity_metrics(
+    model,
+    global_orient: np.ndarray,
+    body_pose_21: np.ndarray,
+    device: torch.device,
+    sample_count: int = 16,
+) -> dict[str, float]:
+    """Measure temporal rotation jumps and sampled SMPL surface distortion."""
+
+    global_orient = np.asarray(global_orient, dtype=np.float32).reshape(-1, 3)
+    body_pose_21 = np.asarray(body_pose_21, dtype=np.float32).reshape(-1, 63)
+    if len(global_orient) != len(body_pose_21) or len(global_orient) < 1:
+        raise ValueError("global_orient and body_pose must have the same non-zero length")
+
+    axis_angle = np.concatenate(
+        [global_orient[:, None], body_pose_21.reshape(-1, 21, 3)], axis=1
+    )
+    local = R.from_rotvec(axis_angle.reshape(-1, 3)).as_matrix().reshape(
+        len(axis_angle), N_JOINTS, 3, 3
+    )
+    if len(local) > 1:
+        delta = local[1:] @ local[:-1].transpose(0, 1, 3, 2)
+        angle = np.degrees(
+            np.arccos(
+                np.clip(
+                    (np.trace(delta, axis1=-2, axis2=-1) - 1.0) / 2.0,
+                    -1.0,
+                    1.0,
+                )
+            )
+        )
+        rotation_p99 = float(np.percentile(angle, 99))
+        rotation_max = float(angle.max())
+    else:
+        rotation_p99 = rotation_max = 0.0
+
+    count = min(max(1, int(sample_count)), len(global_orient))
+    indices = np.linspace(0, len(global_orient) - 1, count).round().astype(np.int64)
+    body_23 = np.zeros((count, 69), dtype=np.float32)
+    body_23[:, :63] = body_pose_21[indices]
+    with torch.no_grad():
+        posed = model(
+            betas=torch.zeros(count, 10, device=device),
+            body_pose=torch.from_numpy(body_23).to(device),
+            global_orient=torch.from_numpy(global_orient[indices]).to(device),
+            transl=torch.zeros(count, 3, device=device),
+        ).vertices.detach().cpu().numpy()
+        rest = model(
+            betas=torch.zeros(1, 10, device=device),
+            body_pose=torch.zeros(1, 69, device=device),
+            global_orient=torch.zeros(1, 3, device=device),
+            transl=torch.zeros(1, 3, device=device),
+        ).vertices[0].detach().cpu().numpy()
+    faces = np.asarray(model.faces, dtype=np.int64)
+    edges = np.unique(
+        np.sort(
+            np.concatenate(
+                [faces[:, [0, 1]], faces[:, [1, 2]], faces[:, [0, 2]]], axis=0
+            ),
+            axis=1,
+        ),
+        axis=0,
+    )
+    rest_lengths = np.linalg.norm(rest[edges[:, 0]] - rest[edges[:, 1]], axis=-1)
+    posed_lengths = np.linalg.norm(
+        posed[:, edges[:, 0]] - posed[:, edges[:, 1]], axis=-1
+    )
+    ratios = posed_lengths / np.maximum(rest_lengths[None], 1e-8)
+    return {
+        "rotation_jump_deg_p99": rotation_p99,
+        "rotation_jump_deg_max": rotation_max,
+        "mesh_edge_ratio_p01": float(np.percentile(ratios, 1)),
+        "mesh_edge_ratio_p99": float(np.percentile(ratios, 99)),
+        "mesh_edge_ratio_max": float(ratios.max()),
+        "mesh_sample_count": float(count),
+    }
+
+
+def validate_smpl_motion_integrity(
+    metrics: dict[str, float],
+    *,
+    max_rotation_jump_p99_deg: float = 90.0,
+    max_mesh_edge_ratio_p99: float = 1.8,
+    min_mesh_edge_ratio_p01: float = 0.2,
+) -> None:
+    """Reject low-MPJPE poses whose local rotations deform the SMPL mesh."""
+
+    required = {
+        "rotation_jump_deg_p99",
+        "mesh_edge_ratio_p01",
+        "mesh_edge_ratio_p99",
+    }
+    missing = required.difference(metrics)
+    if missing:
+        raise ValueError(f"missing SMPL integrity metrics: {sorted(missing)}")
+    values = np.asarray([metrics[key] for key in required], dtype=np.float64)
+    if not np.isfinite(values).all():
+        raise ValueError("SMPL integrity metrics contain non-finite values")
+    if metrics["rotation_jump_deg_p99"] > max_rotation_jump_p99_deg:
+        raise ValueError(
+            "local-rotation jump p99 "
+            f"{metrics['rotation_jump_deg_p99']:.2f} deg exceeds "
+            f"{max_rotation_jump_p99_deg:.2f} deg"
+        )
+    if metrics["mesh_edge_ratio_p99"] > max_mesh_edge_ratio_p99:
+        raise ValueError(
+            "SMPL edge-stretch p99 "
+            f"{metrics['mesh_edge_ratio_p99']:.3f} exceeds "
+            f"{max_mesh_edge_ratio_p99:.3f}"
+        )
+    if metrics["mesh_edge_ratio_p01"] < min_mesh_edge_ratio_p01:
+        raise ValueError(
+            "SMPL edge-collapse p01 "
+            f"{metrics['mesh_edge_ratio_p01']:.3f} is below "
+            f"{min_mesh_edge_ratio_p01:.3f}"
+        )
 
 
 def refine_smpl_fit(

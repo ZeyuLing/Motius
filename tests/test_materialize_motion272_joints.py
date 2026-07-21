@@ -25,6 +25,17 @@ HML_MODULE = importlib.util.module_from_spec(HML_SPEC)
 HML_SPEC.loader.exec_module(HML_MODULE)
 
 
+def _good_mesh_integrity() -> dict[str, float]:
+    return {
+        "rotation_jump_deg_p99": 20.0,
+        "rotation_jump_deg_max": 35.0,
+        "mesh_edge_ratio_p01": 0.7,
+        "mesh_edge_ratio_p99": 1.3,
+        "mesh_edge_ratio_max": 4.0,
+        "mesh_sample_count": 7.0,
+    }
+
+
 def test_hml263_ids_loader_defers_lengths_and_reads_only_its_shard(
     tmp_path: Path, monkeypatch
 ) -> None:
@@ -89,6 +100,7 @@ def test_hml263_materializer_preserves_positions_via_smpl_fit(
             "fitted_joints": joints,
             "fit_mpjpe_mm": np.full(frames, 12.0, dtype=np.float32),
             "rotation_init": np.asarray("hml263_end_effectors"),
+            "mesh_integrity": _good_mesh_integrity(),
         }
 
     monkeypatch.setattr(HML_MODULE, "retarget_hml263_clip", fake_retarget)
@@ -129,6 +141,7 @@ def test_hml263_materializer_derives_target_length_from_source(
             "fitted_joints": np.zeros((frames, 22, 3), dtype=np.float32),
             "fit_mpjpe_mm": np.full(frames, 10.0, dtype=np.float32),
             "rotation_init": np.asarray("position_ik"),
+            "mesh_integrity": _good_mesh_integrity(),
         }
 
     monkeypatch.setattr(HML_MODULE, "retarget_hml263_clip", fake_retarget)
@@ -162,6 +175,8 @@ def test_hml263_materialization_validation_rejects_truncated_output(
         body_pose=np.zeros((frames, 63), dtype=np.float32),
         transl=np.zeros((frames, 3), dtype=np.float32),
         fit_mpjpe_mm=np.zeros(frames, dtype=np.float32),
+        rotation_jump_deg_p99=np.asarray(0.0, dtype=np.float32),
+        mesh_edge_ratio_p99=np.asarray(1.0, dtype=np.float32),
     )
     np.save(joints_path, np.zeros((frames, 66), dtype=np.float32))
 

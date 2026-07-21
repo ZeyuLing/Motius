@@ -19,7 +19,11 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from motius.motion import canonicalize_smpl22_joints
-from motius.motion.retarget.hml263_smpl import load_smpl_rest, retarget_hml263_clip
+from motius.motion.retarget.hml263_smpl import (
+    load_smpl_rest,
+    retarget_hml263_clip,
+    validate_smpl_motion_integrity,
+)
 
 
 def _valid_materialization(smpl_path: Path, joints_path: Path) -> bool:
@@ -33,6 +37,8 @@ def _valid_materialization(smpl_path: Path, joints_path: Path) -> bool:
                 "body_pose",
                 "transl",
                 "fit_mpjpe_mm",
+                "rotation_jump_deg_p99",
+                "mesh_edge_ratio_p99",
             )
             arrays = {key: np.asarray(payload[key]) for key in required}
         frames = len(arrays["transl"])
@@ -74,7 +80,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--source-fps", type=float, default=20.0)
     parser.add_argument("--target-fps", type=float, default=30.0)
-    parser.add_argument("--refine-iters", type=int, default=80)
+    parser.add_argument("--refine-iters", type=int, default=0)
     parser.add_argument("--refine-lr", type=float, default=0.02)
     parser.add_argument(
         "--max-fit-mpjpe-mm",
@@ -82,6 +88,9 @@ def parse_args() -> argparse.Namespace:
         default=50.0,
         help="Reject a clip when its mean SMPL joint-fit error exceeds this value.",
     )
+    parser.add_argument("--max-rotation-jump-p99-deg", type=float, default=90.0)
+    parser.add_argument("--max-mesh-edge-ratio-p99", type=float, default=1.8)
+    parser.add_argument("--min-mesh-edge-ratio-p01", type=float, default=0.2)
     parser.add_argument(
         "--rotation-init",
         default="position_ik",
@@ -136,6 +145,9 @@ def materialize_case(
     refine_lr: float,
     rotation_init: str,
     max_fit_mpjpe_mm: float = 50.0,
+    max_rotation_jump_p99_deg: float = 90.0,
+    max_mesh_edge_ratio_p99: float = 1.8,
+    min_mesh_edge_ratio_p01: float = 0.2,
 ) -> dict[str, float]:
     features = np.asarray(np.load(source_path), dtype=np.float32)
     if features.ndim != 2 or features.shape[1] != 263:
@@ -156,6 +168,7 @@ def materialize_case(
         refine_iters=refine_iters,
         refine_lr=refine_lr,
         rotation_init=rotation_init,
+        compute_mesh_metrics=True,
     )
     joints = canonicalize_smpl22_joints(converted["fitted_joints"])
     if joints.shape != (expected_frames, 22, 3):
@@ -178,6 +191,16 @@ def materialize_case(
             f"SMPL fit MPJPE {mean_error:.2f} mm exceeds "
             f"the {float(max_fit_mpjpe_mm):.2f} mm quality gate: {source_path}"
         )
+    integrity = dict(converted.get("mesh_integrity") or {})
+    try:
+        validate_smpl_motion_integrity(
+            integrity,
+            max_rotation_jump_p99_deg=max_rotation_jump_p99_deg,
+            max_mesh_edge_ratio_p99=max_mesh_edge_ratio_p99,
+            min_mesh_edge_ratio_p01=min_mesh_edge_ratio_p01,
+        )
+    except ValueError as exc:
+        raise RuntimeError(f"SMPL mesh integrity gate failed for {source_path}: {exc}") from exc
 
     smpl_path.parent.mkdir(parents=True, exist_ok=True)
     joints_path.parent.mkdir(parents=True, exist_ok=True)
@@ -195,6 +218,21 @@ def materialize_case(
             gender=np.asarray("neutral"),
             mocap_framerate=np.asarray(target_fps, dtype=np.float32),
             fit_mpjpe_mm=np.asarray(converted["fit_mpjpe_mm"], dtype=np.float32),
+            rotation_jump_deg_p99=np.asarray(
+                integrity["rotation_jump_deg_p99"], dtype=np.float32
+            ),
+            rotation_jump_deg_max=np.asarray(
+                integrity["rotation_jump_deg_max"], dtype=np.float32
+            ),
+            mesh_edge_ratio_p01=np.asarray(
+                integrity["mesh_edge_ratio_p01"], dtype=np.float32
+            ),
+            mesh_edge_ratio_p99=np.asarray(
+                integrity["mesh_edge_ratio_p99"], dtype=np.float32
+            ),
+            mesh_edge_ratio_max=np.asarray(
+                integrity["mesh_edge_ratio_max"], dtype=np.float32
+            ),
             rotation_init=np.asarray(str(converted["rotation_init"])),
             source_hml263=np.asarray(str(source_path)),
         )
@@ -208,6 +246,7 @@ def materialize_case(
         "fit_mpjpe_mm_mean": mean_error,
         "fit_mpjpe_mm_p95": float(np.percentile(errors, 95)),
         "fit_mpjpe_mm_max": float(errors.max()),
+        **{key: float(value) for key, value in integrity.items()},
     }
 
 
@@ -261,6 +300,9 @@ def main() -> None:
                 refine_lr=args.refine_lr,
                 rotation_init=args.rotation_init,
                 max_fit_mpjpe_mm=args.max_fit_mpjpe_mm,
+                max_rotation_jump_p99_deg=args.max_rotation_jump_p99_deg,
+                max_mesh_edge_ratio_p99=args.max_mesh_edge_ratio_p99,
+                min_mesh_edge_ratio_p01=args.min_mesh_edge_ratio_p01,
             )
             fit_means.append(stats["fit_mpjpe_mm_mean"])
             generated += 1
@@ -282,6 +324,9 @@ def main() -> None:
         "rotation_init": args.rotation_init,
         "refine_iters": args.refine_iters,
         "max_fit_mpjpe_mm": args.max_fit_mpjpe_mm,
+        "max_rotation_jump_p99_deg": args.max_rotation_jump_p99_deg,
+        "max_mesh_edge_ratio_p99": args.max_mesh_edge_ratio_p99,
+        "min_mesh_edge_ratio_p01": args.min_mesh_edge_ratio_p01,
         "source_fps": args.source_fps,
         "target_fps": args.target_fps,
         "shard_index": args.shard_index,
