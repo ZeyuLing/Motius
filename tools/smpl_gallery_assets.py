@@ -75,6 +75,87 @@ def encode_motion135(motion: np.ndarray, *, stride: int) -> tuple[bytes, dict]:
     return translation_bytes + rotation_bytes, descriptor
 
 
+def load_joint_positions(path: Path) -> np.ndarray:
+    """Load native joint positions from an inference NPZ or AIST++ JSON."""
+
+    path = Path(path)
+    if path.suffix == ".json":
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if "dance_array" not in payload:
+            raise KeyError(f"dance_array not found in {path}")
+        value = np.asarray(payload["dance_array"], dtype=np.float32)
+    else:
+        loaded = np.load(path, allow_pickle=False)
+        if isinstance(loaded, np.lib.npyio.NpzFile):
+            try:
+                if "joints" not in loaded.files:
+                    raise KeyError(f"joints not found in {path}: {loaded.files}")
+                value = np.asarray(loaded["joints"], dtype=np.float32)
+            finally:
+                loaded.close()
+        else:
+            value = np.asarray(loaded, dtype=np.float32)
+    if value.ndim == 2 and value.shape[1] % 3 == 0:
+        value = value.reshape(len(value), -1, 3)
+    if value.ndim != 3 or value.shape[1:] != (24, 3):
+        raise ValueError(f"Expected AIST++ joints shaped (T,24,3) in {path}, got {value.shape}")
+    if not np.isfinite(value).all():
+        raise ValueError(f"Non-finite joint positions in {path}")
+    return np.ascontiguousarray(value, dtype=np.float32)
+
+
+def resample_joint_positions(
+    joints: np.ndarray,
+    *,
+    source_fps: float,
+    target_fps: float,
+    target_frames: int,
+) -> np.ndarray:
+    """Linearly sample native joints onto an exact target-frame timeline."""
+
+    value = np.asarray(joints, dtype=np.float32)
+    if source_fps <= 0 or target_fps <= 0:
+        raise ValueError("source_fps and target_fps must be positive")
+    if target_frames < 1:
+        raise ValueError("target_frames must be positive")
+    positions = np.arange(target_frames, dtype=np.float64) * source_fps / target_fps
+    if positions[-1] > len(value) - 1 + 1e-6:
+        raise ValueError(
+            f"Joint clip has {len(value)} frames, but {target_frames} frames at "
+            f"{target_fps:g} fps require {positions[-1] + 1:.3f} source frames at {source_fps:g} fps"
+        )
+    lower = np.floor(positions).astype(np.int64)
+    upper = np.minimum(lower + 1, len(value) - 1)
+    alpha = (positions - lower).astype(np.float32)[:, None, None]
+    sampled = value[lower] * (1.0 - alpha) + value[upper] * alpha
+    return np.ascontiguousarray(sampled, dtype=np.float32)
+
+
+def encode_joint_positions(joints: np.ndarray, *, stride: int = 1) -> tuple[bytes, dict]:
+    """Quantize a joint-position clip for range-addressable web playback."""
+
+    value = np.asarray(joints, dtype=np.float32)
+    if value.ndim != 3 or value.shape[2] != 3:
+        raise ValueError(f"Expected joints shaped (T,J,3), got {value.shape}")
+    display_frames = int(len(value))
+    stride = max(1, int(stride))
+    sampled = np.ascontiguousarray(value[::stride], dtype=np.float32)
+    minimum = sampled.reshape(-1, 3).min(axis=0).astype(np.float32)
+    maximum = sampled.reshape(-1, 3).max(axis=0).astype(np.float32)
+    scale = np.maximum((maximum - minimum) / 65535.0, 1e-8).astype(np.float32)
+    encoded = np.rint((sampled - minimum) / scale).clip(0, 65535).astype("<u2")
+    descriptor = {
+        "frames": int(len(sampled)),
+        "display_frames": display_frames,
+        "stride": stride,
+        "joint_count": int(sampled.shape[1]),
+        "position_count": int(encoded.size),
+        "position_minimum": minimum.tolist(),
+        "position_scale": scale.tolist(),
+    }
+    return encoded.tobytes(), descriptor
+
+
 def motion_path(directory: Path, case_id: str) -> Path:
     for suffix in (".npz", ".npy"):
         path = directory / f"{case_id}{suffix}"

@@ -22,6 +22,10 @@ from motius.motion.representation.aistpp import AISTPP_SMPL24_PARENTS
 from motius.models.bailando.bundle import BailandoBundle, DEFAULT_BAILANDO_CONFIG
 from motius.pipelines.bailando import BailandoPipeline
 from motius.registry import EVALUATORS, MODEL_BUNDLES, PIPELINES
+from tools.smpl_gallery_assets import (
+    encode_joint_positions,
+    resample_joint_positions,
+)
 
 
 def _tiny_half():
@@ -367,3 +371,22 @@ def test_aistpp_smpl24_fk_uses_scaled_root_and_parent_offsets():
             np.broadcast_to(offsets[joint], difference.shape),
             atol=1e-6,
         )
+
+
+def test_native_skeleton_web_asset_preserves_30fps_joint_positions():
+    joints = np.arange(6 * 24 * 3, dtype=np.float32).reshape(6, 24, 3) / 100.0
+    sampled = resample_joint_positions(
+        joints, source_fps=60.0, target_fps=30.0, target_frames=3
+    )
+    np.testing.assert_array_equal(sampled, joints[[0, 2, 4]])
+
+    encoded, descriptor = encode_joint_positions(sampled)
+    quantized = np.frombuffer(encoded, dtype="<u2").reshape(3, 24, 3)
+    restored = (
+        np.asarray(descriptor["position_minimum"], dtype=np.float32)
+        + quantized * np.asarray(descriptor["position_scale"], dtype=np.float32)
+    )
+    tolerance = max(descriptor["position_scale"]) + 1e-7
+    np.testing.assert_allclose(restored, sampled, atol=tolerance)
+    assert descriptor["display_frames"] == 3
+    assert descriptor["joint_count"] == 24

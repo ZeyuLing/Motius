@@ -8,7 +8,9 @@ joints. Bailando is the first released baseline.
 [Open the public Music-to-Dance Leaderboard](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard),
 including the audio-synchronized all-case GT/Bailando SMPL Mesh comparison.
 Its Three.js viewer supports free orbit, zoom, view reset, timeline seeking,
-and synchronized playback for all 40 cases.
+and synchronized playback for all 40 cases. Every case shows native SMPL-24
+joint positions beside the position-IK SMPL Mesh fit; only the latter is affected
+by IK ambiguity.
 
 ## Task Contract
 
@@ -95,6 +97,20 @@ motion135 = convert_motion(
 This second route is lossy and reports fit errors when called through the lower-
 level `retarget_hml263_clip` API. It is intended for SMPL mesh rendering and
 cross-representation tools; official Bailando metrics consume native joints.
+
+The public four-view comparison can be rebuilt from the native 60 fps outputs
+and fitted 30 fps SMPL parameters with:
+
+```bash
+python tools/build_smpl_motion_gallery.py \
+  --source-manifest outputs/bailando/leaderboard_gallery_source.json \
+  --motion 'gt=GT SMPL Mesh=outputs/bailando/leaderboard_smpl/gt' \
+  --motion 'bailando=Bailando SMPL Mesh=outputs/bailando/leaderboard_smpl/bailando' \
+  --skeleton 'gt=GT Native Skeleton=path/to/aistpp_test_full_wav' \
+  --skeleton 'bailando=Bailando Native Skeleton=outputs/bailando/aistpp_official_epoch10' \
+  --skeleton-fps 60 --fps 30 --stride 2 \
+  --output-dir docs/leaderboards/hf_space_music_to_dance/cases
+```
 
 ## Evaluation
 

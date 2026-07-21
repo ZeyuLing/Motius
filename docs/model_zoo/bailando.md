@@ -36,10 +36,11 @@ runtime.
 ## Preview
 
 [Open the audio-synchronized 40-case GT/Bailando comparison](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html).
-The viewer renders neutral SMPL meshes at 30 fps, uses the official AIST music
-for each case, and keeps audio, timeline seeking, and motion frames synchronized.
-Each panel supports free 3D orbit, zoom, and view reset. Position-IK fit reports
-are retained with the generated release artifacts.
+The viewer places the native 30 fps AIST++ SMPL-24 skeleton beside the neutral
+SMPL Mesh fit for both GT and Bailando. Native skeletons never pass through IK;
+the mesh panels report position-IK MPJPE so generation artifacts can be separated
+from fitting artifacts. Audio, timeline seeking, and all four views remain
+synchronized, with free 3D orbit, zoom, and view reset.
 
 ## Release Snapshot
 

@@ -10,7 +10,15 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 
-from smpl_gallery_assets import encode_motion135, load_motion135
+import numpy as np
+
+from smpl_gallery_assets import (
+    encode_joint_positions,
+    encode_motion135,
+    load_joint_positions,
+    load_motion135,
+    resample_joint_positions,
+)
 
 
 ACCENTS = (
@@ -32,6 +40,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-manifest", required=True, type=Path)
     parser.add_argument("--motion", required=True, action="append", metavar="KEY=LABEL=DIR")
+    parser.add_argument("--skeleton", action="append", default=[], metavar="KEY=LABEL=DIR")
+    parser.add_argument("--skeleton-fps", type=float, default=60.0)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--asset-base-url")
     parser.add_argument("--body-model-url", default="smpl_model/")
@@ -43,7 +53,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def parse_sources(values: list[str]) -> list[Source]:
+def parse_sources(values: list[str], *, suffixes=(".npz", ".npy")) -> list[Source]:
     sources = []
     for index, value in enumerate(values):
         parts = value.split("=", 2)
@@ -53,15 +63,47 @@ def parse_sources(values: list[str]) -> list[Source]:
         path = Path(raw_path).expanduser().resolve()
         if not path.is_dir():
             raise NotADirectoryError(path)
-        suffix = ".npz" if next(path.glob("*.npz"), None) is not None else ".npy"
+        suffix = next((value for value in suffixes if next(path.glob(f"*{value}"), None)), None)
+        if suffix is None:
+            raise FileNotFoundError(f"No supported files {suffixes} under {path}")
         sources.append(Source(key, label, path, ACCENTS[index % len(ACCENTS)], suffix))
     return sources
+
+
+def load_motion_record(path: Path, *, max_frames: int) -> tuple[np.ndarray, float | None]:
+    motion = load_motion135(path, max_frames=max_frames)
+    fit_mean = None
+    if path.suffix == ".npz":
+        with np.load(path, allow_pickle=False) as payload:
+            if "fit_mpjpe_mm" in payload.files:
+                errors = np.asarray(payload["fit_mpjpe_mm"], dtype=np.float32)[: len(motion)]
+                if errors.size and np.isfinite(errors).all():
+                    fit_mean = float(errors.mean())
+    return motion, fit_mean
+
+
+def load_skeleton_record(
+    path: Path,
+    *,
+    source_fps: float,
+    target_fps: float,
+    target_frames: int,
+) -> np.ndarray:
+    return resample_joint_positions(
+        load_joint_positions(path),
+        source_fps=source_fps,
+        target_fps=target_fps,
+        target_frames=target_frames,
+    )
 
 
 def main() -> None:
     args = parse_args()
     source_manifest = json.loads(args.source_manifest.expanduser().resolve().read_text())
     sources = parse_sources(args.motion)
+    skeleton_sources = parse_sources(
+        args.skeleton, suffixes=(".npz", ".npy", ".json")
+    )
     output = args.output_dir.expanduser().resolve()
     assets = output / "assets"
     if assets.exists():
@@ -89,6 +131,7 @@ def main() -> None:
             "audio_start_seconds": item.get("audio_start_seconds"),
             "audio_end_seconds": item.get("audio_end_seconds"),
             "motions": {},
+            "skeletons": {},
             "_max_frames": max(1, round(source_frames * float(args.fps) / source_fps)),
         })
 
@@ -101,7 +144,7 @@ def main() -> None:
             chunk = cases[start:end]
             futures = {
                 (source.key, index): executor.submit(
-                    load_motion135,
+                    load_motion_record,
                     source.directory / f"{item['case_id']}{source.suffix}",
                     max_frames=item["_max_frames"],
                 )
@@ -112,7 +155,7 @@ def main() -> None:
                 payload = bytearray()
                 asset_name = f"{source.key}_{start // chunk_size:03d}.smpl"
                 for index, item in enumerate(chunk):
-                    motion = futures[(source.key, index)].result()
+                    motion, fit_mean = futures[(source.key, index)].result()
                     encoded, descriptor = encode_motion135(motion, stride=stride)
                     byte_offset = len(payload)
                     descriptor.update({
@@ -121,7 +164,35 @@ def main() -> None:
                         "rotation_offset": byte_offset + descriptor["translation_count"] * 2,
                         "fps": float(args.fps),
                     })
+                    if fit_mean is not None:
+                        descriptor["fit_mpjpe_mm_mean"] = fit_mean
                     item["motions"][source.key] = descriptor
+                    payload.extend(encoded)
+                (assets / asset_name).write_bytes(payload)
+            skeleton_futures = {
+                (source.key, index): executor.submit(
+                    load_skeleton_record,
+                    source.directory / f"{item['case_id']}{source.suffix}",
+                    source_fps=float(args.skeleton_fps),
+                    target_fps=float(args.fps),
+                    target_frames=item["_max_frames"],
+                )
+                for source in skeleton_sources
+                for index, item in enumerate(chunk)
+            }
+            for source in skeleton_sources:
+                payload = bytearray()
+                asset_name = f"{source.key}_skeleton_{start // chunk_size:03d}.joints"
+                for index, item in enumerate(chunk):
+                    joints = skeleton_futures[(source.key, index)].result()
+                    encoded, descriptor = encode_joint_positions(joints)
+                    descriptor.update({
+                        "asset": f"assets/{asset_name}",
+                        "position_offset": len(payload),
+                        "fps": float(args.fps),
+                        "representation": "aistpp_smpl24_joints",
+                    })
+                    item["skeletons"][source.key] = descriptor
                     payload.extend(encoded)
                 (assets / asset_name).write_bytes(payload)
             print(f"exported {end}/{len(cases)} cases", flush=True)
@@ -137,14 +208,19 @@ def main() -> None:
         "body_model_url": args.body_model_url,
         "reference_label": source_manifest.get("reference_label", "Input caption"),
         "motion_methods": [source.__dict__ | {"directory": None} for source in sources],
+        "skeleton_methods": [
+            source.__dict__ | {"directory": None} for source in skeleton_sources
+        ],
         "cases": cases,
     }
     for item in manifest["cases"]:
         item.pop("_max_frames", None)
+        if not item["skeletons"]:
+            item.pop("skeletons")
         for key in ("audio", "audio_start_seconds", "audio_end_seconds"):
             if item.get(key) is None:
                 item.pop(key, None)
-    for method in manifest["motion_methods"]:
+    for method in manifest["motion_methods"] + manifest["skeleton_methods"]:
         method.pop("directory", None)
         method.pop("suffix", None)
     (output / "manifest.json").write_text(
