@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "source": "AIST Dance Video Database v1.0.0 official MP3 release",
+  "source_page": "https://aistdancedb.ongaaccel.jp/database_download/",
+  "alignment": "Each clip starts at music time 0 and ends at its gallery motion duration.",
+  "feature_alignment_validation": "Correlation compares continuous channels 0:53 against the official Bailando 7.5 fps feature prefix.",
+  "files": [
+    {
+      "music_id": "mBR0",
+      "duration_seconds": 12.0,
+      "source_url": "https://aistdancedb.ongaaccel.jp/v1.0.0/audio/mp3/mBR0.mp3",
+      "path": "audio/mBR0.mp3",
+      "bytes": 193195,
+      "sha256": "076e423b0993bd950488bfa5bbb25aac8cb610f5b9fe387803a0667196d16e02",
+      "feature_prefix_correlation": 0.9939039341793069
+    },
+    {
+      "music_id": "mHO5",
+      "duration_seconds": 7.1,
+      "source_url": "https://aistdancedb.ongaaccel.jp/v1.0.0/audio/mp3/mHO5.mp3",
+      "path": "audio/mHO5.mp3",
+      "bytes": 114619,
+      "sha256": "11cd811be732c15ac4993f54c17eed54c90d2ff9de0fce9950cd8a85c2eb86d9",
+      "feature_prefix_correlation": 0.9912518722626484
+    },
+    {
+      "music_id": "mJB5",
+      "duration_seconds": 7.4,
+      "source_url": "https://aistdancedb.ongaaccel.jp/v1.0.0/audio/mp3/mJB5.mp3",
+      "path": "audio/mJB5.mp3",
+      "bytes": 119635,
+      "sha256": "5880441a3cf9fd953c59313b4adcb20fd4e1dbe4074208032001e8376bd95b21",
+      "feature_prefix_correlation": 0.9960441334570753
+    },
+    {
+      "music_id": "mJS3",
+      "duration_seconds": 8.733333,
+      "source_url": "https://aistdancedb.ongaaccel.jp/v1.0.0/audio/mp3/mJS3.mp3",
+      "path": "audio/mJS3.mp3",
+      "bytes": 140951,
+      "sha256": "bfe3ef61058fae6d96a6f9299a156d7c5c741ab3c6020c4de0f41f0d352b9bdf",
+      "feature_prefix_correlation": 0.9919703507262871
+    },
+    {
+      "music_id": "mKR2",
+      "duration_seconds": 9.6,
+      "source_url": "https://aistdancedb.ongaaccel.jp/v1.0.0/audio/mp3/mKR2.mp3",
+      "path": "audio/mKR2.mp3",
+      "bytes": 154742,
+      "sha256": "7ed4d1834959089ab1baa35212c049e38e440d8d82beea64f28033cd8ea47bc1",
+      "feature_prefix_correlation": 0.9900240640140389
+    },
+    {
+      "music_id": "mLH4",
+      "duration_seconds": 8.0,
+      "source_url": "https://aistdancedb.ongaaccel.jp/v1.0.0/audio/mp3/mLH4.mp3",
+      "path": "audio/mLH4.mp3",
+      "bytes": 129248,
+      "sha256": "3800936b2996fa74d6e147f1e8505353c77a41e1a8ca35a6c89e5f9698078433",
+      "feature_prefix_correlation": 0.9933411584541814
+    },
+    {
+      "music_id": "mLO2",
+      "duration_seconds": 9.6,
+      "source_url": "https://aistdancedb.ongaaccel.jp/v1.0.0/audio/mp3/mLO2.mp3",
+      "path": "audio/mLO2.mp3",
+      "bytes": 154742,
+      "sha256": "ca2cd81b4fd2f4bbdd66f139caee5c02af9b742c01f4ecc7a9a85f1546d17d28",
+      "feature_prefix_correlation": 0.9926046748173059
+    },
+    {
+      "music_id": "mMH3",
+      "duration_seconds": 8.733333,
+      "source_url": "https://aistdancedb.ongaaccel.jp/v1.0.0/audio/mp3/mMH3.mp3",
+      "path": "audio/mMH3.mp3",
+      "bytes": 140951,
+      "sha256": "5fcdf185903a1b0fa32187107e9f5fc13cf557aaf83e084f59d2eb6e1e1c59dd",
+      "feature_prefix_correlation": 0.9918607638628326
+    },
+    {
+      "music_id": "mPO1",
+      "duration_seconds": 10.666667,
+      "source_url": "https://aistdancedb.ongaaccel.jp/v1.0.0/audio/mp3/mPO1.mp3",
+      "path": "audio/mPO1.mp3",
+      "bytes": 171879,
+      "sha256": "50c55db6d1d6e701573fdfdffad84aa23a928b1b98f6e3e2c3cd78e026dffb7f",
+      "feature_prefix_correlation": 0.9923837193863025
+    },
+    {
+      "music_id": "mWA0",
+      "duration_seconds": 12.0,
+      "source_url": "https://aistdancedb.ongaaccel.jp/v1.0.0/audio/mp3/mWA0.mp3",
+      "path": "audio/mWA0.mp3",
+      "bytes": 193195,
+      "sha256": "38d23fe4110933585b958798bd4c64240d27f8fcfa2e426f142fa163b0217008",
+      "feature_prefix_correlation": 0.9938691561697172
+    }
+  ]
+}

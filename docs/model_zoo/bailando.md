@@ -35,22 +35,11 @@ runtime.
 
 ## Preview
 
-<table>
-  <tr>
-    <td width="33%"><img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/bailando/bailando_aistpp_break_gBR_mBR0_smpl_mesh_512_30fps.gif" alt="Bailando break dance"></td>
-    <td width="33%"><img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/bailando/bailando_aistpp_krump_gKR_mKR2_smpl_mesh_512_30fps.gif" alt="Bailando krump dance"></td>
-    <td width="33%"><img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/bailando/bailando_aistpp_waacking_gWA_mWA0_smpl_mesh_512_30fps.gif" alt="Bailando waacking dance"></td>
-  </tr>
-  <tr>
-    <td align="center"><sub>Break / <code>gBR...mBR0</code></sub></td>
-    <td align="center"><sub>Krump / <code>gKR...mKR2</code></sub></td>
-    <td align="center"><sub>Waacking / <code>gWA...mWA0</code></sub></td>
-  </tr>
-</table>
-
-The previews are distinct AIST++ evaluation outputs rendered as neutral SMPL
-meshes at 512x512 and 30 fps. Their position-IK fit errors are 13.75, 13.89,
-and 13.71 mm. MP4 sources and fit reports are stored beside the GIF assets.
+[Open the audio-synchronized 40-case GT/Bailando comparison](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html).
+The viewer renders neutral SMPL meshes at 30 fps, uses the official AIST music
+for each case, and keeps audio, timeline seeking, and motion frames synchronized.
+Each panel supports free 3D orbit, zoom, and view reset. Position-IK fit reports
+are retained with the generated release artifacts.
 
 ## Release Snapshot
 

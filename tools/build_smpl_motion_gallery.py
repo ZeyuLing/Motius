@@ -85,6 +85,9 @@ def main() -> None:
             "references": item.get("references"),
             "segments": item.get("segments"),
             "outputs": item.get("outputs"),
+            "audio": item.get("audio"),
+            "audio_start_seconds": item.get("audio_start_seconds"),
+            "audio_end_seconds": item.get("audio_end_seconds"),
             "motions": {},
             "_max_frames": max(1, round(source_frames * float(args.fps) / source_fps)),
         })
@@ -138,6 +141,9 @@ def main() -> None:
     }
     for item in manifest["cases"]:
         item.pop("_max_frames", None)
+        for key in ("audio", "audio_start_seconds", "audio_end_seconds"):
+            if item.get(key) is None:
+                item.pop(key, None)
     for method in manifest["motion_methods"]:
         method.pop("directory", None)
         method.pop("suffix", None)

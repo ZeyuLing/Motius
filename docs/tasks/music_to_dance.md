@@ -6,7 +6,9 @@ SMPL-24 joints; cross-method Motius metrics use canonical 30 fps SMPL-22
 joints. Bailando is the first released baseline.
 
 [Open the public Music-to-Dance Leaderboard](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard),
-including the all-case GT/Bailando SMPL Mesh comparison.
+including the audio-synchronized all-case GT/Bailando SMPL Mesh comparison.
+Its Three.js viewer supports free orbit, zoom, view reset, timeline seeking,
+and synchronized playback for all 40 cases.
 
 ## Task Contract
 
@@ -49,6 +51,16 @@ python tools/infer_bailando_aistpp.py \
 
 Each case is stored independently and existing cases are skipped, so the
 command can resume after interruption or elastic-worker eviction.
+
+The public viewer uses motion-length MP3 clips derived from the official
+[AIST Dance Video Database audio release](https://aistdancedb.ongaaccel.jp/database_download/).
+Rebuild the clips and provenance manifest with:
+
+```bash
+python tools/build_aistpp_gallery_audio.py \
+  --manifest docs/leaderboards/hf_space_music_to_dance/cases/manifest.json \
+  --output-dir docs/leaderboards/hf_space_music_to_dance/cases/audio
+```
 
 ## Representation Bridge
 

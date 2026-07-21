@@ -49,6 +49,9 @@ def main() -> None:
                 "case_key": sequence_id,
                 "frames": frames,
                 "fps": 30.0,
+                "audio": f"audio/{music_id}.mp3",
+                "audio_start_seconds": 0.0,
+                "audio_end_seconds": frames / 30.0,
                 "references": [GENRES.get(genre_code, genre_code), f"Music {music_id}"],
             }
         )
