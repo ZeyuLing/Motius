@@ -156,20 +156,24 @@ def materialize_case(
         expected_frames = max(
             2, int(round(len(features) * target_fps / source_fps))
         )
-    converted = retarget_hml263_clip(
-        features,
-        smpl_rest=smpl_rest,
-        device=device,
-        gender="neutral",
-        source_fps=source_fps,
-        target_fps=target_fps,
-        target_len=expected_frames,
-        floor_align=True,
-        refine_iters=refine_iters,
-        refine_lr=refine_lr,
-        rotation_init=rotation_init,
-        compute_mesh_metrics=True,
-    )
+    def convert(*, stabilize_twist: bool):
+        return retarget_hml263_clip(
+            features,
+            smpl_rest=smpl_rest,
+            device=device,
+            gender="neutral",
+            source_fps=source_fps,
+            target_fps=target_fps,
+            target_len=expected_frames,
+            floor_align=True,
+            refine_iters=refine_iters,
+            refine_lr=refine_lr,
+            rotation_init=rotation_init,
+            temporal_twist_stabilization=stabilize_twist,
+            compute_mesh_metrics=True,
+        )
+
+    converted = convert(stabilize_twist=True)
     joints = canonicalize_smpl22_joints(converted["fitted_joints"])
     if joints.shape != (expected_frames, 22, 3):
         raise RuntimeError(
@@ -200,7 +204,35 @@ def materialize_case(
             min_mesh_edge_ratio_p01=min_mesh_edge_ratio_p01,
         )
     except ValueError as exc:
-        raise RuntimeError(f"SMPL mesh integrity gate failed for {source_path}: {exc}") from exc
+        fallback = convert(stabilize_twist=False)
+        fallback_errors = np.asarray(fallback["fit_mpjpe_mm"], dtype=np.float64)
+        fallback_mean = float(fallback_errors.mean())
+        fallback_integrity = dict(fallback.get("mesh_integrity") or {})
+        try:
+            if (
+                fallback_errors.size != expected_frames
+                or not np.isfinite(fallback_errors).all()
+                or fallback_mean > float(max_fit_mpjpe_mm)
+            ):
+                raise ValueError(
+                    f"fallback SMPL fit MPJPE is invalid or exceeds {max_fit_mpjpe_mm:.2f} mm"
+                )
+            validate_smpl_motion_integrity(
+                fallback_integrity,
+                max_rotation_jump_p99_deg=max_rotation_jump_p99_deg,
+                max_mesh_edge_ratio_p99=max_mesh_edge_ratio_p99,
+                min_mesh_edge_ratio_p01=min_mesh_edge_ratio_p01,
+            )
+        except ValueError as fallback_exc:
+            raise RuntimeError(
+                f"SMPL mesh integrity gate failed for {source_path}: "
+                f"stable={exc}; raw={fallback_exc}"
+            ) from fallback_exc
+        converted = fallback
+        errors = fallback_errors
+        mean_error = fallback_mean
+        integrity = fallback_integrity
+        joints = canonicalize_smpl22_joints(converted["fitted_joints"])
 
     smpl_path.parent.mkdir(parents=True, exist_ok=True)
     joints_path.parent.mkdir(parents=True, exist_ok=True)
@@ -234,6 +266,13 @@ def materialize_case(
                 integrity["mesh_edge_ratio_max"], dtype=np.float32
             ),
             rotation_init=np.asarray(str(converted["rotation_init"])),
+            temporal_twist_stabilization=np.asarray(
+                bool(
+                    np.asarray(
+                        converted.get("temporal_twist_stabilization", True)
+                    ).item()
+                )
+            ),
             source_hml263=np.asarray(str(source_path)),
         )
         np.save(joints_tmp, joints.reshape(expected_frames, 66).astype(np.float32))
@@ -246,6 +285,13 @@ def materialize_case(
         "fit_mpjpe_mm_mean": mean_error,
         "fit_mpjpe_mm_p95": float(np.percentile(errors, 95)),
         "fit_mpjpe_mm_max": float(errors.max()),
+        "temporal_twist_stabilization": float(
+            bool(
+                np.asarray(
+                    converted.get("temporal_twist_stabilization", True)
+                ).item()
+            )
+        ),
         **{key: float(value) for key, value in integrity.items()},
     }
 

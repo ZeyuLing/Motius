@@ -217,3 +217,51 @@ def test_hml263_materializer_rejects_bad_smpl_fit(
             refine_lr=0.02,
             rotation_init="hml263_end_effectors",
         )
+
+
+def test_hml263_materializer_falls_back_when_stable_twist_deforms_mesh(
+    tmp_path: Path, monkeypatch
+) -> None:
+    source = tmp_path / "case.npy"
+    np.save(source, np.zeros((5, 263), dtype=np.float32))
+    calls = []
+
+    def fake_retarget(_features, **kwargs):
+        stable = bool(kwargs["temporal_twist_stabilization"])
+        calls.append(stable)
+        frames = int(kwargs["target_len"])
+        integrity = _good_mesh_integrity()
+        integrity["mesh_edge_ratio_p99"] = 2.3 if stable else 1.35
+        return {
+            "global_orient": np.zeros((frames, 3), dtype=np.float32),
+            "body_pose": np.zeros((frames, 63), dtype=np.float32),
+            "transl": np.zeros((frames, 3), dtype=np.float32),
+            "motion_135": np.zeros((frames, 135), dtype=np.float32),
+            "fitted_joints": np.zeros((frames, 22, 3), dtype=np.float32),
+            "fit_mpjpe_mm": np.full(frames, 25.0, dtype=np.float32),
+            "rotation_init": np.asarray("position_ik"),
+            "temporal_twist_stabilization": np.asarray(stable),
+            "mesh_integrity": integrity,
+        }
+
+    monkeypatch.setattr(HML_MODULE, "retarget_hml263_clip", fake_retarget)
+    destination = tmp_path / "smpl" / "case.npz"
+    stats = HML_MODULE.materialize_case(
+        source,
+        destination,
+        tmp_path / "joints" / "case.npy",
+        smpl_rest=object(),
+        expected_frames=7,
+        device="cpu",
+        source_fps=20.0,
+        target_fps=30.0,
+        refine_iters=0,
+        refine_lr=0.02,
+        rotation_init="position_ik",
+    )
+
+    assert calls == [True, False]
+    assert stats["mesh_edge_ratio_p99"] == 1.35
+    assert stats["temporal_twist_stabilization"] == 0.0
+    with np.load(destination, allow_pickle=False) as payload:
+        assert not bool(payload["temporal_twist_stabilization"].item())

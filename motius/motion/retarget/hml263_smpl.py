@@ -241,6 +241,9 @@ def retarget_hml263_clip(
         "root_translation_restore_mode": np.array("source_transl" if root_translation_restored else "canonical"),
         "root_translation_restored": np.array(root_translation_restored),
         "global_orient_locked": np.array(bool(lock_global_orient)),
+        "temporal_twist_stabilization": np.array(
+            bool(temporal_twist_stabilization)
+        ),
     }
     if compute_mesh_metrics:
         result["mesh_integrity"] = smpl_motion_integrity_metrics(
