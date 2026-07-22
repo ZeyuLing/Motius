@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/brand/motius-logo-readme.png" width="520" alt="Motius">
+  <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/brand/motius-logo-readme.png" width="520" alt="Motius">
 </p>
 
 <p align="center">
@@ -39,13 +39,13 @@ its output into another model, skeleton, renderer, or character pipeline.
 <table>
   <tr>
     <td width="50%" align="center">
-      <img src="assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif" width="390" alt="HYMotion text-to-motion roundhouse-kick demo"><br>
+      <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif" width="390" alt="HYMotion text-to-motion roundhouse-kick demo"><br>
       <strong>Text-to-Motion</strong><br>
       <sub>HYMotion · “someone executes a roundhouse kick with their left foot” · 30 fps</sub><br>
       <a href="docs/model_zoo/hymotion_t2m.md">Model card</a> · <a href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard">Leaderboard</a>
     </td>
     <td width="50%" align="center">
-      <img src="assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair_512_30fps.gif" width="390" alt="InterGen two-person handshake demo"><br>
+      <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair_512_30fps.gif" width="390" alt="InterGen two-person handshake demo"><br>
       <strong>Two-Person Interaction</strong><br>
       <sub>InterGen · “two people shake hands and then step apart” · 30 fps</sub><br>
       <a href="docs/model_zoo/intergen.md">Model card</a> · <a href="assets/motion/interhuman_representation_demo/index.html">Representation viewer</a>
@@ -53,13 +53,13 @@ its output into another model, skeleton, renderer, or character pipeline.
   </tr>
   <tr>
     <td width="50%" align="center">
-      <img src="assets/model_zoo/bailando/bailando_aistpp_break_gBR_mBR0_smpl_mesh_512_30fps.gif" width="390" alt="Bailando break-dance demo"><br>
+      <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/bailando/bailando_aistpp_break_gBR_mBR0_smpl_mesh_512_30fps.gif" width="390" alt="Bailando break-dance demo"><br>
       <strong>Music-to-Dance</strong><br>
       <sub>Bailando · AIST++ break sequence · SMPL mesh at 30 fps</sub><br>
       <a href="docs/model_zoo/bailando.md">Model card</a> · <a href="https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard">Leaderboard</a>
     </td>
     <td width="50%" align="center">
-      <img src="assets/motion/representation_demo/004822_hml_smpl_soma_core_g1.gif" width="390" alt="Cross-representation motion demo"><br>
+      <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/representation_demo/004822_hml_smpl_soma_core_g1.gif" width="390" alt="Cross-representation motion demo"><br>
       <strong>One Motion, Many Embodiments</strong><br>
       <sub>HumanML3D · SMPL · SOMA · ARDY · Unitree G1</sub><br>
       <a href="assets/motion/representation_demo/index.html">Synchronized viewer</a> · <a href="docs/motion/representations.md">Protocol</a>
