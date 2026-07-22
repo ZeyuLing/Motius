@@ -1556,6 +1556,7 @@
         }
       ],
       "preview": "https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html",
+      "t2m_preview": "https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html",
       "secondary_preview": "https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html",
       "preview_cases": [
         {

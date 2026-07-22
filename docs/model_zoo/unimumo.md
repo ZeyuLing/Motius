@@ -37,13 +37,16 @@ checkout or download a second text, audio, motion, or caption model.
 
 ## Preview
 
+- [HumanML3D all-case text-to-motion comparison](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html)
 - [HumanML3D all-case motion caption comparison](https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html)
 - [Audio-synchronized AIST++ all-case dance comparison](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html)
 
-The M2T page shows the same animated input SMPL Mesh beside every baseline
-caption for all 4,400 protocol samples. The M2D page contains all 40 AIST++
-cases, synchronized audio, native SMPL-24 joints, the fitted SMPL Mesh, orbit,
-zoom, timeline seeking, and downloadable motion assets.
+The T2M page compares UniMuMo's generated SMPL Mesh with every released
+baseline over all 4,042 selected-caption cases. The M2T page shows the same
+animated input SMPL Mesh beside every baseline caption for all 4,400 protocol
+samples. The M2D page contains all 40 AIST++ cases, synchronized audio, native
+SMPL-24 joints, the fitted SMPL Mesh, orbit, zoom, timeline seeking, and
+downloadable motion assets.
 
 ## Release Snapshot
 
