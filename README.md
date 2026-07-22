@@ -39,23 +39,23 @@ its output into another model, skeleton, renderer, or character pipeline.
 <table>
   <tr>
     <td width="50%" align="center">
-      <img src="assets/model_zoo/prism_kt/prism_kt_humanml3d_004545_smpl_mesh_512_30fps.gif" width="390" alt="PRISM-KT text-to-motion demo"><br>
+      <img src="assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif" width="390" alt="HYMotion text-to-motion roundhouse-kick demo"><br>
       <strong>Text-to-Motion</strong><br>
-      <sub>PRISM-KT · “a person jumping while raising both hands and moving apart legs” · 30 fps</sub><br>
-      <a href="docs/model_zoo/prism.md">Model card</a> · <a href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard">Leaderboard</a>
+      <sub>HYMotion · “someone executes a roundhouse kick with their left foot” · 30 fps</sub><br>
+      <a href="docs/model_zoo/hymotion_t2m.md">Model card</a> · <a href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard">Leaderboard</a>
     </td>
     <td width="50%" align="center">
-      <img src="assets/model_zoo/intermask/intermask_interhuman_hug_smpl_pair_512_30fps.gif" width="390" alt="InterMask two-person interaction demo"><br>
+      <img src="assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair_512_30fps.gif" width="390" alt="InterGen two-person handshake demo"><br>
       <strong>Two-Person Interaction</strong><br>
-      <sub>InterMask · “two people hug each other and then step back” · 30 fps</sub><br>
-      <a href="docs/model_zoo/intermask.md">Model card</a> · <a href="assets/motion/interhuman_representation_demo/index.html">Representation viewer</a>
+      <sub>InterGen · “two people shake hands and then step apart” · 30 fps</sub><br>
+      <a href="docs/model_zoo/intergen.md">Model card</a> · <a href="assets/motion/interhuman_representation_demo/index.html">Representation viewer</a>
     </td>
   </tr>
   <tr>
     <td width="50%" align="center">
-      <img src="assets/model_zoo/bailando/bailando_aistpp_krump_gKR_mKR2_smpl_mesh_512_30fps.gif" width="390" alt="Bailando music-to-dance demo"><br>
+      <img src="assets/model_zoo/bailando/bailando_aistpp_break_gBR_mBR0_smpl_mesh_512_30fps.gif" width="390" alt="Bailando break-dance demo"><br>
       <strong>Music-to-Dance</strong><br>
-      <sub>Bailando · AIST++ krump sequence · SMPL mesh at 30 fps</sub><br>
+      <sub>Bailando · AIST++ break sequence · SMPL mesh at 30 fps</sub><br>
       <a href="docs/model_zoo/bailando.md">Model card</a> · <a href="https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard">Leaderboard</a>
     </td>
     <td width="50%" align="center">
