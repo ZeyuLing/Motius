@@ -44,10 +44,44 @@ def cached_audio(args: argparse.Namespace, relative_path: str) -> Path:
     return destination
 
 
-def audio_beats(path: Path, start: float, duration: float) -> np.ndarray:
-    waveform, sample_rate = librosa.load(
-        path, sr=32_000, mono=True, offset=max(0.0, start), duration=duration
-    )
+def load_audio(path: Path, target_sample_rate: int = 32_000) -> np.ndarray:
+    try:
+        waveform, _ = librosa.load(path, sr=target_sample_rate, mono=True)
+        return np.asarray(waveform, dtype=np.float32)
+    except Exception as librosa_error:  # noqa: BLE001
+        try:
+            import av
+
+            chunks = []
+            with av.open(str(path)) as container:
+                stream = container.streams.audio[0]
+                resampler = av.AudioResampler(
+                    format="fltp", layout="mono", rate=target_sample_rate
+                )
+                for frame in container.decode(stream):
+                    for converted in resampler.resample(frame):
+                        chunks.append(converted.to_ndarray().reshape(-1))
+                for converted in resampler.resample(None):
+                    chunks.append(converted.to_ndarray().reshape(-1))
+            if not chunks:
+                raise ValueError(f"No audio frames decoded from {path}")
+            return np.concatenate(chunks).astype(np.float32)
+        except Exception as av_error:  # noqa: BLE001
+            raise RuntimeError(
+                f"Could not decode {path} with librosa or PyAV: "
+                f"{librosa_error}; {av_error}"
+            ) from av_error
+
+
+def audio_beats(
+    waveform: np.ndarray,
+    start: float,
+    duration: float,
+    sample_rate: int = 32_000,
+) -> np.ndarray:
+    first = max(0, int(round(start * sample_rate)))
+    last = min(len(waveform), first + int(round(duration * sample_rate)))
+    waveform = waveform[first:last]
     _, frames = librosa.beat.beat_track(y=waveform, sr=sample_rate, units="frames")
     return librosa.frames_to_time(frames, sr=sample_rate)
 
@@ -80,6 +114,7 @@ def main() -> None:
     total_reference = 0
     total_prediction = 0
     total_matches = 0
+    reference_waveforms: dict[Path, np.ndarray] = {}
     for case in cases:
         case_id = str(case.get("case_id") or case.get("sample_id"))
         prediction_path = args.predictions / f"{case_id}.wav"
@@ -89,8 +124,10 @@ def main() -> None:
         end = float(case.get("audio_end_seconds") or start + 10.0)
         duration = min(10.0, end - start)
         reference_path = cached_audio(args, str(case["audio"]))
-        reference = audio_beats(reference_path, start, duration)
-        prediction = audio_beats(prediction_path, 0.0, duration)
+        if reference_path not in reference_waveforms:
+            reference_waveforms[reference_path] = load_audio(reference_path)
+        reference = audio_beats(reference_waveforms[reference_path], start, duration)
+        prediction = audio_beats(load_audio(prediction_path), 0.0, duration)
         matches = unique_beat_matches(reference, prediction, args.tolerance_seconds)
         total_reference += len(reference)
         total_prediction += len(prediction)
@@ -111,7 +148,7 @@ def main() -> None:
         "method": "UniMuMo",
         "dataset": "AIST++ shared crossmodal 40-case package",
         "n_samples": len(rows),
-        "beats_coverage": min(total_prediction, total_reference) / total_reference,
+        "beats_coverage": total_prediction / total_reference,
         "beats_hit": total_matches / total_reference,
         "tolerance_seconds": args.tolerance_seconds,
         "aggregation": "micro average over reference beats",
