@@ -24,6 +24,7 @@ DEFAULT_MODELS = {
     "motiongpt3": "ZeyuLing/Motius-MotionGPT3-HumanML3D",
     "tm2t": "ZeyuLing/Motius-TM2T-HumanML3D",
     "vermo": "ZeyuLing/Motius-VerMo-HumanML3D",
+    "unimumo": "ZeyuLing/Motius-UniMuMo",
 }
 
 
@@ -125,7 +126,36 @@ def build_pipeline(method: str, model: str, args: argparse.Namespace):
             bundle_kwargs={"device": args.device},
             smpl_model_dir=args.smpl_model_dir or None,
         )
+    if method == "unimumo":
+        from motius.pipelines.unimumo import UniMuMoPipeline
+
+        return UniMuMoPipeline.from_pretrained(
+            model,
+            bundle_kwargs={"local_files_only": args.local_files_only},
+            device=args.device,
+        )
     raise ValueError(f"Unsupported M2T method: {method}")
+
+
+def _unimumo_caption_batch(pipeline, motions) -> tuple[str, ...]:
+    """Match UniMuMo's released 10-second HumanML3D caption protocol."""
+
+    target_frames = 200
+    padded = np.zeros((len(motions), target_frames, 263), dtype=np.float32)
+    for index, motion in enumerate(motions):
+        frames = min(len(motion), target_frames)
+        padded[index, :frames] = motion[:frames]
+    captions = pipeline.infer_motion_to_text(padded, input_fps=20.0).captions
+    prefixes = ("The motion is that", "The dance is that")
+    cleaned = []
+    for caption in captions or ():
+        value = str(caption).strip()
+        for prefix in prefixes:
+            if value.lower().startswith(prefix.lower()):
+                value = value[len(prefix) :].strip()
+                break
+        cleaned.append(value[:1].upper() + value[1:] if value else value)
+    return tuple(cleaned)
 
 
 def main() -> None:
@@ -214,11 +244,15 @@ def main() -> None:
                 inference_kwargs["pad_to_batch_max"] = (
                     args.motiongpt_official_batch_padding
                 )
-            predictions = pipeline.infer_m2t(
-                [sample.load_motion() for sample in batch],
-                lengths=[sample.length for sample in batch],
-                **inference_kwargs,
-            )
+            motions = [sample.load_motion() for sample in batch]
+            if args.method == "unimumo":
+                predictions = _unimumo_caption_batch(pipeline, motions)
+            else:
+                predictions = pipeline.infer_m2t(
+                    motions,
+                    lengths=[sample.length for sample in batch],
+                    **inference_kwargs,
+                )
             if len(predictions) != len(batch):
                 raise RuntimeError(
                     f"{args.method} returned {len(predictions)} captions for "

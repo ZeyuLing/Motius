@@ -9,6 +9,8 @@ from motius.models.unimumo.generator import DelayedPattern, generate_parallel
 from motius.models.unimumo.motion_codec import UniMuMoMotionCodec
 from motius.pipelines.unimumo import UniMuMoPipeline
 from motius.registry import MODEL_BUNDLES, PIPELINES
+from tools.infer_unimumo_aistpp import smpl22_to_smpl24
+from tools.run_m2t_humanml3d import _unimumo_caption_batch
 
 
 def _generator_config():
@@ -156,3 +158,36 @@ def test_unimumo_pipeline_resamples_motion_to_native_fps():
     assert upsampled.shape == (36, 263)
     assert batched.shape == (1, 36, 263)
     torch.testing.assert_close(upsampled, batched[0])
+
+
+def test_unimumo_aistpp_bridge_preserves_body_and_extends_hands():
+    joints = torch.zeros(3, 22, 3).numpy()
+    joints[:, 18, 0] = 1
+    joints[:, 19, 0] = -1
+    joints[:, 20, 0] = 2
+    joints[:, 21, 0] = -2
+    bridged = smpl22_to_smpl24(joints)
+    assert bridged.shape == (3, 24, 3)
+    torch.testing.assert_close(torch.from_numpy(bridged[:, :22]), torch.from_numpy(joints))
+    torch.testing.assert_close(torch.from_numpy(bridged[:, 22, 0]), torch.full((3,), 2.35))
+    torch.testing.assert_close(torch.from_numpy(bridged[:, 23, 0]), torch.full((3,), -2.35))
+
+
+def test_unimumo_caption_batch_matches_official_padding_and_cleanup():
+    class FakePipeline:
+        def infer_motion_to_text(self, motion, *, input_fps):
+            assert motion.shape == (2, 200, 263)
+            assert input_fps == 20.0
+            assert torch.count_nonzero(torch.from_numpy(motion[0, 2:])) == 0
+            return SimpleNamespace(
+                captions=(
+                    "The motion is that a person spins",
+                    "The dance is that someone jumps",
+                )
+            )
+
+    captions = _unimumo_caption_batch(
+        FakePipeline(),
+        [torch.ones(2, 263).numpy(), torch.ones(4, 263).numpy()],
+    )
+    assert captions == ("A person spins", "Someone jumps")
