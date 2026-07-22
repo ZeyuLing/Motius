@@ -22,6 +22,12 @@ from motius.motion.retarget.hml263_smpl import (
     retarget_hml263_clip,
     validate_smpl_motion_integrity,
 )
+from motius.motion.retarget._hml263_smpl_impl import (
+    estimate_local_rotations,
+    matrix_to_rot6d_rowmajor,
+    recover_from_ric,
+    resample_linear,
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -32,6 +38,24 @@ def parse_args() -> argparse.Namespace:
         "--smpl-model-dir",
         type=Path,
         default=REPO_ROOT / "checkpoints" / "body_models" / "smpl",
+    )
+    parser.add_argument(
+        "--web-rig-dir",
+        type=Path,
+        default=(
+            REPO_ROOT
+            / "docs"
+            / "leaderboards"
+            / "hf_space_music_to_dance"
+            / "cases"
+            / "smpl_model"
+        ),
+        help="Public SMPL web rig used by --web-rig-only.",
+    )
+    parser.add_argument(
+        "--web-rig-only",
+        action="store_true",
+        help="Fit rotations to the public web rig without licensed SMPL parameters.",
     )
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--target-fps", type=float, default=30.0)
@@ -50,8 +74,17 @@ def parse_args() -> argparse.Namespace:
 
 def materialize_case(source: Path, destination: Path, *, args, smpl_rest) -> dict:
     with np.load(source, allow_pickle=False) as payload:
-        hml263 = np.asarray(payload["humanml3d_263"], dtype=np.float32)
-        source_fps = float(np.asarray(payload["fps"]).item())
+        motion_key = (
+            "input_humanml3d_263"
+            if "input_humanml3d_263" in payload.files
+            else "humanml3d_263"
+        )
+        hml263 = np.asarray(payload[motion_key], dtype=np.float32)
+        source_fps = (
+            float(np.asarray(payload["fps"]).item())
+            if "fps" in payload.files
+            else 60.0
+        )
     converted = retarget_hml263_clip(
         hml263,
         smpl_rest=smpl_rest,
@@ -126,12 +159,93 @@ def materialize_case(source: Path, destination: Path, *, args, smpl_rest) -> dic
     }
 
 
+def load_web_rig(path: Path) -> tuple[np.ndarray, np.ndarray]:
+    metadata = json.loads((path / "model.json").read_text(encoding="utf-8"))
+    joints = np.fromfile(path / "joints.f32", dtype="<f4").reshape(-1, 3)
+    parents = np.asarray(metadata["parents"], dtype=np.int64)
+    if len(joints) < 22 or len(parents) < 22:
+        raise ValueError("SMPL web rig must contain at least 22 joints")
+    return joints[:22].astype(np.float32), parents[:22]
+
+
+def materialize_web_rig_case(
+    source: Path,
+    destination: Path,
+    *,
+    args,
+    web_rig: tuple[np.ndarray, np.ndarray],
+) -> dict:
+    with np.load(source, allow_pickle=False) as payload:
+        motion_key = (
+            "input_humanml3d_263"
+            if "input_humanml3d_263" in payload.files
+            else "humanml3d_263"
+        )
+        hml263 = np.asarray(payload[motion_key], dtype=np.float32)
+        source_fps = (
+            float(np.asarray(payload["fps"]).item())
+            if "fps" in payload.files
+            else 60.0
+        )
+    joints, parents = web_rig
+    target = resample_linear(
+        recover_from_ric(hml263), source_fps, args.target_fps
+    )
+    target = np.asarray(target, dtype=np.float32)
+    target[..., 1] -= target[..., 1].min()
+    rotations = estimate_local_rotations(
+        target,
+        joints,
+        parents,
+        orientation_mode="bone",
+        parent_ref_weight=0.25,
+        temporal_twist_stabilization=True,
+    )
+    translation = target[:, 0] - joints[0]
+    motion135 = np.concatenate(
+        (
+            translation,
+            matrix_to_rot6d_rowmajor(rotations).reshape(len(target), 132),
+        ),
+        axis=1,
+    ).astype(np.float32)
+    if not np.isfinite(motion135).all():
+        raise RuntimeError(f"Web-rig IK produced non-finite values for {source}")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = destination.with_name(
+        f".{destination.stem}.{os.getpid()}-{time.time_ns()}.tmp.npz"
+    )
+    try:
+        np.savez_compressed(
+            temporary,
+            motion_135=motion135,
+            target_joints=target,
+            betas=np.zeros(10, dtype=np.float32),
+            gender=np.asarray("neutral"),
+            mocap_framerate=np.asarray(args.target_fps, dtype=np.float32),
+            rotation_init=np.asarray("position_ik_public_web_rig"),
+            source_unimumo_hml263=np.asarray(str(source)),
+        )
+        os.replace(temporary, destination)
+    finally:
+        temporary.unlink(missing_ok=True)
+    return {
+        "frames": len(motion135),
+        "target_floor_height": float(target[..., 1].min()),
+    }
+
+
 def main() -> None:
     args = parse_args()
     sources = sorted(args.input_dir.expanduser().resolve().glob("*.npz"))
-    smpl_rest = load_smpl_rest(
-        args.smpl_model_dir.expanduser(), args.device, gender="neutral"
-    )
+    smpl_rest = None
+    web_rig = None
+    if args.web_rig_only:
+        web_rig = load_web_rig(args.web_rig_dir.expanduser().resolve())
+    else:
+        smpl_rest = load_smpl_rest(
+            args.smpl_model_dir.expanduser(), args.device, gender="neutral"
+        )
     records = []
     failed = 0
     for index, source in enumerate(sources):
@@ -142,9 +256,14 @@ def main() -> None:
             records.append({"case_id": source.stem, "status": "skipped"})
             continue
         try:
-            stats = materialize_case(
-                source, destination, args=args, smpl_rest=smpl_rest
-            )
+            if web_rig is not None:
+                stats = materialize_web_rig_case(
+                    source, destination, args=args, web_rig=web_rig
+                )
+            else:
+                stats = materialize_case(
+                    source, destination, args=args, smpl_rest=smpl_rest
+                )
             record = {"case_id": source.stem, "status": "generated", **stats}
         except Exception as exc:  # noqa: BLE001
             failed += 1
@@ -159,7 +278,11 @@ def main() -> None:
         "target_representation": "neutral SMPL motion135",
         "source_fps": 60.0,
         "target_fps": args.target_fps,
-        "rotation_init": "position_ik_temporal_twist_stabilized",
+        "rotation_init": (
+            "position_ik_public_web_rig"
+            if args.web_rig_only
+            else "position_ik_temporal_twist_stabilized"
+        ),
         "refine_iters": 0,
         "shard_index": args.shard_index,
         "num_shards": args.num_shards,

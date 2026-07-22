@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Evaluate generated music against AIST++ reference beats."""
+"""Run the non-ranking Motius common-40 beat diagnostic."""
 
 from __future__ import annotations
 
@@ -143,19 +143,21 @@ def main() -> None:
     if total_reference == 0:
         raise ValueError("No reference beats were detected")
     result = {
-        "schema_version": 1,
+        "schema_version": 2,
         "task": "dance_to_music",
         "method": "UniMuMo",
         "dataset": "AIST++ shared crossmodal 40-case package",
         "n_samples": len(rows),
-        "beats_coverage": total_prediction / total_reference,
-        "beats_hit": total_matches / total_reference,
+        "beat_count_ratio_diagnostic": total_prediction / total_reference,
+        "beat_hit_rate_diagnostic": total_matches / total_reference,
         "tolerance_seconds": args.tolerance_seconds,
         "aggregation": "micro average over reference beats",
         "protocol_note": (
-            "Motius common-case diagnostic. UniMuMo paper Table 2 uses the "
-            "D2M-GAN 2-second split and must not be compared directly."
+            "Non-ranking Motius common-case diagnostic. This is not the "
+            "D2M-GAN protocol used by UniMuMo Table 2. Use "
+            "eval_unimumo_d2mgan_aistpp.py for paper-comparable results."
         ),
+        "ranking_eligible": False,
         "reference_beats": total_reference,
         "generated_beats": total_prediction,
         "matched_beats": total_matches,

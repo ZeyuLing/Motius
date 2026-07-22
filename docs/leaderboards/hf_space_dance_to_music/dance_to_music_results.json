@@ -1,44 +1,83 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "task": "dance_to_music",
-  "dataset": "AIST++ shared crossmodal 40-case package",
-  "population": 40,
+  "dataset": "AIST++ D2M-GAN official 86x2-second test split",
+  "population": 86,
   "updated": "2026-07-22",
   "protocol": {
-    "aggregation": "micro average over reference beats",
-    "beat_tolerance_seconds": 0.1,
+    "aggregation": "macro average over two-second clips",
+    "beat_detection": "D2M-GAN Beats_Scores (22.05 kHz onset detection, one-second bins)",
     "generation": {
       "guidance_scale": 3.0,
       "temperature": 1.0,
-      "top_k": 250
+      "top_k": 250,
+      "prompt": "none"
     },
-    "note": "Motius common-case diagnostic. UniMuMo paper Table 2 uses the D2M-GAN 2-second split and must not be compared directly."
+    "coverage_note": "The paper's Beats Coverage is an unbounded generated/reference beat-count ratio. Values above 100% indicate excess beats."
   },
   "rows": [
     {
       "method": "GT",
       "version": "AIST++ reference music",
+      "source": "reference",
       "reference": true,
-      "beats_coverage": 1.0,
-      "beats_hit": 1.0
+      "beat_count_ratio": 1.0,
+      "beat_hit_rate": 1.0
     },
     {
       "method": "UniMuMo",
-      "version": "official checkpoint, CFG 3, Motius common40",
+      "version": "Motius reproduction, official checkpoint, CFG 3",
+      "source": "motius",
       "reference": false,
       "checkpoint": "https://huggingface.co/ZeyuLing/Motius-UniMuMo",
       "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/unimumo.md",
       "paper": "https://arxiv.org/abs/2410.04534",
-      "beats_coverage": 1.0810810810810811,
-      "beats_hit": 0.3918918918918919
+      "beat_count_ratio": 0.8430232558139535,
+      "beat_hit_rate": 0.8081395348837209
     }
   ],
-  "paper_protocol_rows": [
+  "paper_rows": [
+    {
+      "method": "Dance2Music",
+      "version": "paper Table 2",
+      "source": "paper",
+      "beat_count_ratio": 0.835,
+      "beat_hit_rate": 0.824
+    },
+    {
+      "method": "Foley",
+      "version": "paper Table 2",
+      "source": "paper",
+      "beat_count_ratio": 0.741,
+      "beat_hit_rate": 0.694
+    },
+    {
+      "method": "CMT",
+      "version": "paper Table 2",
+      "source": "paper",
+      "beat_count_ratio": 0.855,
+      "beat_hit_rate": 0.835
+    },
+    {
+      "method": "D2M-GAN",
+      "version": "paper Table 2",
+      "source": "paper",
+      "beat_count_ratio": 0.882,
+      "beat_hit_rate": 0.847
+    },
+    {
+      "method": "CDCD",
+      "version": "paper Table 2",
+      "source": "paper",
+      "beat_count_ratio": 0.939,
+      "beat_hit_rate": 0.907
+    },
     {
       "method": "UniMuMo paper",
-      "protocol": "D2M-GAN 2-second AIST++ split",
-      "beats_coverage": 0.93,
-      "beats_hit": 0.884
+      "version": "paper Table 2",
+      "source": "paper",
+      "beat_count_ratio": 0.93,
+      "beat_hit_rate": 0.884
     }
   ]
 }

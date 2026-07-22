@@ -48,8 +48,9 @@ baseline over all 4,042 selected-caption cases. The M2T page shows the same
 animated input SMPL Mesh beside every baseline caption for all 4,400 protocol
 samples. The M2D page contains all 40 AIST++ cases, synchronized audio, native
 SMPL-24 joints, the fitted SMPL Mesh, orbit, zoom, timeline seeking, and
-downloadable motion assets. The D2M page reuses the same 40 dances and lets
-the viewer switch between reference and generated audio while the mesh plays.
+downloadable motion assets. The D2M page contains the official 86 two-second
+D2M-GAN clips and lets the viewer switch between reference and generated audio
+while the same input mesh plays.
 
 ## Release Snapshot
 
@@ -217,25 +218,42 @@ method and does not mix the shorter parity result into rankings.
 
 ### AIST++ Dance-to-Music
 
-Motion-to-music is a zero-shot route of the same released checkpoint. The
-authors evaluate on the D2M-GAN 2-second AIST++ split; Motius records those
-published numbers separately from its longer common-case diagnostic.
+Motion-to-music is a zero-shot route of the same released checkpoint. Motius
+uses the D2M-GAN list of 86 two-second AIST++ clips, no text prompt, `CFG=3`,
+temperature `1.0`, top-k `250`, and the released onset detector and one-second
+beat-bin aggregation.
 
-| Protocol | Samples | Beats Coverage | Beats Hit |
-| -------- | ------: | -------------: | --------: |
-| UniMuMo paper, D2M-GAN 2-second split | paper test split | 93.0% | 88.4% |
-| Motius common AIST++ cases, up to 10 seconds | 40 | 108.11% | 39.19% |
+| Protocol | Samples | Beat Count Ratio (target 100%) | Beat Hit |
+| -------- | ------: | -----------------------------: | -------: |
+| UniMuMo paper, D2M-GAN protocol | 86 | 93.0% | 88.4% |
+| Motius reproduction, official checkpoint | 86 | 84.30% | 80.81% |
 
-The common-case coverage is the generated/reference beat-count ratio
-(`640/592`); hit is one-to-one beat matching within `0.1 s` (`232/592`). This
-run uses the task's official test default (`CFG=3`, temperature `1.0`,
-top-k `250`). The
-long-window diagnostic is useful for inspecting complete generated songs but
-is not directly comparable to the paper's 2-second protocol. Every WAV,
-input-motion package, prompt, seed, and codec output is available in the
-[`dance_to_music_aistpp_common40` benchmark folder](https://huggingface.co/ZeyuLing/Motius-UniMuMo/tree/main/benchmarks/dance_to_music_aistpp_common40).
+The paper calls the first metric *Beats Coverage*, but its released evaluator
+defines it as generated beat bins divided by reference beat bins. It is
+therefore unbounded: values above 100% mean excess detected beats, not a score
+better than 100%. Motius displays the less ambiguous name **Beat Count Ratio**
+and does not rank it with a higher-is-better arrow.
 
-[Open the Dance-to-Music leaderboard and synchronized 40-case SMPL/audio viewer](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard).
+An earlier 40-case result was invalid and has been removed. The published
+audio codec stores modern parametrized weight-normalization keys, while the
+official runtime expects `weight_g` and `weight_v`; the permissive loader had
+silently left convolution weights randomly initialized. The Motius loader now
+maps the layouts explicitly and rejects every missing, unexpected, or
+shape-mismatched tensor. After the fix, motion codes, music codes, conditioned
+motion codes, and decoded waveforms match the official implementation exactly
+(waveform RMSE and maximum absolute error are both zero).
+
+The public UniMuMo motion archive contains exact HumanML3D-263 features for 13
+of the 20 AIST++ source dances in this protocol. The seven filtered dances are
+reconstructed from the official AIST++ SMPL release using the same public SMPL
+web rig and HumanML3D preprocessing. The six 119-frame tail clips retain their
+native length instead of being padded to 120 frames.
+
+Every generated WAV, codec output, input-motion provenance record, seed, and
+per-case metric is available in the
+[`dance_to_music_d2mgan_official86` benchmark folder](https://huggingface.co/ZeyuLing/Motius-UniMuMo/tree/main/benchmarks/dance_to_music_d2mgan_official86).
+
+[Open the Dance-to-Music leaderboard and synchronized 86-case SMPL/audio viewer](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard).
 
 ## Motion Representation
 
@@ -263,7 +281,8 @@ twist. Across all 40 clips, the fitted mesh has `28.16 mm` mean joint MPJPE.
 | Official tensor load | 880 core tensors loaded across two safe shards |
 | HumanML3D caption generation | 4,400/4,400 protocol samples |
 | AIST++ dance generation | 40/40 cases, all finite |
-| AIST++ music generation from dance | 40/40 cases, all WAV and codec metadata public |
+| AIST++ music generation from dance | 86/86 official D2M-GAN clips, all WAV and codec metadata public |
+| Encodec compatibility parity | Exact codes and decoded waveform; RMSE 0, maximum absolute error 0 |
 | HumanML3D zero-shot motion generation | 4,042/4,042 selected-caption cases, all four output representations finite |
 | Runtime boundary | No import from `ref_repo` or an upstream checkout |
 

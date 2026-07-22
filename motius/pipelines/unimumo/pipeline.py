@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Sequence
 
 import numpy as np
 import torch
@@ -89,17 +90,25 @@ class UniMuMoPipeline(BasePipeline):
     def _decode(
         self, music_codes: torch.Tensor, motion_codes: torch.Tensor
     ) -> UniMuMoGenerationOutput:
+        return self._decode_batch(music_codes, motion_codes)[0]
+
+    def _decode_batch(
+        self, music_codes: torch.Tensor, motion_codes: torch.Tensor
+    ) -> tuple[UniMuMoGenerationOutput, ...]:
         waveform = self.bundle.decode_audio(music_codes)
         motion = self.bundle.decode_motion(music_codes, motion_codes)
         joints = recover_from_ric(motion, joints_num=22)
-        return UniMuMoGenerationOutput(
-            waveform=waveform[0, 0].float().cpu().numpy(),
-            sample_rate=self.bundle.sample_rate,
-            motion=motion[0].float().cpu().numpy(),
-            joints=joints[0].float().cpu().numpy(),
-            motion_fps=self.bundle.motion_fps,
-            music_codes=music_codes[0].cpu().numpy(),
-            motion_codes=motion_codes[0].cpu().numpy(),
+        return tuple(
+            UniMuMoGenerationOutput(
+                waveform=waveform[index, 0].float().cpu().numpy(),
+                sample_rate=self.bundle.sample_rate,
+                motion=motion[index].float().cpu().numpy(),
+                joints=joints[index].float().cpu().numpy(),
+                motion_fps=self.bundle.motion_fps,
+                music_codes=music_codes[index].cpu().numpy(),
+                motion_codes=motion_codes[index].cpu().numpy(),
+            )
+            for index in range(len(music_codes))
         )
 
     def _generation_kwargs(
@@ -248,11 +257,42 @@ class UniMuMoPipeline(BasePipeline):
         top_k: int = 250,
         seed: int = 0,
     ) -> UniMuMoGenerationOutput:
+        return self.infer_motion_to_music_batch(
+            motion,
+            input_fps=input_fps,
+            music_prompts=[music_prompt],
+            guidance_scale=guidance_scale,
+            temperature=temperature,
+            top_k=top_k,
+            seed=seed,
+        )[0]
+
+    @torch.inference_mode()
+    def infer_motion_to_music_batch(
+        self,
+        motion: np.ndarray | torch.Tensor,
+        *,
+        input_fps: float = 60.0,
+        music_prompts: Sequence[str] | None = None,
+        guidance_scale: float = 4.0,
+        temperature: float = 1.0,
+        top_k: int = 250,
+        seed: int = 0,
+    ) -> tuple[UniMuMoGenerationOutput, ...]:
+        """Generate music for an equal-length motion batch on one device."""
+
+        prepared = self._prepare_motion(motion, input_fps=input_fps)
+        if prepared.ndim == 2:
+            prepared = prepared[None]
+        batch_size = len(prepared)
+        prompts = [""] * batch_size if music_prompts is None else list(music_prompts)
+        if len(prompts) != batch_size:
+            raise ValueError("music_prompts must match the motion batch size")
         motion_codes = self.bundle.encode_motion(
-            self._prepare_motion(motion, input_fps=input_fps)
+            prepared
         )
         music_codes, generated_motion = self.bundle.generate_codes(
-            [self._description(music=music_prompt)],
+            [self._description(music=prompt) for prompt in prompts],
             timesteps=motion_codes.shape[-1],
             mode="motion2music",
             motion_codes=motion_codes,
@@ -263,7 +303,7 @@ class UniMuMoPipeline(BasePipeline):
                 seed=seed,
             ),
         )
-        return self._decode(music_codes, generated_motion)
+        return self._decode_batch(music_codes, generated_motion)
 
     @torch.inference_mode()
     def infer_music_to_text(

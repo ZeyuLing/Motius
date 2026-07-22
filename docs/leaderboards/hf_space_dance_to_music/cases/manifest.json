@@ -1,2130 +1,4482 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "task": "dance_to_music",
   "title": "AIST++ Dance-to-Music Audio Comparison",
-  "protocol": "AIST++ shared crossmodal 40-case package",
-  "population": 40,
+  "protocol": "AIST++ D2M-GAN official 86x2-second test split",
+  "population": 86,
   "representation": "smpl_motion135",
-  "body_model_url": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/smpl_model/",
+  "body_model_url": "smpl_model/",
   "cases": [
     {
-      "case_id": "gBR_sBM_cAll_d04_mBR0_ch01",
-      "sample_id": "gBR_sBM_cAll_d04_mBR0_ch01",
+      "case_id": "gPO_sBM_c01_d11_mPO1_ch02_seg1",
+      "sample_id": "gPO_sBM_c01_d11_mPO1_ch02_seg1",
       "references": [
-        "Break",
-        "Music mBR0"
+        "mPO1",
+        "0-2 s"
       ],
       "motion": {
-        "frames": 180,
-        "display_frames": 360,
-        "stride": 2,
-        "translation_count": 540,
-        "rotation_count": 23760,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.16307027637958527,
-          1.1167535781860352,
-          -0.18697276711463928
+          -0.4418470561504364,
+          1.145159125328064,
+          -0.028219128027558327
         ],
         "translation_scale": [
-          7.150786586862523e-06,
-          2.0579741430992726e-06,
-          6.515964287245879e-06
+          6.790287898184033e-06,
+          1.1158451798110036e-06,
+          2.4294934064528206e-06
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "asset": "motions/gPO_sBM_c01_d11_mPO1_ch02_seg1.smpl",
+        "fps": 30.0,
         "translation_offset": 0,
-        "rotation_offset": 1080,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.895600318908691
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mBR0.mp3",
+          "asset": "audio/reference/mPO1.mp3",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gBR_sBM_cAll_d04_mBR0_ch01.wav",
+          "asset": "audio/generated/gPO_sBM_c01_d11_mPO1_ch02_seg1.wav",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 16,
-        "generated_beats": 19,
-        "matched_beats": 9,
-        "coverage": 1.1875,
-        "hit": 0.5625
-      }
-    },
-    {
-      "case_id": "gBR_sBM_cAll_d04_mBR0_ch02",
-      "sample_id": "gBR_sBM_cAll_d04_mBR0_ch02",
-      "references": [
-        "Break",
-        "Music mBR0"
-      ],
-      "motion": {
-        "frames": 180,
-        "display_frames": 360,
-        "stride": 2,
-        "translation_count": 540,
-        "rotation_count": 23760,
-        "translation_minimum": [
-          -0.1927625834941864,
-          1.1270824670791626,
-          0.1297108232975006
-        ],
-        "translation_scale": [
-          5.184208930586465e-06,
-          2.7928115287068067e-06,
-          4.283945600036532e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 48600,
-        "rotation_offset": 49680,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 13.6560640335083
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mBR0.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 10.0
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gBR_sBM_cAll_d04_mBR0_ch02.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 10.0
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 16,
-        "generated_beats": 19,
-        "matched_beats": 4,
-        "coverage": 1.1875,
-        "hit": 0.25
-      }
-    },
-    {
-      "case_id": "gBR_sBM_cAll_d05_mBR0_ch01",
-      "sample_id": "gBR_sBM_cAll_d05_mBR0_ch01",
-      "references": [
-        "Break",
-        "Music mBR0"
-      ],
-      "motion": {
-        "frames": 180,
-        "display_frames": 360,
-        "stride": 2,
-        "translation_count": 540,
-        "rotation_count": 23760,
-        "translation_minimum": [
-          -0.3865744471549988,
-          1.1253637075424194,
-          -0.2643873989582062
-        ],
-        "translation_scale": [
-          1.0742916856543161e-05,
-          2.412355115666287e-06,
-          5.902349585085176e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 97200,
-        "rotation_offset": 98280,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.841167449951172
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mBR0.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 10.0
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gBR_sBM_cAll_d05_mBR0_ch01.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 10.0
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 16,
-        "generated_beats": 17,
-        "matched_beats": 8,
-        "coverage": 1.0625,
-        "hit": 0.5
-      }
-    },
-    {
-      "case_id": "gBR_sBM_cAll_d05_mBR0_ch02",
-      "sample_id": "gBR_sBM_cAll_d05_mBR0_ch02",
-      "references": [
-        "Break",
-        "Music mBR0"
-      ],
-      "motion": {
-        "frames": 180,
-        "display_frames": 360,
-        "stride": 2,
-        "translation_count": 540,
-        "rotation_count": 23760,
-        "translation_minimum": [
-          -0.13347606360912323,
-          1.153630018234253,
-          -0.2770628333091736
-        ],
-        "translation_scale": [
-          4.301180069887778e-06,
-          2.446459802740719e-06,
-          6.911143827892374e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 145800,
-        "rotation_offset": 146880,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.63364028930664
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mBR0.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 10.0
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gBR_sBM_cAll_d05_mBR0_ch02.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 10.0
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 16,
-        "generated_beats": 24,
-        "matched_beats": 10,
-        "coverage": 1.5,
-        "hit": 0.625
-      }
-    },
-    {
-      "case_id": "gHO_sBM_cAll_d20_mHO5_ch01",
-      "sample_id": "gHO_sBM_cAll_d20_mHO5_ch01",
-      "references": [
-        "House",
-        "Music mHO5"
-      ],
-      "motion": {
-        "frames": 107,
-        "display_frames": 213,
-        "stride": 2,
-        "translation_count": 321,
-        "rotation_count": 14124,
-        "translation_minimum": [
-          -0.08674436807632446,
-          1.1150178909301758,
-          -0.2693440020084381
-        ],
-        "translation_scale": [
-          2.9945013011456467e-06,
-          1.9835545117530273e-06,
-          3.76971570403839e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 194400,
-        "rotation_offset": 195042,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 13.706133842468262
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mHO5.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 7.1
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gHO_sBM_cAll_d20_mHO5_ch01.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 7.1
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 16,
-        "generated_beats": 12,
-        "matched_beats": 7,
-        "coverage": 0.75,
-        "hit": 0.4375
-      }
-    },
-    {
-      "case_id": "gHO_sBM_cAll_d20_mHO5_ch02",
-      "sample_id": "gHO_sBM_cAll_d20_mHO5_ch02",
-      "references": [
-        "House",
-        "Music mHO5"
-      ],
-      "motion": {
-        "frames": 107,
-        "display_frames": 213,
-        "stride": 2,
-        "translation_count": 321,
-        "rotation_count": 14124,
-        "translation_minimum": [
-          -0.31434935331344604,
-          1.07599937915802,
-          -0.33498460054397583
-        ],
-        "translation_scale": [
-          7.481733518943656e-06,
-          2.5031586119439453e-06,
-          3.3129033454315504e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 223290,
-        "rotation_offset": 223932,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 13.695927619934082
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mHO5.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 7.1
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gHO_sBM_cAll_d20_mHO5_ch02.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 7.1
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 16,
-        "generated_beats": 9,
+        "reference_beats": 2,
+        "generated_beats": 2,
         "matched_beats": 2,
-        "coverage": 0.5625,
-        "hit": 0.125
+        "coverage": 1.0,
+        "hit": 1.0
       }
     },
     {
-      "case_id": "gHO_sBM_cAll_d21_mHO5_ch01",
-      "sample_id": "gHO_sBM_cAll_d21_mHO5_ch01",
+      "case_id": "gLH_sBM_c01_d17_mLH4_ch02_seg2",
+      "sample_id": "gLH_sBM_c01_d17_mLH4_ch02_seg2",
       "references": [
-        "House",
-        "Music mHO5"
+        "mLH4",
+        "2-4 s"
       ],
       "motion": {
-        "frames": 107,
-        "display_frames": 213,
-        "stride": 2,
-        "translation_count": 321,
-        "rotation_count": 14124,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.09463256597518921,
-          1.107774257659912,
-          -0.7394058108329773
+          -0.3927575349807739,
+          1.1298335790634155,
+          -0.11657413840293884
         ],
         "translation_scale": [
-          5.927178790443577e-06,
-          2.3573643375129905e-06,
-          5.646557838190347e-06
+          7.393518444587244e-06,
+          1.5435415434694733e-06,
+          4.418467142386362e-06
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 252180,
-        "rotation_offset": 252822,
+        "asset": "motions/gLH_sBM_c01_d17_mLH4_ch02_seg2.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 13.489347457885742
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mHO5.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 7.1
+          "asset": "audio/reference/mLH4.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gHO_sBM_cAll_d21_mHO5_ch01.wav",
+          "asset": "audio/generated/gLH_sBM_c01_d17_mLH4_ch02_seg2.wav",
           "start_seconds": 0.0,
-          "end_seconds": 7.1
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 16,
-        "generated_beats": 13,
-        "matched_beats": 5,
-        "coverage": 0.8125,
-        "hit": 0.3125
-      }
-    },
-    {
-      "case_id": "gHO_sBM_cAll_d21_mHO5_ch02",
-      "sample_id": "gHO_sBM_cAll_d21_mHO5_ch02",
-      "references": [
-        "House",
-        "Music mHO5"
-      ],
-      "motion": {
-        "frames": 107,
-        "display_frames": 213,
-        "stride": 2,
-        "translation_count": 321,
-        "rotation_count": 14124,
-        "translation_minimum": [
-          -0.2505875527858734,
-          1.0299468040466309,
-          -0.5812352895736694
-        ],
-        "translation_scale": [
-          7.595987426611828e-06,
-          3.4120032523787813e-06,
-          2.6330251330364263e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 281070,
-        "rotation_offset": 281712,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 13.728363037109375
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mHO5.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 7.1
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gHO_sBM_cAll_d21_mHO5_ch02.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 7.1
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 16,
-        "generated_beats": 14,
-        "matched_beats": 8,
-        "coverage": 0.875,
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
         "hit": 0.5
       }
     },
     {
-      "case_id": "gJB_sBM_cAll_d08_mJB5_ch01",
-      "sample_id": "gJB_sBM_cAll_d08_mJB5_ch01",
+      "case_id": "gLO_sBM_c01_d15_mLO2_ch02_seg1",
+      "sample_id": "gLO_sBM_c01_d15_mLO2_ch02_seg1",
       "references": [
-        "Jazz Ballet",
-        "Music mJB5"
+        "mLO2",
+        "0-2 s"
       ],
       "motion": {
-        "frames": 111,
-        "display_frames": 222,
-        "stride": 2,
-        "translation_count": 333,
-        "rotation_count": 14652,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -1.9834054708480835,
-          1.135158658027649,
-          -0.5207378268241882
+          -0.008577418513596058,
+          1.174721360206604,
+          -0.06967303156852722
         ],
         "translation_scale": [
-          5.743002111557871e-05,
-          2.1690907487936784e-06,
-          5.9197145674261265e-06
+          2.3543343274923245e-07,
+          3.6596077279682504e-07,
+          6.522638500428002e-07
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 309960,
-        "rotation_offset": 310626,
+        "asset": "motions/gLO_sBM_c01_d15_mLO2_ch02_seg1.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 16.031763076782227
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJB5.mp3",
+          "asset": "audio/reference/mLO2.mp3",
           "start_seconds": 0.0,
-          "end_seconds": 7.4
+          "end_seconds": 2.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gJB_sBM_cAll_d08_mJB5_ch01.wav",
+          "asset": "audio/generated/gLO_sBM_c01_d15_mLO2_ch02_seg1.wav",
           "start_seconds": 0.0,
-          "end_seconds": 7.4
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 14,
-        "matched_beats": 11,
-        "coverage": 0.9333333333333333,
-        "hit": 0.7333333333333333
-      }
-    },
-    {
-      "case_id": "gJB_sBM_cAll_d08_mJB5_ch02",
-      "sample_id": "gJB_sBM_cAll_d08_mJB5_ch02",
-      "references": [
-        "Jazz Ballet",
-        "Music mJB5"
-      ],
-      "motion": {
-        "frames": 111,
-        "display_frames": 222,
-        "stride": 2,
-        "translation_count": 333,
-        "rotation_count": 14652,
-        "translation_minimum": [
-          -0.9844953417778015,
-          1.1475911140441895,
-          -1.3739606142044067
-        ],
-        "translation_scale": [
-          4.03565245505888e-05,
-          2.665829697434674e-06,
-          3.718190419021994e-05
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 339930,
-        "rotation_offset": 340596,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 15.644195556640625
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJB5.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 7.4
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gJB_sBM_cAll_d08_mJB5_ch02.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 7.4
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 11,
-        "matched_beats": 5,
-        "coverage": 0.7333333333333333,
-        "hit": 0.3333333333333333
-      }
-    },
-    {
-      "case_id": "gJB_sBM_cAll_d09_mJB5_ch01",
-      "sample_id": "gJB_sBM_cAll_d09_mJB5_ch01",
-      "references": [
-        "Jazz Ballet",
-        "Music mJB5"
-      ],
-      "motion": {
-        "frames": 111,
-        "display_frames": 222,
-        "stride": 2,
-        "translation_count": 333,
-        "rotation_count": 14652,
-        "translation_minimum": [
-          -1.017688512802124,
-          1.120871901512146,
-          -1.5336881875991821
-        ],
-        "translation_scale": [
-          4.183283090242185e-05,
-          2.9952100248920033e-06,
-          1.2737575161736459e-05
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 369900,
-        "rotation_offset": 370566,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 15.834006309509277
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJB5.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 7.4
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gJB_sBM_cAll_d09_mJB5_ch01.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 7.4
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 8,
-        "matched_beats": 4,
-        "coverage": 0.5333333333333333,
-        "hit": 0.26666666666666666
-      }
-    },
-    {
-      "case_id": "gJB_sBM_cAll_d09_mJB5_ch02",
-      "sample_id": "gJB_sBM_cAll_d09_mJB5_ch02",
-      "references": [
-        "Jazz Ballet",
-        "Music mJB5"
-      ],
-      "motion": {
-        "frames": 111,
-        "display_frames": 222,
-        "stride": 2,
-        "translation_count": 333,
-        "rotation_count": 14652,
-        "translation_minimum": [
-          -1.3204801082611084,
-          1.1564830541610718,
-          -0.6585723757743835
-        ],
-        "translation_scale": [
-          4.676953540183604e-05,
-          2.977789336000569e-06,
-          5.360328486858634e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 399870,
-        "rotation_offset": 400536,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 16.133243560791016
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJB5.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 7.4
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gJB_sBM_cAll_d09_mJB5_ch02.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 7.4
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 7,
-        "matched_beats": 3,
-        "coverage": 0.4666666666666667,
-        "hit": 0.2
-      }
-    },
-    {
-      "case_id": "gJS_sBM_cAll_d01_mJS3_ch01",
-      "sample_id": "gJS_sBM_cAll_d01_mJS3_ch01",
-      "references": [
-        "Jazz",
-        "Music mJS3"
-      ],
-      "motion": {
-        "frames": 131,
-        "display_frames": 262,
-        "stride": 2,
-        "translation_count": 393,
-        "rotation_count": 17292,
-        "translation_minimum": [
-          0.010421681217849255,
-          1.180728554725647,
-          -0.16307811439037323
-        ],
-        "translation_scale": [
-          3.408071904686949e-07,
-          4.254862915331614e-07,
-          8.407873792748433e-07
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 429840,
-        "rotation_offset": 430626,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 17.158716201782227
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJS3.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gJS_sBM_cAll_d01_mJS3_ch01.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 23,
-        "matched_beats": 8,
-        "coverage": 1.5333333333333334,
-        "hit": 0.5333333333333333
-      }
-    },
-    {
-      "case_id": "gJS_sBM_cAll_d01_mJS3_ch02",
-      "sample_id": "gJS_sBM_cAll_d01_mJS3_ch02",
-      "references": [
-        "Jazz",
-        "Music mJS3"
-      ],
-      "motion": {
-        "frames": 131,
-        "display_frames": 262,
-        "stride": 2,
-        "translation_count": 393,
-        "rotation_count": 17292,
-        "translation_minimum": [
-          -0.16552411019802094,
-          1.1795783042907715,
-          -0.20389024913311005
-        ],
-        "translation_scale": [
-          4.258511125954101e-06,
-          6.289070029197319e-07,
-          2.7112869247503113e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 465210,
-        "rotation_offset": 465996,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 18.225940704345703
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJS3.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gJS_sBM_cAll_d01_mJS3_ch02.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 18,
-        "matched_beats": 5,
-        "coverage": 1.2,
-        "hit": 0.3333333333333333
-      }
-    },
-    {
-      "case_id": "gJS_sBM_cAll_d03_mJS3_ch01",
-      "sample_id": "gJS_sBM_cAll_d03_mJS3_ch01",
-      "references": [
-        "Jazz",
-        "Music mJS3"
-      ],
-      "motion": {
-        "frames": 131,
-        "display_frames": 262,
-        "stride": 2,
-        "translation_count": 393,
-        "rotation_count": 17292,
-        "translation_minimum": [
-          0.035210538655519485,
-          1.1900826692581177,
-          -0.11827614158391953
-        ],
-        "translation_scale": [
-          3.4501451295909646e-07,
-          5.563536547015246e-07,
-          7.243593245220836e-07
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 500580,
-        "rotation_offset": 501366,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 16.657974243164062
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJS3.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gJS_sBM_cAll_d03_mJS3_ch01.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 14,
-        "matched_beats": 5,
-        "coverage": 0.9333333333333333,
-        "hit": 0.3333333333333333
-      }
-    },
-    {
-      "case_id": "gJS_sBM_cAll_d03_mJS3_ch02",
-      "sample_id": "gJS_sBM_cAll_d03_mJS3_ch02",
-      "references": [
-        "Jazz",
-        "Music mJS3"
-      ],
-      "motion": {
-        "frames": 131,
-        "display_frames": 262,
-        "stride": 2,
-        "translation_count": 393,
-        "rotation_count": 17292,
-        "translation_minimum": [
-          -0.16563868522644043,
-          1.1818629503250122,
-          -0.11094177514314651
-        ],
-        "translation_scale": [
-          4.139597876928747e-06,
-          5.685738528882212e-07,
-          1.7249559505216894e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 535950,
-        "rotation_offset": 536736,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 15.063187599182129
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJS3.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gJS_sBM_cAll_d03_mJS3_ch02.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 18,
-        "matched_beats": 5,
-        "coverage": 1.2,
-        "hit": 0.3333333333333333
-      }
-    },
-    {
-      "case_id": "gKR_sBM_cAll_d28_mKR2_ch01",
-      "sample_id": "gKR_sBM_cAll_d28_mKR2_ch01",
-      "references": [
-        "Krump",
-        "Music mKR2"
-      ],
-      "motion": {
-        "frames": 144,
-        "display_frames": 288,
-        "stride": 2,
-        "translation_count": 432,
-        "rotation_count": 19008,
-        "translation_minimum": [
-          -0.19976414740085602,
-          1.1410659551620483,
-          -0.19857157766819
-        ],
-        "translation_scale": [
-          3.741505452126148e-06,
-          1.5382699984911596e-06,
-          2.076707232845365e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 571320,
-        "rotation_offset": 572184,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.46229076385498
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mKR2.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gKR_sBM_cAll_d28_mKR2_ch01.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 19,
-        "matched_beats": 8,
-        "coverage": 1.2666666666666666,
-        "hit": 0.5333333333333333
-      }
-    },
-    {
-      "case_id": "gKR_sBM_cAll_d28_mKR2_ch02",
-      "sample_id": "gKR_sBM_cAll_d28_mKR2_ch02",
-      "references": [
-        "Krump",
-        "Music mKR2"
-      ],
-      "motion": {
-        "frames": 144,
-        "display_frames": 288,
-        "stride": 2,
-        "translation_count": 432,
-        "rotation_count": 19008,
-        "translation_minimum": [
-          -0.06695317476987839,
-          1.0542972087860107,
-          -0.1653786599636078
-        ],
-        "translation_scale": [
-          7.875628966758086e-07,
-          3.0257131129474146e-06,
-          3.3327130495308666e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 610200,
-        "rotation_offset": 611064,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.15017318725586
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mKR2.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gKR_sBM_cAll_d28_mKR2_ch02.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 20,
-        "matched_beats": 5,
-        "coverage": 1.3333333333333333,
-        "hit": 0.3333333333333333
-      }
-    },
-    {
-      "case_id": "gKR_sBM_cAll_d30_mKR2_ch01",
-      "sample_id": "gKR_sBM_cAll_d30_mKR2_ch01",
-      "references": [
-        "Krump",
-        "Music mKR2"
-      ],
-      "motion": {
-        "frames": 144,
-        "display_frames": 288,
-        "stride": 2,
-        "translation_count": 432,
-        "rotation_count": 19008,
-        "translation_minimum": [
-          -0.19227075576782227,
-          1.144486904144287,
-          -0.23381775617599487
-        ],
-        "translation_scale": [
-          3.633393134805374e-06,
-          2.5648832888691686e-06,
-          1.5798220829310594e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 649080,
-        "rotation_offset": 649944,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.98525619506836
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mKR2.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gKR_sBM_cAll_d30_mKR2_ch01.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 26,
-        "matched_beats": 10,
-        "coverage": 1.7333333333333334,
-        "hit": 0.6666666666666666
-      }
-    },
-    {
-      "case_id": "gKR_sBM_cAll_d30_mKR2_ch02",
-      "sample_id": "gKR_sBM_cAll_d30_mKR2_ch02",
-      "references": [
-        "Krump",
-        "Music mKR2"
-      ],
-      "motion": {
-        "frames": 144,
-        "display_frames": 288,
-        "stride": 2,
-        "translation_count": 432,
-        "rotation_count": 19008,
-        "translation_minimum": [
-          -0.2099449336528778,
-          1.0700156688690186,
-          -0.280047744512558
-        ],
-        "translation_scale": [
-          4.367499059299007e-06,
-          2.6951140625897096e-06,
-          2.216461552961846e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 687960,
-        "rotation_offset": 688824,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.81053352355957
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mKR2.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gKR_sBM_cAll_d30_mKR2_ch02.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 8,
-        "matched_beats": 3,
-        "coverage": 0.5333333333333333,
-        "hit": 0.2
-      }
-    },
-    {
-      "case_id": "gLH_sBM_cAll_d17_mLH4_ch01",
-      "sample_id": "gLH_sBM_cAll_d17_mLH4_ch01",
-      "references": [
-        "LA Style Hip-hop",
-        "Music mLH4"
-      ],
-      "motion": {
-        "frames": 120,
-        "display_frames": 240,
-        "stride": 2,
-        "translation_count": 360,
-        "rotation_count": 15840,
-        "translation_minimum": [
-          -0.5742355585098267,
-          1.0960363149642944,
-          -0.4581889808177948
-        ],
-        "translation_scale": [
-          1.3797906831314322e-05,
-          3.0685764613735955e-06,
-          5.1668343985511456e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 726840,
-        "rotation_offset": 727560,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.436945915222168
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLH4.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 8.0
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gLH_sBM_cAll_d17_mLH4_ch01.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 8.0
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 9,
-        "matched_beats": 3,
-        "coverage": 0.6,
-        "hit": 0.2
-      }
-    },
-    {
-      "case_id": "gLH_sBM_cAll_d17_mLH4_ch02",
-      "sample_id": "gLH_sBM_cAll_d17_mLH4_ch02",
-      "references": [
-        "LA Style Hip-hop",
-        "Music mLH4"
-      ],
-      "motion": {
-        "frames": 120,
-        "display_frames": 240,
-        "stride": 2,
-        "translation_count": 360,
-        "rotation_count": 15840,
-        "translation_minimum": [
-          -0.5817664265632629,
-          1.1263427734375,
-          -0.5663530826568604
-        ],
-        "translation_scale": [
-          1.1719749636540655e-05,
-          1.6073818187578581e-06,
-          3.796702685576747e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 759240,
-        "rotation_offset": 759960,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.354974746704102
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLH4.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 8.0
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gLH_sBM_cAll_d17_mLH4_ch02.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 8.0
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 7,
-        "matched_beats": 3,
-        "coverage": 0.4666666666666667,
-        "hit": 0.2
-      }
-    },
-    {
-      "case_id": "gLH_sBM_cAll_d18_mLH4_ch01",
-      "sample_id": "gLH_sBM_cAll_d18_mLH4_ch01",
-      "references": [
-        "LA Style Hip-hop",
-        "Music mLH4"
-      ],
-      "motion": {
-        "frames": 120,
-        "display_frames": 240,
-        "stride": 2,
-        "translation_count": 360,
-        "rotation_count": 15840,
-        "translation_minimum": [
-          -0.5464929342269897,
-          1.1124812364578247,
-          -0.5891174077987671
-        ],
-        "translation_scale": [
-          1.4552657376043499e-05,
-          1.8628390989761101e-06,
-          5.724773927795468e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 791640,
-        "rotation_offset": 792360,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.017572402954102
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLH4.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 8.0
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gLH_sBM_cAll_d18_mLH4_ch01.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 8.0
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 16,
-        "matched_beats": 7,
-        "coverage": 1.0666666666666667,
-        "hit": 0.4666666666666667
-      }
-    },
-    {
-      "case_id": "gLH_sBM_cAll_d18_mLH4_ch02",
-      "sample_id": "gLH_sBM_cAll_d18_mLH4_ch02",
-      "references": [
-        "LA Style Hip-hop",
-        "Music mLH4"
-      ],
-      "motion": {
-        "frames": 120,
-        "display_frames": 240,
-        "stride": 2,
-        "translation_count": 360,
-        "rotation_count": 15840,
-        "translation_minimum": [
-          -0.5145145654678345,
-          1.1150151491165161,
-          -0.7900537848472595
-        ],
-        "translation_scale": [
-          1.2079510270268656e-05,
-          2.6957143290928798e-06,
-          8.87383703229716e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 824040,
-        "rotation_offset": 824760,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.039381980895996
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLH4.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 8.0
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gLH_sBM_cAll_d18_mLH4_ch02.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 8.0
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 10,
-        "matched_beats": 3,
-        "coverage": 0.6666666666666666,
-        "hit": 0.2
-      }
-    },
-    {
-      "case_id": "gLO_sBM_cAll_d13_mLO2_ch01",
-      "sample_id": "gLO_sBM_cAll_d13_mLO2_ch01",
-      "references": [
-        "Lock",
-        "Music mLO2"
-      ],
-      "motion": {
-        "frames": 144,
-        "display_frames": 288,
-        "stride": 2,
-        "translation_count": 432,
-        "rotation_count": 19008,
-        "translation_minimum": [
-          -0.05410177633166313,
-          1.1645472049713135,
-          -0.40184009075164795
-        ],
-        "translation_scale": [
-          1.1795182217611e-06,
-          6.685615403512202e-07,
-          1.1524001592988498e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 856440,
-        "rotation_offset": 857304,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.332940101623535
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLO2.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gLO_sBM_cAll_d13_mLO2_ch01.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 14,
-        "generated_beats": 17,
-        "matched_beats": 6,
-        "coverage": 1.2142857142857142,
-        "hit": 0.42857142857142855
-      }
-    },
-    {
-      "case_id": "gLO_sBM_cAll_d13_mLO2_ch02",
-      "sample_id": "gLO_sBM_cAll_d13_mLO2_ch02",
-      "references": [
-        "Lock",
-        "Music mLO2"
-      ],
-      "motion": {
-        "frames": 144,
-        "display_frames": 288,
-        "stride": 2,
-        "translation_count": 432,
-        "rotation_count": 19008,
-        "translation_minimum": [
-          -0.0598926842212677,
-          1.1762468814849854,
-          -0.4752640128135681
-        ],
-        "translation_scale": [
-          7.40217046768521e-07,
-          6.536910746035574e-07,
-          1.0862133876798907e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 895320,
-        "rotation_offset": 896184,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.084979057312012
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLO2.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gLO_sBM_cAll_d13_mLO2_ch02.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 14,
-        "generated_beats": 16,
-        "matched_beats": 5,
-        "coverage": 1.1428571428571428,
-        "hit": 0.35714285714285715
-      }
-    },
-    {
-      "case_id": "gLO_sBM_cAll_d15_mLO2_ch01",
-      "sample_id": "gLO_sBM_cAll_d15_mLO2_ch01",
-      "references": [
-        "Lock",
-        "Music mLO2"
-      ],
-      "motion": {
-        "frames": 144,
-        "display_frames": 288,
-        "stride": 2,
-        "translation_count": 432,
-        "rotation_count": 19008,
-        "translation_minimum": [
-          -0.038817599415779114,
-          1.1457939147949219,
-          -0.4236394464969635
-        ],
-        "translation_scale": [
-          1.1043324548154487e-06,
-          1.0508953209864558e-06,
-          1.9461569991108263e-06
-        ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 934200,
-        "rotation_offset": 935064,
-        "fps": 30.0,
-        "fit_mpjpe_mm_mean": 13.740509033203125
-      },
-      "audio_tracks": [
-        {
-          "key": "reference",
-          "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLO2.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        },
-        {
-          "key": "unimumo",
-          "label": "UniMuMo",
-          "asset": "audio/generated/gLO_sBM_cAll_d15_mLO2_ch01.wav",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
-        }
-      ],
-      "beat_metrics": {
-        "reference_beats": 14,
-        "generated_beats": 14,
-        "matched_beats": 3,
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
         "coverage": 1.0,
-        "hit": 0.21428571428571427
+        "hit": 1.0
       }
     },
     {
-      "case_id": "gLO_sBM_cAll_d15_mLO2_ch02",
-      "sample_id": "gLO_sBM_cAll_d15_mLO2_ch02",
+      "case_id": "gMH_sBM_c01_d24_mMH3_ch02_seg3",
+      "sample_id": "gMH_sBM_c01_d24_mMH3_ch02_seg3",
       "references": [
-        "Lock",
-        "Music mLO2"
+        "mMH3",
+        "4-6 s"
       ],
       "motion": {
-        "frames": 144,
-        "display_frames": 288,
-        "stride": 2,
-        "translation_count": 432,
-        "rotation_count": 19008,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.00440544867888093,
-          1.1818784475326538,
-          -0.2916017174720764
+          -0.47173815965652466,
+          1.1176912784576416,
+          -0.028219128027558327
         ],
         "translation_scale": [
-          5.937474156780809e-07,
-          4.32640490544145e-07,
-          6.472345148722525e-07
+          7.612643912580097e-06,
+          1.4586862562282477e-06,
+          6.622869932471076e-06
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 973080,
-        "rotation_offset": 973944,
+        "asset": "motions/gMH_sBM_c01_d24_mMH3_ch02_seg3.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.451268196105957
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLO2.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 9.6
+          "asset": "audio/reference/mMH3.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gLO_sBM_cAll_d15_mLO2_ch02.wav",
+          "asset": "audio/generated/gMH_sBM_c01_d24_mMH3_ch02_seg3.wav",
           "start_seconds": 0.0,
-          "end_seconds": 9.6
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 14,
-        "generated_beats": 18,
-        "matched_beats": 5,
-        "coverage": 1.2857142857142858,
-        "hit": 0.35714285714285715
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
       }
     },
     {
-      "case_id": "gMH_sBM_cAll_d22_mMH3_ch01",
-      "sample_id": "gMH_sBM_cAll_d22_mMH3_ch01",
+      "case_id": "gJS_sBM_c01_d01_mJS3_ch02_seg3",
+      "sample_id": "gJS_sBM_c01_d01_mJS3_ch02_seg3",
       "references": [
-        "Middle Hip-hop",
-        "Music mMH3"
+        "mJS3",
+        "4-6 s"
       ],
       "motion": {
-        "frames": 131,
-        "display_frames": 262,
-        "stride": 2,
-        "translation_count": 393,
-        "rotation_count": 17292,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.2327917516231537,
-          1.1592611074447632,
-          -0.45944148302078247
+          0.0017950627952814102,
+          1.1899603605270386,
+          -0.031106270849704742
         ],
         "translation_scale": [
-          4.549681762000546e-06,
-          1.9924787011404987e-06,
-          9.522515938442666e-06
+          1.1606255156948464e-06,
+          2.3163364915035345e-07,
+          6.924617537151789e-07
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 1011960,
-        "rotation_offset": 1012746,
+        "asset": "motions/gJS_sBM_c01_d01_mJS3_ch02_seg3.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 13.48442554473877
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mMH3.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
+          "asset": "audio/reference/mJS3.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gMH_sBM_cAll_d22_mMH3_ch01.wav",
+          "asset": "audio/generated/gJS_sBM_c01_d01_mJS3_ch02_seg3.wav",
           "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 23,
-        "matched_beats": 9,
-        "coverage": 1.5333333333333334,
-        "hit": 0.6
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
       }
     },
     {
-      "case_id": "gMH_sBM_cAll_d22_mMH3_ch02",
-      "sample_id": "gMH_sBM_cAll_d22_mMH3_ch02",
+      "case_id": "gJB_sBM_c01_d09_mJB5_ch02_seg3",
+      "sample_id": "gJB_sBM_c01_d09_mJB5_ch02_seg3",
       "references": [
-        "Middle Hip-hop",
-        "Music mMH3"
+        "mJB5",
+        "4-6 s"
       ],
       "motion": {
-        "frames": 131,
-        "display_frames": 262,
-        "stride": 2,
-        "translation_count": 393,
-        "rotation_count": 17292,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.9034698605537415,
-          1.0373162031173706,
-          -0.620844841003418
+          0.0017950627952814102,
+          1.1399680376052856,
+          -0.06488586962223053
         ],
         "translation_scale": [
-          1.6032832718337886e-05,
-          3.65104574484576e-06,
-          8.669101589475758e-06
+          2.758813207037747e-05,
+          2.811463900798117e-06,
+          8.845217962516472e-06
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 1047330,
-        "rotation_offset": 1048116,
+        "asset": "motions/gJB_sBM_c01_d09_mJB5_ch02_seg3.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 13.462074279785156
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mMH3.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
+          "asset": "audio/reference/mJB5.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gMH_sBM_cAll_d22_mMH3_ch02.wav",
+          "asset": "audio/generated/gJB_sBM_c01_d09_mJB5_ch02_seg3.wav",
           "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 19,
-        "matched_beats": 8,
-        "coverage": 1.2666666666666666,
-        "hit": 0.5333333333333333
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
       }
     },
     {
-      "case_id": "gMH_sBM_cAll_d24_mMH3_ch01",
-      "sample_id": "gMH_sBM_cAll_d24_mMH3_ch01",
+      "case_id": "gHO_sBM_c01_d20_mHO5_ch02_seg3",
+      "sample_id": "gHO_sBM_c01_d20_mHO5_ch02_seg3",
       "references": [
-        "Middle Hip-hop",
-        "Music mMH3"
+        "mHO5",
+        "4-6 s"
       ],
       "motion": {
-        "frames": 131,
-        "display_frames": 262,
-        "stride": 2,
-        "translation_count": 393,
-        "rotation_count": 17292,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.17868320643901825,
-          1.164634346961975,
-          -0.3152570128440857
+          -0.09209003299474716,
+          1.0824058055877686,
+          -0.12439048290252686
         ],
         "translation_scale": [
-          9.263256288249977e-06,
-          1.3575561297329841e-06,
-          3.8112348192953505e-06
+          5.8438658925297204e-06,
+          2.262415364384651e-06,
+          2.2356698536896147e-06
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 1082700,
-        "rotation_offset": 1083486,
+        "asset": "motions/gHO_sBM_c01_d20_mHO5_ch02_seg3.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.24215316772461
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mMH3.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
+          "asset": "audio/reference/mHO5.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gMH_sBM_cAll_d24_mMH3_ch01.wav",
+          "asset": "audio/generated/gHO_sBM_c01_d20_mHO5_ch02_seg3.wav",
           "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 13,
-        "matched_beats": 7,
-        "coverage": 0.8666666666666667,
-        "hit": 0.4666666666666667
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
       }
     },
     {
-      "case_id": "gMH_sBM_cAll_d24_mMH3_ch02",
-      "sample_id": "gMH_sBM_cAll_d24_mMH3_ch02",
+      "case_id": "gLH_sBM_c01_d17_mLH4_ch02_seg4",
+      "sample_id": "gLH_sBM_c01_d17_mLH4_ch02_seg4",
       "references": [
-        "Middle Hip-hop",
-        "Music mMH3"
+        "mLH4",
+        "6-8 s"
       ],
       "motion": {
-        "frames": 131,
-        "display_frames": 262,
-        "stride": 2,
-        "translation_count": 393,
-        "rotation_count": 17292,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.4583994150161743,
-          1.084701657295227,
-          -0.32176557183265686
+          -0.38968873023986816,
+          1.1319068670272827,
+          -0.10621634125709534
         ],
         "translation_scale": [
-          1.0163367733184714e-05,
-          2.0356949335109675e-06,
-          3.4959869026351953e-06
+          5.973659426672384e-06,
+          1.0640195569067146e-06,
+          5.018706360715441e-06
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 1118070,
-        "rotation_offset": 1118856,
+        "asset": "motions/gLH_sBM_c01_d17_mLH4_ch02_seg4.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 13.157142639160156
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mMH3.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
+          "asset": "audio/reference/mLH4.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gMH_sBM_cAll_d24_mMH3_ch02.wav",
+          "asset": "audio/generated/gLH_sBM_c01_d17_mLH4_ch02_seg4.wav",
           "start_seconds": 0.0,
-          "end_seconds": 8.733333333333333
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 15,
-        "generated_beats": 12,
-        "matched_beats": 5,
-        "coverage": 0.8,
-        "hit": 0.3333333333333333
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
       }
     },
     {
-      "case_id": "gPO_sBM_cAll_d10_mPO1_ch01",
-      "sample_id": "gPO_sBM_cAll_d10_mPO1_ch01",
+      "case_id": "gBR_sBM_c01_d04_mBR0_ch02_seg4",
+      "sample_id": "gBR_sBM_c01_d04_mBR0_ch02_seg4",
       "references": [
-        "Pop",
-        "Music mPO1"
+        "mBR0",
+        "6-8 s"
       ],
       "motion": {
-        "frames": 160,
-        "display_frames": 320,
-        "stride": 2,
-        "translation_count": 480,
-        "rotation_count": 21120,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.18976882100105286,
-          1.1848769187927246,
-          -0.1752447485923767
+          -0.20290084183216095,
+          1.1291134357452393,
+          -0.028219128027558327
         ],
         "translation_scale": [
-          4.552563495963113e-06,
-          4.4682155930786394e-07,
-          7.657771448066342e-07
+          3.1421172934642527e-06,
+          2.5850051770248683e-06,
+          2.686708967303275e-06
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 1153440,
-        "rotation_offset": 1154400,
+        "asset": "motions/gBR_sBM_c01_d04_mBR0_ch02_seg4.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.858207702636719
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mPO1.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "asset": "audio/reference/mBR0.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gPO_sBM_cAll_d10_mPO1_ch01.wav",
+          "asset": "audio/generated/gBR_sBM_c01_d04_mBR0_ch02_seg4.wav",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 14,
-        "generated_beats": 21,
-        "matched_beats": 6,
-        "coverage": 1.5,
-        "hit": 0.42857142857142855
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
       }
     },
     {
-      "case_id": "gPO_sBM_cAll_d10_mPO1_ch02",
-      "sample_id": "gPO_sBM_cAll_d10_mPO1_ch02",
+      "case_id": "gWA_sBM_c01_d26_mWA0_ch02_seg5",
+      "sample_id": "gWA_sBM_c01_d26_mWA0_ch02_seg5",
       "references": [
-        "Pop",
-        "Music mPO1"
+        "mWA0",
+        "8-10 s"
       ],
       "motion": {
-        "frames": 160,
-        "display_frames": 320,
-        "stride": 2,
-        "translation_count": 480,
-        "rotation_count": 21120,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.2841874659061432,
-          1.1568619012832642,
-          -0.1547500193119049
+          -0.04417853802442551,
+          1.1848077774047852,
+          -0.028219128027558327
         ],
         "translation_scale": [
-          9.552177289151587e-06,
-          9.663347100286046e-07,
-          7.014857146714348e-06
+          1.5247381952576688e-06,
+          1.0661550504664774e-06,
+          3.786751676670974e-06
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 1196640,
-        "rotation_offset": 1197600,
+        "asset": "motions/gWA_sBM_c01_d26_mWA0_ch02_seg5.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.756622314453125
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mPO1.mp3",
-          "start_seconds": 0.0,
+          "asset": "audio/reference/mWA0.mp3",
+          "start_seconds": 8.0,
           "end_seconds": 10.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gPO_sBM_cAll_d10_mPO1_ch02.wav",
+          "asset": "audio/generated/gWA_sBM_c01_d26_mWA0_ch02_seg5.wav",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 14,
-        "generated_beats": 19,
-        "matched_beats": 6,
-        "coverage": 1.3571428571428572,
-        "hit": 0.42857142857142855
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
       }
     },
     {
-      "case_id": "gPO_sBM_cAll_d11_mPO1_ch01",
-      "sample_id": "gPO_sBM_cAll_d11_mPO1_ch01",
+      "case_id": "gMH_sBM_c01_d24_mMH3_ch02_seg1",
+      "sample_id": "gMH_sBM_c01_d24_mMH3_ch02_seg1",
       "references": [
-        "Pop",
-        "Music mPO1"
+        "mMH3",
+        "0-2 s"
       ],
       "motion": {
-        "frames": 160,
-        "display_frames": 320,
-        "stride": 2,
-        "translation_count": 480,
-        "rotation_count": 21120,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.18246084451675415,
-          1.1737102270126343,
-          -0.3211534917354584
+          -0.4324791431427002,
+          1.0850396156311035,
+          -0.08504510670900345
         ],
         "translation_scale": [
-          6.798994490964105e-06,
-          7.713451282143069e-07,
-          1.7106583527493058e-06
+          8.057267223193776e-06,
+          1.96550627151737e-06,
+          4.534417712420691e-06
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 1239840,
-        "rotation_offset": 1240800,
+        "asset": "motions/gMH_sBM_c01_d24_mMH3_ch02_seg1.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 15.787168502807617
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mPO1.mp3",
+          "asset": "audio/reference/mMH3.mp3",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gPO_sBM_cAll_d11_mPO1_ch01.wav",
+          "asset": "audio/generated/gMH_sBM_c01_d24_mMH3_ch02_seg1.wav",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 14,
-        "generated_beats": 11,
-        "matched_beats": 4,
-        "coverage": 0.7857142857142857,
-        "hit": 0.2857142857142857
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
       }
     },
     {
-      "case_id": "gPO_sBM_cAll_d11_mPO1_ch02",
-      "sample_id": "gPO_sBM_cAll_d11_mPO1_ch02",
+      "case_id": "gKR_sBM_c01_d28_mKR2_ch02_seg3",
+      "sample_id": "gKR_sBM_c01_d28_mKR2_ch02_seg3",
       "references": [
-        "Pop",
-        "Music mPO1"
+        "mKR2",
+        "4-6 s"
       ],
       "motion": {
-        "frames": 160,
-        "display_frames": 320,
-        "stride": 2,
-        "translation_count": 480,
-        "rotation_count": 21120,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.3816234767436981,
-          1.1507248878479004,
-          -0.23105411231517792
+          -0.026934511959552765,
+          1.0616636276245117,
+          -0.10166123509407043
         ],
         "translation_scale": [
-          1.1862034625664819e-05,
-          1.372926817566622e-06,
-          8.183065801858902e-06
+          5.858566396454989e-07,
+          2.7355545171303675e-06,
+          2.0588317966030445e-06
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 1283040,
-        "rotation_offset": 1284000,
+        "asset": "motions/gKR_sBM_c01_d28_mKR2_ch02_seg3.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.469769477844238
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mPO1.mp3",
-          "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "asset": "audio/reference/mKR2.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gPO_sBM_cAll_d11_mPO1_ch02.wav",
+          "asset": "audio/generated/gKR_sBM_c01_d28_mKR2_ch02_seg3.wav",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 14,
-        "generated_beats": 24,
-        "matched_beats": 5,
-        "coverage": 1.7142857142857142,
-        "hit": 0.35714285714285715
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
       }
     },
     {
-      "case_id": "gWA_sBM_cAll_d25_mWA0_ch01",
-      "sample_id": "gWA_sBM_cAll_d25_mWA0_ch01",
+      "case_id": "gBR_sBM_c01_d05_mBR0_ch02_seg1",
+      "sample_id": "gBR_sBM_c01_d05_mBR0_ch02_seg1",
       "references": [
-        "Waacking",
-        "Music mWA0"
+        "mBR0",
+        "0-2 s"
       ],
       "motion": {
-        "frames": 180,
-        "display_frames": 360,
-        "stride": 2,
-        "translation_count": 540,
-        "rotation_count": 23760,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.4222854971885681,
-          1.1675422191619873,
-          -0.0611795037984848
+          -0.04393526166677475,
+          1.1548172235488892,
+          -0.03608936816453934
         ],
         "translation_scale": [
-          9.026383850141428e-06,
-          1.6329044001395232e-06,
-          2.326397407159675e-06
+          2.261038389406167e-06,
+          1.9875872112606885e-06,
+          4.544398962025298e-06
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 1326240,
-        "rotation_offset": 1327320,
+        "asset": "motions/gBR_sBM_c01_d05_mBR0_ch02_seg1.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.792815208435059
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mWA0.mp3",
+          "asset": "audio/reference/mBR0.mp3",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gWA_sBM_cAll_d25_mWA0_ch01.wav",
+          "asset": "audio/generated/gBR_sBM_c01_d05_mBR0_ch02_seg1.wav",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 13,
-        "generated_beats": 23,
-        "matched_beats": 7,
-        "coverage": 1.7692307692307692,
-        "hit": 0.5384615384615384
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
       }
     },
     {
-      "case_id": "gWA_sBM_cAll_d25_mWA0_ch02",
-      "sample_id": "gWA_sBM_cAll_d25_mWA0_ch02",
+      "case_id": "gLH_sBM_c01_d17_mLH4_ch02_seg1",
+      "sample_id": "gLH_sBM_c01_d17_mLH4_ch02_seg1",
       "references": [
-        "Waacking",
-        "Music mWA0"
+        "mLH4",
+        "0-2 s"
       ],
       "motion": {
-        "frames": 180,
-        "display_frames": 360,
-        "stride": 2,
-        "translation_count": 540,
-        "rotation_count": 23760,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.15989576280117035,
-          1.1745781898498535,
-          -0.0672241747379303
+          -0.48630085587501526,
+          1.1171880960464478,
+          -0.29998379945755005
         ],
         "translation_scale": [
-          5.533327566809021e-06,
-          1.738330979605962e-06,
-          2.09422319130681e-06
+          8.186488230421674e-06,
+          1.6285461015286273e-06,
+          6.450970431615133e-06
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 1374840,
-        "rotation_offset": 1375920,
+        "asset": "motions/gLH_sBM_c01_d17_mLH4_ch02_seg1.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 15.288458824157715
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mWA0.mp3",
+          "asset": "audio/reference/mLH4.mp3",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gWA_sBM_cAll_d25_mWA0_ch02.wav",
+          "asset": "audio/generated/gLH_sBM_c01_d17_mLH4_ch02_seg1.wav",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 13,
-        "generated_beats": 19,
-        "matched_beats": 5,
-        "coverage": 1.4615384615384615,
-        "hit": 0.38461538461538464
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
       }
     },
     {
-      "case_id": "gWA_sBM_cAll_d26_mWA0_ch01",
-      "sample_id": "gWA_sBM_cAll_d26_mWA0_ch01",
+      "case_id": "gPO_sBM_c01_d10_mPO1_ch02_seg1",
+      "sample_id": "gPO_sBM_c01_d10_mPO1_ch02_seg1",
       "references": [
-        "Waacking",
-        "Music mWA0"
+        "mPO1",
+        "0-2 s"
       ],
       "motion": {
-        "frames": 180,
-        "display_frames": 360,
-        "stride": 2,
-        "translation_count": 540,
-        "rotation_count": 23760,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.16403207182884216,
-          1.1779839992523193,
-          -0.33696311712265015
+          -0.005073323845863342,
+          1.159326434135437,
+          -0.06411128491163254
         ],
         "translation_scale": [
-          2.8950273645023117e-06,
-          1.1075832162532606e-06,
-          1.7195894770338782e-06
+          5.788663656858262e-06,
+          7.779154316267523e-07,
+          7.267092883012083e-07
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 1423440,
-        "rotation_offset": 1424520,
+        "asset": "motions/gPO_sBM_c01_d10_mPO1_ch02_seg1.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 14.56847095489502
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mWA0.mp3",
+          "asset": "audio/reference/mPO1.mp3",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gWA_sBM_cAll_d26_mWA0_ch01.wav",
+          "asset": "audio/generated/gPO_sBM_c01_d10_mPO1_ch02_seg1.wav",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 13,
-        "generated_beats": 18,
-        "matched_beats": 5,
-        "coverage": 1.3846153846153846,
-        "hit": 0.38461538461538464
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
       }
     },
     {
-      "case_id": "gWA_sBM_cAll_d26_mWA0_ch02",
-      "sample_id": "gWA_sBM_cAll_d26_mWA0_ch02",
+      "case_id": "gMH_sBM_c01_d24_mMH3_ch02_seg2",
+      "sample_id": "gMH_sBM_c01_d24_mMH3_ch02_seg2",
       "references": [
-        "Waacking",
-        "Music mWA0"
+        "mMH3",
+        "2-4 s"
       ],
       "motion": {
-        "frames": 180,
-        "display_frames": 360,
-        "stride": 2,
-        "translation_count": 540,
-        "rotation_count": 23760,
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
         "translation_minimum": [
-          -0.19468630850315094,
-          1.178603172302246,
-          -0.2731412649154663
+          -0.0664733275771141,
+          1.098936676979065,
+          -0.05363614112138748
         ],
         "translation_scale": [
-          4.783162694366183e-06,
-          1.580875050422037e-06,
-          6.693978775729192e-06
+          7.310834917007014e-06,
+          1.494435423410323e-06,
+          6.0855386436742265e-06
         ],
-        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
-        "translation_offset": 1472040,
-        "rotation_offset": 1473120,
+        "asset": "motions/gMH_sBM_c01_d24_mMH3_ch02_seg2.smpl",
         "fps": 30.0,
-        "fit_mpjpe_mm_mean": 15.06358814239502
+        "translation_offset": 0,
+        "rotation_offset": 360
       },
       "audio_tracks": [
         {
           "key": "reference",
           "label": "Ground truth music",
-          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mWA0.mp3",
+          "asset": "audio/reference/mMH3.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gMH_sBM_c01_d24_mMH3_ch02_seg2.wav",
           "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gPO_sBM_c01_d11_mPO1_ch02_seg2",
+      "sample_id": "gPO_sBM_c01_d11_mPO1_ch02_seg2",
+      "references": [
+        "mPO1",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.0924404039978981,
+          1.1386895179748535,
+          -0.06141844391822815
+        ],
+        "translation_scale": [
+          2.4231223960669013e-06,
+          1.3840101473761024e-06,
+          4.0550985431764275e-06
+        ],
+        "asset": "motions/gPO_sBM_c01_d11_mPO1_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mPO1.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gPO_sBM_c01_d11_mPO1_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gBR_sBM_c01_d04_mBR0_ch02_seg1",
+      "sample_id": "gBR_sBM_c01_d04_mBR0_ch02_seg1",
+      "references": [
+        "mBR0",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.06884291768074036,
+          1.1277885437011719,
+          -0.028219128027558327
+        ],
+        "translation_scale": [
+          3.079278258155682e-06,
+          2.732505663516349e-06,
+          2.8103047498007072e-06
+        ],
+        "asset": "motions/gBR_sBM_c01_d04_mBR0_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mBR0.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_c01_d04_mBR0_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gKR_sBM_c01_d28_mKR2_ch02_seg1",
+      "sample_id": "gKR_sBM_c01_d28_mKR2_ch02_seg1",
+      "references": [
+        "mKR2",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.0023471745662391186,
+          1.0728473663330078,
+          -0.15913282334804535
+        ],
+        "translation_scale": [
+          4.946617195855652e-07,
+          2.703899781408836e-06,
+          2.518951305319206e-06
+        ],
+        "asset": "motions/gKR_sBM_c01_d28_mKR2_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mKR2.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gKR_sBM_c01_d28_mKR2_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gKR_sBM_c01_d30_mKR2_ch02_seg1",
+      "sample_id": "gKR_sBM_c01_d30_mKR2_ch02_seg1",
+      "references": [
+        "mKR2",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.09414760023355484,
+          1.0702224969863892,
+          -0.11968837678432465
+        ],
+        "translation_scale": [
+          4.085728505742736e-06,
+          2.7600128760241205e-06,
+          1.4308596973933163e-06
+        ],
+        "asset": "motions/gKR_sBM_c01_d30_mKR2_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mKR2.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gKR_sBM_c01_d30_mKR2_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gLO_sBM_c01_d15_mLO2_ch02_seg2",
+      "sample_id": "gLO_sBM_c01_d15_mLO2_ch02_seg2",
+      "references": [
+        "mLO2",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          0.0013411020627245307,
+          1.174350380897522,
+          -0.028219128027558327
+        ],
+        "translation_scale": [
+          1.4976063766880543e-07,
+          3.3251816944357415e-07,
+          3.355672788529773e-07
+        ],
+        "asset": "motions/gLO_sBM_c01_d15_mLO2_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mLO2.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLO_sBM_c01_d15_mLO2_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gPO_sBM_c01_d10_mPO1_ch02_seg3",
+      "sample_id": "gPO_sBM_c01_d10_mPO1_ch02_seg3",
+      "references": [
+        "mPO1",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.2789367437362671,
+          1.1610344648361206,
+          -0.030925516039133072
+        ],
+        "translation_scale": [
+          4.381514827400679e-06,
+          7.375768973361119e-07,
+          4.154740054218564e-06
+        ],
+        "asset": "motions/gPO_sBM_c01_d10_mPO1_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mPO1.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gPO_sBM_c01_d10_mPO1_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gWA_sBM_c01_d26_mWA0_ch02_seg3",
+      "sample_id": "gWA_sBM_c01_d26_mWA0_ch02_seg3",
+      "references": [
+        "mWA0",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.026684757322072983,
+          1.1762595176696777,
+          -0.0786561518907547
+        ],
+        "translation_scale": [
+          2.2514354895974975e-06,
+          5.848485784554214e-07,
+          1.0713772553572198e-06
+        ],
+        "asset": "motions/gWA_sBM_c01_d26_mWA0_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mWA0.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_c01_d26_mWA0_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gJS_sBM_c01_d03_mJS3_ch02_seg4",
+      "sample_id": "gJS_sBM_c01_d03_mJS3_ch02_seg4",
+      "references": [
+        "mJS3",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          0.0017950627952814102,
+          1.1838284730911255,
+          -0.028219128027558327
+        ],
+        "translation_scale": [
+          2.6512785211707524e-07,
+          4.1987462395809416e-07,
+          1.3532078355638077e-06
+        ],
+        "asset": "motions/gJS_sBM_c01_d03_mJS3_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mJS3.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJS_sBM_c01_d03_mJS3_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gLO_sBM_c01_d13_mLO2_ch02_seg4",
+      "sample_id": "gLO_sBM_c01_d13_mLO2_ch02_seg4",
+      "references": [
+        "mLO2",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.013665205799043179,
+          1.1802067756652832,
+          -0.03417317569255829
+        ],
+        "translation_scale": [
+          2.8896724302285293e-07,
+          6.035298838469316e-07,
+          6.180904392749653e-07
+        ],
+        "asset": "motions/gLO_sBM_c01_d13_mLO2_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mLO2.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLO_sBM_c01_d13_mLO2_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gHO_sBM_c01_d21_mHO5_ch02_seg2",
+      "sample_id": "gHO_sBM_c01_d21_mHO5_ch02_seg2",
+      "references": [
+        "mHO5",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.17566724121570587,
+          1.0500333309173584,
+          -0.23861771821975708
+        ],
+        "translation_scale": [
+          6.131691407063045e-06,
+          3.0777716801821953e-06,
+          4.223928954161238e-06
+        ],
+        "asset": "motions/gHO_sBM_c01_d21_mHO5_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mHO5.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gHO_sBM_c01_d21_mHO5_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gLO_sBM_c01_d15_mLO2_ch02_seg3",
+      "sample_id": "gLO_sBM_c01_d15_mLO2_ch02_seg3",
+      "references": [
+        "mLO2",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          0.0017950627952814102,
+          1.1731823682785034,
+          -0.028219128027558327
+        ],
+        "translation_scale": [
+          3.553568888037262e-07,
+          3.0782680937591067e-07,
+          2.998401953391294e-07
+        ],
+        "asset": "motions/gLO_sBM_c01_d15_mLO2_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mLO2.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLO_sBM_c01_d15_mLO2_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gWA_sBM_c01_d26_mWA0_ch02_seg2",
+      "sample_id": "gWA_sBM_c01_d26_mWA0_ch02_seg2",
+      "references": [
+        "mWA0",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.1507536619901657,
+          1.1859700679779053,
+          -0.028219128027558327
+        ],
+        "translation_scale": [
+          3.227141860406846e-06,
+          1.2268379805391305e-06,
+          3.9181404645205475e-06
+        ],
+        "asset": "motions/gWA_sBM_c01_d26_mWA0_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mWA0.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_c01_d26_mWA0_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gMH_sBM_c01_d24_mMH3_ch02_seg4",
+      "sample_id": "gMH_sBM_c01_d24_mMH3_ch02_seg4",
+      "references": [
+        "mMH3",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.025321517139673233,
+          1.1343778371810913,
+          -0.046325474977493286
+        ],
+        "translation_scale": [
+          7.14811221769196e-06,
+          1.1383282298993436e-06,
+          2.362883378737024e-06
+        ],
+        "asset": "motions/gMH_sBM_c01_d24_mMH3_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mMH3.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gMH_sBM_c01_d24_mMH3_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gLO_sBM_c01_d13_mLO2_ch02_seg1",
+      "sample_id": "gLO_sBM_c01_d13_mLO2_ch02_seg1",
+      "references": [
+        "mLO2",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.03231485188007355,
+          1.1859748363494873,
+          -0.0546552911400795
+        ],
+        "translation_scale": [
+          5.886255394216278e-07,
+          3.85566153227046e-07,
+          5.956768518444733e-07
+        ],
+        "asset": "motions/gLO_sBM_c01_d13_mLO2_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mLO2.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLO_sBM_c01_d13_mLO2_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gPO_sBM_c01_d11_mPO1_ch02_seg3",
+      "sample_id": "gPO_sBM_c01_d11_mPO1_ch02_seg3",
+      "references": [
+        "mPO1",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          0.0017950627952814102,
+          1.1683138608932495,
+          -0.028219128027558327
+        ],
+        "translation_scale": [
+          4.375345724838553e-06,
+          1.1537534874150879e-06,
+          7.018153610260924e-06
+        ],
+        "asset": "motions/gPO_sBM_c01_d11_mPO1_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mPO1.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gPO_sBM_c01_d11_mPO1_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gWA_sBM_c01_d25_mWA0_ch02_seg5",
+      "sample_id": "gWA_sBM_c01_d25_mWA0_ch02_seg5",
+      "references": [
+        "mWA0",
+        "8-10 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.1289234310388565,
+          1.1803133487701416,
+          -0.14186474680900574
+        ],
+        "translation_scale": [
+          2.7021799269277835e-06,
+          1.6545416201552143e-06,
+          1.8067331666316022e-06
+        ],
+        "asset": "motions/gWA_sBM_c01_d25_mWA0_ch02_seg5.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mWA0.mp3",
+          "start_seconds": 8.0,
           "end_seconds": 10.0
         },
         {
           "key": "unimumo",
           "label": "UniMuMo",
-          "asset": "audio/generated/gWA_sBM_cAll_d26_mWA0_ch02.wav",
+          "asset": "audio/generated/gWA_sBM_c01_d25_mWA0_ch02_seg5.wav",
           "start_seconds": 0.0,
-          "end_seconds": 10.0
+          "end_seconds": 2.0
         }
       ],
       "beat_metrics": {
-        "reference_beats": 13,
-        "generated_beats": 18,
-        "matched_beats": 5,
-        "coverage": 1.3846153846153846,
-        "hit": 0.38461538461538464
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gJS_sBM_c01_d03_mJS3_ch02_seg2",
+      "sample_id": "gJS_sBM_c01_d03_mJS3_ch02_seg2",
+      "references": [
+        "mJS3",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.07362430542707443,
+          1.1769088506698608,
+          -0.05768810957670212
+        ],
+        "translation_scale": [
+          3.1697338727099122e-06,
+          4.1749535739654675e-07,
+          7.446689096468617e-07
+        ],
+        "asset": "motions/gJS_sBM_c01_d03_mJS3_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mJS3.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJS_sBM_c01_d03_mJS3_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gBR_sBM_c01_d05_mBR0_ch02_seg4",
+      "sample_id": "gBR_sBM_c01_d05_mBR0_ch02_seg4",
+      "references": [
+        "mBR0",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.22701676189899445,
+          1.1460837125778198,
+          -0.03375692293047905
+        ],
+        "translation_scale": [
+          3.491444658720866e-06,
+          2.23616507355473e-06,
+          2.499805077604833e-06
+        ],
+        "asset": "motions/gBR_sBM_c01_d05_mBR0_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mBR0.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_c01_d05_mBR0_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gLH_sBM_c01_d17_mLH4_ch02_seg3",
+      "sample_id": "gLH_sBM_c01_d17_mLH4_ch02_seg3",
+      "references": [
+        "mLH4",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.4158129096031189,
+          1.1174263954162598,
+          -0.059735484421253204
+        ],
+        "translation_scale": [
+          7.63482239563018e-06,
+          1.6707435861462727e-06,
+          3.9998849388211966e-06
+        ],
+        "asset": "motions/gLH_sBM_c01_d17_mLH4_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mLH4.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLH_sBM_c01_d17_mLH4_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gBR_sBM_c01_d04_mBR0_ch02_seg3",
+      "sample_id": "gBR_sBM_c01_d04_mBR0_ch02_seg3",
+      "references": [
+        "mBR0",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.1357029378414154,
+          1.145559310913086,
+          -0.18312035501003265
+        ],
+        "translation_scale": [
+          2.098085133184213e-06,
+          2.424180593152414e-06,
+          2.3905342914076755e-06
+        ],
+        "asset": "motions/gBR_sBM_c01_d04_mBR0_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mBR0.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_c01_d04_mBR0_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gKR_sBM_c01_d30_mKR2_ch02_seg4",
+      "sample_id": "gKR_sBM_c01_d30_mKR2_ch02_seg4",
+      "references": [
+        "mKR2",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.13770310580730438,
+          1.0955920219421387,
+          -0.1193108931183815
+        ],
+        "translation_scale": [
+          4.302285105950432e-06,
+          2.152690285583958e-06,
+          1.4697335473101703e-06
+        ],
+        "asset": "motions/gKR_sBM_c01_d30_mKR2_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mKR2.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gKR_sBM_c01_d30_mKR2_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gMH_sBM_c01_d22_mMH3_ch02_seg3",
+      "sample_id": "gMH_sBM_c01_d22_mMH3_ch02_seg3",
+      "references": [
+        "mMH3",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.45143812894821167,
+          1.0385297536849976,
+          -0.0705699622631073
+        ],
+        "translation_scale": [
+          6.9781117417733185e-06,
+          3.7324302866181824e-06,
+          8.056778824538924e-06
+        ],
+        "asset": "motions/gMH_sBM_c01_d22_mMH3_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mMH3.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gMH_sBM_c01_d22_mMH3_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gLH_sBM_c01_d18_mLH4_ch02_seg4",
+      "sample_id": "gLH_sBM_c01_d18_mLH4_ch02_seg4",
+      "references": [
+        "mLH4",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.5886409878730774,
+          1.1221277713775635,
+          -0.13101442158222198
+        ],
+        "translation_scale": [
+          9.00947634363547e-06,
+          1.8659459328773664e-06,
+          5.4784723033662885e-06
+        ],
+        "asset": "motions/gLH_sBM_c01_d18_mLH4_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mLH4.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLH_sBM_c01_d18_mLH4_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 0,
+        "matched_beats": 0,
+        "coverage": 0.0,
+        "hit": 0.0
+      }
+    },
+    {
+      "case_id": "gHO_sBM_c01_d21_mHO5_ch02_seg1",
+      "sample_id": "gHO_sBM_c01_d21_mHO5_ch02_seg1",
+      "references": [
+        "mHO5",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.36451196670532227,
+          1.0552220344543457,
+          -0.07268106192350388
+        ],
+        "translation_scale": [
+          5.589487045654096e-06,
+          2.5792171527427854e-06,
+          5.235137905401643e-06
+        ],
+        "asset": "motions/gHO_sBM_c01_d21_mHO5_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mHO5.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gHO_sBM_c01_d21_mHO5_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gMH_sBM_c01_d22_mMH3_ch02_seg4",
+      "sample_id": "gMH_sBM_c01_d22_mMH3_ch02_seg4",
+      "references": [
+        "mMH3",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.07616030424833298,
+          1.0969992876052856,
+          -0.10223904252052307
+        ],
+        "translation_scale": [
+          8.775446985964663e-06,
+          1.7989751768254791e-06,
+          2.617010522953933e-06
+        ],
+        "asset": "motions/gMH_sBM_c01_d22_mMH3_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mMH3.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gMH_sBM_c01_d22_mMH3_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gWA_sBM_c01_d26_mWA0_ch02_seg1",
+      "sample_id": "gWA_sBM_c01_d26_mWA0_ch02_seg1",
+      "references": [
+        "mWA0",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.051089152693748474,
+          1.1978507041931152,
+          -0.1361544281244278
+        ],
+        "translation_scale": [
+          1.090437535822275e-06,
+          7.016731160547351e-07,
+          4.203800926916301e-06
+        ],
+        "asset": "motions/gWA_sBM_c01_d26_mWA0_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mWA0.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_c01_d26_mWA0_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gLO_sBM_c01_d13_mLO2_ch02_seg2",
+      "sample_id": "gLO_sBM_c01_d13_mLO2_ch02_seg2",
+      "references": [
+        "mLO2",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.0076436009258031845,
+          1.1830180883407593,
+          -0.03573435917496681
+        ],
+        "translation_scale": [
+          3.9516339711553883e-07,
+          5.023252356295416e-07,
+          6.100664222685737e-07
+        ],
+        "asset": "motions/gLO_sBM_c01_d13_mLO2_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mLO2.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLO_sBM_c01_d13_mLO2_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gWA_sBM_c01_d25_mWA0_ch02_seg4",
+      "sample_id": "gWA_sBM_c01_d25_mWA0_ch02_seg4",
+      "references": [
+        "mWA0",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.08851802349090576,
+          1.1885242462158203,
+          -0.154937744140625
+        ],
+        "translation_scale": [
+          2.7471423891256563e-06,
+          7.702246307417226e-07,
+          2.8735678370139794e-06
+        ],
+        "asset": "motions/gWA_sBM_c01_d25_mWA0_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mWA0.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_c01_d25_mWA0_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gKR_sBM_c01_d28_mKR2_ch02_seg2",
+      "sample_id": "gKR_sBM_c01_d28_mKR2_ch02_seg2",
+      "references": [
+        "mKR2",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.0188154187053442,
+          1.0607678890228271,
+          -0.038672298192977905
+        ],
+        "translation_scale": [
+          5.860713940819551e-07,
+          2.9155371521483175e-06,
+          2.451477712384076e-06
+        ],
+        "asset": "motions/gKR_sBM_c01_d28_mKR2_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mKR2.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gKR_sBM_c01_d28_mKR2_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gPO_sBM_c01_d11_mPO1_ch02_seg4",
+      "sample_id": "gPO_sBM_c01_d11_mPO1_ch02_seg4",
+      "references": [
+        "mPO1",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.3930758535861969,
+          1.1489793062210083,
+          -0.1510876566171646
+        ],
+        "translation_scale": [
+          8.588049240643159e-06,
+          1.1910287867067382e-06,
+          1.8748536376733682e-06
+        ],
+        "asset": "motions/gPO_sBM_c01_d11_mPO1_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mPO1.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gPO_sBM_c01_d11_mPO1_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 1,
+        "generated_beats": 2,
+        "matched_beats": 1,
+        "coverage": 2.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gBR_sBM_c01_d04_mBR0_ch02_seg2",
+      "sample_id": "gBR_sBM_c01_d04_mBR0_ch02_seg2",
+      "references": [
+        "mBR0",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.102276511490345,
+          1.1370877027511597,
+          -0.03906635940074921
+        ],
+        "translation_scale": [
+          2.219481075371732e-06,
+          2.4850066893122857e-06,
+          1.3864588481737883e-06
+        ],
+        "asset": "motions/gBR_sBM_c01_d04_mBR0_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mBR0.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_c01_d04_mBR0_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gJB_sBM_c01_d08_mJB5_ch02_seg1",
+      "sample_id": "gJB_sBM_c01_d08_mJB5_ch02_seg1",
+      "references": [
+        "mJB5",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.2810625433921814,
+          1.1528120040893555,
+          -0.028219128027558327
+        ],
+        "translation_scale": [
+          6.5292674662487116e-06,
+          2.6855550459004007e-06,
+          2.8224638299434446e-05
+        ],
+        "asset": "motions/gJB_sBM_c01_d08_mJB5_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mJB5.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJB_sBM_c01_d08_mJB5_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 1,
+        "generated_beats": 2,
+        "matched_beats": 1,
+        "coverage": 2.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gKR_sBM_c01_d30_mKR2_ch02_seg2",
+      "sample_id": "gKR_sBM_c01_d30_mKR2_ch02_seg2",
+      "references": [
+        "mKR2",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.22852888703346252,
+          1.0684324502944946,
+          -0.028219128027558327
+        ],
+        "translation_scale": [
+          3.6478802485362394e-06,
+          2.6027807962236693e-06,
+          2.163455974368844e-06
+        ],
+        "asset": "motions/gKR_sBM_c01_d30_mKR2_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mKR2.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gKR_sBM_c01_d30_mKR2_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gLH_sBM_c01_d18_mLH4_ch02_seg1",
+      "sample_id": "gLH_sBM_c01_d18_mLH4_ch02_seg1",
+      "references": [
+        "mLH4",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.4162999987602234,
+          1.1262986660003662,
+          -0.2672064006328583
+        ],
+        "translation_scale": [
+          8.973307558335364e-06,
+          1.9839474134641932e-06,
+          5.832403530803276e-06
+        ],
+        "asset": "motions/gLH_sBM_c01_d18_mLH4_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mLH4.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLH_sBM_c01_d18_mLH4_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gBR_sBM_c01_d04_mBR0_ch02_seg6",
+      "sample_id": "gBR_sBM_c01_d04_mBR0_ch02_seg6",
+      "references": [
+        "mBR0",
+        "10-12 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.13523942232131958,
+          1.1379495859146118,
+          -0.07393229007720947
+        ],
+        "translation_scale": [
+          2.3425543531629955e-06,
+          2.5258036657760385e-06,
+          2.380188561801333e-06
+        ],
+        "asset": "motions/gBR_sBM_c01_d04_mBR0_ch02_seg6.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mBR0.mp3",
+          "start_seconds": 10.0,
+          "end_seconds": 12.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_c01_d04_mBR0_ch02_seg6.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gJS_sBM_c01_d01_mJS3_ch02_seg1",
+      "sample_id": "gJS_sBM_c01_d01_mJS3_ch02_seg1",
+      "references": [
+        "mJS3",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.12255427986383438,
+          1.1855705976486206,
+          -0.05133609473705292
+        ],
+        "translation_scale": [
+          2.051864612440113e-06,
+          2.726506522776617e-07,
+          4.1197583300345286e-07
+        ],
+        "asset": "motions/gJS_sBM_c01_d01_mJS3_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mJS3.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJS_sBM_c01_d01_mJS3_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gBR_sBM_c01_d05_mBR0_ch02_seg2",
+      "sample_id": "gBR_sBM_c01_d05_mBR0_ch02_seg2",
+      "references": [
+        "mBR0",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.09014449268579483,
+          1.145247220993042,
+          -0.10264518857002258
+        ],
+        "translation_scale": [
+          2.9916873245383613e-06,
+          2.2125832401798107e-06,
+          2.3202819647849537e-06
+        ],
+        "asset": "motions/gBR_sBM_c01_d05_mBR0_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mBR0.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_c01_d05_mBR0_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gJS_sBM_c01_d01_mJS3_ch02_seg4",
+      "sample_id": "gJS_sBM_c01_d01_mJS3_ch02_seg4",
+      "references": [
+        "mJS3",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.018444592133164406,
+          1.1844455003738403,
+          -0.028355034068226814
+        ],
+        "translation_scale": [
+          5.626893084809126e-07,
+          4.5853238361814874e-07,
+          2.201072447860497e-06
+        ],
+        "asset": "motions/gJS_sBM_c01_d01_mJS3_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mJS3.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJS_sBM_c01_d01_mJS3_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gPO_sBM_c01_d10_mPO1_ch02_seg5",
+      "sample_id": "gPO_sBM_c01_d10_mPO1_ch02_seg5",
+      "references": [
+        "mPO1",
+        "8-10 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.5789821743965149,
+          1.1717820167541504,
+          -0.106613390147686
+        ],
+        "translation_scale": [
+          8.862092727213167e-06,
+          7.08165202922828e-07,
+          1.1962198414039449e-06
+        ],
+        "asset": "motions/gPO_sBM_c01_d10_mPO1_ch02_seg5.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mPO1.mp3",
+          "start_seconds": 8.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gPO_sBM_c01_d10_mPO1_ch02_seg5.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gKR_sBM_c01_d28_mKR2_ch02_seg4",
+      "sample_id": "gKR_sBM_c01_d28_mKR2_ch02_seg4",
+      "references": [
+        "mKR2",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          0.0017950627952814102,
+          1.060503602027893,
+          -0.16204552352428436
+        ],
+        "translation_scale": [
+          5.184735414331954e-07,
+          2.915051481977571e-06,
+          2.2019739844836295e-06
+        ],
+        "asset": "motions/gKR_sBM_c01_d28_mKR2_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mKR2.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gKR_sBM_c01_d28_mKR2_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gBR_sBM_c01_d05_mBR0_ch02_seg6",
+      "sample_id": "gBR_sBM_c01_d05_mBR0_ch02_seg6",
+      "references": [
+        "mBR0",
+        "10-12 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.015355188399553299,
+          1.1555601358413696,
+          -0.22005166113376617
+        ],
+        "translation_scale": [
+          3.5164337077731034e-06,
+          2.061997747659916e-06,
+          2.927176637967932e-06
+        ],
+        "asset": "motions/gBR_sBM_c01_d05_mBR0_ch02_seg6.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mBR0.mp3",
+          "start_seconds": 10.0,
+          "end_seconds": 12.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_c01_d05_mBR0_ch02_seg6.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gMH_sBM_c01_d22_mMH3_ch02_seg2",
+      "sample_id": "gMH_sBM_c01_d22_mMH3_ch02_seg2",
+      "references": [
+        "mMH3",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.07804455608129501,
+          1.0525660514831543,
+          -0.028219128027558327
+        ],
+        "translation_scale": [
+          1.1234942576265894e-05,
+          3.1374809168482898e-06,
+          1.0951284821203444e-05
+        ],
+        "asset": "motions/gMH_sBM_c01_d22_mMH3_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mMH3.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gMH_sBM_c01_d22_mMH3_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gLO_sBM_c01_d13_mLO2_ch02_seg3",
+      "sample_id": "gLO_sBM_c01_d13_mLO2_ch02_seg3",
+      "references": [
+        "mLO2",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.011433331295847893,
+          1.1813665628433228,
+          -0.06753735989332199
+        ],
+        "translation_scale": [
+          5.816136763314717e-07,
+          6.808890589127259e-07,
+          6.937100351933623e-07
+        ],
+        "asset": "motions/gLO_sBM_c01_d13_mLO2_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mLO2.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLO_sBM_c01_d13_mLO2_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gKR_sBM_c01_d30_mKR2_ch02_seg3",
+      "sample_id": "gKR_sBM_c01_d30_mKR2_ch02_seg3",
+      "references": [
+        "mKR2",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.2572099268436432,
+          1.0888887643814087,
+          -0.09483928233385086
+        ],
+        "translation_scale": [
+          4.339950919529656e-06,
+          2.3994291495910147e-06,
+          1.4550840887750383e-06
+        ],
+        "asset": "motions/gKR_sBM_c01_d30_mKR2_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mKR2.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gKR_sBM_c01_d30_mKR2_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gJB_sBM_c01_d08_mJB5_ch02_seg2",
+      "sample_id": "gJB_sBM_c01_d08_mJB5_ch02_seg2",
+      "references": [
+        "mJB5",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -1.942689061164856,
+          1.146715521812439,
+          -0.06128956377506256
+        ],
+        "translation_scale": [
+          2.9670925869140774e-05,
+          2.2841361442260677e-06,
+          6.421443231374724e-06
+        ],
+        "asset": "motions/gJB_sBM_c01_d08_mJB5_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mJB5.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJB_sBM_c01_d08_mJB5_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gMH_sBM_c01_d22_mMH3_ch02_seg1",
+      "sample_id": "gMH_sBM_c01_d22_mMH3_ch02_seg1",
+      "references": [
+        "mMH3",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.5319250822067261,
+          1.0597503185272217,
+          -0.15056626498699188
+        ],
+        "translation_scale": [
+          8.5832480181125e-06,
+          2.5174633719871053e-06,
+          1.0304467650712468e-05
+        ],
+        "asset": "motions/gMH_sBM_c01_d22_mMH3_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mMH3.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gMH_sBM_c01_d22_mMH3_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gBR_sBM_c01_d04_mBR0_ch02_seg5",
+      "sample_id": "gBR_sBM_c01_d04_mBR0_ch02_seg5",
+      "references": [
+        "mBR0",
+        "8-10 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.03383643925189972,
+          1.1581393480300903,
+          -0.03955636918544769
+        ],
+        "translation_scale": [
+          2.2183455712365685e-06,
+          2.370721404076903e-06,
+          2.3084814984031254e-06
+        ],
+        "asset": "motions/gBR_sBM_c01_d04_mBR0_ch02_seg5.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mBR0.mp3",
+          "start_seconds": 8.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_c01_d04_mBR0_ch02_seg5.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gLO_sBM_c01_d15_mLO2_ch02_seg4",
+      "sample_id": "gLO_sBM_c01_d15_mLO2_ch02_seg4",
+      "references": [
+        "mLO2",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.013859402388334274,
+          1.1742193698883057,
+          -0.047284968197345734
+        ],
+        "translation_scale": [
+          2.4059616521299176e-07,
+          3.849458778404369e-07,
+          4.1677452600197284e-07
+        ],
+        "asset": "motions/gLO_sBM_c01_d15_mLO2_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mLO2.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLO_sBM_c01_d15_mLO2_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gWA_sBM_c01_d26_mWA0_ch02_seg4",
+      "sample_id": "gWA_sBM_c01_d26_mWA0_ch02_seg4",
+      "references": [
+        "mWA0",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          0.0017950627952814102,
+          1.1845825910568237,
+          -0.028219128027558327
+        ],
+        "translation_scale": [
+          1.488666612203815e-06,
+          1.173508053398109e-06,
+          2.8069175641576294e-06
+        ],
+        "asset": "motions/gWA_sBM_c01_d26_mWA0_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mWA0.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_c01_d26_mWA0_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gJB_sBM_c01_d08_mJB5_ch02_seg3",
+      "sample_id": "gJB_sBM_c01_d08_mJB5_ch02_seg3",
+      "references": [
+        "mJB5",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -1.360626459121704,
+          1.1554383039474487,
+          -0.5798558592796326
+        ],
+        "translation_scale": [
+          2.0789218979189172e-05,
+          2.1904568257014034e-06,
+          1.0193161870120093e-05
+        ],
+        "asset": "motions/gJB_sBM_c01_d08_mJB5_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mJB5.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJB_sBM_c01_d08_mJB5_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gBR_sBM_c01_d05_mBR0_ch02_seg3",
+      "sample_id": "gBR_sBM_c01_d05_mBR0_ch02_seg3",
+      "references": [
+        "mBR0",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.048501722514629364,
+          1.1546576023101807,
+          -0.17188870906829834
+        ],
+        "translation_scale": [
+          2.9118793918314623e-06,
+          2.417850282654399e-06,
+          2.8521601507236483e-06
+        ],
+        "asset": "motions/gBR_sBM_c01_d05_mBR0_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mBR0.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_c01_d05_mBR0_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gJB_sBM_c01_d09_mJB5_ch02_seg1",
+      "sample_id": "gJB_sBM_c01_d09_mJB5_ch02_seg1",
+      "references": [
+        "mJB5",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.5892708897590637,
+          1.1676487922668457,
+          -0.028219128027558327
+        ],
+        "translation_scale": [
+          9.019087883643806e-06,
+          2.783742047540727e-06,
+          3.264320912421681e-05
+        ],
+        "asset": "motions/gJB_sBM_c01_d09_mJB5_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mJB5.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJB_sBM_c01_d09_mJB5_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 1,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gHO_sBM_c01_d21_mHO5_ch02_seg3",
+      "sample_id": "gHO_sBM_c01_d21_mHO5_ch02_seg3",
+      "references": [
+        "mHO5",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.06979329138994217,
+          1.013745903968811,
+          -0.05172321945428848
+        ],
+        "translation_scale": [
+          6.53640745440498e-06,
+          2.974196831928566e-06,
+          2.0753225271619158e-06
+        ],
+        "asset": "motions/gHO_sBM_c01_d21_mHO5_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mHO5.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gHO_sBM_c01_d21_mHO5_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gPO_sBM_c01_d10_mPO1_ch02_seg4",
+      "sample_id": "gPO_sBM_c01_d10_mPO1_ch02_seg4",
+      "references": [
+        "mPO1",
+        "6-8 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          0.0017950627952814102,
+          1.155797004699707,
+          -0.028219128027558327
+        ],
+        "translation_scale": [
+          7.1801318881625775e-06,
+          8.974266734185221e-07,
+          1.0682205129342037e-06
+        ],
+        "asset": "motions/gPO_sBM_c01_d10_mPO1_ch02_seg4.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mPO1.mp3",
+          "start_seconds": 6.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gPO_sBM_c01_d10_mPO1_ch02_seg4.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 1,
+        "generated_beats": 2,
+        "matched_beats": 1,
+        "coverage": 2.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gWA_sBM_c01_d25_mWA0_ch02_seg1",
+      "sample_id": "gWA_sBM_c01_d25_mWA0_ch02_seg1",
+      "references": [
+        "mWA0",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.09322821348905563,
+          1.1821848154067993,
+          -0.1044037938117981
+        ],
+        "translation_scale": [
+          2.4041091819526628e-06,
+          7.701227673351241e-07,
+          2.381899321335368e-06
+        ],
+        "asset": "motions/gWA_sBM_c01_d25_mWA0_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mWA0.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_c01_d25_mWA0_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gPO_sBM_c01_d10_mPO1_ch02_seg2",
+      "sample_id": "gPO_sBM_c01_d10_mPO1_ch02_seg2",
+      "references": [
+        "mPO1",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.20745845139026642,
+          1.1728752851486206,
+          -0.10757192224264145
+        ],
+        "translation_scale": [
+          4.395226824271958e-06,
+          7.208547003756394e-07,
+          2.911592901000404e-06
+        ],
+        "asset": "motions/gPO_sBM_c01_d10_mPO1_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mPO1.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gPO_sBM_c01_d10_mPO1_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gLH_sBM_c01_d18_mLH4_ch02_seg2",
+      "sample_id": "gLH_sBM_c01_d18_mLH4_ch02_seg2",
+      "references": [
+        "mLH4",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.5345223546028137,
+          1.0827736854553223,
+          -0.28702980279922485
+        ],
+        "translation_scale": [
+          8.758308467804454e-06,
+          2.8549929993459955e-06,
+          5.898968538531335e-06
+        ],
+        "asset": "motions/gLH_sBM_c01_d18_mLH4_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mLH4.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLH_sBM_c01_d18_mLH4_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gJS_sBM_c01_d03_mJS3_ch02_seg1",
+      "sample_id": "gJS_sBM_c01_d03_mJS3_ch02_seg1",
+      "references": [
+        "mJS3",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.12458976358175278,
+          1.188456416130066,
+          -0.04834957793354988
+        ],
+        "translation_scale": [
+          2.022722583205905e-06,
+          1.7604448032670916e-07,
+          3.149156100334949e-07
+        ],
+        "asset": "motions/gJS_sBM_c01_d03_mJS3_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mJS3.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJS_sBM_c01_d03_mJS3_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gWA_sBM_c01_d25_mWA0_ch02_seg3",
+      "sample_id": "gWA_sBM_c01_d25_mWA0_ch02_seg3",
+      "references": [
+        "mWA0",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.07530104368925095,
+          1.183881402015686,
+          -0.03428445756435394
+        ],
+        "translation_scale": [
+          1.1764111604861682e-06,
+          1.115363147619064e-06,
+          2.4816602035571123e-06
+        ],
+        "asset": "motions/gWA_sBM_c01_d25_mWA0_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mWA0.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_c01_d25_mWA0_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gBR_sBM_c01_d05_mBR0_ch02_seg5",
+      "sample_id": "gBR_sBM_c01_d05_mBR0_ch02_seg5",
+      "references": [
+        "mBR0",
+        "8-10 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.1992429494857788,
+          1.1545301675796509,
+          -0.028219128027558327
+        ],
+        "translation_scale": [
+          3.198965941919596e-06,
+          2.2448164145316696e-06,
+          2.321158717677463e-06
+        ],
+        "asset": "motions/gBR_sBM_c01_d05_mBR0_ch02_seg5.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mBR0.mp3",
+          "start_seconds": 8.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_c01_d05_mBR0_ch02_seg5.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gHO_sBM_c01_d20_mHO5_ch02_seg2",
+      "sample_id": "gHO_sBM_c01_d20_mHO5_ch02_seg2",
+      "references": [
+        "mHO5",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.15735852718353271,
+          1.0758696794509888,
+          -0.11514029651880264
+        ],
+        "translation_scale": [
+          5.1374436225160025e-06,
+          2.5514643766655354e-06,
+          1.7834505570135661e-06
+        ],
+        "asset": "motions/gHO_sBM_c01_d20_mHO5_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mHO5.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gHO_sBM_c01_d20_mHO5_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gJS_sBM_c01_d03_mJS3_ch02_seg3",
+      "sample_id": "gJS_sBM_c01_d03_mJS3_ch02_seg3",
+      "references": [
+        "mJS3",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          0.0017950627952814102,
+          1.1920099258422852,
+          -0.033691368997097015
+        ],
+        "translation_scale": [
+          8.211659405787941e-07,
+          2.2128344312477566e-07,
+          3.752895167963288e-07
+        ],
+        "asset": "motions/gJS_sBM_c01_d03_mJS3_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mJS3.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJS_sBM_c01_d03_mJS3_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gWA_sBM_c01_d25_mWA0_ch02_seg6",
+      "sample_id": "gWA_sBM_c01_d25_mWA0_ch02_seg6",
+      "references": [
+        "mWA0",
+        "10-12 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.03163103014230728,
+          1.1823062896728516,
+          -0.04032544419169426
+        ],
+        "translation_scale": [
+          2.2368922145687975e-06,
+          1.1870941989400308e-06,
+          1.0883177310461178e-06
+        ],
+        "asset": "motions/gWA_sBM_c01_d25_mWA0_ch02_seg6.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mWA0.mp3",
+          "start_seconds": 10.0,
+          "end_seconds": 12.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_c01_d25_mWA0_ch02_seg6.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gLH_sBM_c01_d18_mLH4_ch02_seg3",
+      "sample_id": "gLH_sBM_c01_d18_mLH4_ch02_seg3",
+      "references": [
+        "mLH4",
+        "4-6 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.5668471455574036,
+          1.0772072076797485,
+          -0.1892036348581314
+        ],
+        "translation_scale": [
+          8.676924153405707e-06,
+          2.5390604605490807e-06,
+          7.391764484054875e-06
+        ],
+        "asset": "motions/gLH_sBM_c01_d18_mLH4_ch02_seg3.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mLH4.mp3",
+          "start_seconds": 4.0,
+          "end_seconds": 6.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLH_sBM_c01_d18_mLH4_ch02_seg3.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gHO_sBM_c01_d20_mHO5_ch02_seg1",
+      "sample_id": "gHO_sBM_c01_d20_mHO5_ch02_seg1",
+      "references": [
+        "mHO5",
+        "0-2 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.27619531750679016,
+          1.093267798423767,
+          -0.07510700821876526
+        ],
+        "translation_scale": [
+          5.54714688405511e-06,
+          1.8727454289546586e-06,
+          1.5738443153168191e-06
+        ],
+        "asset": "motions/gHO_sBM_c01_d20_mHO5_ch02_seg1.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mHO5.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gHO_sBM_c01_d20_mHO5_ch02_seg1.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gJS_sBM_c01_d01_mJS3_ch02_seg2",
+      "sample_id": "gJS_sBM_c01_d01_mJS3_ch02_seg2",
+      "references": [
+        "mJS3",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.06574617326259613,
+          1.1663583517074585,
+          -0.02849714644253254
+        ],
+        "translation_scale": [
+          2.669073865035898e-06,
+          4.57191760006026e-07,
+          3.317639141187101e-07
+        ],
+        "asset": "motions/gJS_sBM_c01_d01_mJS3_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mJS3.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJS_sBM_c01_d01_mJS3_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gPO_sBM_c01_d11_mPO1_ch02_seg5",
+      "sample_id": "gPO_sBM_c01_d11_mPO1_ch02_seg5",
+      "references": [
+        "mPO1",
+        "8-10 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          0.0017950627952814102,
+          1.1524702310562134,
+          -0.28896522521972656
+        ],
+        "translation_scale": [
+          9.169456461677328e-06,
+          1.1509412161103683e-06,
+          3.978730546805309e-06
+        ],
+        "asset": "motions/gPO_sBM_c01_d11_mPO1_ch02_seg5.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mPO1.mp3",
+          "start_seconds": 8.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gPO_sBM_c01_d11_mPO1_ch02_seg5.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gWA_sBM_c01_d26_mWA0_ch02_seg6",
+      "sample_id": "gWA_sBM_c01_d26_mWA0_ch02_seg6",
+      "references": [
+        "mWA0",
+        "10-12 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.13940522074699402,
+          1.190416693687439,
+          -0.21569877862930298
+        ],
+        "translation_scale": [
+          2.220465603386401e-06,
+          6.977949738029565e-07,
+          3.6744029330293415e-06
+        ],
+        "asset": "motions/gWA_sBM_c01_d26_mWA0_ch02_seg6.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mWA0.mp3",
+          "start_seconds": 10.0,
+          "end_seconds": 12.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_c01_d26_mWA0_ch02_seg6.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 1,
+        "matched_beats": 1,
+        "coverage": 0.5,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gWA_sBM_c01_d25_mWA0_ch02_seg2",
+      "sample_id": "gWA_sBM_c01_d25_mWA0_ch02_seg2",
+      "references": [
+        "mWA0",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.030285971239209175,
+          1.1820627450942993,
+          -0.12213296443223953
+        ],
+        "translation_scale": [
+          1.6101627124953666e-06,
+          9.188292438011558e-07,
+          3.0044413961149985e-06
+        ],
+        "asset": "motions/gWA_sBM_c01_d25_mWA0_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mWA0.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_c01_d25_mWA0_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
+      }
+    },
+    {
+      "case_id": "gJB_sBM_c01_d09_mJB5_ch02_seg2",
+      "sample_id": "gJB_sBM_c01_d09_mJB5_ch02_seg2",
+      "references": [
+        "mJB5",
+        "2-4 s"
+      ],
+      "motion": {
+        "frames": 60,
+        "display_frames": 60,
+        "stride": 1,
+        "translation_count": 180,
+        "rotation_count": 7920,
+        "translation_minimum": [
+          -0.912583589553833,
+          1.1515291929244995,
+          -0.03000069037079811
+        ],
+        "translation_scale": [
+          1.3952523659099825e-05,
+          3.041542186110746e-06,
+          3.8058335576351965e-06
+        ],
+        "asset": "motions/gJB_sBM_c01_d09_mJB5_ch02_seg2.smpl",
+        "fps": 30.0,
+        "translation_offset": 0,
+        "rotation_offset": 360
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "audio/reference/mJB5.mp3",
+          "start_seconds": 2.0,
+          "end_seconds": 4.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJB_sBM_c01_d09_mJB5_ch02_seg2.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 2.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 2,
+        "generated_beats": 2,
+        "matched_beats": 2,
+        "coverage": 1.0,
+        "hit": 1.0
       }
     }
   ]

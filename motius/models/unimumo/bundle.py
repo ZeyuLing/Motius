@@ -116,6 +116,76 @@ def _resolve_artifact(
     )
 
 
+def _adapt_audio_codec_state_dict(
+    state: Mapping[str, torch.Tensor],
+    target: Mapping[str, torch.Tensor],
+) -> dict[str, torch.Tensor]:
+    """Bridge old and parametrized weight-norm checkpoint key layouts."""
+
+    replacements = (
+        (".parametrizations.weight.original0", ".weight_g"),
+        (".parametrizations.weight.original1", ".weight_v"),
+        (".weight_g", ".parametrizations.weight.original0"),
+        (".weight_v", ".parametrizations.weight.original1"),
+    )
+    mapped: dict[str, torch.Tensor] = {}
+    unexpected = []
+    for source_key, value in state.items():
+        destination = source_key if source_key in target else None
+        if destination is None:
+            for old, new in replacements:
+                if old in source_key:
+                    candidate = source_key.replace(old, new)
+                    if candidate in target:
+                        destination = candidate
+                        break
+        if destination is None:
+            unexpected.append(source_key)
+            continue
+        if destination in mapped:
+            raise RuntimeError(
+                "UniMuMo audio codec checkpoint has duplicate mappings for "
+                f"{destination}"
+            )
+        if target[destination].shape != value.shape:
+            raise RuntimeError(
+                "UniMuMo audio codec tensor shape mismatch: "
+                f"{source_key} {tuple(value.shape)} -> {destination} "
+                f"{tuple(target[destination].shape)}"
+            )
+        mapped[destination] = value
+    missing = sorted(set(target) - set(mapped))
+    if missing or unexpected:
+        raise RuntimeError(
+            "UniMuMo audio codec checkpoint mismatch: "
+            f"missing={missing}, unexpected={sorted(unexpected)}"
+        )
+    return mapped
+
+
+def _load_audio_codec(
+    artifact: Path,
+    *,
+    torch_dtype: torch.dtype | None,
+) -> nn.Module:
+    from safetensors.torch import load_file
+    from transformers import EncodecConfig, EncodecModel
+
+    directory = artifact / "audio_codec"
+    config = EncodecConfig.from_pretrained(directory, local_files_only=True)
+    model = EncodecModel(config)
+    checkpoint = directory / "model.safetensors"
+    if not checkpoint.is_file():
+        raise FileNotFoundError(checkpoint)
+    state = _adapt_audio_codec_state_dict(
+        load_file(str(checkpoint)), model.state_dict()
+    )
+    model.load_state_dict(state, strict=True)
+    if torch_dtype is not None:
+        model.to(dtype=torch_dtype)
+    return model
+
+
 @MODEL_BUNDLES.register_module()
 class UniMuMoBundle(ModelBundle):
     """Frozen UniMuMo codecs, dual-stream LM, and captioning models."""
@@ -484,7 +554,6 @@ class UniMuMoBundle(ModelBundle):
         from huggingface_hub import load_torch_model
         from transformers import (
             AutoTokenizer,
-            EncodecModel,
             T5Config,
             T5EncoderModel,
         )
@@ -513,9 +582,7 @@ class UniMuMoBundle(ModelBundle):
         caption_config.is_encoder_decoder = True
         bundle = cls(
             metadata["config"],
-            audio_codec=EncodecModel.from_pretrained(
-                artifact / "audio_codec", **model_kwargs
-            ),
+            audio_codec=_load_audio_codec(artifact, torch_dtype=torch_dtype),
             text_encoder=T5EncoderModel.from_pretrained(
                 artifact / "text_encoder", **model_kwargs
             ),

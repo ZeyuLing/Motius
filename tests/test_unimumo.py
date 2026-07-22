@@ -4,9 +4,11 @@ import json
 from types import SimpleNamespace
 
 import numpy as np
+import pytest
 import torch
 
 from motius.models.unimumo import UniMuMoBundle, UniMuMoGenerator
+from motius.models.unimumo.bundle import _adapt_audio_codec_state_dict
 from motius.models.unimumo.generator import (
     DelayedPattern,
     _sample_logits,
@@ -152,6 +154,49 @@ def test_unimumo_description_modes():
     )
 
 
+def test_unimumo_audio_codec_adapts_parametrized_weight_norm_keys():
+    state = {
+        "encoder.conv.parametrizations.weight.original0": torch.ones(2, 1, 1),
+        "encoder.conv.parametrizations.weight.original1": torch.ones(2, 3, 5),
+        "encoder.conv.bias": torch.ones(2),
+    }
+    target = {
+        "encoder.conv.weight_g": torch.zeros(2, 1, 1),
+        "encoder.conv.weight_v": torch.zeros(2, 3, 5),
+        "encoder.conv.bias": torch.zeros(2),
+    }
+
+    mapped = _adapt_audio_codec_state_dict(state, target)
+
+    assert set(mapped) == set(target)
+    torch.testing.assert_close(
+        mapped["encoder.conv.weight_g"],
+        state["encoder.conv.parametrizations.weight.original0"],
+    )
+
+
+def test_unimumo_audio_codec_rejects_partial_checkpoint():
+    with pytest.raises(RuntimeError, match="checkpoint mismatch"):
+        _adapt_audio_codec_state_dict(
+            {"encoder.conv.weight_g": torch.ones(1)},
+            {
+                "encoder.conv.weight_g": torch.zeros(1),
+                "encoder.conv.weight_v": torch.zeros(1),
+            },
+        )
+
+
+def test_unimumo_audio_codec_rejects_duplicate_key_layouts():
+    with pytest.raises(RuntimeError, match="duplicate mappings"):
+        _adapt_audio_codec_state_dict(
+            {
+                "encoder.conv.weight_g": torch.ones(1),
+                "encoder.conv.parametrizations.weight.original0": torch.ones(1),
+            },
+            {"encoder.conv.weight_g": torch.zeros(1)},
+        )
+
+
 def test_unimumo_cfg_conditions_share_padding_layout():
     class FakeBundle:
         device = torch.device("cpu")
@@ -189,6 +234,39 @@ def test_unimumo_pipeline_resamples_motion_to_native_fps():
     assert upsampled.shape == (36, 263)
     assert batched.shape == (1, 36, 263)
     torch.testing.assert_close(upsampled, batched[0])
+
+
+def test_unimumo_motion_to_music_batches_equal_length_inputs():
+    class FakeBundle:
+        device = torch.device("cpu")
+        motion_fps = 60.0
+
+        def encode_motion(self, motion):
+            assert motion.shape == (3, 120, 263)
+            return torch.zeros(3, 4, 10, dtype=torch.long)
+
+        def generate_codes(self, descriptions, **kwargs):
+            assert descriptions == [
+                " <separation> ",
+                "percussion <separation> ",
+                "jazz <separation> ",
+            ]
+            assert kwargs["mode"] == "motion2music"
+            assert kwargs["motion_codes"].shape == (3, 4, 10)
+            codes = torch.ones(3, 4, 10, dtype=torch.long)
+            return codes, kwargs["motion_codes"]
+
+    pipeline = UniMuMoPipeline.__new__(UniMuMoPipeline)
+    pipeline.bundle = FakeBundle()
+    pipeline._decode_batch = lambda music, motion: (music.shape, motion.shape)
+
+    output = pipeline.infer_motion_to_music_batch(
+        np.zeros((3, 120, 263), dtype=np.float32),
+        music_prompts=["", "percussion", "jazz"],
+        seed=42,
+    )
+
+    assert output == ((3, 4, 10), (3, 4, 10))
 
 
 def test_unimumo_aistpp_bridge_preserves_body_and_extends_hands():
