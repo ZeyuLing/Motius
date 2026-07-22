@@ -8,5 +8,6 @@ artifact-based; raw upstream checkpoints are handled by converter/debug code.
 """
 
 from motius.models.motionstreamer.bundle import MotionStreamerBundle
+from motius.models.motionstreamer.evaluator import MotionStreamer272Evaluator
 
-__all__ = ["MotionStreamerBundle"]
+__all__ = ["MotionStreamer272Evaluator", "MotionStreamerBundle"]
