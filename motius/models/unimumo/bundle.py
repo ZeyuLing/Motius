@@ -523,7 +523,7 @@ class UniMuMoBundle(ModelBundle):
                 artifact / "captioner", config=caption_config, **model_kwargs
             ),
             tokenizer=AutoTokenizer.from_pretrained(
-                artifact / "tokenizer", local_files_only=True
+                artifact / "tokenizer", local_files_only=True, use_fast=False
             ),
             mean=np.load(artifact / "mean.npy"),
             std=np.load(artifact / "std.npy"),
