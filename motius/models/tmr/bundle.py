@@ -8,6 +8,7 @@ from typing import Any, Dict, Optional
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch import Tensor
 
 from motius.models.base_model_bundle import ModelBundle
@@ -158,6 +159,26 @@ class TMRCore(nn.Module):
             return mean
         return mean + self.fact * torch.randn_like(mean) * torch.exp(0.5 * log_variance)
 
+    def encode_with_distribution(
+        self,
+        inputs: Dict[str, Tensor],
+        modality: str,
+        sample_mean: Optional[bool] = None,
+    ):
+        """Return a latent together with its Gaussian parameters."""
+        encoder = self.text_encoder if modality == "text" else self.motion_encoder
+        encoded = encoder(inputs)
+        if not self.vae:
+            return encoded[:, 0], None
+        mean, log_variance = encoded.unbind(1)
+        use_mean = self.sample_mean if sample_mean is None else bool(sample_mean)
+        latent = mean
+        if not use_mean:
+            latent = mean + self.fact * torch.randn_like(mean) * torch.exp(
+                0.5 * log_variance
+            )
+        return latent, (mean, log_variance)
+
     def decode(self, latent: Tensor, mask: Tensor) -> Tensor:
         return self.motion_decoder(latent, mask)
 
@@ -172,6 +193,9 @@ class TMRBundle(ModelBundle):
         text_nfeats: int = 768,
         vae: bool = True,
         arch: Optional[Dict[str, Any]] = None,
+        lmd: Optional[Dict[str, float]] = None,
+        temperature: float = 0.1,
+        threshold_selfsim: float = 0.8,
         sample_mean: bool = True,
         fact: Optional[float] = None,
         **_: Any,
@@ -192,14 +216,114 @@ class TMRBundle(ModelBundle):
             fact=fact,
         )
         self._save_ckpt_modules.append("tmr")
+        self._trainable_modules.append("tmr")
+        self._module_checkpoint_formats["tmr"] = "full"
+        self.lmd = deepcopy(lmd) if lmd is not None else {
+            "recons": 1.0,
+            "latent": 1.0e-5,
+            "kl": 1.0e-5,
+            "contrastive": 0.1,
+        }
+        self.temperature = float(temperature)
+        self.threshold_selfsim = float(threshold_selfsim)
+
+    @staticmethod
+    def _unwrap_tmr(module: nn.Module) -> TMRCore:
+        while hasattr(module, "module") and isinstance(module.module, nn.Module):
+            module = module.module
+        return module
+
+    @staticmethod
+    def _kl_loss(q, p) -> Tensor:
+        mu_q, logvar_q = q
+        mu_p, logvar_p = p
+        return 0.5 * (
+            logvar_p
+            - logvar_q
+            + (logvar_q.exp() + (mu_q - mu_p).pow(2)) / logvar_p.exp()
+            - 1
+        ).mean()
+
+    def _contrastive_loss(
+        self,
+        text_latents: Tensor,
+        motion_latents: Tensor,
+        sentence_embeddings: Optional[Tensor],
+    ) -> Tensor:
+        text_latents = F.normalize(text_latents, dim=-1)
+        motion_latents = F.normalize(motion_latents, dim=-1)
+        logits = text_latents @ motion_latents.T / self.temperature
+        labels = torch.arange(len(logits), device=logits.device)
+        if sentence_embeddings is not None and self.threshold_selfsim:
+            similarities = sentence_embeddings @ sentence_embeddings.T
+            similarities = similarities - torch.diag_embed(similarities.diag())
+            filtered = similarities > (2 * self.threshold_selfsim - 1)
+            logits = logits.masked_fill(filtered, -torch.inf)
+        return 0.5 * (
+            F.cross_entropy(logits, labels)
+            + F.cross_entropy(logits.T, labels)
+        )
+
+    def compute_loss(self, batch: Dict[str, Any]) -> Dict[str, Tensor]:
+        """Compute the released TMR reconstruction and retrieval objective."""
+        core = self._unwrap_tmr(self.tmr)
+        text_inputs = batch["text_x_dict"]
+        motion_inputs = batch["motion_x_dict"]
+        mask = motion_inputs["mask"]
+        reference = motion_inputs["x"]
+
+        text_latents, text_dist = core.encode_with_distribution(
+            text_inputs, modality="text"
+        )
+        motion_latents, motion_dist = core.encode_with_distribution(
+            motion_inputs, modality="motion"
+        )
+        text_reconstruction = core.decode(text_latents, mask)
+        motion_reconstruction = core.decode(motion_latents, mask)
+
+        losses: Dict[str, Tensor] = {}
+        losses["recons_text"] = F.smooth_l1_loss(
+            text_reconstruction, reference
+        )
+        losses["recons_motion"] = F.smooth_l1_loss(
+            motion_reconstruction, reference
+        )
+        losses["recons"] = losses["recons_text"] + losses["recons_motion"]
+        if core.vae:
+            zero_dist = (
+                torch.zeros_like(motion_dist[0]),
+                torch.zeros_like(motion_dist[1]),
+            )
+            losses["kl"] = (
+                self._kl_loss(text_dist, motion_dist)
+                + self._kl_loss(motion_dist, text_dist)
+                + self._kl_loss(motion_dist, zero_dist)
+                + self._kl_loss(text_dist, zero_dist)
+            )
+        losses["latent"] = F.smooth_l1_loss(text_latents, motion_latents)
+        losses["contrastive"] = self._contrastive_loss(
+            text_latents,
+            motion_latents,
+            batch.get("sent_emb"),
+        )
+        losses["loss"] = sum(
+            self.lmd[name] * value
+            for name, value in losses.items()
+            if name in self.lmd
+        )
+        return losses
 
     @torch.inference_mode()
     def encode_text(self, inputs: Dict[str, Tensor], sample_mean: bool = True) -> Tensor:
-        return self.tmr.encode(inputs, modality="text", sample_mean=sample_mean)
+        return self._unwrap_tmr(self.tmr).encode(
+            inputs, modality="text", sample_mean=sample_mean
+        )
 
     @torch.inference_mode()
     def encode_motion(self, inputs: Dict[str, Tensor], sample_mean: bool = True) -> Tensor:
-        return self.tmr.encode(inputs, modality="motion", sample_mean=sample_mean)
+        return self._unwrap_tmr(self.tmr).encode(
+            inputs, modality="motion", sample_mean=sample_mean
+        )
 
 
 __all__ = ["TMRBundle"]

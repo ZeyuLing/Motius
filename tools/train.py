@@ -69,6 +69,17 @@ def parse_args():
     return parser.parse_args()
 
 
+def _import_custom_modules(cfg):
+    custom_imports = getattr(cfg, 'custom_imports', None)
+    if custom_imports is None:
+        return
+    if hasattr(custom_imports, 'to_dict'):
+        custom_imports = custom_imports.to_dict()
+    from mmengine.utils import import_modules_from_strings
+
+    import_modules_from_strings(**dict(custom_imports))
+
+
 def main():
     args = parse_args()
 
@@ -79,6 +90,7 @@ def main():
     # Load config
     from mmengine.config import Config
     cfg = Config.fromfile(args.config)
+    _import_custom_modules(cfg)
 
     # Apply CLI overrides
     if args.work_dir:

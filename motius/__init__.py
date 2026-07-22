@@ -22,9 +22,8 @@ from motius.registry import (
 def register_all_modules() -> None:
     """Register framework-level components.
 
-    Method-specific models, trainers, and pipelines are intentionally not
-    imported by the core release. They will be registered by each method package
-    as it is opened.
+    Lightweight datasets and trainers are registered here. Method-specific
+    model packages remain opt-in through each config's ``custom_imports`` list.
     """
 
     import motius.hooks.checkpoint_hook  # noqa: F401
@@ -34,8 +33,10 @@ def register_all_modules() -> None:
     import motius.visualization.file_visualizer  # noqa: F401
     import motius.visualization.tensorboard_visualizer  # noqa: F401
     import motius.datasets.transforms  # noqa: F401
+    import motius.datasets  # noqa: F401
     import motius.evaluation.evaluators  # noqa: F401
     import motius.models.tmr  # noqa: F401
+    import motius.trainers  # noqa: F401
 
 
 __all__ = [

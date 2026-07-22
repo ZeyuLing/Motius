@@ -346,6 +346,12 @@ pytest -q
 
 ## Documentation
 
+Training code for PRISM, TMR, and HYMotion T2M is released with neutral data
+interfaces and reproducible configs. See the
+[training guide](docs/training/prism_tmr_hymotion_t2m.md). The recipes accept
+only user-provided local roots/manifests and do not encode private data
+locations or provenance.
+
 The detailed architecture, extension points, and package conventions live in
 the formal documentation:
 
