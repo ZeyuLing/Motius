@@ -7,14 +7,18 @@ import numpy as np
 import torch
 
 from motius.models.unimumo import UniMuMoBundle, UniMuMoGenerator
-from motius.models.unimumo.generator import DelayedPattern, generate_parallel
+from motius.models.unimumo.generator import (
+    DelayedPattern,
+    _sample_logits,
+    generate_parallel,
+)
 from motius.models.unimumo.motion_codec import UniMuMoMotionCodec
 from motius.pipelines.unimumo import UniMuMoPipeline
 from motius.registry import MODEL_BUNDLES, PIPELINES
 from tools.eval_dance_to_music_beats import unique_beat_matches
 from tools.infer_unimumo_aistpp import smpl22_to_smpl24
 from tools.infer_unimumo_dance_to_music import decode_packed_joints
-from tools.infer_unimumo_humanml3d import selected_caption
+from tools.infer_unimumo_humanml3d import inverse_native_hml263, selected_caption
 from tools.run_m2t_humanml3d import _unimumo_caption_batch
 
 
@@ -110,6 +114,28 @@ def test_unimumo_generator_forward_and_cfg_generation():
     assert generated_motion.min() >= 0 and generated_motion.max() < 8
 
 
+def test_unimumo_top_k_sampling_matches_upstream_full_vocabulary_order():
+    logits = torch.randn(2, 3, 17, generator=torch.Generator().manual_seed(4))
+    probabilities = torch.softmax(logits / 0.8, dim=-1)
+    top_values = torch.topk(probabilities, 5, dim=-1).values
+    probabilities *= probabilities >= top_values[..., -1, None]
+    probabilities /= probabilities.sum(dim=-1, keepdim=True)
+    expected = torch.multinomial(
+        probabilities.reshape(-1, probabilities.shape[-1]),
+        1,
+        generator=torch.Generator().manual_seed(9),
+    ).reshape(*probabilities.shape[:-1])
+
+    actual = _sample_logits(
+        logits,
+        temperature=0.8,
+        top_k=5,
+        generator=torch.Generator().manual_seed(9),
+    )
+
+    torch.testing.assert_close(actual, expected)
+
+
 def test_unimumo_description_modes():
     descriptions = ["piano solo <separation> a person spins"]
     assert UniMuMoBundle._split_descriptions(descriptions, "music_motion") == (
@@ -184,6 +210,17 @@ def test_unimumo_t2m_selected_caption_prefers_macro(tmp_path):
         json.dumps({"macro": ["walk forward"], "meso": ["ignored"]})
     )
     assert selected_caption(path) == "walk forward"
+
+
+def test_unimumo_t2m_inverts_native_linear_upsampling_phase():
+    motion = torch.randn(17, 263, generator=torch.Generator().manual_seed(8))
+    native = torch.nn.functional.interpolate(
+        motion.T[None], scale_factor=3, mode="linear"
+    ).transpose(1, 2)[0]
+
+    reconstructed = inverse_native_hml263(native.numpy(), len(motion))
+
+    np.testing.assert_allclose(reconstructed, motion.numpy(), atol=1e-6)
 
 
 def test_decode_packed_joints_respects_offset_and_quantization(tmp_path):

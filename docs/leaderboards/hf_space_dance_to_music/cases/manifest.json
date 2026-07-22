@@ -1,0 +1,2131 @@
+{
+  "schema_version": 1,
+  "task": "dance_to_music",
+  "title": "AIST++ Dance-to-Music Audio Comparison",
+  "protocol": "AIST++ shared crossmodal 40-case package",
+  "population": 40,
+  "representation": "smpl_motion135",
+  "body_model_url": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/smpl_model/",
+  "cases": [
+    {
+      "case_id": "gBR_sBM_cAll_d04_mBR0_ch01",
+      "sample_id": "gBR_sBM_cAll_d04_mBR0_ch01",
+      "references": [
+        "Break",
+        "Music mBR0"
+      ],
+      "motion": {
+        "frames": 180,
+        "display_frames": 360,
+        "stride": 2,
+        "translation_count": 540,
+        "rotation_count": 23760,
+        "translation_minimum": [
+          -0.16307027637958527,
+          1.1167535781860352,
+          -0.18697276711463928
+        ],
+        "translation_scale": [
+          7.150786586862523e-06,
+          2.0579741430992726e-06,
+          6.515964287245879e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 0,
+        "rotation_offset": 1080,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.895600318908691
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mBR0.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_cAll_d04_mBR0_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 16,
+        "generated_beats": 19,
+        "matched_beats": 9,
+        "coverage": 1.1875,
+        "hit": 0.5625
+      }
+    },
+    {
+      "case_id": "gBR_sBM_cAll_d04_mBR0_ch02",
+      "sample_id": "gBR_sBM_cAll_d04_mBR0_ch02",
+      "references": [
+        "Break",
+        "Music mBR0"
+      ],
+      "motion": {
+        "frames": 180,
+        "display_frames": 360,
+        "stride": 2,
+        "translation_count": 540,
+        "rotation_count": 23760,
+        "translation_minimum": [
+          -0.1927625834941864,
+          1.1270824670791626,
+          0.1297108232975006
+        ],
+        "translation_scale": [
+          5.184208930586465e-06,
+          2.7928115287068067e-06,
+          4.283945600036532e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 48600,
+        "rotation_offset": 49680,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 13.6560640335083
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mBR0.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_cAll_d04_mBR0_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 16,
+        "generated_beats": 19,
+        "matched_beats": 4,
+        "coverage": 1.1875,
+        "hit": 0.25
+      }
+    },
+    {
+      "case_id": "gBR_sBM_cAll_d05_mBR0_ch01",
+      "sample_id": "gBR_sBM_cAll_d05_mBR0_ch01",
+      "references": [
+        "Break",
+        "Music mBR0"
+      ],
+      "motion": {
+        "frames": 180,
+        "display_frames": 360,
+        "stride": 2,
+        "translation_count": 540,
+        "rotation_count": 23760,
+        "translation_minimum": [
+          -0.3865744471549988,
+          1.1253637075424194,
+          -0.2643873989582062
+        ],
+        "translation_scale": [
+          1.0742916856543161e-05,
+          2.412355115666287e-06,
+          5.902349585085176e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 97200,
+        "rotation_offset": 98280,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.841167449951172
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mBR0.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_cAll_d05_mBR0_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 16,
+        "generated_beats": 17,
+        "matched_beats": 8,
+        "coverage": 1.0625,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gBR_sBM_cAll_d05_mBR0_ch02",
+      "sample_id": "gBR_sBM_cAll_d05_mBR0_ch02",
+      "references": [
+        "Break",
+        "Music mBR0"
+      ],
+      "motion": {
+        "frames": 180,
+        "display_frames": 360,
+        "stride": 2,
+        "translation_count": 540,
+        "rotation_count": 23760,
+        "translation_minimum": [
+          -0.13347606360912323,
+          1.153630018234253,
+          -0.2770628333091736
+        ],
+        "translation_scale": [
+          4.301180069887778e-06,
+          2.446459802740719e-06,
+          6.911143827892374e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 145800,
+        "rotation_offset": 146880,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.63364028930664
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mBR0.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gBR_sBM_cAll_d05_mBR0_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 16,
+        "generated_beats": 24,
+        "matched_beats": 10,
+        "coverage": 1.5,
+        "hit": 0.625
+      }
+    },
+    {
+      "case_id": "gHO_sBM_cAll_d20_mHO5_ch01",
+      "sample_id": "gHO_sBM_cAll_d20_mHO5_ch01",
+      "references": [
+        "House",
+        "Music mHO5"
+      ],
+      "motion": {
+        "frames": 107,
+        "display_frames": 213,
+        "stride": 2,
+        "translation_count": 321,
+        "rotation_count": 14124,
+        "translation_minimum": [
+          -0.08674436807632446,
+          1.1150178909301758,
+          -0.2693440020084381
+        ],
+        "translation_scale": [
+          2.9945013011456467e-06,
+          1.9835545117530273e-06,
+          3.76971570403839e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 194400,
+        "rotation_offset": 195042,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 13.706133842468262
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mHO5.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 7.1
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gHO_sBM_cAll_d20_mHO5_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 7.1
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 16,
+        "generated_beats": 12,
+        "matched_beats": 7,
+        "coverage": 0.75,
+        "hit": 0.4375
+      }
+    },
+    {
+      "case_id": "gHO_sBM_cAll_d20_mHO5_ch02",
+      "sample_id": "gHO_sBM_cAll_d20_mHO5_ch02",
+      "references": [
+        "House",
+        "Music mHO5"
+      ],
+      "motion": {
+        "frames": 107,
+        "display_frames": 213,
+        "stride": 2,
+        "translation_count": 321,
+        "rotation_count": 14124,
+        "translation_minimum": [
+          -0.31434935331344604,
+          1.07599937915802,
+          -0.33498460054397583
+        ],
+        "translation_scale": [
+          7.481733518943656e-06,
+          2.5031586119439453e-06,
+          3.3129033454315504e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 223290,
+        "rotation_offset": 223932,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 13.695927619934082
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mHO5.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 7.1
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gHO_sBM_cAll_d20_mHO5_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 7.1
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 16,
+        "generated_beats": 9,
+        "matched_beats": 2,
+        "coverage": 0.5625,
+        "hit": 0.125
+      }
+    },
+    {
+      "case_id": "gHO_sBM_cAll_d21_mHO5_ch01",
+      "sample_id": "gHO_sBM_cAll_d21_mHO5_ch01",
+      "references": [
+        "House",
+        "Music mHO5"
+      ],
+      "motion": {
+        "frames": 107,
+        "display_frames": 213,
+        "stride": 2,
+        "translation_count": 321,
+        "rotation_count": 14124,
+        "translation_minimum": [
+          -0.09463256597518921,
+          1.107774257659912,
+          -0.7394058108329773
+        ],
+        "translation_scale": [
+          5.927178790443577e-06,
+          2.3573643375129905e-06,
+          5.646557838190347e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 252180,
+        "rotation_offset": 252822,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 13.489347457885742
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mHO5.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 7.1
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gHO_sBM_cAll_d21_mHO5_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 7.1
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 16,
+        "generated_beats": 13,
+        "matched_beats": 5,
+        "coverage": 0.8125,
+        "hit": 0.3125
+      }
+    },
+    {
+      "case_id": "gHO_sBM_cAll_d21_mHO5_ch02",
+      "sample_id": "gHO_sBM_cAll_d21_mHO5_ch02",
+      "references": [
+        "House",
+        "Music mHO5"
+      ],
+      "motion": {
+        "frames": 107,
+        "display_frames": 213,
+        "stride": 2,
+        "translation_count": 321,
+        "rotation_count": 14124,
+        "translation_minimum": [
+          -0.2505875527858734,
+          1.0299468040466309,
+          -0.5812352895736694
+        ],
+        "translation_scale": [
+          7.595987426611828e-06,
+          3.4120032523787813e-06,
+          2.6330251330364263e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 281070,
+        "rotation_offset": 281712,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 13.728363037109375
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mHO5.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 7.1
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gHO_sBM_cAll_d21_mHO5_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 7.1
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 16,
+        "generated_beats": 14,
+        "matched_beats": 8,
+        "coverage": 0.875,
+        "hit": 0.5
+      }
+    },
+    {
+      "case_id": "gJB_sBM_cAll_d08_mJB5_ch01",
+      "sample_id": "gJB_sBM_cAll_d08_mJB5_ch01",
+      "references": [
+        "Jazz Ballet",
+        "Music mJB5"
+      ],
+      "motion": {
+        "frames": 111,
+        "display_frames": 222,
+        "stride": 2,
+        "translation_count": 333,
+        "rotation_count": 14652,
+        "translation_minimum": [
+          -1.9834054708480835,
+          1.135158658027649,
+          -0.5207378268241882
+        ],
+        "translation_scale": [
+          5.743002111557871e-05,
+          2.1690907487936784e-06,
+          5.9197145674261265e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 309960,
+        "rotation_offset": 310626,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 16.031763076782227
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJB5.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 7.4
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJB_sBM_cAll_d08_mJB5_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 7.4
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 14,
+        "matched_beats": 11,
+        "coverage": 0.9333333333333333,
+        "hit": 0.7333333333333333
+      }
+    },
+    {
+      "case_id": "gJB_sBM_cAll_d08_mJB5_ch02",
+      "sample_id": "gJB_sBM_cAll_d08_mJB5_ch02",
+      "references": [
+        "Jazz Ballet",
+        "Music mJB5"
+      ],
+      "motion": {
+        "frames": 111,
+        "display_frames": 222,
+        "stride": 2,
+        "translation_count": 333,
+        "rotation_count": 14652,
+        "translation_minimum": [
+          -0.9844953417778015,
+          1.1475911140441895,
+          -1.3739606142044067
+        ],
+        "translation_scale": [
+          4.03565245505888e-05,
+          2.665829697434674e-06,
+          3.718190419021994e-05
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 339930,
+        "rotation_offset": 340596,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 15.644195556640625
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJB5.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 7.4
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJB_sBM_cAll_d08_mJB5_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 7.4
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 11,
+        "matched_beats": 5,
+        "coverage": 0.7333333333333333,
+        "hit": 0.3333333333333333
+      }
+    },
+    {
+      "case_id": "gJB_sBM_cAll_d09_mJB5_ch01",
+      "sample_id": "gJB_sBM_cAll_d09_mJB5_ch01",
+      "references": [
+        "Jazz Ballet",
+        "Music mJB5"
+      ],
+      "motion": {
+        "frames": 111,
+        "display_frames": 222,
+        "stride": 2,
+        "translation_count": 333,
+        "rotation_count": 14652,
+        "translation_minimum": [
+          -1.017688512802124,
+          1.120871901512146,
+          -1.5336881875991821
+        ],
+        "translation_scale": [
+          4.183283090242185e-05,
+          2.9952100248920033e-06,
+          1.2737575161736459e-05
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 369900,
+        "rotation_offset": 370566,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 15.834006309509277
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJB5.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 7.4
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJB_sBM_cAll_d09_mJB5_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 7.4
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 8,
+        "matched_beats": 4,
+        "coverage": 0.5333333333333333,
+        "hit": 0.26666666666666666
+      }
+    },
+    {
+      "case_id": "gJB_sBM_cAll_d09_mJB5_ch02",
+      "sample_id": "gJB_sBM_cAll_d09_mJB5_ch02",
+      "references": [
+        "Jazz Ballet",
+        "Music mJB5"
+      ],
+      "motion": {
+        "frames": 111,
+        "display_frames": 222,
+        "stride": 2,
+        "translation_count": 333,
+        "rotation_count": 14652,
+        "translation_minimum": [
+          -1.3204801082611084,
+          1.1564830541610718,
+          -0.6585723757743835
+        ],
+        "translation_scale": [
+          4.676953540183604e-05,
+          2.977789336000569e-06,
+          5.360328486858634e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 399870,
+        "rotation_offset": 400536,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 16.133243560791016
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJB5.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 7.4
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJB_sBM_cAll_d09_mJB5_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 7.4
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 7,
+        "matched_beats": 3,
+        "coverage": 0.4666666666666667,
+        "hit": 0.2
+      }
+    },
+    {
+      "case_id": "gJS_sBM_cAll_d01_mJS3_ch01",
+      "sample_id": "gJS_sBM_cAll_d01_mJS3_ch01",
+      "references": [
+        "Jazz",
+        "Music mJS3"
+      ],
+      "motion": {
+        "frames": 131,
+        "display_frames": 262,
+        "stride": 2,
+        "translation_count": 393,
+        "rotation_count": 17292,
+        "translation_minimum": [
+          0.010421681217849255,
+          1.180728554725647,
+          -0.16307811439037323
+        ],
+        "translation_scale": [
+          3.408071904686949e-07,
+          4.254862915331614e-07,
+          8.407873792748433e-07
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 429840,
+        "rotation_offset": 430626,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 17.158716201782227
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJS3.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJS_sBM_cAll_d01_mJS3_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 23,
+        "matched_beats": 8,
+        "coverage": 1.5333333333333334,
+        "hit": 0.5333333333333333
+      }
+    },
+    {
+      "case_id": "gJS_sBM_cAll_d01_mJS3_ch02",
+      "sample_id": "gJS_sBM_cAll_d01_mJS3_ch02",
+      "references": [
+        "Jazz",
+        "Music mJS3"
+      ],
+      "motion": {
+        "frames": 131,
+        "display_frames": 262,
+        "stride": 2,
+        "translation_count": 393,
+        "rotation_count": 17292,
+        "translation_minimum": [
+          -0.16552411019802094,
+          1.1795783042907715,
+          -0.20389024913311005
+        ],
+        "translation_scale": [
+          4.258511125954101e-06,
+          6.289070029197319e-07,
+          2.7112869247503113e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 465210,
+        "rotation_offset": 465996,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 18.225940704345703
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJS3.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJS_sBM_cAll_d01_mJS3_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 18,
+        "matched_beats": 5,
+        "coverage": 1.2,
+        "hit": 0.3333333333333333
+      }
+    },
+    {
+      "case_id": "gJS_sBM_cAll_d03_mJS3_ch01",
+      "sample_id": "gJS_sBM_cAll_d03_mJS3_ch01",
+      "references": [
+        "Jazz",
+        "Music mJS3"
+      ],
+      "motion": {
+        "frames": 131,
+        "display_frames": 262,
+        "stride": 2,
+        "translation_count": 393,
+        "rotation_count": 17292,
+        "translation_minimum": [
+          0.035210538655519485,
+          1.1900826692581177,
+          -0.11827614158391953
+        ],
+        "translation_scale": [
+          3.4501451295909646e-07,
+          5.563536547015246e-07,
+          7.243593245220836e-07
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 500580,
+        "rotation_offset": 501366,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 16.657974243164062
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJS3.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJS_sBM_cAll_d03_mJS3_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 14,
+        "matched_beats": 5,
+        "coverage": 0.9333333333333333,
+        "hit": 0.3333333333333333
+      }
+    },
+    {
+      "case_id": "gJS_sBM_cAll_d03_mJS3_ch02",
+      "sample_id": "gJS_sBM_cAll_d03_mJS3_ch02",
+      "references": [
+        "Jazz",
+        "Music mJS3"
+      ],
+      "motion": {
+        "frames": 131,
+        "display_frames": 262,
+        "stride": 2,
+        "translation_count": 393,
+        "rotation_count": 17292,
+        "translation_minimum": [
+          -0.16563868522644043,
+          1.1818629503250122,
+          -0.11094177514314651
+        ],
+        "translation_scale": [
+          4.139597876928747e-06,
+          5.685738528882212e-07,
+          1.7249559505216894e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 535950,
+        "rotation_offset": 536736,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 15.063187599182129
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mJS3.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gJS_sBM_cAll_d03_mJS3_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 18,
+        "matched_beats": 5,
+        "coverage": 1.2,
+        "hit": 0.3333333333333333
+      }
+    },
+    {
+      "case_id": "gKR_sBM_cAll_d28_mKR2_ch01",
+      "sample_id": "gKR_sBM_cAll_d28_mKR2_ch01",
+      "references": [
+        "Krump",
+        "Music mKR2"
+      ],
+      "motion": {
+        "frames": 144,
+        "display_frames": 288,
+        "stride": 2,
+        "translation_count": 432,
+        "rotation_count": 19008,
+        "translation_minimum": [
+          -0.19976414740085602,
+          1.1410659551620483,
+          -0.19857157766819
+        ],
+        "translation_scale": [
+          3.741505452126148e-06,
+          1.5382699984911596e-06,
+          2.076707232845365e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 571320,
+        "rotation_offset": 572184,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.46229076385498
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mKR2.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gKR_sBM_cAll_d28_mKR2_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 19,
+        "matched_beats": 8,
+        "coverage": 1.2666666666666666,
+        "hit": 0.5333333333333333
+      }
+    },
+    {
+      "case_id": "gKR_sBM_cAll_d28_mKR2_ch02",
+      "sample_id": "gKR_sBM_cAll_d28_mKR2_ch02",
+      "references": [
+        "Krump",
+        "Music mKR2"
+      ],
+      "motion": {
+        "frames": 144,
+        "display_frames": 288,
+        "stride": 2,
+        "translation_count": 432,
+        "rotation_count": 19008,
+        "translation_minimum": [
+          -0.06695317476987839,
+          1.0542972087860107,
+          -0.1653786599636078
+        ],
+        "translation_scale": [
+          7.875628966758086e-07,
+          3.0257131129474146e-06,
+          3.3327130495308666e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 610200,
+        "rotation_offset": 611064,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.15017318725586
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mKR2.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gKR_sBM_cAll_d28_mKR2_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 20,
+        "matched_beats": 5,
+        "coverage": 1.3333333333333333,
+        "hit": 0.3333333333333333
+      }
+    },
+    {
+      "case_id": "gKR_sBM_cAll_d30_mKR2_ch01",
+      "sample_id": "gKR_sBM_cAll_d30_mKR2_ch01",
+      "references": [
+        "Krump",
+        "Music mKR2"
+      ],
+      "motion": {
+        "frames": 144,
+        "display_frames": 288,
+        "stride": 2,
+        "translation_count": 432,
+        "rotation_count": 19008,
+        "translation_minimum": [
+          -0.19227075576782227,
+          1.144486904144287,
+          -0.23381775617599487
+        ],
+        "translation_scale": [
+          3.633393134805374e-06,
+          2.5648832888691686e-06,
+          1.5798220829310594e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 649080,
+        "rotation_offset": 649944,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.98525619506836
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mKR2.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gKR_sBM_cAll_d30_mKR2_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 26,
+        "matched_beats": 10,
+        "coverage": 1.7333333333333334,
+        "hit": 0.6666666666666666
+      }
+    },
+    {
+      "case_id": "gKR_sBM_cAll_d30_mKR2_ch02",
+      "sample_id": "gKR_sBM_cAll_d30_mKR2_ch02",
+      "references": [
+        "Krump",
+        "Music mKR2"
+      ],
+      "motion": {
+        "frames": 144,
+        "display_frames": 288,
+        "stride": 2,
+        "translation_count": 432,
+        "rotation_count": 19008,
+        "translation_minimum": [
+          -0.2099449336528778,
+          1.0700156688690186,
+          -0.280047744512558
+        ],
+        "translation_scale": [
+          4.367499059299007e-06,
+          2.6951140625897096e-06,
+          2.216461552961846e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 687960,
+        "rotation_offset": 688824,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.81053352355957
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mKR2.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gKR_sBM_cAll_d30_mKR2_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 8,
+        "matched_beats": 3,
+        "coverage": 0.5333333333333333,
+        "hit": 0.2
+      }
+    },
+    {
+      "case_id": "gLH_sBM_cAll_d17_mLH4_ch01",
+      "sample_id": "gLH_sBM_cAll_d17_mLH4_ch01",
+      "references": [
+        "LA Style Hip-hop",
+        "Music mLH4"
+      ],
+      "motion": {
+        "frames": 120,
+        "display_frames": 240,
+        "stride": 2,
+        "translation_count": 360,
+        "rotation_count": 15840,
+        "translation_minimum": [
+          -0.5742355585098267,
+          1.0960363149642944,
+          -0.4581889808177948
+        ],
+        "translation_scale": [
+          1.3797906831314322e-05,
+          3.0685764613735955e-06,
+          5.1668343985511456e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 726840,
+        "rotation_offset": 727560,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.436945915222168
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLH4.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLH_sBM_cAll_d17_mLH4_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 8.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 9,
+        "matched_beats": 3,
+        "coverage": 0.6,
+        "hit": 0.2
+      }
+    },
+    {
+      "case_id": "gLH_sBM_cAll_d17_mLH4_ch02",
+      "sample_id": "gLH_sBM_cAll_d17_mLH4_ch02",
+      "references": [
+        "LA Style Hip-hop",
+        "Music mLH4"
+      ],
+      "motion": {
+        "frames": 120,
+        "display_frames": 240,
+        "stride": 2,
+        "translation_count": 360,
+        "rotation_count": 15840,
+        "translation_minimum": [
+          -0.5817664265632629,
+          1.1263427734375,
+          -0.5663530826568604
+        ],
+        "translation_scale": [
+          1.1719749636540655e-05,
+          1.6073818187578581e-06,
+          3.796702685576747e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 759240,
+        "rotation_offset": 759960,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.354974746704102
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLH4.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLH_sBM_cAll_d17_mLH4_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 8.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 7,
+        "matched_beats": 3,
+        "coverage": 0.4666666666666667,
+        "hit": 0.2
+      }
+    },
+    {
+      "case_id": "gLH_sBM_cAll_d18_mLH4_ch01",
+      "sample_id": "gLH_sBM_cAll_d18_mLH4_ch01",
+      "references": [
+        "LA Style Hip-hop",
+        "Music mLH4"
+      ],
+      "motion": {
+        "frames": 120,
+        "display_frames": 240,
+        "stride": 2,
+        "translation_count": 360,
+        "rotation_count": 15840,
+        "translation_minimum": [
+          -0.5464929342269897,
+          1.1124812364578247,
+          -0.5891174077987671
+        ],
+        "translation_scale": [
+          1.4552657376043499e-05,
+          1.8628390989761101e-06,
+          5.724773927795468e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 791640,
+        "rotation_offset": 792360,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.017572402954102
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLH4.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLH_sBM_cAll_d18_mLH4_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 8.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 16,
+        "matched_beats": 7,
+        "coverage": 1.0666666666666667,
+        "hit": 0.4666666666666667
+      }
+    },
+    {
+      "case_id": "gLH_sBM_cAll_d18_mLH4_ch02",
+      "sample_id": "gLH_sBM_cAll_d18_mLH4_ch02",
+      "references": [
+        "LA Style Hip-hop",
+        "Music mLH4"
+      ],
+      "motion": {
+        "frames": 120,
+        "display_frames": 240,
+        "stride": 2,
+        "translation_count": 360,
+        "rotation_count": 15840,
+        "translation_minimum": [
+          -0.5145145654678345,
+          1.1150151491165161,
+          -0.7900537848472595
+        ],
+        "translation_scale": [
+          1.2079510270268656e-05,
+          2.6957143290928798e-06,
+          8.87383703229716e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 824040,
+        "rotation_offset": 824760,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.039381980895996
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLH4.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 8.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLH_sBM_cAll_d18_mLH4_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 8.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 10,
+        "matched_beats": 3,
+        "coverage": 0.6666666666666666,
+        "hit": 0.2
+      }
+    },
+    {
+      "case_id": "gLO_sBM_cAll_d13_mLO2_ch01",
+      "sample_id": "gLO_sBM_cAll_d13_mLO2_ch01",
+      "references": [
+        "Lock",
+        "Music mLO2"
+      ],
+      "motion": {
+        "frames": 144,
+        "display_frames": 288,
+        "stride": 2,
+        "translation_count": 432,
+        "rotation_count": 19008,
+        "translation_minimum": [
+          -0.05410177633166313,
+          1.1645472049713135,
+          -0.40184009075164795
+        ],
+        "translation_scale": [
+          1.1795182217611e-06,
+          6.685615403512202e-07,
+          1.1524001592988498e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 856440,
+        "rotation_offset": 857304,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.332940101623535
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLO2.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLO_sBM_cAll_d13_mLO2_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 14,
+        "generated_beats": 17,
+        "matched_beats": 6,
+        "coverage": 1.2142857142857142,
+        "hit": 0.42857142857142855
+      }
+    },
+    {
+      "case_id": "gLO_sBM_cAll_d13_mLO2_ch02",
+      "sample_id": "gLO_sBM_cAll_d13_mLO2_ch02",
+      "references": [
+        "Lock",
+        "Music mLO2"
+      ],
+      "motion": {
+        "frames": 144,
+        "display_frames": 288,
+        "stride": 2,
+        "translation_count": 432,
+        "rotation_count": 19008,
+        "translation_minimum": [
+          -0.0598926842212677,
+          1.1762468814849854,
+          -0.4752640128135681
+        ],
+        "translation_scale": [
+          7.40217046768521e-07,
+          6.536910746035574e-07,
+          1.0862133876798907e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 895320,
+        "rotation_offset": 896184,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.084979057312012
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLO2.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLO_sBM_cAll_d13_mLO2_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 14,
+        "generated_beats": 16,
+        "matched_beats": 5,
+        "coverage": 1.1428571428571428,
+        "hit": 0.35714285714285715
+      }
+    },
+    {
+      "case_id": "gLO_sBM_cAll_d15_mLO2_ch01",
+      "sample_id": "gLO_sBM_cAll_d15_mLO2_ch01",
+      "references": [
+        "Lock",
+        "Music mLO2"
+      ],
+      "motion": {
+        "frames": 144,
+        "display_frames": 288,
+        "stride": 2,
+        "translation_count": 432,
+        "rotation_count": 19008,
+        "translation_minimum": [
+          -0.038817599415779114,
+          1.1457939147949219,
+          -0.4236394464969635
+        ],
+        "translation_scale": [
+          1.1043324548154487e-06,
+          1.0508953209864558e-06,
+          1.9461569991108263e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 934200,
+        "rotation_offset": 935064,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 13.740509033203125
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLO2.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLO_sBM_cAll_d15_mLO2_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 14,
+        "generated_beats": 14,
+        "matched_beats": 3,
+        "coverage": 1.0,
+        "hit": 0.21428571428571427
+      }
+    },
+    {
+      "case_id": "gLO_sBM_cAll_d15_mLO2_ch02",
+      "sample_id": "gLO_sBM_cAll_d15_mLO2_ch02",
+      "references": [
+        "Lock",
+        "Music mLO2"
+      ],
+      "motion": {
+        "frames": 144,
+        "display_frames": 288,
+        "stride": 2,
+        "translation_count": 432,
+        "rotation_count": 19008,
+        "translation_minimum": [
+          -0.00440544867888093,
+          1.1818784475326538,
+          -0.2916017174720764
+        ],
+        "translation_scale": [
+          5.937474156780809e-07,
+          4.32640490544145e-07,
+          6.472345148722525e-07
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 973080,
+        "rotation_offset": 973944,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.451268196105957
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mLO2.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gLO_sBM_cAll_d15_mLO2_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 9.6
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 14,
+        "generated_beats": 18,
+        "matched_beats": 5,
+        "coverage": 1.2857142857142858,
+        "hit": 0.35714285714285715
+      }
+    },
+    {
+      "case_id": "gMH_sBM_cAll_d22_mMH3_ch01",
+      "sample_id": "gMH_sBM_cAll_d22_mMH3_ch01",
+      "references": [
+        "Middle Hip-hop",
+        "Music mMH3"
+      ],
+      "motion": {
+        "frames": 131,
+        "display_frames": 262,
+        "stride": 2,
+        "translation_count": 393,
+        "rotation_count": 17292,
+        "translation_minimum": [
+          -0.2327917516231537,
+          1.1592611074447632,
+          -0.45944148302078247
+        ],
+        "translation_scale": [
+          4.549681762000546e-06,
+          1.9924787011404987e-06,
+          9.522515938442666e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 1011960,
+        "rotation_offset": 1012746,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 13.48442554473877
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mMH3.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gMH_sBM_cAll_d22_mMH3_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 23,
+        "matched_beats": 9,
+        "coverage": 1.5333333333333334,
+        "hit": 0.6
+      }
+    },
+    {
+      "case_id": "gMH_sBM_cAll_d22_mMH3_ch02",
+      "sample_id": "gMH_sBM_cAll_d22_mMH3_ch02",
+      "references": [
+        "Middle Hip-hop",
+        "Music mMH3"
+      ],
+      "motion": {
+        "frames": 131,
+        "display_frames": 262,
+        "stride": 2,
+        "translation_count": 393,
+        "rotation_count": 17292,
+        "translation_minimum": [
+          -0.9034698605537415,
+          1.0373162031173706,
+          -0.620844841003418
+        ],
+        "translation_scale": [
+          1.6032832718337886e-05,
+          3.65104574484576e-06,
+          8.669101589475758e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 1047330,
+        "rotation_offset": 1048116,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 13.462074279785156
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mMH3.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gMH_sBM_cAll_d22_mMH3_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 19,
+        "matched_beats": 8,
+        "coverage": 1.2666666666666666,
+        "hit": 0.5333333333333333
+      }
+    },
+    {
+      "case_id": "gMH_sBM_cAll_d24_mMH3_ch01",
+      "sample_id": "gMH_sBM_cAll_d24_mMH3_ch01",
+      "references": [
+        "Middle Hip-hop",
+        "Music mMH3"
+      ],
+      "motion": {
+        "frames": 131,
+        "display_frames": 262,
+        "stride": 2,
+        "translation_count": 393,
+        "rotation_count": 17292,
+        "translation_minimum": [
+          -0.17868320643901825,
+          1.164634346961975,
+          -0.3152570128440857
+        ],
+        "translation_scale": [
+          9.263256288249977e-06,
+          1.3575561297329841e-06,
+          3.8112348192953505e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 1082700,
+        "rotation_offset": 1083486,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.24215316772461
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mMH3.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gMH_sBM_cAll_d24_mMH3_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 13,
+        "matched_beats": 7,
+        "coverage": 0.8666666666666667,
+        "hit": 0.4666666666666667
+      }
+    },
+    {
+      "case_id": "gMH_sBM_cAll_d24_mMH3_ch02",
+      "sample_id": "gMH_sBM_cAll_d24_mMH3_ch02",
+      "references": [
+        "Middle Hip-hop",
+        "Music mMH3"
+      ],
+      "motion": {
+        "frames": 131,
+        "display_frames": 262,
+        "stride": 2,
+        "translation_count": 393,
+        "rotation_count": 17292,
+        "translation_minimum": [
+          -0.4583994150161743,
+          1.084701657295227,
+          -0.32176557183265686
+        ],
+        "translation_scale": [
+          1.0163367733184714e-05,
+          2.0356949335109675e-06,
+          3.4959869026351953e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 1118070,
+        "rotation_offset": 1118856,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 13.157142639160156
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mMH3.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gMH_sBM_cAll_d24_mMH3_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 8.733333333333333
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 15,
+        "generated_beats": 12,
+        "matched_beats": 5,
+        "coverage": 0.8,
+        "hit": 0.3333333333333333
+      }
+    },
+    {
+      "case_id": "gPO_sBM_cAll_d10_mPO1_ch01",
+      "sample_id": "gPO_sBM_cAll_d10_mPO1_ch01",
+      "references": [
+        "Pop",
+        "Music mPO1"
+      ],
+      "motion": {
+        "frames": 160,
+        "display_frames": 320,
+        "stride": 2,
+        "translation_count": 480,
+        "rotation_count": 21120,
+        "translation_minimum": [
+          -0.18976882100105286,
+          1.1848769187927246,
+          -0.1752447485923767
+        ],
+        "translation_scale": [
+          4.552563495963113e-06,
+          4.4682155930786394e-07,
+          7.657771448066342e-07
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 1153440,
+        "rotation_offset": 1154400,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.858207702636719
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mPO1.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gPO_sBM_cAll_d10_mPO1_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 14,
+        "generated_beats": 21,
+        "matched_beats": 6,
+        "coverage": 1.5,
+        "hit": 0.42857142857142855
+      }
+    },
+    {
+      "case_id": "gPO_sBM_cAll_d10_mPO1_ch02",
+      "sample_id": "gPO_sBM_cAll_d10_mPO1_ch02",
+      "references": [
+        "Pop",
+        "Music mPO1"
+      ],
+      "motion": {
+        "frames": 160,
+        "display_frames": 320,
+        "stride": 2,
+        "translation_count": 480,
+        "rotation_count": 21120,
+        "translation_minimum": [
+          -0.2841874659061432,
+          1.1568619012832642,
+          -0.1547500193119049
+        ],
+        "translation_scale": [
+          9.552177289151587e-06,
+          9.663347100286046e-07,
+          7.014857146714348e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 1196640,
+        "rotation_offset": 1197600,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.756622314453125
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mPO1.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gPO_sBM_cAll_d10_mPO1_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 14,
+        "generated_beats": 19,
+        "matched_beats": 6,
+        "coverage": 1.3571428571428572,
+        "hit": 0.42857142857142855
+      }
+    },
+    {
+      "case_id": "gPO_sBM_cAll_d11_mPO1_ch01",
+      "sample_id": "gPO_sBM_cAll_d11_mPO1_ch01",
+      "references": [
+        "Pop",
+        "Music mPO1"
+      ],
+      "motion": {
+        "frames": 160,
+        "display_frames": 320,
+        "stride": 2,
+        "translation_count": 480,
+        "rotation_count": 21120,
+        "translation_minimum": [
+          -0.18246084451675415,
+          1.1737102270126343,
+          -0.3211534917354584
+        ],
+        "translation_scale": [
+          6.798994490964105e-06,
+          7.713451282143069e-07,
+          1.7106583527493058e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 1239840,
+        "rotation_offset": 1240800,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 15.787168502807617
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mPO1.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gPO_sBM_cAll_d11_mPO1_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 14,
+        "generated_beats": 11,
+        "matched_beats": 4,
+        "coverage": 0.7857142857142857,
+        "hit": 0.2857142857142857
+      }
+    },
+    {
+      "case_id": "gPO_sBM_cAll_d11_mPO1_ch02",
+      "sample_id": "gPO_sBM_cAll_d11_mPO1_ch02",
+      "references": [
+        "Pop",
+        "Music mPO1"
+      ],
+      "motion": {
+        "frames": 160,
+        "display_frames": 320,
+        "stride": 2,
+        "translation_count": 480,
+        "rotation_count": 21120,
+        "translation_minimum": [
+          -0.3816234767436981,
+          1.1507248878479004,
+          -0.23105411231517792
+        ],
+        "translation_scale": [
+          1.1862034625664819e-05,
+          1.372926817566622e-06,
+          8.183065801858902e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 1283040,
+        "rotation_offset": 1284000,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.469769477844238
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mPO1.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gPO_sBM_cAll_d11_mPO1_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 14,
+        "generated_beats": 24,
+        "matched_beats": 5,
+        "coverage": 1.7142857142857142,
+        "hit": 0.35714285714285715
+      }
+    },
+    {
+      "case_id": "gWA_sBM_cAll_d25_mWA0_ch01",
+      "sample_id": "gWA_sBM_cAll_d25_mWA0_ch01",
+      "references": [
+        "Waacking",
+        "Music mWA0"
+      ],
+      "motion": {
+        "frames": 180,
+        "display_frames": 360,
+        "stride": 2,
+        "translation_count": 540,
+        "rotation_count": 23760,
+        "translation_minimum": [
+          -0.4222854971885681,
+          1.1675422191619873,
+          -0.0611795037984848
+        ],
+        "translation_scale": [
+          9.026383850141428e-06,
+          1.6329044001395232e-06,
+          2.326397407159675e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 1326240,
+        "rotation_offset": 1327320,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.792815208435059
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mWA0.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_cAll_d25_mWA0_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 13,
+        "generated_beats": 23,
+        "matched_beats": 7,
+        "coverage": 1.7692307692307692,
+        "hit": 0.5384615384615384
+      }
+    },
+    {
+      "case_id": "gWA_sBM_cAll_d25_mWA0_ch02",
+      "sample_id": "gWA_sBM_cAll_d25_mWA0_ch02",
+      "references": [
+        "Waacking",
+        "Music mWA0"
+      ],
+      "motion": {
+        "frames": 180,
+        "display_frames": 360,
+        "stride": 2,
+        "translation_count": 540,
+        "rotation_count": 23760,
+        "translation_minimum": [
+          -0.15989576280117035,
+          1.1745781898498535,
+          -0.0672241747379303
+        ],
+        "translation_scale": [
+          5.533327566809021e-06,
+          1.738330979605962e-06,
+          2.09422319130681e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 1374840,
+        "rotation_offset": 1375920,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 15.288458824157715
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mWA0.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_cAll_d25_mWA0_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 13,
+        "generated_beats": 19,
+        "matched_beats": 5,
+        "coverage": 1.4615384615384615,
+        "hit": 0.38461538461538464
+      }
+    },
+    {
+      "case_id": "gWA_sBM_cAll_d26_mWA0_ch01",
+      "sample_id": "gWA_sBM_cAll_d26_mWA0_ch01",
+      "references": [
+        "Waacking",
+        "Music mWA0"
+      ],
+      "motion": {
+        "frames": 180,
+        "display_frames": 360,
+        "stride": 2,
+        "translation_count": 540,
+        "rotation_count": 23760,
+        "translation_minimum": [
+          -0.16403207182884216,
+          1.1779839992523193,
+          -0.33696311712265015
+        ],
+        "translation_scale": [
+          2.8950273645023117e-06,
+          1.1075832162532606e-06,
+          1.7195894770338782e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 1423440,
+        "rotation_offset": 1424520,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 14.56847095489502
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mWA0.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_cAll_d26_mWA0_ch01.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 13,
+        "generated_beats": 18,
+        "matched_beats": 5,
+        "coverage": 1.3846153846153846,
+        "hit": 0.38461538461538464
+      }
+    },
+    {
+      "case_id": "gWA_sBM_cAll_d26_mWA0_ch02",
+      "sample_id": "gWA_sBM_cAll_d26_mWA0_ch02",
+      "references": [
+        "Waacking",
+        "Music mWA0"
+      ],
+      "motion": {
+        "frames": 180,
+        "display_frames": 360,
+        "stride": 2,
+        "translation_count": 540,
+        "rotation_count": 23760,
+        "translation_minimum": [
+          -0.19468630850315094,
+          1.178603172302246,
+          -0.2731412649154663
+        ],
+        "translation_scale": [
+          4.783162694366183e-06,
+          1.580875050422037e-06,
+          6.693978775729192e-06
+        ],
+        "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/assets/gt_000.smpl",
+        "translation_offset": 1472040,
+        "rotation_offset": 1473120,
+        "fps": 30.0,
+        "fit_mpjpe_mm_mean": 15.06358814239502
+      },
+      "audio_tracks": [
+        {
+          "key": "reference",
+          "label": "Ground truth music",
+          "asset": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard/resolve/main/cases/audio/mWA0.mp3",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        },
+        {
+          "key": "unimumo",
+          "label": "UniMuMo",
+          "asset": "audio/generated/gWA_sBM_cAll_d26_mWA0_ch02.wav",
+          "start_seconds": 0.0,
+          "end_seconds": 10.0
+        }
+      ],
+      "beat_metrics": {
+        "reference_beats": 13,
+        "generated_beats": 18,
+        "matched_beats": 5,
+        "coverage": 1.3846153846153846,
+        "hit": 0.38461538461538464
+      }
+    }
+  ]
+}

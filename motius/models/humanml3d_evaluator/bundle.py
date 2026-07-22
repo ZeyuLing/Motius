@@ -38,6 +38,20 @@ def _first_existing(root: Path, candidates: Sequence[str]) -> Path:
     )
 
 
+def _prefixed_state_dict(
+    state_dict: dict[str, torch.Tensor], prefix: str
+) -> dict[str, torch.Tensor]:
+    marker = f"{prefix}."
+    values = {
+        key[len(marker) :]: value
+        for key, value in state_dict.items()
+        if key.startswith(marker)
+    }
+    if not values:
+        raise KeyError(f"Evaluator weights are missing the {prefix!r} module")
+    return values
+
+
 @MODEL_BUNDLES.register_module()
 class HumanML3DMatchingBundle(ModelBundle):
     """Official Guo et al. HumanML3D-263 matching network.
@@ -59,18 +73,22 @@ class HumanML3DMatchingBundle(ModelBundle):
     ) -> None:
         super().__init__()
         artifact = Path(artifact_dir or _DEFAULT_ARTIFACT).expanduser().resolve()
-        checkpoint_path = _first_existing(
-            artifact,
-            (
-                "text_mot_match.tar",
-                "text_mot_match/model/finest.tar",
-                "t2m/text_mot_match/model/finest.tar",
-                "checkpoints/t2m/text_mot_match/model/finest.tar",
-            ),
-        )
+        safetensors_path = artifact / "model.safetensors"
+        checkpoint_path = None
+        if not safetensors_path.is_file():
+            checkpoint_path = _first_existing(
+                artifact,
+                (
+                    "text_mot_match.tar",
+                    "text_mot_match/model/finest.tar",
+                    "t2m/text_mot_match/model/finest.tar",
+                    "checkpoints/t2m/text_mot_match/model/finest.tar",
+                ),
+            )
         mean_path = _first_existing(
             artifact,
             (
+                "stats/mean.npy",
                 "meta/mean.npy",
                 "t2m/Comp_v6_KLD005/meta/mean.npy",
                 "checkpoints/t2m/Comp_v6_KLD005/meta/mean.npy",
@@ -79,6 +97,7 @@ class HumanML3DMatchingBundle(ModelBundle):
         std_path = _first_existing(
             artifact,
             (
+                "stats/std.npy",
                 "meta/std.npy",
                 "t2m/Comp_v6_KLD005/meta/std.npy",
                 "checkpoints/t2m/Comp_v6_KLD005/meta/std.npy",
@@ -94,10 +113,27 @@ class HumanML3DMatchingBundle(ModelBundle):
             output_size=512,
         )
         self.motion_encoder = MotionEncoderBiGRUCo(512, 1024, 512)
-        checkpoint = torch.load(checkpoint_path, map_location="cpu")
-        self.movement_encoder.load_state_dict(checkpoint["movement_encoder"], strict=True)
-        self.text_encoder.load_state_dict(checkpoint["text_encoder"], strict=True)
-        self.motion_encoder.load_state_dict(checkpoint["motion_encoder"], strict=True)
+        if safetensors_path.is_file():
+            from safetensors.torch import load_file
+
+            state_dict = load_file(safetensors_path, device="cpu")
+            module_states = {
+                name: _prefixed_state_dict(state_dict, name)
+                for name in ("movement_encoder", "text_encoder", "motion_encoder")
+            }
+        else:
+            checkpoint = torch.load(checkpoint_path, map_location="cpu")
+            module_states = {
+                name: checkpoint[name]
+                for name in ("movement_encoder", "text_encoder", "motion_encoder")
+            }
+        self.movement_encoder.load_state_dict(
+            module_states["movement_encoder"], strict=True
+        )
+        self.text_encoder.load_state_dict(module_states["text_encoder"], strict=True)
+        self.motion_encoder.load_state_dict(
+            module_states["motion_encoder"], strict=True
+        )
         self.register_buffer("mean", torch.from_numpy(np.load(mean_path)).float())
         self.register_buffer("std", torch.from_numpy(np.load(std_path)).float())
         self.word_vectorizer = HumanML3DWordVectorizer(glove_dir)

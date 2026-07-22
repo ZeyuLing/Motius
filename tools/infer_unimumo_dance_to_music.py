@@ -40,7 +40,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--asset-cache", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--device", default=None)
-    parser.add_argument("--guidance-scale", type=float, default=4.0)
+    parser.add_argument("--guidance-scale", type=float, default=3.0)
     parser.add_argument("--temperature", type=float, default=1.0)
     parser.add_argument("--top-k", type=int, default=250)
     parser.add_argument("--seed", type=int, default=20260722)

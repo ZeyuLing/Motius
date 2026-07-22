@@ -26,7 +26,8 @@ tags:
   <a href="https://huggingface.co/ZeyuLing/Motius-UniMuMo">Motius Checkpoint</a> |
   <a href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard">T2M Leaderboard</a> |
   <a href="https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard">M2T Leaderboard</a> |
-  <a href="https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard">M2D Leaderboard</a>
+  <a href="https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard">M2D Leaderboard</a> |
+  <a href="https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard">D2M Leaderboard</a>
 </p>
 
 UniMuMo is the unified text, music, and motion model introduced in *UniMuMo:
@@ -40,13 +41,15 @@ checkout or download a second text, audio, motion, or caption model.
 - [HumanML3D all-case text-to-motion comparison](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html)
 - [HumanML3D all-case motion caption comparison](https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html)
 - [Audio-synchronized AIST++ all-case dance comparison](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html)
+- [Motion-synchronized AIST++ all-case music comparison](https://zeyuling-dance-to-music-aistpp-leaderboard.static.hf.space/cases/index.html)
 
 The T2M page compares UniMuMo's generated SMPL Mesh with every released
 baseline over all 4,042 selected-caption cases. The M2T page shows the same
 animated input SMPL Mesh beside every baseline caption for all 4,400 protocol
 samples. The M2D page contains all 40 AIST++ cases, synchronized audio, native
 SMPL-24 joints, the fitted SMPL Mesh, orbit, zoom, timeline seeking, and
-downloadable motion assets.
+downloadable motion assets. The D2M page reuses the same 40 dances and lets
+the viewer switch between reference and generated audio while the mesh plays.
 
 ## Release Snapshot
 
@@ -146,7 +149,7 @@ retrieval computation uses the largest complete 32-case groups (`n=4,000`).
 
 | Evaluator | n | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
 | --------- | -: | --: | --: | --: | --: | ------: | --------: |
-| HumanML3D Official | 4,000 | 0.1020 | 0.1740 | 0.2433 | 5.9594 | 6.6519 | 8.0675 |
+| HumanML3D Official | 4,000 | 0.1000 | 0.1775 | 0.2468 | 1.4849 | 6.6372 | 9.0766 |
 | MotionStreamer Evaluator | 4,032 | 0.0655 | 0.1138 | 0.1617 | 373.2192 | 25.6637 | 18.8368 |
 | Motius Joint-Position Evaluator | 4,032 | 0.0704 | 0.1471 | 0.2093 | 0.6788 | 54.0101 | 46.7609 |
 
@@ -154,6 +157,15 @@ HumanML3D and MotionStreamer FID use their native evaluator spaces; uTMR FID
 uses per-sample L2-normalized embeddings. The weak retrieval scores are
 reported as measured: this checkpoint supports T2M, but it was not optimized
 as a dedicated HumanML3D text-to-motion model.
+
+The HumanML3D result above is computed from the codec's native 60 fps output
+with the phase-aligned `[1::3]` inverse used by the official UniMuMo data
+pipeline. A parity audit found and fixed a top-k sampling-order discrepancy;
+under the upstream dependency versions, motion codes, sampled tokens, and
+decoded features now match the released implementation exactly. The UniMuMo
+paper does not report a standalone HumanML3D T2M leaderboard result, so the
+remaining low retrieval score is recorded as the zero-shot operating point of
+the released joint model rather than treated as a paper-parity target.
 
 Physical diagnostics over all 4,042 generated SMPL-22 joint sequences:
 
@@ -212,14 +224,18 @@ published numbers separately from its longer common-case diagnostic.
 | Protocol | Samples | Beats Coverage | Beats Hit |
 | -------- | ------: | -------------: | --------: |
 | UniMuMo paper, D2M-GAN 2-second split | paper test split | 93.0% | 88.4% |
-| Motius common AIST++ cases, up to 10 seconds | 40 | 100.34% | 38.01% |
+| Motius common AIST++ cases, up to 10 seconds | 40 | 108.11% | 39.19% |
 
 The common-case coverage is the generated/reference beat-count ratio
-(`594/592`); hit is one-to-one beat matching within `0.1 s` (`225/592`). The
+(`640/592`); hit is one-to-one beat matching within `0.1 s` (`232/592`). This
+run uses the task's official test default (`CFG=3`, temperature `1.0`,
+top-k `250`). The
 long-window diagnostic is useful for inspecting complete generated songs but
 is not directly comparable to the paper's 2-second protocol. Every WAV,
 input-motion package, prompt, seed, and codec output is available in the
 [`dance_to_music_aistpp_common40` benchmark folder](https://huggingface.co/ZeyuLing/Motius-UniMuMo/tree/main/benchmarks/dance_to_music_aistpp_common40).
+
+[Open the Dance-to-Music leaderboard and synchronized 40-case SMPL/audio viewer](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard).
 
 ## Motion Representation
 

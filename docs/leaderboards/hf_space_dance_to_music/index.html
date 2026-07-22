@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Motius Dance-to-Music Leaderboard</title>
+  <style>
+    :root{color-scheme:light;--ink:#17211d;--muted:#64716b;--line:#d6ded9;--paper:#fff;--wash:#edf2ef;--green:#087d72;--red:#d14b35;--yellow:#e4ad32}
+    *{box-sizing:border-box}body{margin:0;background:var(--wash);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,sans-serif;letter-spacing:0}a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}.shell{max-width:1180px;margin:auto;background:var(--paper);min-height:100vh;border-inline:1px solid var(--line)}
+    header{padding:38px 42px 28px;border-bottom:1px solid var(--line)}.kicker{font:700 12px ui-monospace,monospace;color:var(--red);text-transform:uppercase}.title-row{display:flex;align-items:end;justify-content:space-between;gap:24px}h1{margin:5px 0 8px;font-size:42px;line-height:1.05}header p{max-width:720px;margin:0;color:var(--muted)}.viewer-link{display:inline-flex;align-items:center;gap:9px;padding:11px 14px;border:1px solid var(--ink);border-radius:4px;color:var(--ink);font-weight:750;white-space:nowrap}.viewer-link:hover{background:var(--ink);color:#fff;text-decoration:none}
+    main{padding:32px 42px 56px}.section{padding:28px 0;border-bottom:1px solid var(--line)}.section:last-child{border-bottom:0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:18px}h2{margin:0;font-size:22px}.section-head p{margin:0;color:var(--muted)}
+    .chart{display:grid;gap:13px;max-width:850px}.bar-row{display:grid;grid-template-columns:150px 1fr 76px;gap:14px;align-items:center}.bar-label{font-weight:700}.bar-track{height:24px;background:#edf1ef;border:1px solid var(--line)}.bar-fill{height:100%;background:var(--green)}.bar-fill.hit{background:var(--red)}.bar-value{text-align:right;font:700 13px ui-monospace,monospace}
+    .table-wrap{overflow:auto;border:1px solid var(--line)}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:13px 15px;border-bottom:1px solid var(--line);text-align:left}th{background:#f3f6f4;color:var(--muted);font:700 11px ui-monospace,monospace;text-transform:uppercase}tr:last-child td{border-bottom:0}.metric{font:700 14px ui-monospace,monospace}.reference{color:var(--muted)}.links{display:flex;gap:10px;flex-wrap:wrap}.protocol{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}.protocol>div{background:#fff;padding:18px}.protocol strong{display:block;margin-bottom:4px}.protocol span{color:var(--muted)}
+    footer{padding:18px 42px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}@media(max-width:720px){header,main,footer{padding-inline:18px}.title-row,.section-head{align-items:start;flex-direction:column}h1{font-size:32px}.protocol{grid-template-columns:1fr}.bar-row{grid-template-columns:110px 1fr 60px}}
+  </style>
+</head>
+<body><div class="shell">
+  <header><div class="kicker">Motius / AIST++</div><div class="title-row"><div><h1>Dance-to-Music Leaderboard</h1><p>Generate music from motion. Metrics and synchronized listening are kept in one evaluation surface.</p></div><a class="viewer-link" href="cases/index.html">Open all 40 cases <span>↗</span></a></div></header>
+  <main>
+    <section class="section"><div class="section-head"><div><h2>Common40 Snapshot</h2><p>Micro average over reference beats, 100 ms matching tolerance.</p></div></div><div class="chart" id="chart"></div></section>
+    <section class="section"><div class="section-head"><div><h2>Results</h2><p>Reference and generated audio are evaluated on the same 40 dance clips.</p></div></div><div class="table-wrap"><table><thead><tr><th>Method</th><th>Version</th><th>Beats Coverage ↑</th><th>Beats Hit ↑</th><th>Resources</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+    <section class="section"><div class="section-head"><div><h2>Protocol Views</h2><p>Numbers from different test splits are intentionally not mixed.</p></div></div><div class="protocol"><div><strong>Motius common40</strong><span>Full 10-second AIST++ clips shared by the Motius cross-modal viewer. Use this view for direct case-level comparison.</span></div><div><strong>Paper protocol</strong><span>UniMuMo reports 93.0% coverage and 88.4% hit on the D2M-GAN 2-second split. It is preserved as provenance, not ranked against common40.</span></div></div></section>
+  </main><footer>Machine-readable results: <a href="dance_to_music_results.json">dance_to_music_results.json</a> · Built with Motius</footer>
+</div><script>
+  const percent=value=>`${(100*value).toFixed(2)}%`;
+  fetch('dance_to_music_results.json').then(r=>r.json()).then(data=>{
+    const method=data.rows.find(row=>!row.reference);
+    document.querySelector('#chart').innerHTML=[['Beats Coverage',method.beats_coverage,'coverage'],['Beats Hit',method.beats_hit,'hit']].map(([label,value,kind])=>`<div class="bar-row"><span class="bar-label">${label}</span><div class="bar-track"><div class="bar-fill ${kind}" style="width:${Math.min(value,1)*100}%"></div></div><span class="bar-value">${percent(value)}</span></div>`).join('');
+    document.querySelector('#rows').innerHTML=data.rows.map(row=>`<tr><td><strong>${row.method}</strong></td><td class="${row.reference?'reference':''}">${row.version}</td><td class="metric">${percent(row.beats_coverage)}</td><td class="metric">${percent(row.beats_hit)}</td><td><div class="links">${row.checkpoint?`<a href="${row.checkpoint}">Checkpoint</a>`:''}${row.model_card?`<a href="${row.model_card}">Model card</a>`:''}${row.paper?`<a href="${row.paper}">Paper</a>`:''}</div></td></tr>`).join('');
+  });
+</script></body></html>

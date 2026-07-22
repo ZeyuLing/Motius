@@ -33,6 +33,25 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--guidance-scale", type=float, default=4.0)
     parser.add_argument("--temperature", type=float, default=1.0)
     parser.add_argument("--top-k", type=int, default=250)
+    parser.add_argument(
+        "--generation-duration-seconds",
+        type=float,
+        help=(
+            "Generate every sample at this duration, then crop to the GT duration. "
+            "By default generation directly uses the GT duration."
+        ),
+    )
+    parser.add_argument(
+        "--music-prompt",
+        default="",
+        help="Optional companion music description for UniMuMo joint generation.",
+    )
+    parser.add_argument(
+        "--motion-prompt-template",
+        choices=("raw", "motion", "dance"),
+        default="raw",
+        help="Match UniMuMo's HumanML3D caption templates when requested.",
+    )
     parser.add_argument("--seed", type=int, default=20260722)
     parser.add_argument("--max-samples", type=int)
     parser.add_argument("--shard-index", type=int)
@@ -54,6 +73,11 @@ def parse_args() -> argparse.Namespace:
         parser.error("--shard-index must be in [0, --num-shards)")
     if args.device is None:
         args.device = f"cuda:{int(os.environ.get('LOCAL_RANK', '0'))}"
+    if (
+        args.generation_duration_seconds is not None
+        and not 0 < args.generation_duration_seconds <= 10
+    ):
+        parser.error("--generation-duration-seconds must be in (0, 10]")
     return args
 
 
@@ -86,6 +110,20 @@ def exact_resample(
     return output.reshape(target_frames, 22, 3).astype(np.float32)
 
 
+def inverse_native_hml263(
+    motion: np.ndarray, target_frames: int
+) -> np.ndarray:
+    """Invert UniMuMo's 20-to-60 fps linear HML263 interpolation."""
+
+    values = np.asarray(motion, dtype=np.float32)[1::3]
+    if len(values) < target_frames:
+        raise ValueError(
+            f"Native HML263 has {len(values)} inverse frames, expected "
+            f"at least {target_frames}"
+        )
+    return values[:target_frames]
+
+
 def main() -> None:
     args = parse_args()
     protocol = json.loads(args.annotation.read_text(encoding="utf-8"))
@@ -100,9 +138,16 @@ def main() -> None:
 
     native_dir = args.output / "native_hml263_60fps"
     hml_dir = args.output / "hml263_20fps"
+    roundtrip_dir = args.output / "hml263_20fps_joints_roundtrip"
     joints_dir = args.output / "joints66"
     codes_dir = args.output / "motion_codes"
-    for directory in (native_dir, hml_dir, joints_dir, codes_dir):
+    for directory in (
+        native_dir,
+        hml_dir,
+        roundtrip_dir,
+        joints_dir,
+        codes_dir,
+    ):
         directory.mkdir(parents=True, exist_ok=True)
 
     pipeline = UniMuMoPipeline.from_pretrained(
@@ -123,21 +168,37 @@ def main() -> None:
             root = args.path_root or args.annotation.resolve().parents[1]
             caption_path = root / caption_path
         caption = selected_caption(caption_path)
+        if args.motion_prompt_template == "motion":
+            motion_prompt = f"The motion is that {caption}."
+        elif args.motion_prompt_template == "dance":
+            motion_prompt = f"The dance is that {caption}."
+        else:
+            motion_prompt = caption
         output_fps = float(record["fps"])
         output_frames = int(record["num_frames"])
         duration = min(output_frames / output_fps, 10.0)
         output_frames = max(2, min(output_frames, int(round(duration * output_fps))))
+        generation_duration = args.generation_duration_seconds or duration
 
         case_started = time.time()
-        result = pipeline.infer_text_to_motion(
-            caption,
-            duration_seconds=duration,
+        result = pipeline.infer_text_to_music_motion(
+            music_prompt=args.music_prompt,
+            motion_prompt=motion_prompt,
+            duration_seconds=generation_duration,
             guidance_scale=args.guidance_scale,
             temperature=args.temperature,
             top_k=args.top_k,
             seed=args.seed + global_index,
         )
-        native_joints = np.asarray(result.joints, dtype=np.float32)
+        native_frames = max(
+            2,
+            min(
+                len(result.motion),
+                int(round(duration * float(result.motion_fps))),
+            ),
+        )
+        native_motion = np.asarray(result.motion[:native_frames], dtype=np.float32)
+        native_joints = np.asarray(result.joints[:native_frames], dtype=np.float32)
         joints30 = exact_resample(
             native_joints,
             float(result.motion_fps),
@@ -145,6 +206,7 @@ def main() -> None:
             output_frames,
         )
         hml_frames = max(2, int(round(duration * 20.0)))
+        evaluator_frames = max(1, hml_frames - 1)
         joints20 = exact_resample(
             native_joints,
             float(result.motion_fps),
@@ -152,8 +214,15 @@ def main() -> None:
             hml_frames,
         )
         np.save(destination, joints30.reshape(len(joints30), 66))
-        np.save(native_dir / f"{name}.npy", result.motion)
-        np.save(hml_dir / f"{name}.npy", joints_to_hml263(joints20))
+        np.save(native_dir / f"{name}.npy", native_motion)
+        np.save(
+            hml_dir / f"{name}.npy",
+            inverse_native_hml263(native_motion, evaluator_frames),
+        )
+        np.save(
+            roundtrip_dir / f"{name}.npy",
+            joints_to_hml263(joints20),
+        )
         np.save(codes_dir / f"{name}.npy", result.motion_codes)
         completed.append(name)
         print(
@@ -170,12 +239,16 @@ def main() -> None:
         "checkpoint": args.checkpoint,
         "representation": (
             "native HumanML3D-263 at 60 fps; canonical SMPL-22 joints66 at "
-            "30 fps; evaluator HumanML3D-263 at 20 fps"
+            "30 fps; evaluator HumanML3D-263 uses the phase-aligned native "
+            "20 fps inverse; joints round-trip is diagnostic only"
         ),
         "generation_mode": "zero-shot joint music-motion token generation",
         "guidance_scale": args.guidance_scale,
         "temperature": args.temperature,
         "top_k": args.top_k,
+        "generation_duration_seconds": args.generation_duration_seconds,
+        "music_prompt": args.music_prompt,
+        "motion_prompt_template": args.motion_prompt_template,
         "seed": args.seed,
         "shard_index": args.shard_index,
         "num_shards": args.num_shards,

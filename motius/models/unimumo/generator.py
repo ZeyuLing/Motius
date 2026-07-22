@@ -479,18 +479,15 @@ def _sample_logits(
 ) -> torch.Tensor:
     if temperature <= 0:
         return logits.argmax(dim=-1)
-    logits = logits / float(temperature)
+    probabilities = torch.softmax(logits.float() / float(temperature), dim=-1)
     if top_k > 0:
-        top_k = min(int(top_k), logits.shape[-1])
-        values, indices = torch.topk(logits, top_k, dim=-1)
-        probabilities = torch.softmax(values.float(), dim=-1)
-        selected = torch.multinomial(
-            probabilities.reshape(-1, top_k),
-            1,
-            generator=generator,
-        ).reshape(*probabilities.shape[:-1])
-        return indices.gather(-1, selected[..., None]).squeeze(-1)
-    probabilities = torch.softmax(logits.float(), dim=-1)
+        top_k = min(int(top_k), probabilities.shape[-1])
+        top_values = torch.topk(probabilities, top_k, dim=-1).values
+        threshold = top_values[..., -1, None]
+        probabilities = probabilities * (probabilities >= threshold)
+        probabilities = probabilities / probabilities.sum(
+            dim=-1, keepdim=True
+        )
     return torch.multinomial(
         probabilities.reshape(-1, probabilities.shape[-1]),
         1,
