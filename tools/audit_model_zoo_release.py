@@ -39,10 +39,20 @@ TASK_LABELS = {
 }
 TASK_LEADERBOARDS = {
     "T2M": "https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard",
+    "M2T": "https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard",
     "TP2M": "https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard",
     "Temporal Condition": "https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard",
     "Sequential Generation": "https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard",
     "Music-to-Dance": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard",
+}
+TASK_METRIC_MARKERS = {
+    "T2M": (
+        "HumanML3D Official",
+        "MotionStreamer Evaluator",
+        "Motius Joint-Position Evaluator",
+    ),
+    "M2T": ("HumanML3D Motion-to-Text",),
+    "Music-to-Dance": ("AIST++ Music-to-Dance",),
 }
 
 
@@ -169,12 +179,19 @@ def _demo_status(card_text: str) -> tuple[str, str]:
     return "missing", "no demo media reference"
 
 
-def _metric_status(card_text: str) -> tuple[str, str]:
+def _metric_status(card_text: str, task_cell: str) -> tuple[str, str]:
     section = card_text.split("## Evaluation Results", 1)
     if len(section) == 1:
         return "missing", "no Evaluation Results section"
     tail = section[1].split("\n## ", 1)[0]
-    required = ["HumanML3D Official", "MotionStreamer Evaluator", "Motius Joint-Position Evaluator"]
+    task_labels = [label for label, _ in _parse_task_entries(task_cell)]
+    required = list(
+        dict.fromkeys(
+            marker
+            for task in task_labels
+            for marker in TASK_METRIC_MARKERS.get(task, ())
+        )
+    )
     missing_required = [name for name in required if name not in tail]
     if missing_required:
         return "missing", "missing rows: " + ", ".join(missing_required)
@@ -206,7 +223,7 @@ def run(check_hf: bool) -> str:
         tasks, task_note = _task_status(row.task_cell, text)
         checkpoint, checkpoint_note = _checkpoint_status(row.checkpoint_cell, check_hf)
         demo, demo_note = _demo_status(text)
-        metrics, metric_note = _metric_status(text)
+        metrics, metric_note = _metric_status(text, row.task_cell)
         notes = "; ".join(
             note for note in [task_note, checkpoint_note, demo_note, metric_note] if note
         )

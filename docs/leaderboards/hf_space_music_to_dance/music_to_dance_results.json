@@ -3,7 +3,7 @@
   "task": "music_to_dance",
   "dataset": "AIST++ official crossmodal test+validation package",
   "population": 40,
-  "updated": "2026-07-21",
+  "updated": "2026-07-22",
   "protocol": {
     "official_reference_pool": 1320,
     "official_motion_fps": 60,
@@ -85,6 +85,26 @@
       "penetration": 0.0,
       "float": 0.2637316529,
       "slide": 0.0060531974
+    },
+    {
+      "method": "UniMuMo",
+      "version": "official checkpoint, Motius parity-verified conversion",
+      "reference": false,
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-UniMuMo",
+      "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/unimumo.md",
+      "paper": "https://arxiv.org/abs/2410.04534",
+      "fid_k": 17.7249756512,
+      "fid_g": 38.6445951528,
+      "diversity_k": 8.8767165541,
+      "diversity_g": 8.4657342329,
+      "beat_align": 0.2429539725,
+      "beat_align_30fps": 0.2429539725,
+      "fid_utmr": 0.2823490752,
+      "jitter": 0.0098198556,
+      "dynamic": 0.0252346498,
+      "penetration": 0.0,
+      "float": 0.1917622998,
+      "slide": 0.0052329788
     }
   ],
   "paper_parity": [

@@ -9,7 +9,7 @@
     "reference_count": 3,
     "semantic_chunk_size": 32,
     "semantic_repeats": 1,
-    "updated_at": "2026-07-19",
+    "updated_at": "2026-07-22",
     "status": "complete"
   },
   "methods": [
@@ -126,6 +126,34 @@
       }
     },
     {
+      "id": "unimumo",
+      "name": "UniMuMo",
+      "kind": "method",
+      "status": "measured",
+      "paper": "https://arxiv.org/abs/2410.04534",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-UniMuMo",
+      "metrics": {
+        "bleu1": 0.353411,
+        "bleu4": 0.04573,
+        "rougeL": 0.282152,
+        "cider": 0.063526,
+        "bertF1": 0.410854,
+        "bertRaw": 0.900567,
+        "r1": 0.516195,
+        "r2": 0.703239,
+        "r3": 0.798358,
+        "matching": 2.965752
+      },
+      "rawReferenceMetrics": {
+        "bleu1": 0.448843,
+        "bleu4": 0.127078,
+        "rougeL": 0.356033,
+        "cider": 0.311441,
+        "bertF1": 0.451678,
+        "bertRaw": 0.907457
+      }
+    },
+    {
       "id": "gt",
       "name": "GT captions",
       "kind": "reference",
@@ -162,7 +190,8 @@
         "TM2T": "a person kick something with their left foot",
         "MotionGPT": "a person kicks with his left hand.",
         "MotionGPT3": "a person kicks with left leg.",
-        "VerMo": "a person kicks with their left leg."
+        "VerMo": "a person kicks with their left leg.",
+        "UniMuMo": "A person kicks with their left leg."
       }
     },
     {
@@ -172,7 +201,8 @@
         "TM2T": "a person jog in place then jog to the right then jog to the left",
         "MotionGPT": "a person jogs to the right and then to the left",
         "MotionGPT3": "a person runs to the right, then back to where they started.",
-        "VerMo": "a person jogs in a half a circle"
+        "VerMo": "a person jogs in a half a circle",
+        "UniMuMo": "A person jogs back and forth."
       }
     },
     {
@@ -182,7 +212,8 @@
         "TM2T": "a person kick with their right foot",
         "MotionGPT": "a man hilds both hands up in a defensive stance. he kicks with his left leg in an upward motion and then goes back to a defensive position",
         "MotionGPT3": "a person in a defensive stance does a kick with his left leg.",
-        "VerMo": "a person kicks with their left leg."
+        "VerMo": "a person kicks with their left leg.",
+        "UniMuMo": "A person throws a punch with their left hand."
       }
     },
     {
@@ -192,7 +223,8 @@
         "TM2T": "a person is do jump jack",
         "MotionGPT": "a person doing jumping jacks.",
         "MotionGPT3": "a person performs jumping jacks.",
-        "VerMo": "a person does jumping jacks."
+        "VerMo": "a person does jumping jacks.",
+        "UniMuMo": "A person is doing jumping jacks."
       }
     }
   ]

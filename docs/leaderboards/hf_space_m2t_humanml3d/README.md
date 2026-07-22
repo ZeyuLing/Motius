@@ -14,9 +14,9 @@ language protocol, candidate groups of 32 for semantic retrieval, and one
 deterministic evaluation pass.
 
 The all-case explorer exposes the input motion, all human references, and every
-TM2T, MotionGPT, MotionGPT3, and VerMo prediction for all 4,400 evaluated clips.
-The input is shown as an animated neutral SMPL mesh next to all four caption
-outputs on one page.
+TM2T, MotionGPT, MotionGPT3, VerMo, and UniMuMo prediction for all 4,400
+evaluated clips. The input is shown as an animated neutral SMPL mesh next to
+all five caption outputs on one page.
 Large motion chunks are loaded on demand from
 [`ZeyuLing/Motius-Leaderboard-Cases`](https://huggingface.co/datasets/ZeyuLing/Motius-Leaderboard-Cases).
 The metric table names both BERTScore scales explicitly: raw cosine similarity

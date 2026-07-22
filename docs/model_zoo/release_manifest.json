@@ -1466,6 +1466,55 @@
           "viewer": "https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html"
         }
       ]
+    },
+    "unimumo": {
+      "method": "UniMuMo",
+      "tasks": [
+        "M2T",
+        "Music-to-Dance"
+      ],
+      "motion_representation": "HumanML3D-263 at 60 fps; Encodec audio at 32 kHz",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-UniMuMo",
+      "upstream_checkpoint": "ClarenceY/unimumo@d0e4298a6b021aacb9c0616392b6abce80554ec8",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Motion-to-Text",
+          "variant": "TM2T token references, semantic chunk size 32",
+          "samples": 4400,
+          "Bleu_1": 0.353411,
+          "Bleu_4": 0.04573,
+          "ROUGE_L": 0.282152,
+          "CIDEr": 0.063526,
+          "Bert_F1_raw": 0.900567,
+          "R1": 0.516195,
+          "R2": 0.703239,
+          "R3": 0.798358,
+          "MM-Dist": 2.965752
+        },
+        {
+          "evaluator": "AIST++ Music-to-Dance",
+          "variant": "40-case full-timeline protocol",
+          "samples": 40,
+          "FID_k": 17.724976,
+          "FID_g": 38.644595,
+          "FID_uTMR": 0.282349,
+          "Diversity_k": 8.876717,
+          "Diversity_g": 8.465734,
+          "BeatAlign": 0.242954
+        }
+      ],
+      "preview": "https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html",
+      "secondary_preview": "https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html",
+      "preview_cases": [
+        {
+          "sample_id": "000000",
+          "viewer": "https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html"
+        },
+        {
+          "sample_id": "gBR_sBM_cAll_d04_mBR0_ch01",
+          "viewer": "https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html"
+        }
+      ]
     }
   }
 }
