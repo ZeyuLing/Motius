@@ -24,6 +24,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--annotation", required=True, type=Path)
     parser.add_argument("--path-root", required=True, type=Path)
+    parser.add_argument(
+        "--reference-dir",
+        type=Path,
+        help="Official HumanML3D new_joint_vecs directory; preferred for FID.",
+    )
     parser.add_argument("--predictions", required=True, type=Path)
     parser.add_argument("--evaluator", required=True)
     parser.add_argument("--method", required=True)
@@ -53,14 +58,24 @@ def main() -> None:
         if not prediction_path.is_file():
             raise FileNotFoundError(prediction_path)
         caption_path = resolve(record["hierarchical_caption_path"], args.path_root)
-        reference_path = resolve(record["smplx_path"], args.path_root)
         prediction = np.asarray(np.load(prediction_path), dtype=np.float32)
-        reference272 = np.asarray(np.load(reference_path), dtype=np.float32)
-        reference = motion272_to_hml263(
-            reference272,
-            src_fps=float(record.get("fps") or 30.0),
-            dst_fps=20.0,
+        official_reference = (
+            args.reference_dir / f"{name}.npy"
+            if args.reference_dir is not None
+            else None
         )
+        if official_reference is not None:
+            if not official_reference.is_file():
+                raise FileNotFoundError(official_reference)
+            reference = np.asarray(np.load(official_reference), dtype=np.float32)
+        else:
+            reference_path = resolve(record["smplx_path"], args.path_root)
+            reference272 = np.asarray(np.load(reference_path), dtype=np.float32)
+            reference = motion272_to_hml263(
+                reference272,
+                src_fps=float(record.get("fps") or 30.0),
+                dst_fps=20.0,
+            )
         captions.append(selected_caption(caption_path))
         predictions.append(prediction)
         references.append(reference)
@@ -90,7 +105,9 @@ def main() -> None:
             "chunk_size": args.chunk_size,
             "caption_protocol": "macro -> meso -> micro selected full-clip caption",
             "reference_representation": (
-                "official MotionStreamer-272 test motion -> HumanML3D-263 at 20 fps"
+                "official HumanML3D new_joint_vecs at 20 fps"
+                if args.reference_dir is not None
+                else "MotionStreamer-272 -> HumanML3D-263 at 20 fps fallback"
             ),
             "prediction_representation": "HumanML3D-263 at 20 fps",
         }
