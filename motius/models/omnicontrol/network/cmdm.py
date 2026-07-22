@@ -1,5 +1,7 @@
 """OmniControl CMDM network, adapted from the official MIT implementation."""
 
+import os
+
 import numpy as np
 import torch
 import torch.nn as nn
@@ -119,8 +121,15 @@ class CMDM(torch.nn.Module):
         return [p for name, p in self.named_parameters() if not name.startswith('clip_model.')]
 
     def load_and_freeze_clip(self, clip_version):
-        clip_model, clip_preprocess = clip.load(clip_version, device='cpu',
-                                                jit=False)  # Must set jit=False for training
+        clip_path = os.environ.get("MOTIUS_CLIP_PATH")
+        if clip_path and not os.path.isfile(clip_path):
+            raise FileNotFoundError(f"MOTIUS_CLIP_PATH does not exist: {clip_path}")
+        clip_model, clip_preprocess = clip.load(
+            clip_path or clip_version,
+            device='cpu',
+            jit=False,
+            download_root=os.environ.get("MOTIUS_CLIP_CACHE"),
+        )  # Must set jit=False for training
         clip.model.convert_weights(
             clip_model)  # Actually this line is unnecessary since clip by default already on float16
 
