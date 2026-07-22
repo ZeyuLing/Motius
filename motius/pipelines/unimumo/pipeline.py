@@ -7,6 +7,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+import torch.nn.functional as F
 
 from motius.motion.representation.humanml import recover_from_ric
 from motius.pipelines.base_pipeline import BasePipeline
@@ -184,6 +185,30 @@ class UniMuMoPipeline(BasePipeline):
         )
         return self.bundle.encode_audio(waveform[:maximum_samples])
 
+    def _prepare_motion(
+        self,
+        motion: np.ndarray | torch.Tensor,
+        *,
+        input_fps: float,
+    ) -> torch.Tensor:
+        motion = torch.as_tensor(motion, dtype=torch.float32)
+        squeeze = motion.ndim == 2
+        if squeeze:
+            motion = motion[None]
+        if motion.ndim != 3 or motion.shape[-1] != 263:
+            raise ValueError("motion must have shape (T,263) or (B,T,263)")
+        input_fps = float(input_fps)
+        if input_fps <= 0:
+            raise ValueError("input_fps must be positive")
+        target_fps = self.bundle.motion_fps
+        if input_fps != target_fps:
+            motion = F.interpolate(
+                motion.transpose(1, 2),
+                scale_factor=target_fps / input_fps,
+                mode="linear",
+            ).transpose(1, 2)
+        return motion[0] if squeeze else motion
+
     @torch.inference_mode()
     def infer_music_to_motion(
         self,
@@ -216,13 +241,16 @@ class UniMuMoPipeline(BasePipeline):
         self,
         motion: np.ndarray | torch.Tensor,
         *,
+        input_fps: float = 60.0,
         music_prompt: str = "",
         guidance_scale: float = 4.0,
         temperature: float = 1.0,
         top_k: int = 250,
         seed: int = 0,
     ) -> UniMuMoGenerationOutput:
-        motion_codes = self.bundle.encode_motion(motion)
+        motion_codes = self.bundle.encode_motion(
+            self._prepare_motion(motion, input_fps=input_fps)
+        )
         music_codes, generated_motion = self.bundle.generate_codes(
             [self._description(music=music_prompt)],
             timesteps=motion_codes.shape[-1],
@@ -253,9 +281,14 @@ class UniMuMoPipeline(BasePipeline):
 
     @torch.inference_mode()
     def infer_motion_to_text(
-        self, motion: np.ndarray | torch.Tensor
+        self,
+        motion: np.ndarray | torch.Tensor,
+        *,
+        input_fps: float = 60.0,
     ) -> UniMuMoGenerationOutput:
-        motion_codes = self.bundle.encode_motion(motion)
+        motion_codes = self.bundle.encode_motion(
+            self._prepare_motion(motion, input_fps=input_fps)
+        )
         captions = self.bundle.caption(motion_codes, modality="motion")
         return UniMuMoGenerationOutput(
             motion_codes=motion_codes[0].cpu().numpy(),

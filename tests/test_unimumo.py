@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import torch
 
 from motius.models.unimumo import UniMuMoBundle, UniMuMoGenerator
@@ -139,3 +141,18 @@ def test_unimumo_cfg_conditions_share_padding_layout():
     assert condition.shape == null.shape
     assert condition_mask.shape == null_mask.shape
     assert condition.shape[1] == 7
+
+
+def test_unimumo_pipeline_resamples_motion_to_native_fps():
+    pipeline = UniMuMoPipeline.__new__(UniMuMoPipeline)
+    pipeline.bundle = SimpleNamespace(motion_fps=60.0)
+    motion = torch.arange(12 * 263, dtype=torch.float32).reshape(12, 263)
+
+    native = pipeline._prepare_motion(motion, input_fps=60)
+    upsampled = pipeline._prepare_motion(motion, input_fps=20)
+    batched = pipeline._prepare_motion(motion[None], input_fps=20)
+
+    assert native.shape == (12, 263)
+    assert upsampled.shape == (36, 263)
+    assert batched.shape == (1, 36, 263)
+    torch.testing.assert_close(upsampled, batched[0])
