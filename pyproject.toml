@@ -73,6 +73,11 @@ tm2d = [
     "soundfile>=0.10",
     "spacy>=3.7",
 ]
+unimumo = [
+    "librosa>=0.10",
+    "sentencepiece>=0.1",
+    "soundfile>=0.12",
+]
 m2t = [
     "bert-score>=0.3.13",
     "pycocoevalcap>=1.2",
@@ -145,6 +150,7 @@ namespaces = false
 "motius.models.edge" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.models.maskcontrol" = ["ATTRIBUTIONS.md"]
 "motius.models.tm2d" = ["ATTRIBUTIONS.md"]
+"motius.models.unimumo" = ["ATTRIBUTIONS.md"]
 "motius.models.ardy" = [
     "LICENSE",
     "ATTRIBUTIONS.md",

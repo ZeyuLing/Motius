@@ -304,17 +304,37 @@ class UniMuMoBundle(ModelBundle):
         self, descriptions: Sequence[str], mode: str = "music_motion"
     ) -> tuple[torch.Tensor, torch.Tensor]:
         music_text, motion_text = self._split_descriptions(descriptions, mode)
+        return self._condition_from_streams(music_text, motion_text)
+
+    def _condition_from_streams(
+        self, music_text: Sequence[str], motion_text: Sequence[str]
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        if len(music_text) != len(motion_text):
+            raise ValueError("music and motion text batches must have equal length")
         music_hidden, music_mask = self._encode_descriptions(music_text)
         motion_hidden, motion_mask = self._encode_descriptions(motion_text)
         hidden = torch.cat((music_hidden, motion_hidden), dim=1)
         mask = torch.zeros(
-            (len(descriptions), 2, hidden.shape[1]),
+            (len(music_text), 2, hidden.shape[1]),
             dtype=torch.bool,
             device=self.device,
         )
         mask[:, 0, : music_mask.shape[1]] = music_mask
         mask[:, 1, music_mask.shape[1] :] = motion_mask
         return hidden, mask
+
+    def cfg_text_condition(
+        self, descriptions: Sequence[str], mode: str = "music_motion"
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Encode conditional and null prompts with identical padding lengths."""
+
+        music_text, motion_text = self._split_descriptions(descriptions, mode)
+        batch = len(descriptions)
+        hidden, mask = self._condition_from_streams(
+            music_text + [""] * batch,
+            motion_text + [""] * batch,
+        )
+        return hidden[:batch], mask[:batch], hidden[batch:], mask[batch:]
 
     def generate_codes(
         self,
@@ -329,9 +349,8 @@ class UniMuMoBundle(ModelBundle):
         top_k: int = 250,
         generator: torch.Generator | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
-        condition, condition_mask = self.text_condition(descriptions, mode)
-        unconditional, unconditional_mask = self.text_condition(
-            ["<separation>"] * len(descriptions), mode
+        condition, condition_mask, unconditional, unconditional_mask = (
+            self.cfg_text_condition(descriptions, mode)
         )
         return generate_parallel(
             self.generator,

@@ -115,3 +115,27 @@ def test_unimumo_description_modes():
         ["piano solo"],
         [""],
     )
+
+
+def test_unimumo_cfg_conditions_share_padding_layout():
+    class FakeBundle:
+        device = torch.device("cpu")
+        _split_descriptions = staticmethod(UniMuMoBundle._split_descriptions)
+        _condition_from_streams = UniMuMoBundle._condition_from_streams
+        cfg_text_condition = UniMuMoBundle.cfg_text_condition
+
+        def _encode_descriptions(self, descriptions):
+            lengths = [max(1, len(value.split())) for value in descriptions]
+            width = max(lengths)
+            hidden = torch.zeros(len(descriptions), width, 3)
+            mask = torch.zeros(len(descriptions), width, dtype=torch.bool)
+            for index, length in enumerate(lengths):
+                mask[index, :length] = True
+            return hidden, mask
+
+    condition, condition_mask, null, null_mask = FakeBundle().cfg_text_condition(
+        ["long orchestral score <separation> a person spins quickly"]
+    )
+    assert condition.shape == null.shape
+    assert condition_mask.shape == null_mask.shape
+    assert condition.shape[1] == 7
