@@ -77,6 +77,7 @@ unimumo = [
     "librosa>=0.10",
     "sentencepiece>=0.1",
     "soundfile>=0.12",
+    "transformers>=4.57,<5",
 ]
 m2t = [
     "bert-score>=0.3.13",
