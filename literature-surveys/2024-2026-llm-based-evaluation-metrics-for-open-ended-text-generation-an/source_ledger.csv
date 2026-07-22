@@ -1,5 +1,0 @@
-run_id,date,source_family,source_name,query,filters,command_or_url,raw_output,raw_hits,unique_hits,status,notes
-1,2026-07-19,preprint,arXiv,"LLM-as-a-judge MT-Bench G-Eval Arena-Hard",primary research,https://arxiv.org/,web search,4,4,complete,"Open-ended generation anchors"
-2,2026-07-19,preprint,arXiv,"AlpacaEval 2 JudgeBench Prometheus 2",primary research,https://arxiv.org/,web search,4,4,complete,"Bias control and judge meta-evaluation"
-3,2026-07-19,proceedings,"ACL Anthology/CVF","LLM and multimodal caption evaluation",2023-2025,https://aclanthology.org/,web search,8,6,complete,"Caption-specific grounding"
-4,2026-07-19,proceedings,"ECCV/NeurIPS","TM2T MotionGPT motion-to-text metrics",original papers,https://www.ecva.net/,web search,4,2,complete,"Domain protocol verification"
