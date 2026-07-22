@@ -253,9 +253,13 @@ def main():
     from transformers import T5ForConditionalGeneration
 
     text_config = T5Config.from_pretrained(args.tokenizer)
+    encoder_config = copy.deepcopy(text_config)
+    encoder_config.is_encoder_decoder = False
+    caption_config = copy.deepcopy(text_config)
+    caption_config.is_encoder_decoder = True
     audio_codec = build_audio_codec()
-    text_encoder = T5EncoderModel(text_config)
-    captioner = T5ForConditionalGeneration(copy.deepcopy(text_config))
+    text_encoder = T5EncoderModel(encoder_config)
+    captioner = T5ForConditionalGeneration(caption_config)
     tokenizer = AutoTokenizer.from_pretrained(args.tokenizer)
     tokenizer.add_tokens("<separation>")
     bundle = UniMuMoBundle(

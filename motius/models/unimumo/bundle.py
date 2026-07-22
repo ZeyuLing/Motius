@@ -482,7 +482,12 @@ class UniMuMoBundle(ModelBundle):
         **_kwargs,
     ):
         from huggingface_hub import load_torch_model
-        from transformers import AutoTokenizer, EncodecModel, T5EncoderModel
+        from transformers import (
+            AutoTokenizer,
+            EncodecModel,
+            T5Config,
+            T5EncoderModel,
+        )
         from transformers import T5ForConditionalGeneration
 
         artifact = _resolve_artifact(
@@ -499,6 +504,13 @@ class UniMuMoBundle(ModelBundle):
         model_kwargs = {"local_files_only": True}
         if torch_dtype is not None:
             model_kwargs["torch_dtype"] = torch_dtype
+        caption_config = T5Config.from_pretrained(
+            artifact / "captioner", local_files_only=True
+        )
+        # Early converted artifacts inherited the encoder-only flag because
+        # T5EncoderModel mutates its config during construction. The caption
+        # weights are unchanged; restore the seq2seq contract while loading.
+        caption_config.is_encoder_decoder = True
         bundle = cls(
             metadata["config"],
             audio_codec=EncodecModel.from_pretrained(
@@ -508,7 +520,7 @@ class UniMuMoBundle(ModelBundle):
                 artifact / "text_encoder", **model_kwargs
             ),
             captioner=T5ForConditionalGeneration.from_pretrained(
-                artifact / "captioner", **model_kwargs
+                artifact / "captioner", config=caption_config, **model_kwargs
             ),
             tokenizer=AutoTokenizer.from_pretrained(
                 artifact / "tokenizer", local_files_only=True
