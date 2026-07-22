@@ -176,10 +176,12 @@ foot contacts                                                   4
 The released VQ encoder consumes the first 283 channels; the decoder predicts
 all 287. Motius decodes native joints directly with `recover_from_ric`. SMPL
 mesh export uses position IK because TM2D's generated joint positions do not
-uniquely determine twist. The converter preserves temporal twist continuity on
-single-bone chains and does not run position-only pose refinement, which can
-reduce MPJPE while moving through unconstrained twist solutions. Every release
-preview must pass joint, rotation, and sampled SMPL-surface quality gates.
+uniquely determine twist. T2M export uses the per-frame minimum-twist solution
+to avoid accumulating unconstrained axial rotations. M2D retains temporal
+twist stabilization for its continuous dance stream. Neither route runs
+position-only pose refinement, which can reduce MPJPE while moving through
+unconstrained twist solutions. Every release preview must pass joint, rotation,
+and sampled SMPL-surface quality gates.
 
 Across the 40 AIST++ cases, the corrected fit has `24.45 mm` mean joint MPJPE,
 `13.81 deg` mean per-case local-rotation jump p99 (`19.94 deg` worst case), and
