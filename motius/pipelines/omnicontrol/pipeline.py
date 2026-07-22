@@ -129,6 +129,50 @@ class OmniControlPipeline(BasePipeline):
             axis_mask.any(dim=-1).any(dim=-1),
         )
 
+    def _build_explicit_hints(
+        self,
+        motions: Sequence[np.ndarray],
+        lengths: Sequence[int],
+        n_frames: int,
+        position_mask,
+    ):
+        """Build hints from an explicit ``(B,T,22,3)`` position mask.
+
+        This is the lossless adapter for heterogeneous position evidence: every
+        frame, joint, and Cartesian axis may be selected independently.
+        """
+        motion = torch.zeros((len(lengths), n_frames, 263), device=self.device)
+        for batch_index, (value, length) in enumerate(zip(motions, lengths)):
+            value = torch.as_tensor(value, dtype=torch.float32, device=self.device)
+            if value.ndim != 2 or value.shape[1] != 263:
+                raise ValueError(
+                    f"motion {batch_index} must have shape (T,263), got {tuple(value.shape)}"
+                )
+            motion[batch_index, :length] = value[:length]
+        joints = recover_from_ric(motion, 22)
+
+        axis_mask = torch.as_tensor(position_mask, dtype=torch.bool, device=self.device)
+        expected_prefix = (len(lengths), n_frames, 22, 3)
+        if tuple(axis_mask.shape) != expected_prefix:
+            raise ValueError(
+                "position_mask must have shape "
+                f"{expected_prefix}, got {tuple(axis_mask.shape)}"
+            )
+        valid = torch.arange(n_frames, device=self.device)[None, :] < torch.tensor(
+            lengths, device=self.device
+        )[:, None]
+        axis_mask = axis_mask & valid[:, :, None, None]
+
+        raw_mean = self.bundle.raw_mean.view(1, 1, 22, 3)
+        raw_std = self.bundle.raw_std.view(1, 1, 22, 3)
+        normalized = (joints - raw_mean) / raw_std
+        hint = torch.where(axis_mask, normalized, torch.zeros_like(normalized))
+        return (
+            hint.reshape(len(lengths), n_frames, 66),
+            axis_mask,
+            axis_mask.any(dim=-1).any(dim=-1),
+        )
+
     @torch.no_grad()
     def infer_control(
         self,
@@ -141,6 +185,7 @@ class OmniControlPipeline(BasePipeline):
         keyframe_indices: Optional[Sequence[Sequence[int]]] = None,
         prefix_ratio: float = 0.2,
         boundary_ratio: float = 0.1,
+        position_mask=None,
         guidance_param: Optional[float] = None,
         seed: int = 0,
         progress: bool = False,
@@ -156,17 +201,26 @@ class OmniControlPipeline(BasePipeline):
         if keyframe_indices is not None and len(keyframe_indices) != len(lengths):
             raise ValueError("keyframe_indices must have one sequence per sample")
 
-        hint, axis_mask, frame_mask = self._build_hints(
-            motions,
-            lengths,
-            n_frames,
-            control_mode,
-            joint_indices,
-            axes,
-            keyframe_indices,
-            prefix_ratio,
-            boundary_ratio,
-        )
+        if position_mask is not None:
+            if joint_indices is not None or keyframe_indices is not None:
+                raise ValueError(
+                    "position_mask cannot be combined with joint_indices or keyframe_indices"
+                )
+            hint, axis_mask, frame_mask = self._build_explicit_hints(
+                motions, lengths, n_frames, position_mask
+            )
+        else:
+            hint, axis_mask, frame_mask = self._build_hints(
+                motions,
+                lengths,
+                n_frames,
+                control_mode,
+                joint_indices,
+                axes,
+                keyframe_indices,
+                prefix_ratio,
+                boundary_ratio,
+            )
         valid = torch.arange(n_frames, device=self.device)[None] < torch.tensor(
             lengths, device=self.device
         )[:, None]

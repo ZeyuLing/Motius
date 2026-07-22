@@ -48,6 +48,33 @@ def test_sparse_root_xz_keeps_axes_independent():
     assert not axis_mask[0, :, 1:].any()
 
 
+def test_explicit_position_mask_preserves_heterogeneous_atoms():
+    pipeline = OmniControlPipeline(_HintBundle())
+    motion = np.zeros((40, 263), dtype=np.float32)
+    position_mask = np.zeros((1, 40, 22, 3), dtype=bool)
+    position_mask[0, 1, 20, 0] = True
+    position_mask[0, 2, 10, 1] = True
+    position_mask[0, 3, 0, 2] = True
+
+    _, axis_mask, frame_mask = pipeline._build_explicit_hints(
+        [motion], [40], 40, position_mask
+    )
+
+    assert torch.equal(axis_mask.cpu(), torch.from_numpy(position_mask))
+    assert frame_mask[0, :4].tolist() == [False, True, True, True]
+    assert not frame_mask[0, 4:].any()
+
+
+def test_explicit_position_mask_rejects_wrong_shape():
+    pipeline = OmniControlPipeline(_HintBundle())
+    motion = np.zeros((40, 263), dtype=np.float32)
+
+    with pytest.raises(ValueError, match="position_mask must have shape"):
+        pipeline._build_explicit_hints(
+            [motion], [40], 40, np.zeros((1, 40, 22), dtype=bool)
+        )
+
+
 def test_adaptive_keyframes_map_by_fraction_to_model_length():
     entry = {"T": 300, "keyframe_indices": [0, 150, 299]}
 
