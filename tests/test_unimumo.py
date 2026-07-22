@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 from types import SimpleNamespace
 
+import numpy as np
 import torch
 
 from motius.models.unimumo import UniMuMoBundle, UniMuMoGenerator
@@ -9,7 +11,10 @@ from motius.models.unimumo.generator import DelayedPattern, generate_parallel
 from motius.models.unimumo.motion_codec import UniMuMoMotionCodec
 from motius.pipelines.unimumo import UniMuMoPipeline
 from motius.registry import MODEL_BUNDLES, PIPELINES
+from tools.eval_dance_to_music_beats import unique_beat_matches
 from tools.infer_unimumo_aistpp import smpl22_to_smpl24
+from tools.infer_unimumo_dance_to_music import decode_packed_joints
+from tools.infer_unimumo_humanml3d import selected_caption
 from tools.run_m2t_humanml3d import _unimumo_caption_batch
 
 
@@ -171,6 +176,41 @@ def test_unimumo_aistpp_bridge_preserves_body_and_extends_hands():
     torch.testing.assert_close(torch.from_numpy(bridged[:, :22]), torch.from_numpy(joints))
     torch.testing.assert_close(torch.from_numpy(bridged[:, 22, 0]), torch.full((3,), 2.35))
     torch.testing.assert_close(torch.from_numpy(bridged[:, 23, 0]), torch.full((3,), -2.35))
+
+
+def test_unimumo_t2m_selected_caption_prefers_macro(tmp_path):
+    path = tmp_path / "caption.json"
+    path.write_text(
+        json.dumps({"macro": ["walk forward"], "meso": ["ignored"]})
+    )
+    assert selected_caption(path) == "walk forward"
+
+
+def test_decode_packed_joints_respects_offset_and_quantization(tmp_path):
+    path = tmp_path / "packed.joints"
+    prefix = np.arange(5, dtype="<u2")
+    values = np.arange(12, dtype="<u2")
+    path.write_bytes(prefix.tobytes() + values.tobytes())
+    descriptor = {
+        "frames": 2,
+        "joint_count": 2,
+        "position_count": 12,
+        "position_offset": prefix.nbytes,
+        "position_minimum": [1.0, 2.0, 3.0],
+        "position_scale": [0.5, 0.25, 0.125],
+    }
+    decoded = decode_packed_joints(path, descriptor)
+    expected = (
+        values.reshape(2, 2, 3) * descriptor["position_scale"]
+        + descriptor["position_minimum"]
+    )
+    np.testing.assert_allclose(decoded, expected)
+
+
+def test_dance_to_music_beat_matching_is_one_to_one():
+    reference = np.asarray([0.0, 0.1, 1.0])
+    prediction = np.asarray([0.05, 1.04])
+    assert unique_beat_matches(reference, prediction, tolerance=0.1) == 2
 
 
 def test_unimumo_caption_batch_matches_official_padding_and_cleanup():
