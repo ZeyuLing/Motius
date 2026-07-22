@@ -518,7 +518,10 @@ class UniMuMoBundle(ModelBundle):
         report = load_torch_model(
             bundle.core,
             artifact,
-            strict=True,
+            # huggingface_hub applies strict=True to every shard individually,
+            # so a valid multi-shard checkpoint is rejected for keys living in
+            # the other shards. Validate the complete loaded key set below.
+            strict=False,
             safe=True,
             filename_pattern="core{suffix}.safetensors",
         )
