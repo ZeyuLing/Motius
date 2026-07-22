@@ -440,6 +440,8 @@ class UniMuMoBundle(ModelBundle):
                     "artifact_format": UNIMUMO_ARTIFACT_FORMAT,
                     "tasks": [
                         "text-to-music-motion",
+                        "text-to-motion",
+                        "text-to-music",
                         "music-to-motion",
                         "motion-to-music",
                         "music-to-text",
