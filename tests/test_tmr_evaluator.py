@@ -101,6 +101,22 @@ def test_utmr_fid_is_invariant_to_per_sample_embedding_scale() -> None:
     )
 
 
+def test_t2m_metrics_can_preserve_native_fid_space() -> None:
+    rng = np.random.default_rng(13)
+    text = rng.normal(size=(32, 8)).astype(np.float32)
+    real = rng.normal(size=(32, 8)).astype(np.float32)
+    predicted = real * 5.0
+    metrics = aggregate_t2m_metrics(
+        text,
+        real,
+        predicted,
+        n_repeats=1,
+        normalize_fid=False,
+    )
+    assert metrics["fid_embedding_space"] == "native_raw"
+    assert metrics["fid"] > 0.1
+
+
 def test_r_precision_accepts_repeated_caption_groups_as_multiple_positives() -> None:
     text = np.asarray([[0.0], [0.0], [10.0]], dtype=np.float32)
     motion = np.asarray([[1.0], [0.0], [10.0]], dtype=np.float32)

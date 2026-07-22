@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from concurrent.futures import ThreadPoolExecutor
+from functools import partial
 from pathlib import Path
 
 import numpy as np
@@ -33,19 +35,48 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--chunk-size", type=int, default=32)
     parser.add_argument("--n-repeats", type=int, default=1)
+    parser.add_argument("--num-workers", type=int, default=32)
     parser.add_argument("--seed", type=int, default=0)
     return parser.parse_args()
 
 
 def _selected_caption(path: Path) -> str:
+    def timestamp(value: str) -> float:
+        value = value.strip().lower()
+        return 0.0 if value in {"", "nan"} else float(value)
+
     captions = []
     for line in path.read_text(encoding="utf-8").splitlines():
         parts = line.strip().split("#")
-        if len(parts) >= 4 and float(parts[2] or 0) == 0 and float(parts[3] or 0) == 0:
+        if (
+            len(parts) >= 4
+            and timestamp(parts[2]) == 0
+            and timestamp(parts[3]) == 0
+        ):
             captions.append(parts[0].strip())
     if len(captions) != 1:
-        raise ValueError(f"Expected one selected full-clip caption in {path}, got {captions}.")
+        raise ValueError(
+            f"Expected one selected full-clip caption in {path}, got {captions}."
+        )
     return captions[0]
+
+
+def _load_pair(
+    name: str,
+    *,
+    data_root: Path,
+    texts_dir: Path,
+    predictions_dir: Path,
+):
+    reference_path = data_root / "motion_data" / f"{name}.npy"
+    prediction_path = predictions_dir / f"{name}.npy"
+    caption_path = texts_dir / f"{name}.txt"
+    for path in (reference_path, prediction_path, caption_path):
+        if not path.is_file():
+            raise FileNotFoundError(path)
+    reference = np.asarray(np.load(reference_path), dtype=np.float32)
+    prediction = np.asarray(np.load(prediction_path), dtype=np.float32)
+    return _selected_caption(caption_path), reference, prediction
 
 
 def main() -> None:
@@ -57,16 +88,16 @@ def main() -> None:
     ]
     captions, references, predictions = [], [], []
     reference_lengths, prediction_lengths = [], []
-    for name in names:
-        reference_path = args.data_root / "motion_data" / f"{name}.npy"
-        prediction_path = args.predictions / f"{name}.npy"
-        caption_path = args.texts_dir / f"{name}.txt"
-        for path in (reference_path, prediction_path, caption_path):
-            if not path.is_file():
-                raise FileNotFoundError(path)
-        reference = np.asarray(np.load(reference_path), dtype=np.float32)
-        prediction = np.asarray(np.load(prediction_path), dtype=np.float32)
-        captions.append(_selected_caption(caption_path))
+    loader = partial(
+        _load_pair,
+        data_root=args.data_root,
+        texts_dir=args.texts_dir,
+        predictions_dir=args.predictions,
+    )
+    with ThreadPoolExecutor(max_workers=max(1, args.num_workers)) as executor:
+        pairs = list(executor.map(loader, names))
+    for caption, reference, prediction in pairs:
+        captions.append(caption)
         references.append(reference)
         predictions.append(prediction)
         reference_lengths.append(len(reference))
@@ -89,6 +120,7 @@ def main() -> None:
         n_repeats=args.n_repeats,
         chunk=args.chunk_size,
         seed=args.seed,
+        normalize_fid=False,
     )
     result.update(
         {

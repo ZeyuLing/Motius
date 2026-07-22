@@ -217,6 +217,7 @@ def aggregate_t2m_metrics(
     chunk: int = 32,
     seed: int = 0,
     positive_group_ids: Optional[Sequence[object]] = None,
+    normalize_fid: bool = True,
 ) -> Dict[str, object]:
     n = min(len(text_embeddings), len(real_embeddings), len(predicted_embeddings))
     if n < 3:
@@ -225,8 +226,18 @@ def aggregate_t2m_metrics(
     text_embeddings = text_embeddings[:n]
     real_embeddings = real_embeddings[:n]
     predicted_embeddings = predicted_embeddings[:n]
-    fid_real_embeddings = l2_normalize_embeddings(real_embeddings)
-    fid_predicted_embeddings = l2_normalize_embeddings(predicted_embeddings)
+    if normalize_fid:
+        fid_real_embeddings = l2_normalize_embeddings(real_embeddings)
+        fid_predicted_embeddings = l2_normalize_embeddings(predicted_embeddings)
+        fid_embedding_space = "l2_normalized"
+    else:
+        fid_real_embeddings = np.asarray(
+            real_embeddings, dtype=np.float64
+        ).reshape(n, -1)
+        fid_predicted_embeddings = np.asarray(
+            predicted_embeddings, dtype=np.float64
+        ).reshape(n, -1)
+        fid_embedding_space = "native_raw"
     group_ids = None
     if positive_group_ids is not None:
         if len(positive_group_ids) < n:
@@ -269,7 +280,7 @@ def aggregate_t2m_metrics(
         "r_precision_std": r_array.std(0).tolist(),
         "matching_score": float(np.mean(matching_values)),
         "fid": float(np.mean(fids)),
-        "fid_embedding_space": "l2_normalized",
+        "fid_embedding_space": fid_embedding_space,
         "diversity_reference": float(np.mean(real_div)),
         "diversity_predicted": float(np.mean(pred_div)),
     }

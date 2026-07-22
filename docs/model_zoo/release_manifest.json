@@ -1470,13 +1470,58 @@
     "unimumo": {
       "method": "UniMuMo",
       "tasks": [
+        "T2M",
         "M2T",
-        "Music-to-Dance"
+        "Music-to-Dance",
+        "Dance-to-Music"
       ],
       "motion_representation": "HumanML3D-263 at 60 fps; Encodec audio at 32 kHz",
       "checkpoint": "https://huggingface.co/ZeyuLing/Motius-UniMuMo",
       "upstream_checkpoint": "ClarenceY/unimumo@d0e4298a6b021aacb9c0616392b6abce80554ec8",
       "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "selected captions, native FID space, chunk size 32",
+          "samples": 4000,
+          "R1": 0.102,
+          "R2": 0.174,
+          "R3": 0.24325,
+          "FID": 5.959406,
+          "MM-Dist": 6.651851,
+          "Diversity": 8.067502
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "MotionStreamer-272, native FID space, chunk size 32",
+          "samples": 4032,
+          "R1": 0.065476,
+          "R2": 0.113839,
+          "R3": 0.161706,
+          "FID": 373.219165,
+          "MM-Dist": 25.663734,
+          "Diversity": 18.836777
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "SMPL-22 joints66, normalized FID, chunk size 32",
+          "samples": 4032,
+          "R1": 0.070437,
+          "R2": 0.147073,
+          "R3": 0.209325,
+          "FID": 0.678796,
+          "MM-Dist": 54.010105,
+          "Diversity": 46.760899
+        },
+        {
+          "evaluator": "Motius Physical",
+          "variant": "SMPL-22 joints66, table-scaled",
+          "samples": 4042,
+          "Slide": 21.737724,
+          "Float": 58.76685,
+          "Jitter": 11.878,
+          "Dynamic": 54.355233,
+          "Penetration": 0.0
+        },
         {
           "evaluator": "HumanML3D Motion-to-Text",
           "variant": "TM2T token references, semantic chunk size 32",
@@ -1501,6 +1546,13 @@
           "Diversity_k": 8.876717,
           "Diversity_g": 8.465734,
           "BeatAlign": 0.242954
+        },
+        {
+          "evaluator": "AIST++ Dance-to-Music",
+          "variant": "Motius common 40 cases, up to 10 seconds",
+          "samples": 40,
+          "Beats_Coverage": 1.003378,
+          "Beats_Hit": 0.380068
         }
       ],
       "preview": "https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html",

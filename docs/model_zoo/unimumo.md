@@ -24,6 +24,7 @@ tags:
   <a href="https://github.com/hanyangclarence/UniMuMo">Original GitHub</a> |
   <a href="https://huggingface.co/ClarenceY/unimumo">Original Checkpoint</a> |
   <a href="https://huggingface.co/ZeyuLing/Motius-UniMuMo">Motius Checkpoint</a> |
+  <a href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard">T2M Leaderboard</a> |
   <a href="https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard">M2T Leaderboard</a> |
   <a href="https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard">M2D Leaderboard</a>
 </p>
@@ -48,8 +49,8 @@ zoom, timeline seeking, and downloadable motion assets.
 
 | Item | Value |
 | ---- | ----- |
-| Tasks | M2T, Music-to-Dance |
-| Additional pipeline routes | Text-to-Motion, Text-to-Music, joint Text-to-Music-Motion, Motion-to-Music, Music-to-Text |
+| Tasks | T2M, M2T, Music-to-Dance, Dance-to-Music |
+| Additional pipeline routes | Text-to-Music and joint Text-to-Music-Motion |
 | Motion representation | HumanML3D-263 at 60 fps |
 | Audio representation | Encodec, 32 kHz, four 2,048-entry RVQ codebooks |
 | Shared code rate | 50 Hz |
@@ -132,6 +133,31 @@ the motion representation API.
 
 ## Evaluation Results
 
+### HumanML3D Text-to-Motion
+
+UniMuMo exposes text-to-motion as a zero-shot route of its joint music-motion
+generator. Motius evaluates all 4,042 selected-caption protocol cases with one
+deterministic pass and retrieval groups of 32. HumanML3D Official uses the
+4,012 cases for which the released `new_joint_vecs` reference exists; its
+retrieval computation uses the largest complete 32-case groups (`n=4,000`).
+
+| Evaluator | n | R@1 | R@2 | R@3 | FID | MM-Dist | Diversity |
+| --------- | -: | --: | --: | --: | --: | ------: | --------: |
+| HumanML3D Official | 4,000 | 0.1020 | 0.1740 | 0.2433 | 5.9594 | 6.6519 | 8.0675 |
+| MotionStreamer Evaluator | 4,032 | 0.0655 | 0.1138 | 0.1617 | 373.2192 | 25.6637 | 18.8368 |
+| Motius Joint-Position Evaluator | 4,032 | 0.0704 | 0.1471 | 0.2093 | 0.6788 | 54.0101 | 46.7609 |
+
+HumanML3D and MotionStreamer FID use their native evaluator spaces; uTMR FID
+uses per-sample L2-normalized embeddings. The weak retrieval scores are
+reported as measured: this checkpoint supports T2M, but it was not optimized
+as a dedicated HumanML3D text-to-motion model.
+
+Physical diagnostics over all 4,042 generated SMPL-22 joint sequences:
+
+| Slide | Float | Jitter | Dynamic | Penetration |
+| ----: | ----: | -----: | ------: | ----------: |
+| 21.7377 | 58.7669 | 11.8780 | 54.3552 | 0.0000 |
+
 ### HumanML3D Motion-to-Text
 
 The shared M2T protocol contains 4,400 official test motions and temporal
@@ -174,6 +200,24 @@ For paper parity, a separate first-five-second evaluation gives
 BeatAlign `0.24`. The leaderboard uses full generated timelines for every
 method and does not mix the shorter parity result into rankings.
 
+### AIST++ Dance-to-Music
+
+Motion-to-music is a zero-shot route of the same released checkpoint. The
+authors evaluate on the D2M-GAN 2-second AIST++ split; Motius records those
+published numbers separately from its longer common-case diagnostic.
+
+| Protocol | Samples | Beats Coverage | Beats Hit |
+| -------- | ------: | -------------: | --------: |
+| UniMuMo paper, D2M-GAN 2-second split | paper test split | 93.0% | 88.4% |
+| Motius common AIST++ cases, up to 10 seconds | 40 | 100.34% | 38.01% |
+
+The common-case coverage is the generated/reference beat-count ratio
+(`594/592`); hit is one-to-one beat matching within `0.1 s` (`225/592`). The
+long-window diagnostic is useful for inspecting complete generated songs but
+is not directly comparable to the paper's 2-second protocol. Every WAV,
+input-motion package, prompt, seed, and codec output is available in the
+[`dance_to_music_aistpp_common40` benchmark folder](https://huggingface.co/ZeyuLing/Motius-UniMuMo/tree/main/benchmarks/dance_to_music_aistpp_common40).
+
 ## Motion Representation
 
 The native motion stream is HumanML3D-263. Its root velocities, root height,
@@ -200,6 +244,8 @@ twist. Across all 40 clips, the fitted mesh has `28.16 mm` mean joint MPJPE.
 | Official tensor load | 880 core tensors loaded across two safe shards |
 | HumanML3D caption generation | 4,400/4,400 protocol samples |
 | AIST++ dance generation | 40/40 cases, all finite |
+| AIST++ music generation from dance | 40/40 cases, all WAV and codec metadata public |
+| HumanML3D zero-shot motion generation | 4,042/4,042 selected-caption cases, all four output representations finite |
 | Runtime boundary | No import from `ref_repo` or an upstream checkout |
 
 The audited upstream source and checkpoint declare no license. Motius records
