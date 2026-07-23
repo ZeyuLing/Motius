@@ -59,19 +59,21 @@ character pipeline without rebuilding the surrounding infrastructure.
 </p>
 
 The comparison above follows one motion through native feature vectors,
-SMPL-family bodies, kinematic skeletons, and a robot embodiment. Exact routes
-preserve source state; lossy joint-only and cross-skeleton routes expose their
-IK or retargeting diagnostics.
+SMPL-family bodies, kinematic skeletons, and a robot embodiment. The same
+conversion bridge is actor-count agnostic: single-person motion uses `(T, D)`,
+while paired and multi-person motion use `(T, A, D)` and preserve one shared
+world frame. Representation conversion and retargeting run per actor without
+independently recentering them, so relative position and facing remain intact.
 
-### Two-Person Representation Demo
-
-The GT InterX preview decodes one synchronized pair into SMPL-22 skeletons and
-paired meshes while preserving the shared interaction frame. Open the
-[30 fps GT comparison](assets/motion/interhuman_representation_demo/interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif),
-inspect both people in the
-[Three.js viewer](assets/motion/interhuman_representation_demo/index.html), or
-read the
-[two-person representation protocol](docs/motion/representations.md#two-person-interhuman-preview).
+InterHuman-262 is a motion representation within this shared actor layout, not
+a separate "two-person representation" class. The
+[GT InterX comparison](assets/motion/interhuman_representation_demo/interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif)
+and [Three.js viewer](assets/motion/interhuman_representation_demo/index.html)
+show the same conversion route as paired InterHuman skeletons and SMPL-H
+meshes. See the
+[shared-frame conversion contract](docs/motion/representations.md#shared-frame-multi-actor-conversion).
+Exact routes preserve source state; lossy joint-only and cross-skeleton routes
+expose their IK or retargeting diagnostics.
 
 ### Character FBX Export
 

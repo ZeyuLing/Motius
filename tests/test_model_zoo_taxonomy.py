@@ -35,6 +35,8 @@ def test_root_readme_uses_only_representation_conversion_visuals() -> None:
     readme = (ROOT / "README.md").read_text()
     assert "<table>" not in readme
     assert "assets/model_zoo/" not in readme
+    assert "### Two-Person Representation Demo" not in readme
+    assert "(T, A, D)" in readme
     assert "004822_hml_smpl_soma_core_g1_1920_30fps.gif" in readme
     assert "interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif" in readme
     assert "004822_skeleton_smpl_mixamo_1440_readme_30fps.gif" in readme
