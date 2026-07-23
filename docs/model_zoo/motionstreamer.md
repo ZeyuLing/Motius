@@ -31,7 +31,7 @@ statistics, and task-facing pipeline without requiring the original checkout.
 | Item | Value |
 | ---- | ----- |
 | Method | MotionStreamer, diffusion autoregression in causal latent space |
-| Tasks | T2M, Sequential Generation, TP2M |
+| Tasks | Text-to-Motion, Temporal Condition, Sequential Generation |
 | Venue | ICCV 2025 |
 | Motion representation | MotionStreamer-272, 30 fps |
 | Text encoder | SentenceT5-XXL |
@@ -110,7 +110,6 @@ joints. R-Precision uses action-group multi-positive recall batches of 32.
 See the [BABEL Sequential Generation Leaderboard](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard)
 for the complete transition diagnostics and cross-method comparison.
 
-
 ## TP2M Results
 
 Protocol: HumanML3D TP2M official-test selected-caption splits scored with the
@@ -136,7 +135,6 @@ MotionStreamer predicts a 272-dimensional global representation at 30 fps:
 
 The TAE temporal downsample factor is 4 frames per latent token. The pipeline
 therefore clamps requested lengths to token-aligned frame counts.
-
 
 ## Motius Components
 

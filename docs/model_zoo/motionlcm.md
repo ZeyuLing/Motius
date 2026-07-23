@@ -32,7 +32,7 @@ space, MLD VAE decoding, and HumanML3D-263 denormalization.
 | Item | Value |
 | ---- | ----- |
 | Method | MotionLCM, latent consistency model for human motion |
-| Tasks | T2M |
+| Tasks | Text-to-Motion |
 | Venue | ECCV 2024 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Text encoder | SentenceT5-Large, frozen |
@@ -73,7 +73,6 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 | HumanML3D Official | Default | 4,042 | 0.509 | 0.708 | 0.811 | 0.340 | 2.969 | 9.641 | Measured |
 | MotionStreamer Evaluator | Default | 4,042 | 0.566 | 0.735 | 0.807 | 44.055 | 19.454 | 24.640 | Measured |
 | Motius Joint-Position Evaluator | Default | 4,034 | 0.516 | 0.692 | 0.774 | 283.053 | 36.587 | 56.946 | Measured |
-
 
 ## Motion Representation
 

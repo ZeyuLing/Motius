@@ -45,7 +45,7 @@ positions. The T2M page uses the selected HumanML3D caption for every case.
 
 | Item | Value |
 | ---- | ----- |
-| Tasks | T2M, Music-to-Dance |
+| Tasks | Text-to-Motion, Music-to-Dance |
 | Datasets | HumanML3D and AIST++ |
 | Native motion | TM2D-287, 24 joints at 60 fps |
 | Motion tokens | 1,024-entry VQ codebook, stride 8 |

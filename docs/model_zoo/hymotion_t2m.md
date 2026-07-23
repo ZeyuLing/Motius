@@ -31,7 +31,7 @@ CLIP-L text encoders, official smoothing, and an ODE-based inference pipeline.
 | Item | Value |
 | ---- | ----- |
 | Method | HY-Motion 1.0 T2M, DiT + flow matching |
-| Tasks | T2M |
+| Tasks | Text-to-Motion |
 | Motion representation | HY-Motion-201 at 30 fps |
 | Text encoder | Qwen3-8B token context + CLIP-L sentence embedding |
 | Pipeline | `motius.pipelines.hymotion_t2m.HyMotionT2MPipeline` |
@@ -79,7 +79,6 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 | MotionStreamer Evaluator | Lite | 4,042 | 0.794 | 0.915 | 0.952 | 10.451 | 14.836 | 27.471 | Measured |
 | Motius Joint-Position Evaluator | Lite | 4,034 | 0.594 | 0.746 | 0.814 | 32.069 | 30.671 | 55.421 | Measured |
 
-
 ## Motion Representation
 
 HY-Motion T2M has a single public motion representation in this release:
@@ -90,7 +89,6 @@ The pipeline may expose decoded helper tensors such as `rot6d`, `transl`, or
 `keypoints3d` for visualization/evaluation adapters, but those helpers are not
 separate HY-Motion checkpoint variants and should not be listed as the model's
 motion representation.
-
 
 ## Motius Components
 

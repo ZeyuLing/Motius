@@ -33,7 +33,7 @@ denormalization behind a consistent inference pipeline.
 | Item | Value |
 | ---- | ----- |
 | Method | MoGenTS, spatial-temporal discrete motion tokens |
-| Tasks | T2M |
+| Tasks | Text-to-Motion |
 | Venue | NeurIPS 2024 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Text encoder | CLIP ViT-B/32, frozen |
@@ -76,7 +76,6 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 | MotionStreamer Evaluator | Default | 4,042 | 0.499 | 0.652 | 0.735 | 20.186 | 19.535 | 25.697 | Measured |
 | Motius Joint-Position Evaluator | Default | 4,034 | 0.462 | 0.624 | 0.714 | 158.588 | 36.714 | 56.513 | Measured |
 
-
 ## Motion Representation
 
 MoGenTS generates HumanML3D-263 features at 20 fps. Per frame:
@@ -94,7 +93,6 @@ MoGenTS generates HumanML3D-263 features at 20 fps. Per frame:
 The model tokenizes motion into a 1D auxiliary stream and a 2D joint-token map.
 The 2D stream preserves spatial-temporal structure before decoding back to the
 standard 263-dim HumanML3D representation.
-
 
 ## Motius Components
 

@@ -34,7 +34,7 @@ available on the [project page](https://research.nvidia.com/labs/sil/projects/ar
 | Item | Value |
 | ---- | ----- |
 | Method | Two-stage autoregressive diffusion with explicit root and latent body streams |
-| Tasks | T2M, online prompt updates, kinematic control |
+| Tasks | Text-to-Motion, Sequential Generation, Kinematic Control |
 | Venue | ACM TOG 45(4), SIGGRAPH 2026, Article 86 |
 | Native skeletons | ARDY-27 and Unitree G1 |
 | Native FPS | ARDY-330 20 fps; G1 25 fps |

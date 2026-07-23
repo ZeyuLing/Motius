@@ -33,7 +33,7 @@ pipeline methods without requiring the original checkout.
 | Item | Value |
 | ---- | ----- |
 | Method | FlowMDM, diffusion with blended positional encodings |
-| Tasks | T2M, Sequential Generation, TP2M |
+| Tasks | Text-to-Motion, Temporal Condition, Sequential Generation |
 | Venue | CVPR 2024 |
 | Motion representation | HumanML3D-263 at 20 fps; BABEL-135 at 30 fps |
 | Checkpoints | [`HumanML3D`](https://huggingface.co/ZeyuLing/hftrainer-flowmdm-humanml3d), [`BABEL`](https://huggingface.co/ZeyuLing/motius-flowmdm-babel) |
@@ -113,7 +113,6 @@ row and is excluded from method ranking.
 Full protocol and diagnostic statistics are maintained on the
 [`BABEL Sequential Generation Leaderboard`](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard).
 
-
 ## TP2M Results
 
 FlowMDM also supports prefix-conditioned TP2M evaluation under the published
@@ -140,7 +139,6 @@ FlowMDM generates HumanML3D-263 features at 20 fps. Per frame:
 | `rot_data` | 126 | local joint rotations in continuous 6D format |
 | `local_vel` | 66 | local joint velocities |
 | `foot_contact` | 4 | binary foot-contact labels |
-
 
 ## Motius Components
 

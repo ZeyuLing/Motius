@@ -23,7 +23,7 @@ weights outside the repository.
 | Item | Value |
 | ---- | ----- |
 | Method | Modular latent generative model plus smart primitives |
-| Tasks | Real-time Unitree G1 locomotion and navigation control |
+| Tasks | Robot Motion Control |
 | Native representation | MotionBricks G1 global 414D, local 413D, dual-root 418D |
 | Robot skeleton | Unitree G1 29-DOF MuJoCo model |
 | Public output | G1 qpos-36 stream |

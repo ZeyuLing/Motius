@@ -1,56 +1,142 @@
 # Motius Model Zoo
 
-The Model Zoo is the method-level index for Motius. Each model card records the
-native task API, motion representation, released checkpoint, evaluation
-protocol, upstream paper and code, and any method-specific license terms.
+The Model Zoo is the method-level index for Motius. Every entry links to a model
+card that records the released task API, native motion representation,
+checkpoint, evaluation protocol, paper, original code, and license terms.
 
-Use the task labels below as capabilities. Architecture properties such as
-autoregressive, diffusion, latent, streaming, or zero-shot remain in the model
-cards rather than becoming separate tasks.
+Task labels follow the
+[canonical Motius task definitions](../tasks/README.md). Architecture properties
+such as autoregressive, diffusion, latent, streaming, and zero-shot stay in the
+method description rather than becoming additional tasks.
 
-| Method | Tasks | Native representation | Model card |
-| --- | --- | --- | --- |
-| MDM | T2M | HumanML3D-263 | [MDM](mdm.md) |
-| T2M-GPT | T2M | HumanML3D-263 | [T2M-GPT](t2mgpt.md) |
-| MoMask | T2M | HumanML3D-263 | [MoMask](momask.md) |
-| MoGenTS | T2M | HumanML3D-263 | [MoGenTS](mogents.md) |
-| MLD | T2M | HumanML3D-263 | [MLD](mld.md) |
-| MotionLCM | T2M | HumanML3D latent / 263 bridge | [MotionLCM](motionlcm.md) |
-| MotionGPT | T2M, M2T | HumanML3D-263 | [MotionGPT](motiongpt.md) |
-| MotionGPT3 | M2T | HumanML3D-263 | [MotionGPT3](motiongpt3.md) |
-| TM2T | M2T | HumanML3D-263 | [TM2T](tm2t.md) |
-| VerMo | M2T, multimodal motion tasks | VerMo-138 via SMPL-22 | [VerMo](vermo.md) |
-| FlowMDM | T2M, Temporal Condition, Sequential Generation | HumanML3D-263 / BABEL-135 | [FlowMDM](flowmdm.md) |
-| MotionStreamer | T2M, Temporal Condition, Sequential Generation | MotionStreamer-272 | [MotionStreamer](motionstreamer.md) |
-| MotionMillion | T2M | MotionStreamer-272 | [MotionMillion](motionmillion.md) |
-| PRISM | T2M, Temporal Condition, Sequential Generation | PRISM Motion-138 | [PRISM](prism.md) |
-| HY-Motion T2M | T2M | HY-Motion-201 | [HY-Motion T2M](hymotion_t2m.md) |
-| ViMoGen | T2M | DART276 | [ViMoGen](vimogen.md) |
-| DART | T2M, Motion Control | DART276 | [DART](dart.md) |
-| CondMDI | T2M, Temporal Condition | HumanML3D-263, absolute-root native | [CondMDI](condmdi.md) |
-| MaskControl | T2M, Temporal, Joint and Body-Part Control | HumanML3D-263 | [MaskControl](maskcontrol.md) |
-| OmniControl | Motion Control | HumanML3D-263 | [OmniControl](omnicontrol.md) |
-| MotionCLR | T2M, Motion Editing | HumanML3D-263 | [MotionCLR](motionclr.md) |
-| Bailando | Music-to-Dance | AIST++ SMPL-24 joints | [Bailando](bailando.md) |
-| EDGE | Music-to-Dance | EDGE-151 / SMPL rotations | [EDGE](edge.md) |
-| TM2D | T2M, Music-to-Dance | TM2D-287 / SMPL-24 joints | [TM2D](tm2d.md) |
-| UniMuMo | T2M, M2T, Music-to-Dance, Dance-to-Music | HumanML3D-263 / audio 32 kHz | [UniMuMo](unimumo.md) |
-| InterGen | Two-Person T2M | paired InterHuman-262 | [InterGen](intergen.md) |
-| InterMask | Two-Person T2M | paired InterHuman-262 | [InterMask](intermask.md) |
-| KIMODO | T2M, Temporal, Sequential, Kinematic Control | SOMA / G1 / SMPL-X | [KIMODO](kimodo.md) |
-| ARDY | T2M, Kinematic Control | ARDY-330 / explicit G1 | [ARDY](ardy.md) |
-| MotionBricks | Kinematic Control | MotionBricks G1 413D / 414D / 418D | [MotionBricks](motionbricks.md) |
+**Browse by task:** [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) ·
+[Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) ·
+[Temporal Condition](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) ·
+[Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) ·
+[Body-Part Condition](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) ·
+[Kinematic Control](../tasks/README.md#kinematic-control) ·
+[Motion Editing](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) ·
+[Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) ·
+[Dance-to-Music](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) ·
+[Two-Person Text-to-Motion](../tasks/README.md#two-person-text-to-motion) ·
+[Robot Motion Control](../tasks/README.md#robot-motion-control)
+
+## Text And Motion
+
+- **[MDM](mdm.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard)
+  · `HumanML3D-263` · [Weights](https://huggingface.co/ZeyuLing/hftrainer-mdm-humanml3d)
+- **[T2M-GPT](t2mgpt.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard)
+  · `HumanML3D-263` · [Weights](https://huggingface.co/ZeyuLing/hftrainer-t2mgpt-humanml3d)
+- **[MoMask](momask.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard)
+  · `HumanML3D-263` · [Weights](https://huggingface.co/ZeyuLing/hftrainer-momask-humanml3d)
+- **[MoGenTS](mogents.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard)
+  · `HumanML3D-263` · [Weights](https://huggingface.co/ZeyuLing/hftrainer-mogents-humanml3d)
+- **[MLD](mld.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard)
+  · `HumanML3D-263` · [Weights](https://huggingface.co/ZeyuLing/hftrainer-mld-humanml3d)
+- **[MotionLCM](motionlcm.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard)
+  · `HumanML3D latent` · [Weights](https://huggingface.co/ZeyuLing/hftrainer-motionlcm-humanml3d)
+- **[MotionGPT](motiongpt.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard),
+  [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard)
+  · `HumanML3D-263` · [Weights](https://huggingface.co/ZeyuLing/Motius-MotionGPT-HumanML3D)
+- **[MotionGPT3](motiongpt3.md)** - [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard)
+  · `HumanML3D-263` · [Weights](https://huggingface.co/ZeyuLing/Motius-MotionGPT3-HumanML3D)
+- **[TM2T](tm2t.md)** - [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard)
+  · `HumanML3D-263` · [Weights](https://huggingface.co/ZeyuLing/Motius-TM2T-HumanML3D)
+- **[VerMo](vermo.md)** - [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard)
+  · `VerMo-138` · [Weights](https://huggingface.co/ZeyuLing/Motius-VerMo-HumanML3D)
+- **[MotionMillion](motionmillion.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard)
+  · `MotionStreamer-272` · [Weights](https://huggingface.co/ZeyuLing/hftrainer-gotozero-7b-train-humanml272)
+- **[HY-Motion T2M](hymotion_t2m.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard)
+  · `HY-Motion-201` · [Full](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0)
+  · [Lite](https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0-lite)
+- **[ViMoGen](vimogen.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard)
+  · `DART276` · [Weights](https://huggingface.co/ZeyuLing/hftrainer-vimogen-1.3b-humanml3d)
+
+## Temporal, Editing, And Control
+
+- **[FlowMDM](flowmdm.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard),
+  [Temporal Condition](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard),
+  [Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard)
+  · `HumanML3D-263 / BABEL-135` · [Weights](https://huggingface.co/ZeyuLing/hftrainer-flowmdm-humanml3d)
+- **[MotionStreamer](motionstreamer.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard),
+  [Temporal Condition](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard),
+  [Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard)
+  · `MotionStreamer-272` · [Weights](https://huggingface.co/ZeyuLing/hftrainer-motionstreamer-humanml272)
+- **[PRISM](prism.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard),
+  [Temporal Condition](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard),
+  [Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard)
+  · `PRISM Motion-138` · [1.0](https://huggingface.co/ZeyuLing/motius-prism-1.0-humanml3d)
+  · [KT](https://huggingface.co/ZeyuLing/motius-prism-kt-humanml3d)
+- **[DART](dart.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard),
+  [Kinematic Control](../tasks/README.md#kinematic-control)
+  · `DART276` · [Weights](https://huggingface.co/ZeyuLing/motius-dart-humanml3d)
+- **[CondMDI](condmdi.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard),
+  [Temporal Condition](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard),
+  [Kinematic Control](../tasks/README.md#kinematic-control)
+  · `HumanML3D-263` · [Weights](https://huggingface.co/ZeyuLing/motius-condmdi-humanml3d)
+- **[MaskControl](maskcontrol.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard),
+  [Temporal Condition](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard),
+  [Kinematic Control](../tasks/README.md#kinematic-control)
+  · `HumanML3D-263` · [Weights](https://huggingface.co/ZeyuLing/motius-maskcontrol-humanml3d)
+- **[OmniControl](omnicontrol.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard),
+  [Temporal Condition](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard),
+  [Kinematic Control](../tasks/README.md#kinematic-control)
+  · `HumanML3D-263` · [Paper](https://arxiv.org/abs/2310.08580)
+- **[MotionCLR](motionclr.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard),
+  [Motion Editing](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard)
+  · `HumanML3D-263` · [Weights](https://huggingface.co/ZeyuLing/motius-motionclr-humanml3d)
+- **[KIMODO](kimodo.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard),
+  [Temporal Condition](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard),
+  [Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard),
+  [Kinematic Control](../tasks/README.md#kinematic-control)
+  · `SOMA / G1 / SMPL-X` · [Weights](https://huggingface.co/ZeyuLing/hftrainer-kimodo-soma-rp)
+- **[ARDY](ardy.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard),
+  [Sequential Generation](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard),
+  [Kinematic Control](../tasks/README.md#kinematic-control)
+  · `ARDY-330 / G1` · [Weights](https://huggingface.co/collections/nvidia/ardy)
+
+MaskControl also exposes experimental
+[Body-Part Condition](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard)
+and Sequential Generation routes. Their current validation boundary is recorded
+in its [model card](maskcontrol.md#validation-status), rather than being
+advertised as a release-complete capability.
+
+## Audio-Driven Motion
+
+- **[Bailando](bailando.md)** - [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard)
+  · `AIST++ SMPL-24 joints` · [Weights](https://huggingface.co/ZeyuLing/Motius-Bailando-AISTPP)
+- **[EDGE](edge.md)** - [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard)
+  · `EDGE-151` · [Weights](https://huggingface.co/ZeyuLing/Motius-EDGE-AISTPP)
+- **[TM2D](tm2d.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard),
+  [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard)
+  · `TM2D-287` · [Weights](https://huggingface.co/ZeyuLing/Motius-TM2D-HumanML3D-AISTPP)
+- **[UniMuMo](unimumo.md)** - [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard),
+  [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard),
+  [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard),
+  [Dance-to-Music](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard)
+  · `HumanML3D-263 / Encodec audio` · [Weights](https://huggingface.co/ZeyuLing/Motius-UniMuMo)
+
+## Interaction And Robotics
+
+- **[InterGen](intergen.md)** - [Two-Person Text-to-Motion](../tasks/README.md#two-person-text-to-motion)
+  · `paired InterHuman-262` · [Weights](https://huggingface.co/ZeyuLing/motius-intergen-interhuman)
+- **[InterMask](intermask.md)** - [Two-Person Text-to-Motion](../tasks/README.md#two-person-text-to-motion)
+  · `paired InterHuman-262` · [Weights](https://huggingface.co/ZeyuLing/motius-intermask-interhuman)
+- **[MotionBricks](motionbricks.md)** - [Robot Motion Control](../tasks/README.md#robot-motion-control)
+  · `MotionBricks G1 413D / 414D / 418D` ·
+  [Official code and weights](https://github.com/NVlabs/GR00T-WholeBodyControl/tree/main/motionbricks)
 
 ## Integration Contract
 
-A complete public entry should provide:
+A complete public entry provides:
 
 1. A `ModelBundle` that owns modules, checkpoint metadata, and serialization.
 2. A task-facing pipeline with stable physical-space outputs.
-3. A model card with exact representation, FPS, weights, and upstream attribution.
+3. A model card with exact tasks, representation, FPS, weights, and attribution.
 4. Evaluation results generated by a named protocol and persisted artifact.
-5. Conversion or retargeting diagnostics whenever the native representation is
-   not the evaluator or renderer representation.
+5. Conversion or retargeting diagnostics whenever model-native and evaluation
+   representations differ.
 
-See the [release policy](release_policy.md), [architecture guide](../architecture.md),
+Read the [task definitions](../tasks/README.md),
+[release policy](release_policy.md), [architecture guide](../architecture.md),
 and [development guide](../development.md) before adding a method.

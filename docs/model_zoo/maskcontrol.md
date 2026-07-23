@@ -45,7 +45,8 @@ evaluation set; every row exposes its caption and per-case diagnostics.
 
 | Item | Value |
 | ---- | ----- |
-| Tasks | T2M, Joint Control, Temporal Condition; experimental Body-Part Condition and Sequential Generation |
+| Tasks | Text-to-Motion, Temporal Condition, Kinematic Control |
+| Experimental tasks | Body-Part Condition, Sequential Generation |
 | Motion representation | HumanML3D-263 at 20 fps |
 | Native T2M length | 40-196 frames |
 | Extended control canvas | Up to 392 frames |

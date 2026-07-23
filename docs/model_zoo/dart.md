@@ -30,7 +30,7 @@ HumanML3D DART276 rollout path through a `ModelBundle` and task-facing pipeline.
 | Item | Value |
 | ---- | ----- |
 | Method | DART / DartControl |
-| Tasks | T2M, Motion Control |
+| Tasks | Text-to-Motion, Kinematic Control |
 | Venue | ICLR 2025 |
 | Motion representation | DART276, 20 fps |
 | Backbone | Motion primitive VAE + latent diffusion denoiser |
@@ -76,7 +76,6 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 | HumanML3D Official | Default | 3,970 | 0.401 | 0.592 | 0.700 | 1.846 | 3.709 | 9.867 | Measured |
 | MotionStreamer Evaluator | Default | 4,042 | 0.548 | 0.725 | 0.794 | 127.830 | 18.531 | 26.261 | Measured |
 | Motius Joint-Position Evaluator | Default | 4,034 | 0.425 | 0.606 | 0.702 | 371.131 | 38.764 | 56.949 | Measured |
-
 
 ## Motion Representation
 

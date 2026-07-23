@@ -18,7 +18,7 @@ processor. No external paper or original repository is claimed for this row.
 
 | Item | Value |
 | ---- | ----- |
-| Released task | M2T |
+| Tasks | Motion-to-Text |
 | Evaluation input | HumanML3D-263, converted through the Motius SMPL-22 bridge |
 | Native motion representation | VerMo-138, 20 fps |
 | Motion tokenizer | 16K VQ motion tokenizer |

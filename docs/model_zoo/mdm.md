@@ -33,7 +33,7 @@ methods.
 | Item | Value |
 | ---- | ----- |
 | Method | MDM, classifier-free diffusion for human motion |
-| Tasks | T2M |
+| Tasks | Text-to-Motion |
 | Venue | ICLR 2023 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Text encoder | CLIP ViT-B/32, frozen |
@@ -83,7 +83,6 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 | HumanML3D Official | Default | 3,970 | 0.462 | 0.660 | 0.763 | 0.400 | 3.248 | 9.966 | Measured |
 | MotionStreamer Evaluator | Default | 4,042 | 0.521 | 0.694 | 0.770 | 35.517 | 19.425 | 25.338 | Measured |
 | Motius Joint-Position Evaluator | Default | 4,034 | 0.450 | 0.629 | 0.726 | 263.358 | 37.554 | 56.397 | Measured |
-
 
 ## Motion Representation
 

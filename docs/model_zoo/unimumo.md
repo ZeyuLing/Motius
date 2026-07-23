@@ -56,7 +56,7 @@ while the same input mesh plays.
 
 | Item | Value |
 | ---- | ----- |
-| Tasks | T2M, M2T, Music-to-Dance, Dance-to-Music |
+| Tasks | Text-to-Motion, Motion-to-Text, Music-to-Dance, Dance-to-Music |
 | Additional pipeline routes | Text-to-Music and joint Text-to-Music-Motion |
 | Motion representation | HumanML3D-263 at 60 fps |
 | Audio representation | Encodec, 32 kHz, four 2,048-entry RVQ codebooks |

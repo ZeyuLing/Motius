@@ -21,7 +21,7 @@ official multi-task checkpoint and all model/tokenizer configuration required by
 
 | Item | Value |
 | ---- | ----- |
-| Released task | M2T |
+| Tasks | Motion-to-Text |
 | Input representation | HumanML3D-263, 20 fps |
 | Motion latent | Continuous temporal VAE latent |
 | Language model | GPT-2-family bimodal Transformer |

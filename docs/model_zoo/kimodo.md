@@ -32,7 +32,7 @@ keyframes, end-effector controls, root paths, and prefix-conditioned TP2M.
 | Item | Value |
 | ---- | ----- |
 | Method | KIMODO, two-stage kinematic motion diffusion |
-| Tasks | T2M, Sequential Generation, TP2M, Kinematic Control |
+| Tasks | Text-to-Motion, Temporal Condition, Sequential Generation, Kinematic Control |
 | Motion representations | SOMA, Unitree G1, SMPL-X, plus `motion_135` TP2M bridge |
 | Text encoder | LLM2Vec / Meta-Llama-3 local encoder tree |
 | Default model | `Kimodo-SOMA-RP-v1` |
@@ -102,7 +102,6 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 | MotionStreamer Evaluator | SMPL-X RP | 4,042 | 0.365 | 0.500 | 0.582 | 117.028 | 21.410 | 25.363 | Measured |
 | Motius Joint-Position Evaluator | SMPL-X RP | 4,034 | 0.303 | 0.464 | 0.557 | 899.829 | 47.819 | 54.440 | Measured |
 
-
 ## TP2M Results
 
 Protocol: HumanML3D TP2M official-test selected-caption splits scored with
@@ -125,7 +124,6 @@ For TP2M and cross-method evaluation, Motius also supports a `motion_135` bridge
 root translation `(3)` plus 22 local joint rotations in row-major 6D `(132)`.
 The public pipeline uses the same row-major 6D convention when creating prefix
 constraints and when exporting generated `motion_135`.
-
 
 ## Motius Components
 

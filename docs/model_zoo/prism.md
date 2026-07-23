@@ -50,7 +50,7 @@ HumanML3D captions used by the benchmark.
 
 | Item | Value |
 | ---- | ----- |
-| Tasks | T2M, TP2M, Sequential Generation |
+| Tasks | Text-to-Motion, Temporal Condition, Sequential Generation |
 | Native representation | `prism_motion138` at 30 fps |
 | Skeleton | SMPL-H input, fixed SMPL body-22 subset |
 | Generator | 1.4B KU-FlowT with T5-XXL conditioning |

@@ -32,7 +32,7 @@ denormalization behind a consistent pipeline.
 | Item | Value |
 | ---- | ----- |
 | Method | T2M-GPT, autoregressive discrete motion tokens |
-| Tasks | T2M |
+| Tasks | Text-to-Motion |
 | Venue | CVPR 2023 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Text encoder | CLIP ViT-B/32, frozen |
@@ -72,7 +72,6 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 | HumanML3D Official | Default | 3,944 | 0.490 | 0.678 | 0.776 | 0.225 | 3.145 | 9.624 | Measured |
 | MotionStreamer Evaluator | Default | 4,042 | 0.552 | 0.706 | 0.779 | 25.491 | 19.091 | 25.595 | Measured |
 | Motius Joint-Position Evaluator | Default | 4,034 | 0.487 | 0.652 | 0.736 | 209.940 | 36.318 | 55.538 | Measured |
-
 
 ## Motion Representation
 

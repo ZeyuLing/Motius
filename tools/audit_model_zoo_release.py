@@ -3,8 +3,8 @@
 
 The audit is intentionally simple and conservative. A model is release-complete
 only when its card has a visible demo reference, no pending evaluator rows, and
-the README checkpoint cell points at reachable Hugging Face artifacts or another
-explicitly published URL.
+the Model Zoo entry points at reachable Hugging Face artifacts or another
+explicitly published checkpoint source.
 """
 
 from __future__ import annotations
@@ -20,38 +20,51 @@ from typing import Iterable
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-README = REPO_ROOT / "README.md"
-MODEL_CARD_RE = re.compile(r"\[Model Card\]\((docs/model_zoo/[^)]+)\)")
+README = REPO_ROOT / "docs/model_zoo/README.md"
+MODEL_ZOO_DIR = README.parent
+MODEL_ENTRY_RE = re.compile(
+    r"^- \*\*\[([^\]]+)\]\(([^)]+\.md)\)\*\* - (.*?)(?=^- \*\*\[|\n## |\Z)",
+    re.MULTILINE | re.DOTALL,
+)
 HF_RE = re.compile(r"https://huggingface\.co/([^)\s|]+)")
-CARD_TASK_RE = re.compile(r"^\| Tasks? \| ([^|]+?) \|$", re.MULTILINE)
+CARD_TASK_RE = re.compile(r"^\| Tasks \| ([^|]+?) \|$", re.MULTILINE)
+CARD_TASK_INLINE_RE = re.compile(r"^\*\*Tasks:\*\*\s*(.+?)\.?$", re.MULTILINE)
 TASK_LINK_RE = re.compile(r"^\[([^\]]+)\]\(([^)]+)\)$")
 TASK_LABELS = {
-    "T2M",
-    "M2T",
-    "TP2M",
+    "Text-to-Motion",
+    "Motion-to-Text",
     "Temporal Condition",
     "Body-Part Condition",
-    "Multi-Prompt T2M",
     "Sequential Generation",
+    "Motion Editing",
     "Music-to-Dance",
-    "Motion Control",
+    "Dance-to-Music",
+    "Speech-to-Gesture",
     "Kinematic Control",
+    "Two-Person Text-to-Motion",
+    "Robot Motion Control",
 }
 TASK_LEADERBOARDS = {
-    "T2M": "https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard",
-    "M2T": "https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard",
-    "TP2M": "https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard",
+    "Text-to-Motion": "https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard",
+    "Motion-to-Text": "https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard",
     "Temporal Condition": "https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard",
+    "Body-Part Condition": "https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard",
     "Sequential Generation": "https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard",
+    "Motion Editing": "https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard",
     "Music-to-Dance": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard",
+    "Dance-to-Music": "https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard",
+    "Speech-to-Gesture": "https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard",
+    "Kinematic Control": "../tasks/README.md#kinematic-control",
+    "Two-Person Text-to-Motion": "../tasks/README.md#two-person-text-to-motion",
+    "Robot Motion Control": "../tasks/README.md#robot-motion-control",
 }
 TASK_METRIC_MARKERS = {
-    "T2M": (
+    "Text-to-Motion": (
         "HumanML3D Official",
         "MotionStreamer Evaluator",
         "Motius Joint-Position Evaluator",
     ),
-    "M2T": ("HumanML3D Motion-to-Text",),
+    "Motion-to-Text": ("HumanML3D Motion-to-Text",),
     "Music-to-Dance": ("AIST++ Music-to-Dance",),
 }
 
@@ -64,30 +77,22 @@ class ModelRow:
     card_path: Path
 
 
-def _split_table_row(line: str) -> list[str]:
-    return [part.strip() for part in line.strip().strip("|").split("|")]
-
-
 def _read_model_rows() -> list[ModelRow]:
-    rows: list[ModelRow] = []
-    in_table = False
-    for line in README.read_text().splitlines():
-        if line.startswith("| Method | Tasks | Motion Rep. | Checkpoint | Card | References |"):
-            in_table = True
+    rows = []
+    for match in MODEL_ENTRY_RE.finditer(README.read_text()):
+        method, relative_card, body = match.groups()
+        task_cell, separator, resources = body.partition("·")
+        if not separator:
             continue
-        if in_table and line.startswith("## "):
-            break
-        if not in_table or not line.startswith("|"):
-            continue
-        if line.startswith("| ------"):
-            continue
-        cells = _split_table_row(line)
-        if len(cells) < 5:
-            continue
-        match = MODEL_CARD_RE.search(cells[4])
-        if not match:
-            continue
-        rows.append(ModelRow(cells[0], cells[1], cells[3], REPO_ROOT / match.group(1)))
+        task_cell = " ".join(task_cell.split())
+        rows.append(
+            ModelRow(
+                method,
+                task_cell,
+                resources,
+                MODEL_ZOO_DIR / relative_card,
+            )
+        )
     return rows
 
 
@@ -119,14 +124,16 @@ def _task_status(readme_cell: str, card_text: str) -> tuple[str, str]:
         if (
             expected
             and not expected.startswith(("http://", "https://"))
-            and not (REPO_ROOT / expected).is_file()
+            and not (README.parent / expected.split("#", 1)[0]).resolve().is_file()
         ):
             return "invalid", f"missing leaderboard target: {expected}"
 
     card_match = CARD_TASK_RE.search(card_text)
-    if not card_match:
+    inline_match = CARD_TASK_INLINE_RE.search(card_text)
+    if not card_match and not inline_match:
         return "invalid", "model card has no Task/Tasks row"
-    card_entries = _parse_task_entries(card_match.group(1))
+    card_value = card_match.group(1) if card_match else inline_match.group(1)
+    card_entries = _parse_task_entries(card_value)
     card_labels = [label for label, _ in card_entries]
     invalid = [label for label in card_labels if label not in TASK_LABELS]
     if invalid:

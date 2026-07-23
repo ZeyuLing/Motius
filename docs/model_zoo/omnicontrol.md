@@ -4,6 +4,8 @@ OmniControl generates HumanML3D motion from text while controlling selected
 3D joint positions at selected frames. The Motius integration vendors the
 official MIT inference runtime and uses the released HumanML3D checkpoint.
 
+**Tasks:** Text-to-Motion, Temporal Condition, Kinematic Control.
+
 ## Native Control Contract
 
 - Input motion representation: physical-scale HumanML3D-263.

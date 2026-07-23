@@ -46,7 +46,7 @@ fitting artifacts. Audio and timeline seeking remain synchronized, with free
 
 | Item | Value |
 | ---- | ----- |
-| Task | Music-to-Dance |
+| Tasks | Music-to-Dance |
 | Dataset | AIST++ cross-modal split |
 | Music input | 438D features at 7.5 fps, or raw audio through the bundled frontend |
 | Native motion | AIST++ global SMPL-24 joint positions at 60 fps |

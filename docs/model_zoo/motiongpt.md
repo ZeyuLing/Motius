@@ -32,7 +32,7 @@ pipeline methods without requiring the original checkout.
 | Item | Value |
 | ---- | ----- |
 | Method | MotionGPT, language modeling over text and motion tokens |
-| Tasks | T2M, M2T |
+| Tasks | Text-to-Motion, Motion-to-Text |
 | Venue | NeurIPS 2023 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Language backbone | FLAN-T5-base-style encoder-decoder with motion tokens |
@@ -104,7 +104,6 @@ independent of unrelated samples in the API batch. The released evaluator's
 batch-dependent zero-padding can be reproduced explicitly with
 `pad_to_batch_max=True`, but that diagnostic variant is excluded from ranking.
 
-
 ## Motion Representation
 
 MotionGPT generates HumanML3D-263 features at 20 fps. Per frame:
@@ -122,7 +121,6 @@ MotionGPT generates HumanML3D-263 features at 20 fps. Per frame:
 The VQ-VAE converts normalized HumanML3D features into discrete motion tokens.
 MotionGPT then treats those tokens as a language vocabulary item alongside text
 tokens.
-
 
 ## Motius Components
 

@@ -1126,7 +1126,7 @@
     },
     "prism_1_0": {
       "method": "PRISM 1.0",
-      "task": "T2M, TP2M, Sequential Generation",
+      "task": "Text-to-Motion, Temporal Condition, Sequential Generation",
       "motion_representation": "PRISM Motion-138",
       "checkpoint": "https://huggingface.co/ZeyuLing/motius-prism-1.0-humanml3d",
       "metrics": [
@@ -1195,7 +1195,7 @@
     },
     "prism_kt": {
       "method": "PRISM-KT",
-      "task": "T2M, TP2M, Sequential Generation",
+      "task": "Text-to-Motion, Temporal Condition, Sequential Generation",
       "motion_representation": "PRISM Motion-138",
       "checkpoint": "https://huggingface.co/ZeyuLing/motius-prism-kt-humanml3d",
       "metrics": [
@@ -1264,7 +1264,7 @@
     },
     "maskcontrol": {
       "method": "MaskControl",
-      "task": "T2M, Temporal Condition, Body-Part Condition, Sequential Generation",
+      "task": "Text-to-Motion, Temporal Condition, Kinematic Control",
       "motion_representation": "HumanML3D-263",
       "checkpoint": "https://huggingface.co/ZeyuLing/motius-maskcontrol-humanml3d",
       "metrics": [
@@ -1333,7 +1333,7 @@
     },
     "intergen": {
       "method": "InterGen",
-      "task": "Two-Person T2M",
+      "task": "Two-Person Text-to-Motion",
       "motion_representation": "paired InterHuman-262",
       "checkpoint": "https://huggingface.co/ZeyuLing/motius-intergen-interhuman",
       "metric_source": "official InterGen paper, InterCLIP protocol",
@@ -1367,7 +1367,7 @@
     },
     "intermask": {
       "method": "InterMask",
-      "task": "Two-Person T2M",
+      "task": "Two-Person Text-to-Motion",
       "motion_representation": "paired InterHuman-262",
       "checkpoint": "https://huggingface.co/ZeyuLing/motius-intermask-interhuman",
       "metric_source": "official InterMask paper, InterCLIP protocol",
@@ -1402,7 +1402,7 @@
     "tm2d": {
       "method": "TM2D",
       "tasks": [
-        "T2M",
+        "Text-to-Motion",
         "Music-to-Dance"
       ],
       "motion_representation": "TM2D-287, 24 joints at 60 fps",
@@ -1470,8 +1470,8 @@
     "unimumo": {
       "method": "UniMuMo",
       "tasks": [
-        "T2M",
-        "M2T",
+        "Text-to-Motion",
+        "Motion-to-Text",
         "Music-to-Dance",
         "Dance-to-Music"
       ],

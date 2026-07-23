@@ -32,7 +32,7 @@ denormalization behind a consistent inference pipeline.
 | Item | Value |
 | ---- | ----- |
 | Method | MoMask, masked discrete motion token generation |
-| Tasks | T2M |
+| Tasks | Text-to-Motion |
 | Venue | CVPR 2024 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Text encoder | CLIP ViT-B/32, frozen |
@@ -74,7 +74,6 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 | MotionStreamer Evaluator | Default | 4,042 | 0.640 | 0.797 | 0.861 | 21.073 | 18.122 | 25.979 | Measured |
 | Motius Joint-Position Evaluator | Default | 4,034 | 0.567 | 0.754 | 0.836 | 143.543 | 33.312 | 56.611 | Measured |
 
-
 ## Motion Representation
 
 MoMask generates HumanML3D-263 features at 20 fps. Per frame:
@@ -91,7 +90,6 @@ MoMask generates HumanML3D-263 features at 20 fps. Per frame:
 
 The RVQ-VAE downsamples motion by a factor of four frames. A 196-frame motion
 maps to 49 token positions, each represented by 6 residual quantizers.
-
 
 ## Motius Components
 

@@ -44,7 +44,7 @@ frames, so jumps, foot slide, and root-height drift remain visible.
 
 | Item | Value |
 | ---- | ----- |
-| Task | Music-to-Dance |
+| Tasks | Music-to-Dance |
 | Dataset | AIST++ |
 | Music input | Jukebox layer 66, 4,800D at 30 fps |
 | Native motion | EDGE-151 at 30 fps |

@@ -31,7 +31,7 @@ denoiser, DDIM scheduler, and frozen SentenceT5 text wrapper.
 | Item | Value |
 | ---- | ----- |
 | Method | MLD, latent diffusion for human motion |
-| Tasks | T2M |
+| Tasks | Text-to-Motion |
 | Venue | CVPR 2023 |
 | Motion representation | HumanML3D-263, 20 fps |
 | Text encoder | SentenceT5-Large, frozen |
@@ -80,7 +80,6 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 | HumanML3D Official | Default | 4,042 | 0.518 | 0.716 | 0.816 | 0.297 | 2.950 | 9.628 | Measured |
 | MotionStreamer Evaluator | Default | 4,042 | 0.566 | 0.733 | 0.810 | 39.744 | 19.337 | 24.902 | Measured |
 | Motius Joint-Position Evaluator | Default | 4,034 | 0.517 | 0.685 | 0.770 | 258.621 | 36.345 | 57.346 | Measured |
-
 
 ## Motion Representation
 

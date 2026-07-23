@@ -34,7 +34,7 @@ normalization into a consistent inference pipeline.
 | Item | Value |
 | ---- | ----- |
 | Method | Go to Zero / MotionMillion |
-| Tasks | T2M |
+| Tasks | Text-to-Motion |
 | Venue | ICCV 2025 |
 | Motion representation | MotionStreamer-272 / humanml3d_272, 30 fps |
 | Text encoder | Flan-T5-XL, frozen |
@@ -79,7 +79,6 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 | MotionStreamer Evaluator | 3B train-only | 4,042 | 0.740 | 0.877 | 0.923 | 3.066 | 15.381 | 27.560 | Measured |
 | Motius Joint-Position Evaluator | 3B train-only | 4,034 | 0.623 | 0.786 | 0.857 | 34.414 | 29.966 | 54.624 | Measured |
 
-
 ## Motion Representation
 
 MotionMillion generates `humanml3d_272`, the same 272-dim, 30 fps layout used by
@@ -92,7 +91,6 @@ text -> Flan-T5-XL -> LLaMA AR -> FSQ dequantize
 
 Because this representation matches MotionStreamer-272 directly, native
 evaluation does not need an additional rotation re-encoding step.
-
 
 ## Motius Components
 

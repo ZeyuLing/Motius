@@ -36,7 +36,7 @@ the native model output remains HumanML3D-263 rather than SMPL parameters.
 | Item | Value |
 | ---- | ----- |
 | Method | MotionCLR attention-aware motion diffusion |
-| Task | T2M |
+| Tasks | Text-to-Motion, Motion Editing |
 | Release | 2024 |
 | Motion representation | HumanML3D-263 at 20 fps |
 | Checkpoint | [`ZeyuLing/motius-motionclr-humanml3d`](https://huggingface.co/ZeyuLing/motius-motionclr-humanml3d) |

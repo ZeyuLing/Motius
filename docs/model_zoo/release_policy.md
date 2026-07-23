@@ -14,26 +14,33 @@ are present and verified:
 
 ## Task Taxonomy
 
-README and model-card task fields must use only these capability labels:
+README and model-card task fields must use the full labels defined in the
+[canonical task guide](../tasks/README.md):
 
-| Label | Meaning |
-| ----- | ------- |
-| [`T2M`](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | Text-to-motion generation |
-| `M2T` | Motion-to-text generation |
-| [`TP2M`](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) | Text-guided generation conditioned on a motion prefix |
-| [`Temporal Condition`](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) | Generation conditioned on observed frames, boundaries, or sparse keyframes |
-| `Body-Part Condition` | Generation or editing conditioned on body-part-specific timeline prompts |
-| [`Sequential Generation`](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) | One continuous motion composed from an ordered sequence of prompts |
-| `Motion Control` | Motion generation under general control signals |
-| `Kinematic Control` | Motion generation under keyframe, trajectory, or end-effector constraints |
+- `Text-to-Motion`
+- `Motion-to-Text`
+- `Temporal Condition`
+- `Sequential Generation`
+- `Body-Part Condition`
+- `Kinematic Control`
+- `Motion Editing`
+- `Music-to-Dance`
+- `Dance-to-Music`
+- `Speech-to-Gesture`
+- `Two-Person Text-to-Motion`
+- `Robot Motion Control`
+
+Prediction, in-betweening, keyframes, and TP2M are `Temporal Condition`
+subtasks. `Motion Control`, `Joint Control`, `Two-Person T2M`, and generic
+`multimodal motion tasks` are not valid task-field labels.
 
 Zero-shot, streaming, latent, diffusion, and autoregressive describe how a
 method is trained or executed; they are not separate tasks. Keep those terms in
 the model summary and method description instead of the task field.
 
-In the root Model Zoo table, every task with a published Motius leaderboard
-must link to that page. Model-card task rows keep the canonical plain-text
-labels so the cards remain portable to Hugging Face.
+In the Model Zoo index, every task with a published Motius leaderboard must
+link to that page. Model-card task rows keep canonical plain-text labels so the
+cards remain portable to Hugging Face.
 
 Model cards must not use adapter outputs as the model's native representation.
 For example, HY-Motion T2M is `HY-Motion-201`; DART is `DART276`. SMPL,

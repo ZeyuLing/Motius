@@ -31,7 +31,7 @@ the rest of the Model Zoo.
 | Item | Value |
 | ---- | ----- |
 | Method | ViMoGen 1.3B |
-| Tasks | T2M |
+| Tasks | Text-to-Motion |
 | Venue | ICLR 2026 |
 | Motion representation | DART276, 20 fps |
 | Text encoder | Wan2.1 T2V-1.3B UMT5-XXL encoder |
@@ -83,7 +83,6 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 | HumanML3D Official | 1.3B prompt-rewrite | 3,970 | 0.283 | 0.438 | 0.547 | 8.371 | 4.894 | 6.709 | Measured |
 | MotionStreamer Evaluator | 1.3B prompt-rewrite | 4,042 | 0.429 | 0.569 | 0.652 | 152.209 | 21.074 | 24.180 | Measured |
 | Motius Joint-Position Evaluator | 1.3B prompt-rewrite | 4,034 | 0.304 | 0.433 | 0.520 | 922.471 | 47.057 | 55.616 | Measured |
-
 
 ## Motion Representation
 

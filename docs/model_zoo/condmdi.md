@@ -33,7 +33,7 @@ control.
 | Item | Value |
 | ---- | ----- |
 | Method | Conditional Motion Diffusion In-betweening (CondMDI) |
-| Tasks | T2M, Motion Control |
+| Tasks | Text-to-Motion, Temporal Condition, Kinematic Control |
 | Venue | SIGGRAPH 2024 |
 | Training data | HumanML3D |
 | Native representation | HumanML3D-263 with absolute root rotation and translation, 20 fps |

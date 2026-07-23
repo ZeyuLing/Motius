@@ -20,7 +20,7 @@ repository checkout.
 
 | Item | Value |
 | ---- | ----- |
-| Released task | M2T |
+| Tasks | Motion-to-Text |
 | Motion representation | HumanML3D-263, 20 fps |
 | Motion tokenizer | 1,024-code VQ tokenizer |
 | Caption model | 4-layer encoder / 4-layer decoder Transformer |
