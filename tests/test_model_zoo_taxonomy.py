@@ -35,4 +35,5 @@ def test_root_readme_uses_only_representation_conversion_visuals() -> None:
     assert "assets/model_zoo/" not in readme
     assert "004822_hml_smpl_soma_core_g1.gif" in readme
     assert "interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif" in readme
+    assert "004822_skeleton_smpl_mixamo_960_30fps.gif" in readme
     assert "004822_skeleton_smpl_mixamo_1440_30fps.gif" in readme

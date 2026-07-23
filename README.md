@@ -75,6 +75,10 @@ read the
 
 ### Character FBX Export
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_960_30fps.gif" width="920" alt="One motion transferred from an SMPL skeleton and mesh to four rigged FBX characters">
+</p>
+
 Any supported representation can pass through the SMPL-22 bridge into a rigged
 FBX character. Compare the same motion as an SMPL-22 skeleton, an exported SMPL
 FBX, and four Mixamo characters in the
