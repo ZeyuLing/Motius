@@ -39,7 +39,11 @@ def main() -> None:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("outputs/evaluation/g1_tmr/metrics.json"),
+        required=True,
+        help=(
+            "Canonical run metrics path under "
+            "outputs/evaluation/<task>/<benchmark>/<protocol>/runs/<method>/<run>/metrics/"
+        ),
     )
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--batch-size", type=int, default=128)

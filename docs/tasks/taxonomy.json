@@ -97,90 +97,120 @@
       "id": "text_to_motion_humanml3d",
       "label": "Text-to-Motion · HumanML3D",
       "task": "text_to_motion",
+      "protocol_id": "humanml3d-selected-caption-v1",
+      "artifact_root": "outputs/evaluation/text_to_motion/text_to_motion_humanml3d/humanml3d-selected-caption-v1",
       "target": "https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard"
     },
     {
       "id": "text_to_motion_unitree_g1",
       "label": "Text-to-Motion · Unitree G1",
       "task": "text_to_motion",
-      "target": "../leaderboards/t2m_unitree_g1.md"
+      "protocol_id": "unitree-g1-paper-eval-1024-v1",
+      "artifact_root": "outputs/evaluation/text_to_motion/text_to_motion_unitree_g1/unitree-g1-paper-eval-1024-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/t2m-unitree-g1-leaderboard"
     },
     {
       "id": "motion_to_text_humanml3d",
       "label": "Motion-to-Text · HumanML3D",
       "task": "motion_to_text",
+      "protocol_id": "humanml3d-selected-caption-v1",
+      "artifact_root": "outputs/evaluation/motion_to_text/motion_to_text_humanml3d/humanml3d-selected-caption-v1",
       "target": "https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard"
     },
     {
       "id": "sequential_text_to_motion_babel",
       "label": "Sequential Text-to-Motion · BABEL",
       "task": "sequential_text_to_motion",
+      "protocol_id": "babel-actiongroups-v3",
+      "artifact_root": "outputs/evaluation/sequential_text_to_motion/sequential_text_to_motion_babel/babel-actiongroups-v3",
       "target": "https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard"
     },
     {
       "id": "text_to_multi_person_motion_interhuman",
       "label": "Text-to-Multi-Person Motion · InterHuman",
       "task": "text_to_multi_person_motion",
+      "protocol_id": "interhuman-test-v1",
+      "artifact_root": "outputs/evaluation/text_to_multi_person_motion/text_to_multi_person_motion_interhuman/interhuman-test-v1",
       "target": "../leaderboards/text_to_multi_person_interhuman.md"
     },
     {
       "id": "temporal_motion_completion_humanml3d",
       "label": "Temporal Motion Completion · HumanML3D",
       "task": "temporal_motion_completion",
+      "protocol_id": "humanml3d-temporal-v1",
+      "artifact_root": "outputs/evaluation/temporal_motion_completion/temporal_motion_completion_humanml3d/humanml3d-temporal-v1",
       "target": "https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard"
     },
     {
       "id": "kinematic_motion_control_native",
       "label": "Kinematic Motion Control · Native-Skeleton Protocol",
       "task": "kinematic_motion_control",
+      "protocol_id": "native-skeleton-v1",
+      "artifact_root": "outputs/evaluation/kinematic_motion_control/kinematic_motion_control_native/native-skeleton-v1",
       "target": "../leaderboards/kinematic_motion_control.md"
     },
     {
       "id": "part_level_motion_control_humanml3d",
       "label": "Part-Level Motion Control · HumanML3D",
       "task": "part_level_motion_control",
+      "protocol_id": "humanml3d-body-part-v1",
+      "artifact_root": "outputs/evaluation/part_level_motion_control/part_level_motion_control_humanml3d/humanml3d-body-part-v1",
       "target": "https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard"
     },
     {
       "id": "motion_editing_style_content",
       "label": "Motion Editing · Style and Content",
       "task": "motion_editing",
+      "protocol_id": "style-content-v1",
+      "artifact_root": "outputs/evaluation/motion_editing/motion_editing_style_content/style-content-v1",
       "target": "https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard"
     },
     {
       "id": "motion_editing_motionfix",
       "label": "Motion Editing · MotionFix Instructions",
       "task": "motion_editing",
+      "protocol_id": "motionfix-test-v1",
+      "artifact_root": "outputs/evaluation/motion_editing/motion_editing_motionfix/motionfix-test-v1",
       "target": "https://huggingface.co/spaces/ZeyuLing/instruction-editing-leaderboard"
     },
     {
       "id": "motion_repair_fixed_support",
       "label": "Motion Repair · Fixed-Support Protocol",
       "task": "motion_repair",
+      "protocol_id": "fixed-support-v1",
+      "artifact_root": "outputs/evaluation/motion_repair/motion_repair_fixed_support/fixed-support-v1",
       "target": "../leaderboards/README.md#motion-repair-fixed-support-protocol"
     },
     {
       "id": "motion_reconstruction_humanml3d",
       "label": "Motion Reconstruction · HumanML3D",
       "task": "motion_reconstruction",
+      "protocol_id": "humanml3d-reconstruction-v1",
+      "artifact_root": "outputs/evaluation/motion_reconstruction/motion_reconstruction_humanml3d/humanml3d-reconstruction-v1",
       "target": "../leaderboards/README.md#motion-reconstruction-humanml3d"
     },
     {
       "id": "music_to_dance_aistpp",
       "label": "Music-to-Dance · AIST++",
       "task": "music_to_dance",
+      "protocol_id": "aistpp-test-v1",
+      "artifact_root": "outputs/evaluation/music_to_dance/music_to_dance_aistpp/aistpp-test-v1",
       "target": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard"
     },
     {
       "id": "dance_to_music_aistpp",
       "label": "Dance-to-Music · AIST++",
       "task": "dance_to_music",
+      "protocol_id": "aistpp-test-v1",
+      "artifact_root": "outputs/evaluation/dance_to_music/dance_to_music_aistpp/aistpp-test-v1",
       "target": "https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard"
     },
     {
       "id": "speech_to_gesture_beat2",
       "label": "Speech-to-Gesture · BEAT2",
       "task": "speech_to_gesture",
+      "protocol_id": "beat2-test-v1",
+      "artifact_root": "outputs/evaluation/speech_to_gesture/speech_to_gesture_beat2/beat2-test-v1",
       "target": "https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard"
     }
   ]

@@ -1,5 +1,6 @@
 """Evaluation interfaces and released evaluators."""
 
+from motius.evaluation.artifacts import EvaluationArtifactLayout
 from motius.evaluation.base_evaluator import BaseEvaluator
 from motius.evaluation.dance_to_music import (
     D2MGANBeatScore,
@@ -34,6 +35,7 @@ __all__ = [
     "BaseEvaluator",
     "BailandoEvaluator",
     "D2MGANBeatScore",
+    "EvaluationArtifactLayout",
     "HumanML3DM2TSample",
     "HumanMLM2TEvaluator",
     "MusicDanceSample",

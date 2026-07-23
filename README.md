@@ -78,7 +78,7 @@ keyframes, and TP2M remain inside their parent task.
 
 | Task | Contract | Leaderboard settings |
 | ---- | -------- | -------------------- |
-| [Text-to-Motion](docs/leaderboards/README.md#text-to-motion) | Text → motion | [HumanML3D](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) · [Unitree G1](docs/leaderboards/t2m_unitree_g1.md) |
+| [Text-to-Motion](docs/leaderboards/README.md#text-to-motion) | Text → motion | [HumanML3D](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) · [Unitree G1](https://huggingface.co/spaces/ZeyuLing/t2m-unitree-g1-leaderboard) |
 | [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | Motion → caption | HumanML3D |
 | [Sequential Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) | Ordered prompts → continuous motion | BABEL |
 | [Text-to-Multi-Person Motion](docs/leaderboards/text_to_multi_person_interhuman.md) | Interaction text → shared-frame actors | InterHuman |

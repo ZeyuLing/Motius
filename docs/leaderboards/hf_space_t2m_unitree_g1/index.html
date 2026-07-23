@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Motius Unitree G1 text-to-motion leaderboard.">
+  <link rel="icon" href="data:,">
+  <title>Text-to-Motion · Unitree G1 · Motius</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #121917;
+      --muted: #5c6965;
+      --line: #d8dfdc;
+      --paper: #fff;
+      --canvas: #eef2f0;
+      --dark: #17211e;
+      --green: #087a55;
+      --green-soft: #e7f4ed;
+      --amber: #a45b06;
+      --amber-soft: #fff4df;
+      --blue: #285f96;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: "Manrope", sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    .page { width: min(1320px, calc(100% - 36px)); margin: 0 auto; padding: 20px 0 44px; }
+    .nav {
+      display: flex;
+      min-height: 42px;
+      align-items: center;
+      gap: 5px;
+      padding: 4px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+    }
+    .nav strong { padding: 0 11px; font: 600 11px "IBM Plex Mono", monospace; text-transform: uppercase; white-space: nowrap; }
+    .nav a { flex: 0 0 auto; padding: 7px 10px; border-radius: 4px; color: var(--muted); font-weight: 700; }
+    .nav a:hover { background: var(--canvas); color: var(--ink); }
+    .nav a.active { background: var(--dark); color: #fff; }
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+      gap: 34px;
+      align-items: end;
+      margin: 14px 0;
+      padding: 34px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+    }
+    .eyebrow { margin-bottom: 10px; color: var(--green); font: 600 11px "IBM Plex Mono", monospace; text-transform: uppercase; }
+    h1, h2, p { margin-top: 0; }
+    h1 { max-width: 800px; margin-bottom: 10px; font-size: 38px; line-height: 1.08; letter-spacing: 0; }
+    h2 { margin-bottom: 5px; font-size: 19px; letter-spacing: 0; }
+    .lede { max-width: 780px; margin-bottom: 0; color: var(--muted); font-size: 16px; }
+    .robot-spec {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 15px;
+      align-items: center;
+      padding-left: 24px;
+      border-left: 3px solid var(--green);
+    }
+    .robot-mark {
+      display: grid;
+      width: 56px;
+      height: 72px;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--dark);
+      font: 700 17px "IBM Plex Mono", monospace;
+    }
+    .robot-spec strong { display: block; margin-bottom: 3px; font-size: 16px; }
+    .robot-spec span { color: var(--muted); font-size: 12px; }
+    .protocol-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-bottom: 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--paper);
+    }
+    .protocol-item { min-height: 104px; padding: 17px; border-right: 1px solid var(--line); }
+    .protocol-item:last-child { border-right: 0; }
+    .key { margin-bottom: 8px; color: var(--muted); font: 600 10px "IBM Plex Mono", monospace; text-transform: uppercase; }
+    .protocol-item strong { display: block; margin-bottom: 3px; font-size: 16px; }
+    .protocol-item span { color: var(--muted); font-size: 12px; }
+    .band { margin-bottom: 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); overflow: hidden; }
+    .band-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; padding: 20px 22px; border-bottom: 1px solid var(--line); }
+    .band-head p { margin-bottom: 0; color: var(--muted); font-size: 12px; }
+    .status { padding: 4px 8px; border: 1px solid #9bc9b6; border-radius: 4px; background: var(--green-soft); color: var(--green); font: 600 10px "IBM Plex Mono", monospace; white-space: nowrap; }
+    .table-shell { overflow-x: auto; }
+    table { width: 100%; min-width: 900px; border-collapse: collapse; }
+    th, td { padding: 13px 14px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+    th { background: #f5f7f6; color: #4d5955; font: 600 10px "IBM Plex Mono", monospace; text-transform: uppercase; }
+    th:first-child, td:first-child { text-align: left; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #f8faf9; }
+    tr.reference { background: #f0f4f2; }
+    .method { font-weight: 800; }
+    .variant { display: block; margin-top: 2px; color: var(--muted); font: 500 10px "IBM Plex Mono", monospace; }
+    .best { color: var(--green); font-weight: 800; }
+    .isolated { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr); gap: 0; }
+    .isolated-copy { padding: 22px; border-right: 1px solid var(--line); }
+    .isolated-copy p { margin-bottom: 0; color: var(--muted); }
+    .warning { display: flex; gap: 12px; padding: 20px 22px; background: var(--amber-soft); color: #75420b; }
+    .warning-mark { flex: 0 0 auto; font: 700 17px "IBM Plex Mono", monospace; }
+    .rerun-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .metric { min-height: 92px; padding: 16px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .metric:nth-child(even) { border-right: 0; }
+    .metric:nth-last-child(-n+2) { border-bottom: 0; }
+    .metric span { display: block; color: var(--muted); font: 600 10px "IBM Plex Mono", monospace; text-transform: uppercase; }
+    .metric strong { display: block; margin-top: 7px; color: var(--blue); font-size: 20px; }
+    .footer { display: flex; justify-content: space-between; gap: 20px; padding: 12px 2px 0; color: var(--muted); font-size: 11px; }
+    .error { padding: 24px; color: #a21d1d; }
+    @media (max-width: 820px) {
+      .page { width: min(100% - 20px, 1320px); padding-top: 10px; }
+      .masthead { grid-template-columns: 1fr; padding: 24px 20px; }
+      .robot-spec { padding: 14px 0 0; border-top: 1px solid var(--line); border-left: 0; }
+      .protocol-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .protocol-item:nth-child(2) { border-right: 0; }
+      .protocol-item:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .isolated { grid-template-columns: 1fr; }
+      .isolated-copy { border-right: 0; border-bottom: 1px solid var(--line); }
+    }
+    @media (max-width: 500px) {
+      h1 { font-size: 30px; }
+      .protocol-strip { grid-template-columns: 1fr; }
+      .protocol-item { border-right: 0; border-bottom: 1px solid var(--line); }
+      .protocol-item:last-child { border-bottom: 0; }
+      .band-head { align-items: stretch; flex-direction: column; }
+      .status { align-self: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="nav" aria-label="Motius leaderboards">
+      <strong>Motius Benchmarks</strong>
+      <a href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard">Human T2M</a>
+      <a class="active" aria-current="page" href="#">Unitree G1 T2M</a>
+      <a href="https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard">Motion-to-Text</a>
+      <a href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard">Temporal</a>
+    </nav>
+
+    <header class="masthead">
+      <div>
+        <div class="eyebrow">Robotic motion benchmark</div>
+        <h1>Text-to-Motion · Unitree G1</h1>
+        <p class="lede">Direct G1-native generation, measured in the robot's own motion space. Human-body retargeting results belong to a separate conversion track.</p>
+      </div>
+      <div class="robot-spec">
+        <div class="robot-mark" aria-hidden="true">G1</div>
+        <div><strong>29 actuated joints</strong><span>Canonical g1_38 · 30 fps · no SMPL round trip</span></div>
+      </div>
+    </header>
+
+    <section class="protocol-strip" aria-label="Protocol summary">
+      <div class="protocol-item"><div class="key">Population</div><strong id="sample-count">1,024 cases</strong><span>One fixed selected caption per case</span></div>
+      <div class="protocol-item"><div class="key">Evaluator</div><strong>TMR-G1 epoch 139</strong><span>Robot-native text-motion embedding space</span></div>
+      <div class="protocol-item"><div class="key">Retrieval</div><strong>Groups of 32</strong><span>20 deterministic shuffled repeats</span></div>
+      <div class="protocol-item"><div class="key">FID</div><strong>Normalized latent</strong><span>Per-sample L2 normalization</span></div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <div><h2>Comparable Snapshot</h2><p>Every generated row below shares the same persisted inputs, evaluator checkpoint, and GT calibration.</p></div>
+        <span class="status">Protocol matched</span>
+      </div>
+      <div class="table-shell">
+        <table>
+          <thead><tr><th>Method</th><th>Samples</th><th>R@1 ↑</th><th>R@2 ↑</th><th>R@3 ↑</th><th>FID ↓</th><th>MM-Dist ↓</th><th>Diversity</th></tr></thead>
+          <tbody id="leaderboard-body"><tr><td colspan="8">Loading persisted metrics...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="band isolated">
+      <div>
+        <div class="isolated-copy"><h2>Latest Isolated Rerun</h2><p>HY-Motion's newer checkpoint is retained here without being mixed into the comparable ranking.</p></div>
+        <div class="warning"><span class="warning-mark">!</span><span id="rerun-reason">Loading protocol note...</span></div>
+      </div>
+      <div class="rerun-metrics" id="rerun-metrics"></div>
+    </section>
+
+    <footer class="footer">
+      <span id="protocol-id">Protocol loading...</span>
+      <a href="https://github.com/ZeyuLing/Motius">Source and evaluator ↗</a>
+    </footer>
+  </main>
+  <script>
+    const fmt = (value, digits = 4) => Number(value).toFixed(digits);
+    const metricBest = (rows, key, lower = false) => {
+      const generated = rows.filter(row => row.kind === "generated");
+      const values = generated.map(row => row[key]);
+      return lower ? Math.min(...values) : Math.max(...values);
+    };
+    fetch("g1_results.json")
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then(data => {
+        const rows = data.comparison_snapshot.rows;
+        const best = {
+          r1: metricBest(rows, "r1"),
+          r2: metricBest(rows, "r2"),
+          r3: metricBest(rows, "r3"),
+          fid: metricBest(rows, "fid", true),
+          mm_dist: metricBest(rows, "mm_dist", true),
+        };
+        document.getElementById("sample-count").textContent = `${data.benchmark.samples.toLocaleString()} cases`;
+        document.getElementById("protocol-id").textContent = `Protocol · ${data.benchmark.protocol_id}`;
+        document.getElementById("leaderboard-body").innerHTML = rows.map(row => {
+          const cell = (key, digits = 4) => {
+            const isBest = row.kind === "generated" && row[key] === best[key];
+            return `<td class="${isBest ? "best" : ""}">${fmt(row[key], digits)}</td>`;
+          };
+          const artifact = row.artifact ? ` <a href="${row.artifact}" aria-label="Open artifact">↗</a>` : "";
+          return `<tr class="${row.kind === "reference" ? "reference" : ""}">
+            <td><span class="method">${row.method}${artifact}</span><span class="variant">${row.variant}</span></td>
+            <td>${row.samples.toLocaleString()}</td>${cell("r1")}${cell("r2")}${cell("r3")}${cell("fid", 3)}${cell("mm_dist", 3)}<td>${fmt(row.diversity, 3)}</td>
+          </tr>`;
+        }).join("");
+        const rerun = data.isolated_rerun;
+        document.getElementById("rerun-reason").textContent = rerun.reason_not_cross_ranked;
+        const method = rerun.rows.find(row => row.kind === "generated");
+        document.getElementById("rerun-metrics").innerHTML = [
+          ["R@1 / R@2 / R@3", `${fmt(method.r1)} / ${fmt(method.r2)} / ${fmt(method.r3)}`],
+          ["Normalized FID", fmt(method.fid, 3)],
+          ["MM-Dist", fmt(method.mm_dist, 3)],
+          ["Diversity", fmt(method.diversity, 3)],
+        ].map(([label, value]) => `<div class="metric"><span>${label}</span><strong>${value}</strong></div>`).join("");
+      })
+      .catch(error => {
+        document.getElementById("leaderboard-body").innerHTML = `<tr><td class="error" colspan="8">Failed to load persisted results: ${error.message}</td></tr>`;
+      });
+  </script>
+</body>
+</html>

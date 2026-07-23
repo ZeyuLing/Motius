@@ -28,7 +28,7 @@ Task names link to their leaderboard, never back to this definition page.
 
 | Task | Condition → output | Principal scope / tracks | Leaderboard settings |
 | ---- | ------------------ | ------------------------ | -------------------- |
-| [Text-to-Motion](../leaderboards/README.md#text-to-motion) | Text → motion | Offline · streaming · duration control | [HumanML3D](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) · [Unitree G1](../leaderboards/t2m_unitree_g1.md) |
+| [Text-to-Motion](../leaderboards/README.md#text-to-motion) | Text → motion | Offline · streaming · duration control | [HumanML3D](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) · [Unitree G1](https://huggingface.co/spaces/ZeyuLing/t2m-unitree-g1-leaderboard) |
 | [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | Motion → caption | Caption generation · API alias `M2T` | HumanML3D |
 | [Sequential Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) | Ordered prompts → continuous motion | Multi-action composition · transitions | BABEL |
 | [Text-to-Multi-Person Motion](../leaderboards/text_to_multi_person_interhuman.md) | Interaction text → shared-frame actors | Two-person · multi-person | InterHuman |
@@ -192,6 +192,9 @@ caption.
 
 - Public task fields use only labels from
   [`taxonomy.json`](taxonomy.json).
+- Every benchmark entry in `taxonomy.json` owns one immutable `protocol_id`
+  and canonical `artifact_root` under the shared
+  [evaluation artifact layout](../evaluation/artifact_layout.md).
 - Leaderboards use `Task · Dataset/Protocol`, for example
   `Text-to-Motion · HumanML3D` and `Text-to-Motion · Unitree G1`.
 - Prediction, in-betweening, sparse keyframes, and TP2M stay under Temporal

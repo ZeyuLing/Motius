@@ -86,14 +86,16 @@ Prepare a JSONL manifest with `id` and `caption` fields. Store one `(T, 38)`
 
 ```bash
 python tools/eval_g1_tmr.py \
-  --manifest data/evaluation/g1_test.jsonl \
-  --pred-dir outputs/g1_predictions \
-  --reference-dir data/evaluation/g1_reference \
-  --output outputs/evaluation/g1_tmr/metrics.json
+  --manifest outputs/evaluation/text_to_motion/text_to_motion_unitree_g1/unitree-g1-paper-eval-1024-v1/protocol/manifest.jsonl \
+  --pred-dir outputs/evaluation/text_to_motion/text_to_motion_unitree_g1/unitree-g1-paper-eval-1024-v1/runs/my-method/release-1/predictions/g1_38 \
+  --reference-dir outputs/evaluation/text_to_motion/text_to_motion_unitree_g1/unitree-g1-paper-eval-1024-v1/protocol/references/g1_38 \
+  --output outputs/evaluation/text_to_motion/text_to_motion_unitree_g1/unitree-g1-paper-eval-1024-v1/runs/my-method/release-1/metrics/summary.json
 ```
 
 The default protocol uses recall chunks of 32 and one deterministic repeat.
 Set `--repeats` explicitly when a benchmark requires repeated shuffles.
+The shared directory contract is documented in
+[Evaluation Artifact Layout](../evaluation/artifact_layout.md).
 
 ## Provenance
 

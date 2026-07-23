@@ -207,9 +207,8 @@ def test_text_to_motion_includes_unitree_g1_setting() -> None:
     assert setting["task"] == "text_to_motion"
     assert setting["label"] == "Text-to-Motion · Unitree G1"
 
-    protocol_path = (
-        ROOT / "docs/tasks" / setting["target"].split("#", 1)[0]
-    ).resolve()
+    assert setting["target"].endswith("/t2m-unitree-g1-leaderboard")
+    protocol_path = ROOT / "docs/leaderboards/t2m_unitree_g1.md"
     assert protocol_path.is_file()
     protocol = protocol_path.read_text()
     for expected in ("KIMODO", "HY-Motion G1", "`g1_38`", "TMR-G1"):
@@ -219,6 +218,7 @@ def test_text_to_motion_includes_unitree_g1_setting() -> None:
 def test_local_benchmark_pages_use_canonical_titles() -> None:
     local_sources = {
         "text_to_motion_humanml3d": "hf_space_t2m_humanml3d",
+        "text_to_motion_unitree_g1": "hf_space_t2m_unitree_g1",
         "motion_to_text_humanml3d": "hf_space_m2t_humanml3d",
         "sequential_text_to_motion_babel": "hf_space_babel_sequential",
         "temporal_motion_completion_humanml3d": "hf_space_temporal_condition",
