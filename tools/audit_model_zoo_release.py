@@ -29,7 +29,9 @@ MODEL_TABLE_METHOD_RE = re.compile(r"^\[([^\]]+)\]\(([^)]+\.md)\)$")
 HF_RE = re.compile(r"https://huggingface\.co/([^)\s|]+)")
 CARD_TASK_RE = re.compile(r"^\| Tasks \| ([^|]+?) \|$", re.MULTILINE)
 CARD_TASK_INLINE_RE = re.compile(r"^\*\*Tasks:\*\*\s*(.+?)\.?$", re.MULTILINE)
+CARD_TASK_STATUS_RE = re.compile(r"^\| Task status \| ([^|]+?) \|$", re.MULTILINE)
 TASK_LINK_RE = re.compile(r"^\[([^\]]+)\]\(([^)]+)\)$")
+UNREGISTERED_TASK_CELL = "**Not registered**"
 TASK_LABELS = {task["label"] for task in TASK_REGISTRY["tasks"]}
 TASK_LEADERBOARDS = {
     task["label"]: task["model_zoo_target"] for task in TASK_REGISTRY["tasks"]
@@ -90,6 +92,12 @@ def _parse_task_entries(cell: str) -> list[tuple[str, str | None]]:
 
 
 def _task_status(readme_cell: str, card_text: str) -> tuple[str, str]:
+    if readme_cell == UNREGISTERED_TASK_CELL:
+        status_match = CARD_TASK_STATUS_RE.search(card_text)
+        if not status_match or status_match.group(1) != "Not registered":
+            return "invalid", "model card must declare unregistered task status"
+        return "unregistered", "no canonical Motius task contract"
+
     readme_entries = _parse_task_entries(readme_cell)
     readme_labels = [label for label, _ in readme_entries]
     if not readme_labels:

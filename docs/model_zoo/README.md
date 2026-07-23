@@ -4,7 +4,8 @@ The Model Zoo indexes integrated **method packages** and their public artifacts.
 Task definitions live in the [Task Registry](../tasks/README.md); measured
 results live in the [Benchmark Hub](../leaderboards/README.md). A multi-task
 method appears in every applicable task row below, but only once in the
-alphabetical method catalog.
+alphabetical method catalog. Model integrations without a stable Motius task
+contract remain in the catalog but do not appear in the Task Index.
 
 <p align="center">
   <a href="../tasks/README.md">🧭 Task Registry</a> ·
@@ -51,14 +52,13 @@ metadata. They are never used as task categories.
 | [Motion Repair](../leaderboards/README.md#motion-repair-fixed-support-protocol) | Corrupted motion + support → restored motion | Benchmark protocol available; no standalone package |
 | [Motion Reconstruction](../leaderboards/README.md#motion-reconstruction-humanml3d) | Motion → bottleneck reconstruction | Benchmark protocol available; no standalone package |
 
-Robot representations, retargeting, and external runtime wrappers such as
-[MotionBricks](../motion/motionbricks.md) belong to the
-[Motion Toolkit](../motion/README.md). They are not task-indexed Model Zoo
-methods.
+MotionBricks remains a Model Zoo method integration, but it is intentionally
+absent from the Task Index until Motius defines a stable task and benchmark
+contract for its upstream G1 runtime.
 
 ## Method Catalog 📦
 
-| Method | Canonical tasks | Native space | Artifacts |
+| Method | Task coverage | Native space | Artifacts |
 | --- | --- | --- | --- |
 | [ARDY](ardy.md) | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Sequential Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard), [Kinematic Motion Control](../tasks/README.md#kinematic-motion-control) | `ARDY-330 / G1` | [↗ Official weights](https://huggingface.co/collections/nvidia/ardy) |
 | [Bailando](bailando.md) | [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) | `AIST++ SMPL-24 joints` | [📦 Weights](https://huggingface.co/ZeyuLing/Motius-Bailando-AISTPP) |
@@ -75,6 +75,7 @@ methods.
 | [MLD](mld.md) | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | `HumanML3D-263` | [📦 Weights](https://huggingface.co/ZeyuLing/hftrainer-mld-humanml3d) |
 | [MoGenTS](mogents.md) | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | `HumanML3D-263` | [📦 Weights](https://huggingface.co/ZeyuLing/hftrainer-mogents-humanml3d) |
 | [MoMask](momask.md) | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | `HumanML3D-263` | [📦 Weights](https://huggingface.co/ZeyuLing/hftrainer-momask-humanml3d) |
+| [MotionBricks](motionbricks.md) | **Not registered** | `G1 413D / 414D / 418D` | [↗ Official code and weights](https://github.com/NVlabs/GR00T-WholeBodyControl/tree/main/motionbricks) |
 | [MotionCLR](motionclr.md) | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Motion Editing](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) | `HumanML3D-263` | [📦 Weights](https://huggingface.co/ZeyuLing/motius-motionclr-humanml3d) |
 | [MotionGPT](motiongpt.md) | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | `HumanML3D-263` | [📦 Weights](https://huggingface.co/ZeyuLing/Motius-MotionGPT-HumanML3D) |
 | [MotionGPT3](motiongpt3.md) | [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | `HumanML3D-263` | [📦 Weights](https://huggingface.co/ZeyuLing/Motius-MotionGPT3-HumanML3D) |
@@ -95,8 +96,9 @@ methods.
 | Component | Public requirement |
 | --- | --- |
 | `ModelBundle` | Owns modules, checkpoint metadata, and serialization |
-| Task pipeline | Exposes stable task-facing inputs and physical-space outputs |
-| Model card | Declares exact tasks, native representation, FPS, artifacts, and attribution |
+| Task pipeline | For registered coverage, exposes stable task-facing inputs and physical-space outputs |
+| Runtime integration | May remain unregistered when Motius has no stable task and benchmark contract |
+| Model card | Declares exact task coverage or unregistered status, native representation, FPS, artifacts, and attribution |
 | Evaluation | Persists results from a named benchmark protocol |
 | Representation bridge | Reports conversion diagnostics whenever native and evaluation spaces differ |
 

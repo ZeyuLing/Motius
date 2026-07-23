@@ -1,4 +1,4 @@
-<h1 align="center">MotionBricks Runtime Integration</h1>
+<h1 align="center">MotionBricks Model Card</h1>
 
 <p align="center">
   <strong>Real-time Unitree G1 motion primitives with modular latent generators.</strong>
@@ -18,22 +18,22 @@ Motius vendors the Apache-2.0 source runtime under
 `MotionBricksBundle` / `MotionBricksPipeline`, and keeps the multi-GB pretrained
 weights outside the repository.
 
-## Integration Snapshot
+## Release Snapshot
 
 | Item | Value |
 | ---- | ----- |
-| Upstream system | Modular latent generative model plus smart primitives |
-| Motius role | External runtime wrapper and G1 representation utilities |
+| Method | Modular latent generative model plus smart primitives |
+| Task status | Not registered |
 | Native representation | MotionBricks G1 global 414D, local 413D, dual-root 418D |
 | Robot skeleton | Unitree G1 29-DOF MuJoCo model |
 | Public output | G1 qpos-36 stream |
 | Checkpoint source | Official Git LFS files in GR00T-WholeBodyControl `motionbricks/out` |
 | Pipeline | `motius.pipelines.motionbricks.MotionBricksPipeline` |
 
-This integration is not registered as a Motius task and does not appear in the
-task-based Model Zoo. The repository currently exposes runtime and
-representation utilities, but does not define a stable robot-control task
-pipeline or benchmark contract.
+MotionBricks is a Model Zoo integration, but it is not registered under a
+canonical Motius task and therefore does not appear in the Task Index. The
+repository exposes the upstream runtime and representation utilities without
+claiming a stable robot-control task or benchmark contract.
 
 ## Checkpoints
 

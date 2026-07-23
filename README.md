@@ -13,7 +13,7 @@
 <p align="center">
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.9%2B-2563EB?style=flat-square&logo=python&logoColor=white" alt="Python 3.9+"></a>
   <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-2.0%2B-F9735B?style=flat-square&logo=pytorch&logoColor=white" alt="PyTorch 2.0+"></a>
-  <a href="docs/model_zoo/README.md"><img src="https://img.shields.io/badge/Model_Zoo-29_methods-111827?style=flat-square" alt="29 Model Zoo methods"></a>
+  <a href="docs/model_zoo/README.md"><img src="https://img.shields.io/badge/Model_Zoo-30_methods-111827?style=flat-square" alt="30 Model Zoo methods"></a>
   <a href="docs/leaderboards/README.md"><img src="https://img.shields.io/badge/Benchmarks-12_suites-15A6C8?style=flat-square&logo=huggingface&logoColor=white" alt="12 benchmark suites"></a>
 </p>
 
@@ -91,7 +91,7 @@ Model cards use these exact labels. Benchmark titles use
 
 | Surface | Use it for | Includes |
 | --- | --- | --- |
-| 📦 **[Model Zoo](docs/model_zoo/README.md)** | Find a runnable method by task | 29 integrated packages, native spaces, artifacts, papers, and validation boundaries |
+| 📦 **[Model Zoo](docs/model_zoo/README.md)** | Browse integrated methods; filter registered capabilities by task | 30 packages, native spaces, artifacts, papers, and validation boundaries |
 | 📊 **[Benchmark Hub](docs/leaderboards/README.md)** | Compare persisted results under one protocol | 12 suites with public tables, metric contracts, and qualitative case explorers |
 | ⚙️ **[Evaluator Zoo](docs/evaluator_zoo/README.md)** | Reuse a metric implementation | HumanML3D Official, MotionStreamer, InterCLIP, TMR-G1, AIST++, and joint-position evaluators |
 | 🩺 **[Physical Metrics](docs/evaluation/physical_metrics.md)** | Diagnose motion quality without a semantic checkpoint | Foot slide, floating, jitter, dynamics, and floor penetration |

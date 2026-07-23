@@ -6,6 +6,7 @@ from PIL import Image
 from tools.audit_model_zoo_release import (
     TASK_LABELS,
     TASK_REGISTRY,
+    UNREGISTERED_TASK_CELL,
     _parse_task_entries,
     _read_model_rows,
     _task_status,
@@ -17,12 +18,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_model_zoo_uses_canonical_task_labels() -> None:
     rows = _read_model_rows()
-    assert len(rows) == 29
+    assert len(rows) == 30
 
     for row in rows:
         card_text = row.card_path.read_text()
         status, note = _task_status(row.task_cell, card_text)
-        assert status == "valid", f"{row.method}: {note}"
+        expected = "unregistered" if row.method == "MotionBricks" else "valid"
+        assert status == expected, f"{row.method}: {note}"
 
 
 def test_task_registry_separates_tasks_and_benchmarks() -> None:
@@ -160,6 +162,8 @@ def test_model_zoo_task_index_covers_every_release_capability() -> None:
     )[0]
 
     for row in _read_model_rows():
+        if row.task_cell == UNREGISTERED_TASK_CELL:
+            continue
         for task_label, _ in _parse_task_entries(row.task_cell):
             matching_lines = [
                 line
@@ -191,13 +195,13 @@ def test_documentation_uses_scan_friendly_tables_and_navigation() -> None:
         "| Capability | Task | Condition → output | Principal scope / tracks | "
         "Primary resource |"
     ) in task_registry
-    assert "| Method | Canonical tasks | Native space | Artifacts |" in model_zoo
+    assert "| Method | Task coverage | Native space | Artifacts |" in model_zoo
     assert model_zoo.count("| Task | Contract | Integrated methods |") == 4
     assert benchmark_hub.count("| Benchmark | Fixed contract | Resources |") == 4
     assert "| Evaluator | Native input | Principal metrics | Artifact |" in evaluator_zoo
 
 
-def test_robot_utilities_are_not_registered_as_a_task() -> None:
+def test_motionbricks_is_model_zoo_method_without_task_registration() -> None:
     readme = (ROOT / "README.md").read_text()
     task_registry = (ROOT / "docs/tasks/README.md").read_text()
     model_zoo = (ROOT / "docs/model_zoo/README.md").read_text()
@@ -211,9 +215,12 @@ def test_robot_utilities_are_not_registered_as_a_task() -> None:
     assert "Robot Motion Control" not in readme
     assert "## Embodied Motion" not in task_registry
     assert "### Embodied Motion" not in model_zoo
-    assert "[MotionBricks](" not in method_catalog
-    assert "[MotionBricks runtime integration](motionbricks.md)" in motion_toolkit
-    assert (ROOT / "docs/motion/motionbricks.md").is_file()
+    assert (
+        "| [MotionBricks](motionbricks.md) | **Not registered** |"
+        in method_catalog
+    )
+    assert "MotionBricks runtime integration" not in motion_toolkit
+    assert (ROOT / "docs/model_zoo/motionbricks.md").is_file()
 
 
 def test_local_benchmark_pages_use_canonical_titles() -> None:
