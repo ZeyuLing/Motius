@@ -21,7 +21,7 @@ It is the official evaluator used by InterGen and by InterMask on InterHuman.
 | Motion encoder | 8-layer Transformer, width 1024 |
 | Text encoder | CLIP token embedding + 8-layer Transformer, width 768 |
 | Embedding | 512D, L2 normalized, learned latent scale |
-| Metrics | R@1/R@2/R@3, FID, MM-Dist, Diversity |
+| Metrics | R@1/R@2/R@3, normalized FID, MM-Dist, Diversity |
 | Official retrieval batch | 96 |
 | Official repeats | 20 |
 | Checkpoint | [`ZeyuLing/motius-evaluator-interhuman-interclip`](https://huggingface.co/ZeyuLing/motius-evaluator-interhuman-interclip) |
@@ -78,6 +78,10 @@ The official Lightning checkpoint was reduced to 583 MB of inference-only
 SafeTensors weights. Text and motion embeddings are exactly equal to the legacy
 loader (`max_abs=0`, `mean_abs=0`). A copied motion pack gives FID below
 `3e-9`, validating the embedding and FID path numerically.
+
+FID uses independently L2-normalized InterCLIP motion embeddings. Retrieval,
+MM-Dist, and Diversity retain the evaluator's native embedding scale; raw
+embedding-space FID is not rankable.
 
 InterCLIP follows the InterGen repository's CC BY-NC-SA 4.0 terms. The
 InterHuman dataset is not included in the artifact.

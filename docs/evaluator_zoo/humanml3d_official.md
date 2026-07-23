@@ -23,7 +23,7 @@ protocol for public model-card reporting.
 | Architecture | BiGRU text encoder + movement encoder + BiGRU motion encoder |
 | Motion representation | HumanML3D-263 at 20 fps |
 | Caption protocol | Selected caption for the HumanML3D test split |
-| Metrics | R@1, R@2, R@3, FID, MM-Dist, Diversity |
+| Metrics | R@1, R@2, R@3, normalized FID, MM-Dist, Diversity |
 | Checkpoint | [ZeyuLing/motius-evaluator-humanml3d-official](https://huggingface.co/ZeyuLing/motius-evaluator-humanml3d-official) |
 | Artifact format | Safetensors + HumanML3D stats + `our_vab` GloVe lookup |
 
@@ -58,6 +58,8 @@ by a different evaluator.
 
 ## Notes
 
-For FID and MM-Dist, lower is better. For R-Precision and Diversity, higher is
-usually better, but Diversity should be compared together with the ground-truth
-row and the target dataset protocol.
+FID is computed after independently L2-normalizing every reference and
+generated motion embedding. Raw embedding-space FID is not a Motius
+leaderboard metric. For normalized FID and MM-Dist, lower is better. For
+R-Precision and Diversity, higher is usually better, but Diversity should be
+compared together with the ground-truth row and the target dataset protocol.

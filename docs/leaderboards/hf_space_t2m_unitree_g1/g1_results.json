@@ -14,74 +14,57 @@
     "fid_space": "L2-normalized TMR-G1 latent"
   },
   "comparison_snapshot": {
-    "created_at": "2026-07-08T04:42:11",
+    "created_at": "2026-07-24T03:39:16+08:00",
     "rows": [
       {
         "method": "GT calibration",
         "variant": "reference",
         "kind": "reference",
         "samples": 1024,
-        "r1": 0.848876953125,
+        "r1": 0.84892578125,
         "r2": 0.950048828125,
-        "r3": 0.97958984375,
+        "r3": 0.979638671875,
         "fid": 0.0,
-        "mm_dist": 16.346378326416016,
-        "diversity": 36.768417549133304
+        "mm_dist": 16.344970703125,
+        "diversity": 36.71347064971924
+      },
+      {
+        "method": "HY-Motion G1",
+        "variant": "iter 20k",
+        "kind": "generated",
+        "samples": 1024,
+        "r1": 0.773583984375,
+        "r2": 0.88759765625,
+        "r3": 0.93095703125,
+        "fid": 0.02302387603527678,
+        "mm_dist": 18.292926788330078,
+        "diversity": 36.3522533416748
       },
       {
         "method": "HY-Motion G1",
         "variant": "iter 339k",
         "kind": "generated",
         "samples": 1024,
-        "r1": 0.709619140625,
-        "r2": 0.83896484375,
-        "r3": 0.894482421875,
-        "fid": 42.03868010119339,
-        "mm_dist": 20.4845027923584,
-        "diversity": 36.171302032470706
+        "r1": 0.708642578125,
+        "r2": 0.83798828125,
+        "r3": 0.893505859375,
+        "fid": 0.0587378660855683,
+        "mm_dist": 20.51283073425293,
+        "diversity": 36.01064567565918
       },
       {
         "method": "KIMODO G1-RP",
         "variant": "released",
         "kind": "generated",
-        "samples": 1024,
-        "r1": 0.51572265625,
-        "r2": 0.67490234375,
-        "r3": 0.752294921875,
-        "fid": 85.65149040990106,
-        "mm_dist": 25.129037857055664,
-        "diversity": 35.80309982299805,
+        "samples": 1023,
+        "r1": 0.5173387096774195,
+        "r2": 0.6777721774193548,
+        "r3": 0.754485887096774,
+        "fid": 0.11929946150144946,
+        "mm_dist": 25.1236515045166,
+        "diversity": 35.687303733825686,
+        "coverage_note": "1023 of 1024 protocol cases; one persisted prediction is missing",
         "artifact": "https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-rp"
-      }
-    ]
-  },
-  "isolated_rerun": {
-    "created_at": "2026-07-08T15:06:47",
-    "reason_not_cross_ranked": "GT retrieval calibration differs from the comparison snapshot; baselines must be replayed before cross-ranking.",
-    "rows": [
-      {
-        "method": "GT calibration",
-        "variant": "reference",
-        "kind": "reference",
-        "samples": 1024,
-        "r1": 0.950244140625,
-        "r2": 0.994189453125,
-        "r3": 0.9990234375,
-        "fid": 0.0,
-        "mm_dist": 16.346176494285466,
-        "diversity": 36.656834030151366
-      },
-      {
-        "method": "HY-Motion G1",
-        "variant": "iter 20k rerun",
-        "kind": "generated",
-        "samples": 1024,
-        "r1": 0.907763671875,
-        "r2": 0.97109375,
-        "r3": 0.987255859375,
-        "fid": 16.57502631994985,
-        "mm_dist": 18.26893492527306,
-        "diversity": 36.41424140930176
       }
     ]
   }

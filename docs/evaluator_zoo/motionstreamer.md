@@ -24,7 +24,7 @@ path.
 | Architecture | DistilBERT text encoder + ACTOR motion encoder, latent dim 256 |
 | Motion representation | MotionStreamer-272 at 30 fps |
 | Caption protocol | HumanML3D selected-caption protocol unless a card states otherwise |
-| Metrics | R@1, R@2, R@3, FID, MM-Dist, Diversity |
+| Metrics | R@1, R@2, R@3, normalized FID, MM-Dist, Diversity |
 | Checkpoint | [ZeyuLing/motius-evaluator-motionstreamer-272](https://huggingface.co/ZeyuLing/motius-evaluator-motionstreamer-272) |
 | Artifact format | Safetensors + MotionStreamer-272 stats + DistilBERT tokenizer |
 
@@ -62,3 +62,6 @@ metric is reported.
 This evaluator remains useful as a strong semantic metric, but it is not the
 only public metric view. Motius reports it together with HumanML3D Official and
 the Motius Joint-Position Evaluator.
+
+FID uses independently L2-normalized reference and generated motion
+embeddings. Raw embedding-space FID is not rankable.

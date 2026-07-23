@@ -178,23 +178,15 @@
 
     <section class="band">
       <div class="band-head">
-        <div><h2>Comparable Snapshot</h2><p>Every generated row below shares the same persisted inputs, evaluator checkpoint, and GT calibration.</p></div>
+        <div><h2>Comparable Snapshot</h2><p>Every generated row below uses the same fixed manifest, evaluator checkpoint, and normalized-FID protocol. Sample coverage is reported per row.</p></div>
         <span class="status">Protocol matched</span>
       </div>
       <div class="table-shell">
         <table>
-          <thead><tr><th>Method</th><th>Samples</th><th>R@1 ↑</th><th>R@2 ↑</th><th>R@3 ↑</th><th>FID ↓</th><th>MM-Dist ↓</th><th>Diversity</th></tr></thead>
+          <thead><tr><th>Method</th><th>Samples</th><th>R@1 ↑</th><th>R@2 ↑</th><th>R@3 ↑</th><th>Normalized FID ↓</th><th>MM-Dist ↓</th><th>Diversity</th></tr></thead>
           <tbody id="leaderboard-body"><tr><td colspan="8">Loading persisted metrics...</td></tr></tbody>
         </table>
       </div>
-    </section>
-
-    <section class="band isolated">
-      <div>
-        <div class="isolated-copy"><h2>Latest Isolated Rerun</h2><p>HY-Motion's newer checkpoint is retained here without being mixed into the comparable ranking.</p></div>
-        <div class="warning"><span class="warning-mark">!</span><span id="rerun-reason">Loading protocol note...</span></div>
-      </div>
-      <div class="rerun-metrics" id="rerun-metrics"></div>
     </section>
 
     <footer class="footer">
@@ -236,15 +228,6 @@
             <td>${row.samples.toLocaleString()}</td>${cell("r1")}${cell("r2")}${cell("r3")}${cell("fid", 3)}${cell("mm_dist", 3)}<td>${fmt(row.diversity, 3)}</td>
           </tr>`;
         }).join("");
-        const rerun = data.isolated_rerun;
-        document.getElementById("rerun-reason").textContent = rerun.reason_not_cross_ranked;
-        const method = rerun.rows.find(row => row.kind === "generated");
-        document.getElementById("rerun-metrics").innerHTML = [
-          ["R@1 / R@2 / R@3", `${fmt(method.r1)} / ${fmt(method.r2)} / ${fmt(method.r3)}`],
-          ["Normalized FID", fmt(method.fid, 3)],
-          ["MM-Dist", fmt(method.mm_dist, 3)],
-          ["Diversity", fmt(method.diversity, 3)],
-        ].map(([label, value]) => `<div class="metric"><span>${label}</span><strong>${value}</strong></div>`).join("");
       })
       .catch(error => {
         document.getElementById("leaderboard-body").innerHTML = `<tr><td class="error" colspan="8">Failed to load persisted results: ${error.message}</td></tr>`;

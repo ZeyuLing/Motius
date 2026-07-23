@@ -120,7 +120,7 @@ def main() -> None:
         n_repeats=args.n_repeats,
         chunk=args.chunk_size,
         seed=args.seed,
-        normalize_fid=False,
+        normalize_fid=True,
     )
     result.update(
         {
@@ -131,6 +131,7 @@ def main() -> None:
             "evaluator": args.evaluator,
             "representation": "MotionStreamer-272 at 30 fps",
             "caption_protocol": "one selected full-clip caption per sample",
+            "fid_embedding_space": "l2_normalized",
         }
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)

@@ -26,7 +26,10 @@ import torch
 from motius.models.interclip import load_interclip_checkpoint
 from motius.registry import EVALUATORS
 
-from motius.evaluation.metrics.t2m import euclidean_distance_matrix
+from motius.evaluation.metrics.t2m import (
+    euclidean_distance_matrix,
+    l2_normalize_embeddings,
+)
 
 
 _EMB_SCALE = 6.0
@@ -44,7 +47,7 @@ def _calculate_top_k(argmax: np.ndarray, top_k: int = 3) -> np.ndarray:
 
 
 def _activation_stats(activations: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-    activations = activations * _EMB_SCALE
+    activations = l2_normalize_embeddings(activations)
     return np.mean(activations, axis=0), np.cov(activations, rowvar=False)
 
 
@@ -231,6 +234,7 @@ class InterHuman262Evaluator:
                 "rp_top3": float(rp[2]),
                 "mm_dist": float(mm),
                 "diversity": float(div),
+                "fid_embedding_space": "l2_normalized",
             }
             motion_embeddings[name] = mot_emb
 

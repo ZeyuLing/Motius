@@ -674,7 +674,7 @@
 
     <section class="score-strip" aria-label="summary">
       <div class="score-card">
-        <div class="label">Best MS FID</div>
+        <div class="label">Best normalized uTMR FID</div>
         <div class="value" id="summary-ms-fid">-</div>
         <div class="note" id="summary-ms-fid-note">Generated methods only</div>
       </div>
@@ -760,7 +760,7 @@
           <tbody></tbody>
         </table>
       </div>
-      <p class="caption">MS = MotionStreamer-272 evaluator. uTMR = universal SMPL-22 joints66 TMR evaluator. Legacy uTMR FID retains the historical raw-embedding scale; all newly evaluated methods report canonical per-sample L2-normalized FID in the separate uTMR FID (norm) column. Values from the two spaces are never ranked against each other. Lower FID and MM are better; higher R-Precision is better. Diversity is a reference statistic and is not ranked.</p>
+      <p class="caption">MS = MotionStreamer-272 evaluator. uTMR = universal SMPL-22 joints66 TMR evaluator. Only per-sample L2-normalized FID is displayed and ranked; historical raw-embedding FID values remain hidden until recomputed. Lower normalized FID and MM are better; higher R-Precision is better. Diversity is a reference statistic and is not ranked.</p>
     </section>
 
     <section id="physical" class="view hidden" aria-label="physical metrics">
@@ -873,15 +873,13 @@
           {key: "msR1", label: "MS R1", numeric: true, higher: true},
           {key: "msR2", label: "MS R2", numeric: true, higher: true},
           {key: "msR3", label: "MS R3", numeric: true, higher: true},
-          {key: "msFID", label: "MS FID", numeric: true, lower: true},
           {key: "msMM", label: "MS MM", numeric: true, lower: true},
           {key: "msDiv", label: "MS Div", numeric: true, referenceStatistic: true},
           {key: "utmrN", label: "uTMR n", numeric: true},
           {key: "utmrR1", label: "uTMR R1", numeric: true, higher: true},
           {key: "utmrR2", label: "uTMR R2", numeric: true, higher: true},
           {key: "utmrR3", label: "uTMR R3", numeric: true, higher: true},
-          {key: "utmrFID", label: "uTMR FID (legacy/raw)", numeric: true, lower: true},
-          {key: "utmrFIDNorm", label: "uTMR FID (norm)", numeric: true, lower: true},
+          {key: "utmrFIDNorm", label: "uTMR FID (normalized)", numeric: true, lower: true},
           {key: "utmrMM", label: "uTMR MM", numeric: true, lower: true},
           {key: "utmrDiv", label: "uTMR Div", numeric: true, referenceStatistic: true}
         ]
@@ -910,7 +908,7 @@
           {key: "checkpoint", label: "Checkpoint"},
           {key: "source", label: "Source"},
           {key: "rPrecision", label: "R-Precision", numeric: true, higher: true},
-          {key: "fid", label: "FID", numeric: true, lower: true},
+          {key: "fid", label: "Paper FID", numeric: true, lower: true},
           {key: "skating", label: "Skate %", numeric: true, lower: true},
           {key: "constraintError", label: "Constraint cm", numeric: true, lower: true},
           {key: "latency", label: "Latency s", numeric: true, lower: true},
@@ -926,7 +924,7 @@
           {key: "n", label: "n", numeric: true},
           {key: "msR1", label: "MS R1", numeric: true, higher: true},
           {key: "msR3", label: "MS R3", numeric: true, higher: true},
-          {key: "msFID", label: "MS FID", numeric: true, lower: true},
+          {key: "msFID", label: "MS FID (legacy/raw calibration)", numeric: true, lower: true},
           {key: "msMM", label: "MS MM", numeric: true, lower: true},
           {key: "msDiv", label: "MS Div", numeric: true, higher: true}
         ]
@@ -939,12 +937,10 @@
         metrics: [
           {key: "msR1", label: "MS R@1", higher: true},
           {key: "msR3", label: "MS R@3", higher: true},
-          {key: "msFID", label: "MS FID", lower: true},
           {key: "msMM", label: "MS MM-Dist", lower: true},
           {key: "utmrR1", label: "uTMR R@1", higher: true},
           {key: "utmrR3", label: "uTMR R@3", higher: true},
-          {key: "utmrFID", label: "uTMR FID (legacy/raw)", lower: true},
-          {key: "utmrFIDNorm", label: "uTMR FID (norm)", lower: true},
+          {key: "utmrFIDNorm", label: "uTMR FID (normalized)", lower: true},
           {key: "utmrMM", label: "uTMR MM-Dist", lower: true}
         ]
       },
@@ -1086,11 +1082,16 @@
       const best = (rows, key, lower) => rows
         .filter((row) => typeof row[key] === "number")
         .sort((a, b) => lower ? a[key] - b[key] : b[key] - a[key])[0];
-      const msFid = best(generatedSemantic, "msFID", true);
+      const normalizedFid = best(generatedSemantic, "utmrFIDNorm", true);
       const msR1 = best(generatedSemantic, "msR1", false);
       const utmrR3 = best(generatedSemantic, "utmrR3", false);
       const slide = best(generatedPhysical, "slide", true);
-      setSummary("summary-ms-fid", "summary-ms-fid-note", msFid, msFid.msFID);
+      setSummary(
+        "summary-ms-fid",
+        "summary-ms-fid-note",
+        normalizedFid,
+        normalizedFid.utmrFIDNorm
+      );
       setSummary("summary-ms-r1", "summary-ms-r1-note", msR1, msR1.msR1);
       setSummary("summary-utmr-r3", "summary-utmr-r3-note", utmrR3, utmrR3.utmrR3);
       setSummary("summary-slide", "summary-slide-note", slide, slide.slide, " mm/frame");

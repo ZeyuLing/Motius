@@ -27,7 +27,7 @@ angles back through SMPL.
 | Training corpus | HYMotion Data G1 materialization, 359,153 clips |
 | Split | 344,966 train / 7,083 validation / 7,104 test |
 | Training checkpoint | Epoch 139 |
-| Metrics | R@1, R@2, R@3, FID, MM-Dist, Diversity |
+| Metrics | R@1, R@2, R@3, normalized FID, MM-Dist, Diversity |
 | Checkpoint | [ZeyuLing/motius-evaluator-g1-38d-tmr](https://huggingface.co/ZeyuLing/motius-evaluator-g1-38d-tmr) |
 | Artifact format | Safetensors + G1-38D training statistics |
 

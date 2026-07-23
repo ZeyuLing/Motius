@@ -130,7 +130,7 @@ def main() -> None:
         n_repeats=args.n_repeats,
         chunk=args.chunk_size,
         seed=args.seed,
-        normalize_fid=False,
+        normalize_fid=True,
     )
     result.update(
         {
@@ -144,6 +144,7 @@ def main() -> None:
             "evaluator": args.evaluator,
             "chunk_size": args.chunk_size,
             "caption_protocol": "macro -> meso -> micro selected full-clip caption",
+            "fid_embedding_space": "l2_normalized",
             "reference_representation": (
                 "official HumanML3D new_joint_vecs at 20 fps"
                 if args.reference_dir is not None

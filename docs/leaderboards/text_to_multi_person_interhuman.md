@@ -18,7 +18,7 @@ people in one shared world frame.
 | Actor layout | `(B, T, 2, 262)` paired InterHuman-262 |
 | Evaluator | [InterCLIP](../evaluator_zoo/interclip.md) |
 | Retrieval protocol | Batch 96 · 20 official repeats |
-| Metrics | R@1 · R@2 · R@3 · FID · MM-Dist · Diversity |
+| Metrics | R@1 · R@2 · R@3 · normalized FID · MM-Dist · Diversity |
 | Included methods | [InterGen](../model_zoo/intergen.md) · [InterMask](../model_zoo/intermask.md) |
 
 Both actors must retain the dataset's shared coordinate frame. Per-actor root
@@ -27,7 +27,7 @@ evaluation changes the task and is not allowed.
 
 ## Leaderboard
 
-| Method | Samples | R@1 ↑ | R@2 ↑ | R@3 ↑ | FID ↓ | MM-Dist ↓ | Diversity |
+| Method | Samples | R@1 ↑ | R@2 ↑ | R@3 ↑ | Normalized FID ↓ | MM-Dist ↓ | Diversity |
 | ------ | ------: | ----: | ----: | ----: | ----: | --------: | --------: |
 | GT | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
 | InterGen | Pending | Pending | Pending | Pending | Pending | Pending | Pending |

@@ -36,33 +36,26 @@ G1-native generation.
 
 | Method | Variant | Native output | Artifact | Evaluation status |
 | ------ | ------- | ------------- | -------- | ----------------- |
-| [KIMODO](../model_zoo/kimodo.md) | G1-RP | Unitree G1 native arrays | [📦 Checkpoint](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-rp) | Measured, 1,024 cases |
+| [KIMODO](../model_zoo/kimodo.md) | G1-RP | Unitree G1 native arrays | [📦 Checkpoint](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-rp) | Measured, 1,023 / 1,024 cases |
 | [KIMODO](../model_zoo/kimodo.md) | G1-SEED | Unitree G1 native arrays | [📦 Checkpoint](https://huggingface.co/ZeyuLing/hftrainer-kimodo-g1-seed) | Pending full split |
-| HY-Motion G1 | Iteration 339,000 | Unitree G1 | Release artifact pending | Measured, 1,024 cases |
+| HY-Motion G1 | Iterations 20,000 and 339,000 | Unitree G1 | Release artifact pending | Measured, 1,024 cases |
 | [ARDY](../model_zoo/ardy.md) | G1-RP Horizon-52 | ARDY G1-414 / qpos-36 | [📦 Checkpoint](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon52) | Pending full split |
 
 ## Leaderboard
 
-| Method | Samples | R@1 ↑ | R@2 ↑ | R@3 ↑ | FID ↓ | MM-Dist ↓ | Diversity |
+| Method | Samples | R@1 ↑ | R@2 ↑ | R@3 ↑ | Normalized FID ↓ | MM-Dist ↓ | Diversity |
 | ------ | ------: | ----: | ----: | ----: | ----: | --------: | --------: |
-| GT calibration | 1,024 | 0.8489 | 0.9500 | 0.9796 | 0.000 | 16.346 | 36.768 |
-| **HY-Motion G1 · iter 339k** | 1,024 | **0.7096** | **0.8390** | **0.8945** | **42.039** | **20.485** | **36.171** |
-| KIMODO G1-RP | 1,024 | 0.5157 | 0.6749 | 0.7523 | 85.651 | 25.129 | 35.803 |
+| GT calibration | 1,024 | 0.8489 | 0.9500 | 0.9796 | 0.0000 | 16.345 | 36.713 |
+| **HY-Motion G1 · iter 20k** | 1,024 | **0.7736** | **0.8876** | **0.9310** | **0.0230** | **18.293** | **36.352** |
+| HY-Motion G1 · iter 339k | 1,024 | 0.7086 | 0.8380 | 0.8935 | 0.0587 | 20.513 | 36.011 |
+| KIMODO G1-RP | 1,023 | 0.5173 | 0.6778 | 0.7545 | 0.1193 | 25.124 | 35.687 |
 | KIMODO G1-SEED | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
 | ARDY G1-RP Horizon-52 | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
 
-The measured rows above come from one persisted metric report: the same 1,024
-ordered captions, TMR-G1 epoch-139 checkpoint, 32-sample retrieval groups,
-20 deterministic repeats, and normalized-latent FID.
-
-## Latest Isolated Rerun
-
-A newer HY-Motion G1 iteration-20k result measured R@1/2/3
-`0.9078 / 0.9711 / 0.9873`, FID `16.575`, MM-Dist `18.269`, and Diversity
-`36.414`. Its companion GT calibration was `0.9502 / 0.9942 / 0.9990`,
-which differs materially from the comparison snapshot above. It is preserved
-as an isolated rerun and is not cross-ranked until the baselines are replayed
-under that exact evaluator snapshot.
+The measured rows use the same frozen 1,024-caption manifest, TMR-G1 epoch-139
+checkpoint, 32-sample retrieval groups, 20 deterministic repeats, and
+per-sample L2-normalized latent FID. KIMODO has one missing persisted prediction,
+so its metrics use the available 1,023 cases (`992` after retrieval chunking).
 
 The canonical storage root is
 `outputs/evaluation/text_to_motion/text_to_motion_unitree_g1/unitree-g1-paper-eval-1024-v1`.

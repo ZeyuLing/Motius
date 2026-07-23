@@ -47,6 +47,7 @@ Editing. The canonical vocabulary lives in the
 | Physical diagnostics | Report separately from learned semantic scores |
 | Qualitative viewer | Use the persisted predictions scored by the metric job whenever they can be distributed |
 | Artifact path | Use the canonical [`task / benchmark / protocol / run` layout](../evaluation/artifact_layout.md); every registered setting publishes its root in `docs/tasks/taxonomy.json` |
+| Learned-embedding FID | L2-normalize every reference and generated embedding before estimating means and covariances; raw-space FID is not rankable |
 
 Evaluator details live in the [Evaluator Zoo](../evaluator_zoo/README.md), with
 shared diagnostics documented in
