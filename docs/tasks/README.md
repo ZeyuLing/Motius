@@ -11,7 +11,9 @@ Model Zoo, and benchmark documentation.
 | 📦 **Method** | A model implementation serving one or more tasks |
 
 Dataset names, model architectures, motion representations, and training
-objectives are not task names. The machine-readable source is
+objectives are not task names. Tasks are intentionally listed without
+top-level families because modality, operation, actor count, and application
+domain are overlapping axes. The machine-readable source is
 [`taxonomy.json`](taxonomy.json).
 
 <p align="center">
@@ -20,48 +22,53 @@ objectives are not task names. The machine-readable source is
   <a href="../motion/README.md">🔄 Motion Toolkit</a>
 </p>
 
-## Classification Principle
-
-Families describe the **capability being performed**, not the input modality,
-dataset, architecture, or actor count. Condition and output modalities remain
-explicit columns, while single-person, multi-person, and temporal composition
-remain task scope or tracks where appropriate.
-
 ## Task Matrix 🧭
 
-| Capability | Task | Condition → output | Principal scope / tracks | Primary resource |
-| ---------- | ---- | ------------------ | ------------------------ | ---------------- |
-| ✨ Motion generation | [Text-to-Motion](#text-to-motion) | Text → motion | Offline · streaming · duration control | [📊 HumanML3D Leaderboard](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) |
-| ✨ Motion generation | [Sequential Text-to-Motion](#sequential-text-to-motion) | Ordered prompts → continuous motion | Multi-action composition · transitions | [📊 BABEL Leaderboard](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) |
-| ✨ Motion generation | [Text-to-Multi-Person Motion](#text-to-multi-person-motion) | Interaction text → shared-frame actors | Two-person · multi-person | [📋 Task contract](#text-to-multi-person-motion) |
-| ✨ Motion generation | [Music-to-Dance](#music-to-dance) | Music ± text → dance | Beat-aligned dance · API alias `M2D` | [📊 AIST++ Leaderboard](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) |
-| ✨ Motion generation | [Speech-to-Gesture](#speech-to-gesture) | Speech ± caption → gesture | Co-speech gesture · API alias `S2G` | [📊 BEAT2 Leaderboard](https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard) |
-| 🔎 Motion understanding and translation | [Motion-to-Text](#motion-to-text) | Motion → caption | Caption generation · API alias `M2T` | [📊 HumanML3D Leaderboard](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) |
-| 🔎 Motion understanding and translation | [Dance-to-Music](#dance-to-music) | Dance → music | Motion-conditioned audio · API alias `D2M` | [📊 AIST++ Leaderboard](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) |
-| 🎛️ Motion control and completion | [Temporal Motion Completion](#temporal-motion-completion) | Observed frames ± text → motion | Prediction · in-betweening · keyframes · TP2M | [📊 Temporal Leaderboard](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) |
-| 🎛️ Motion control and completion | [Kinematic Motion Control](#kinematic-motion-control) | Numeric geometry → motion | Joint · root · trajectory · end-effector | [📋 Task contract](#kinematic-motion-control) |
-| 🎛️ Motion control and completion | [Part-Level Motion Control](#part-level-motion-control) | Body-region semantics → motion | Spatial and temporal part composition | [📊 Part-Control Leaderboard](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) |
-| ✂️ Motion transformation and reconstruction | [Motion Editing](#motion-editing) | Motion + semantic edit → motion | Style · content · free-form instruction | [📊 Editing Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) |
-| ✂️ Motion transformation and reconstruction | [Motion Repair](#motion-repair) | Corrupted motion + support → motion | Oracle mask · predicted mask | [📋 Repair protocol](../leaderboards/README.md#motion-repair-fixed-support-protocol) |
-| ✂️ Motion transformation and reconstruction | [Motion Reconstruction](#motion-reconstruction) | Motion → reconstructed motion | Tokenizer · codec · autoencoder | [📋 Reconstruction protocol](../leaderboards/README.md#motion-reconstruction-humanml3d) |
+Task names link to their leaderboard, never back to this definition page.
+
+| Task | Condition → output | Principal scope / tracks | Leaderboard settings |
+| ---- | ------------------ | ------------------------ | -------------------- |
+| [Text-to-Motion](../leaderboards/README.md#text-to-motion) | Text → motion | Offline · streaming · duration control | [HumanML3D](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) · [Unitree G1](../leaderboards/t2m_unitree_g1.md) |
+| [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | Motion → caption | Caption generation · API alias `M2T` | HumanML3D |
+| [Sequential Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) | Ordered prompts → continuous motion | Multi-action composition · transitions | BABEL |
+| [Text-to-Multi-Person Motion](../leaderboards/text_to_multi_person_interhuman.md) | Interaction text → shared-frame actors | Two-person · multi-person | InterHuman |
+| [Temporal Motion Completion](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) | Observed frames ± text → motion | Prediction · in-betweening · keyframes · TP2M | HumanML3D |
+| [Kinematic Motion Control](../leaderboards/kinematic_motion_control.md) | Numeric geometry → motion | Joint · root · trajectory · end-effector | Native-skeleton protocol |
+| [Part-Level Motion Control](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) | Body-region semantics → motion | Spatial and temporal part composition | HumanML3D |
+| [Motion Editing](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) | Motion + semantic edit → motion | Style · content · free-form instruction | Style/content · MotionFix |
+| [Motion Repair](../leaderboards/README.md#motion-repair-fixed-support-protocol) | Corrupted motion + support → motion | Oracle mask · predicted mask | Fixed-support protocol |
+| [Motion Reconstruction](../leaderboards/README.md#motion-reconstruction-humanml3d) | Motion → reconstructed motion | Tokenizer · codec · autoencoder | HumanML3D |
+| [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) | Music ± text → dance | Beat-aligned dance · API alias `M2D` | AIST++ |
+| [Dance-to-Music](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) | Dance → music | Motion-conditioned audio · API alias `D2M` | AIST++ |
+| [Speech-to-Gesture](https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard) | Speech ± caption → gesture | Co-speech gesture · API alias `S2G` | BEAT2 |
 
 Robot representations, human-to-robot retargeting, G1 export, and external
-runtime wrappers are [Motion Toolkit](../motion/README.md) integrations. They
-do not constitute a Motius task until the repository provides a stable task
-pipeline and evaluation contract.
+runtime wrappers are implementation capabilities rather than standalone tasks.
+A robotic method can still implement Text-to-Motion, as in the Unitree G1 T2M
+setting.
 
-## Motion Generation ✨
+## Task Definitions
 
 ### Text-to-Motion
 
 **Input:** one natural-language motion description, with an optional requested
 duration.
 
-**Output:** one motion sequence.
+**Output:** one motion sequence for a declared body or robot skeleton.
 
-`T2M` is an accepted API alias. Offline, streaming, diffusion,
-flow-matching, autoregressive, masked-token, and latent generators all remain
-the same task.
+`T2M` is an accepted API alias. Human and robotic skeletons are benchmark
+settings of the same task, not different task names. Offline, streaming,
+diffusion, flow-matching, autoregressive, masked-token, and latent generators
+also remain the same task.
+
+### Motion-to-Text
+
+**Input:** one complete motion sequence.
+
+**Output:** one natural-language motion description.
+
+`M2T` is an accepted API alias. Caption generation is the task; retrieval,
+BLEU, ROUGE, CIDEr, or embedding similarity are benchmark metrics.
 
 ### Sequential Text-to-Motion
 
@@ -84,46 +91,6 @@ frame.
 Current InterHuman releases use a two-actor track. Actor count is an output
 layout property, so `Two-Person T2M`, `Interaction T2M`, and
 `Multi-Person Motion` are not additional public task labels.
-
-### Music-to-Dance
-
-**Input:** music audio or synchronized music features, optionally paired with a
-text condition.
-
-**Output:** a synchronized dance motion.
-
-`M2D` is an accepted API alias. PRISM-MCM, Bailando, EDGE, and TM2D are methods,
-not tasks.
-
-### Speech-to-Gesture
-
-**Input:** speech audio or speech features, optionally paired with a semantic
-caption.
-
-**Output:** a synchronized co-speech gesture motion.
-
-`S2G` is an accepted API alias.
-
-## Motion Understanding And Translation 🔎
-
-### Motion-to-Text
-
-**Input:** one complete motion sequence.
-
-**Output:** one natural-language motion description.
-
-`M2T` is an accepted API alias. Caption generation is the task; retrieval,
-BLEU, ROUGE, CIDEr, or embedding similarity are benchmark metrics.
-
-### Dance-to-Music
-
-**Input:** one dance motion.
-
-**Output:** synchronized music audio or music tokens.
-
-`D2M` is an accepted API alias.
-
-## Motion Control And Completion 🎛️
 
 ### Temporal Motion Completion
 
@@ -164,8 +131,6 @@ preserving or generating the complementary body motion.
 This task describes semantic body-region composition. Numeric joint or
 trajectory evidence belongs to Kinematic Motion Control.
 
-## Motion Transformation And Reconstruction ✂️
-
 ### Motion Editing
 
 **Input:** a source motion and a semantic edit instruction or attribute.
@@ -196,17 +161,44 @@ autoencoder, codec, or representation bottleneck.
 Reconstruction is a motion-to-motion task. MPJPE, root error, FID, codebook
 usage, and physical diagnostics are evaluation measures rather than task names.
 
+### Music-to-Dance
+
+**Input:** music audio or synchronized music features, optionally paired with a
+text condition.
+
+**Output:** a synchronized dance motion.
+
+`M2D` is an accepted API alias. PRISM-MCM, Bailando, EDGE, and TM2D are methods,
+not tasks.
+
+### Dance-to-Music
+
+**Input:** one dance motion.
+
+**Output:** synchronized music audio or music tokens.
+
+`D2M` is an accepted API alias.
+
+### Speech-to-Gesture
+
+**Input:** speech audio or speech features, optionally paired with a semantic
+caption.
+
+**Output:** a synchronized co-speech gesture motion.
+
+`S2G` is an accepted API alias.
+
 ## Naming Contract ✅
 
 - Public task fields use only labels from
   [`taxonomy.json`](taxonomy.json).
 - Leaderboards use `Task · Dataset/Protocol`, for example
-  `Text-to-Motion · HumanML3D`.
+  `Text-to-Motion · HumanML3D` and `Text-to-Motion · Unitree G1`.
 - Prediction, in-betweening, sparse keyframes, and TP2M stay under Temporal
   Motion Completion.
+- Human, multi-person, and robot skeletons are benchmark settings or output
+  layouts, not top-level task families.
 - Architecture terms such as diffusion, autoregressive, streaming, latent,
   zero-shot, and multimodal never become task labels.
 - Representation conversion, body-model conversion, retargeting, and character
   export remain Motion Toolkit operations.
-- Robot representation support and external runtime wrappers do not become
-  tasks without a task pipeline and benchmark contract.

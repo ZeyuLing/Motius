@@ -31,12 +31,10 @@ def test_task_registry_separates_tasks_and_benchmarks() -> None:
     tasks = TASK_REGISTRY["tasks"]
     task_ids = {task["id"] for task in tasks}
     task_labels = {task["label"] for task in tasks}
-    family_ids = {family["id"] for family in TASK_REGISTRY["families"]}
 
     assert len(task_ids) == len(tasks)
     assert len(task_labels) == len(tasks)
     assert task_labels == TASK_LABELS
-    assert {task["family"] for task in tasks}.issubset(family_ids)
 
     benchmark_ids = set()
     for benchmark in TASK_REGISTRY["benchmarks"]:
@@ -49,40 +47,10 @@ def test_task_registry_separates_tasks_and_benchmarks() -> None:
         assert benchmark["label"].startswith(f"{task_label} · ")
 
 
-def test_task_families_use_one_capability_axis() -> None:
-    expected = {
-        "motion_generation": {
-            "text_to_motion",
-            "sequential_text_to_motion",
-            "text_to_multi_person_motion",
-            "music_to_dance",
-            "speech_to_gesture",
-        },
-        "motion_understanding_translation": {
-            "motion_to_text",
-            "dance_to_music",
-        },
-        "motion_control_completion": {
-            "temporal_motion_completion",
-            "kinematic_motion_control",
-            "part_level_motion_control",
-        },
-        "motion_transformation": {
-            "motion_editing",
-            "motion_repair",
-            "motion_reconstruction",
-        },
-    }
-    actual = {
-        family["id"]: {
-            task["id"]
-            for task in TASK_REGISTRY["tasks"]
-            if task["family"] == family["id"]
-        }
-        for family in TASK_REGISTRY["families"]
-    }
-
-    assert actual == expected
+def test_task_registry_is_flat_and_unclassified() -> None:
+    assert "families" not in TASK_REGISTRY
+    assert len(TASK_REGISTRY["tasks"]) == 13
+    assert all("family" not in task for task in TASK_REGISTRY["tasks"])
 
 
 def test_every_task_has_linked_readme_and_registry_resources() -> None:
@@ -94,25 +62,33 @@ def test_every_task_has_linked_readme_and_registry_resources() -> None:
     task_matrix = task_registry.split("## Task Matrix", 1)[1].split(
         "\n## ", 1
     )[0]
+    model_zoo = (ROOT / "docs/model_zoo/README.md").read_text()
+    task_index = model_zoo.split("## Task Index", 1)[1].split(
+        "## Method Catalog", 1
+    )[0]
 
     for task in TASK_REGISTRY["tasks"]:
         label = task["label"]
-        anchor = task["id"].replace("_", "-")
-        assert f"[{label}](" in task_system
+        for surface, table in {
+            "root Task System": task_system,
+            "Task Matrix": task_matrix,
+            "Model Zoo Task Index": task_index,
+        }.items():
+            matching_rows = [
+                line
+                for line in table.splitlines()
+                if line.startswith(f"| [{label}](")
+            ]
+            assert len(matching_rows) == 1, (
+                f"{surface} has no unique {label} row"
+            )
+            task_cell = matching_rows[0].strip().strip("|").split("|")[0]
+            task_target = task_cell.split("](", 1)[1].split(")", 1)[0]
+            assert "leaderboard" in task_target
+            assert "tasks/" not in task_target
 
-        matching_rows = [
-            line
-            for line in task_matrix.splitlines()
-            if f"[{label}](#{anchor})" in line
-        ]
-        assert len(matching_rows) == 1, f"Task Matrix has no unique {label} row"
-        cells = [
-            cell.strip()
-            for cell in matching_rows[0].strip().strip("|").split("|")
-        ]
-        assert len(cells) == 5
-        assert cells[-1].startswith("[")
-        assert "](" in cells[-1]
+        assert "leaderboard" in task["model_zoo_target"]
+        assert "../tasks/" not in task["model_zoo_target"]
 
 
 def test_release_manifest_task_labels_are_canonical() -> None:
@@ -147,7 +123,7 @@ def test_documentation_uses_one_information_architecture() -> None:
     benchmark_labels = {
         benchmark["label"] for benchmark in TASK_REGISTRY["benchmarks"]
     }
-    assert len(benchmark_labels) == 12
+    assert len(benchmark_labels) == 15
     for label in benchmark_labels:
         assert f"**{label}**" in benchmark_hub
     assert "### T2M HumanML3D" not in benchmark_hub
@@ -192,12 +168,12 @@ def test_documentation_uses_scan_friendly_tables_and_navigation() -> None:
     assert "📊 Benchmarks" in readme
 
     assert (
-        "| Capability | Task | Condition → output | Principal scope / tracks | "
-        "Primary resource |"
+        "| Task | Condition → output | Principal scope / tracks | "
+        "Leaderboard settings |"
     ) in task_registry
     assert "| Method | Task coverage | Native space | Artifacts |" in model_zoo
-    assert model_zoo.count("| Task | Contract | Integrated methods |") == 4
-    assert benchmark_hub.count("| Benchmark | Fixed contract | Resources |") == 4
+    assert model_zoo.count("| Task | Contract | Integrated methods |") == 1
+    assert benchmark_hub.count("| Benchmark | Fixed contract | Resources |") == 1
     assert "| Evaluator | Native input | Principal metrics | Artifact |" in evaluator_zoo
 
 
@@ -211,7 +187,7 @@ def test_motionbricks_is_model_zoo_method_without_task_registration() -> None:
     motion_toolkit = (ROOT / "docs/motion/README.md").read_text()
 
     assert "Robot Motion Control" not in TASK_LABELS
-    assert all(family["id"] != "embodied_motion" for family in TASK_REGISTRY["families"])
+    assert "families" not in TASK_REGISTRY
     assert "Robot Motion Control" not in readme
     assert "## Embodied Motion" not in task_registry
     assert "### Embodied Motion" not in model_zoo
@@ -221,6 +197,23 @@ def test_motionbricks_is_model_zoo_method_without_task_registration() -> None:
     )
     assert "MotionBricks runtime integration" not in motion_toolkit
     assert (ROOT / "docs/model_zoo/motionbricks.md").is_file()
+
+
+def test_text_to_motion_includes_unitree_g1_setting() -> None:
+    benchmarks = {
+        benchmark["id"]: benchmark for benchmark in TASK_REGISTRY["benchmarks"]
+    }
+    setting = benchmarks["text_to_motion_unitree_g1"]
+    assert setting["task"] == "text_to_motion"
+    assert setting["label"] == "Text-to-Motion · Unitree G1"
+
+    protocol_path = (
+        ROOT / "docs/tasks" / setting["target"].split("#", 1)[0]
+    ).resolve()
+    assert protocol_path.is_file()
+    protocol = protocol_path.read_text()
+    for expected in ("KIMODO", "HY-Motion G1", "`g1_38`", "TMR-G1"):
+        assert expected in protocol
 
 
 def test_local_benchmark_pages_use_canonical_titles() -> None:

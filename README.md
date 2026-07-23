@@ -14,7 +14,7 @@
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.9%2B-2563EB?style=flat-square&logo=python&logoColor=white" alt="Python 3.9+"></a>
   <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-2.0%2B-F9735B?style=flat-square&logo=pytorch&logoColor=white" alt="PyTorch 2.0+"></a>
   <a href="docs/model_zoo/README.md"><img src="https://img.shields.io/badge/Model_Zoo-30_methods-111827?style=flat-square" alt="30 Model Zoo methods"></a>
-  <a href="docs/leaderboards/README.md"><img src="https://img.shields.io/badge/Benchmarks-12_suites-15A6C8?style=flat-square&logo=huggingface&logoColor=white" alt="12 benchmark suites"></a>
+  <a href="docs/leaderboards/README.md"><img src="https://img.shields.io/badge/Benchmarks-15_settings-15A6C8?style=flat-square&logo=huggingface&logoColor=white" alt="15 benchmark settings"></a>
 </p>
 
 <p align="center">
@@ -72,15 +72,25 @@ choose a [task](docs/tasks/README.md), a released
 ## Task System 🧭
 
 The [Task Registry](docs/tasks/README.md) is the only public task vocabulary.
-Tracks such as prediction, in-betweening, sparse keyframes, and TP2M remain
-inside their parent task. Dataset and model names never become task names.
+Tasks are listed flat instead of being forced into overlapping modality or
+capability families. Tracks such as prediction, in-betweening, sparse
+keyframes, and TP2M remain inside their parent task.
 
-| Family | Canonical tasks |
-| --- | --- |
-| ✨ **Motion generation** | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) · [Sequential Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) · [Text-to-Multi-Person Motion](docs/tasks/README.md#text-to-multi-person-motion) · [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) · [Speech-to-Gesture](https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard) |
-| 🔎 **Motion understanding and translation** | [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) · [Dance-to-Music](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) |
-| 🎛️ **Motion control and completion** | [Temporal Motion Completion](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) · [Kinematic Motion Control](docs/tasks/README.md#kinematic-motion-control) · [Part-Level Motion Control](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) |
-| ✂️ **Motion transformation and reconstruction** | [Motion Editing](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) · [Motion Repair](docs/leaderboards/README.md#motion-repair-fixed-support-protocol) · [Motion Reconstruction](docs/leaderboards/README.md#motion-reconstruction-humanml3d) |
+| Task | Contract | Leaderboard settings |
+| ---- | -------- | -------------------- |
+| [Text-to-Motion](docs/leaderboards/README.md#text-to-motion) | Text → motion | [HumanML3D](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) · [Unitree G1](docs/leaderboards/t2m_unitree_g1.md) |
+| [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | Motion → caption | HumanML3D |
+| [Sequential Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) | Ordered prompts → continuous motion | BABEL |
+| [Text-to-Multi-Person Motion](docs/leaderboards/text_to_multi_person_interhuman.md) | Interaction text → shared-frame actors | InterHuman |
+| [Temporal Motion Completion](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) | Observed frames ± text → motion | HumanML3D temporal tracks |
+| [Kinematic Motion Control](docs/leaderboards/kinematic_motion_control.md) | Numeric geometry → motion | Native-skeleton protocol |
+| [Part-Level Motion Control](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) | Body-region semantics → motion | HumanML3D |
+| [Motion Editing](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) | Motion + semantic edit → motion | Style/content · MotionFix |
+| [Motion Repair](docs/leaderboards/README.md#motion-repair-fixed-support-protocol) | Corrupted motion + support → motion | Fixed-support protocol |
+| [Motion Reconstruction](docs/leaderboards/README.md#motion-reconstruction-humanml3d) | Motion → reconstructed motion | HumanML3D |
+| [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) | Music ± text → dance | AIST++ |
+| [Dance-to-Music](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) | Dance → music | AIST++ |
+| [Speech-to-Gesture](https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard) | Speech ± caption → gesture | BEAT2 |
 
 Model cards use these exact labels. Benchmark titles use
 `Task · Dataset/Protocol`, such as
@@ -92,7 +102,7 @@ Model cards use these exact labels. Benchmark titles use
 | Surface | Use it for | Includes |
 | --- | --- | --- |
 | 📦 **[Model Zoo](docs/model_zoo/README.md)** | Browse integrated methods; filter registered capabilities by task | 30 packages, native spaces, artifacts, papers, and validation boundaries |
-| 📊 **[Benchmark Hub](docs/leaderboards/README.md)** | Compare persisted results under one protocol | 12 suites with public tables, metric contracts, and qualitative case explorers |
+| 📊 **[Benchmark Hub](docs/leaderboards/README.md)** | Compare persisted results under one protocol | 15 settings with public tables, metric contracts, and qualitative case explorers |
 | ⚙️ **[Evaluator Zoo](docs/evaluator_zoo/README.md)** | Reuse a metric implementation | HumanML3D Official, MotionStreamer, InterCLIP, TMR-G1, AIST++, and joint-position evaluators |
 | 🩺 **[Physical Metrics](docs/evaluation/physical_metrics.md)** | Diagnose motion quality without a semantic checkpoint | Foot slide, floating, jitter, dynamics, and floor penetration |
 
