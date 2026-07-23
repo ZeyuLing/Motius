@@ -44,7 +44,11 @@ remain task scope or tracks where appropriate.
 | ✂️ Motion transformation and reconstruction | [Motion Editing](#motion-editing) | Motion + semantic edit → motion | Style · content · free-form instruction | [📊 Editing Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) |
 | ✂️ Motion transformation and reconstruction | [Motion Repair](#motion-repair) | Corrupted motion + support → motion | Oracle mask · predicted mask | [📋 Repair protocol](../leaderboards/README.md#motion-repair-fixed-support-protocol) |
 | ✂️ Motion transformation and reconstruction | [Motion Reconstruction](#motion-reconstruction) | Motion → reconstructed motion | Tokenizer · codec · autoencoder | [📋 Reconstruction protocol](../leaderboards/README.md#motion-reconstruction-humanml3d) |
-| 🤖 Embodied motion | [Robot Motion Control](#robot-motion-control) | Command or state → robot motion | Navigation · velocity · primitive schedule | [📋 Task contract](#robot-motion-control) |
+
+Robot representations, human-to-robot retargeting, G1 export, and external
+runtime wrappers are [Motion Toolkit](../motion/README.md) integrations. They
+do not constitute a Motius task until the repository provides a stable task
+pipeline and evaluation contract.
 
 ## Motion Generation ✨
 
@@ -192,18 +196,6 @@ autoencoder, codec, or representation bottleneck.
 Reconstruction is a motion-to-motion task. MPJPE, root error, FID, codebook
 usage, and physical diagnostics are evaluation measures rather than task names.
 
-## Embodied Motion 🤖
-
-### Robot Motion Control
-
-**Input:** navigation commands, target velocities, control state, or a motion
-primitive schedule for a specified robot.
-
-**Output:** an executable robot-state or joint-control sequence.
-
-Human-to-robot retargeting is a
-[Motion Toolkit](../motion/README.md) conversion route, not this task.
-
 ## Naming Contract ✅
 
 - Public task fields use only labels from
@@ -216,3 +208,5 @@ Human-to-robot retargeting is a
   zero-shot, and multimodal never become task labels.
 - Representation conversion, body-model conversion, retargeting, and character
   export remain Motion Toolkit operations.
+- Robot representation support and external runtime wrappers do not become
+  tasks without a task pipeline and benchmark contract.

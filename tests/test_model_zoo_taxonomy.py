@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_model_zoo_uses_canonical_task_labels() -> None:
     rows = _read_model_rows()
-    assert len(rows) == 30
+    assert len(rows) == 29
 
     for row in rows:
         card_text = row.card_path.read_text()
@@ -70,7 +70,6 @@ def test_task_families_use_one_capability_axis() -> None:
             "motion_repair",
             "motion_reconstruction",
         },
-        "embodied_motion": {"robot_motion_control"},
     }
     actual = {
         family["id"]: {
@@ -193,9 +192,28 @@ def test_documentation_uses_scan_friendly_tables_and_navigation() -> None:
         "Primary resource |"
     ) in task_registry
     assert "| Method | Canonical tasks | Native space | Artifacts |" in model_zoo
-    assert model_zoo.count("| Task | Contract | Integrated methods |") == 5
+    assert model_zoo.count("| Task | Contract | Integrated methods |") == 4
     assert benchmark_hub.count("| Benchmark | Fixed contract | Resources |") == 4
     assert "| Evaluator | Native input | Principal metrics | Artifact |" in evaluator_zoo
+
+
+def test_robot_utilities_are_not_registered_as_a_task() -> None:
+    readme = (ROOT / "README.md").read_text()
+    task_registry = (ROOT / "docs/tasks/README.md").read_text()
+    model_zoo = (ROOT / "docs/model_zoo/README.md").read_text()
+    method_catalog = model_zoo.split("## Method Catalog", 1)[1].split(
+        "\n## ", 1
+    )[0]
+    motion_toolkit = (ROOT / "docs/motion/README.md").read_text()
+
+    assert "Robot Motion Control" not in TASK_LABELS
+    assert all(family["id"] != "embodied_motion" for family in TASK_REGISTRY["families"])
+    assert "Robot Motion Control" not in readme
+    assert "## Embodied Motion" not in task_registry
+    assert "### Embodied Motion" not in model_zoo
+    assert "[MotionBricks](" not in method_catalog
+    assert "[MotionBricks runtime integration](motionbricks.md)" in motion_toolkit
+    assert (ROOT / "docs/motion/motionbricks.md").is_file()
 
 
 def test_local_benchmark_pages_use_canonical_titles() -> None:

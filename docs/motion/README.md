@@ -1,9 +1,10 @@
 # Motion Representation Toolkit
 
-Motius supports HumanML3D-263, AIST++ SMPL-24 joints, MotionStreamer-272, HY-Motion-201, DART276,
-InterHuman-262, and SMPL-22 `motion135` as first-class motion representations. Instead of coupling
-every model to every other model's tensor layout, Motius uses SMPL body motion
-as the shared interchange layer:
+Motius supports HumanML3D-263, AIST++ SMPL-24 joints, MotionStreamer-272,
+HY-Motion-201, DART276, InterHuman-262, SMPL-22 `motion135`, and named Unitree
+G1 layouts as motion representations. Instead of coupling every model to every
+other model's tensor layout, Motius uses SMPL body motion as the shared
+interchange layer:
 
 ```text
 source representation -> SMPL-22 motion135 -> target representation
@@ -22,6 +23,8 @@ with:
 - [Representation-to-FBX export](fbx.md): export every public representation
   to a user-provided rigged character through the SMPL-22 bridge, using
   Autodesk FBX SDK without Blender or Blender as an optional backend.
+- [MotionBricks runtime integration](motionbricks.md): use the vendored
+  external runtime wrapper and its G1 413D/414D/418D representation utilities.
 - [Physical evaluation](../evaluation/physical_metrics.md): checkpoint-free
   Slide, Float, Jitter, Dynamic, and Penet metrics on canonical SMPL-22 joints.
 

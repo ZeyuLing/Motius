@@ -16,10 +16,6 @@
     {
       "id": "motion_transformation",
       "label": "Motion Transformation and Reconstruction"
-    },
-    {
-      "id": "embodied_motion",
-      "label": "Embodied Motion"
     }
   ],
   "tasks": [
@@ -125,13 +121,6 @@
         "S2G"
       ],
       "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard"
-    },
-    {
-      "id": "robot_motion_control",
-      "label": "Robot Motion Control",
-      "family": "embodied_motion",
-      "aliases": [],
-      "model_zoo_target": "../tasks/README.md#robot-motion-control"
     }
   ],
   "benchmarks": [

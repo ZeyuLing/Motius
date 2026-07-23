@@ -51,14 +51,10 @@ metadata. They are never used as task categories.
 | [Motion Repair](../leaderboards/README.md#motion-repair-fixed-support-protocol) | Corrupted motion + support → restored motion | Benchmark protocol available; no standalone package |
 | [Motion Reconstruction](../leaderboards/README.md#motion-reconstruction-humanml3d) | Motion → bottleneck reconstruction | Benchmark protocol available; no standalone package |
 
-### Embodied Motion 🤖
-
-| Task | Contract | Integrated methods |
-| --- | --- | --- |
-| [Robot Motion Control](../tasks/README.md#robot-motion-control) | Command or state → robot motion | [MotionBricks](motionbricks.md) |
-
-Human-to-robot retargeting belongs to the
-[Motion Toolkit](../motion/README.md), not the Robot Motion Control task.
+Robot representations, retargeting, and external runtime wrappers such as
+[MotionBricks](../motion/motionbricks.md) belong to the
+[Motion Toolkit](../motion/README.md). They are not task-indexed Model Zoo
+methods.
 
 ## Method Catalog 📦
 
@@ -79,7 +75,6 @@ Human-to-robot retargeting belongs to the
 | [MLD](mld.md) | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | `HumanML3D-263` | [📦 Weights](https://huggingface.co/ZeyuLing/hftrainer-mld-humanml3d) |
 | [MoGenTS](mogents.md) | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | `HumanML3D-263` | [📦 Weights](https://huggingface.co/ZeyuLing/hftrainer-mogents-humanml3d) |
 | [MoMask](momask.md) | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | `HumanML3D-263` | [📦 Weights](https://huggingface.co/ZeyuLing/hftrainer-momask-humanml3d) |
-| [MotionBricks](motionbricks.md) | [Robot Motion Control](../tasks/README.md#robot-motion-control) | `G1 413D / 414D / 418D` | [↗ Official code and weights](https://github.com/NVlabs/GR00T-WholeBodyControl/tree/main/motionbricks) |
 | [MotionCLR](motionclr.md) | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Motion Editing](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) | `HumanML3D-263` | [📦 Weights](https://huggingface.co/ZeyuLing/motius-motionclr-humanml3d) |
 | [MotionGPT](motiongpt.md) | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard), [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | `HumanML3D-263` | [📦 Weights](https://huggingface.co/ZeyuLing/Motius-MotionGPT-HumanML3D) |
 | [MotionGPT3](motiongpt3.md) | [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | `HumanML3D-263` | [📦 Weights](https://huggingface.co/ZeyuLing/Motius-MotionGPT3-HumanML3D) |
