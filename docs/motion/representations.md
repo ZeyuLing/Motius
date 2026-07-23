@@ -153,7 +153,7 @@ forward at an average pace, swaying their arms and torso with swagger.* This
 keeps the source motion fixed while changing only the representation and target
 body.
 
-![HumanML3D-263, SMPL motion135, SOMA-30, ARDY-330, and Unitree G1](../../assets/motion/representation_demo/004822_hml_smpl_soma_core_g1.gif)
+![HumanML3D-263, SMPL motion135, SOMA-30, ARDY-330, and Unitree G1](../../assets/motion/representation_demo/004822_hml_smpl_soma_core_g1_1920_30fps.gif)
 
 The synchronized [Three.js viewer](../../assets/motion/representation_demo/index.html)
 uses the following routes:

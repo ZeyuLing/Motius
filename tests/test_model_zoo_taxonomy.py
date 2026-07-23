@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+from PIL import Image
+
 from tools.audit_model_zoo_release import TASK_LABELS, _read_model_rows, _task_status
 
 
@@ -33,7 +35,20 @@ def test_root_readme_uses_only_representation_conversion_visuals() -> None:
     readme = (ROOT / "README.md").read_text()
     assert "<table>" not in readme
     assert "assets/model_zoo/" not in readme
-    assert "004822_hml_smpl_soma_core_g1.gif" in readme
+    assert "004822_hml_smpl_soma_core_g1_1920_30fps.gif" in readme
     assert "interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif" in readme
-    assert "004822_skeleton_smpl_mixamo_960_30fps.gif" in readme
+    assert "004822_skeleton_smpl_mixamo_1440_readme_30fps.gif" in readme
     assert "004822_skeleton_smpl_mixamo_1440_30fps.gif" in readme
+
+
+def test_root_readme_conversion_visuals_are_high_resolution() -> None:
+    assets = {
+        "assets/motion/representation_demo/"
+        "004822_hml_smpl_soma_core_g1_1920_30fps.gif": ((1920, 1080), 180),
+        "assets/motion/fbx_character_demo/"
+        "004822_skeleton_smpl_mixamo_1440_readme_30fps.gif": ((1440, 900), 90),
+    }
+    for relative_path, (expected_size, expected_frames) in assets.items():
+        with Image.open(ROOT / relative_path) as image:
+            assert image.size == expected_size
+            assert image.n_frames == expected_frames
