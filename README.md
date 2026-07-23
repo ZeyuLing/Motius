@@ -18,26 +18,27 @@
 </p>
 
 <p align="center">
-  <a href="#start-here">Start Here</a> ·
-  <a href="docs/tasks/README.md">Tasks</a> ·
-  <a href="docs/model_zoo/README.md">Models</a> ·
-  <a href="docs/leaderboards/README.md">Benchmarks</a> ·
-  <a href="docs/motion/README.md">Motion Toolkit</a> ·
-  <a href="docs/architecture.md">Architecture</a>
+  <a href="#start-here">🚀 Start</a> ·
+  <a href="docs/tasks/README.md">🧭 Tasks</a> ·
+  <a href="docs/model_zoo/README.md">📦 Models</a> ·
+  <a href="docs/leaderboards/README.md">📊 Benchmarks</a> ·
+  <a href="docs/motion/README.md">🔄 Motion I/O</a> ·
+  <a href="docs/architecture.md">🏗️ Architecture</a>
 </p>
 
 Motius packages motion methods behind consistent bundles, task pipelines,
-trainers, evaluators, and representation bridges. The repository separates
-four concerns that motion projects often mix together:
+trainers, evaluators, and representation bridges.
 
-- **Tasks** define input and output contracts.
-- **Methods** implement one or more tasks and live in the Model Zoo.
-- **Benchmarks** bind a task to a dataset, split, protocol, evaluator, and
-  persisted results.
-- **Motion data** moves through explicit representation, body, character, and
-  robot conversion routes.
+| Layer | Owns | Source of truth |
+| --- | --- | --- |
+| 🧭 **Task** | Input and output contract | [Task Registry](docs/tasks/README.md) |
+| 📦 **Method** | Model, checkpoint, pipeline, and native representation | [Model Zoo](docs/model_zoo/README.md) |
+| 📊 **Benchmark** | Dataset, split, protocol, evaluator, and persisted results | [Benchmark Hub](docs/leaderboards/README.md) |
+| 🔄 **Motion data** | Representation, body, character, and robot conversion | [Motion Toolkit](docs/motion/README.md) |
 
-## Start Here
+<a id="start-here"></a>
+
+## Start Here 🚀
 
 Install from source:
 
@@ -68,45 +69,35 @@ choose a [task](docs/tasks/README.md), a released
 [method](docs/model_zoo/README.md), or a
 [benchmark](docs/leaderboards/README.md).
 
-## Task System
+## Task System 🧭
 
 The [Task Registry](docs/tasks/README.md) is the only public task vocabulary.
 Tracks such as prediction, in-betweening, sparse keyframes, and TP2M remain
 inside their parent task. Dataset and model names never become task names.
 
-- **Language and motion:** Text-to-Motion, Motion-to-Text, Sequential
-  Text-to-Motion, and Text-to-Multi-Person Motion.
-- **Conditioned motion:** Temporal Motion Completion, Kinematic Motion Control,
-  and Part-Level Motion Control.
-- **Transformation and restoration:** Motion Editing, Motion Repair, and Motion
-  Reconstruction.
-- **Audio and motion:** Music-to-Dance, Dance-to-Music, and Speech-to-Gesture.
-- **Embodied motion:** Robot Motion Control.
+| Family | Canonical tasks |
+| --- | --- |
+| 💬 **Language and motion** | Text-to-Motion · Motion-to-Text · Sequential Text-to-Motion · Text-to-Multi-Person Motion |
+| 🎛️ **Conditioned motion** | Temporal Motion Completion · Kinematic Motion Control · Part-Level Motion Control |
+| ✂️ **Transformation and restoration** | Motion Editing · Motion Repair · Motion Reconstruction |
+| 🎵 **Audio and motion** | Music-to-Dance · Dance-to-Music · Speech-to-Gesture |
+| 🤖 **Embodied motion** | Robot Motion Control |
 
 Model cards use these exact labels. Benchmark titles use
 `Task · Dataset/Protocol`, such as
 `Text-to-Motion · HumanML3D` and
 `Sequential Text-to-Motion · BABEL`.
 
-## Models And Benchmarks
+## Models And Benchmarks 📦
 
-The **[Model Zoo](docs/model_zoo/README.md)** provides a task-first index and an
-alphabetical catalog of 30 integrated method packages. Every card records its native
-motion representation, frame rate, checkpoint, evaluation boundary, paper,
-upstream code, and license.
+| Surface | Use it for | Includes |
+| --- | --- | --- |
+| 📦 **[Model Zoo](docs/model_zoo/README.md)** | Find a runnable method by task | 30 integrated packages, native spaces, artifacts, papers, and validation boundaries |
+| 📊 **[Benchmark Hub](docs/leaderboards/README.md)** | Compare persisted results under one protocol | 12 suites with public tables, metric contracts, and qualitative case explorers |
+| ⚙️ **[Evaluator Zoo](docs/evaluator_zoo/README.md)** | Reuse a metric implementation | HumanML3D Official, MotionStreamer, InterCLIP, TMR-G1, AIST++, and joint-position evaluators |
+| 🩺 **[Physical Metrics](docs/evaluation/physical_metrics.md)** | Diagnose motion quality without a semantic checkpoint | Foot slide, floating, jitter, dynamics, and floor penetration |
 
-The **[Benchmark Hub](docs/leaderboards/README.md)** maintains twelve suites
-across language, temporal and kinematic control, editing and restoration, and
-audio-driven motion. Public result pages are backed by persisted repository
-protocols and qualitative case explorers.
-
-Evaluator implementations remain separate from benchmark identity. Open the
-**[Evaluator Zoo](docs/evaluator_zoo)** for HumanML3D Official,
-MotionStreamer, InterCLIP, TMR-G1, AIST++, and shared joint-position evaluators;
-see [physical metrics](docs/evaluation/physical_metrics.md) for foot slide,
-floating, jitter, dynamics, and floor penetration.
-
-## Motion Interoperability
+## Motion Interoperability 🔄
 
 ### Representation And Embodiment
 
@@ -149,7 +140,7 @@ mesh, and four Mixamo characters in the
 [30 fps character preview](assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_30fps.gif),
 then follow the [FBX export guide](docs/motion/fbx.md).
 
-## Train And Extend
+## Train And Extend 🛠️
 
 Train a Python config locally or with Accelerate:
 
@@ -168,7 +159,7 @@ Use the [architecture guide](docs/architecture.md) to add a package, the
 [PRISM, TMR, and HY-Motion recipes](docs/training/prism_tmr_hymotion_t2m.md)
 for released training examples.
 
-## Architecture
+## Architecture 🏗️
 
 ```mermaid
 flowchart LR
@@ -187,19 +178,19 @@ The split is intentional: a method can change architecture without renaming
 its task, a benchmark can change dataset without becoming a new method, and a
 motion representation can change without silently changing evaluation space.
 
-## Documentation
+## Documentation 📚
 
-[Getting Started](docs/getting_started.md) ·
-[Task Registry](docs/tasks/README.md) ·
-[Model Zoo](docs/model_zoo/README.md) ·
-[Benchmark Hub](docs/leaderboards/README.md) ·
-[Evaluator Zoo](docs/evaluator_zoo) ·
-[Motion Toolkit](docs/motion/README.md) ·
-[Architecture](docs/architecture.md) ·
-[Training Recipes](docs/training/prism_tmr_hymotion_t2m.md) ·
-[Development](docs/development.md)
+| Goal | Guide |
+| --- | --- |
+| Install and run a first model | [Getting Started](docs/getting_started.md) |
+| Choose the correct public task name | [Task Registry](docs/tasks/README.md) |
+| Find model packages and checkpoints | [Model Zoo](docs/model_zoo/README.md) |
+| Compare methods under fixed protocols | [Benchmark Hub](docs/leaderboards/README.md) · [Evaluator Zoo](docs/evaluator_zoo/README.md) |
+| Convert representations, bodies, or characters | [Motion Toolkit](docs/motion/README.md) |
+| Understand or extend the runtime | [Architecture](docs/architecture.md) · [Development](docs/development.md) |
+| Reproduce released training | [Training Recipes](docs/training/prism_tmr_hymotion_t2m.md) |
 
-## Project Status
+## Project Status 🚦
 
 Motius is an active research release. Public artifacts are versioned,
 evaluation protocols are persisted with their results, and method-specific

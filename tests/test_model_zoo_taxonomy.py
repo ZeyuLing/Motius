@@ -1,5 +1,4 @@
 import json
-import re
 from pathlib import Path
 
 from PIL import Image
@@ -82,7 +81,7 @@ def test_documentation_uses_one_information_architecture() -> None:
     }
     assert len(benchmark_labels) == 12
     for label in benchmark_labels:
-        assert f"### {label}" in benchmark_hub
+        assert f"**{label}**" in benchmark_hub
     assert "### T2M HumanML3D" not in benchmark_hub
     assert "### M2T HumanML3D" not in benchmark_hub
     assert "### BABEL Sequential Generation" not in benchmark_hub
@@ -96,16 +95,37 @@ def test_model_zoo_task_index_covers_every_release_capability() -> None:
 
     for row in _read_model_rows():
         for task_label, _ in _parse_task_entries(row.task_cell):
-            match = re.search(
-                rf"- \*\*\[{re.escape(task_label)}\]\([^)]+\):\*\*(.*?)"
-                rf"(?=\n- \*\*\[|\n### |\n## |\Z)",
-                task_index,
-                re.DOTALL,
+            matching_lines = [
+                line
+                for line in task_index.splitlines()
+                if f"[{task_label}](" in line
+            ]
+            assert len(matching_lines) == 1, (
+                f"Task Index has no unique {task_label} entry"
             )
-            assert match, f"Task Index has no {task_label} entry"
-            assert f"({row.card_path.name})" in match.group(1), (
+            assert f"({row.card_path.name})" in matching_lines[0], (
                 f"{row.method} is missing from the {task_label} index"
             )
+
+
+def test_documentation_uses_scan_friendly_tables_and_navigation() -> None:
+    readme = (ROOT / "README.md").read_text()
+    task_registry = (ROOT / "docs/tasks/README.md").read_text()
+    model_zoo = (ROOT / "docs/model_zoo/README.md").read_text()
+    benchmark_hub = (ROOT / "docs/leaderboards/README.md").read_text()
+    evaluator_zoo = (ROOT / "docs/evaluator_zoo/README.md").read_text()
+
+    assert "| Layer | Owns | Source of truth |" in readme
+    assert "| Goal | Guide |" in readme
+    assert "🧭 Tasks" in readme
+    assert "📦 Models" in readme
+    assert "📊 Benchmarks" in readme
+
+    assert "| Family | Task | Input | Output / principal tracks |" in task_registry
+    assert "| Method | Canonical tasks | Native space | Artifacts |" in model_zoo
+    assert model_zoo.count("| Task | Contract | Integrated methods |") == 5
+    assert benchmark_hub.count("| Benchmark | Fixed contract | Resources |") == 4
+    assert "| Evaluator | Native input | Principal metrics | Artifact |" in evaluator_zoo
 
 
 def test_local_benchmark_pages_use_canonical_titles() -> None:

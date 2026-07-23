@@ -25,10 +25,7 @@ README = REPO_ROOT / "docs/model_zoo/README.md"
 MODEL_ZOO_DIR = README.parent
 TASK_REGISTRY_PATH = REPO_ROOT / "docs/tasks/taxonomy.json"
 TASK_REGISTRY = json.loads(TASK_REGISTRY_PATH.read_text())
-MODEL_ENTRY_RE = re.compile(
-    r"^- \*\*\[([^\]]+)\]\(([^)]+\.md)\)\*\* - (.*?)(?=^- \*\*\[|\n## |\Z)",
-    re.MULTILINE | re.DOTALL,
-)
+MODEL_TABLE_METHOD_RE = re.compile(r"^\[([^\]]+)\]\(([^)]+\.md)\)$")
 HF_RE = re.compile(r"https://huggingface\.co/([^)\s|]+)")
 CARD_TASK_RE = re.compile(r"^\| Tasks \| ([^|]+?) \|$", re.MULTILINE)
 CARD_TASK_INLINE_RE = re.compile(r"^\*\*Tasks:\*\*\s*(.+?)\.?$", re.MULTILINE)
@@ -58,17 +55,23 @@ class ModelRow:
 
 def _read_model_rows() -> list[ModelRow]:
     rows = []
-    for match in MODEL_ENTRY_RE.finditer(README.read_text()):
-        method, relative_card, body = match.groups()
-        task_cell, separator, resources = body.partition("·")
-        if not separator:
+    catalog = README.read_text().split("## Method Catalog", 1)[1]
+    catalog = catalog.split("\n## ", 1)[0]
+    for line in catalog.splitlines():
+        if not line.startswith("| ["):
             continue
-        task_cell = " ".join(task_cell.split())
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if len(cells) != 4:
+            continue
+        method_match = MODEL_TABLE_METHOD_RE.fullmatch(cells[0])
+        if not method_match:
+            continue
+        method, relative_card = method_match.groups()
         rows.append(
             ModelRow(
                 method,
-                task_cell,
-                resources,
+                cells[1],
+                cells[3],
                 MODEL_ZOO_DIR / relative_card,
             )
         )

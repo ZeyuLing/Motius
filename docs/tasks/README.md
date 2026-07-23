@@ -1,20 +1,45 @@
 # Motius Task Registry
 
 This registry is the single vocabulary used by pipelines, model cards, the
-Model Zoo, and benchmark documentation. It deliberately keeps four entities
-separate:
+Model Zoo, and benchmark documentation.
 
-- A **task** is an input/output contract.
-- A **track** narrows a task with a conditioning pattern or operating setting.
-- A **benchmark** binds a task to a dataset, split, selection rule, evaluator,
-  and metric implementation.
-- A **method** implements one or more tasks.
+| Entity | Meaning |
+| ------ | ------- |
+| 🧭 **Task** | An input/output contract |
+| 🛤️ **Track** | A task narrowed by a conditioning pattern or operating setting |
+| 📊 **Benchmark** | A task bound to a dataset, split, selection rule, evaluator, and metric implementation |
+| 📦 **Method** | A model implementation serving one or more tasks |
 
 Dataset names, model architectures, motion representations, and training
 objectives are not task names. The machine-readable source is
 [`taxonomy.json`](taxonomy.json).
 
-## Language And Motion
+<p align="center">
+  <a href="../model_zoo/README.md">📦 Model Zoo</a> ·
+  <a href="../leaderboards/README.md">📊 Benchmark Hub</a> ·
+  <a href="../motion/README.md">🔄 Motion Toolkit</a>
+</p>
+
+## Task Matrix 🧭
+
+| Family | Task | Input | Output / principal tracks |
+| --- | --- | --- | --- |
+| 💬 Language and motion | [Text-to-Motion](#text-to-motion) | Text, optional duration | Motion · API alias `T2M` |
+| 💬 Language and motion | [Motion-to-Text](#motion-to-text) | Motion | Caption · API alias `M2T` |
+| 💬 Language and motion | [Sequential Text-to-Motion](#sequential-text-to-motion) | Ordered prompts and intervals | One continuous multi-action motion |
+| 💬 Language and motion | [Text-to-Multi-Person Motion](#text-to-multi-person-motion) | Interaction description | Shared-frame motion for two or more actors |
+| 🎛️ Conditioned motion | [Temporal Motion Completion](#temporal-motion-completion) | Observed frames, optional text | Prediction · in-betweening · keyframes · TP2M |
+| 🎛️ Conditioned motion | [Kinematic Motion Control](#kinematic-motion-control) | Numeric pose or trajectory constraints | Joint · root · trajectory · end-effector control |
+| 🎛️ Conditioned motion | [Part-Level Motion Control](#part-level-motion-control) | Semantic body-region conditions | Composed full-body motion |
+| ✂️ Transformation and restoration | [Motion Editing](#motion-editing) | Source motion and semantic edit | Style · content · instruction editing |
+| ✂️ Transformation and restoration | [Motion Repair](#motion-repair) | Corrupted motion and repair support | Restored motion |
+| ✂️ Transformation and restoration | [Motion Reconstruction](#motion-reconstruction) | Motion | Tokenizer, codec, or autoencoder reconstruction |
+| 🎵 Audio and motion | [Music-to-Dance](#music-to-dance) | Music, optional text | Dance · API alias `M2D` |
+| 🎵 Audio and motion | [Dance-to-Music](#dance-to-music) | Dance | Music · API alias `D2M` |
+| 🎵 Audio and motion | [Speech-to-Gesture](#speech-to-gesture) | Speech, optional caption | Co-speech gesture · API alias `S2G` |
+| 🤖 Embodied motion | [Robot Motion Control](#robot-motion-control) | Commands, state, or primitives | Executable robot-state sequence |
+
+## Language And Motion 💬
 
 ### Text-to-Motion
 
@@ -58,7 +83,7 @@ Current InterHuman releases use a two-actor track. Actor count is an output
 layout property, so `Two-Person T2M`, `Interaction T2M`, and
 `Multi-Person Motion` are not separate public task labels.
 
-## Conditioned Motion
+## Conditioned Motion 🎛️
 
 ### Temporal Motion Completion
 
@@ -99,7 +124,7 @@ preserving or generating the complementary body motion.
 This task describes semantic body-region composition. Numeric joint or
 trajectory evidence belongs to Kinematic Motion Control.
 
-## Motion Transformation And Restoration
+## Motion Transformation And Restoration ✂️
 
 ### Motion Editing
 
@@ -131,7 +156,7 @@ autoencoder, codec, or representation bottleneck.
 Reconstruction is a motion-to-motion task. MPJPE, root error, FID, codebook
 usage, and physical diagnostics are evaluation measures rather than task names.
 
-## Audio And Motion
+## Audio And Motion 🎵
 
 ### Music-to-Dance
 
@@ -160,7 +185,7 @@ caption.
 
 `S2G` is an accepted API alias.
 
-## Embodied Motion
+## Embodied Motion 🤖
 
 ### Robot Motion Control
 
@@ -172,7 +197,7 @@ primitive schedule for a specified robot.
 Human-to-robot retargeting is a
 [Motion Toolkit](../motion/README.md) conversion route, not this task.
 
-## Naming Contract
+## Naming Contract ✅
 
 - Public task fields use only labels from
   [`taxonomy.json`](taxonomy.json).
