@@ -1,131 +1,137 @@
-# Motius Leaderboard Hub
+# Motius Benchmark Hub
 
-Motius maintains twelve top-level benchmark families. A family is defined by a
-canonical task and evaluation contract, not by an individual method, dataset
-variant, or ablation. Public Spaces expose sortable results and qualitative
-case browsers; repository protocols remain the source of truth.
+Motius maintains twelve benchmark suites. Every public title follows
+`Task · Dataset/Protocol`, so the name identifies both the capability being
+measured and the contract that makes scores comparable.
 
-Task names follow the [Motius task definitions](../tasks/README.md).
+A benchmark is not a task and a dataset is not a task. Prediction,
+in-betweening, and TP2M are tracks inside one benchmark; style editing and
+instruction editing are two benchmarks of the same Motion Editing task. The
+canonical vocabulary lives in the [Task Registry](../tasks/README.md).
 
-## Generation And Understanding
+## Language And Motion
 
-### T2M HumanML3D
+### Text-to-Motion · HumanML3D
 
-[Open leaderboard](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) ·
+[Open benchmark](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) ·
 [Repository source](hf_space_t2m_humanml3d) ·
 [Evaluator](../evaluator_zoo/humanml3d_official.md)
 
-Text-to-Motion evaluation on the official HumanML3D test split using the fixed
-selected-caption protocol.
+Official HumanML3D test split with the persisted selected-caption protocol.
 
-### M2T HumanML3D
+### Motion-to-Text · HumanML3D
 
-[Open leaderboard](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) ·
+[Open benchmark](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) ·
 [Repository source](hf_space_m2t_humanml3d) ·
-[Task protocol](../tasks/m2t.md)
+[Protocol](../tasks/m2t.md)
 
-Motion-to-Text evaluation with complete input motions, reference captions, and
-semantic retrieval metrics.
+Complete input motions, reference captions, language metrics, and semantic
+motion-text retrieval metrics.
 
-### Reconstruction
+### Sequential Text-to-Motion · BABEL
 
-Tokenizer and autoencoder reconstruction on the complete official HumanML3D
-test split. Geometry is compared after conversion to the same SMPL-22 body
-skeleton; semantic reconstruction uses a declared persisted evaluator.
-Canonical reports include global and root-aligned joint error, root-motion
-error, velocity or drift diagnostics, reconstruction FID, and physical metrics.
-
-## Conditional And Sequential Motion
-
-### Temporal Condition
-
-[Open leaderboard](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) ·
-[Repository source](hf_space_temporal_condition) ·
-[Task definition](../tasks/README.md#temporal-condition)
-
-One parent benchmark for prediction, motion in-betweening, adaptive keyframes,
-and TP2M. TP2M is not counted as a separate top-level leaderboard.
-
-### Body-Part Condition
-
-[Open leaderboard](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) ·
-[Task definition](../tasks/README.md#body-part-condition)
-
-Sparse and dense position or rotation constraints on selected body regions.
-
-### BABEL Sequential Generation
-
-[Open leaderboard](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) ·
+[Open benchmark](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) ·
 [Repository source](hf_space_babel_sequential) ·
 [Protocol](../evaluation/babel_sequential.md)
 
-Ordered multi-prompt motion composition and transition quality under the
-canonical processed-BABEL protocol. The older alternate sequential protocol is
-not maintained.
+Ordered multi-prompt composition and transition quality under the canonical
+processed-BABEL protocol. The obsolete alternate protocol is not maintained.
 
-## Editing And Repair
+## Conditioned Motion
 
-### Motion Editing
+### Temporal Motion Completion · HumanML3D
 
-[Open leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) ·
-[Task definition](../tasks/README.md#motion-editing)
+[Open benchmark](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) ·
+[Repository source](hf_space_temporal_condition) ·
+[Task contract](../tasks/README.md#temporal-motion-completion)
 
-Style and content editing while preserving the complementary source attribute.
+One benchmark with prediction, in-betweening, sparse-keyframe, and TP2M tracks.
+Text-conditioned and text-free settings remain separate result tables within
+the same suite.
 
-### Instruction Editing
+### Part-Level Motion Control · HumanML3D
 
-[Open leaderboard](https://huggingface.co/spaces/ZeyuLing/instruction-editing-leaderboard) ·
-[Task definition](../tasks/README.md#motion-editing)
+[Open benchmark](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) ·
+[Task contract](../tasks/README.md#part-level-motion-control)
 
-MotionFix source motion plus a free-form edit instruction.
+Semantic body-region prompts and constraints over selected time intervals.
+Numeric joint trajectories belong to Kinematic Motion Control instead.
 
-### Motion Repair
+## Motion Transformation And Restoration
 
-Fixed-support repair with separate oracle-mask and method-native-mask tracks. A
-method receives corrupted motion and a repair support mask; clean target values
-are never inputs. Paired geometry, root, skating, jitter, and semantic metrics
+<a id="motion-reconstruction-humanml3d"></a>
+
+### Motion Reconstruction · HumanML3D
+
+Tokenizer, codec, and autoencoder reconstruction on the complete official
+HumanML3D test split. Reports include global and root-aligned joint error,
+root-motion error, velocity or drift, reconstruction FID, and physical
+diagnostics after conversion to a declared common skeleton.
+
+### Motion Editing · Style and Content
+
+[Open benchmark](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) ·
+[Task contract](../tasks/README.md#motion-editing)
+
+Style and content edits evaluated for target compliance and preservation of the
+complementary source attribute.
+
+### Motion Editing · MotionFix Instructions
+
+[Open benchmark](https://huggingface.co/spaces/ZeyuLing/instruction-editing-leaderboard) ·
+[Task contract](../tasks/README.md#motion-editing)
+
+MotionFix source motions paired with free-form edit instructions. This is a
+benchmark track of Motion Editing, not a separate "Instruction Editing" task.
+
+<a id="motion-repair-fixed-support-protocol"></a>
+
+### Motion Repair · Fixed-Support Protocol
+
+Fixed-support repair with separate oracle-mask and method-native-mask tracks.
+The method receives corrupted motion and an allowed repair support; clean target
+values are never inputs. Geometry, root, skating, jitter, and semantic metrics
 share one canonical skeleton convention.
 
-## Audio-Driven Motion
+## Audio And Motion
 
-### Music-to-Dance
+### Music-to-Dance · AIST++
 
-[Open leaderboard](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) ·
+[Open benchmark](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) ·
 [Repository source](hf_space_music_to_dance) ·
 [Evaluator](../evaluator_zoo/aistpp_music_to_dance.md)
 
 Dance quality, diversity, beat alignment, and physical diagnostics on AIST++.
-PRISM-MCM is evaluated as a method in this family rather than as a separate
-leaderboard.
+PRISM-MCM is a method evaluated here, not a task or benchmark family.
 
-### Dance-to-Music
+### Dance-to-Music · AIST++
 
-[Open leaderboard](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) ·
+[Open benchmark](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) ·
 [Repository source](hf_space_dance_to_music) ·
-[Task definition](../tasks/README.md#dance-to-music)
+[Task contract](../tasks/README.md#dance-to-music)
 
-Motion-conditioned music generation with synchronized beat diagnostics.
+Motion-conditioned music generation with synchronized audio and motion beat
+diagnostics.
 
-### Speech-to-Gesture
+### Speech-to-Gesture · BEAT2
 
-[Open leaderboard](https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard) ·
-[Task definition](../tasks/README.md#speech-to-gesture)
+[Open benchmark](https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard) ·
+[Task contract](../tasks/README.md#speech-to-gesture)
 
-Speech-conditioned gesture generation on the fixed BEAT2 protocol. PRISM-MCM
-remains a method in this task family.
+Speech-conditioned co-speech gesture generation on the fixed BEAT2 protocol.
+PRISM-MCM remains a method in this task.
 
-## Evaluation Rules
+## Result Contract
 
-- Every result names its dataset split, caption or condition selection, motion
+- Every result identifies dataset split, condition selection, motion
   representation, evaluator checkpoint, and sample coverage.
-- GT rows are calibration references and do not participate in generated-method
+- GT rows are calibration references and never participate in generated-method
   ranking.
 - Different representations are compared only after a validated bridge, with
   lossy conversion or IK explicitly disclosed.
-- Physical metrics remain separate columns rather than being folded into a
-  semantic score.
-- Qualitative viewers use the same persisted predictions as metric jobs whenever
-  those artifacts are publicly distributable.
+- Physical diagnostics remain separate from semantic scores.
+- Qualitative viewers use the persisted predictions scored by the metric job
+  whenever those artifacts are publicly distributable.
 
 Evaluator details live in the [Evaluator Zoo](../evaluator_zoo), with shared
 diagnostics documented in

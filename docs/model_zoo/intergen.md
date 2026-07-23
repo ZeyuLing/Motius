@@ -30,7 +30,7 @@ model output remains paired InterHuman-262 rather than SMPL parameters.
 
 | Item | Value |
 | ---- | ----- |
-| Tasks | Two-Person Text-to-Motion |
+| Tasks | Text-to-Multi-Person Motion |
 | Dataset | InterHuman |
 | Representation | `(B, T, 2, 262)` InterHuman-262, 30 fps |
 | Text encoder | CLIP ViT-L/14@336px text tower, frozen |

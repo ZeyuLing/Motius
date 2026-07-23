@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Motius Dance-to-Music Leaderboard</title>
+  <title>Dance-to-Music · AIST++ · Motius</title>
   <style>
     :root{color-scheme:light;--ink:#17211d;--muted:#64716b;--line:#d6ded9;--paper:#fff;--wash:#edf2ef;--green:#087d72;--red:#d14b35;--yellow:#d89d20}
     *{box-sizing:border-box}body{margin:0;background:var(--wash);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,sans-serif;letter-spacing:0}a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}.shell{max-width:1180px;margin:auto;background:var(--paper);min-height:100vh;border-inline:1px solid var(--line)}
@@ -15,7 +15,7 @@
   </style>
 </head>
 <body><div class="shell">
-  <header><div class="kicker">Motius / AIST++</div><div class="title-row"><div><h1>Dance-to-Music Leaderboard</h1><p>Music generated from motion, evaluated on the public D2M-GAN 86-segment AIST++ protocol.</p></div><a class="viewer-link" href="cases/index.html">Open all 86 cases <span>↗</span></a></div></header>
+  <header><div class="kicker">Motius / AIST++</div><div class="title-row"><div><h1>Dance-to-Music · AIST++</h1><p>Music generated from motion, evaluated on the public D2M-GAN 86-segment AIST++ protocol.</p></div><a class="viewer-link" href="cases/index.html">Open all 86 cases <span>↗</span></a></div></header>
   <main>
     <section class="section"><div class="section-head"><div><h2>UniMuMo Reproduction</h2><p>Official checkpoint, no text prompt, CFG 3, temperature 1.0, top-k 250.</p></div></div><div class="chart" id="chart"></div><div class="target-note"><span class="target-key"></span>Beat Count Ratio is best near 100%; values above 100% indicate excess detected beat bins.</div></section>
     <section class="section"><div class="section-head"><div><h2>Motius Results</h2><p>One macro average over the same 86 two-second clips used by the paper.</p></div></div><div class="table-wrap"><table><thead><tr><th>Method</th><th>Version</th><th>Beat Count Ratio (target 100%)</th><th>Beat Hit ↑</th><th>Resources</th></tr></thead><tbody id="rows"></tbody></table></div></section>

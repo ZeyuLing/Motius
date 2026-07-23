@@ -1,5 +1,5 @@
 ---
-title: T2M HumanML3D Leaderboard
+title: Text-to-Motion · HumanML3D
 emoji: 🏃
 colorFrom: green
 colorTo: indigo
@@ -9,7 +9,7 @@ pinned: false
 license: mit
 ---
 
-# T2M HumanML3D Leaderboard
+# Text-to-Motion · HumanML3D
 
 Static leaderboard page for HumanML3D official-test text-to-motion evaluation.
 

@@ -33,7 +33,7 @@ pipeline methods without requiring the original checkout.
 | Item | Value |
 | ---- | ----- |
 | Method | FlowMDM, diffusion with blended positional encodings |
-| Tasks | Text-to-Motion, Temporal Condition, Sequential Generation |
+| Tasks | Text-to-Motion, Temporal Motion Completion, Sequential Text-to-Motion |
 | Venue | CVPR 2024 |
 | Motion representation | HumanML3D-263 at 20 fps; BABEL-135 at 30 fps |
 | Checkpoints | [`HumanML3D`](https://huggingface.co/ZeyuLing/hftrainer-flowmdm-humanml3d), [`BABEL`](https://huggingface.co/ZeyuLing/motius-flowmdm-babel) |
@@ -111,12 +111,12 @@ run, but it does not define the R-Precision candidate set. GT is a calibration
 row and is excluded from method ranking.
 
 Full protocol and diagnostic statistics are maintained on the
-[`BABEL Sequential Generation Leaderboard`](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard).
+[`Sequential Text-to-Motion · BABEL` benchmark](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard).
 
 ## TP2M Results
 
 FlowMDM also supports prefix-conditioned TP2M evaluation under the published
-[`Temporal Condition Leaderboard`](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard)
+[`Temporal Motion Completion · HumanML3D` benchmark](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard)
 protocol. These results are separate from the multi-prompt BABEL benchmark
 above.
 

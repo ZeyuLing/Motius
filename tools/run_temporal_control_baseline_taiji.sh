@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Generate all eight HumanML3D Temporal Condition settings for one baseline.
+# Generate all eight HumanML3D Temporal Motion Completion tracks for one baseline.
 # Taiji sets INDEX to the host rank. Each host launches one shard per local GPU.
 
 METHOD="${METHOD:?Set METHOD=maskcontrol or METHOD=omnicontrol}"

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Materialize the shared Temporal Condition GT as physical HML263 clips."""
+"""Materialize shared Temporal Motion Completion GT as physical HML263 clips."""
 
 from __future__ import annotations
 

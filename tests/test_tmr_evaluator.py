@@ -219,10 +219,10 @@ def test_representation_demo_contains_synchronized_routes() -> None:
 
 def test_multi_actor_conversion_uses_gt_shared_frame_preview() -> None:
     readme = (ROOT / "README.md").read_text()
-    section = readme.split("## Representation And Body Conversion", 1)[1].split("\n## ", 1)[0]
+    section = readme.split("## Motion Interoperability", 1)[1].split("\n## ", 1)[0]
     assert "### Two-Person Representation Demo" not in readme
     assert "(T, A, D)" in section
-    assert "one shared\nworld frame" in section
+    assert "one shared world frame" in " ".join(section.split())
     assert "interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif" in section
     assert "assets/motion/interhuman_representation_demo/index.html" in section
     assert "Three.js viewer" in section

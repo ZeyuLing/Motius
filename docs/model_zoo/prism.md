@@ -50,7 +50,7 @@ HumanML3D captions used by the benchmark.
 
 | Item | Value |
 | ---- | ----- |
-| Tasks | Text-to-Motion, Temporal Condition, Sequential Generation |
+| Tasks | Text-to-Motion, Temporal Motion Completion, Sequential Text-to-Motion |
 | Native representation | `prism_motion138` at 30 fps |
 | Skeleton | SMPL-H input, fixed SMPL body-22 subset |
 | Generator | 1.4B KU-FlowT with T5-XXL conditioning |
@@ -167,7 +167,7 @@ on the first 1, 5, or 9 frames.
 | 5 frames | 3,968 | 0.7588 | 0.8957 | 0.9330 | 38.8512 | 15.8599 | 26.8676 |
 | 9 frames | 3,968 | 0.7649 | 0.8942 | 0.9367 | 36.4133 | 15.7691 | 26.9763 |
 
-### Sequential Generation
+### Sequential Text-to-Motion · BABEL
 
 The BABEL benchmark uses all 1,295 eligible validation episodes and 7,285
 captioned subclips. PRISM runs the epoch-18 checkpoint with CFG `1.5`, seed

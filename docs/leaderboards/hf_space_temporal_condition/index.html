@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Motius Temporal Condition Leaderboard for HumanML3D motion generation.">
+  <meta name="description" content="Motius Temporal Motion Completion · HumanML3D for HumanML3D motion generation.">
   <link rel="icon" href="data:,">
-  <title>Temporal Condition Leaderboard · Motius</title>
+  <title>Temporal Motion Completion · HumanML3D · Motius</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -780,17 +780,17 @@
   <main class="page">
     <nav class="leaderboard-nav" aria-label="Motius leaderboards">
       <span class="nav-label">Leaderboards</span>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard" target="_blank" rel="noopener noreferrer">T2M HumanML3D</a>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard" target="_blank" rel="noopener noreferrer">M2T HumanML3D</a>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard" target="_blank" rel="noopener noreferrer" aria-current="page">Temporal Condition</a>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard" target="_blank" rel="noopener noreferrer">BABEL Sequential</a>
-      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard" target="_blank" rel="noopener noreferrer">Music-to-Dance</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard" target="_blank" rel="noopener noreferrer">Text-to-Motion · HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard" target="_blank" rel="noopener noreferrer">Motion-to-Text · HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard" target="_blank" rel="noopener noreferrer" aria-current="page">Temporal Motion Completion · HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard" target="_blank" rel="noopener noreferrer">Sequential Text-to-Motion · BABEL</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard" target="_blank" rel="noopener noreferrer">Music-to-Dance · AIST++</a>
     </nav>
 
     <header>
       <section class="topbar" aria-labelledby="title">
         <div>
-          <h1 id="title">Temporal Condition Leaderboard</h1>
+          <h1 id="title">Temporal Motion Completion · HumanML3D</h1>
           <p class="subtitle" id="protocol-subtitle"></p>
           <div class="badge-row" id="protocol-badges" aria-label="protocol"></div>
         </div>
@@ -885,7 +885,7 @@
           </select>
         </div>
       </div>
-      <iframe id="case-explorer-frame" src="cases/start_1f/index.html" title="Temporal Condition all-case motion comparison" loading="lazy"></iframe>
+      <iframe id="case-explorer-frame" src="cases/start_1f/index.html" title="Temporal Motion Completion all-case motion comparison" loading="lazy"></iframe>
     </section>
 
     <section class="controls" aria-label="table controls">
@@ -893,7 +893,7 @@
       <input class="search" id="search" type="search" placeholder="Filter method or setting" aria-label="Filter results">
     </section>
 
-    <section aria-label="Temporal Condition results">
+    <section aria-label="Temporal Motion Completion results">
       <div id="control-table-pair" class="table-pair" hidden>
         <section class="table-block" aria-labelledby="text-table-title">
           <div class="table-heading">
@@ -939,7 +939,7 @@
 
     <footer>
       Temporal Control and TP2M are separate protocols sharing one public entry point.
-      Ordered multi-prompt composition remains on the BABEL Sequential Generation Leaderboard.
+      Ordered multi-prompt composition remains on the Sequential Text-to-Motion · BABEL.
     </footer>
   </main>
 

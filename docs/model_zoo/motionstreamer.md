@@ -31,7 +31,7 @@ statistics, and task-facing pipeline without requiring the original checkout.
 | Item | Value |
 | ---- | ----- |
 | Method | MotionStreamer, diffusion autoregression in causal latent space |
-| Tasks | Text-to-Motion, Temporal Condition, Sequential Generation |
+| Tasks | Text-to-Motion, Temporal Motion Completion, Sequential Text-to-Motion |
 | Venue | ICCV 2025 |
 | Motion representation | MotionStreamer-272, 30 fps |
 | Text encoder | SentenceT5-XXL |
@@ -97,7 +97,7 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 | MotionStreamer Evaluator | Default | 4,042 | 0.630 | 0.786 | 0.850 | 12.211 | 16.581 | 27.464 | Measured |
 | Motius Joint-Position Evaluator | Default | 4,034 | 0.440 | 0.597 | 0.681 | 93.469 | 35.674 | 53.800 | Measured |
 
-### BABEL Sequential Generation
+### Sequential Text-to-Motion · BABEL
 
 The official MotionStreamer checkpoint is evaluated on all 1,295 processed
 BABEL validation episodes with exact manifest lengths and canonical SMPL-22
@@ -107,7 +107,7 @@ joints. R-Precision uses action-group multi-positive recall batches of 32.
 | -------: | --: | --: | --: | --: | ------: | --------: | -------------: | ------: |
 | 7,285 | 0.2087 | 0.3136 | 0.3955 | 0.1205 | 49.3062 | 56.2576 | 0.1664 | 76.2889 |
 
-See the [BABEL Sequential Generation Leaderboard](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard)
+See the [Sequential Text-to-Motion · BABEL benchmark](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard)
 for the complete transition diagnostics and cross-method comparison.
 
 ## TP2M Results

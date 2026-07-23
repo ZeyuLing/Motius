@@ -1,5 +1,5 @@
 ---
-title: Motius Dance-to-Music Leaderboard
+title: Dance-to-Music · AIST++
 emoji: 🎧
 colorFrom: green
 colorTo: red
@@ -7,7 +7,7 @@ sdk: static
 pinned: false
 ---
 
-# Motius Dance-to-Music Leaderboard
+# Dance-to-Music · AIST++
 
 Static D2M-GAN AIST++ dance-to-music benchmark and synchronized SMPL/audio
 case viewer.

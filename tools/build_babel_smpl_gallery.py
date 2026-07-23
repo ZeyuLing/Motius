@@ -245,7 +245,7 @@ def main() -> None:
         "schema_version": 2,
         "representation": "smpl_motion135",
         "task": "sequential_motion_generation",
-        "title": "BABEL Sequential Generation: SMPL Mesh Comparison",
+        "title": "Sequential Text-to-Motion · BABEL: SMPL Mesh Comparison",
         "protocol": source.get("protocol"),
         "provenance": {
             "flowmdm_visualization": "native joints66 fitted to the shared SMPL-22 body",

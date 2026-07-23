@@ -1,6 +1,6 @@
-# BABEL Sequential Generation Evaluation
+# Sequential Text-to-Motion · BABEL Evaluation
 
-The BABEL Sequential Generation leaderboard evaluates one continuous motion
+The Sequential Text-to-Motion · BABEL benchmark evaluates one continuous motion
 conditioned on an ordered list of action captions. The protocol uses every
 eligible episode in the processed official BABEL validation split. It contains
 1,295 episodes, 7,285 captioned action intervals, and 5,990 transitions.

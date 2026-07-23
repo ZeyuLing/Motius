@@ -1,5 +1,5 @@
 ---
-title: Music-to-Dance AIST++ Leaderboard
+title: Music-to-Dance · AIST++
 emoji: 🎵
 colorFrom: green
 colorTo: red
@@ -9,7 +9,7 @@ pinned: false
 license: mit
 ---
 
-# Music-to-Dance AIST++ Leaderboard
+# Music-to-Dance · AIST++
 
 Static Motius leaderboard for music-conditioned dance generation on the
 official 40-case AIST++ cross-modal evaluation package.

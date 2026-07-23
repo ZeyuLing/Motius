@@ -29,6 +29,9 @@
   "models": {
     "mdm": {
       "method": "MDM",
+      "tasks": [
+        "Text-to-Motion"
+      ],
       "motion_representation": "HumanML3D-263",
       "checkpoint": "https://huggingface.co/ZeyuLing/hftrainer-mdm-humanml3d",
       "metrics": [
@@ -89,6 +92,9 @@
     },
     "t2mgpt": {
       "method": "T2M-GPT",
+      "tasks": [
+        "Text-to-Motion"
+      ],
       "motion_representation": "HumanML3D-263",
       "checkpoint": "https://huggingface.co/ZeyuLing/hftrainer-t2mgpt-humanml3d",
       "metrics": [
@@ -149,6 +155,9 @@
     },
     "momask": {
       "method": "MoMask",
+      "tasks": [
+        "Text-to-Motion"
+      ],
       "motion_representation": "HumanML3D-263",
       "checkpoint": "https://huggingface.co/ZeyuLing/hftrainer-momask-humanml3d",
       "metrics": [
@@ -209,6 +218,9 @@
     },
     "mogents": {
       "method": "MoGenTS",
+      "tasks": [
+        "Text-to-Motion"
+      ],
       "motion_representation": "HumanML3D-263",
       "checkpoint": "https://huggingface.co/ZeyuLing/hftrainer-mogents-humanml3d",
       "metrics": [
@@ -269,6 +281,10 @@
     },
     "motiongpt": {
       "method": "MotionGPT",
+      "tasks": [
+        "Text-to-Motion",
+        "Motion-to-Text"
+      ],
       "motion_representation": "HumanML3D-263",
       "checkpoint": "https://huggingface.co/ZeyuLing/hftrainer-motiongpt-humanml3d",
       "metrics": [
@@ -329,6 +345,11 @@
     },
     "flowmdm": {
       "method": "FlowMDM",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Sequential Text-to-Motion"
+      ],
       "motion_representation": "HumanML3D-263",
       "checkpoint": "https://huggingface.co/ZeyuLing/hftrainer-flowmdm-humanml3d",
       "metrics": [
@@ -421,6 +442,10 @@
     },
     "motionclr": {
       "method": "MotionCLR",
+      "tasks": [
+        "Text-to-Motion",
+        "Motion Editing"
+      ],
       "motion_representation": "HumanML3D-263",
       "checkpoint": "https://huggingface.co/ZeyuLing/motius-motionclr-humanml3d",
       "metrics": [
@@ -511,6 +536,9 @@
     },
     "motionmillion": {
       "method": "MotionMillion",
+      "tasks": [
+        "Text-to-Motion"
+      ],
       "motion_representation": "MotionStreamer-272",
       "checkpoint": "https://huggingface.co/ZeyuLing/hftrainer-gotozero-7b-train-humanml272",
       "metrics": [
@@ -604,6 +632,11 @@
     },
     "motionstreamer": {
       "method": "MotionStreamer",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Sequential Text-to-Motion"
+      ],
       "motion_representation": "MotionStreamer-272",
       "checkpoint": "https://huggingface.co/ZeyuLing/hftrainer-motionstreamer-humanml272",
       "metrics": [
@@ -664,6 +697,9 @@
     },
     "hymotion_t2m": {
       "method": "HY-Motion T2M",
+      "tasks": [
+        "Text-to-Motion"
+      ],
       "motion_representation": "HY-Motion-201",
       "checkpoint": "https://huggingface.co/ZeyuLing/hftrainer-hymotion-t2m-1.0-lite",
       "metrics": [
@@ -757,6 +793,12 @@
     },
     "kimodo": {
       "method": "KIMODO",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Sequential Text-to-Motion",
+        "Kinematic Motion Control"
+      ],
       "motion_representation": "SOMA / G1 / SMPL-X",
       "checkpoint": "https://huggingface.co/ZeyuLing/hftrainer-kimodo-smplx-rp",
       "metrics": [
@@ -817,6 +859,9 @@
     },
     "mld": {
       "method": "MLD",
+      "tasks": [
+        "Text-to-Motion"
+      ],
       "motion_representation": "HumanML3D-263",
       "checkpoint": "https://huggingface.co/ZeyuLing/hftrainer-mld-humanml3d",
       "metrics": [
@@ -877,6 +922,9 @@
     },
     "motionlcm": {
       "method": "MotionLCM",
+      "tasks": [
+        "Text-to-Motion"
+      ],
       "motion_representation": "HumanML3D-263",
       "checkpoint": "https://huggingface.co/ZeyuLing/hftrainer-motionlcm-humanml3d",
       "metrics": [
@@ -937,6 +985,9 @@
     },
     "vimogen": {
       "method": "ViMoGen",
+      "tasks": [
+        "Text-to-Motion"
+      ],
       "motion_representation": "DART276",
       "checkpoint": "https://huggingface.co/ZeyuLing/hftrainer-vimogen-1.3b-humanml3d",
       "metrics": [
@@ -997,6 +1048,10 @@
     },
     "dart": {
       "method": "DART",
+      "tasks": [
+        "Text-to-Motion",
+        "Kinematic Motion Control"
+      ],
       "motion_representation": "DART276",
       "checkpoint": "https://huggingface.co/ZeyuLing/motius-dart-humanml3d",
       "metrics": [
@@ -1057,6 +1112,11 @@
     },
     "condmdi": {
       "method": "CondMDI",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Kinematic Motion Control"
+      ],
       "motion_representation": "HumanML3D-263 (absolute-root native)",
       "checkpoint": "https://huggingface.co/ZeyuLing/motius-condmdi-humanml3d",
       "metrics": [
@@ -1126,7 +1186,11 @@
     },
     "prism_1_0": {
       "method": "PRISM 1.0",
-      "task": "Text-to-Motion, Temporal Condition, Sequential Generation",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Sequential Text-to-Motion"
+      ],
       "motion_representation": "PRISM Motion-138",
       "checkpoint": "https://huggingface.co/ZeyuLing/motius-prism-1.0-humanml3d",
       "metrics": [
@@ -1195,7 +1259,11 @@
     },
     "prism_kt": {
       "method": "PRISM-KT",
-      "task": "Text-to-Motion, Temporal Condition, Sequential Generation",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Sequential Text-to-Motion"
+      ],
       "motion_representation": "PRISM Motion-138",
       "checkpoint": "https://huggingface.co/ZeyuLing/motius-prism-kt-humanml3d",
       "metrics": [
@@ -1264,7 +1332,11 @@
     },
     "maskcontrol": {
       "method": "MaskControl",
-      "task": "Text-to-Motion, Temporal Condition, Kinematic Control",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Kinematic Motion Control"
+      ],
       "motion_representation": "HumanML3D-263",
       "checkpoint": "https://huggingface.co/ZeyuLing/motius-maskcontrol-humanml3d",
       "metrics": [
@@ -1333,7 +1405,9 @@
     },
     "intergen": {
       "method": "InterGen",
-      "task": "Two-Person Text-to-Motion",
+      "tasks": [
+        "Text-to-Multi-Person Motion"
+      ],
       "motion_representation": "paired InterHuman-262",
       "checkpoint": "https://huggingface.co/ZeyuLing/motius-intergen-interhuman",
       "metric_source": "official InterGen paper, InterCLIP protocol",
@@ -1367,7 +1441,9 @@
     },
     "intermask": {
       "method": "InterMask",
-      "task": "Two-Person Text-to-Motion",
+      "tasks": [
+        "Text-to-Multi-Person Motion"
+      ],
       "motion_representation": "paired InterHuman-262",
       "checkpoint": "https://huggingface.co/ZeyuLing/motius-intermask-interhuman",
       "metric_source": "official InterMask paper, InterCLIP protocol",

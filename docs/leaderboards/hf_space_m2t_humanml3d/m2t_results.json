@@ -1,6 +1,6 @@
 {
   "benchmark": {
-    "name": "M2T HumanML3D",
+    "name": "Motion-to-Text · HumanML3D",
     "protocol": "humanml3d_tm2t_v2",
     "split": "official test",
     "num_samples": 4400,

@@ -10,6 +10,7 @@ explicitly published checkpoint source.
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 import urllib.error
@@ -22,6 +23,8 @@ from typing import Iterable
 REPO_ROOT = Path(__file__).resolve().parents[1]
 README = REPO_ROOT / "docs/model_zoo/README.md"
 MODEL_ZOO_DIR = README.parent
+TASK_REGISTRY_PATH = REPO_ROOT / "docs/tasks/taxonomy.json"
+TASK_REGISTRY = json.loads(TASK_REGISTRY_PATH.read_text())
 MODEL_ENTRY_RE = re.compile(
     r"^- \*\*\[([^\]]+)\]\(([^)]+\.md)\)\*\* - (.*?)(?=^- \*\*\[|\n## |\Z)",
     re.MULTILINE | re.DOTALL,
@@ -30,33 +33,9 @@ HF_RE = re.compile(r"https://huggingface\.co/([^)\s|]+)")
 CARD_TASK_RE = re.compile(r"^\| Tasks \| ([^|]+?) \|$", re.MULTILINE)
 CARD_TASK_INLINE_RE = re.compile(r"^\*\*Tasks:\*\*\s*(.+?)\.?$", re.MULTILINE)
 TASK_LINK_RE = re.compile(r"^\[([^\]]+)\]\(([^)]+)\)$")
-TASK_LABELS = {
-    "Text-to-Motion",
-    "Motion-to-Text",
-    "Temporal Condition",
-    "Body-Part Condition",
-    "Sequential Generation",
-    "Motion Editing",
-    "Music-to-Dance",
-    "Dance-to-Music",
-    "Speech-to-Gesture",
-    "Kinematic Control",
-    "Two-Person Text-to-Motion",
-    "Robot Motion Control",
-}
+TASK_LABELS = {task["label"] for task in TASK_REGISTRY["tasks"]}
 TASK_LEADERBOARDS = {
-    "Text-to-Motion": "https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard",
-    "Motion-to-Text": "https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard",
-    "Temporal Condition": "https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard",
-    "Body-Part Condition": "https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard",
-    "Sequential Generation": "https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard",
-    "Motion Editing": "https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard",
-    "Music-to-Dance": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard",
-    "Dance-to-Music": "https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard",
-    "Speech-to-Gesture": "https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard",
-    "Kinematic Control": "../tasks/README.md#kinematic-control",
-    "Two-Person Text-to-Motion": "../tasks/README.md#two-person-text-to-motion",
-    "Robot Motion Control": "../tasks/README.md#robot-motion-control",
+    task["label"]: task["model_zoo_target"] for task in TASK_REGISTRY["tasks"]
 }
 TASK_METRIC_MARKERS = {
     "Text-to-Motion": (

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Incrementally publish complete Temporal Condition evaluation results."""
+"""Incrementally publish Temporal Motion Completion evaluation results."""
 
 from __future__ import annotations
 

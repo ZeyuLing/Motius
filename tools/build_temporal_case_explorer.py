@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build all-case Temporal Condition galleries with synchronised SMPL meshes."""
+"""Build all-case Temporal Motion Completion galleries with SMPL meshes."""
 
 from __future__ import annotations
 
@@ -282,7 +282,7 @@ def build_setting(args: argparse.Namespace, setting: str, setting_label: str) ->
         "schema_version": 2,
         "representation": "smpl_motion135",
         "task": "temporal_condition_generation",
-        "title": f"Temporal Condition: {setting_label}",
+        "title": f"Temporal Motion Completion · HumanML3D: {setting_label}",
         "protocol": source_manifest.get("protocol"),
         "population": len(cases),
         "asset_base_url": f"{args.asset_base_url.rstrip('/')}/{setting}/",

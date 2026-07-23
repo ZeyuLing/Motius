@@ -1,4 +1,4 @@
-# Motion-to-Text on HumanML3D
+# Motion-to-Text · HumanML3D
 
 Motius evaluates motion captioning with one model-independent HumanML3D
 protocol. TM2T, MotionGPT, MotionGPT3, VerMo, and future methods all emit the
@@ -103,9 +103,9 @@ near 90 while the TM2T-paper scale clusters near 30 to 40.
 
 BLEU, ROUGE, CIDEr, and BERTScore remain compatibility metrics. They should not
 be treated as a complete measure of caption correctness because HumanML3D
-references omit valid motion details and allow many paraphrases. Motius will add
-a version-pinned, human-calibrated motion-grounded judge before using an LLM
-score for ranking; the design survey is under `literature-surveys/`.
+references omit valid motion details and allow many paraphrases. A learned or
+LLM-based judge must be version-pinned and human-calibrated before it can affect
+ranking.
 
-The public [M2T HumanML3D Leaderboard](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard)
+The public [Motion-to-Text · HumanML3D benchmark](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard)
 only accepts results produced from this complete protocol population.

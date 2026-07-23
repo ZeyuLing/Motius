@@ -34,7 +34,7 @@ available on the [project page](https://research.nvidia.com/labs/sil/projects/ar
 | Item | Value |
 | ---- | ----- |
 | Method | Two-stage autoregressive diffusion with explicit root and latent body streams |
-| Tasks | Text-to-Motion, Sequential Generation, Kinematic Control |
+| Tasks | Text-to-Motion, Sequential Text-to-Motion, Kinematic Motion Control |
 | Venue | ACM TOG 45(4), SIGGRAPH 2026, Article 86 |
 | Native skeletons | ARDY-27 and Unitree G1 |
 | Native FPS | ARDY-330 20 fps; G1 25 fps |
@@ -252,9 +252,9 @@ keyframe error, 0.015 m trajectory error, and 0.024 m waypoint error.
 The paper's separately trained HumanML3D benchmark model reports R-Precision
 0.729, FID 0.044, skating ratio 6.28%, constraint error 4.15 cm, and 0.15 s
 latency. That benchmark model is not one of the four released Core/G1 Rigplay
-checkpoints above. Motius lists this paper-only result in the T2M HumanML3D
-leaderboard as an official-paper benchmark row, separate from the released
-checkpoint rows.
+checkpoints above. Motius lists this paper-only result in the
+Text-to-Motion · HumanML3D benchmark as an official-paper row, separate from
+the released checkpoint rows.
 
 Motius's HumanML3D, MotionStreamer, and joint-position evaluator rows are not
 reported yet: the released ARDY-27 output first needs a validated SMPL-22

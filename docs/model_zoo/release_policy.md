@@ -14,24 +14,13 @@ are present and verified:
 
 ## Task Taxonomy
 
-README and model-card task fields must use the full labels defined in the
-[canonical task guide](../tasks/README.md):
+README and model-card task fields must use labels from the machine-readable
+[task taxonomy](../tasks/taxonomy.json), documented in the
+[Task Registry](../tasks/README.md). The release audit reads this file directly;
+do not duplicate a second task list in model documentation or source code.
 
-- `Text-to-Motion`
-- `Motion-to-Text`
-- `Temporal Condition`
-- `Sequential Generation`
-- `Body-Part Condition`
-- `Kinematic Control`
-- `Motion Editing`
-- `Music-to-Dance`
-- `Dance-to-Music`
-- `Speech-to-Gesture`
-- `Two-Person Text-to-Motion`
-- `Robot Motion Control`
-
-Prediction, in-betweening, keyframes, and TP2M are `Temporal Condition`
-subtasks. `Motion Control`, `Joint Control`, `Two-Person T2M`, and generic
+Prediction, in-betweening, keyframes, and TP2M are `Temporal Motion Completion`
+tracks. `Motion Control`, `Joint Control`, `Two-Person T2M`, and generic
 `multimodal motion tasks` are not valid task-field labels.
 
 Zero-shot, streaming, latent, diffusion, and autoregressive describe how a

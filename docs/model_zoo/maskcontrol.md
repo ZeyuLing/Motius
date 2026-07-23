@@ -45,8 +45,8 @@ evaluation set; every row exposes its caption and per-case diagnostics.
 
 | Item | Value |
 | ---- | ----- |
-| Tasks | Text-to-Motion, Temporal Condition, Kinematic Control |
-| Experimental tasks | Body-Part Condition, Sequential Generation |
+| Tasks | Text-to-Motion, Temporal Motion Completion, Kinematic Motion Control |
+| Experimental tasks | Part-Level Motion Control, Sequential Text-to-Motion |
 | Motion representation | HumanML3D-263 at 20 fps |
 | Native T2M length | 40-196 frames |
 | Extended control canvas | Up to 392 frames |
@@ -210,9 +210,9 @@ tail is excluded consistently from R-Precision and MM-Dist, while FID and
 Diversity use all 4,012 samples. Across 879,012 fitted frames, the
 HML263-to-SMPL joint error is `17.85 mm` on average and `23.56 mm` at P95.
 
-### Temporal Condition Benchmark
+### Temporal Motion Completion · HumanML3D
 
-All eight HumanML3D Temporal Condition settings use the complete 4,012-sample
+All eight HumanML3D Temporal Motion Completion settings use the complete 4,012-sample
 official test split. Retrieval uses batches of 32 and a single deterministic
 repeat. FID is measured in the normalized Motius joint-position evaluator
 space; condition error is pelvis-relative SMPL-22 error on constrained frames.
@@ -229,9 +229,9 @@ space; condition error is pelvis-relative SMPL-22 error on constrained frames.
 | Adaptive sparse frames | Off | 0.6015 | 0.7742 | 0.8488 | 0.0430 | 31.6811 | 4.6801 | 0.0077 | 0.0018 | 0.1491 | 54.7080 |
 
 The canonical result records are maintained in the
-[Temporal Condition leaderboard](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard).
+[Temporal Motion Completion · HumanML3D benchmark](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard).
 
-### Body-Part Position Benchmark
+### Part-Level Motion Control · HumanML3D
 
 The complete 4,012-sample HumanML3D official test split is evaluated with
 world-space joint evidence. Retrieval uses 125 complete batches of 32; FID is

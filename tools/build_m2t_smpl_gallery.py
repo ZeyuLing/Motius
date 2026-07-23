@@ -120,7 +120,7 @@ def main() -> None:
         "schema_version": 2,
         "representation": "smpl_motion135",
         "task": "motion_to_text",
-        "title": "M2T HumanML3D: SMPL Mesh and Caption Comparison",
+        "title": "Motion-to-Text · HumanML3D: SMPL Mesh and Caption Comparison",
         "protocol": source.get("protocol"),
         "population": len(cases),
         "asset_base_url": args.asset_base_url,

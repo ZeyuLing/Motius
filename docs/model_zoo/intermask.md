@@ -26,7 +26,7 @@ attention. This Motius release packages the official InterHuman model.
 
 | Item | Value |
 | ---- | ----- |
-| Tasks | Two-Person Text-to-Motion |
+| Tasks | Text-to-Multi-Person Motion |
 | Dataset | InterHuman |
 | Representation | `(B, T, 2, 262)` InterHuman-262, 30 fps |
 | Tokenizer | Shared 2D RVQ-VAE |

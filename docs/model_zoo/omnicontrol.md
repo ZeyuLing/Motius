@@ -4,7 +4,7 @@ OmniControl generates HumanML3D motion from text while controlling selected
 3D joint positions at selected frames. The Motius integration vendors the
 official MIT inference runtime and uses the released HumanML3D checkpoint.
 
-**Tasks:** Text-to-Motion, Temporal Condition, Kinematic Control.
+**Tasks:** Text-to-Motion, Temporal Motion Completion, Kinematic Motion Control.
 
 ## Native Control Contract
 
@@ -36,7 +36,7 @@ The runtime caches the CLIP text embedding once per batch. Motion and spatial
 normalization statistics are packaged with Motius so execution does not depend
 on an external OmniControl checkout or a current working directory.
 
-## Temporal Condition Benchmark
+## Temporal Motion Completion · HumanML3D
 
 All eight settings use the complete 4,012-sample HumanML3D official test split.
 Retrieval uses batches of 32 and a single deterministic repeat. FID is measured
@@ -55,9 +55,9 @@ pelvis-relative SMPL-22 error on constrained frames.
 | Adaptive sparse frames | Off | 0.2427 | 0.3485 | 0.4295 | 0.2969 | 45.7091 | 13.2468 | 0.1913 | 0.0145 | 0.5418 | 54.5594 |
 
 The canonical result records are maintained in the
-[Temporal Condition leaderboard](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard).
+[Temporal Motion Completion · HumanML3D benchmark](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard).
 
-## Body-Part Position Benchmark
+## Part-Level Motion Control · HumanML3D
 
 All settings use the complete 4,012-sample HumanML3D official test split and
 OmniControl's native world-space, per-axis joint evidence. Retrieval uses 125

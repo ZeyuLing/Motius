@@ -1,12 +1,12 @@
 ---
-title: M2T HumanML3D Leaderboard
+title: Motion-to-Text · HumanML3D
 sdk: static
 app_file: index.html
 pinned: false
 license: mit
 ---
 
-# M2T HumanML3D Leaderboard
+# Motion-to-Text · HumanML3D
 
 Static leaderboard for motion-to-text captioning on the official HumanML3D
 test population. All methods use the same 4,400 samples, three-reference TM2T

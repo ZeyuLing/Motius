@@ -1,4 +1,4 @@
-# Music-to-Dance on AIST++
+# Music-to-Dance · AIST++
 
 Motius exposes music-to-dance methods through one audio/feature input contract
 and a shared SMPL motion bridge. Bailando's native output is 60 fps AIST++

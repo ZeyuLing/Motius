@@ -1,5 +1,5 @@
 ---
-title: BABEL Sequential Generation Leaderboard
+title: Sequential Text-to-Motion · BABEL
 emoji: 🎬
 colorFrom: green
 colorTo: indigo
@@ -9,7 +9,7 @@ pinned: false
 license: mit
 ---
 
-# BABEL Sequential Generation Leaderboard
+# Sequential Text-to-Motion · BABEL
 
 Static leaderboard for text-guided sequential human motion generation on the
 processed official BABEL validation split: 1,295 episodes, 7,285 LLM-rewritten

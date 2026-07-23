@@ -32,7 +32,7 @@ keyframes, end-effector controls, root paths, and prefix-conditioned TP2M.
 | Item | Value |
 | ---- | ----- |
 | Method | KIMODO, two-stage kinematic motion diffusion |
-| Tasks | Text-to-Motion, Temporal Condition, Sequential Generation, Kinematic Control |
+| Tasks | Text-to-Motion, Temporal Motion Completion, Sequential Text-to-Motion, Kinematic Motion Control |
 | Motion representations | SOMA, Unitree G1, SMPL-X, plus `motion_135` TP2M bridge |
 | Text encoder | LLM2Vec / Meta-Llama-3 local encoder tree |
 | Default model | `Kimodo-SOMA-RP-v1` |

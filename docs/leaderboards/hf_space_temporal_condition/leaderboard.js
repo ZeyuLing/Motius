@@ -491,10 +491,10 @@ function renderProtocolDetails() {
   document.getElementById("protocol-details").innerHTML = control ? `
     <section><h3>Task families</h3><dl><dt>Prediction</dt><dd>First-frame or prefix completion.</dd><dt>MIB</dt><dd>Generate between observed start and end frames.</dd><dt>Keyframe</dt><dd>Generate around adaptive sparse full-body keyframes.</dd></dl></section>
     <section><h3>Evaluation</h3><dl><dt>Semantic</dt><dd>Motius Joint-Position Evaluator; normalized-space FID.</dd><dt>Condition</dt><dd>Pelvis-relative SMPL-22 error on constrained frames.</dd><dt>Physical</dt><dd>Foot-skating ratio from one deterministic pass.</dd></dl></section>
-    <section><h3>GT reference</h3><dl><dt>Semantic</dt><dd>Reused verbatim from the T2M HumanML3D GT row.</dd><dt>Temporal</dt><dd>Condition error and failure rates are zero by identity.</dd><dt>Ranking</dt><dd>GT is visible but excluded from all ranks and charts.</dd></dl></section>` : `
+    <section><h3>GT reference</h3><dl><dt>Semantic</dt><dd>Reused verbatim from the Text-to-Motion · HumanML3D GT row.</dd><dt>Temporal</dt><dd>Condition error and failure rates are zero by identity.</dd><dt>Ranking</dt><dd>GT is visible but excluded from all ranks and charts.</dd></dl></section>` : `
     <section><h3>Task</h3><dl><dt>Input</dt><dd>Selected caption plus the first N ground-truth frames.</dd><dt>Output</dt><dd>Continuation for the remaining sequence.</dd><dt>Prefixes</dt><dd>1, 5, and 9 frames.</dd></dl></section>
     <section><h3>Evaluation</h3><dl><dt>Split</dt><dd>HumanML3D official test split.</dd><dt>Evaluator</dt><dd>MotionStreamer-272 retrieval and distribution metrics.</dd><dt>FID</dt><dd>Computed against the same official GT distribution.</dd></dl></section>
-    <section><h3>GT reference</h3><dl><dt>Source</dt><dd>Same GT row as the T2M HumanML3D Leaderboard.</dd><dt>Visibility</dt><dd>Repeated for each prefix to keep comparisons local.</dd><dt>Ranking</dt><dd>GT is visible but excluded from all ranks and charts.</dd></dl></section>`;
+    <section><h3>GT reference</h3><dl><dt>Source</dt><dd>Same GT row as the Text-to-Motion · HumanML3D.</dd><dt>Visibility</dt><dd>Repeated for each prefix to keep comparisons local.</dd><dt>Ranking</dt><dd>GT is visible but excluded from all ranks and charts.</dd></dl></section>`;
 }
 
 function resetProtocolState() {

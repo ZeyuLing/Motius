@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "benchmark": "Temporal Condition Motion Generation Benchmark",
+  "benchmark": "Temporal Motion Completion · HumanML3D",
   "dataset": "HumanML3D official test split",
   "num_cases": 4012,
   "updated": "2026-07-20",
@@ -29,7 +29,7 @@
       "diversity": 53.941
     },
     "sources": {
-      "semantic": "T2M HumanML3D GT row, same evaluator and selected-caption protocol",
+      "semantic": "Text-to-Motion · HumanML3D GT row, same evaluator and selected-caption protocol",
       "temporal": "Analytic identity for condition metrics; one 4012-clip pass for foot skating"
     }
   },
