@@ -47,6 +47,73 @@ def test_task_registry_separates_tasks_and_benchmarks() -> None:
         assert benchmark["label"].startswith(f"{task_label} · ")
 
 
+def test_task_families_use_one_capability_axis() -> None:
+    expected = {
+        "motion_generation": {
+            "text_to_motion",
+            "sequential_text_to_motion",
+            "text_to_multi_person_motion",
+            "music_to_dance",
+            "speech_to_gesture",
+        },
+        "motion_understanding_translation": {
+            "motion_to_text",
+            "dance_to_music",
+        },
+        "motion_control_completion": {
+            "temporal_motion_completion",
+            "kinematic_motion_control",
+            "part_level_motion_control",
+        },
+        "motion_transformation": {
+            "motion_editing",
+            "motion_repair",
+            "motion_reconstruction",
+        },
+        "embodied_motion": {"robot_motion_control"},
+    }
+    actual = {
+        family["id"]: {
+            task["id"]
+            for task in TASK_REGISTRY["tasks"]
+            if task["family"] == family["id"]
+        }
+        for family in TASK_REGISTRY["families"]
+    }
+
+    assert actual == expected
+
+
+def test_every_task_has_linked_readme_and_registry_resources() -> None:
+    root_readme = (ROOT / "README.md").read_text()
+    task_system = root_readme.split("## Task System", 1)[1].split(
+        "\n## ", 1
+    )[0]
+    task_registry = (ROOT / "docs/tasks/README.md").read_text()
+    task_matrix = task_registry.split("## Task Matrix", 1)[1].split(
+        "\n## ", 1
+    )[0]
+
+    for task in TASK_REGISTRY["tasks"]:
+        label = task["label"]
+        anchor = task["id"].replace("_", "-")
+        assert f"[{label}](" in task_system
+
+        matching_rows = [
+            line
+            for line in task_matrix.splitlines()
+            if f"[{label}](#{anchor})" in line
+        ]
+        assert len(matching_rows) == 1, f"Task Matrix has no unique {label} row"
+        cells = [
+            cell.strip()
+            for cell in matching_rows[0].strip().strip("|").split("|")
+        ]
+        assert len(cells) == 5
+        assert cells[-1].startswith("[")
+        assert "](" in cells[-1]
+
+
 def test_release_manifest_task_labels_are_canonical() -> None:
     manifest = json.loads(
         (ROOT / "docs/model_zoo/release_manifest.json").read_text()
@@ -121,7 +188,10 @@ def test_documentation_uses_scan_friendly_tables_and_navigation() -> None:
     assert "📦 Models" in readme
     assert "📊 Benchmarks" in readme
 
-    assert "| Family | Task | Input | Output / principal tracks |" in task_registry
+    assert (
+        "| Capability | Task | Condition → output | Principal scope / tracks | "
+        "Primary resource |"
+    ) in task_registry
     assert "| Method | Canonical tasks | Native space | Artifacts |" in model_zoo
     assert model_zoo.count("| Task | Contract | Integrated methods |") == 5
     assert benchmark_hub.count("| Benchmark | Fixed contract | Resources |") == 4

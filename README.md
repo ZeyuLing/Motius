@@ -77,11 +77,11 @@ inside their parent task. Dataset and model names never become task names.
 
 | Family | Canonical tasks |
 | --- | --- |
-| 💬 **Language and motion** | Text-to-Motion · Motion-to-Text · Sequential Text-to-Motion · Text-to-Multi-Person Motion |
-| 🎛️ **Conditioned motion** | Temporal Motion Completion · Kinematic Motion Control · Part-Level Motion Control |
-| ✂️ **Transformation and restoration** | Motion Editing · Motion Repair · Motion Reconstruction |
-| 🎵 **Audio and motion** | Music-to-Dance · Dance-to-Music · Speech-to-Gesture |
-| 🤖 **Embodied motion** | Robot Motion Control |
+| ✨ **Motion generation** | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) · [Sequential Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) · [Text-to-Multi-Person Motion](docs/tasks/README.md#text-to-multi-person-motion) · [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) · [Speech-to-Gesture](https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard) |
+| 🔎 **Motion understanding and translation** | [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) · [Dance-to-Music](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) |
+| 🎛️ **Motion control and completion** | [Temporal Motion Completion](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard) · [Kinematic Motion Control](docs/tasks/README.md#kinematic-motion-control) · [Part-Level Motion Control](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) |
+| ✂️ **Motion transformation and reconstruction** | [Motion Editing](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) · [Motion Repair](docs/leaderboards/README.md#motion-repair-fixed-support-protocol) · [Motion Reconstruction](docs/leaderboards/README.md#motion-reconstruction-humanml3d) |
+| 🤖 **Embodied motion** | [Robot Motion Control](docs/tasks/README.md#robot-motion-control) |
 
 Model cards use these exact labels. Benchmark titles use
 `Task · Dataset/Protocol`, such as

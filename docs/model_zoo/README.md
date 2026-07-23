@@ -18,16 +18,24 @@ metadata. They are never used as task categories.
 
 ## Task Index 🧭
 
-### Language And Motion 💬
+### Motion Generation ✨
 
 | Task | Contract | Integrated methods |
 | --- | --- | --- |
 | [Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard) | Text → motion | [ARDY](ardy.md) · [CondMDI](condmdi.md) · [DART](dart.md) · [FlowMDM](flowmdm.md) · [HY-Motion T2M](hymotion_t2m.md) · [KIMODO](kimodo.md) · [MaskControl](maskcontrol.md) · [MDM](mdm.md) · [MLD](mld.md) · [MoGenTS](mogents.md) · [MoMask](momask.md) · [MotionCLR](motionclr.md) · [MotionGPT](motiongpt.md) · [MotionLCM](motionlcm.md) · [MotionMillion](motionmillion.md) · [MotionStreamer](motionstreamer.md) · [OmniControl](omnicontrol.md) · [PRISM](prism.md) · [T2M-GPT](t2mgpt.md) · [TM2D](tm2d.md) · [UniMuMo](unimumo.md) · [ViMoGen](vimogen.md) |
-| [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | Motion → caption | [MotionGPT](motiongpt.md) · [MotionGPT3](motiongpt3.md) · [TM2T](tm2t.md) · [UniMuMo](unimumo.md) · [VerMo](vermo.md) |
 | [Sequential Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) | Ordered prompts → continuous motion | [ARDY](ardy.md) · [FlowMDM](flowmdm.md) · [KIMODO](kimodo.md) · [MotionStreamer](motionstreamer.md) · [PRISM](prism.md) |
 | [Text-to-Multi-Person Motion](../tasks/README.md#text-to-multi-person-motion) | Interaction text → shared-frame actors | [InterGen](intergen.md) · [InterMask](intermask.md) |
+| [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) | Music ± text → dance | [Bailando](bailando.md) · [EDGE](edge.md) · [TM2D](tm2d.md) · [UniMuMo](unimumo.md) |
+| [Speech-to-Gesture](https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard) | Speech ± caption → gesture | No release-complete package |
 
-### Conditioned Motion 🎛️
+### Motion Understanding And Translation 🔎
+
+| Task | Contract | Integrated methods |
+| --- | --- | --- |
+| [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | Motion → caption | [MotionGPT](motiongpt.md) · [MotionGPT3](motiongpt3.md) · [TM2T](tm2t.md) · [UniMuMo](unimumo.md) · [VerMo](vermo.md) |
+| [Dance-to-Music](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) | Dance → music | [UniMuMo](unimumo.md) |
+
+### Motion Control And Completion 🎛️
 
 | Task | Contract | Integrated methods |
 | --- | --- | --- |
@@ -35,21 +43,13 @@ metadata. They are never used as task categories.
 | [Kinematic Motion Control](../tasks/README.md#kinematic-motion-control) | Numeric pose or trajectory constraints → motion | [ARDY](ardy.md) · [CondMDI](condmdi.md) · [DART](dart.md) · [KIMODO](kimodo.md) · [MaskControl](maskcontrol.md) · [OmniControl](omnicontrol.md) |
 | [Part-Level Motion Control](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) | Body-region semantics → composed motion | No release-complete package; [MaskControl](maskcontrol.md#validation-status) exposes an experimental route |
 
-### Motion Transformation And Restoration ✂️
+### Motion Transformation And Reconstruction ✂️
 
 | Task | Contract | Integrated methods |
 | --- | --- | --- |
 | [Motion Editing](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) | Motion + edit → edited motion | [MotionCLR](motionclr.md) |
-| [Motion Repair](../tasks/README.md#motion-repair) | Corrupted motion + support → restored motion | Benchmark protocol available; no standalone package |
-| [Motion Reconstruction](../tasks/README.md#motion-reconstruction) | Motion → bottleneck reconstruction | Benchmark protocol available; no standalone package |
-
-### Audio And Motion 🎵
-
-| Task | Contract | Integrated methods |
-| --- | --- | --- |
-| [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) | Music ± text → dance | [Bailando](bailando.md) · [EDGE](edge.md) · [TM2D](tm2d.md) · [UniMuMo](unimumo.md) |
-| [Dance-to-Music](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) | Dance → music | [UniMuMo](unimumo.md) |
-| [Speech-to-Gesture](https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard) | Speech ± caption → gesture | No release-complete package |
+| [Motion Repair](../leaderboards/README.md#motion-repair-fixed-support-protocol) | Corrupted motion + support → restored motion | Benchmark protocol available; no standalone package |
+| [Motion Reconstruction](../leaderboards/README.md#motion-reconstruction-humanml3d) | Motion → bottleneck reconstruction | Benchmark protocol available; no standalone package |
 
 ### Embodied Motion 🤖
 

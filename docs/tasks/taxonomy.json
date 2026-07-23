@@ -2,20 +2,20 @@
   "schema_version": 1,
   "families": [
     {
-      "id": "language_motion",
-      "label": "Language and Motion"
+      "id": "motion_generation",
+      "label": "Motion Generation"
     },
     {
-      "id": "motion_control",
-      "label": "Conditioned Motion"
+      "id": "motion_understanding_translation",
+      "label": "Motion Understanding and Translation"
+    },
+    {
+      "id": "motion_control_completion",
+      "label": "Motion Control and Completion"
     },
     {
       "id": "motion_transformation",
-      "label": "Motion Transformation and Restoration"
-    },
-    {
-      "id": "audio_motion",
-      "label": "Audio and Motion"
+      "label": "Motion Transformation and Reconstruction"
     },
     {
       "id": "embodied_motion",
@@ -26,7 +26,7 @@
     {
       "id": "text_to_motion",
       "label": "Text-to-Motion",
-      "family": "language_motion",
+      "family": "motion_generation",
       "aliases": [
         "T2M"
       ],
@@ -35,7 +35,7 @@
     {
       "id": "motion_to_text",
       "label": "Motion-to-Text",
-      "family": "language_motion",
+      "family": "motion_understanding_translation",
       "aliases": [
         "M2T"
       ],
@@ -44,21 +44,21 @@
     {
       "id": "sequential_text_to_motion",
       "label": "Sequential Text-to-Motion",
-      "family": "language_motion",
+      "family": "motion_generation",
       "aliases": [],
       "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard"
     },
     {
       "id": "text_to_multi_person_motion",
       "label": "Text-to-Multi-Person Motion",
-      "family": "language_motion",
+      "family": "motion_generation",
       "aliases": [],
       "model_zoo_target": "../tasks/README.md#text-to-multi-person-motion"
     },
     {
       "id": "temporal_motion_completion",
       "label": "Temporal Motion Completion",
-      "family": "motion_control",
+      "family": "motion_control_completion",
       "aliases": [
         "TP2M"
       ],
@@ -67,14 +67,14 @@
     {
       "id": "kinematic_motion_control",
       "label": "Kinematic Motion Control",
-      "family": "motion_control",
+      "family": "motion_control_completion",
       "aliases": [],
       "model_zoo_target": "../tasks/README.md#kinematic-motion-control"
     },
     {
       "id": "part_level_motion_control",
       "label": "Part-Level Motion Control",
-      "family": "motion_control",
+      "family": "motion_control_completion",
       "aliases": [],
       "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard"
     },
@@ -90,19 +90,19 @@
       "label": "Motion Repair",
       "family": "motion_transformation",
       "aliases": [],
-      "model_zoo_target": "../tasks/README.md#motion-repair"
+      "model_zoo_target": "../leaderboards/README.md#motion-repair-fixed-support-protocol"
     },
     {
       "id": "motion_reconstruction",
       "label": "Motion Reconstruction",
       "family": "motion_transformation",
       "aliases": [],
-      "model_zoo_target": "../tasks/README.md#motion-reconstruction"
+      "model_zoo_target": "../leaderboards/README.md#motion-reconstruction-humanml3d"
     },
     {
       "id": "music_to_dance",
       "label": "Music-to-Dance",
-      "family": "audio_motion",
+      "family": "motion_generation",
       "aliases": [
         "M2D"
       ],
@@ -111,7 +111,7 @@
     {
       "id": "dance_to_music",
       "label": "Dance-to-Music",
-      "family": "audio_motion",
+      "family": "motion_understanding_translation",
       "aliases": [
         "D2M"
       ],
@@ -120,7 +120,7 @@
     {
       "id": "speech_to_gesture",
       "label": "Speech-to-Gesture",
-      "family": "audio_motion",
+      "family": "motion_generation",
       "aliases": [
         "S2G"
       ],
