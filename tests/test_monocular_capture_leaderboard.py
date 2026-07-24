@@ -19,13 +19,15 @@ def test_monocular_capture_leaderboard_is_verified_only():
         "emdb_2_global_v1",
     }
     assert all(row.get("verified") is True for row in data["rows"])
-    assert len(data["methods"]) == 5
+    assert len(data["methods"]) == 4
     assert {method["method"] for method in data["methods"]} == {
         "GVHMR",
         "PromptHMR-Video",
         "GEM-SMPL",
         "GEM-X",
-        "HYMotion-V2M",
+    }
+    assert "HYMotion-V2M" not in {
+        method["method"] for method in data["methods"]
     }
 
 

@@ -176,37 +176,6 @@
           "artifact": "outputs/evaluation/monocular_capture/3dpw_test/gem_x/metrics.json"
         }
       }
-    },
-    {
-      "method": "HYMotion-V2M",
-      "body_model": "SMPL-H",
-      "implementation_status": "verified_3dpw_gt_crop_100pct_coverage_unranked_static_camera",
-      "paper": "https://arxiv.org/abs/2512.23464",
-      "source": "https://github.com/Tencent-Hunyuan/HY-Motion-1.0",
-      "diagnostic_results": {
-        "3dpw_test_camera_v1": {
-          "ranking_eligible": false,
-          "ranking_exclusion": "Static-camera fallback; camera-space metrics remain diagnostic until a video-only camera estimator is integrated.",
-          "complete_target_tracks": 37,
-          "population_target_tracks": 37,
-          "coverage_percent": 100.0,
-          "metrics": {
-            "pa_mpjpe_mm": 139.24838498199202,
-            "mpjpe_mm": 270.6502529944316,
-            "pve_mm": null,
-            "accel_mps2": 6.11760881891987
-          },
-          "artifact": "outputs/evaluation/monocular_capture/3dpw_test/hymotion_v2m_gtcrop_v1/metrics.json",
-          "audit": "outputs/evaluation/monocular_capture/3dpw_test/hymotion_v2m_gtcrop_v1/audit.json"
-        }
-      },
-      "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/hymotion_v2m.md",
-      "legacy_diagnostic_results": {
-        "detector_single_person_3dpw_test_camera_v1": {
-          "coverage_percent": 53.70125299169365,
-          "artifact": "outputs/evaluation/monocular_capture/3dpw_test/hymotion_v2m/metrics.json"
-        }
-      }
     }
   ],
   "rows": []
