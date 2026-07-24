@@ -51,3 +51,23 @@ Generated audit reports should be written under `outputs/`, for example:
 python tools/audit_model_zoo_release.py --check-hf \
   --output outputs/model_zoo_release_audit.md
 ```
+
+## Monocular Motion Capture Releases
+
+Monocular capture packages use a task-specific release gate because licensed
+video datasets and parametric body assets cannot be redistributed:
+
+- record the pinned official source revision and every evaluated checkpoint
+  SHA-256;
+- complete at least one real-video inference path and emit a pickle-free
+  `MonocularCaptureResult`;
+- declare the native body model and camera/world coordinate availability
+  without fabricating cross-topology vertices or camera trajectories;
+- reference, but never redistribute, separately licensed detectors, body
+  models, and benchmark media;
+- disclose tracking coverage, input protocol, body-model compatibility, and
+  numerical limitations.
+
+A 3DPW or EMDB row is publishable only after the complete licensed split is
+evaluated under its registered protocol. Partial runs and paper-reported values
+remain diagnostic.

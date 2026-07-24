@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "title": "Monocular Motion Capture · 3DPW Test",
+  "updated": "2026-07-24",
+  "verification_policy": "Leaderboard publication is paused; completed runs are documented only in method Model Cards.",
+  "protocols": {
+    "3dpw_test_camera_v1": {
+      "dataset": "3DPW",
+      "split": "test",
+      "space": "camera",
+      "body_model": "SMPL",
+      "target_definition": "One official 3DPW person track per inference item.",
+      "input_crop": "One dense crop per official poses2d person track using each method's documented native aspect and expansion. Missing 2D frames are interpolated only for cropping and remain excluded from metrics.",
+      "metrics": [
+        "pa_mpjpe_mm",
+        "mpjpe_mm",
+        "pve_mm",
+        "accel_mps2"
+      ]
+    },
+    "emdb_1_camera_v1": {
+      "dataset": "EMDB",
+      "split": "EMDB-1",
+      "space": "camera",
+      "body_model": "SMPL",
+      "metrics": [
+        "pa_mpjpe_mm",
+        "mpjpe_mm",
+        "pve_mm",
+        "accel_mps2"
+      ]
+    },
+    "emdb_2_global_v1": {
+      "dataset": "EMDB",
+      "split": "EMDB-2",
+      "space": "world",
+      "body_model": "SMPL",
+      "metrics": [
+        "w_mpjpe_mm",
+        "wa_mpjpe_mm",
+        "rte_percent",
+        "jitter_mps3",
+        "foot_sliding_mm"
+      ]
+    }
+  },
+  "methods": [
+    {
+      "method": "GVHMR",
+      "body_model": "SMPL",
+      "implementation_status": "verified_3dpw_gt_crop_100pct_coverage",
+      "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/gvhmr.md",
+      "paper": "https://arxiv.org/abs/2409.06662",
+      "source": "https://github.com/zju3dv/GVHMR",
+      "verified_results": {
+        "3dpw_test_camera_v1": {
+          "coverage_percent": 100.0,
+          "metrics": {
+            "pa_mpjpe_mm": 47.659360127887965,
+            "mpjpe_mm": 62.64664052390961,
+            "pve_mm": null,
+            "accel_mps2": 5.472120052587855
+          },
+          "artifact": "outputs/evaluation/monocular_capture/3dpw_test/gvhmr_gtcrop_v1/metrics.json"
+        }
+      },
+      "diagnostic_results": {
+        "3dpw_test_camera_v1": {
+          "ranking_eligible": false,
+          "ranking_exclusion": "Official top-area single-person tracking covers only 65.35% of valid 3DPW person-frames.",
+          "coverage_percent": 65.35266788680839,
+          "metrics": {
+            "pa_mpjpe_mm": 59.35291121892796,
+            "mpjpe_mm": 86.85332473845178,
+            "pve_mm": null,
+            "accel_mps2": 7.189290700834153
+          },
+          "artifact": "outputs/evaluation/monocular_capture/3dpw_test/gvhmr/metrics.json"
+        }
+      }
+    },
+    {
+      "method": "PromptHMR-Video",
+      "body_model": "SMPL-X",
+      "implementation_status": "verified_3dpw_official_multitrack_37_of_37_tracks",
+      "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/prompthmr.md",
+      "paper": "https://arxiv.org/abs/2504.06397",
+      "source": "https://github.com/yufu-wang/PromptHMR",
+      "verified_results": {
+        "3dpw_test_camera_v1": {
+          "ranking_eligible": false,
+          "ranking_exclusion": "Official full-frame multi-person inference rather than the per-target GT-crop input protocol.",
+          "complete_target_tracks": 37,
+          "population_target_tracks": 37,
+          "coverage_percent": 98.91595100661692,
+          "metrics": {
+            "pa_mpjpe_mm": 46.17481872285863,
+            "mpjpe_mm": 64.49571463811763,
+            "pve_mm": null,
+            "accel_mps2": 4.800934745561704
+          },
+          "artifact": "outputs/evaluation/monocular_capture/3dpw_test/prompthmr_official_multitrack_v1/metrics.json"
+        }
+      }
+    },
+    {
+      "method": "GEM-SMPL",
+      "body_model": "SMPL",
+      "implementation_status": "verified_3dpw_gt_crop_100pct_coverage",
+      "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/gem_smpl.md",
+      "paper": "https://arxiv.org/abs/2505.01425",
+      "source": "https://github.com/NVlabs/GENMO",
+      "verified_results": {
+        "3dpw_test_camera_v1": {
+          "coverage_percent": 100.0,
+          "metrics": {
+            "pa_mpjpe_mm": 46.44700513576593,
+            "mpjpe_mm": 64.45656223644482,
+            "pve_mm": null,
+            "accel_mps2": 5.71293644240658
+          },
+          "artifact": "outputs/evaluation/monocular_capture/3dpw_test/gem_smpl_gt_crop_v1/metrics.json"
+        }
+      },
+      "diagnostic_results": {
+        "3dpw_test_camera_v1": {
+          "ranking_eligible": false,
+          "ranking_exclusion": "Official single-person demo covers only 65.35% of valid 3DPW person-frames.",
+          "coverage_percent": 65.35266788680839,
+          "metrics": {
+            "pa_mpjpe_mm": 66.61427917114521,
+            "mpjpe_mm": 102.1501983809963,
+            "pve_mm": null,
+            "accel_mps2": 10.812737878445654
+          },
+          "artifact": "outputs/evaluation/monocular_capture/3dpw_test/gem_smpl/metrics.json"
+        }
+      }
+    },
+    {
+      "method": "GEM-X",
+      "body_model": "SOMA-77",
+      "implementation_status": "verified_3dpw_gt_crop_100pct_coverage_camera_only",
+      "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/gem_x.md",
+      "paper": "https://arxiv.org/abs/2505.01425",
+      "source": "https://github.com/NVlabs/GEM-X",
+      "verified_results": {
+        "3dpw_test_camera_v1": {
+          "ranking_eligible": true,
+          "world_metrics_eligible": false,
+          "camera_trajectory_source": "official_demo_identity_fallback_without_external_vo",
+          "complete_target_tracks": 37,
+          "population_target_tracks": 37,
+          "coverage_percent": 100.0,
+          "metrics": {
+            "pa_mpjpe_mm": 53.19737912041162,
+            "mpjpe_mm": 84.38056374520121,
+            "pve_mm": null,
+            "accel_mps2": 5.615875659234918
+          },
+          "artifact": "outputs/evaluation/monocular_capture/3dpw_test/gem_x_gtcrop_v1/metrics.json",
+          "audit": "outputs/evaluation/monocular_capture/3dpw_test/gem_x_gtcrop_v1/audit.json"
+        }
+      },
+      "diagnostic_results": {
+        "3dpw_test_camera_v1": {
+          "ranking_eligible": false,
+          "ranking_exclusion": "Official detector-driven demo emits one SOMA-77 track per video and covers 65.35% of valid 3DPW person-frames.",
+          "coverage_percent": 65.35266788680839,
+          "metrics": {
+            "pa_mpjpe_mm": 65.49439577948031,
+            "mpjpe_mm": 107.41650061246324,
+            "pve_mm": null,
+            "accel_mps2": 6.37358685639547
+          },
+          "artifact": "outputs/evaluation/monocular_capture/3dpw_test/gem_x/metrics.json"
+        }
+      }
+    },
+    {
+      "method": "HYMotion-V2M",
+      "body_model": "SMPL-H",
+      "implementation_status": "verified_3dpw_gt_crop_100pct_coverage_unranked_static_camera",
+      "paper": "https://arxiv.org/abs/2512.23464",
+      "source": "https://github.com/Tencent-Hunyuan/HY-Motion-1.0",
+      "diagnostic_results": {
+        "3dpw_test_camera_v1": {
+          "ranking_eligible": false,
+          "ranking_exclusion": "Static-camera fallback; camera-space metrics remain diagnostic until a video-only camera estimator is integrated.",
+          "complete_target_tracks": 37,
+          "population_target_tracks": 37,
+          "coverage_percent": 100.0,
+          "metrics": {
+            "pa_mpjpe_mm": 139.24838498199202,
+            "mpjpe_mm": 270.6502529944316,
+            "pve_mm": null,
+            "accel_mps2": 6.11760881891987
+          },
+          "artifact": "outputs/evaluation/monocular_capture/3dpw_test/hymotion_v2m_gtcrop_v1/metrics.json",
+          "audit": "outputs/evaluation/monocular_capture/3dpw_test/hymotion_v2m_gtcrop_v1/audit.json"
+        }
+      },
+      "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/hymotion_v2m.md",
+      "legacy_diagnostic_results": {
+        "detector_single_person_3dpw_test_camera_v1": {
+          "coverage_percent": 53.70125299169365,
+          "artifact": "outputs/evaluation/monocular_capture/3dpw_test/hymotion_v2m/metrics.json"
+        }
+      }
+    }
+  ],
+  "rows": []
+}

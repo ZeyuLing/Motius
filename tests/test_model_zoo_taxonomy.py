@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_model_zoo_uses_canonical_task_labels() -> None:
     rows = _read_model_rows()
-    assert len(rows) == 30
+    assert len(rows) == 35
 
     for row in rows:
         card_text = row.card_path.read_text()
@@ -49,7 +49,7 @@ def test_task_registry_separates_tasks_and_benchmarks() -> None:
 
 def test_task_registry_is_flat_and_unclassified() -> None:
     assert "families" not in TASK_REGISTRY
-    assert len(TASK_REGISTRY["tasks"]) == 13
+    assert len(TASK_REGISTRY["tasks"]) == 14
     assert all("family" not in task for task in TASK_REGISTRY["tasks"])
 
 
@@ -123,7 +123,7 @@ def test_documentation_uses_one_information_architecture() -> None:
     benchmark_labels = {
         benchmark["label"] for benchmark in TASK_REGISTRY["benchmarks"]
     }
-    assert len(benchmark_labels) == 15
+    assert len(benchmark_labels) == 16
     for label in benchmark_labels:
         assert f"**{label}**" in benchmark_hub
     assert "### T2M HumanML3D" not in benchmark_hub
@@ -224,6 +224,7 @@ def test_local_benchmark_pages_use_canonical_titles() -> None:
         "temporal_motion_completion_humanml3d": "hf_space_temporal_condition",
         "music_to_dance_aistpp": "hf_space_music_to_dance",
         "dance_to_music_aistpp": "hf_space_dance_to_music",
+        "monocular_motion_capture_3dpw_test": "hf_space_monocular_capture",
     }
     benchmarks = {
         benchmark["id"]: benchmark for benchmark in TASK_REGISTRY["benchmarks"]

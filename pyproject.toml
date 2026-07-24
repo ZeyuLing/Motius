@@ -152,6 +152,11 @@ namespaces = false
 "motius.models.maskcontrol" = ["ATTRIBUTIONS.md"]
 "motius.models.tm2d" = ["ATTRIBUTIONS.md"]
 "motius.models.unimumo" = ["ATTRIBUTIONS.md"]
+"motius.models.gvhmr" = ["ATTRIBUTIONS.md"]
+"motius.models.prompthmr" = ["ATTRIBUTIONS.md"]
+"motius.models.gem_smpl" = ["ATTRIBUTIONS.md", "setup_runtime.sh"]
+"motius.models.gem_x" = ["ATTRIBUTIONS.md", "setup_runtime.sh"]
+"motius.models.hymotion_v2m" = ["ATTRIBUTIONS.md", "License.txt", "NOTICE"]
 "motius.models.ardy" = [
     "LICENSE",
     "ATTRIBUTIONS.md",

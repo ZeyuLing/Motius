@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Motius verified monocular motion capture leaderboard on 3DPW and EMDB">
+  <title>Monocular Motion Capture · 3DPW Test</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap");
+    :root{color-scheme:light;--bg:#f4f6f5;--panel:#fff;--ink:#17211f;--muted:#63706c;--line:#d9dfdc;--line-strong:#bdc8c3;--teal:#087d72;--blue:#315f9d;--amber:#ad6d00;--coral:#c7563f;--shadow:0 8px 24px rgba(29,45,40,.07)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Manrope",ui-sans-serif,sans-serif;line-height:1.5}a{color:inherit}.page{width:min(1440px,calc(100vw - 32px));margin:0 auto;padding:28px 0 40px}
+    .leaderboard-nav{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:16px;color:var(--muted);font-size:12px}.nav-label{margin-right:4px;font-weight:700;text-transform:uppercase}.nav-link{border:1px solid transparent;border-radius:6px;padding:6px 9px;color:#46534f;text-decoration:none}.nav-link:hover{border-color:var(--line);background:var(--panel)}.nav-link[aria-current="page"]{border-color:var(--line-strong);background:var(--panel);color:var(--teal);font-weight:700}
+    .topbar{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:18px;border-bottom:1px solid var(--line);padding:0 190px 22px 0;overflow:hidden}.topbar:after{position:absolute;right:22px;bottom:20px;width:112px;height:112px;border-left:2px solid var(--coral);border-bottom:2px solid var(--teal);content:"";opacity:.72}.axis-x,.axis-y{position:absolute;right:2px;font:10px "IBM Plex Mono",monospace}.axis-x{bottom:11px;color:var(--teal)}.axis-y{right:139px;bottom:126px;color:var(--coral)}h1{margin:0;font-size:30px;line-height:1.15}.subtitle{max-width:850px;margin:10px 0 0;color:var(--muted);font-size:14px}.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.badge{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 10px;color:#3d4857;font-size:12px;white-space:nowrap}.updated{position:absolute;top:0;right:0;min-width:184px;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:10px 12px;color:var(--muted);font-size:12px;box-shadow:var(--shadow);z-index:1}.updated strong{display:block;color:var(--ink);font-size:14px;font-weight:650}
+    .score-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}.score-card{border:1px solid var(--line);border-top:3px solid var(--teal);border-radius:8px;background:var(--panel);padding:14px;box-shadow:var(--shadow)}.score-card:nth-child(2){border-top-color:var(--blue)}.score-card:nth-child(3){border-top-color:var(--amber)}.score-card:nth-child(4){border-top-color:var(--coral)}.score-card .label{color:var(--muted);font-size:12px;text-transform:uppercase}.score-card .value{min-height:31px;margin-top:6px;font-size:21px;font-weight:720}.score-card .note{margin-top:4px;color:var(--muted);font-size:12px}
+    section.panel{margin:18px 0;border:1px solid var(--line);border-radius:8px;background:var(--panel);box-shadow:var(--shadow);overflow:hidden}.section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line);padding:16px 18px}.section-heading h2{margin:0;font-size:18px}.section-heading p{margin:3px 0 0;color:var(--muted);font-size:12px}.section-link{display:inline-flex;align-items:center;min-height:34px;border:1px solid var(--line-strong);border-radius:6px;padding:0 11px;background:#fff;color:var(--teal);font-size:12px;font-weight:650;text-decoration:none}.section-link:hover{border-color:var(--teal)}
+    select{min-height:36px;border:1px solid var(--line-strong);border-radius:6px;background:#fff;padding:0 34px 0 11px;color:var(--ink);font:12px "IBM Plex Mono",monospace}.table-wrap{overflow:auto}.leaderboard{width:100%;min-width:980px;border-collapse:separate;border-spacing:0;font-size:13px}.leaderboard th,.leaderboard td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.leaderboard thead th{background:#f2f5f8;color:#425064;font-size:11px}.leaderboard th:first-child,.leaderboard td:first-child{text-align:left}.leaderboard tbody tr:hover{background:#f6f9f7}.method strong{display:block}.method small{color:var(--muted);font-size:11px}.rank{display:inline-grid;float:left;place-items:center;width:20px;height:20px;margin:3px 8px 0 0;border-radius:50%;background:#e8eeeb;color:#46524d;font:11px "IBM Plex Mono",monospace}.status{display:inline-flex;padding:4px 7px;border:1px solid #74a995;border-radius:4px;background:#e4f0e8;color:#145b47;font:9px "IBM Plex Mono",monospace;text-transform:uppercase}.best{font-weight:800;color:#086b62}.empty td{height:160px!important;text-align:center!important;color:var(--muted)}.empty strong,.empty span{display:block}.empty strong{color:var(--ink);font-size:15px}.empty span{margin-top:5px;font-size:12px}.note{padding:13px 18px;color:var(--muted);font-size:12px}
+    .protocol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.protocol article{padding:18px;border-right:1px solid var(--line)}.protocol article:last-child{border:0}.protocol h3{margin:0 0 6px;font-size:13px}.protocol p{margin:0;color:var(--muted);font-size:12px}.protocol code{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--teal)}
+    .method-inventory{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}.method-inventory article{position:relative;min-height:166px;padding:18px;border-right:1px solid var(--line)}.method-inventory article:last-child{border:0}.method-mark{display:inline-block;border-bottom:2px solid var(--teal);color:var(--muted);font:10px "IBM Plex Mono",monospace;text-transform:uppercase}.method-inventory h3{margin:20px 0 4px;font-size:17px}.method-inventory p{margin:0;color:var(--muted);font-size:11px;text-transform:uppercase}.method-links{position:absolute;bottom:17px;display:flex;gap:12px}.method-links a{color:var(--teal);font-size:12px;font-weight:650;text-decoration:none}.footer{display:flex;justify-content:space-between;gap:20px;padding:8px 0 0;color:var(--muted);font-size:12px}
+    @media(max-width:980px){.topbar{padding-right:0;flex-direction:column}.topbar:after,.axis-x,.axis-y{display:none}.updated{position:static;width:100%}.score-strip{grid-template-columns:repeat(2,1fr)}.protocol,.method-inventory{grid-template-columns:1fr}.protocol article,.method-inventory article{border-right:0;border-bottom:1px solid var(--line)}}
+    @media(max-width:620px){.page{width:min(100% - 20px,1440px);padding-top:18px}h1{font-size:27px}.score-strip{grid-template-columns:1fr}.section-heading{align-items:flex-start;flex-direction:column}select{width:100%}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="leaderboard-nav" aria-label="Motius leaderboards">
+      <span class="nav-label">Leaderboards</span>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard" target="_blank" rel="noopener noreferrer">T2M HumanML3D</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard" target="_blank" rel="noopener noreferrer">Temporal Condition</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard" target="_blank" rel="noopener noreferrer">Music-to-Dance</a>
+      <a class="nav-link" href="https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard" target="_blank" rel="noopener noreferrer">Speech-to-Gesture</a>
+      <a class="nav-link" href="#" aria-current="page">Monocular Motion Capture</a>
+    </nav>
+
+    <header class="topbar">
+      <div>
+        <h1>Monocular Motion Capture · 3DPW Test</h1>
+        <p class="subtitle">Camera-relative and world-grounded human motion recovery from monocular video. Rows open only after the complete licensed test population is run inside Motius with immutable checkpoint, runtime, and coordinate-system provenance.</p>
+        <div class="badge-row">
+          <span class="badge">Task: Monocular Motion Capture</span>
+          <span class="badge">3DPW Test · EMDB-1 · EMDB-2</span>
+          <span class="badge">SMPL + SOMA-77</span>
+          <span class="badge">GT media never republished</span>
+          <span class="badge">Verified rows only</span>
+        </div>
+      </div>
+      <div class="updated"><strong>Current Public Snapshot</strong><span id="snapshot">Loading results</span></div>
+      <span class="axis-x">camera +Z →</span><span class="axis-y">gravity +Y ↑</span>
+    </header>
+
+    <section class="score-strip" aria-label="summary">
+      <div class="score-card"><div class="label">Verified methods</div><div class="value" id="method-count">0</div><div class="note">Active protocol rows</div></div>
+      <div class="score-card"><div class="label">Camera protocols</div><div class="value">2</div><div class="note">3DPW Test and EMDB-1</div></div>
+      <div class="score-card"><div class="label">Global protocol</div><div class="value">EMDB-2</div><div class="note">100-frame WHAM/GVHMR alignment</div></div>
+      <div class="score-card"><div class="label">Cross-model contract</div><div class="value">15 joints</div><div class="note">Strictly selected by joint name</div></div>
+    </section>
+
+    <section class="panel" id="benchmark">
+      <div class="section-heading"><div><h2>Results · <span id="active-protocol">loading</span></h2><p>Mesh metrics are shown only when prediction and ground truth use a compatible body model.</p></div><select id="protocol-select" aria-label="Evaluation protocol"></select></div>
+      <div class="table-wrap">
+        <table class="leaderboard">
+          <thead><tr id="metric-head"></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="note">Units: joint and vertex errors in mm; acceleration in m/s²; RTE in percent; jitter follows the public GVHMR display scale. GEM-X/SOMA enters cross-model comparison only through the named common-joint protocol—never through fabricated SMPL vertices.</div>
+    </section>
+
+    <section class="panel" id="methods">
+      <div class="section-heading"><div><h2>Method Integration Inventory</h2><p>Implementation status is not a benchmark submission and does not affect ranking.</p></div></div>
+      <div class="method-inventory" id="method-inventory"></div>
+    </section>
+
+    <section class="panel" id="protocol">
+      <div class="section-heading"><div><h2>Evaluation Contract</h2><p>Dataset-specific metrics remain separate; numbers are never merged across incompatible spaces.</p></div><a class="section-link" href="https://github.com/ZeyuLing/Motius/blob/main/docs/tasks/monocular_motion_capture.md">Protocol Card</a></div>
+      <div class="protocol">
+        <article><h3>3DPW Test · Camera</h3><p>Official person tracks and valid masks. Pelvis-aligned <code>MPJPE</code>, per-frame similarity-aligned <code>PA-MPJPE</code>, compatible-model <code>PVE</code>, and fps-aware acceleration.</p></article>
+        <article><h3>EMDB-1 · Camera</h3><p>Official <code>emdb1</code> sequence flags and <code>good_frames_mask</code>. Camera-coordinate pose and surface accuracy; no world-space claims for camera-only methods.</p></article>
+        <article><h3>EMDB-2 · World</h3><p>Official <code>emdb2</code> flags. <code>W-MPJPE</code> aligns the first two frames; <code>WA-MPJPE</code> aligns each full 100-frame chunk, plus RTE, jitter, and foot sliding.</p></article>
+      </div>
+    </section>
+
+    <footer class="footer"><span>Motius open motion evaluation</span><span id="updated">—</span></footer>
+  </main>
+  <script src="leaderboard.js"></script>
+</body>
+</html>

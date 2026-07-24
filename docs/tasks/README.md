@@ -41,6 +41,7 @@ Task names link to their leaderboard, never back to this definition page.
 | [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) | Music ± text → dance | Beat-aligned dance · API alias `M2D` | AIST++ |
 | [Dance-to-Music](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) | Dance → music | Motion-conditioned audio · API alias `D2M` | AIST++ |
 | [Speech-to-Gesture](https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard) | Speech ± caption → gesture | Co-speech gesture · API alias `S2G` | BEAT2 |
+| [Monocular Motion Capture](https://huggingface.co/spaces/ZeyuLing/monocular-motion-capture-leaderboard) | Monocular RGB video → body motion | Camera-relative · world-grounded · multi-person tracking | 3DPW Test · EMDB-1/2 protocol support |
 
 Robot representations, human-to-robot retargeting, G1 export, and external
 runtime wrappers are implementation capabilities rather than standalone tasks.
@@ -187,6 +188,19 @@ caption.
 **Output:** a synchronized co-speech gesture motion.
 
 `S2G` is an accepted API alias.
+
+### Monocular Motion Capture
+
+**Input:** one monocular RGB video, optionally with a target-person track or
+crop.
+
+**Output:** time-aligned body parameters, joints, or mesh geometry in explicitly
+declared camera and, when estimated, world coordinate systems.
+
+The registered 3DPW Test benchmark uses official person tracks and camera-space
+metrics. EMDB-1 camera-space and EMDB-2 world-space manifests, materialization,
+and evaluators are implemented, but become public benchmark settings only
+after licensed data is available for a complete verified run.
 
 ## Naming Contract ✅
 

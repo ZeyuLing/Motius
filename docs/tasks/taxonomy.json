@@ -90,6 +90,12 @@
         "S2G"
       ],
       "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard"
+    },
+    {
+      "id": "monocular_motion_capture",
+      "label": "Monocular Motion Capture",
+      "aliases": [],
+      "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/monocular-motion-capture-leaderboard"
     }
   ],
   "benchmarks": [
@@ -212,6 +218,14 @@
       "protocol_id": "beat2-test-v1",
       "artifact_root": "outputs/evaluation/speech_to_gesture/speech_to_gesture_beat2/beat2-test-v1",
       "target": "https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard"
+    },
+    {
+      "id": "monocular_motion_capture_3dpw_test",
+      "label": "Monocular Motion Capture · 3DPW Test",
+      "task": "monocular_motion_capture",
+      "protocol_id": "3dpw_test_camera_v1",
+      "artifact_root": "outputs/evaluation/monocular_capture/3dpw_test",
+      "target": "https://huggingface.co/spaces/ZeyuLing/monocular-motion-capture-leaderboard"
     }
   ]
 }

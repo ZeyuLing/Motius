@@ -7,7 +7,7 @@
   <a href="../evaluation/physical_metrics.md">🏃 Physical Metrics</a>
 </p>
 
-Motius maintains fifteen benchmark settings. Benchmark titles follow
+Motius maintains sixteen benchmark settings. Benchmark titles follow
 `Task · Dataset/Protocol`, so the name identifies both the task and the
 contract that makes scores comparable.
 
@@ -36,6 +36,7 @@ Editing. The canonical vocabulary lives in the
 | **Music-to-Dance · AIST++** | Dance quality, diversity, beat alignment, and physical diagnostics on AIST++. | [↗ Results](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) · [🧾 Source](hf_space_music_to_dance) · [📐 Evaluator](../evaluator_zoo/aistpp_music_to_dance.md) |
 | **Dance-to-Music · AIST++** | Motion-conditioned music generation with synchronized audio and motion beat diagnostics. | [↗ Results](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) · [🧾 Source](hf_space_dance_to_music) |
 | **Speech-to-Gesture · BEAT2** | Speech-conditioned co-speech gesture generation under the fixed BEAT2 protocol. | [↗ Results](https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard) |
+| **Monocular Motion Capture · 3DPW Test** | Official person tracks, valid-frame masks, declared body topology, and camera-space pose/acceleration metrics under `3dpw_test_camera_v1`. | [↗ Results](https://huggingface.co/spaces/ZeyuLing/monocular-motion-capture-leaderboard) · [🧾 Source](hf_space_monocular_capture) · [📋 Protocol](../tasks/monocular_motion_capture.md) |
 
 ## Result Contract ✅
 
