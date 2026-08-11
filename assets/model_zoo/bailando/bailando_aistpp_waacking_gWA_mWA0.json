@@ -1,0 +1,26 @@
+{
+  "sequence_id": "gWA_sBM_cAll_d25_mWA0_ch01",
+  "genre": "waacking",
+  "source": "Bailando epoch-10 AIST++ generation",
+  "keys": [
+    "global_orient",
+    "body_pose",
+    "transl",
+    "motion_135",
+    "fit_mpjpe_mm",
+    "source_fps",
+    "target_fps",
+    "rotation_init"
+  ],
+  "fit_mpjpe_mm_mean": 13.714078903198242,
+  "fit_mpjpe_mm_p95": 16.049754047393794,
+  "rotation_init": "position_ik",
+  "source_fps": 60.0,
+  "target_fps": 30.0,
+  "mp4": "assets/model_zoo/bailando/bailando_aistpp_waacking_gWA_mWA0_smpl_mesh.mp4",
+  "gif": "assets/model_zoo/bailando/bailando_aistpp_waacking_gWA_mWA0_smpl_mesh_512_30fps.gif",
+  "frames": 180,
+  "fps": 30,
+  "width": 512,
+  "height": 512
+}

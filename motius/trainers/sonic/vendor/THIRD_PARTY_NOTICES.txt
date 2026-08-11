@@ -1,0 +1,13 @@
+THIRD-PARTY ASSET NOTICE
+------------------------
+
+The Unitree G1 robot description and mesh files under
+`gear_sonic/data/assets/robot_description/` originate from the Unitree robot
+description assets distributed with NVlabs/GR00T-WholeBodyControl.
+
+Copyright (c) 2016-2023 HangZhou YuShu TECHNOLOGY CO.,LTD.
+("Unitree Robotics")
+
+License: BSD-3-Clause. The full upstream project license is preserved in
+`UPSTREAM_LICENSE`. Model weights remain governed by the NVIDIA Open Model
+License shipped with the corresponding checkpoint artifact.

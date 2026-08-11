@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>BABEL Sequence Audit</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17202a;
+      --muted: #687481;
+      --line: #d7dee5;
+      --paper: #f4f6f8;
+      --surface: #ffffff;
+      --control: #e8edf2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+    button, select, input { font: inherit; }
+    header {
+      min-height: 72px;
+      padding: 15px clamp(16px, 3vw, 42px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+    .title { display: flex; align-items: baseline; gap: 13px; min-width: 0; }
+    h1 { margin: 0; font-size: 22px; line-height: 1.1; font-weight: 730; }
+    .protocol {
+      min-width: 0;
+      color: var(--muted);
+      font: 12px/1.2 ui-monospace, monospace;
+      overflow-wrap: anywhere;
+    }
+    .selectors { display: flex; align-items: center; gap: 8px; }
+    select, button {
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--ink);
+      background: var(--surface);
+    }
+    select { min-width: 132px; padding: 0 30px 0 10px; }
+    button { min-width: 38px; padding: 0 11px; cursor: pointer; }
+    button:hover { background: var(--control); }
+    main { width: min(1500px, 100%); margin: 0 auto; padding: 18px clamp(12px, 2vw, 28px) 32px; }
+    .stage {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      border: 1px solid var(--line);
+      background: var(--line);
+    }
+    .viewport { position: relative; height: clamp(300px, 42vh, 470px); overflow: hidden; background: var(--surface); }
+    .viewport-label {
+      position: absolute;
+      z-index: 2;
+      top: 14px;
+      left: 16px;
+      padding-bottom: 5px;
+      border-bottom: 3px solid currentColor;
+      font-size: 12px;
+      font-weight: 720;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+    .facing-label {
+      position: absolute;
+      z-index: 2;
+      right: 14px;
+      bottom: 12px;
+      color: #137f72;
+      font-size: 11px;
+      font-weight: 720;
+      text-transform: uppercase;
+      cursor: help;
+      pointer-events: auto;
+    }
+    canvas { display: block; width: 100%; height: 100%; }
+    .transport {
+      display: grid;
+      grid-template-columns: auto minmax(120px, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 4px 13px;
+    }
+    #scrubber { width: 100%; accent-color: #1f2937; }
+    #frameLabel { min-width: 122px; color: var(--muted); font: 12px/1 ui-monospace, monospace; text-align: right; }
+    .segments { border-top: 1px solid var(--line); background: var(--surface); }
+    .segment {
+      width: 100%;
+      min-height: 108px;
+      display: grid;
+      grid-template-columns: 9px minmax(190px, 1.08fr) minmax(230px, 1fr) minmax(230px, 1fr) 104px;
+      align-items: stretch;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      padding: 0;
+      text-align: left;
+      background: var(--surface);
+      cursor: pointer;
+    }
+    .segment:last-child { border-bottom: 0; }
+    .segment:hover, .segment.active { background: #f1f4f6; }
+    .segment.active .caption { font-weight: 700; }
+    .stripe { background: var(--segment); }
+    .caption { padding: 17px 16px 14px; font-size: 15px; line-height: 1.45; }
+    .raw { display: block; margin-top: 5px; color: var(--muted); font-size: 13px; line-height: 1.35; font-weight: 400; }
+    .range { padding: 18px 12px; color: var(--muted); font: 12px/1.5 ui-monospace, monospace; text-align: right; }
+    .retrieval-cell {
+      min-width: 0;
+      padding: 15px 14px;
+      border-left: 1px solid var(--line);
+      background: #fbfcfd;
+    }
+    .retrieval-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .retrieval-source { color: var(--muted); font-size: 12px; font-weight: 760; text-transform: uppercase; }
+    .rank-status {
+      flex: 0 0 auto;
+      padding: 2px 5px;
+      border: 1px solid #d29b2f;
+      border-radius: 4px;
+      color: #805d12;
+      background: #fff8e5;
+      font: 12px/1.3 ui-monospace, monospace;
+    }
+    .rank-status.hit { border-color: #62a97e; color: #28623d; background: #eef8f1; }
+    .nearest-text {
+      margin-top: 7px;
+      overflow: hidden;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.35;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .retrieval-meta { margin-top: 5px; color: var(--muted); font: 12px/1.4 ui-monospace, monospace; }
+    details { margin-top: 7px; color: var(--muted); font-size: 12px; }
+    summary { width: fit-content; cursor: pointer; }
+    .ranking-label {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 760;
+      text-transform: uppercase;
+    }
+    .ranking { margin: 6px 0 0; padding: 0; list-style: none; }
+    .ranking li {
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr) auto;
+      gap: 5px;
+      padding: 3px 0;
+      border-top: 1px solid #e7ebef;
+      color: var(--ink);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .ranking .distance { color: var(--muted); font-family: ui-monospace, monospace; }
+    .ranking .positive { color: #287147; font-weight: 720; }
+    .loading {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      background: rgba(244, 246, 248, .94);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 800px) {
+      header { align-items: flex-start; flex-direction: column; }
+      .title { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .stage { grid-template-columns: 1fr; }
+      .viewport { height: 42vh; min-height: 310px; }
+      .segment { grid-template-columns: 8px minmax(0, 1fr); }
+      .stripe { grid-row: 1 / span 3; }
+      .caption, .retrieval-cell { grid-column: 2; }
+      .retrieval-cell { border-left: 0; border-top: 1px solid var(--line); }
+      .range { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading" id="loading">Loading BABEL episode</div>
+  <header>
+    <div class="title"><h1>BABEL Sequence Audit</h1><span class="protocol" id="protocol"></span></div>
+    <div class="selectors">
+      <select id="episodeSelect" aria-label="Episode"></select>
+      <select id="speedSelect" aria-label="Playback speed">
+        <option value="0.5">0.5x</option><option value="1" selected>1x</option><option value="1.5">1.5x</option><option value="2">2x</option>
+      </select>
+    </div>
+  </header>
+  <main>
+    <section class="stage" id="stage" aria-label="Synchronized motion comparison"></section>
+    <div class="transport">
+      <button id="playButton" title="Play or pause" aria-label="Play or pause">▶</button>
+      <input id="scrubber" type="range" min="0" max="1" value="0" step="1" aria-label="Frame">
+      <span id="frameLabel">0000 / 0000</span>
+    </div>
+    <section class="segments" id="segments" aria-label="Captioned subclips"></section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script type="module">
+    const manifest = await fetch("manifest.json").then((response) => response.json());
+    const parents = manifest.parents;
+    const episodeSelect = document.getElementById("episodeSelect");
+    const speedSelect = document.getElementById("speedSelect");
+    const scrubber = document.getElementById("scrubber");
+    const frameLabel = document.getElementById("frameLabel");
+    const playButton = document.getElementById("playButton");
+    const segmentRoot = document.getElementById("segments");
+    document.getElementById("protocol").textContent = manifest.protocol;
+    manifest.episodes.forEach((episode, index) => {
+      const option = document.createElement("option");
+      option.value = String(index);
+      option.textContent = episode.case_id;
+      episodeSelect.appendChild(option);
+    });
+
+    function makeScene(container) {
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xf5f7f9);
+      scene.fog = new THREE.Fog(0xf5f7f9, 9, 22);
+      const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.outputEncoding = THREE.sRGBEncoding;
+      renderer.shadowMap.enabled = true;
+      container.appendChild(renderer.domElement);
+      const camera = new THREE.PerspectiveCamera(34, 1, 0.05, 60);
+      camera.position.set(3.5, 2.4, 5.3);
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.target.set(0, 0.9, 0);
+      controls.enableDamping = true;
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x788491, 1.7));
+      const key = new THREE.DirectionalLight(0xffffff, 2.4);
+      key.position.set(3, 6, 4);
+      key.castShadow = true;
+      scene.add(key);
+      const floor = new THREE.Mesh(
+        new THREE.PlaneGeometry(14, 14),
+        new THREE.MeshStandardMaterial({ color: 0xe8edf1, roughness: .96 })
+      );
+      floor.rotation.x = -Math.PI / 2;
+      floor.receiveShadow = true;
+      scene.add(floor);
+      const grid = new THREE.GridHelper(14, 56, 0xaeb8c2, 0xd4dae0);
+      grid.position.y = .002;
+      scene.add(grid);
+
+      const facingArrow = new THREE.ArrowHelper(
+        new THREE.Vector3(0, 0, 1),
+        new THREE.Vector3(0, .025, 0),
+        .75,
+        0x137f72,
+        .16,
+        .09
+      );
+      scene.add(facingArrow);
+      const trajectoryGroup = new THREE.Group();
+      scene.add(trajectoryGroup);
+      const resize = () => {
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        renderer.setSize(width, height, false);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      };
+      window.addEventListener("resize", resize);
+      resize();
+      return { scene, renderer, camera, controls, floor, grid, facingArrow, trajectoryGroup };
+    }
+
+    const faces = new Uint32Array(await fetch(manifest.mesh.faces_file).then((response) => response.arrayBuffer()));
+
+    function makeBodyMesh(env, color) {
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute("position", new THREE.BufferAttribute(new Float32Array(manifest.mesh.vertex_count * 3), 3));
+      geometry.setIndex(new THREE.BufferAttribute(faces, 1));
+      const material = new THREE.MeshStandardMaterial({
+        color,
+        roughness: .62,
+        metalness: .02,
+        side: THREE.DoubleSide,
+      });
+      const body = new THREE.Mesh(geometry, material);
+      body.castShadow = true;
+      body.receiveShadow = true;
+      env.scene.add(body);
+      return { body, geometry, material };
+    }
+
+    function updateBodyMesh(view, asset, frame) {
+      const indices = asset.keyframeIndices;
+      let hi = 0;
+      while (hi < indices.length && indices[hi] < frame) hi++;
+      if (hi >= indices.length) hi = indices.length - 1;
+      const lo = Math.max(0, hi - (indices[hi] > frame ? 1 : 0));
+      const span = Math.max(1, indices[hi] - indices[lo]);
+      const alpha = hi === lo ? 0 : (frame - indices[lo]) / span;
+      const width = asset.vertexCount * 3;
+      const loBase = lo * width;
+      const hiBase = hi * width;
+      const position = view.mesh.geometry.attributes.position.array;
+      for (let index = 0; index < width; index++) {
+        const axis = index % 3;
+        const q = asset.quantized[loBase + index] * (1 - alpha) + asset.quantized[hiBase + index] * alpha;
+        position[index] = asset.minimum[axis] + q * asset.scale[axis];
+      }
+      view.mesh.geometry.attributes.position.needsUpdate = true;
+      view.mesh.geometry.computeVertexNormals();
+      view.mesh.geometry.computeBoundingSphere();
+    }
+
+    const yAxis = new THREE.Vector3(0, 1, 0);
+    const facingLeft = new THREE.Vector3();
+    const facingAcrossShoulders = new THREE.Vector3();
+    const facingForward = new THREE.Vector3();
+    const facingOrigin = new THREE.Vector3();
+    function updateFacingArrow(env, data, frame) {
+      const base = frame * 66;
+      const originX = data[0];
+      const originZ = data[2];
+      const joint = (index, target) => {
+        const offset = base + index * 3;
+        return target.set(
+          data[offset] - originX,
+          data[offset + 1],
+          data[offset + 2] - originZ
+        );
+      };
+      const leftHip = joint(1, new THREE.Vector3());
+      const rightHip = joint(2, new THREE.Vector3());
+      const leftShoulder = joint(16, new THREE.Vector3());
+      const rightShoulder = joint(17, new THREE.Vector3());
+      facingLeft
+        .subVectors(leftHip, rightHip)
+        .add(facingAcrossShoulders.subVectors(leftShoulder, rightShoulder));
+      facingLeft.y = 0;
+      if (facingLeft.lengthSq() < 1e-10) facingLeft.set(1, 0, 0);
+      else facingLeft.normalize();
+      facingForward.crossVectors(facingLeft, yAxis).normalize();
+      joint(0, facingOrigin);
+      facingOrigin.y = .025;
+      env.facingArrow.position.copy(facingOrigin);
+      env.facingArrow.setDirection(facingForward);
+    }
+
+    const stageRoot = document.getElementById("stage");
+    const methodViews = new Map(manifest.methods.map((method) => {
+      const viewport = document.createElement("div");
+      viewport.className = "viewport";
+      const label = document.createElement("div");
+      label.className = "viewport-label";
+      label.style.color = method.accent;
+      label.textContent = method.label;
+      viewport.appendChild(label);
+      const facingLabel = document.createElement("div");
+      facingLabel.className = "facing-label";
+      facingLabel.textContent = "Body facing";
+      facingLabel.title = "Current body-facing direction estimated from the hips and shoulders; this is not root velocity.";
+      viewport.appendChild(facingLabel);
+      stageRoot.appendChild(viewport);
+      const env = makeScene(viewport);
+      return [method.key, { method, env, mesh: makeBodyMesh(env, method.accent) }];
+    }));
+
+    function clearTrajectories(env) {
+      while (env.trajectoryGroup.children.length) {
+        const line = env.trajectoryGroup.children[env.trajectoryGroup.children.length - 1];
+        env.trajectoryGroup.remove(line);
+        line.geometry.dispose();
+        line.material.dispose();
+      }
+    }
+
+    function addTrajectories(env, data, episode) {
+      const originX = data[0];
+      const originZ = data[2];
+      for (const segment of episode.segments) {
+        const points = [];
+        for (let frame = segment.start_frame; frame < segment.end_frame; frame++) {
+          const base = frame * 66;
+          points.push(new THREE.Vector3(
+            data[base] - originX,
+            .018,
+            data[base + 2] - originZ
+          ));
+        }
+        if (points.length < 2) continue;
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+        env.trajectoryGroup.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: segment.color })));
+      }
+    }
+
+    function fitTrajectoryCamera(env, data, frames) {
+      const originX = data[0];
+      const originZ = data[2];
+      let minX = 0;
+      let maxX = 0;
+      let minZ = 0;
+      let maxZ = 0;
+      for (let frame = 0; frame < frames; frame++) {
+        const base = frame * 66;
+        const x = data[base] - originX;
+        const z = data[base + 2] - originZ;
+        minX = Math.min(minX, x);
+        maxX = Math.max(maxX, x);
+        minZ = Math.min(minZ, z);
+        maxZ = Math.max(maxZ, z);
+      }
+      const span = Math.max(maxX - minX, maxZ - minZ, 3.2);
+      env.controls.target.set(0, .9, 0);
+      env.camera.position.set(3.2, 2.45, 5.6);
+      env.followRoot = new THREE.Vector2(0, 0);
+      const floorSize = Math.max(14, span * 1.45);
+      const floorScale = floorSize / 14;
+      env.floor.scale.set(floorScale, floorScale, 1);
+      env.grid.scale.set(floorScale, 1, floorScale);
+      env.controls.update();
+    }
+
+    function updateFollowCamera(env, data, frame) {
+      const base = frame * 66;
+      const rootX = data[base] - data[0];
+      const rootZ = data[base + 2] - data[2];
+      const previous = env.followRoot || new THREE.Vector2(0, 0);
+      const dx = rootX - previous.x;
+      const dz = rootZ - previous.y;
+      env.camera.position.x += dx;
+      env.camera.position.z += dz;
+      env.controls.target.x += dx;
+      env.controls.target.z += dz;
+      previous.set(rootX, rootZ);
+      env.followRoot = previous;
+    }
+
+    let episode;
+    let motionData = new Map();
+    let meshData = new Map();
+    let frame = 0;
+    // Keep the audit on the actual canonical frame until the user starts it.
+    let playing = false;
+    let lastTime = performance.now();
+    let accumulator = 0;
+    let activeSegment = -1;
+
+    async function loadFloat32(path) {
+      return new Float32Array(await fetch(path).then((response) => response.arrayBuffer()));
+    }
+
+    async function loadMeshAsset(spec) {
+      return {
+        quantized: new Uint16Array(await fetch(spec.vertices_file).then((response) => response.arrayBuffer())),
+        keyframeIndices: spec.keyframe_indices,
+        vertexCount: spec.vertex_count,
+        minimum: spec.quantization_min,
+        scale: spec.quantization_scale,
+      };
+    }
+
+    function currentSegmentIndex(value) {
+      return episode.segments.findIndex((item) => value >= item.start_frame && value < item.end_frame);
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function retrievalCell(label, audit) {
+      if (!audit || !audit.evaluated) {
+        return `<div class="retrieval-cell"><span class="retrieval-source">${label}</span><div class="retrieval-meta">Not included in the complete recall batches</div></div>`;
+      }
+      const motionToText = audit.motion_to_text;
+      const textToMotion = audit.text_to_motion;
+      const top = motionToText.top;
+      const rank = textToMotion.positive_rank;
+      const hit = rank !== null && rank <= 3;
+      const rankingRows = (items) => items.map((item, index) => `
+        <li>
+          <span>#${index + 1}</span>
+          <span class="${item.is_positive ? "positive" : ""}" title="BABEL: ${escapeHtml(item.raw_label || "")}">${escapeHtml(item.caption)}</span>
+          <span class="distance">${item.distance.toFixed(2)}</span>
+        </li>`).join("");
+      return `
+        <div class="retrieval-cell">
+          <div class="retrieval-head">
+            <span class="retrieval-source">${label} · Motion→Text</span>
+            <span class="rank-status ${hit ? "hit" : ""}">T→M ${hit ? "hit" : "miss"} · #${rank}</span>
+          </div>
+          <div class="nearest-text" title="${escapeHtml(top[0].caption)}">#1 ${escapeHtml(top[0].caption)}</div>
+          <div class="retrieval-meta">M→T positive #${motionToText.positive_rank} · batch ${audit.batch_index + 1}</div>
+          <details>
+            <summary>Both Top-${top.length} rankings</summary>
+            <span class="ranking-label">Motion→Text</span>
+            <ol class="ranking">${rankingRows(motionToText.top)}</ol>
+            <span class="ranking-label">Text→Motion</span>
+            <ol class="ranking">${rankingRows(textToMotion.top)}</ol>
+          </details>
+        </div>`;
+    }
+
+    function setFrame(value) {
+      frame = Math.max(0, Math.min(episode.frames - 1, Math.round(value)));
+      scrubber.value = String(frame);
+      methodViews.forEach((view, key) => {
+        updateFollowCamera(view.env, motionData.get(key), frame);
+        updateBodyMesh(view, meshData.get(key), frame);
+        updateFacingArrow(view.env, motionData.get(key), frame);
+      });
+      frameLabel.textContent = `${String(frame + 1).padStart(4, "0")} / ${String(episode.frames).padStart(4, "0")}`;
+      const index = currentSegmentIndex(frame);
+      if (index !== activeSegment && index >= 0) {
+        activeSegment = index;
+        const color = episode.segments[index].color;
+        methodViews.forEach((view) => view.mesh.material.color.set(color));
+        [...segmentRoot.children].forEach((node, nodeIndex) => node.classList.toggle("active", nodeIndex === index));
+      }
+    }
+
+    function renderSegmentRows() {
+      segmentRoot.innerHTML = "";
+      episode.segments.forEach((segment) => {
+        const row = document.createElement("article");
+        row.className = "segment";
+        row.tabIndex = 0;
+        row.setAttribute("role", "button");
+        row.style.setProperty("--segment", segment.color);
+        const seconds = ((segment.end_frame - segment.start_frame) / episode.fps).toFixed(1);
+        const categories = (segment.action_categories || []).map((values) => values.join(" + ")).join(" → ");
+        row.innerHTML = `<span class="stripe"></span><span class="caption">${escapeHtml(segment.caption)}<span class="raw">BABEL: ${escapeHtml(segment.raw_label)}</span><span class="raw">act_cat: ${escapeHtml(categories)}</span></span>${retrievalCell("BABEL GT", segment.retrieval?.gt)}${retrievalCell("FlowMDM", segment.retrieval?.flowmdm)}<span class="range">${segment.start_frame}–${segment.end_frame}<br>${seconds}s</span>`;
+        row.addEventListener("click", (event) => {
+          if (!event.target.closest("details")) setFrame(segment.start_frame);
+        });
+        row.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") setFrame(segment.start_frame);
+        });
+        segmentRoot.appendChild(row);
+      });
+    }
+
+    async function loadEpisode(index) {
+      document.getElementById("loading").style.display = "grid";
+      episode = manifest.episodes[index];
+      const loaded = await Promise.all(manifest.methods.map(async (method) => [
+        method.key,
+        await loadFloat32(episode.motion_files[method.key]),
+      ]));
+      motionData = new Map(loaded);
+      const loadedMeshes = await Promise.all(manifest.methods.map(async (method) => [
+        method.key,
+        await loadMeshAsset(episode.mesh_files[method.key]),
+      ]));
+      meshData = new Map(loadedMeshes);
+      methodViews.forEach((view, key) => {
+        clearTrajectories(view.env);
+        const data = motionData.get(key);
+        addTrajectories(view.env, data, episode);
+        fitTrajectoryCamera(view.env, data, episode.frames);
+      });
+      scrubber.max = String(episode.frames - 1);
+      activeSegment = -1;
+      renderSegmentRows();
+      setFrame(0);
+      document.getElementById("loading").style.display = "none";
+    }
+
+    episodeSelect.addEventListener("change", () => loadEpisode(Number(episodeSelect.value)));
+    scrubber.addEventListener("input", () => { playing = false; playButton.textContent = "▶"; setFrame(Number(scrubber.value)); });
+    playButton.addEventListener("click", () => { playing = !playing; playButton.textContent = playing ? "❚❚" : "▶"; });
+    await loadEpisode(0);
+
+    function animate(now) {
+      requestAnimationFrame(animate);
+      const delta = Math.min((now - lastTime) / 1000, .1);
+      lastTime = now;
+      if (playing) {
+        accumulator += delta * Number(speedSelect.value) * episode.fps;
+        if (accumulator >= 1) {
+          const advance = Math.floor(accumulator);
+          accumulator -= advance;
+          setFrame((frame + advance) % episode.frames);
+        }
+      }
+      methodViews.forEach((view) => {
+        view.env.controls.update();
+        view.env.renderer.render(view.env.scene, view.env.camera);
+      });
+    }
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

@@ -1,0 +1,623 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+"""Configuration classes for base simulator and domain randomization."""
+
+from typing import Literal, Tuple, List, Dict, Optional, Any, Union
+import torch
+import re
+from dataclasses import dataclass, field
+
+
+def get_matching_indices(
+    names: List[str],
+    names_to_match: Optional[List[str]] = None,
+    indices_to_match: Optional[List[int]] = None,
+) -> List[int]:
+    """
+    Get the indices of the names that match the given names or indices.
+
+    Args:
+        names: List of all available names
+        names_to_match: List of regex patterns to match against names
+        indices_to_match: List of indices to return directly
+
+    Returns:
+        List of indices where names match the regex patterns
+    """
+    assert (
+        names_to_match is not None or indices_to_match is not None
+    ), "Either names_to_match or indices_to_match must be provided"
+    assert (
+        names_to_match is None or indices_to_match is None
+    ), "Only one of names_to_match or indices_to_match must be provided"
+
+    if names_to_match is not None:
+        # Set to store unique matching names (avoid duplicates from multiple regex)
+        matching_names = set()
+
+        # Go over all regex patterns
+        for regex_pattern in names_to_match:
+            # Find all names that match the current regex
+            for i, name in enumerate(names):
+                if re.fullmatch(regex_pattern, name):
+                    assert (
+                        i not in matching_names
+                    ), f"Multiple regex patterns match the same name {name}"
+                    matching_names.add(i)
+
+        # Get indices for all unique matching names
+        return list(matching_names)
+
+    return indices_to_match
+
+
+@dataclass
+class MarkerConfig:
+    """Configuration for a single marker instance."""
+
+    size: Literal["tiny", "small", "regular"] = field(
+        default="regular", metadata={"help": "Marker size for visualization."}
+    )
+
+
+@dataclass
+class VisualizationMarkerConfig:
+    """Configuration for a group of visualization markers."""
+
+    type: Literal["sphere", "arrow"] = field(
+        default="sphere", metadata={"help": "Marker geometry type."}
+    )
+    color: Tuple[float, float, float] = field(
+        default=(1.0, 0.0, 0.0), metadata={"help": "RGB color values (0-1)."}
+    )
+    markers: List[MarkerConfig] = field(
+        default_factory=list, metadata={"help": "List of marker configurations."}
+    )
+
+
+@dataclass
+class MarkerState:
+    """Represents the state of a marker in 3D space."""
+
+    translation: torch.Tensor = field(
+        default=None, metadata={"help": "Translation vector (position)."}
+    )
+    orientation: torch.Tensor = field(
+        default=None, metadata={"help": "Orientation quaternion."}
+    )
+    color: Optional[Tuple[float, float, float]] = field(
+        default=None, metadata={"help": "Optional RGB color override."}
+    )
+
+
+@dataclass
+class ActionNoiseDomainRandomizationConfig:
+    """Configuration for action noise domain randomization."""
+
+    action_noise_range: Tuple[float, float] = field(
+        default=None, metadata={"help": "Range (min, max) for action noise."}
+    )
+    dof_names: Optional[List[str]] = field(
+        default=None, metadata={"help": "DOF names to apply noise to (regex patterns)."}
+    )
+    dof_indices: Optional[List[int]] = field(
+        default=None, metadata={"help": "DOF indices to apply noise to."}
+    )
+
+    def __post_init__(self):
+        """Validate that dof_names and dof_indices are not both provided."""
+        if self.dof_names is not None and self.dof_indices is not None:
+            raise ValueError("Only one of dof_names or dof_indices must be provided.")
+        if self.dof_names is None and self.dof_indices is None:
+            raise ValueError("Either dof_names or dof_indices must be provided.")
+        if self.action_noise_range is None:
+            raise ValueError("action_noise_range must be provided.")
+        if self.action_noise_range[0] >= self.action_noise_range[1]:
+            raise ValueError(
+                "action_noise_range must be a tuple of two values where the first value is less than the second value."
+            )
+
+
+@dataclass
+class FrictionDomainRandomizationConfig:
+    """Configuration for friction domain randomization."""
+
+    num_buckets: int = field(
+        default=10,
+        metadata={"help": "Number of friction buckets for environments.", "min": 1},
+    )
+    static_friction_range: Tuple[float, float] = field(
+        default=(0.5, 1.5), metadata={"help": "Range (min, max) for static friction."}
+    )
+    dynamic_friction_range: Tuple[float, float] = field(
+        default=(0.5, 1.5), metadata={"help": "Range (min, max) for dynamic friction."}
+    )
+    restitution_range: Tuple[float, float] = field(
+        default=(0.0, 0.1), metadata={"help": "Range (min, max) for restitution."}
+    )
+    body_names: Optional[List[str]] = field(
+        default=None,
+        metadata={"help": "Body names to apply randomization to (regex patterns)."},
+    )
+    body_indices: Optional[List[int]] = field(
+        default=None, metadata={"help": "Body indices to apply randomization to."}
+    )
+
+    def __post_init__(self):
+        """Validate that body_names and body_indices are not both provided."""
+        if self.body_names is not None and self.body_indices is not None:
+            raise ValueError("Only one of body_names or body_indices must be provided.")
+        if self.body_names is None and self.body_indices is None:
+            raise ValueError("Either body_names or body_indices must be provided.")
+
+
+@dataclass
+class ObjectAssetDomainRandomizationConfig:
+    """Configuration for scene object asset domain randomization.
+
+    Ranges are absolute sampled values. When a range is set, it overrides the
+    matching base value from each scene object's ObjectOptions.
+    """
+
+    num_buckets: int = field(
+        default=10,
+        metadata={"help": "Number of object asset property buckets.", "min": 1},
+    )
+    static_friction_range: Optional[Tuple[float, float]] = field(
+        default=None,
+        metadata={"help": "Absolute range (min, max) for object static friction."},
+    )
+    dynamic_friction_range: Optional[Tuple[float, float]] = field(
+        default=None,
+        metadata={"help": "Absolute range (min, max) for object dynamic friction."},
+    )
+    restitution_range: Optional[Tuple[float, float]] = field(
+        default=None,
+        metadata={"help": "Absolute range (min, max) for object restitution."},
+    )
+    mass_range: Optional[Tuple[float, float]] = field(
+        default=None, metadata={"help": "Absolute range (min, max) for object mass."}
+    )
+    density_range: Optional[Tuple[float, float]] = field(
+        default=None,
+        metadata={"help": "Absolute range (min, max) for object density."},
+    )
+    center_of_mass_range: Optional[Dict[str, Tuple[float, float]]] = field(
+        default=None,
+        metadata={
+            "help": (
+                "Absolute local center-of-mass range per axis, e.g. "
+                "{'x': (-0.05, 0.05), 'y': (0.0, 0.0), 'z': (0.0, 0.1)}."
+            )
+        },
+    )
+
+    def __post_init__(self):
+        if self.num_buckets < 1:
+            raise ValueError("num_buckets must be at least 1.")
+        if self.mass_range is not None and self.density_range is not None:
+            raise ValueError("Only one of mass_range or density_range may be set.")
+
+        range_fields = (
+            "static_friction_range",
+            "dynamic_friction_range",
+            "restitution_range",
+            "mass_range",
+            "density_range",
+            "center_of_mass_range",
+        )
+        if all(getattr(self, field_name) is None for field_name in range_fields):
+            raise ValueError(
+                "At least one object asset randomization range is required."
+            )
+        for field_name in range_fields:
+            value_range = getattr(self, field_name)
+            if value_range is None:
+                continue
+            if field_name == "center_of_mass_range":
+                self._validate_center_of_mass_range(value_range)
+                continue
+            if len(value_range) != 2 or value_range[0] >= value_range[1]:
+                raise ValueError(
+                    f"{field_name} must be a tuple of two values where min < max."
+                )
+
+    @staticmethod
+    def _validate_center_of_mass_range(
+        center_of_mass_range: Dict[str, Tuple[float, float]],
+    ) -> None:
+        if not center_of_mass_range:
+            raise ValueError("center_of_mass_range must define at least one axis.")
+        invalid_axes = set(center_of_mass_range) - {"x", "y", "z"}
+        if invalid_axes:
+            raise ValueError(
+                f"center_of_mass_range contains invalid axes: {invalid_axes}"
+            )
+        for axis, value_range in center_of_mass_range.items():
+            # Equal bounds let configs pin an axis while randomizing others.
+            if len(value_range) != 2 or value_range[0] > value_range[1]:
+                raise ValueError(
+                    f"center_of_mass_range['{axis}'] must be a tuple of two values where min <= max."
+                )
+
+    def sample(self, num_samples: int, num_assets: int, device=None) -> Dict[str, Any]:
+        """Sample absolute object asset properties for each bucket and asset."""
+
+        def sample_range(value_range):
+            if value_range is None:
+                return None
+            return (
+                torch.rand(num_samples, num_assets, device=device)
+                * (value_range[1] - value_range[0])
+                + value_range[0]
+            )
+
+        center_of_mass = None
+        if self.center_of_mass_range is not None:
+            center_of_mass = torch.zeros(
+                num_samples, num_assets, 3, device=device, dtype=torch.float
+            )
+            for axis_idx, axis in enumerate(("x", "y", "z")):
+                value_range = self.center_of_mass_range.get(axis)
+                if value_range is None:
+                    continue
+                center_of_mass[..., axis_idx] = (
+                    torch.rand(num_samples, num_assets, device=device)
+                    * (value_range[1] - value_range[0])
+                    + value_range[0]
+                )
+
+        return {
+            "static_friction": sample_range(self.static_friction_range),
+            "dynamic_friction": sample_range(self.dynamic_friction_range),
+            "restitution": sample_range(self.restitution_range),
+            "mass": sample_range(self.mass_range),
+            "density": sample_range(self.density_range),
+            "center_of_mass": center_of_mass,
+        }
+
+
+@dataclass
+class CenterOfMassDomainRandomizationConfig:
+    """Configuration for center of mass domain randomization."""
+
+    com_range: Dict[str, Tuple[float, float]] = field(
+        default_factory=dict,
+        metadata={
+            "help": "Range per axis: {'x': (-0.1, 0.1), 'y': (-0.1, 0.1), 'z': (-0.1, 0.1)}"
+        },
+    )
+    body_names: Optional[List[str]] = field(
+        default=None,
+        metadata={"help": "Body names to apply randomization to (regex patterns)."},
+    )
+    body_indices: Optional[List[int]] = field(
+        default=None, metadata={"help": "Body indices to apply randomization to."}
+    )
+
+    def __post_init__(self):
+        """Validate that com_range is a dictionary with valid keys."""
+        if self.com_range is None:
+            raise ValueError("com_range must be a dictionary with valid keys.")
+        if not all(key in ["x", "y", "z"] for key in self.com_range.keys()):
+            raise ValueError("com_range must be a dictionary with valid keys.")
+        if self.body_names is None and self.body_indices is None:
+            raise ValueError("Either body_names or body_indices must be provided.")
+        if self.body_names is not None and self.body_indices is not None:
+            raise ValueError("Only one of body_names or body_indices must be provided.")
+
+
+@dataclass
+class RobotNoiseConfig:
+    """Configuration for robot state noise.
+
+    Used for both observation noise (domain randomization during training) and
+    reset noise (Reference State Initialization / RSI).
+
+    For observation noise: adds noise to state observations for sim-to-real transfer.
+    When enabled, regular state variables have noise applied while privileged_*
+    versions remain clean for asymmetric actor-critic training.
+
+    For reset noise (RSI): adds noise to the robot's physics state during
+    environment resets, helping the policy learn to recover from imperfect
+    initial conditions.
+
+    Noise values are scales for additive uniform noise in [-scale, +scale].
+    Each field accepts a scalar (uniform across all axes) or a list for
+    per-axis control (e.g., [x, y, z]).
+
+    Observation noise is applied hierarchically:
+    - DOF noise: applied to joint positions and velocities
+    - Root noise: applied to root body orientation and angular velocity
+    - Anchor noise: applied to anchor body orientation and angular velocity
+    - Whole-body noise: applied to all rigid body positions, rotations, velocities
+
+    Root and anchor noise are applied on top of clean (privileged) data,
+    not on already-noisy whole-body data.
+    """
+
+    # DOF-level noise
+    dof_pos_noise: Union[float, List[float]] = field(
+        default=0.0,
+        metadata={
+            "help": "Noise scale for DOF positions. Scalar or per-DOF list (radians)."
+        },
+    )
+    dof_vel_noise: Union[float, List[float]] = field(
+        default=0.0,
+        metadata={
+            "help": "Noise scale for DOF velocities. Scalar or per-DOF list (rad/s)."
+        },
+    )
+
+    # Root body noise
+    root_pos_noise: Union[float, List[float]] = field(
+        default=0.0,
+        metadata={
+            "help": "Noise scale for root position. Scalar or per-axis [x,y,z] (meters)."
+        },
+    )
+    root_rot_noise: Union[float, List[float]] = field(
+        default=0.0,
+        metadata={
+            "help": "Noise scale for root orientation. Scalar or per-axis [roll,pitch,yaw] (radians)."
+        },
+    )
+    root_vel_noise: Union[float, List[float]] = field(
+        default=0.0,
+        metadata={
+            "help": "Noise scale for root linear velocity. Scalar or per-axis [x,y,z] (m/s)."
+        },
+    )
+    root_ang_vel_noise: Union[float, List[float]] = field(
+        default=0.0,
+        metadata={
+            "help": "Noise scale for root angular velocity. Scalar or per-axis (rad/s)."
+        },
+    )
+
+    # Anchor body noise (observation noise only)
+    anchor_rot_noise: Union[float, List[float]] = field(
+        default=0.0,
+        metadata={"help": "Noise scale for anchor body orientation quaternion."},
+    )
+    anchor_ang_vel_noise: Union[float, List[float]] = field(
+        default=0.0,
+        metadata={"help": "Noise scale for anchor body angular velocity (rad/s)."},
+    )
+
+    # Whole-body noise (all rigid bodies, observation noise only)
+    body_pos_noise: Union[float, List[float]] = field(
+        default=0.0,
+        metadata={"help": "Noise scale for all rigid body positions (meters)."},
+    )
+    body_rot_noise: Union[float, List[float]] = field(
+        default=0.0,
+        metadata={"help": "Noise scale for all rigid body orientations (quaternion)."},
+    )
+    body_vel_noise: Union[float, List[float]] = field(
+        default=0.0,
+        metadata={"help": "Noise scale for all rigid body linear velocities (m/s)."},
+    )
+    body_ang_vel_noise: Union[float, List[float]] = field(
+        default=0.0,
+        metadata={"help": "Noise scale for all rigid body angular velocities (rad/s)."},
+    )
+
+    # Environment observation noise
+    ground_height_noise: Union[float, List[float]] = field(
+        default=0.0,
+        metadata={"help": "Noise scale for ground height observations (meters)."},
+    )
+
+    def _is_nonzero(self, value: Union[float, List[float]]) -> bool:
+        if isinstance(value, list):
+            return any(v != 0.0 for v in value)
+        return value != 0.0
+
+    def has_noise(self) -> bool:
+        """Check if any noise is configured."""
+        return (
+            self._is_nonzero(self.dof_pos_noise)
+            or self._is_nonzero(self.dof_vel_noise)
+            or self._is_nonzero(self.root_pos_noise)
+            or self._is_nonzero(self.root_rot_noise)
+            or self._is_nonzero(self.root_vel_noise)
+            or self._is_nonzero(self.root_ang_vel_noise)
+            or self._is_nonzero(self.anchor_rot_noise)
+            or self._is_nonzero(self.anchor_ang_vel_noise)
+            or self._is_nonzero(self.body_pos_noise)
+            or self._is_nonzero(self.body_rot_noise)
+            or self._is_nonzero(self.body_vel_noise)
+            or self._is_nonzero(self.body_ang_vel_noise)
+            or self._is_nonzero(self.ground_height_noise)
+        )
+
+@dataclass
+class PushDomainRandomizationConfig:
+    """Configuration for push/perturbation domain randomization.
+
+    Applies random velocity impulses to the robot at random intervals to
+    simulate external disturbances (bumps, pushes) for sim-to-real transfer.
+
+    Push velocities are sampled uniformly from [-max, +max] for each component.
+    Push is enabled when any velocity component is non-zero.
+    """
+
+    push_interval_range: Tuple[float, float] = field(
+        default=(1.0, 3.0),
+        metadata={"help": "Range (min, max) in seconds between pushes."},
+    )
+    max_linear_velocity: Tuple[float, float, float] = field(
+        default=(0.0, 0.0, 0.0),
+        metadata={"help": "Max linear velocity impulse (x, y, z) in m/s."},
+    )
+    max_angular_velocity: Tuple[float, float, float] = field(
+        default=(0.0, 0.0, 0.0),
+        metadata={"help": "Max angular velocity impulse (roll, pitch, yaw) in rad/s."},
+    )
+
+    def __post_init__(self):
+        if self.push_interval_range[0] <= 0 or self.push_interval_range[1] <= 0:
+            raise ValueError("push_interval_range values must be positive.")
+        if self.push_interval_range[0] > self.push_interval_range[1]:
+            raise ValueError(
+                "push_interval_range[0] must be <= push_interval_range[1]."
+            )
+
+    def has_push(self) -> bool:
+        """Check if any push velocity is configured (non-zero)."""
+        return any(v != 0.0 for v in self.max_linear_velocity) or any(
+            v != 0.0 for v in self.max_angular_velocity
+        )
+
+
+@dataclass
+class ProjectileConfig:
+    """Configuration for projectile cube throwing (J-key perturbation)."""
+
+    num_projectiles: int = 5
+    cube_half_size_range: Tuple[float, float] = (0.05, 0.15)  # per-pool-index size
+    density: float = 500.0  # kg/m^3
+    speed_range: Tuple[float, float] = (30.0, 40.0)  # m/s (ASE uses 30-40)
+    spawn_distance_range: Tuple[float, float] = (4.0, 5.0)  # meters from robot
+    spawn_height_range: Tuple[float, float] = (
+        -0.65,
+        1.1,
+    )  # meters relative to robot root
+    direction_noise_std: float = 0.1  # std of Gaussian noise added to aim direction
+    hide_delay: float = 2.0  # seconds before cube disappears
+    hide_z: float = -2.0  # z-position when hidden
+
+    def get_sizes(self) -> list:
+        """Return per-pool-index half sizes, linearly interpolated."""
+        lo, hi = self.cube_half_size_range
+        n = self.num_projectiles
+        if n == 1:
+            return [lo]
+        return [lo + (hi - lo) * i / (n - 1) for i in range(n)]
+
+
+@dataclass
+class DomainRandomizationConfig:
+    """Configuration for domain randomization."""
+
+    action_noise: Optional[ActionNoiseDomainRandomizationConfig] = field(
+        default=None, metadata={"help": "Action noise configuration."}
+    )
+    friction: Optional[FrictionDomainRandomizationConfig] = field(
+        default=None, metadata={"help": "Friction randomization configuration."}
+    )
+    center_of_mass: Optional[CenterOfMassDomainRandomizationConfig] = field(
+        default=None, metadata={"help": "Center of mass randomization configuration."}
+    )
+    object_assets: Optional[ObjectAssetDomainRandomizationConfig] = field(
+        default=None,
+        metadata={"help": "Scene object asset property randomization configuration."},
+    )
+    observation_noise: Optional[RobotNoiseConfig] = field(
+        default=None,
+        metadata={"help": "Observation noise configuration for sim-to-real transfer."},
+    )
+    push: Optional[PushDomainRandomizationConfig] = field(
+        default=None,
+        metadata={"help": "Push/perturbation randomization for sim-to-real transfer."},
+    )
+
+
+@dataclass
+class SimParams:
+    """Configuration for core simulation parameters."""
+
+    fps: int = field(
+        default=60, metadata={"help": "Simulation frames per second.", "min": 1}
+    )
+    decimation: int = field(
+        default=4,
+        metadata={"help": "Number of physics steps per control step.", "min": 1},
+    )
+
+
+@dataclass
+class SimulatorConfig:
+    """Main configuration class for the simulator."""
+
+    _target_: str = field(
+        default=None, metadata={"help": "Path to the simulator class."}
+    )
+    w_last: bool = field(
+        default=None,
+        metadata={"help": "Quaternion format: True for xyzw, False for wxyz."},
+    )
+    headless: bool = field(
+        default=None, metadata={"help": "Run without GUI visualization."}
+    )
+    num_envs: int = field(
+        default=None, metadata={"help": "Number of parallel environments.", "min": 1}
+    )
+    sim: SimParams = field(
+        default=None, metadata={"help": "Simulation parameters (fps, decimation)."}
+    )
+    experiment_name: str = field(
+        default=None, metadata={"help": "Name for this experiment (used for logging)."}
+    )
+    camera: Optional[Any] = field(
+        default=None, metadata={"help": "Camera configuration for rendering."}
+    )
+    record_viewer: bool = field(
+        default=False, metadata={"help": "Record viewer output to video."}
+    )
+    viewer_record_dir: str = field(
+        default="output/recordings/viewer",
+        metadata={"help": "Directory for viewer recordings."},
+    )
+    domain_randomization: Optional[DomainRandomizationConfig] = field(
+        default=None,
+        metadata={
+            "help": "Domain randomization configuration for sim-to-real transfer."
+        },
+    )
+    projectile: ProjectileConfig = field(
+        default_factory=lambda: ProjectileConfig(),
+        metadata={
+            "help": (
+                "Projectile cube perturbation configuration (J-key throws). "
+                "Set num_projectiles=0 to disable projectiles."
+            )
+        },
+    )
+    pd_target_max_accel: Optional[float] = field(
+        default=None,
+        metadata={
+            "help": (
+                "Maximum acceleration (second derivative) of PD targets in rad/step^2. "
+                "Limits how quickly the direction of action change can reverse, preventing "
+                "oscillatory jerk while allowing large single-step corrections. "
+                "None = disabled (no acceleration limit)."
+            ),
+            "min": 0.0,
+        }
+    )
+
+    def __post_init__(self):
+        assert self._target_ is not None, "SimulatorConfig._target_ must be provided"
+        assert self.w_last is not None, "SimulatorConfig.w_last must be provided"
+        assert self.headless is not None, "SimulatorConfig.headless must be provided"
+        assert self.num_envs is not None, "SimulatorConfig.num_envs must be provided"
+        assert self.sim is not None, "SimulatorConfig.sim must be provided"
+        assert (
+            self.experiment_name is not None
+        ), "SimulatorConfig.experiment_name must be provided"
+
+
+@dataclass
+class SimBodyOrdering:
+    """Configuration for the ordering of bodies in the simulation."""
+
+    body_names: List[str] = field(
+        default_factory=list, metadata={"help": "Ordered list of rigid body names."}
+    )
+    dof_names: List[str] = field(
+        default_factory=list, metadata={"help": "Ordered list of DOF (joint) names."}
+    )

@@ -1,0 +1,8 @@
+{
+  "input": "Increase the jump apex while preserving the start and goal.",
+  "condition": "Source motion plus trajectory edit",
+  "fps": 30,
+  "render_backend": "threejs",
+  "render_profile": "motius-threejs-floor-v1",
+  "representation": "SMPL mesh with source and target constraints"
+}

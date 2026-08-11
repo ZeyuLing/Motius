@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Motius Unitree G1 text-to-motion leaderboard.">
+  <link rel="icon" href="data:,">
+  <title>Text-to-Motion · Unitree G1 Skeleton · Motius</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #121917;
+      --muted: #5c6965;
+      --line: #d8dfdc;
+      --paper: #fff;
+      --canvas: #eef2f0;
+      --dark: #17211e;
+      --green: #087a55;
+      --green-soft: #e7f4ed;
+      --amber: #a45b06;
+      --amber-soft: #fff4df;
+      --blue: #285f96;
+      --blue-soft: #e9f1f8;
+      --red: #a43f35;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: "Manrope", sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    .page { width: min(1440px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 44px; }
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+      gap: 34px;
+      align-items: end;
+      margin: 0 0 18px;
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+    .eyebrow { margin-bottom: 10px; color: var(--green); font: 600 11px "IBM Plex Mono", monospace; text-transform: uppercase; }
+    h1, h2, p { margin-top: 0; }
+    h1 { max-width: 800px; margin-bottom: 8px; font-size: 34px; line-height: 1.08; letter-spacing: 0; }
+    h2 { margin-bottom: 5px; font-size: 19px; letter-spacing: 0; }
+    .lede { max-width: 780px; margin-bottom: 0; color: var(--muted); font-size: 16px; }
+    .robot-spec {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 15px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: 0 8px 24px rgba(29, 45, 40, 0.07);
+    }
+    .robot-mark {
+      display: grid;
+      width: 56px;
+      height: 72px;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--dark);
+      font: 700 17px "IBM Plex Mono", monospace;
+    }
+    .robot-spec strong { display: block; margin-bottom: 3px; font-size: 16px; }
+    .robot-spec span { color: var(--muted); font-size: 12px; }
+    .score-strip,
+    .protocol-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .score-item,
+    .protocol-item {
+      min-height: 104px;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: 0 8px 24px rgba(29, 45, 40, 0.07);
+    }
+    .score-item { min-height: 96px; border-top: 3px solid var(--green); }
+    .score-item:nth-child(2) { border-top-color: var(--blue); }
+    .score-item:nth-child(3) { border-top-color: var(--amber); }
+    .score-item:nth-child(4) { border-top-color: var(--red); }
+    .score-item .value { margin-top: 3px; color: var(--dark); font-size: 24px; font-weight: 800; line-height: 1.1; }
+    .score-item .detail { display: block; margin-top: 6px; color: var(--muted); font: 500 10px "IBM Plex Mono", monospace; }
+    .score-item.primary .value { color: var(--green); }
+    .key { margin-bottom: 8px; color: var(--muted); font: 600 10px "IBM Plex Mono", monospace; text-transform: uppercase; }
+    .protocol-item strong { display: block; margin-bottom: 3px; font-size: 16px; }
+    .protocol-item span { color: var(--muted); font-size: 12px; }
+    .band {
+      margin-bottom: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: 0 8px 24px rgba(29, 45, 40, 0.07);
+    }
+    .band-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; padding: 20px 22px; border-bottom: 1px solid var(--line); }
+    .band-head p { margin-bottom: 0; color: var(--muted); font-size: 12px; }
+    .status { padding: 4px 8px; border: 1px solid #9bc9b6; border-radius: 4px; background: var(--green-soft); color: var(--green); font: 600 10px "IBM Plex Mono", monospace; white-space: nowrap; }
+    .metric-explorer { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .chart-panel { min-height: 270px; padding: 18px 22px 20px; border-right: 1px solid var(--line); }
+    .chart-panel:last-child { border-right: 0; }
+    .chart-panel h3 { margin: 0 0 4px; font-size: 15px; }
+    .chart-note { margin: 0 0 16px; color: var(--muted); font-size: 11px; }
+    .radar-wrap { position: relative; height: 286px; }
+    .segmented {
+      display: inline-flex;
+      gap: 2px;
+      margin-bottom: 20px;
+      padding: 3px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: var(--canvas);
+    }
+    .segmented button {
+      min-width: 82px;
+      padding: 7px 9px;
+      border: 0;
+      border-radius: 3px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font: 600 10px "IBM Plex Mono", monospace;
+    }
+    .segmented button:hover { color: var(--ink); }
+    .segmented button.active { background: var(--dark); color: #fff; }
+    .chart { display: grid; gap: 15px; }
+    .bar-row { display: grid; grid-template-columns: minmax(150px, 210px) minmax(180px, 1fr) 76px; gap: 14px; align-items: center; }
+    .bar-label strong { display: block; font-size: 13px; }
+    .bar-label span { color: var(--muted); font: 500 9px "IBM Plex Mono", monospace; }
+    .bar-track { height: 15px; overflow: hidden; border: 1px solid var(--line); background: #f2f5f3; }
+    .bar-fill { width: 0; height: 100%; background: var(--blue); transition: width 420ms ease; }
+    .bar-row.best-row .bar-fill { background: var(--green); }
+    .bar-value { text-align: right; font: 600 12px "IBM Plex Mono", monospace; }
+    .chart-empty { padding: 40px 0; color: var(--muted); }
+    .protocol-panel { display: grid; grid-template-rows: repeat(4, minmax(0, 1fr)); }
+    .protocol-line { display: grid; grid-template-columns: 86px 1fr; gap: 12px; align-items: center; padding: 14px 17px; border-bottom: 1px solid var(--line); }
+    .protocol-line:last-child { border-bottom: 0; }
+    .protocol-line .key { margin: 0; }
+    .protocol-line strong { font-size: 12px; }
+    .protocol-line span { display: block; color: var(--muted); font-size: 10px; }
+    .table-shell { overflow-x: auto; }
+    table { width: 100%; min-width: 900px; border-collapse: collapse; }
+    th, td { padding: 13px 14px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+    th { background: #f5f7f6; color: #4d5955; font: 600 10px "IBM Plex Mono", monospace; text-transform: uppercase; }
+    th:first-child, td:first-child { text-align: left; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #f8faf9; }
+    tr.reference { background: #f0f4f2; }
+    .method { font-weight: 800; }
+    .variant { display: block; margin-top: 2px; color: var(--muted); font: 500 10px "IBM Plex Mono", monospace; }
+    .best { color: var(--green); font-weight: 800; }
+    .case-explorer iframe {
+      display: block;
+      width: 100%;
+      height: min(820px, 78vh);
+      min-height: 620px;
+      border: 0;
+      background: #101714;
+    }
+    .footer { display: flex; justify-content: space-between; gap: 20px; padding: 12px 2px 0; color: var(--muted); font-size: 11px; }
+    .error { padding: 24px; color: #a21d1d; }
+    @media (max-width: 820px) {
+      .page { width: min(100% - 20px, 1440px); padding-top: 18px; }
+      .masthead { grid-template-columns: 1fr; }
+      .score-strip,
+      .protocol-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metric-explorer { grid-template-columns: 1fr; }
+      .chart-panel { border-right: 0; border-bottom: 1px solid var(--line); }
+      .chart-panel:last-child { border-bottom: 0; }
+    }
+    @media (max-width: 500px) {
+      h1 { font-size: 30px; }
+      .score-strip,
+      .protocol-strip { grid-template-columns: 1fr; }
+      .band-head { align-items: stretch; flex-direction: column; }
+      .status { align-self: flex-start; }
+      .segmented { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+      .segmented button { min-width: 0; }
+      .bar-row { grid-template-columns: 110px minmax(100px, 1fr) 62px; gap: 8px; }
+      .case-explorer iframe { height: 700px; min-height: 560px; }
+    }
+  </style>
+<!-- motius-benchmark-nav-style:start -->
+<style id="motius-benchmark-nav-style">
+  .motius-benchmark-nav {
+    position: relative;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: min(1420px, calc(100% - 36px));
+    min-height: 50px;
+    margin: 14px auto 0;
+    padding: 8px 10px 8px 14px;
+    border: 1px solid #d8dfdc;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #17211e;
+    box-shadow: 0 5px 18px rgba(23, 33, 30, 0.06);
+    font: 13px/1.4 Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    letter-spacing: 0;
+  }
+  .motius-benchmark-nav *,
+  .motius-benchmark-nav *::before,
+  .motius-benchmark-nav *::after { box-sizing: border-box; }
+  .motius-benchmark-brand {
+    color: #0a746b;
+    font-weight: 760;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .motius-benchmark-context {
+    min-width: 0;
+    margin-left: auto;
+    overflow: hidden;
+    color: #53615c;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .motius-benchmark-menu { position: relative; flex: 0 0 auto; }
+  .motius-benchmark-menu > summary {
+    display: flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 6px 10px;
+    border: 1px solid #cbd5d1;
+    border-radius: 6px;
+    background: #f7f9f8;
+    color: #26332f;
+    cursor: pointer;
+    font-weight: 680;
+    list-style: none;
+    user-select: none;
+  }
+  .motius-benchmark-menu > summary::-webkit-details-marker { display: none; }
+  .motius-benchmark-menu > summary::after {
+    content: "▾";
+    margin-left: 8px;
+    color: #0a746b;
+  }
+  .motius-benchmark-menu[open] > summary::after { content: "▴"; }
+  .motius-benchmark-list {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    width: min(720px, calc(100vw - 36px));
+    max-height: min(70vh, 620px);
+    padding: 8px;
+    overflow: auto;
+    border: 1px solid #cbd5d1;
+    border-radius: 7px;
+    background: #ffffff;
+    box-shadow: 0 16px 42px rgba(23, 33, 30, 0.16);
+  }
+  .motius-benchmark-link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    min-height: 42px;
+    padding: 8px 10px;
+    border-radius: 5px;
+    color: #26332f;
+    text-decoration: none;
+  }
+  .motius-benchmark-link:hover { background: #f0f5f3; }
+  .motius-benchmark-link[aria-current="page"] {
+    background: #e5f3ef;
+    color: #075e57;
+    font-weight: 720;
+  }
+  .motius-benchmark-status {
+    color: #69756f;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+    white-space: nowrap;
+  }
+  .motius-benchmark-status[data-status="complete"] { color: #087267; }
+  .motius-benchmark-status[data-status="metrics_complete"] { color: #946018; }
+  .motius-benchmark-status[data-status="protocol_ready"] { color: #315f9d; }
+  .motius-benchmark-status[data-status="paused"] { color: #a1453a; }
+  .motius-benchmark-status[data-status="settings"] { color: #315f9d; }
+  .motius-setting-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: min(1420px, calc(100% - 36px));
+    margin: 10px auto 0;
+    padding: 4px;
+    overflow-x: auto;
+    border: 1px solid #d8dfdc;
+    border-radius: 7px;
+    background: #eef2f0;
+    font: 13px/1.35 Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    letter-spacing: 0;
+  }
+  .motius-setting-label {
+    flex: 0 0 auto;
+    padding: 0 10px;
+    color: #69756f;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+    text-transform: uppercase;
+  }
+  .motius-setting-link {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: baseline;
+    gap: 8px;
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: #53615c;
+    text-decoration: none;
+  }
+  .motius-setting-link:hover {
+    border-color: #cbd5d1;
+    background: #ffffff;
+    color: #17211e;
+  }
+  .motius-setting-link[aria-current="page"] {
+    border-color: #adc9c2;
+    background: #ffffff;
+    color: #075e57;
+    box-shadow: 0 3px 10px rgba(23, 33, 30, 0.06);
+    font-weight: 720;
+  }
+  .motius-setting-detail {
+    color: #7a8581;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+  }
+  @media (max-width: 720px) {
+    .motius-benchmark-nav {
+      width: calc(100% - 24px);
+      margin-top: 10px;
+      gap: 8px;
+      padding-left: 10px;
+    }
+    .motius-benchmark-context { display: none; }
+    .motius-benchmark-list {
+      position: fixed;
+      top: 64px;
+      right: 12px;
+      grid-template-columns: 1fr;
+      width: calc(100vw - 24px);
+      max-height: calc(100vh - 82px);
+    }
+    .motius-setting-nav { width: calc(100% - 24px); }
+    .motius-setting-label { display: none; }
+  }
+</style>
+<!-- motius-benchmark-nav-style:end -->
+</head>
+<body data-benchmark-id="text_to_motion_unitree_g1">
+<!-- motius-benchmark-nav:start -->
+<nav class="motius-benchmark-nav" data-benchmark-id="text_to_motion_unitree_g1" aria-label="Motius benchmark navigation">
+  <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
+  <span class="motius-benchmark-context">Text-to-Motion · Unitree G1 Skeleton</span>
+  <details class="motius-benchmark-menu">
+    <summary>All benchmarks</summary>
+    <div class="motius-benchmark-list">
+      <a class="motius-benchmark-link" href="https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer" aria-current="page"><span>Text-to-Motion</span><span class="motius-benchmark-status" data-status="settings">2 settings</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion-to-Text · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-babel-sequential-generation-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Sequential Text-to-Motion · BABEL</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-temporal-condition-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Temporal Motion Completion · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-body-part-condition-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Part-Level Motion Control · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-edit-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Editing · Style and Content</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-instruction-editing-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Editing · MotionFix Instructions</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-repair-brokenamass-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Repair · BrokenAMASS</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-reconstruction-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Reconstruction · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Music-to-Dance · AIST++</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-dance-to-music-aistpp-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Dance-to-Music · AIST++</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-speech-to-gesture-beat2-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Speech-to-Gesture · BEAT2</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-monocular-motion-capture-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Monocular Motion Capture · 3DPW Test</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-tracking-mujoco-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Tracking</span><span class="motius-benchmark-status" data-status="settings">2 settings</span></a>
+    </div>
+  </details>
+</nav>
+<!-- motius-benchmark-nav:end -->
+<!-- motius-benchmark-settings:start -->
+<nav class="motius-setting-nav" data-leaderboard-id="text_to_motion" aria-label="Text-to-Motion settings">
+  <span class="motius-setting-label">Evaluation setting</span>
+  <a class="motius-setting-link" href="https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>SMPL Skeleton</span><span class="motius-setting-detail">HumanML3D</span></a>
+  <a class="motius-setting-link" href="https://zeyuling-t2m-unitree-g1-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer" aria-current="page"><span>Unitree G1 Skeleton</span><span class="motius-setting-detail">Native G1</span></a>
+</nav>
+<!-- motius-benchmark-settings:end -->
+  <main class="page">
+    <header class="masthead">
+      <div>
+        <div class="eyebrow">Unitree G1 Skeleton setting</div>
+        <h1>Text-to-Motion Leaderboard</h1>
+        <p class="lede">Direct G1-native generation measured in the robot's own motion space. This setting uses the same page contract as the SMPL Skeleton setting while keeping its evaluator, representation, and ranking isolated.</p>
+      </div>
+      <div class="robot-spec">
+        <div class="robot-mark" aria-hidden="true">G1</div>
+        <div><strong>29 actuated joints</strong><span>Canonical <code>g1_38</code> · 30 fps · no SMPL round trip</span></div>
+      </div>
+    </header>
+
+    <section class="score-strip" aria-label="Benchmark summary">
+      <div class="score-item primary"><div class="key">Best normalized FID</div><div class="value" id="best-fid">-</div><span class="detail" id="best-fid-method">Loading</span></div>
+      <div class="score-item"><div class="key">Best R@1</div><div class="value" id="best-r1">-</div><span class="detail" id="best-r1-method">Loading</span></div>
+      <div class="score-item"><div class="key">Evaluated methods</div><div class="value" id="method-count">-</div><span class="detail">GT excluded</span></div>
+      <div class="score-item"><div class="key">Protocol coverage</div><div class="value" id="sample-count">1,024</div><span class="detail">Fixed selected-caption cases</span></div>
+    </section>
+
+    <section class="protocol-strip" aria-label="Evaluation protocol">
+      <div class="protocol-item"><div class="key">Evaluator</div><strong>TMR-G1 epoch 139</strong><span>Robot-native latent space</span></div>
+      <div class="protocol-item"><div class="key">Retrieval</div><strong>Groups of 32</strong><span>20 deterministic repeats</span></div>
+      <div class="protocol-item"><div class="key">Motion</div><strong>g1_38 · 30 fps</strong><span>Native Unitree G1 coordinates</span></div>
+      <div class="protocol-item"><div class="key">FID</div><strong>Per-sample L2 normalized</strong><span>Mean and covariance after normalization</span></div>
+    </section>
+
+    <section class="band" aria-labelledby="comparison-title">
+      <div class="band-head">
+        <div><h2 id="comparison-title">Method Comparison</h2><p>Generated methods only. GT is retained as a reference and excluded from ranking.</p></div>
+        <span class="status">Normalized FID</span>
+      </div>
+      <div class="metric-explorer">
+        <div class="chart-panel">
+          <h3 id="bar-title">Generated-method ranking</h3>
+          <p class="chart-note">Choose one metric; the best generated method is highlighted.</p>
+          <div class="segmented" role="tablist" aria-label="Comparison metric">
+            <button type="button" role="tab" data-metric="fid" class="active" aria-selected="true">FID</button>
+            <button type="button" role="tab" data-metric="r1" aria-selected="false">R@1</button>
+            <button type="button" role="tab" data-metric="mm_dist" aria-selected="false">MM-Dist</button>
+            <button type="button" role="tab" data-metric="diversity" aria-selected="false">Diversity</button>
+          </div>
+          <div class="chart" id="metric-chart" aria-live="polite"></div>
+        </div>
+        <div class="chart-panel">
+          <h3>Normalized profile</h3>
+          <p class="chart-note">100 is the best generated-method value on each axis; GT is excluded.</p>
+          <div class="radar-wrap"><canvas id="radar-chart"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band case-explorer" aria-labelledby="qualitative-title">
+      <div class="band-head">
+        <div>
+          <h2 id="qualitative-title">All-case Motion Comparison</h2>
+          <p>64 fixed cases · synchronized, orbitable Unitree G1 meshes · lazy loaded</p>
+        </div>
+        <a class="status" href="cases/index.html" target="_self">Open full viewer</a>
+      </div>
+      <iframe src="cases/index.html" title="Unitree G1 all-case motion comparison" loading="lazy"></iframe>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <div><h2>Comparable Snapshot</h2><p>Every generated row below uses the same fixed manifest, evaluator checkpoint, and normalized-FID protocol. Sample coverage is reported per row.</p></div>
+        <span class="status">Protocol matched</span>
+      </div>
+      <div class="table-shell">
+        <table>
+          <thead><tr><th>Method</th><th>Samples</th><th>R@1 ↑</th><th>R@2 ↑</th><th>R@3 ↑</th><th>Normalized FID ↓</th><th>MM-Dist ↓</th><th>Diversity</th></tr></thead>
+          <tbody id="leaderboard-body"><tr><td colspan="8">Loading persisted metrics...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span id="protocol-id">Protocol loading...</span>
+      <span><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/leaderboards/t2m_unitree_g1.md" target="_blank" rel="noopener noreferrer">Protocol</a> · <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/evaluator_zoo/g1_tmr.md" target="_blank" rel="noopener noreferrer">Evaluator</a></span>
+    </footer>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script>
+    const fmt = (value, digits = 4) => Number(value).toFixed(digits);
+    const metricConfig = {
+      fid: {digits: 4, lower: true},
+      r1: {digits: 4, lower: false},
+      mm_dist: {digits: 3, lower: true},
+      diversity: {digits: 3, reference: true},
+    };
+    let leaderboardRows = [];
+    let radarChart = null;
+    const visibleVariant = row => (
+      row.variant && !["released", "reference"].includes(row.variant)
+        ? row.variant
+        : ""
+    );
+    const displayName = row => (
+      visibleVariant(row) ? `${row.method} · ${visibleVariant(row)}` : row.method
+    );
+    const metricBest = (rows, key, lower = false) => {
+      const generated = rows.filter(row => row.kind === "generated");
+      const values = generated.map(row => row[key]);
+      return lower ? Math.min(...values) : Math.max(...values);
+    };
+    fetch("g1_results.json")
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then(data => {
+        const rows = data.comparison_snapshot.rows;
+        leaderboardRows = rows;
+        const generated = rows.filter(row => row.kind === "generated");
+        const best = {
+          r1: metricBest(rows, "r1"),
+          r2: metricBest(rows, "r2"),
+          r3: metricBest(rows, "r3"),
+          fid: metricBest(rows, "fid", true),
+          mm_dist: metricBest(rows, "mm_dist", true),
+        };
+        const bestFidRow = generated.reduce((winner, row) => row.fid < winner.fid ? row : winner);
+        const bestR1Row = generated.reduce((winner, row) => row.r1 > winner.r1 ? row : winner);
+        document.getElementById("best-fid").textContent = fmt(bestFidRow.fid);
+        document.getElementById("best-fid-method").textContent = displayName(bestFidRow);
+        document.getElementById("best-r1").textContent = fmt(bestR1Row.r1);
+        document.getElementById("best-r1-method").textContent = displayName(bestR1Row);
+        document.getElementById("method-count").textContent = generated.length.toLocaleString();
+        document.getElementById("sample-count").textContent = data.benchmark.samples.toLocaleString();
+        document.getElementById("protocol-id").textContent = `Protocol · ${data.benchmark.protocol_id}`;
+        document.getElementById("leaderboard-body").innerHTML = rows.map(row => {
+          const cell = (key, digits = 4) => {
+            const isBest = row.kind === "generated" && row[key] === best[key];
+            return `<td class="${isBest ? "best" : ""}">${fmt(row[key], digits)}</td>`;
+          };
+          const artifact = row.artifact ? ` <a href="${row.artifact}" aria-label="Open artifact">↗</a>` : "";
+          const variant = visibleVariant(row);
+          return `<tr class="${row.kind === "reference" ? "reference" : ""}">
+            <td><span class="method">${row.method}${artifact}</span>${variant ? `<span class="variant">${variant}</span>` : ""}</td>
+            <td>${row.samples.toLocaleString()}</td>${cell("r1")}${cell("r2")}${cell("r3")}${cell("fid", 3)}${cell("mm_dist", 3)}<td>${fmt(row.diversity, 3)}</td>
+          </tr>`;
+        }).join("");
+        renderChart("fid");
+        renderRadar();
+      })
+      .catch(error => {
+        document.getElementById("leaderboard-body").innerHTML = `<tr><td class="error" colspan="8">Failed to load persisted results: ${error.message}</td></tr>`;
+      });
+
+    function renderChart(metric) {
+      const config = metricConfig[metric];
+      const reference = leaderboardRows.find(row => row.kind === "reference");
+      const distance = row => Math.abs(Number(row[metric]) - Number(reference?.[metric]));
+      const rows = leaderboardRows
+        .filter(row => row.kind === "generated")
+        .sort((a, b) => config.reference
+          ? distance(a) - distance(b)
+          : config.lower ? a[metric] - b[metric] : b[metric] - a[metric]);
+      if (!rows.length) {
+        document.getElementById("metric-chart").innerHTML = '<div class="chart-empty">No comparable methods.</div>';
+        return;
+      }
+      const values = rows.map(row => Number(row[metric]));
+      const comparable = config.reference ? rows.map(distance) : values;
+      const min = Math.min(...comparable);
+      const max = Math.max(...comparable);
+      document.getElementById("metric-chart").innerHTML = rows.map((row, index) => {
+        const value = Number(row[metric]);
+        const rankValue = config.reference ? distance(row) : value;
+        const lower = config.lower || config.reference;
+        const score = lower
+          ? (max === min ? 1 : .28 + .72 * (max - rankValue) / (max - min))
+          : (max === min ? 1 : .28 + .72 * (rankValue - min) / (max - min));
+        return `<div class="bar-row ${index === 0 ? "best-row" : ""}">
+          <div class="bar-label"><strong>${row.method}</strong>${visibleVariant(row) ? `<span>${visibleVariant(row)}</span>` : ""}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(score * 100).toFixed(1)}%"></div></div>
+          <div class="bar-value">${fmt(value, config.digits)}</div>
+        </div>`;
+      }).join("");
+    }
+
+    function renderRadar() {
+      if (!globalThis.Chart) return;
+      const generated = leaderboardRows.filter(row => row.kind === "generated");
+      const reference = leaderboardRows.find(row => row.kind === "reference");
+      const metrics = [
+        {key: "r1", label: "R@1", lower: false},
+        {key: "r2", label: "R@2", lower: false},
+        {key: "r3", label: "R@3", lower: false},
+        {key: "fid", label: "FID", lower: true},
+        {key: "mm_dist", label: "MM-Dist", lower: true},
+        {key: "diversity", label: "Diversity", reference: true},
+      ];
+      const normalize = (row, metric) => {
+        const values = generated.map(item => metric.reference
+          ? Math.abs(item[metric.key] - reference[metric.key])
+          : Number(item[metric.key]));
+        const value = metric.reference
+          ? Math.abs(row[metric.key] - reference[metric.key])
+          : Number(row[metric.key]);
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+        if (max === min) return 100;
+        const ratio = metric.lower || metric.reference
+          ? (max - value) / (max - min)
+          : (value - min) / (max - min);
+        return 35 + 65 * ratio;
+      };
+      const colors = ["#087a55", "#285f96", "#a45b06"];
+      if (radarChart) radarChart.destroy();
+      radarChart = new Chart(document.getElementById("radar-chart"), {
+        type: "radar",
+        data: {
+          labels: metrics.map(metric => metric.label),
+          datasets: generated.map((row, index) => ({
+            label: displayName(row),
+            data: metrics.map(metric => normalize(row, metric)),
+            borderColor: colors[index % colors.length],
+            backgroundColor: `${colors[index % colors.length]}18`,
+            borderWidth: 2,
+            pointRadius: 2,
+          })),
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {duration: 380},
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {boxWidth: 10, boxHeight: 10, color: "#34413d"},
+            },
+          },
+          scales: {
+            r: {
+              min: 0,
+              max: 100,
+              ticks: {display: false, stepSize: 25},
+              grid: {color: "#d9dfdc"},
+              angleLines: {color: "#d9dfdc"},
+              pointLabels: {color: "#46534f"},
+            },
+          },
+        },
+      });
+    }
+
+    document.querySelectorAll("[data-metric]").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll("[data-metric]").forEach(item => {
+          const selected = item === button;
+          item.classList.toggle("active", selected);
+          item.setAttribute("aria-selected", selected ? "true" : "false");
+        });
+        renderChart(button.dataset.metric);
+      });
+    });
+  </script>
+</body>
+</html>

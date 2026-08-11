@@ -1,0 +1,1541 @@
+{
+  "schema_version": 1,
+  "benchmark": "Temporal Motion Completion · HumanML3D",
+  "dataset": "HumanML3D official test split",
+  "num_cases": 4012,
+  "updated": "2026-07-28",
+  "metric_protocol": {
+    "semantic": "Motius Joint-Position Evaluator; normalized embedding-space FID",
+    "condition": "Pelvis-relative SMPL-22 error on constrained frames",
+    "physical": "Single deterministic pass over canonical GT/prediction clips"
+  },
+  "tp2m_protocol": {
+    "semantic": "MotionStreamer-272 evaluator space",
+    "fid_space": "MotionStreamer evaluator embedding space",
+    "prefix_frames": [
+      1,
+      5,
+      9
+    ]
+  },
+  "tp2m_rows": [
+    {
+      "method": "GT",
+      "settingId": "c1",
+      "settingLabel": "1-frame prefix",
+      "group": "c1",
+      "samples": 4042,
+      "r1": 0.7703,
+      "r2": 0.903,
+      "r3": 0.9442,
+      "fid": 0.0,
+      "mmDist": 14.8785,
+      "diversity": 27.7705,
+      "isReference": true
+    },
+    {
+      "method": "FlowMDM",
+      "settingId": "c1",
+      "settingLabel": "1-frame prefix",
+      "group": "c1",
+      "samples": 3968,
+      "r1": 0.449,
+      "r2": 0.63,
+      "r3": 0.706,
+      "fid": 83.773,
+      "mmDist": 19.872,
+      "diversity": 26.365
+    },
+    {
+      "method": "MotionStreamer",
+      "settingId": "c1",
+      "settingLabel": "1-frame prefix",
+      "group": "c1",
+      "samples": 3904,
+      "r1": 0.617,
+      "r2": 0.78,
+      "r3": 0.85,
+      "fid": 12.479,
+      "mmDist": 16.849,
+      "diversity": 27.134
+    },
+    {
+      "method": "KIMODO",
+      "settingId": "c1",
+      "settingLabel": "1-frame prefix",
+      "group": "c1",
+      "samples": 3968,
+      "r1": 0.525,
+      "r2": 0.69,
+      "r3": 0.769,
+      "fid": 82.56,
+      "mmDist": 19.301,
+      "diversity": 26.158
+    },
+    {
+      "method": "PRISM-KT",
+      "settingId": "c1",
+      "settingLabel": "1-frame prefix",
+      "group": "c1",
+      "samples": 4042,
+      "r1": 0.7798,
+      "r2": 0.9087,
+      "r3": 0.9482,
+      "fid": 16.2756,
+      "mmDist": 14.9304,
+      "diversity": 27.536
+    },
+    {
+      "method": "GT",
+      "settingId": "c5",
+      "settingLabel": "5-frame prefix",
+      "group": "c5",
+      "samples": 4042,
+      "r1": 0.7703,
+      "r2": 0.903,
+      "r3": 0.9442,
+      "fid": 0.0,
+      "mmDist": 14.8785,
+      "diversity": 27.7705,
+      "isReference": true
+    },
+    {
+      "method": "FlowMDM",
+      "settingId": "c5",
+      "settingLabel": "5-frame prefix",
+      "group": "c5",
+      "samples": 3968,
+      "r1": 0.481,
+      "r2": 0.654,
+      "r3": 0.729,
+      "fid": 75.853,
+      "mmDist": 19.456,
+      "diversity": 26.467
+    },
+    {
+      "method": "MotionStreamer",
+      "settingId": "c5",
+      "settingLabel": "5-frame prefix",
+      "group": "c5",
+      "samples": 3904,
+      "r1": 0.628,
+      "r2": 0.786,
+      "r3": 0.853,
+      "fid": 11.214,
+      "mmDist": 16.586,
+      "diversity": 27.144
+    },
+    {
+      "method": "KIMODO",
+      "settingId": "c5",
+      "settingLabel": "5-frame prefix",
+      "group": "c5",
+      "samples": 3968,
+      "r1": 0.538,
+      "r2": 0.699,
+      "r3": 0.775,
+      "fid": 80.381,
+      "mmDist": 19.199,
+      "diversity": 26.154
+    },
+    {
+      "method": "PRISM-KT",
+      "settingId": "c5",
+      "settingLabel": "5-frame prefix",
+      "group": "c5",
+      "samples": 4042,
+      "r1": 0.7912,
+      "r2": 0.9107,
+      "r3": 0.9489,
+      "fid": 13.5449,
+      "mmDist": 14.79,
+      "diversity": 27.4694
+    },
+    {
+      "method": "GT",
+      "settingId": "c9",
+      "settingLabel": "9-frame prefix",
+      "group": "c9",
+      "samples": 4042,
+      "r1": 0.7703,
+      "r2": 0.903,
+      "r3": 0.9442,
+      "fid": 0.0,
+      "mmDist": 14.8785,
+      "diversity": 27.7705,
+      "isReference": true
+    },
+    {
+      "method": "FlowMDM",
+      "settingId": "c9",
+      "settingLabel": "9-frame prefix",
+      "group": "c9",
+      "samples": 3968,
+      "r1": 0.49,
+      "r2": 0.664,
+      "r3": 0.742,
+      "fid": 71.338,
+      "mmDist": 19.262,
+      "diversity": 26.625
+    },
+    {
+      "method": "MotionStreamer",
+      "settingId": "c9",
+      "settingLabel": "9-frame prefix",
+      "group": "c9",
+      "samples": 3904,
+      "r1": 0.633,
+      "r2": 0.788,
+      "r3": 0.856,
+      "fid": 11.077,
+      "mmDist": 16.486,
+      "diversity": 27.381
+    },
+    {
+      "method": "KIMODO",
+      "settingId": "c9",
+      "settingLabel": "9-frame prefix",
+      "group": "c9",
+      "samples": 3968,
+      "r1": 0.531,
+      "r2": 0.704,
+      "r3": 0.772,
+      "fid": 79.122,
+      "mmDist": 19.166,
+      "diversity": 26.202
+    },
+    {
+      "method": "PRISM-KT",
+      "settingId": "c9",
+      "settingLabel": "9-frame prefix",
+      "group": "c9",
+      "samples": 4042,
+      "r1": 0.7867,
+      "r2": 0.9144,
+      "r3": 0.9529,
+      "fid": 12.5467,
+      "mmDist": 14.7775,
+      "diversity": 27.5227
+    }
+  ],
+  "gt_reference": {
+    "method": "GT",
+    "method_id": "gt",
+    "is_reference": true,
+    "rank_excluded": true,
+    "samples": 4034,
+    "temporal_samples": 4012,
+    "metrics": {
+      "r_precision_top1": 0.6873,
+      "r_precision_top2": 0.8485,
+      "r_precision_top3": 0.9058,
+      "fid": 0.0,
+      "mm_dist": 27.6009,
+      "constraint_error_cm": 0.0,
+      "fail_20": 0.0,
+      "fail_50": 0.0,
+      "foot_skating": 0.08914819392293807,
+      "diversity": 53.941
+    },
+    "sources": {
+      "semantic": "Text-to-Motion · HumanML3D GT row, same evaluator and selected-caption protocol",
+      "temporal": "Analytic identity for condition metrics; one 4012-clip pass for foot skating"
+    }
+  },
+  "settings": [
+    {
+      "id": "temporal_start_1f",
+      "task": "Prediction",
+      "constraint": "first frame",
+      "text": true,
+      "condition_mode": "start_1f",
+      "review_status": "complete",
+      "methods": [
+        {
+          "method": "GT",
+          "method_id": "gt",
+          "samples": 4034,
+          "temporal_samples": 4012,
+          "is_reference": true,
+          "rank_excluded": true,
+          "metrics": {
+            "r_precision_top1": 0.6873,
+            "r_precision_top2": 0.8485,
+            "r_precision_top3": 0.9058,
+            "fid": 0.0,
+            "mm_dist": 27.6009,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.08914819392293807,
+            "diversity": 53.941
+          }
+        },
+        {
+          "method": "ProjFlow",
+          "method_id": "projflow",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5856875,
+            "r_precision_top2": 0.749325,
+            "r_precision_top3": 0.8226875,
+            "fid": 0.02387329596622002,
+            "mm_dist": 30.98370361328125,
+            "constraint_error_cm": 1.3281124419782455,
+            "fail_20": 0.00448654037886341,
+            "fail_50": 0.0024925224327018943,
+            "foot_skating": 0.12276323981722138,
+            "diversity": 54.53442783355713
+          }
+        },
+        {
+          "method": "CondMDI",
+          "method_id": "condmdi",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4918,
+            "r_precision_top2": 0.6613,
+            "r_precision_top3": 0.7506,
+            "fid": 0.0579,
+            "mm_dist": 34.1245,
+            "constraint_error_cm": 1.4377725159257528,
+            "fail_20": 0.00448654037886341,
+            "fail_50": 0.0024925224327018943,
+            "foot_skating": 0.16,
+            "diversity": 55.3821
+          }
+        },
+        {
+          "method": "KIMODO",
+          "method_id": "kimodo",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4246,
+            "r_precision_top2": 0.5868,
+            "r_precision_top3": 0.6786,
+            "fid": 0.2964,
+            "mm_dist": 41.501,
+            "constraint_error_cm": 1.911747206505573e-06,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.178,
+            "diversity": 56.8706
+          }
+        },
+        {
+          "method": "MotionLab",
+          "method_id": "motionlab",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5188,
+            "r_precision_top2": 0.6728,
+            "r_precision_top3": 0.7469,
+            "fid": 0.0525,
+            "mm_dist": 33.8331,
+            "constraint_error_cm": 1.726802875662933,
+            "fail_20": 0.00448654037886341,
+            "fail_50": 0.0024925224327018943,
+            "foot_skating": 0.076,
+            "diversity": 54.7347
+          }
+        },
+        {
+          "method": "FlowMDM",
+          "method_id": "flowmdm",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4666,
+            "r_precision_top2": 0.6397,
+            "r_precision_top3": 0.7295,
+            "fid": 0.0608,
+            "mm_dist": 34.7605,
+            "constraint_error_cm": 1.4377725221808642,
+            "fail_20": 0.00448654037886341,
+            "fail_50": 0.0024925224327018943,
+            "foot_skating": 0.133,
+            "diversity": 55.3023
+          }
+        },
+        {
+          "method": "MotionCanvas",
+          "method_id": "ours",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6914,
+            "r_precision_top2": 0.841,
+            "r_precision_top3": 0.8988,
+            "fid": 0.0139,
+            "mm_dist": 27.9444,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.138,
+            "diversity": 54.0449
+          }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5627,
+            "r_precision_top2": 0.734,
+            "r_precision_top3": 0.8143,
+            "fid": 0.0491,
+            "mm_dist": 32.3544,
+            "constraint_error_cm": 3.5609624186171973,
+            "fail_20": 0.00448654037886341,
+            "fail_50": 0.0024925224327018943,
+            "foot_skating": 0.1475035753342188,
+            "diversity": 55.4882
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4345,
+            "r_precision_top2": 0.5785,
+            "r_precision_top3": 0.6548,
+            "fid": 0.1626,
+            "mm_dist": 38.5584,
+            "constraint_error_cm": 12.56448453308055,
+            "fail_20": 0.15628115653040878,
+            "fail_50": 0.005732801595214357,
+            "foot_skating": 0.09122470450115931,
+            "diversity": 57.654
+          }
+        }
+      ]
+    },
+    {
+      "id": "temporal_pre20",
+      "task": "Prediction",
+      "constraint": "first 20% frames",
+      "text": true,
+      "condition_mode": "pre20",
+      "review_status": "complete",
+      "methods": [
+        {
+          "method": "GT",
+          "method_id": "gt",
+          "samples": 4034,
+          "temporal_samples": 4012,
+          "is_reference": true,
+          "rank_excluded": true,
+          "metrics": {
+            "r_precision_top1": 0.6873,
+            "r_precision_top2": 0.8485,
+            "r_precision_top3": 0.9058,
+            "fid": 0.0,
+            "mm_dist": 27.6009,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.08914819392293807,
+            "diversity": 53.941
+          }
+        },
+        {
+          "method": "ProjFlow",
+          "method_id": "projflow",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6307625,
+            "r_precision_top2": 0.7909875,
+            "r_precision_top3": 0.8600375,
+            "fid": 0.012509498864078927,
+            "mm_dist": 29.435155868530273,
+            "constraint_error_cm": 2.0005572637022695,
+            "fail_20": 0.007889544481669801,
+            "fail_50": 0.0028459162741660076,
+            "foot_skating": 0.11158563565583664,
+            "diversity": 53.97195129394531
+          }
+        },
+        {
+          "method": "CondMDI",
+          "method_id": "condmdi",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.3744,
+            "r_precision_top2": 0.5177,
+            "r_precision_top3": 0.5998,
+            "fid": 0.2333,
+            "mm_dist": 40.8546,
+            "constraint_error_cm": 1.6664119767784833,
+            "fail_20": 0.0053334224092817135,
+            "fail_50": 0.0026500094643195156,
+            "foot_skating": 0.073,
+            "diversity": 51.5968
+          }
+        },
+        {
+          "method": "KIMODO",
+          "method_id": "kimodo",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.451,
+            "r_precision_top2": 0.6053,
+            "r_precision_top3": 0.6891,
+            "fid": 0.1686,
+            "mm_dist": 38.5412,
+            "constraint_error_cm": 2.0262994483509555e-06,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.087,
+            "diversity": 56.301
+          }
+        },
+        {
+          "method": "MotionLab",
+          "method_id": "motionlab",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4928,
+            "r_precision_top2": 0.6428,
+            "r_precision_top3": 0.7176,
+            "fid": 0.0658,
+            "mm_dist": 35.2793,
+            "constraint_error_cm": 1.8725444693555828,
+            "fail_20": 0.005121867031878055,
+            "fail_50": 0.0026834129449621984,
+            "foot_skating": 0.079,
+            "diversity": 54.9043
+          }
+        },
+        {
+          "method": "FlowMDM",
+          "method_id": "flowmdm",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5403,
+            "r_precision_top2": 0.7106,
+            "r_precision_top3": 0.7923,
+            "fid": 0.0349,
+            "mm_dist": 32.2914,
+            "constraint_error_cm": 1.698282949615909,
+            "fail_20": 0.0053334224092817135,
+            "fail_50": 0.0026500094643195156,
+            "foot_skating": 0.114,
+            "diversity": 55.1279
+          }
+        },
+        {
+          "method": "MotionCanvas",
+          "method_id": "ours",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6931,
+            "r_precision_top2": 0.8406,
+            "r_precision_top3": 0.8993,
+            "fid": 0.0091,
+            "mm_dist": 27.8049,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.084,
+            "diversity": 53.6818
+          }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5905,
+            "r_precision_top2": 0.7618,
+            "r_precision_top3": 0.83,
+            "fid": 0.0489,
+            "mm_dist": 31.7072,
+            "constraint_error_cm": 3.7535673379362255,
+            "fail_20": 0.0053723931366981776,
+            "fail_50": 0.00270011468528354,
+            "foot_skating": 0.14778166609553733,
+            "diversity": 55.325
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.3915,
+            "r_precision_top2": 0.5363,
+            "r_precision_top3": 0.6122,
+            "fid": 0.1809,
+            "mm_dist": 40.0146,
+            "constraint_error_cm": 5.420352868464301,
+            "fail_20": 0.028543274209172596,
+            "fail_50": 0.0029506407901036622,
+            "foot_skating": 0.13814627083678857,
+            "diversity": 55.6316
+          }
+        }
+      ]
+    },
+    {
+      "id": "temporal_pre20_uncond",
+      "task": "Prediction",
+      "constraint": "first 20% frames",
+      "text": false,
+      "condition_mode": "pre20",
+      "review_status": "complete",
+      "methods": [
+        {
+          "method": "GT",
+          "method_id": "gt",
+          "samples": 4034,
+          "temporal_samples": 4012,
+          "is_reference": true,
+          "rank_excluded": true,
+          "metrics": {
+            "r_precision_top1": 0.6873,
+            "r_precision_top2": 0.8485,
+            "r_precision_top3": 0.9058,
+            "fid": 0.0,
+            "mm_dist": 27.6009,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.08914819392293807,
+            "diversity": 53.941
+          }
+        },
+        {
+          "method": "ProjFlow",
+          "method_id": "projflow",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.279475,
+            "r_precision_top2": 0.4077625,
+            "r_precision_top3": 0.4860625,
+            "fid": 0.2198830253342238,
+            "mm_dist": 43.142555236816406,
+            "constraint_error_cm": 1.9977672849824686,
+            "fail_20": 0.007718771906128774,
+            "fail_50": 0.0028126826417299825,
+            "foot_skating": 0.058106531651859424,
+            "diversity": 49.92309131622314
+          }
+        },
+        {
+          "method": "CondMDI",
+          "method_id": "condmdi",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.3335,
+            "r_precision_top2": 0.4706,
+            "r_precision_top3": 0.553,
+            "fid": 0.3015,
+            "mm_dist": 43.2236,
+            "constraint_error_cm": 1.6664478017790807,
+            "fail_20": 0.0053334224092817135,
+            "fail_50": 0.0026500094643195156,
+            "foot_skating": 0.058,
+            "diversity": 50.4369
+          }
+        },
+        {
+          "method": "KIMODO",
+          "method_id": "kimodo",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.2881,
+            "r_precision_top2": 0.405,
+            "r_precision_top3": 0.4772,
+            "fid": 0.335,
+            "mm_dist": 46.6152,
+            "constraint_error_cm": 2.0262994483509555e-06,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.063,
+            "diversity": 55.0981
+          }
+        },
+        {
+          "method": "MotionLab",
+          "method_id": "motionlab",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.3327,
+            "r_precision_top2": 0.4669,
+            "r_precision_top3": 0.547,
+            "fid": 0.1355,
+            "mm_dist": 41.6552,
+            "constraint_error_cm": 1.8737436810972765,
+            "fail_20": 0.005277749941543909,
+            "fail_50": 0.0026834129449621984,
+            "foot_skating": 0.055,
+            "diversity": 54.1957
+          }
+        },
+        {
+          "method": "FlowMDM",
+          "method_id": "flowmdm",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.2639,
+            "r_precision_top2": 0.3827,
+            "r_precision_top3": 0.4592,
+            "fid": 0.3,
+            "mm_dist": 45.0807,
+            "constraint_error_cm": 1.6986462053762024,
+            "fail_20": 0.0053334224092817135,
+            "fail_50": 0.0026500094643195156,
+            "foot_skating": 0.049,
+            "diversity": 49.5066
+          }
+        },
+        {
+          "method": "MotionCanvas",
+          "method_id": "ours",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.3411,
+            "r_precision_top2": 0.4731,
+            "r_precision_top3": 0.5532,
+            "fid": 0.1043,
+            "mm_dist": 40.0292,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.096,
+            "diversity": 52.3568
+          }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.3327,
+            "r_precision_top2": 0.4695,
+            "r_precision_top3": 0.5497,
+            "fid": 0.0798,
+            "mm_dist": 40.4863,
+            "constraint_error_cm": 3.73281721410893,
+            "fail_20": 0.005428065604435982,
+            "fail_50": 0.0026500094643195156,
+            "foot_skating": 0.11582375990258295,
+            "diversity": 54.6372
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.204,
+            "r_precision_top2": 0.3127,
+            "r_precision_top3": 0.3887,
+            "fid": 0.4044,
+            "mm_dist": 48.6065,
+            "constraint_error_cm": 6.697243907440181,
+            "fail_20": 0.06952377771097082,
+            "fail_50": 0.0036409793900524434,
+            "foot_skating": 0.07299979646218303,
+            "diversity": 50.2717
+          }
+        }
+      ]
+    },
+    {
+      "id": "temporal_both_1f",
+      "task": "MIB",
+      "constraint": "first + last frame",
+      "text": true,
+      "condition_mode": "both_1f",
+      "review_status": "complete",
+      "methods": [
+        {
+          "method": "GT",
+          "method_id": "gt",
+          "samples": 4034,
+          "temporal_samples": 4012,
+          "is_reference": true,
+          "rank_excluded": true,
+          "metrics": {
+            "r_precision_top1": 0.6873,
+            "r_precision_top2": 0.8485,
+            "r_precision_top3": 0.9058,
+            "fid": 0.0,
+            "mm_dist": 27.6009,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.08914819392293807,
+            "diversity": 53.941
+          }
+        },
+        {
+          "method": "ProjFlow",
+          "method_id": "projflow",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6112375,
+            "r_precision_top2": 0.7725125,
+            "r_precision_top3": 0.8447875,
+            "fid": 0.019104935840385563,
+            "mm_dist": 30.121807098388672,
+            "constraint_error_cm": 8.038689057432777,
+            "fail_20": 0.08374875373878365,
+            "fail_50": 0.017572283150548356,
+            "foot_skating": 0.1380429045110339,
+            "diversity": 54.127499961853026
+          }
+        },
+        {
+          "method": "CondMDI",
+          "method_id": "condmdi",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5614,
+            "r_precision_top2": 0.7343,
+            "r_precision_top3": 0.8143,
+            "fid": 0.0301,
+            "mm_dist": 31.6146,
+            "constraint_error_cm": 2.2057982393471165,
+            "fail_20": 0.005483549351944167,
+            "fail_50": 0.001744765702891326,
+            "foot_skating": 0.183,
+            "diversity": 54.5248
+          }
+        },
+        {
+          "method": "KIMODO",
+          "method_id": "kimodo",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4715,
+            "r_precision_top2": 0.6266,
+            "r_precision_top3": 0.7087,
+            "fid": 0.2137,
+            "mm_dist": 38.8853,
+            "constraint_error_cm": 1.967267959937929e-06,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.154,
+            "diversity": 56.7591
+          }
+        },
+        {
+          "method": "MotionLab",
+          "method_id": "motionlab",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5225,
+            "r_precision_top2": 0.6761,
+            "r_precision_top3": 0.7503,
+            "fid": 0.0646,
+            "mm_dist": 34.1609,
+            "constraint_error_cm": 3.0032395865507757,
+            "fail_20": 0.009222333000997009,
+            "fail_50": 0.002243270189431705,
+            "foot_skating": 0.073,
+            "diversity": 54.6686
+          }
+        },
+        {
+          "method": "FlowMDM",
+          "method_id": "flowmdm",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4825,
+            "r_precision_top2": 0.6575,
+            "r_precision_top3": 0.7477,
+            "fid": 0.0519,
+            "mm_dist": 34.0014,
+            "constraint_error_cm": 4.605280441717816,
+            "fail_20": 0.06331006979062812,
+            "fail_50": 0.003614157527417747,
+            "foot_skating": 0.153,
+            "diversity": 55.1943
+          }
+        },
+        {
+          "method": "MotionCanvas",
+          "method_id": "ours",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6883,
+            "r_precision_top2": 0.838,
+            "r_precision_top3": 0.8972,
+            "fid": 0.0135,
+            "mm_dist": 28.0997,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.184,
+            "diversity": 53.9671
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.382,
+            "r_precision_top2": 0.5292,
+            "r_precision_top3": 0.6122,
+            "fid": 0.1913,
+            "mm_dist": 39.9154,
+            "constraint_error_cm": 9.500756301486888,
+            "fail_20": 0.09546360917248255,
+            "fail_50": 0.0032402791625124627,
+            "foot_skating": 0.24940406306273302,
+            "diversity": 56.3401
+          }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5873,
+            "r_precision_top2": 0.7535,
+            "r_precision_top3": 0.83,
+            "fid": 0.0402,
+            "mm_dist": 31.2923,
+            "constraint_error_cm": 4.325384793620466,
+            "fail_20": 0.006231306081754736,
+            "fail_50": 0.0016201395812562313,
+            "foot_skating": 0.15706595715238783,
+            "diversity": 55.3465
+          }
+        }
+      ]
+    },
+    {
+      "id": "temporal_mid80",
+      "task": "MIB",
+      "constraint": "first + last 10% frames",
+      "text": true,
+      "condition_mode": "mid80",
+      "review_status": "complete",
+      "methods": [
+        {
+          "method": "GT",
+          "method_id": "gt",
+          "samples": 4034,
+          "temporal_samples": 4012,
+          "is_reference": true,
+          "rank_excluded": true,
+          "metrics": {
+            "r_precision_top1": 0.6873,
+            "r_precision_top2": 0.8485,
+            "r_precision_top3": 0.9058,
+            "fid": 0.0,
+            "mm_dist": 27.6009,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.08914819392293807,
+            "diversity": 53.941
+          }
+        },
+        {
+          "method": "ProjFlow",
+          "method_id": "projflow",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.65175,
+            "r_precision_top2": 0.8095,
+            "r_precision_top3": 0.8752,
+            "fid": 0.00929878028830724,
+            "mm_dist": 28.84429359436035,
+            "constraint_error_cm": 7.573240141428757,
+            "fail_20": 0.09510058973510838,
+            "fail_50": 0.01681543802132886,
+            "foot_skating": 0.1233410961057776,
+            "diversity": 53.74297122955322
+          }
+        },
+        {
+          "method": "CondMDI",
+          "method_id": "condmdi",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4661,
+            "r_precision_top2": 0.6219,
+            "r_precision_top3": 0.7064,
+            "fid": 0.1455,
+            "mm_dist": 36.8364,
+            "constraint_error_cm": 2.497012390264924,
+            "fail_20": 0.007082983146812934,
+            "fail_50": 0.001846773123368868,
+            "foot_skating": 0.124,
+            "diversity": 52.6705
+          }
+        },
+        {
+          "method": "KIMODO",
+          "method_id": "kimodo",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5393,
+            "r_precision_top2": 0.7014,
+            "r_precision_top3": 0.7772,
+            "fid": 0.091,
+            "mm_dist": 34.4845,
+            "constraint_error_cm": 2.039430132528458e-06,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.085,
+            "diversity": 55.345
+          }
+        },
+        {
+          "method": "MotionLab",
+          "method_id": "motionlab",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5113,
+            "r_precision_top2": 0.6647,
+            "r_precision_top3": 0.7424,
+            "fid": 0.0738,
+            "mm_dist": 35.0328,
+            "constraint_error_cm": 3.2053199454795087,
+            "fail_20": 0.010135135135135136,
+            "fail_50": 0.0028254522935374,
+            "foot_skating": 0.083,
+            "diversity": 54.6014
+          }
+        },
+        {
+          "method": "FlowMDM",
+          "method_id": "flowmdm",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5534,
+            "r_precision_top2": 0.728,
+            "r_precision_top3": 0.8098,
+            "fid": 0.0292,
+            "mm_dist": 31.6779,
+            "constraint_error_cm": 4.387337274215579,
+            "fail_20": 0.0397830318043084,
+            "fail_50": 0.003007917901534923,
+            "foot_skating": 0.127,
+            "diversity": 54.5792
+          }
+        },
+        {
+          "method": "MotionCanvas",
+          "method_id": "ours",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6941,
+            "r_precision_top2": 0.8452,
+            "r_precision_top3": 0.903,
+            "fid": 0.0052,
+            "mm_dist": 27.7324,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.11,
+            "diversity": 53.8369
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.402,
+            "r_precision_top2": 0.541,
+            "r_precision_top3": 0.627,
+            "fid": 0.1591,
+            "mm_dist": 38.7989,
+            "constraint_error_cm": 7.906330620433731,
+            "fail_20": 0.06968527447250851,
+            "fail_50": 0.0024771088600875836,
+            "foot_skating": 0.3429816141427733,
+            "diversity": 56.1377
+          }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6218,
+            "r_precision_top2": 0.7823,
+            "r_precision_top3": 0.8538,
+            "fid": 0.041,
+            "mm_dist": 30.9639,
+            "constraint_error_cm": 4.483368834285305,
+            "fail_20": 0.00770778962268324,
+            "fail_50": 0.001874419427610917,
+            "foot_skating": 0.15463304965490607,
+            "diversity": 55.1793
+          }
+        }
+      ]
+    },
+    {
+      "id": "temporal_mid80_uncond",
+      "task": "MIB",
+      "constraint": "first + last 10% frames",
+      "text": false,
+      "condition_mode": "mid80",
+      "review_status": "complete",
+      "methods": [
+        {
+          "method": "GT",
+          "method_id": "gt",
+          "samples": 4034,
+          "temporal_samples": 4012,
+          "is_reference": true,
+          "rank_excluded": true,
+          "metrics": {
+            "r_precision_top1": 0.6873,
+            "r_precision_top2": 0.8485,
+            "r_precision_top3": 0.9058,
+            "fid": 0.0,
+            "mm_dist": 27.6009,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.08914819392293807,
+            "diversity": 53.941
+          }
+        },
+        {
+          "method": "ProjFlow",
+          "method_id": "projflow",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.3595125,
+            "r_precision_top2": 0.494175,
+            "r_precision_top3": 0.575575,
+            "fid": 0.17627203593109397,
+            "mm_dist": 39.862945556640625,
+            "constraint_error_cm": 7.020981730645741,
+            "fail_20": 0.07869340205990046,
+            "fail_50": 0.01469179097309665,
+            "foot_skating": 0.08027359287720516,
+            "diversity": 51.952925491333005
+          }
+        },
+        {
+          "method": "CondMDI",
+          "method_id": "condmdi",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.3978,
+            "r_precision_top2": 0.5472,
+            "r_precision_top3": 0.6325,
+            "fid": 0.2113,
+            "mm_dist": 39.7552,
+            "constraint_error_cm": 2.4967946229636313,
+            "fail_20": 0.0070719246251161145,
+            "fail_50": 0.001846773123368868,
+            "foot_skating": 0.108,
+            "diversity": 51.6817
+          }
+        },
+        {
+          "method": "KIMODO",
+          "method_id": "kimodo",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4059,
+            "r_precision_top2": 0.5482,
+            "r_precision_top3": 0.6276,
+            "fid": 0.1906,
+            "mm_dist": 40.0989,
+            "constraint_error_cm": 2.039430132528458e-06,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.074,
+            "diversity": 54.2403
+          }
+        },
+        {
+          "method": "MotionLab",
+          "method_id": "motionlab",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4027,
+            "r_precision_top2": 0.5475,
+            "r_precision_top3": 0.6291,
+            "fid": 0.1273,
+            "mm_dist": 39.2363,
+            "constraint_error_cm": 3.0882512025493103,
+            "fail_20": 0.00869752731454859,
+            "fail_50": 0.0018910072101561463,
+            "foot_skating": 0.071,
+            "diversity": 54.6051
+          }
+        },
+        {
+          "method": "FlowMDM",
+          "method_id": "flowmdm",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.2891,
+            "r_precision_top2": 0.41,
+            "r_precision_top3": 0.4848,
+            "fid": 0.2689,
+            "mm_dist": 43.7286,
+            "constraint_error_cm": 3.6646129196865793,
+            "fail_20": 0.019595700446764275,
+            "fail_50": 0.0022006458176670944,
+            "foot_skating": 0.063,
+            "diversity": 50.3749
+          }
+        },
+        {
+          "method": "MotionCanvas",
+          "method_id": "ours",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4283,
+            "r_precision_top2": 0.5758,
+            "r_precision_top3": 0.6562,
+            "fid": 0.0837,
+            "mm_dist": 36.9094,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.125,
+            "diversity": 52.3345
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.1898,
+            "r_precision_top2": 0.2878,
+            "r_precision_top3": 0.361,
+            "fid": 0.2627,
+            "mm_dist": 47.2423,
+            "constraint_error_cm": 8.949666688586284,
+            "fail_20": 0.10231344273897465,
+            "fail_50": 0.004058477462732782,
+            "foot_skating": 0.3827799243957549,
+            "diversity": 54.0509
+          }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.3847,
+            "r_precision_top2": 0.5413,
+            "r_precision_top3": 0.6345,
+            "fid": 0.0936,
+            "mm_dist": 38.8152,
+            "constraint_error_cm": 4.493447907787573,
+            "fail_20": 0.007785199274560977,
+            "fail_50": 0.001846773123368868,
+            "foot_skating": 0.1246322941564817,
+            "diversity": 53.998
+          }
+        }
+      ]
+    },
+    {
+      "id": "temporal_adaptive_keyframes",
+      "task": "Keyframe",
+      "constraint": "adaptive sparse frames",
+      "text": true,
+      "condition_mode": "adaptive_keyframes",
+      "review_status": "complete",
+      "methods": [
+        {
+          "method": "GT",
+          "method_id": "gt",
+          "samples": 4034,
+          "temporal_samples": 4012,
+          "is_reference": true,
+          "rank_excluded": true,
+          "metrics": {
+            "r_precision_top1": 0.6873,
+            "r_precision_top2": 0.8485,
+            "r_precision_top3": 0.9058,
+            "fid": 0.0,
+            "mm_dist": 27.6009,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.08914819392293807,
+            "diversity": 53.941
+          }
+        },
+        {
+          "method": "ProjFlow",
+          "method_id": "projflow",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.67875,
+            "r_precision_top2": 0.8377375,
+            "r_precision_top3": 0.899325,
+            "fid": 0.00747830405164549,
+            "mm_dist": 28.431156158447266,
+            "constraint_error_cm": 7.01983297995365,
+            "fail_20": 0.06831723444385458,
+            "fail_50": 0.013964599707371395,
+            "foot_skating": 0.16851202798995943,
+            "diversity": 53.93269634246826
+          }
+        },
+        {
+          "method": "CondMDI",
+          "method_id": "condmdi",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6838,
+            "r_precision_top2": 0.8432,
+            "r_precision_top3": 0.9034,
+            "fid": 0.0023,
+            "mm_dist": 27.8305,
+            "constraint_error_cm": 2.7806043503621503,
+            "fail_20": 0.006495907050435701,
+            "fail_50": 0.001795616583047267,
+            "foot_skating": 0.24166525199987832,
+            "diversity": 53.7278
+          }
+        },
+        {
+          "method": "KIMODO",
+          "method_id": "kimodo",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6132,
+            "r_precision_top2": 0.7822,
+            "r_precision_top3": 0.856,
+            "fid": 0.0694,
+            "mm_dist": 31.8709,
+            "constraint_error_cm": 1.8341283170409433,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.18510958310591064,
+            "diversity": 55.6616
+          }
+        },
+        {
+          "method": "MotionLab",
+          "method_id": "motionlab",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6678,
+            "r_precision_top2": 0.8323,
+            "r_precision_top3": 0.8955,
+            "fid": 0.003,
+            "mm_dist": 28.4961,
+            "constraint_error_cm": 3.5404836383655507,
+            "fail_20": 0.009321362556113018,
+            "fail_50": 0.002112490097702667,
+            "foot_skating": 0.09903441361804707,
+            "diversity": 53.6887
+          }
+        },
+        {
+          "method": "MotionCanvas",
+          "method_id": "ours",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6875,
+            "r_precision_top2": 0.8441,
+            "r_precision_top3": 0.9031,
+            "fid": 0.0014,
+            "mm_dist": 27.8142,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.11844043130032456,
+            "diversity": 53.4264
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.4265,
+            "r_precision_top2": 0.5795,
+            "r_precision_top3": 0.663,
+            "fid": 0.1818,
+            "mm_dist": 38.3565,
+            "constraint_error_cm": 11.117579698018124,
+            "fail_20": 0.1217058357538949,
+            "fail_50": 0.004198574069184051,
+            "foot_skating": 0.47643587762036055,
+            "diversity": 56.2984
+          }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6372,
+            "r_precision_top2": 0.8007,
+            "r_precision_top3": 0.8692,
+            "fid": 0.0426,
+            "mm_dist": 30.4901,
+            "constraint_error_cm": 4.790374445742263,
+            "fail_20": 0.007789807235278585,
+            "fail_50": 0.0018484288354898336,
+            "foot_skating": 0.17239635988081475,
+            "diversity": 55.001
+          }
+        }
+      ]
+    },
+    {
+      "id": "temporal_adaptive_keyframes_uncond",
+      "task": "Keyframe",
+      "constraint": "adaptive sparse frames",
+      "text": false,
+      "condition_mode": "adaptive_keyframes",
+      "review_status": "complete",
+      "methods": [
+        {
+          "method": "GT",
+          "method_id": "gt",
+          "samples": 4034,
+          "temporal_samples": 4012,
+          "is_reference": true,
+          "rank_excluded": true,
+          "metrics": {
+            "r_precision_top1": 0.6873,
+            "r_precision_top2": 0.8485,
+            "r_precision_top3": 0.9058,
+            "fid": 0.0,
+            "mm_dist": 27.6009,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.08914819392293807,
+            "diversity": 53.941
+          }
+        },
+        {
+          "method": "ProjFlow",
+          "method_id": "projflow",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5916125,
+            "r_precision_top2": 0.765225,
+            "r_precision_top3": 0.842825,
+            "fid": 0.02799639380418868,
+            "mm_dist": 31.081802368164062,
+            "constraint_error_cm": 7.231188738629954,
+            "fail_20": 0.06810928146297039,
+            "fail_50": 0.014692907209108604,
+            "foot_skating": 0.16502986276982823,
+            "diversity": 52.913767433166505
+          }
+        },
+        {
+          "method": "CondMDI",
+          "method_id": "condmdi",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6748,
+            "r_precision_top2": 0.8359,
+            "r_precision_top3": 0.8986,
+            "fid": 0.0024,
+            "mm_dist": 28.1853,
+            "constraint_error_cm": 2.781636582452628,
+            "fail_20": 0.006522313176656984,
+            "fail_50": 0.001795616583047267,
+            "foot_skating": 0.23298727185573,
+            "diversity": 53.6503
+          }
+        },
+        {
+          "method": "KIMODO",
+          "method_id": "kimodo",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.5914,
+            "r_precision_top2": 0.7614,
+            "r_precision_top3": 0.8381,
+            "fid": 0.0616,
+            "mm_dist": 32.3919,
+            "constraint_error_cm": 1.7744949214902976,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.16539841884606202,
+            "diversity": 54.9968
+          }
+        },
+        {
+          "method": "MotionLab",
+          "method_id": "motionlab",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6594,
+            "r_precision_top2": 0.8249,
+            "r_precision_top3": 0.8908,
+            "fid": 0.0038,
+            "mm_dist": 28.7821,
+            "constraint_error_cm": 3.5598480483217134,
+            "fail_20": 0.009611829944547136,
+            "fail_50": 0.0019804594665962503,
+            "foot_skating": 0.09872186709199789,
+            "diversity": 53.345
+          }
+        },
+        {
+          "method": "MotionCanvas",
+          "method_id": "ours",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6589,
+            "r_precision_top2": 0.8218,
+            "r_precision_top3": 0.8878,
+            "fid": 0.0031,
+            "mm_dist": 28.6949,
+            "constraint_error_cm": 0.0,
+            "fail_20": 0.0,
+            "fail_50": 0.0,
+            "foot_skating": 0.13582135940610346,
+            "diversity": 53.6
+          }
+        },
+        {
+          "method": "OmniControl",
+          "method_id": "omnicontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.2427,
+            "r_precision_top2": 0.3485,
+            "r_precision_top3": 0.4295,
+            "fid": 0.2969,
+            "mm_dist": 45.7091,
+            "constraint_error_cm": 13.246771003609467,
+            "fail_20": 0.19133879059941908,
+            "fail_50": 0.014496963295484552,
+            "foot_skating": 0.5417631163366142,
+            "diversity": 54.5594
+          }
+        },
+        {
+          "method": "MaskControl",
+          "method_id": "maskcontrol",
+          "samples": 4012,
+          "metrics": {
+            "r_precision_top1": 0.6015,
+            "r_precision_top2": 0.7742,
+            "r_precision_top3": 0.8488,
+            "fid": 0.043,
+            "mm_dist": 31.6811,
+            "constraint_error_cm": 4.680132820436112,
+            "fail_20": 0.007710588856614735,
+            "fail_50": 0.001795616583047267,
+            "foot_skating": 0.14905900315156914,
+            "diversity": 54.708
+          }
+        }
+      ]
+    }
+  ]
+}

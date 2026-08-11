@@ -1,0 +1,1453 @@
+{
+  "schema_version": 2,
+  "representation": "smpl_motion135",
+  "task": "speech_to_gesture",
+  "title": "Speech-to-Gesture on BEAT2 speaker 2",
+  "protocol": "BEAT2 official test clips, speaker 2",
+  "population": 15,
+  "asset_base_url": "https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard/resolve/main/cases/",
+  "body_model_url": "smpl_model/",
+  "reference_label": "Speech transcript",
+  "motion_methods": [
+    {
+      "key": "gt",
+      "label": "BEAT2 GT",
+      "accent": "#956000"
+    },
+    {
+      "key": "language_of_motion",
+      "label": "Language of Motion",
+      "accent": "#087d72"
+    },
+    {
+      "key": "emage",
+      "label": "EMAGE",
+      "accent": "#315f9d"
+    },
+    {
+      "key": "diffusestylegesture",
+      "label": "DiffuseStyleGesture+",
+      "accent": "#7b3fa1"
+    }
+  ],
+  "checkpoint_scope": "public_demo_visualization_only",
+  "provenance": {
+    "dataset": "BEAT2 English v2.0.0",
+    "speaker": 2,
+    "artifact": "JuzeZhang/language_of_motion",
+    "seed_policy": "reset_official_seed_before_each_sample",
+    "visualization": "Shared neutral SMPL-22 body projection of the native SMPL-H/SMPL-X poses; LoM, EMAGE, and DiffuseStyleGesture+ fingers and expressions are retained in raw/ but not rendered by this web mesh."
+  },
+  "cases": [
+    {
+      "case_id": "2_scott_0_103_103",
+      "sample_id": "2_scott_0_103_103",
+      "references": [
+        "when i was at university which is almost more than 10 years ago the community security was that good a time and we were often more than not in dangerous situations one time i was walking home from work at waiting at the bus stop her sound of gunfire from across the road please cards came around and a police shot at people cross the street i was so scared the main reason was you have no place to hide here at a bus station there's no place to go then there was another time that i was in los angeles driving i took the wrong road and went down a small will corrode i'm not exaggerating but here on both sides road were filled with homeless people those people were moving around the road and i was very nervous they ignore the traffic rules and came right up to my car and made me stop my car they shook the car and swore at me i thought to myself this is horrible it's a few days ago someone was shot dead and maybe i'll be"
+      ],
+      "audio": "audio/2_scott_0_103_103.wav",
+      "motions": {
+        "gt": {
+          "frames": 1703,
+          "display_frames": 1703,
+          "stride": 1,
+          "translation_count": 5109,
+          "rotation_count": 224796,
+          "translation_minimum": [
+            -0.5702296495437622,
+            1.2370333671569824,
+            -0.4886994957923889
+          ],
+          "translation_scale": [
+            1.1956840353377629e-05,
+            1.8614202872413443e-06,
+            2.2430256649386138e-05
+          ],
+          "asset": "assets/2_scott_0_103_103_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 10218,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 1703,
+          "display_frames": 1703,
+          "stride": 1,
+          "translation_count": 5109,
+          "rotation_count": 224796,
+          "translation_minimum": [
+            -0.033834684640169144,
+            1.273369312286377,
+            -0.9108009934425354
+          ],
+          "translation_scale": [
+            6.539366040669847e-06,
+            8.481404165650019e-07,
+            1.84365580935264e-05
+          ],
+          "asset": "assets/2_scott_0_103_103_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 10218,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 1703,
+          "display_frames": 1703,
+          "stride": 1,
+          "translation_count": 5109,
+          "rotation_count": 224796,
+          "translation_minimum": [
+            -0.09501680731773376,
+            1.2184923887252808,
+            -7.0816264152526855
+          ],
+          "translation_scale": [
+            1.1390543477318715e-05,
+            2.0440222670004005e-06,
+            0.0001087606287910603
+          ],
+          "asset": "assets/2_scott_0_103_103_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 10218,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 1703,
+          "display_frames": 1703,
+          "stride": 1,
+          "translation_count": 5109,
+          "rotation_count": 224796,
+          "translation_minimum": [
+            -0.3265828788280487,
+            -0.08960767835378647,
+            -0.5753297805786133
+          ],
+          "translation_scale": [
+            9.30490750761237e-06,
+            2.1585949525615433e-06,
+            2.807465716614388e-05
+          ],
+          "asset": "assets/2_scott_0_103_103_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 10218,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_111_111",
+      "sample_id": "2_scott_0_111_111",
+      "references": [
+        "some people pelting stones at at dogs watching them yelp and pain amused some people some little children begging in the streets people driving with mobile's glued to the ears women standing in metros while male passengers remain nicely stuck to their seats or mobile talking loudly on the mobile often causing irritation to other passengers all these make me feel discuss another example is in the hospital there are almost 34 patients waiting for me people of different ages are here one thing that disgusted me here is people are using their phones to watch youtube videos and other videos on high volume they have almost forgotten why they're here why they broke piece around the hospital now on mobile phones have become close to everyone and some people can't live without them and i appreciate technology but i wish we would obey some basic"
+      ],
+      "audio": "audio/2_scott_0_111_111.wav",
+      "motions": {
+        "gt": {
+          "frames": 1794,
+          "display_frames": 1794,
+          "stride": 1,
+          "translation_count": 5382,
+          "rotation_count": 236808,
+          "translation_minimum": [
+            -0.41062498092651367,
+            1.2465088367462158,
+            -0.4852653443813324
+          ],
+          "translation_scale": [
+            7.2431516855431255e-06,
+            1.7462418782088207e-06,
+            1.687246185611002e-05
+          ],
+          "asset": "assets/2_scott_0_111_111_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 10764,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 1794,
+          "display_frames": 1794,
+          "stride": 1,
+          "translation_count": 5382,
+          "rotation_count": 236808,
+          "translation_minimum": [
+            -0.286329060792923,
+            1.1244332790374756,
+            -0.11708401143550873
+          ],
+          "translation_scale": [
+            1.0715099961089436e-05,
+            3.203976802979014e-06,
+            2.3067050278768875e-05
+          ],
+          "asset": "assets/2_scott_0_111_111_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 10764,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 1794,
+          "display_frames": 1794,
+          "stride": 1,
+          "translation_count": 5382,
+          "rotation_count": 236808,
+          "translation_minimum": [
+            -0.0026984205469489098,
+            1.2143173217773438,
+            -3.9132707118988037
+          ],
+          "translation_scale": [
+            5.110363781568594e-05,
+            2.046983581749373e-06,
+            6.014310201862827e-05
+          ],
+          "asset": "assets/2_scott_0_111_111_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 10764,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 1794,
+          "display_frames": 1794,
+          "stride": 1,
+          "translation_count": 5382,
+          "rotation_count": 236808,
+          "translation_minimum": [
+            -0.7301559448242188,
+            -0.0298925694078207,
+            -0.2716585397720337
+          ],
+          "translation_scale": [
+            1.2406451787683181e-05,
+            1.7779362906367169e-06,
+            1.8332619220018387e-05
+          ],
+          "asset": "assets/2_scott_0_111_111_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 10764,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_1_1",
+      "sample_id": "2_scott_0_1_1",
+      "references": [
+        "the first thing i like to do on weekends is relaxing and i think i'll go shopping if i'm not that tired so that you started by job i think it's very important to get a good sleep during your weekend because when you have to work on monday through friday the whole week you are very tired so getting a good rest is as important as complain to jaw or completing an excellent job in my spare time if i feel okay i like to go for a hike in nature sometimes i try to organize something for my friends i volunteer at the buddhist temple on the weekend or i can just walk around enjoying the sunshine i'd like to have a healthy lifestyle considering how much time i spend at work i always try to move as much as i can when i'm not working and on other days when i'm free i like to listen to music and we're watch a documentary movies on my laptop but sometimes it just sleep i especially liked watching japanese anime i think watching a me is anime is very helpful for me to learn and express japanese better"
+      ],
+      "audio": "audio/2_scott_0_1_1.wav",
+      "motions": {
+        "gt": {
+          "frames": 1906,
+          "display_frames": 1906,
+          "stride": 1,
+          "translation_count": 5718,
+          "rotation_count": 251592,
+          "translation_minimum": [
+            -0.5245792269706726,
+            1.1085641384124756,
+            -0.6168901920318604
+          ],
+          "translation_scale": [
+            9.251040864910465e-06,
+            3.575194568838924e-06,
+            1.9253860955359414e-05
+          ],
+          "asset": "assets/2_scott_0_1_1_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 11436,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 1906,
+          "display_frames": 1906,
+          "stride": 1,
+          "translation_count": 5718,
+          "rotation_count": 251592,
+          "translation_minimum": [
+            -0.005955677013844252,
+            1.2818435430526733,
+            -1.0047005414962769
+          ],
+          "translation_scale": [
+            2.5056206141016446e-05,
+            7.131856705200335e-07,
+            3.752490374608897e-05
+          ],
+          "asset": "assets/2_scott_0_1_1_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 11436,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 1906,
+          "display_frames": 1906,
+          "stride": 1,
+          "translation_count": 5718,
+          "rotation_count": 251592,
+          "translation_minimum": [
+            -0.28490129113197327,
+            1.2197376489639282,
+            -5.417672634124756
+          ],
+          "translation_scale": [
+            1.3098448107484728e-05,
+            1.8892112620960688e-06,
+            8.266838267445564e-05
+          ],
+          "asset": "assets/2_scott_0_1_1_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 11436,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 1906,
+          "display_frames": 1906,
+          "stride": 1,
+          "translation_count": 5718,
+          "rotation_count": 251592,
+          "translation_minimum": [
+            -0.1426571011543274,
+            -0.018323512747883797,
+            -0.2648271322250366
+          ],
+          "translation_scale": [
+            4.708617780124769e-06,
+            7.765335112708271e-07,
+            9.89140880847117e-06
+          ],
+          "asset": "assets/2_scott_0_1_1_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 11436,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_2_2",
+      "sample_id": "2_scott_0_2_2",
+      "references": [
+        "so when i have time to kill i like to play on the internet and play close attention to new fashion events such as the new york fashion week the paris fashion week the london fashion week and milan fashion week the rest of the time i usually go to the library and find some interesting books and then go to a park and relax there are many books that i find interesting such as fashion magazines inspirational books and professional books these books can give me the motivation to be healthier and energetic and the last thing i like to do when i'm free is it out with my family members you would be surprised to know that i have tried all the restaurants in our huge community i actually give each restaurant a score based on how good the food is how good the environment is and at the same time i will write down the type of food they serve so when you're so when each time a friend comes to the city to enjoy time with me i will give them the top 5 restaurants based on this ranking and every time you're satisfied with these restaurants"
+      ],
+      "audio": "audio/2_scott_0_2_2.wav",
+      "motions": {
+        "gt": {
+          "frames": 1854,
+          "display_frames": 1854,
+          "stride": 1,
+          "translation_count": 5562,
+          "rotation_count": 244728,
+          "translation_minimum": [
+            -0.12493065744638443,
+            1.281677484512329,
+            -0.09546151757240295
+          ],
+          "translation_scale": [
+            5.725694791181013e-06,
+            6.198810069690808e-07,
+            7.582820671814261e-06
+          ],
+          "asset": "assets/2_scott_0_2_2_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 11124,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 1854,
+          "display_frames": 1854,
+          "stride": 1,
+          "translation_count": 5562,
+          "rotation_count": 244728,
+          "translation_minimum": [
+            0.0,
+            1.2647151947021484,
+            -0.7440354228019714
+          ],
+          "translation_scale": [
+            2.6163714210269973e-05,
+            9.708585366752231e-07,
+            1.8938746507046744e-05
+          ],
+          "asset": "assets/2_scott_0_2_2_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 11124,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 1854,
+          "display_frames": 1854,
+          "stride": 1,
+          "translation_count": 5562,
+          "rotation_count": 244728,
+          "translation_minimum": [
+            -0.006783625110983849,
+            1.2228302955627441,
+            -6.143184185028076
+          ],
+          "translation_scale": [
+            2.3385980966850184e-05,
+            1.8716631302595488e-06,
+            9.373898501507938e-05
+          ],
+          "asset": "assets/2_scott_0_2_2_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 11124,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 1854,
+          "display_frames": 1854,
+          "stride": 1,
+          "translation_count": 5562,
+          "rotation_count": 244728,
+          "translation_minimum": [
+            -0.11082950979471207,
+            -0.025818735361099243,
+            -0.061854876577854156
+          ],
+          "translation_scale": [
+            5.015727765567135e-06,
+            6.156540734991722e-07,
+            6.700032372464193e-06
+          ],
+          "asset": "assets/2_scott_0_2_2_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 11124,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_3_3",
+      "sample_id": "2_scott_0_3_3",
+      "references": [
+        "well in my opinion i think the best job for me is to become a journalist cuz this is my dream job i've always wanted to be a journalist since i was in middle school journalists never tell lies and are always seeking the truth i want to be just like that i usually feel shy when i am talking to others and i know that journalists are very good at communicating because good communication skills are very important when you're doing interviews i want to possess the skill myself so that's why i want to become a journalist other than that photography often makes me feel like i'm doing a job full of design and in for innovation because for the same scenery we can use different angles and different compositions for example people being shifted from the center of the frame to left side of the frame it can make a different feeling when we when seen in context with the background when everyone's taking a picture of the exact same scenery i'm very happy when people say my photos look better than the others"
+      ],
+      "audio": "audio/2_scott_0_3_3.wav",
+      "motions": {
+        "gt": {
+          "frames": 2034,
+          "display_frames": 2034,
+          "stride": 1,
+          "translation_count": 6102,
+          "rotation_count": 268488,
+          "translation_minimum": [
+            -0.2699756920337677,
+            1.228921890258789,
+            -0.11015397310256958
+          ],
+          "translation_scale": [
+            6.049484454706544e-06,
+            1.3606485254058498e-06,
+            7.167875082814135e-06
+          ],
+          "asset": "assets/2_scott_0_3_3_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12204,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 2034,
+          "display_frames": 2034,
+          "stride": 1,
+          "translation_count": 6102,
+          "rotation_count": 268488,
+          "translation_minimum": [
+            -0.001974609913304448,
+            1.2615501880645752,
+            -0.4627564549446106
+          ],
+          "translation_scale": [
+            1.2825965313822962e-05,
+            1.0600795121717965e-06,
+            1.5235808859870303e-05
+          ],
+          "asset": "assets/2_scott_0_3_3_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12204,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 2034,
+          "display_frames": 2034,
+          "stride": 1,
+          "translation_count": 6102,
+          "rotation_count": 268488,
+          "translation_minimum": [
+            -0.03589795157313347,
+            1.146770715713501,
+            -7.534869194030762
+          ],
+          "translation_scale": [
+            4.922703010379337e-05,
+            2.9561283554357942e-06,
+            0.0001149747331510298
+          ],
+          "asset": "assets/2_scott_0_3_3_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12204,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 2034,
+          "display_frames": 2034,
+          "stride": 1,
+          "translation_count": 6102,
+          "rotation_count": 268488,
+          "translation_minimum": [
+            -0.1662302315235138,
+            -0.07216010242700577,
+            -0.11607449501752853
+          ],
+          "translation_scale": [
+            4.8320462155970745e-06,
+            1.394227979290008e-06,
+            8.255618013208732e-06
+          ],
+          "asset": "assets/2_scott_0_3_3_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12204,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_4_4",
+      "sample_id": "2_scott_0_4_4",
+      "references": [
+        "my favorite kind of movies are romantic movies such as titanic it's a fantastic film it captured many young people's hearts with it's amazing music and sentimental plots when i think of the movie titanic the word that comes to my mind mind to mises the whole film would be love it's a kind of thing that makes you makes the world go round watching these kinds of romantic movies is just like reading a book that teaches me how to love and be loved moreover we can learn we can learn more from it such things as loyalty and what we treasure in our lives another movie about love is the secret the movie secret is about a story of a musical prodigy do that falls in love with a girl who's dying there are a lot of enviable moments in this film such as the simple love between high school students every time i watch this movie it reminds me of a time that i was in high school and you might remember the crush you had in school and how you would look at him while he's at in class without thinking or wanting to go places with him"
+      ],
+      "audio": "audio/2_scott_0_4_4.wav",
+      "motions": {
+        "gt": {
+          "frames": 2004,
+          "display_frames": 2004,
+          "stride": 1,
+          "translation_count": 6012,
+          "rotation_count": 264528,
+          "translation_minimum": [
+            -0.233451247215271,
+            1.268135666847229,
+            -0.2279158979654312
+          ],
+          "translation_scale": [
+            7.0872483775019646e-06,
+            7.704083486714808e-07,
+            8.410300324612763e-06
+          ],
+          "asset": "assets/2_scott_0_4_4_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12024,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 2004,
+          "display_frames": 2004,
+          "stride": 1,
+          "translation_count": 6012,
+          "rotation_count": 264528,
+          "translation_minimum": [
+            -0.05422194302082062,
+            1.2871968746185303,
+            0.0
+          ],
+          "translation_scale": [
+            8.474630703858566e-06,
+            6.471408369179699e-07,
+            3.378972178325057e-05
+          ],
+          "asset": "assets/2_scott_0_4_4_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12024,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 2004,
+          "display_frames": 2004,
+          "stride": 1,
+          "translation_count": 6012,
+          "rotation_count": 264528,
+          "translation_minimum": [
+            -0.007614895701408386,
+            1.2340558767318726,
+            -6.051639080047607
+          ],
+          "translation_scale": [
+            2.5403154722880572e-05,
+            1.6880807152119814e-06,
+            9.234209574060515e-05
+          ],
+          "asset": "assets/2_scott_0_4_4_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12024,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 2004,
+          "display_frames": 2004,
+          "stride": 1,
+          "translation_count": 6012,
+          "rotation_count": 264528,
+          "translation_minimum": [
+            -0.2638149559497833,
+            -0.04826194420456886,
+            -0.2332453727722168
+          ],
+          "translation_scale": [
+            7.4478193710092455e-06,
+            1.0263005378874368e-06,
+            8.07059132057475e-06
+          ],
+          "asset": "assets/2_scott_0_4_4_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12024,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_5_5",
+      "sample_id": "2_scott_0_5_5",
+      "references": [
+        "know the one thing i miss when i'm away from home is my mom for example when i'm studying in the university which is 40 1,400 miles away from my birthplace the food in my school cafeteria is awful i became 3 kg thinner than when i was in high school so i missed the food my mother cooks for me especially spaghetti which is her signature dish i also miss my mom being around for example i have to organize all my things by myself prepare my clothes that i should are in each season by medicine all by myself excetera i also think about how i have to spend my time because my mom always made me go to bed early when i was and had when i was in college i usually went to bed late but sometimes i miss classes because i woke up late the next day university i've had to handle these problems by myself even though this improves my independent ability i still miss my mom and her rules but most importantly i understand now how much my mom has helped me and all her struggles in the process"
+      ],
+      "audio": "audio/2_scott_0_5_5.wav",
+      "motions": {
+        "gt": {
+          "frames": 2304,
+          "display_frames": 2304,
+          "stride": 1,
+          "translation_count": 6912,
+          "rotation_count": 304128,
+          "translation_minimum": [
+            -0.01546770241111517,
+            1.2797834873199463,
+            -0.039614684879779816
+          ],
+          "translation_scale": [
+            5.255405540083302e-06,
+            7.075158237057622e-07,
+            8.417874596489128e-06
+          ],
+          "asset": "assets/2_scott_0_5_5_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 13824,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 2304,
+          "display_frames": 2304,
+          "stride": 1,
+          "translation_count": 6912,
+          "rotation_count": 304128,
+          "translation_minimum": [
+            -0.13357007503509521,
+            1.2874419689178467,
+            -0.9288761615753174
+          ],
+          "translation_scale": [
+            1.1693514352373313e-05,
+            6.324613650576794e-07,
+            2.3455295377061702e-05
+          ],
+          "asset": "assets/2_scott_0_5_5_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 13824,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 2304,
+          "display_frames": 2304,
+          "stride": 1,
+          "translation_count": 6912,
+          "rotation_count": 304128,
+          "translation_minimum": [
+            -0.016887430101633072,
+            1.0714370012283325,
+            -5.762335777282715
+          ],
+          "translation_scale": [
+            9.422039875062183e-05,
+            4.203217486065114e-06,
+            8.792760490905493e-05
+          ],
+          "asset": "assets/2_scott_0_5_5_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 13824,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 2304,
+          "display_frames": 2304,
+          "stride": 1,
+          "translation_count": 6912,
+          "rotation_count": 304128,
+          "translation_minimum": [
+            -0.10808872431516647,
+            -0.03737224265933037,
+            -0.10836490988731384
+          ],
+          "translation_scale": [
+            6.704040970362257e-06,
+            7.843801199669542e-07,
+            9.45419287745608e-06
+          ],
+          "asset": "assets/2_scott_0_5_5_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 13824,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_65_65",
+      "sample_id": "2_scott_0_65_65",
+      "references": [
+        "okay the best time of the year is valentine's day because i got a present for my family and i was very happy about it it was a bag that i wanted to have last last time when i went to the store i thought i was a little hesitant to buy it or not and i didn't know if i should buy it because i'm not sure if i needed or not however when i got back home on valentine's day i was super super happy because i was thinking about it and it was in my home it was very good bag that allows me to carry my computer as well as all"
+      ],
+      "audio": "audio/2_scott_0_65_65.wav",
+      "motions": {
+        "gt": {
+          "frames": 1584,
+          "display_frames": 1584,
+          "stride": 1,
+          "translation_count": 4752,
+          "rotation_count": 209088,
+          "translation_minimum": [
+            -0.5213356614112854,
+            1.2787145376205444,
+            -1.0149407386779785
+          ],
+          "translation_scale": [
+            1.1697435184032656e-05,
+            8.602550565228739e-07,
+            2.3957914891070686e-05
+          ],
+          "asset": "assets/2_scott_0_65_65_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 9504,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 1584,
+          "display_frames": 1584,
+          "stride": 1,
+          "translation_count": 4752,
+          "rotation_count": 209088,
+          "translation_minimum": [
+            -0.14150658249855042,
+            1.2604243755340576,
+            -0.046852946281433105
+          ],
+          "translation_scale": [
+            9.90876833384391e-06,
+            1.0347479246775038e-06,
+            2.226434116892051e-05
+          ],
+          "asset": "assets/2_scott_0_65_65_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 9504,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 1584,
+          "display_frames": 1584,
+          "stride": 1,
+          "translation_count": 4752,
+          "rotation_count": 209088,
+          "translation_minimum": [
+            -0.022363023832440376,
+            1.2545968294143677,
+            -4.660858631134033
+          ],
+          "translation_scale": [
+            4.774642002303153e-05,
+            1.3576707260654075e-06,
+            7.112014282029122e-05
+          ],
+          "asset": "assets/2_scott_0_65_65_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 9504,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 1584,
+          "display_frames": 1584,
+          "stride": 1,
+          "translation_count": 4752,
+          "rotation_count": 209088,
+          "translation_minimum": [
+            -0.42378658056259155,
+            -0.05271562188863754,
+            -0.6280173659324646
+          ],
+          "translation_scale": [
+            1.3016249795327894e-05,
+            1.0962605756503763e-06,
+            1.5021518265712075e-05
+          ],
+          "asset": "assets/2_scott_0_65_65_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 9504,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_6_6",
+      "sample_id": "2_scott_0_6_6",
+      "references": [
+        "although i've lived with my parents now i excuse me although i live with my parents now i find the things i'm missing the most when i leave my house are simple things since my parents lived abroad when i was a child i didn't live with my parents for a very long time after 8 years old i would live abroad with my parents during the winter and summer break sometimes i feel like i had almost two homes and that made me happy what i am waiting for it my home what i want i'm missing at my home is i miss my relatives and my friends the most i miss feeling that i'm at home and everything feels familiar i consider the place that i know in i know each home and it's street in my neighborhood i know that i do i know what i do in my spare time where to go to get the best food etc i'm also have i am also nostalgic for the feelings i grew up with and who it sometimes that i grew up with some sometimes with a smile and sometimes i feel anger and the place that i grew up with and it is important to know that it's a memory and memories are what keeps me going forward the memory we will make me cherish the time with my family a very much now and this keeps happiness in my heart forever"
+      ],
+      "audio": "audio/2_scott_0_6_6.wav",
+      "motions": {
+        "gt": {
+          "frames": 2484,
+          "display_frames": 2484,
+          "stride": 1,
+          "translation_count": 7452,
+          "rotation_count": 327888,
+          "translation_minimum": [
+            -0.09753084927797318,
+            1.2871956825256348,
+            -0.44302839040756226
+          ],
+          "translation_scale": [
+            4.626222562365001e-06,
+            6.210597689459973e-07,
+            1.2988682101422455e-05
+          ],
+          "asset": "assets/2_scott_0_6_6_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 14904,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 2484,
+          "display_frames": 2484,
+          "stride": 1,
+          "translation_count": 7452,
+          "rotation_count": 327888,
+          "translation_minimum": [
+            -0.3748377561569214,
+            1.2883355617523193,
+            -1.1946772336959839
+          ],
+          "translation_scale": [
+            6.9247730607457925e-06,
+            6.564541763509624e-07,
+            1.8440259736962616e-05
+          ],
+          "asset": "assets/2_scott_0_6_6_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 14904,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 2484,
+          "display_frames": 2484,
+          "stride": 1,
+          "translation_count": 7452,
+          "rotation_count": 327888,
+          "translation_minimum": [
+            -0.5164570212364197,
+            1.232894778251648,
+            -7.773210048675537
+          ],
+          "translation_scale": [
+            1.4914938219590113e-05,
+            1.8072317971018492e-06,
+            0.00011861158418469131
+          ],
+          "asset": "assets/2_scott_0_6_6_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 14904,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 2484,
+          "display_frames": 2484,
+          "stride": 1,
+          "translation_count": 7452,
+          "rotation_count": 327888,
+          "translation_minimum": [
+            -0.16935588419437408,
+            -0.01042571384459734,
+            -0.20463986694812775
+          ],
+          "translation_scale": [
+            5.4068373174231965e-06,
+            5.440768404696428e-07,
+            8.881247595127206e-06
+          ],
+          "asset": "assets/2_scott_0_6_6_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 14904,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_73_73",
+      "sample_id": "2_scott_0_73_73",
+      "references": [
+        "well emotion is one kind of the basic things that makes us human and anger is one of those kinds i normally get i agree when a speedy rash driving vehicle crosses me on the road or someone with a high pitch modified exhaust system drives by for a few seconds i am really angered and upset excuse me i skip i skip the whole thing they do it for fun not to be not to consider how they affect others for a few seconds i'm really angered and tempered i would like to say it's so terrible i'm so sick of these dams sick cars no one can tolerate them nobody drives like this you should really listen to yourselves and hear how loud your car is i think getting angry is human nature and it's hard to control for me another example is when someone tells rumors about me or back stabbing stabbing me will make me angry"
+      ],
+      "audio": "audio/2_scott_0_73_73.wav",
+      "motions": {
+        "gt": {
+          "frames": 1764,
+          "display_frames": 1764,
+          "stride": 1,
+          "translation_count": 5292,
+          "rotation_count": 232848,
+          "translation_minimum": [
+            -0.321567177772522,
+            1.192861795425415,
+            -0.8018385767936707
+          ],
+          "translation_scale": [
+            1.088574299501488e-05,
+            2.1402720449259505e-06,
+            3.0005212465766817e-05
+          ],
+          "asset": "assets/2_scott_0_73_73_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 10584,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 1764,
+          "display_frames": 1764,
+          "stride": 1,
+          "translation_count": 5292,
+          "rotation_count": 232848,
+          "translation_minimum": [
+            -0.3079884350299835,
+            1.237487554550171,
+            -0.27289363741874695
+          ],
+          "translation_scale": [
+            7.16958084012731e-06,
+            1.4054436405785964e-06,
+            1.6866139048943296e-05
+          ],
+          "asset": "assets/2_scott_0_73_73_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 10584,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 1764,
+          "display_frames": 1764,
+          "stride": 1,
+          "translation_count": 5292,
+          "rotation_count": 232848,
+          "translation_minimum": [
+            -0.37450623512268066,
+            1.1181925535202026,
+            -5.255575656890869
+          ],
+          "translation_scale": [
+            1.3074798516754527e-05,
+            3.3883759442687733e-06,
+            8.019494271138683e-05
+          ],
+          "asset": "assets/2_scott_0_73_73_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 10584,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 1764,
+          "display_frames": 1764,
+          "stride": 1,
+          "translation_count": 5292,
+          "rotation_count": 232848,
+          "translation_minimum": [
+            -0.27312904596328735,
+            -0.09118713438510895,
+            -0.7810608148574829
+          ],
+          "translation_scale": [
+            1.0935121281363536e-05,
+            2.128140067725326e-06,
+            2.7848323952639475e-05
+          ],
+          "asset": "assets/2_scott_0_73_73_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 10584,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_7_7",
+      "sample_id": "2_scott_0_7_7",
+      "references": [
+        "the skill i want to learn the most is cooking i have good reasons first i'm going to study abroad so cooking is very necessary for me when i start to live alone as you probably know it's very costly to eat for me to eat out all the time so cooking is a good way to save money usually if i usually if you buy the food at a supermarket and cook it for your home for yourself at home you only need to spend about half the money that you would spend at a restaurant as well as just the amount of seasoning when you're cooking to adjust the taste for your food for example i like to use very low sugar because i don't like to eat things that are particularly sweet and i much prefer using vegetable oil over oil from animals secondly if i cook well i would be able to cook for my form friends and in this way i could share the culture of cooking from my country and if i were good at cooking i could get a part-time job and earn a little bit of"
+      ],
+      "audio": "audio/2_scott_0_7_7.wav",
+      "motions": {
+        "gt": {
+          "frames": 2094,
+          "display_frames": 2094,
+          "stride": 1,
+          "translation_count": 6282,
+          "rotation_count": 276408,
+          "translation_minimum": [
+            -0.0712631419301033,
+            1.2606008052825928,
+            -0.2949692904949188
+          ],
+          "translation_scale": [
+            5.715363386116223e-06,
+            1.0314881819795119e-06,
+            7.493687007809058e-06
+          ],
+          "asset": "assets/2_scott_0_7_7_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12564,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 2094,
+          "display_frames": 2094,
+          "stride": 1,
+          "translation_count": 6282,
+          "rotation_count": 276408,
+          "translation_minimum": [
+            -1.4497764110565186,
+            1.2844489812850952,
+            -0.027362093329429626
+          ],
+          "translation_scale": [
+            2.212217077612877e-05,
+            7.704301765443233e-07,
+            3.0497969419229776e-05
+          ],
+          "asset": "assets/2_scott_0_7_7_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12564,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 2094,
+          "display_frames": 2094,
+          "stride": 1,
+          "translation_count": 6282,
+          "rotation_count": 276408,
+          "translation_minimum": [
+            -0.1412588357925415,
+            1.2360010147094727,
+            -5.455987930297852
+          ],
+          "translation_scale": [
+            2.534701707190834e-05,
+            1.800605105017894e-06,
+            8.325304224854335e-05
+          ],
+          "asset": "assets/2_scott_0_7_7_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12564,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 2094,
+          "display_frames": 2094,
+          "stride": 1,
+          "translation_count": 6282,
+          "rotation_count": 276408,
+          "translation_minimum": [
+            -0.20344193279743195,
+            -0.04041830822825432,
+            -0.20079843699932098
+          ],
+          "translation_scale": [
+            6.967335139052011e-06,
+            9.445606679037155e-07,
+            7.984510375536047e-06
+          ],
+          "asset": "assets/2_scott_0_7_7_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12564,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_81_81",
+      "sample_id": "2_scott_0_81_81",
+      "references": [
+        "today i went to collect french from our apartment usually they come to our house to pay bills but if there's a delay more than two months but efficiently more than too much someone had not pay their bill electric bills velocity months so i asked her about it she said that her son's exams were going on that's why she needs to spend money on him she and her husband were trying hard to keep a roof over the head i was impressed impressed i told her not too worried worried about the bells and ask her if she needs any help she was worried about her son poor guy was very stressed he was working really hard to get into her reputable engineering college she really was depressed last year due to a bad rancor elder son got into he was not able to get a good college and they did not have enough money to support him so reservation killed her dreams and all for a bright future"
+      ],
+      "audio": "audio/2_scott_0_81_81.wav",
+      "motions": {
+        "gt": {
+          "frames": 2003,
+          "display_frames": 2003,
+          "stride": 1,
+          "translation_count": 6009,
+          "rotation_count": 264396,
+          "translation_minimum": [
+            -0.20708297193050385,
+            1.2907871007919312,
+            -0.22037887573242188
+          ],
+          "translation_scale": [
+            3.7274685382726602e-06,
+            5.143816679265001e-07,
+            4.923024789604824e-06
+          ],
+          "asset": "assets/2_scott_0_81_81_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12018,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 2003,
+          "display_frames": 2003,
+          "stride": 1,
+          "translation_count": 6009,
+          "rotation_count": 264396,
+          "translation_minimum": [
+            -0.05825332924723625,
+            1.2641136646270752,
+            -1.7748311758041382
+          ],
+          "translation_scale": [
+            9.327151929028332e-06,
+            1.0690672525015543e-06,
+            3.434692189330235e-05
+          ],
+          "asset": "assets/2_scott_0_81_81_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12018,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 2003,
+          "display_frames": 2003,
+          "stride": 1,
+          "translation_count": 6009,
+          "rotation_count": 264396,
+          "translation_minimum": [
+            -0.12677711248397827,
+            1.2433542013168335,
+            -6.3567423820495605
+          ],
+          "translation_scale": [
+            7.399420155707048e-06,
+            1.679549427535676e-06,
+            9.699766815174371e-05
+          ],
+          "asset": "assets/2_scott_0_81_81_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12018,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 2003,
+          "display_frames": 2003,
+          "stride": 1,
+          "translation_count": 6009,
+          "rotation_count": 264396,
+          "translation_minimum": [
+            -0.27604708075523376,
+            -0.005214547272771597,
+            -0.1321505904197693
+          ],
+          "translation_scale": [
+            5.564436378335813e-06,
+            5.493164962899755e-07,
+            7.582116268167738e-06
+          ],
+          "asset": "assets/2_scott_0_81_81_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 12018,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_87_87",
+      "sample_id": "2_scott_0_87_87",
+      "references": [
+        "thing i don't like is inter a smart these days computers are part of her life people are free to do everything on the internet they are free to do or say whatever they want or they feel there they are they can say or do whatever they feel their however the internet allows people that to have a platform to harass people they are able to give bad or rude comments other people this is all this is also goes doubly forces bertie's who you who are being attacked by internet commentators all the time a famous female star in korea committed suicide because of this harassment the government took some actions to control the networks in the users must be registered with their real names it worked and as form of harassment has been controlled in some way we need to behave ourselves even without the supervision of law i hope you all protect yourself yes and when you send messages to people be careful what you write and post online i don't share unkind personal comments or images remember just because you have a computer in front of you doesn't mean that person on the other side isn't a real human being"
+      ],
+      "audio": "audio/2_scott_0_87_87.wav",
+      "motions": {
+        "gt": {
+          "frames": 2334,
+          "display_frames": 2334,
+          "stride": 1,
+          "translation_count": 7002,
+          "rotation_count": 308088,
+          "translation_minimum": [
+            -0.36890003085136414,
+            1.2537050247192383,
+            -0.16725791990756989
+          ],
+          "translation_scale": [
+            6.203576049301773e-06,
+            1.6441550769741298e-06,
+            8.768759471422527e-06
+          ],
+          "asset": "assets/2_scott_0_87_87_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 14004,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 2334,
+          "display_frames": 2334,
+          "stride": 1,
+          "translation_count": 7002,
+          "rotation_count": 308088,
+          "translation_minimum": [
+            -0.7532285451889038,
+            1.2805373668670654,
+            -0.7640067338943481
+          ],
+          "translation_scale": [
+            1.7183001546072774e-05,
+            7.861573863010562e-07,
+            3.4461649192962795e-05
+          ],
+          "asset": "assets/2_scott_0_87_87_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 14004,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 2334,
+          "display_frames": 2334,
+          "stride": 1,
+          "translation_count": 7002,
+          "rotation_count": 308088,
+          "translation_minimum": [
+            -0.04473575949668884,
+            1.1370047330856323,
+            -5.367419242858887
+          ],
+          "translation_scale": [
+            8.168394560925663e-05,
+            3.1432944069820223e-06,
+            8.190156950149685e-05
+          ],
+          "asset": "assets/2_scott_0_87_87_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 14004,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 2334,
+          "display_frames": 2334,
+          "stride": 1,
+          "translation_count": 7002,
+          "rotation_count": 308088,
+          "translation_minimum": [
+            -0.4301128089427948,
+            -0.03867049887776375,
+            -0.0030627513770014048
+          ],
+          "translation_scale": [
+            8.17308227851754e-06,
+            1.434517685083847e-06,
+            1.4148638001643121e-05
+          ],
+          "asset": "assets/2_scott_0_87_87_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 14004,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_8_8",
+      "sample_id": "2_scott_0_8_8",
+      "references": [
+        "hi i would like to choose a job that could provide me with a high sense of individual satisfaction faction first i believe that success is a process rather than a result of receiving plenty of money money and reputation are things is that i would i would like to come as a result is my recessed so a personal sense of satisfaction would let me enjoy the process secondly a high personal satisfaction can boost my interest and passion to continue the job for example i love music and in my free time i try to remix popular songs but this kind of thing doesn't make a lot of money i'd rather have people praise my remixes online rather than make money also through this i can share my own style of music i would like to add a little more drama or little more drama little more drum guitar sounds to the intro of my of a song as well as add a wrap to the course though this is my job i can share the style of music that i like in my work in other words passion and satisfaction are necessary for my career but money not so much"
+      ],
+      "audio": "audio/2_scott_0_8_8.wav",
+      "motions": {
+        "gt": {
+          "frames": 2327,
+          "display_frames": 2327,
+          "stride": 1,
+          "translation_count": 6981,
+          "rotation_count": 307164,
+          "translation_minimum": [
+            -0.11330181360244751,
+            1.2789559364318848,
+            -0.17380517721176147
+          ],
+          "translation_scale": [
+            5.8812875067815185e-06,
+            6.224167350410426e-07,
+            7.3468690970912576e-06
+          ],
+          "asset": "assets/2_scott_0_8_8_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 13962,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 2327,
+          "display_frames": 2327,
+          "stride": 1,
+          "translation_count": 6981,
+          "rotation_count": 307164,
+          "translation_minimum": [
+            -0.5723029375076294,
+            1.2645180225372314,
+            -0.44392114877700806
+          ],
+          "translation_scale": [
+            1.1460376299510244e-05,
+            9.961302112060366e-07,
+            2.4747838324401528e-05
+          ],
+          "asset": "assets/2_scott_0_8_8_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 13962,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 2327,
+          "display_frames": 2327,
+          "stride": 1,
+          "translation_count": 6981,
+          "rotation_count": 307164,
+          "translation_minimum": [
+            -0.009003915823996067,
+            1.2368403673171997,
+            -6.321014881134033
+          ],
+          "translation_scale": [
+            2.471315565344412e-05,
+            1.810556909731531e-06,
+            9.645250247558579e-05
+          ],
+          "asset": "assets/2_scott_0_8_8_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 13962,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 2327,
+          "display_frames": 2327,
+          "stride": 1,
+          "translation_count": 6981,
+          "rotation_count": 307164,
+          "translation_minimum": [
+            -0.09893199056386948,
+            -0.030315522104501724,
+            -0.32569319009780884
+          ],
+          "translation_scale": [
+            5.905229045310989e-06,
+            6.707388706672646e-07,
+            1.0360838132328354e-05
+          ],
+          "asset": "assets/2_scott_0_8_8_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 13962,
+          "fps": 30.0
+        }
+      }
+    },
+    {
+      "case_id": "2_scott_0_95_95",
+      "sample_id": "2_scott_0_95_95",
+      "references": [
+        "well the world is so small actually last year i was visiting a client or my work time and on the way back i ran into my college classmate who is walking on the street we were both very surprised to see each other wow what are you doing here long time no see it's been like 45 years since we've seen each other right we were so happy to meet each other together and add after not see each other for a long time we gave each other warm hug and decided to spend some time together one two cafe to sit we were eating and drinking they told me how he is now working as a middle school at a middle school as an english teacher oh wow you found your dream job i remember that you wanted to be an english teacher when you were in college overall it was a time where i unexpectedly and surprisingly my"
+      ],
+      "audio": "audio/2_scott_0_95_95.wav",
+      "motions": {
+        "gt": {
+          "frames": 1464,
+          "display_frames": 1464,
+          "stride": 1,
+          "translation_count": 4392,
+          "rotation_count": 193248,
+          "translation_minimum": [
+            -0.2531105577945709,
+            1.1810308694839478,
+            -0.2837187945842743
+          ],
+          "translation_scale": [
+            7.386548077192856e-06,
+            2.5921649466909003e-06,
+            9.193851838062983e-06
+          ],
+          "asset": "assets/2_scott_0_95_95_gt.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 8784,
+          "fps": 30.0
+        },
+        "language_of_motion": {
+          "frames": 1464,
+          "display_frames": 1464,
+          "stride": 1,
+          "translation_count": 4392,
+          "rotation_count": 193248,
+          "translation_minimum": [
+            -0.16862232983112335,
+            1.2905683517456055,
+            -0.09896085411310196
+          ],
+          "translation_scale": [
+            7.110731075954391e-06,
+            5.145599288880476e-07,
+            1.8032495063380338e-05
+          ],
+          "asset": "assets/2_scott_0_95_95_language_of_motion.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 8784,
+          "fps": 30.0
+        },
+        "emage": {
+          "frames": 1464,
+          "display_frames": 1464,
+          "stride": 1,
+          "translation_count": 4392,
+          "rotation_count": 193248,
+          "translation_minimum": [
+            -0.09548475593328476,
+            1.1936589479446411,
+            -3.5384674072265625
+          ],
+          "translation_scale": [
+            6.725939601892605e-05,
+            2.283377625644789e-06,
+            5.399354995461181e-05
+          ],
+          "asset": "assets/2_scott_0_95_95_emage.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 8784,
+          "fps": 30.0
+        },
+        "diffusestylegesture": {
+          "frames": 1464,
+          "display_frames": 1464,
+          "stride": 1,
+          "translation_count": 4392,
+          "rotation_count": 193248,
+          "translation_minimum": [
+            -0.4780517518520355,
+            -0.12810403108596802,
+            -0.2666347324848175
+          ],
+          "translation_scale": [
+            9.019111530506052e-06,
+            2.521416263334686e-06,
+            1.4281602489063516e-05
+          ],
+          "asset": "assets/2_scott_0_95_95_diffusestylegesture.smpl",
+          "translation_offset": 0,
+          "rotation_offset": 8784,
+          "fps": 30.0
+        }
+      }
+    }
+  ]
+}

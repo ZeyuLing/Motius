@@ -1,0 +1,449 @@
+{
+  "cases": {
+    "001840": "hands in fighting position while the left foot kicks aggressively up and over.",
+    "004545": "a person jumps with legs open while clapping with hands over head simultaneously.",
+    "006944": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+    "014457": "the person swings a golf club.",
+    "M013344": "in a fighting stance, person punches downward with their right hand.",
+    "004822": "person walking at a average pace forward, swaying arms and torso with a sense of swagger"
+  },
+  "models": {
+    "dart": {
+      "method": "DART",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/dart/dart_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/dart/dart_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/dart/dart_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/dart/dart_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/dart/dart_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/dart/dart_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "flowmdm": {
+      "method": "FlowMDM",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/flowmdm/flowmdm_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/flowmdm/flowmdm_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/flowmdm/flowmdm_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/flowmdm/flowmdm_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/flowmdm/flowmdm_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/flowmdm/flowmdm_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "hymotion_t2m": {
+      "method": "HY-Motion T2M",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "kimodo": {
+      "method": "KIMODO",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/kimodo/kimodo_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/kimodo/kimodo_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/kimodo/kimodo_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/kimodo/kimodo_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/kimodo/kimodo_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/kimodo/kimodo_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "mdm": {
+      "method": "MDM",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/mdm/mdm_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mdm/mdm_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "014457",
+          "caption": "the person swings a golf club.",
+          "gif": "assets/model_zoo/mdm/mdm_humanml3d_014457_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mdm/mdm_humanml3d_014457_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/mdm/mdm_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mdm/mdm_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "mld": {
+      "method": "MLD",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/mld/mld_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mld/mld_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "M013344",
+          "caption": "in a fighting stance, person punches downward with their right hand.",
+          "gif": "assets/model_zoo/mld/mld_humanml3d_M013344_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mld/mld_humanml3d_M013344_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/mld/mld_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mld/mld_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "mogents": {
+      "method": "MoGenTS",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/mogents/mogents_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mogents/mogents_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/mogents/mogents_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mogents/mogents_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/mogents/mogents_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mogents/mogents_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "momask": {
+      "method": "MoMask",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/momask/momask_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/momask/momask_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/momask/momask_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/momask/momask_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/momask/momask_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/momask/momask_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motiongpt": {
+      "method": "MotionGPT",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/motiongpt/motiongpt_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motiongpt/motiongpt_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/motiongpt/motiongpt_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motiongpt/motiongpt_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/motiongpt/motiongpt_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motiongpt/motiongpt_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motionlcm": {
+      "method": "MotionLCM",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/motionlcm/motionlcm_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionlcm/motionlcm_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/motionlcm/motionlcm_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionlcm/motionlcm_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/motionlcm/motionlcm_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionlcm/motionlcm_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motionmillion": {
+      "method": "MotionMillion-7B",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motionstreamer": {
+      "method": "MotionStreamer",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "t2mgpt": {
+      "method": "T2M-GPT",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "vimogen": {
+      "method": "ViMoGen",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "condmdi": {
+      "method": "CondMDI",
+      "cases": [
+        {
+          "sample_id": "014457",
+          "caption": "the person swings a golf club.",
+          "gif": "assets/model_zoo/condmdi/condmdi_humanml3d_014457_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/condmdi/condmdi_humanml3d_014457_smpl_mesh.json"
+        },
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/condmdi/condmdi_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/condmdi/condmdi_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/condmdi/condmdi_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/condmdi/condmdi_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motionclr": {
+      "method": "MotionCLR",
+      "cases": [
+        {
+          "sample_id": "014160",
+          "caption": "a person is waving with their right hand.",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_014160_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_014160_smpl_mesh.json"
+        },
+        {
+          "sample_id": "003424",
+          "caption": "a person hops in place twice.",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_003424_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_003424_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004822",
+          "caption": "person walking at a average pace forward, swaying arms and torso with a sense of swagger",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh.json"
+        }
+      ]
+    },
+    "prism_1_0": {
+      "method": "PRISM 1.0",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "prism_kt": {
+      "method": "PRISM-KT",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/prism_kt/prism_kt_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_kt/prism_kt_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumps with legs open while clapping with hands over head simultaneously.",
+          "gif": "assets/model_zoo/prism_kt/prism_kt_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_kt/prism_kt_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/prism_kt/prism_kt_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_kt/prism_kt_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "maskcontrol": {
+      "method": "MaskControl",
+      "cases": [
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "014457",
+          "caption": "the person swings a golf club.",
+          "gif": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_014457_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_014457_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it’s doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    }
+  }
+}

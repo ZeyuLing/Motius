@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "method": "ARDY",
+  "task": "kinematic_motion_control",
+  "input": "a person walks forward, turns right, and starts jogging",
+  "condition": "Five root-position and heading constraints over 80 frames",
+  "condition_visualization": "The prescribed root trajectory and constrained samples are rendered in orange beside the native ARDY-330 mesh.",
+  "frames": 80,
+  "fps": 20,
+  "training_motion_fps": 20,
+  "preview_fps": 20,
+  "representation": "ARDY-330 native 9084-vertex body mesh",
+  "render_profile": "motius-threejs-floor-v1"
+}

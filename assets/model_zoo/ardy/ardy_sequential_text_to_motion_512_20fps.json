@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "method": "ARDY",
+  "task": "sequential_text_to_motion",
+  "input": "Continue twice: a person walks forward, turns right, and starts jogging",
+  "condition": "Two stateful 40-frame autoregressive horizons",
+  "condition_visualization": "The two autoregressive horizons are separated on the timeline while the camera follows the continuous native root trajectory.",
+  "frames": 80,
+  "fps": 20,
+  "training_motion_fps": 20,
+  "preview_fps": 20,
+  "representation": "ARDY-330 native 9084-vertex body mesh",
+  "render_profile": "motius-threejs-floor-v1"
+}

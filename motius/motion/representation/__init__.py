@@ -1,0 +1,216 @@
+"""Public motion representation library."""
+
+from .specs import (
+    AISTPP_SMPL24_JOINTS,
+    ARDY_330,
+    ARDY_CORE330,
+    ARDY_G1_414,
+    BABEL135,
+    DART276,
+    G1_38,
+    HML263,
+    HYMOTION201,
+    INTERHUMAN262,
+    MOTION135,
+    MOTIONBRICKS_G1_413,
+    MOTIONBRICKS_G1_414,
+    MOTIONBRICKS_G1_418,
+    MS272,
+    SPECS,
+    MotionRepresentationSpec,
+)
+from .aistpp import (
+    AISTPP_MOTION_FPS,
+    AISTPP_SMPL24_JOINT_DIM,
+    AISTPP_SMPL24_PARENTS,
+    aistpp_smpl24_fk,
+    aistpp_smpl24_to_motion135,
+    aistpp_smpl24_to_smpl22_joints,
+    as_aistpp_smpl24_joints,
+)
+from .babel135 import (
+    BABEL135_DIM,
+    babel135_to_joints,
+    babel135_to_motion135,
+    babel_rows6d_to_matrix,
+    decode_babel135,
+    encode_babel135,
+    infer_smpl22_offsets,
+    matrix_to_babel_rows6d,
+)
+from .ardy import ardy_feature_slices, decode_ardy_features, split_ardy_features
+from .interhuman262 import (
+    interhuman262_to_foot_contacts,
+    interhuman262_to_joint_velocities,
+    interhuman262_to_joints,
+    interhuman262_to_local_rot6d,
+    interhuman262_to_local_rotmat,
+    joints_pair_to_interhuman262,
+    joints_to_interhuman262,
+)
+from .g1 import (
+    G1_MOTION_DIM,
+    G1_QPOS_DIM,
+    decode_g1_to_qpos,
+    encode_g1_motion,
+    encode_g1_qpos,
+)
+from .convert import (
+    convert_motion,
+    hml263_to_motion272,
+    joints_to_hml263,
+    motion135_to_hml263,
+    motion135_to_interhuman262,
+    motion135_to_motion272,
+    motion272_to_joints,
+    motion272_to_motion135,
+    motion272_to_hml263,
+    smpl_to_hml263,
+    smpl_to_humanml263,
+    smpl_to_joints,
+    smpl_to_motion135,
+)
+from .monocular_capture import (
+    CAMERA_OPENCV,
+    GRAVITY_WORLD_Y_UP,
+    CoordinateSystem,
+    MonocularCaptureResult,
+    MonocularTrack,
+    load_monocular_capture_result,
+    save_monocular_capture_result,
+)
+from .monocular_joints import (
+    COMMON_HMR15_NAMES,
+    SMPL24_NAMES,
+    SOMA77_NAMES,
+    select_common_hmr15,
+)
+from motius.motion.retarget.ardy_core import (
+    ARDY_CORE27_NAMES,
+    SMPL22_FROM_ARDY_CORE27,
+    ardy_core27_to_smpl22_joints,
+    smpl22_joints_to_ardy_core27_joints,
+)
+
+
+def get_spec(name: str) -> MotionRepresentationSpec:
+    """Return a representation spec from a normalized public alias."""
+
+    key = (
+        name.lower()
+        .replace("+", "p")
+        .replace("-", "")
+        .replace("_", "")
+        .replace(" ", "")
+    )
+    aliases = {
+        "humanml3d263": "hml263",
+        "humanml263": "hml263",
+        "aistppsmpl24": "aistpp_smpl24_joints",
+        "aistppsmpl24joints": "aistpp_smpl24_joints",
+        "aistppjoints72": "aistpp_smpl24_joints",
+        "babel135": "babel135",
+        "flowmdmbabel135": "babel135",
+        "motionstreamer272": "ms272",
+        "motion272": "ms272",
+        "hymotion201": "hymotion201",
+        "interhuman262": "interhuman262",
+        "interhuman": "interhuman262",
+        "motion135": "motion135",
+        "dart276": "dart276",
+        "g138": "g1_38",
+        "g1motion38": "g1_38",
+        "ardy330": "ardy_330",
+        "ardycore330": "ardy_330",
+        "core330": "ardy_330",
+        "ardy27": "ardy_330",
+        "ardyg1414": "ardy_g1_414",
+        "g1414": "ardy_g1_414",
+        "motionbricksg1414": "motionbricks_g1_414",
+        "motionbricksg1413": "motionbricks_g1_413",
+        "motionbricksg1418": "motionbricks_g1_418",
+    }
+    canonical = aliases.get(key, key)
+    try:
+        return SPECS[canonical]
+    except KeyError as exc:
+        raise KeyError(f"unknown motion representation {name!r}; available: {sorted(SPECS)}") from exc
+
+__all__ = [
+    "MotionRepresentationSpec",
+    "CAMERA_OPENCV",
+    "GRAVITY_WORLD_Y_UP",
+    "CoordinateSystem",
+    "MonocularCaptureResult",
+    "MonocularTrack",
+    "load_monocular_capture_result",
+    "save_monocular_capture_result",
+    "COMMON_HMR15_NAMES",
+    "SMPL24_NAMES",
+    "SOMA77_NAMES",
+    "select_common_hmr15",
+    "AISTPP_SMPL24_JOINTS",
+    "AISTPP_MOTION_FPS",
+    "AISTPP_SMPL24_JOINT_DIM",
+    "AISTPP_SMPL24_PARENTS",
+    "HML263",
+    "BABEL135",
+    "BABEL135_DIM",
+    "MS272",
+    "MOTION135",
+    "HYMOTION201",
+    "INTERHUMAN262",
+    "DART276",
+    "G1_38",
+    "ARDY_330",
+    "ARDY_CORE330",
+    "ARDY_G1_414",
+    "MOTIONBRICKS_G1_414",
+    "MOTIONBRICKS_G1_413",
+    "MOTIONBRICKS_G1_418",
+    "SPECS",
+    "get_spec",
+    "babel_rows6d_to_matrix",
+    "matrix_to_babel_rows6d",
+    "encode_babel135",
+    "decode_babel135",
+    "babel135_to_motion135",
+    "babel135_to_joints",
+    "infer_smpl22_offsets",
+    "G1_MOTION_DIM",
+    "G1_QPOS_DIM",
+    "encode_g1_motion",
+    "encode_g1_qpos",
+    "decode_g1_to_qpos",
+    "ardy_feature_slices",
+    "split_ardy_features",
+    "decode_ardy_features",
+    "as_aistpp_smpl24_joints",
+    "aistpp_smpl24_fk",
+    "aistpp_smpl24_to_smpl22_joints",
+    "aistpp_smpl24_to_motion135",
+    "ARDY_CORE27_NAMES",
+    "SMPL22_FROM_ARDY_CORE27",
+    "ardy_core27_to_smpl22_joints",
+    "smpl22_joints_to_ardy_core27_joints",
+    "interhuman262_to_foot_contacts",
+    "interhuman262_to_joint_velocities",
+    "interhuman262_to_joints",
+    "interhuman262_to_local_rot6d",
+    "interhuman262_to_local_rotmat",
+    "joints_pair_to_interhuman262",
+    "joints_to_interhuman262",
+    "convert_motion",
+    "hml263_to_motion272",
+    "joints_to_hml263",
+    "motion135_to_hml263",
+    "motion135_to_interhuman262",
+    "motion135_to_motion272",
+    "motion272_to_joints",
+    "motion272_to_motion135",
+    "motion272_to_hml263",
+    "smpl_to_hml263",
+    "smpl_to_humanml263",
+    "smpl_to_joints",
+    "smpl_to_motion135",
+]

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "benchmark": {
+    "id": "text_to_motion_unitree_g1",
+    "label": "Text-to-Motion · Unitree G1 Skeleton",
+    "protocol_id": "unitree-g1-paper-eval-1024-v1",
+    "samples": 1024,
+    "representation": "g1_38",
+    "fps": 30,
+    "evaluator": "ZeyuLing/motius-evaluator-g1-38d-tmr",
+    "evaluator_checkpoint": "epoch-139",
+    "retrieval_group_size": 32,
+    "repeats": 20,
+    "fid_space": "L2-normalized TMR-G1 latent"
+  },
+  "comparison_snapshot": {
+    "created_at": "2026-07-24T03:39:16+08:00",
+    "rows": [
+      {
+        "method": "GT calibration",
+        "variant": "reference",
+        "kind": "reference",
+        "samples": 1024,
+        "r1": 0.84892578125,
+        "r2": 0.950048828125,
+        "r3": 0.979638671875,
+        "fid": 0.0,
+        "mm_dist": 16.344970703125,
+        "diversity": 36.71347064971924
+      },
+      {
+        "method": "HY-Motion G1",
+        "variant": "released",
+        "kind": "generated",
+        "samples": 1024,
+        "r1": 0.708642578125,
+        "r2": 0.83798828125,
+        "r3": 0.893505859375,
+        "fid": 0.0587378660855683,
+        "mm_dist": 20.51283073425293,
+        "diversity": 36.01064567565918,
+        "artifact": "https://huggingface.co/ZeyuLing/Motius-HYMotion-G1"
+      },
+      {
+        "method": "KIMODO G1-RP",
+        "variant": "released",
+        "kind": "generated",
+        "samples": 1023,
+        "r1": 0.5173387096774195,
+        "r2": 0.6777721774193548,
+        "r3": 0.754485887096774,
+        "fid": 0.11929946150144946,
+        "mm_dist": 25.1236515045166,
+        "diversity": 35.687303733825686,
+        "coverage_note": "1023 of 1024 protocol cases; one persisted prediction is missing",
+        "artifact": "https://huggingface.co/ZeyuLing/Motius-KIMODO-G1-RP"
+      }
+    ]
+  }
+}

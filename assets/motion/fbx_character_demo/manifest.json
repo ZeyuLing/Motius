@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "case_id": "004822",
+  "source": "HumanML3D test motion135",
+  "frames": 90,
+  "capture_fps": 30,
+  "resolution": [1440, 900],
+  "renderer": "Three.js r169 FBXLoader",
+  "panels": [
+    "SMPL-22 Skeleton",
+    "SMPL Mesh FBX",
+    "Amy FBX",
+    "Maria FBX",
+    "Michelle FBX",
+    "Remy FBX"
+  ],
+  "artifact": "004822_skeleton_smpl_mixamo_1440_30fps.gif",
+  "sha256": "2fc12bcac25c00b31ffc50641d6fae6cf37691bc8a7e85994c795a2e7deeef4e",
+  "fbx_assets_committed": false,
+  "validation": {
+    "duration_seconds": 5.966666666666667,
+    "animation_stacks_per_output": 1,
+    "smpl": {"meshes": 1, "polygons": 13776, "skins": 1, "bones": 24, "bind_poses": 1},
+    "amy": {"meshes": 1, "polygons": 12412, "skins": 1, "bones": 65},
+    "maria": {"meshes": 2, "polygons": 14646, "skins": 2, "bones": 65},
+    "michelle": {"meshes": 1, "polygons": 14218, "skins": 1, "bones": 65},
+    "remy": {"meshes": 7, "polygons": 18891, "skins": 7, "bones": 67}
+  }
+}

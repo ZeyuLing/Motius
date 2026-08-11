@@ -1,0 +1,734 @@
+{
+  "schema_version": 1,
+  "title": "Text-to-Motion \u00b7 Unitree G1 Skeleton comparison",
+  "representation": "Unitree G1 robot body transforms",
+  "benchmark_population": 1024,
+  "population": 64,
+  "asset_base_url": "https://huggingface.co/datasets/ZeyuLing/Motius-Leaderboard-Cases/resolve/main/t2m-unitree-g1/",
+  "mesh_base_url": "https://huggingface.co/datasets/ZeyuLing/Motius-Leaderboard-Cases/resolve/main/t2m-unitree-g1/meshes/",
+  "columns": [
+    {
+      "key": "gt",
+      "label": "GT G1 reference"
+    },
+    {
+      "key": "kimodo",
+      "label": "KIMODO-G1"
+    },
+    {
+      "key": "hymotion_g1",
+      "label": "HYMotion-G1"
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "hy_000034f24cfbd34f_0247968",
+      "prompt": "A person performs an arm exercise, raising their hands to their chest and pushing them down.",
+      "frames": 196,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_000034f24cfbd34f_0247968.json",
+        "kimodo": "frames/kimodo/hy_000034f24cfbd34f_0247968.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_000034f24cfbd34f_0247968.json"
+      }
+    },
+    {
+      "case_id": "hy_00511cedc72cf0be_0173306",
+      "prompt": "A person lifts their left hand and extends it horizontally to the right to stretch, while bending their right elbow to cross it with the left arm, and finally stands naturally.",
+      "frames": 132,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_00511cedc72cf0be_0173306.json",
+        "kimodo": "frames/kimodo/hy_00511cedc72cf0be_0173306.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_00511cedc72cf0be_0173306.json"
+      }
+    },
+    {
+      "case_id": "hy_009c43a9a8d20412_0352379",
+      "prompt": "A person stands and gestures with both hands, then lowers their arms to their sides.",
+      "frames": 170,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_009c43a9a8d20412_0352379.json",
+        "kimodo": "frames/kimodo/hy_009c43a9a8d20412_0352379.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_009c43a9a8d20412_0352379.json"
+      }
+    },
+    {
+      "case_id": "hy_00ce8bee3cded6a5_0251717",
+      "prompt": "A person stands with knees bent and repeatedly raises their arms out to the sides to shoulder level, then lowers them.",
+      "frames": 217,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_00ce8bee3cded6a5_0251717.json",
+        "kimodo": "frames/kimodo/hy_00ce8bee3cded6a5_0251717.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_00ce8bee3cded6a5_0251717.json"
+      }
+    },
+    {
+      "case_id": "hy_0117e3c324122538_0189198",
+      "prompt": "A person repeatedly performs deep squats, standing with feet apart, while raising their arms to the sides, forming a T-shape with their body.",
+      "frames": 209,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0117e3c324122538_0189198.json",
+        "kimodo": "frames/kimodo/hy_0117e3c324122538_0189198.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0117e3c324122538_0189198.json"
+      }
+    },
+    {
+      "case_id": "hy_01d27b7b7e207931_0070900",
+      "prompt": "A person performs a slow, fluid dance routine.",
+      "frames": 81,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_01d27b7b7e207931_0070900.json",
+        "kimodo": "frames/kimodo/hy_01d27b7b7e207931_0070900.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_01d27b7b7e207931_0070900.json"
+      }
+    },
+    {
+      "case_id": "hy_01e1543d3a4957ef_0344087",
+      "prompt": "A person performs a bodyweight squat with arm movements.",
+      "frames": 196,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_01e1543d3a4957ef_0344087.json",
+        "kimodo": "frames/kimodo/hy_01e1543d3a4957ef_0344087.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_01e1543d3a4957ef_0344087.json"
+      }
+    },
+    {
+      "case_id": "hy_02197aa2d209091e_0251279",
+      "prompt": "A person is performing standing side leg raises with their right leg.",
+      "frames": 256,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_02197aa2d209091e_0251279.json",
+        "kimodo": "frames/kimodo/hy_02197aa2d209091e_0251279.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_02197aa2d209091e_0251279.json"
+      }
+    },
+    {
+      "case_id": "hy_022725897c464427_0066172",
+      "prompt": "A person stands and mimes operating a machine, turning a dial with their right hand and then twice pointing forward with their index finger.",
+      "frames": 209,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_022725897c464427_0066172.json",
+        "kimodo": "frames/kimodo/hy_022725897c464427_0066172.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_022725897c464427_0066172.json"
+      }
+    },
+    {
+      "case_id": "hy_0237bce4c48df8da_0161134",
+      "prompt": "A person starts from a pose of extending clasped hands forward and bending over, turns their head to the front, then stands up straight while lowering and slightly swinging their arms.",
+      "frames": 282,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0237bce4c48df8da_0161134.json",
+        "kimodo": "frames/kimodo/hy_0237bce4c48df8da_0161134.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0237bce4c48df8da_0161134.json"
+      }
+    },
+    {
+      "case_id": "hy_0292cf6584b918c6_0329860",
+      "prompt": "A person bends over, stands up gesturing, and then touches their face.",
+      "frames": 162,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0292cf6584b918c6_0329860.json",
+        "kimodo": "frames/kimodo/hy_0292cf6584b918c6_0329860.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0292cf6584b918c6_0329860.json"
+      }
+    },
+    {
+      "case_id": "hy_02e04b87198fc9cb_0079381",
+      "prompt": "A person performs a series of front kicks with their right leg.",
+      "frames": 168,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_02e04b87198fc9cb_0079381.json",
+        "kimodo": "frames/kimodo/hy_02e04b87198fc9cb_0079381.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_02e04b87198fc9cb_0079381.json"
+      }
+    },
+    {
+      "case_id": "hy_02e989f688612c53_0219864",
+      "prompt": "A person is hopping on their right foot while repeatedly kicking their left leg backward.",
+      "frames": 181,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_02e989f688612c53_0219864.json",
+        "kimodo": "frames/kimodo/hy_02e989f688612c53_0219864.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_02e989f688612c53_0219864.json"
+      }
+    },
+    {
+      "case_id": "hy_03593deb99aef925_0006239",
+      "prompt": "A person is dancing with their feet apart, swaying their hips and body from side to side while pointing upwards with their index finger.",
+      "frames": 72,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_03593deb99aef925_0006239.json",
+        "kimodo": "frames/kimodo/hy_03593deb99aef925_0006239.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_03593deb99aef925_0006239.json"
+      }
+    },
+    {
+      "case_id": "hy_038938bdf1d95f5f_0079332",
+      "prompt": "A person walks slowly while holding their head.",
+      "frames": 120,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_038938bdf1d95f5f_0079332.json",
+        "kimodo": "frames/kimodo/hy_038938bdf1d95f5f_0079332.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_038938bdf1d95f5f_0079332.json"
+      }
+    },
+    {
+      "case_id": "hy_03f21a6793c48247_0118145",
+      "prompt": "A person sways their body from side to side while gesturing with their hands.",
+      "frames": 223,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_03f21a6793c48247_0118145.json",
+        "kimodo": "frames/kimodo/hy_03f21a6793c48247_0118145.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_03f21a6793c48247_0118145.json"
+      }
+    },
+    {
+      "case_id": "hy_04077b5710598d68_0333871",
+      "prompt": "A person stands in a shallow squat and gestures with their left hand.",
+      "frames": 167,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_04077b5710598d68_0333871.json",
+        "kimodo": "frames/kimodo/hy_04077b5710598d68_0333871.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_04077b5710598d68_0333871.json"
+      }
+    },
+    {
+      "case_id": "hy_042783bb5169b092_0304265",
+      "prompt": "A person stands, clasps their hands in front of their waist, and sways their torso from side to side.",
+      "frames": 158,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_042783bb5169b092_0304265.json",
+        "kimodo": "frames/kimodo/hy_042783bb5169b092_0304265.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_042783bb5169b092_0304265.json"
+      }
+    },
+    {
+      "case_id": "hy_04dc305ad2f0a3e9_0120388",
+      "prompt": "A person stands up from a crouch while turning to their right.",
+      "frames": 93,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_04dc305ad2f0a3e9_0120388.json",
+        "kimodo": "frames/kimodo/hy_04dc305ad2f0a3e9_0120388.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_04dc305ad2f0a3e9_0120388.json"
+      }
+    },
+    {
+      "case_id": "hy_04f064a74e5ebbb7_0216108",
+      "prompt": "A person stands while tapping their left wrist with their right index finger.",
+      "frames": 248,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_04f064a74e5ebbb7_0216108.json",
+        "kimodo": "frames/kimodo/hy_04f064a74e5ebbb7_0216108.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_04f064a74e5ebbb7_0216108.json"
+      }
+    },
+    {
+      "case_id": "hy_054a30366873efe7_0298290",
+      "prompt": "A person stands still, then raises their right hand to their mouth and coughs.",
+      "frames": 245,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_054a30366873efe7_0298290.json",
+        "kimodo": "frames/kimodo/hy_054a30366873efe7_0298290.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_054a30366873efe7_0298290.json"
+      }
+    },
+    {
+      "case_id": "hy_057397536d67fa65_0050147",
+      "prompt": "This person stands with their legs apart. They are holding an object with both hands in front of their abdomen, their left hand shaking continuously. Then they draw back their left leg, tilt their body to the right, and extend their left hand to take a certain object and make a pouring motion in front.",
+      "frames": 159,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_057397536d67fa65_0050147.json",
+        "kimodo": "frames/kimodo/hy_057397536d67fa65_0050147.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_057397536d67fa65_0050147.json"
+      }
+    },
+    {
+      "case_id": "hy_05ee13a421b69669_0112384",
+      "prompt": "A person stands and waves their right hand.",
+      "frames": 195,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_05ee13a421b69669_0112384.json",
+        "kimodo": "frames/kimodo/hy_05ee13a421b69669_0112384.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_05ee13a421b69669_0112384.json"
+      }
+    },
+    {
+      "case_id": "hy_0633184198e713f8_0061887",
+      "prompt": "A person walks forward slowly while bent over with their hands on their thighs.",
+      "frames": 183,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0633184198e713f8_0061887.json",
+        "kimodo": "frames/kimodo/hy_0633184198e713f8_0061887.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0633184198e713f8_0061887.json"
+      }
+    },
+    {
+      "case_id": "hy_0678aba44a82512b_0306199",
+      "prompt": "A person stands and gestures with both hands outwards, then shrugs their shoulders while tilting their head. They then bring their left hand to their mouth while placing their right hand on their hip.",
+      "frames": 284,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0678aba44a82512b_0306199.json",
+        "kimodo": "frames/kimodo/hy_0678aba44a82512b_0306199.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0678aba44a82512b_0306199.json"
+      }
+    },
+    {
+      "case_id": "hy_0773f9f0687a052e_0294378",
+      "prompt": "A person stands and taps their right wrist with their left hand.",
+      "frames": 68,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0773f9f0687a052e_0294378.json",
+        "kimodo": "frames/kimodo/hy_0773f9f0687a052e_0294378.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0773f9f0687a052e_0294378.json"
+      }
+    },
+    {
+      "case_id": "hy_078fb31f6524ee65_0104051",
+      "prompt": "A person repeatedly turns from side to side while bending over and pulling their arms towards their body.",
+      "frames": 165,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_078fb31f6524ee65_0104051.json",
+        "kimodo": "frames/kimodo/hy_078fb31f6524ee65_0104051.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_078fb31f6524ee65_0104051.json"
+      }
+    },
+    {
+      "case_id": "hy_07a9e1aae1f55d76_0225677",
+      "prompt": "A person stands while gesturing with both hands in front of their body.",
+      "frames": 154,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_07a9e1aae1f55d76_0225677.json",
+        "kimodo": "frames/kimodo/hy_07a9e1aae1f55d76_0225677.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_07a9e1aae1f55d76_0225677.json"
+      }
+    },
+    {
+      "case_id": "hy_07d5274b1401a46e_0132302",
+      "prompt": "The person steps to the left, raising their right hand over the chest and extending it outward to the left. They slowly lower the hand, then step to the right, repeating this sequence of movements twice, ensuring smooth and controlled motions throughout.",
+      "frames": 298,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_07d5274b1401a46e_0132302.json",
+        "kimodo": "frames/kimodo/hy_07d5274b1401a46e_0132302.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_07d5274b1401a46e_0132302.json"
+      }
+    },
+    {
+      "case_id": "hy_082c55691b71f5a1_0072976",
+      "prompt": "A person stands still and then shifts their weight to their right leg.",
+      "frames": 53,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_082c55691b71f5a1_0072976.json",
+        "kimodo": "frames/kimodo/hy_082c55691b71f5a1_0072976.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_082c55691b71f5a1_0072976.json"
+      }
+    },
+    {
+      "case_id": "hy_084c3a564ae47693_0221472",
+      "prompt": "A person twists their torso from side to front while separating and lowering their arms.",
+      "frames": 158,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_084c3a564ae47693_0221472.json",
+        "kimodo": "frames/kimodo/hy_084c3a564ae47693_0221472.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_084c3a564ae47693_0221472.json"
+      }
+    },
+    {
+      "case_id": "hy_088e3e71ac4a533d_0187545",
+      "prompt": "A person touches the back of their head with their left hand, then squats down with both hands on their knees, places their left hand on their chest, and extends their right hand towards the ground.",
+      "frames": 177,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_088e3e71ac4a533d_0187545.json",
+        "kimodo": "frames/kimodo/hy_088e3e71ac4a533d_0187545.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_088e3e71ac4a533d_0187545.json"
+      }
+    },
+    {
+      "case_id": "hy_092643f52425607e_0051205",
+      "prompt": "A person maintains a standing posture, then bends and extends their left arm, placing their left hand in front of their eyes to make a saluting gesture, and then lowers their arm to maintain a standing posture.",
+      "frames": 121,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_092643f52425607e_0051205.json",
+        "kimodo": "frames/kimodo/hy_092643f52425607e_0051205.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_092643f52425607e_0051205.json"
+      }
+    },
+    {
+      "case_id": "hy_094aa4c27dc20e0e_0164859",
+      "prompt": "A person stands with their legs apart, alternately raising and lowering their arms while turning their torso from side to side, and continuously moves forward and backward.",
+      "frames": 183,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_094aa4c27dc20e0e_0164859.json",
+        "kimodo": "frames/kimodo/hy_094aa4c27dc20e0e_0164859.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_094aa4c27dc20e0e_0164859.json"
+      }
+    },
+    {
+      "case_id": "hy_097a4d91b16ca1ef_0003609",
+      "prompt": "A person stands, raises their right hand to shoulder height while tilting their head to the left, holds the pose, and then lowers the arm.",
+      "frames": 99,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_097a4d91b16ca1ef_0003609.json",
+        "kimodo": "frames/kimodo/hy_097a4d91b16ca1ef_0003609.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_097a4d91b16ca1ef_0003609.json"
+      }
+    },
+    {
+      "case_id": "hy_09c0e7c130620021_0033290",
+      "prompt": "A person dances by stepping right and left and waving their arms, while keeping their right hand behind their back.",
+      "frames": 43,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_09c0e7c130620021_0033290.json",
+        "kimodo": "frames/kimodo/hy_09c0e7c130620021_0033290.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_09c0e7c130620021_0033290.json"
+      }
+    },
+    {
+      "case_id": "hy_0a89a689d2259d02_0308721",
+      "prompt": "A person stands and crosses their arms over their chest while turning slightly to the right.",
+      "frames": 194,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0a89a689d2259d02_0308721.json",
+        "kimodo": "frames/kimodo/hy_0a89a689d2259d02_0308721.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0a89a689d2259d02_0308721.json"
+      }
+    },
+    {
+      "case_id": "hy_0b1b675bfb6e6be5_0338602",
+      "prompt": "A person is holding a downward dog yoga pose.",
+      "frames": 156,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0b1b675bfb6e6be5_0338602.json",
+        "kimodo": "frames/kimodo/hy_0b1b675bfb6e6be5_0338602.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0b1b675bfb6e6be5_0338602.json"
+      }
+    },
+    {
+      "case_id": "hy_0b485da50b7c4df2_0183965",
+      "prompt": "A person stands with their feet apart, holding an object in their left hand, extends it forward, raises it and moves it to the right, then lowers and raises it again, and finally puts it back to their side.",
+      "frames": 165,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0b485da50b7c4df2_0183965.json",
+        "kimodo": "frames/kimodo/hy_0b485da50b7c4df2_0183965.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0b485da50b7c4df2_0183965.json"
+      }
+    },
+    {
+      "case_id": "hy_0be3f1e55083b08f_0013735",
+      "prompt": "A person jumps forward, while swinging both hands up and down with large movements to maintain body balance.",
+      "frames": 60,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0be3f1e55083b08f_0013735.json",
+        "kimodo": "frames/kimodo/hy_0be3f1e55083b08f_0013735.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0be3f1e55083b08f_0013735.json"
+      }
+    },
+    {
+      "case_id": "hy_0c3a3781f54b4afc_0120758",
+      "prompt": "A person wipes their face with their left hand.",
+      "frames": 99,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0c3a3781f54b4afc_0120758.json",
+        "kimodo": "frames/kimodo/hy_0c3a3781f54b4afc_0120758.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0c3a3781f54b4afc_0120758.json"
+      }
+    },
+    {
+      "case_id": "hy_0cefa34c045cfb04_0046159",
+      "prompt": "A person is standing, then raises their left arm to their chest and waves it up and down a few times, while taking a step back with their left foot, then lowers the arm, tilts their body and head slightly to the left, raises their left arm and places it on their chest, and finally lowers the arm, walks a few steps forward, with their head and body swaying slightly.",
+      "frames": 165,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0cefa34c045cfb04_0046159.json",
+        "kimodo": "frames/kimodo/hy_0cefa34c045cfb04_0046159.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0cefa34c045cfb04_0046159.json"
+      }
+    },
+    {
+      "case_id": "hy_0cf699bcfcf89dcc_0175763",
+      "prompt": "A person is standing with his feet and arms slightly open, then stands on one leg and makes a slight jumping motion a few times.",
+      "frames": 132,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0cf699bcfcf89dcc_0175763.json",
+        "kimodo": "frames/kimodo/hy_0cf699bcfcf89dcc_0175763.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0cf699bcfcf89dcc_0175763.json"
+      }
+    },
+    {
+      "case_id": "hy_0d149a51364ca899_0095940",
+      "prompt": "The person stands with a slight crouch, then straightens up, bending the right leg slightly while raising both arms sideways. They bend at the waist, lowering their hands, and then repeat this movement twice more, maintaining a rhythmic flow.",
+      "frames": 190,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0d149a51364ca899_0095940.json",
+        "kimodo": "frames/kimodo/hy_0d149a51364ca899_0095940.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0d149a51364ca899_0095940.json"
+      }
+    },
+    {
+      "case_id": "hy_0d1500c506f12b8d_0322072",
+      "prompt": "A person performs a stylized dance routine involving squats and various arm movements.",
+      "frames": 291,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0d1500c506f12b8d_0322072.json",
+        "kimodo": "frames/kimodo/hy_0d1500c506f12b8d_0322072.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0d1500c506f12b8d_0322072.json"
+      }
+    },
+    {
+      "case_id": "hy_0e0584679d32bd7c_0276421",
+      "prompt": "A person is performing a yoga forearm stand, lowering one leg and then raising the other.",
+      "frames": 171,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0e0584679d32bd7c_0276421.json",
+        "kimodo": "frames/kimodo/hy_0e0584679d32bd7c_0276421.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0e0584679d32bd7c_0276421.json"
+      }
+    },
+    {
+      "case_id": "hy_0e3405411086874e_0261613",
+      "prompt": "A person stands still, gestures with their right hand, then with their left hand, before crossing both arms in front of their chest.",
+      "frames": 244,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0e3405411086874e_0261613.json",
+        "kimodo": "frames/kimodo/hy_0e3405411086874e_0261613.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0e3405411086874e_0261613.json"
+      }
+    },
+    {
+      "case_id": "hy_0e577faf30bf3a8d_0036248",
+      "prompt": "A person is standing, raises their left hand to their ear, then to their side, and then lowers their arm.",
+      "frames": 224,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0e577faf30bf3a8d_0036248.json",
+        "kimodo": "frames/kimodo/hy_0e577faf30bf3a8d_0036248.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0e577faf30bf3a8d_0036248.json"
+      }
+    },
+    {
+      "case_id": "hy_0e8099216f255bae_0066873",
+      "prompt": "A person uses a capsule machine by turning a knob with their right hand and catching an item with their left, then raises their arms out to their sides.",
+      "frames": 162,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0e8099216f255bae_0066873.json",
+        "kimodo": "frames/kimodo/hy_0e8099216f255bae_0066873.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0e8099216f255bae_0066873.json"
+      }
+    },
+    {
+      "case_id": "hy_0e9987069c23fdbc_0119180",
+      "prompt": "A person performs a short, fluid dance sequence involving turns, bends, and arm movements.",
+      "frames": 160,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0e9987069c23fdbc_0119180.json",
+        "kimodo": "frames/kimodo/hy_0e9987069c23fdbc_0119180.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0e9987069c23fdbc_0119180.json"
+      }
+    },
+    {
+      "case_id": "hy_0efb499b533d39d8_0004601",
+      "prompt": "A person is standing, tilting their head to the left, and repeatedly waving their right hand up and down.",
+      "frames": 242,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0efb499b533d39d8_0004601.json",
+        "kimodo": "frames/kimodo/hy_0efb499b533d39d8_0004601.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0efb499b533d39d8_0004601.json"
+      }
+    },
+    {
+      "case_id": "hy_0f1a9658da7809ff_0312412",
+      "prompt": "A person stands and performs a neck stretch to the left.",
+      "frames": 158,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0f1a9658da7809ff_0312412.json",
+        "kimodo": "frames/kimodo/hy_0f1a9658da7809ff_0312412.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0f1a9658da7809ff_0312412.json"
+      }
+    },
+    {
+      "case_id": "hy_0f2a183383ca744b_0300938",
+      "prompt": "A person is standing and performs a side-to-side stretch by tilting their head and torso.",
+      "frames": 212,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0f2a183383ca744b_0300938.json",
+        "kimodo": "frames/kimodo/hy_0f2a183383ca744b_0300938.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0f2a183383ca744b_0300938.json"
+      }
+    },
+    {
+      "case_id": "hy_0f2fc51186fc6e97_0260560",
+      "prompt": "A person squats down while bringing their raised right arm to their forehead, and then stands up while lowering their arm.",
+      "frames": 212,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0f2fc51186fc6e97_0260560.json",
+        "kimodo": "frames/kimodo/hy_0f2fc51186fc6e97_0260560.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0f2fc51186fc6e97_0260560.json"
+      }
+    },
+    {
+      "case_id": "hy_0f3017e60be366a9_0033387",
+      "prompt": "A person stands still with their feet apart, their right hand touching their chest, and their left hand gesturing near their head.",
+      "frames": 56,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0f3017e60be366a9_0033387.json",
+        "kimodo": "frames/kimodo/hy_0f3017e60be366a9_0033387.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0f3017e60be366a9_0033387.json"
+      }
+    },
+    {
+      "case_id": "hy_0f50ff2c592f014f_0252705",
+      "prompt": "A person turns to the left and walks away.",
+      "frames": 151,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0f50ff2c592f014f_0252705.json",
+        "kimodo": "frames/kimodo/hy_0f50ff2c592f014f_0252705.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0f50ff2c592f014f_0252705.json"
+      }
+    },
+    {
+      "case_id": "hy_0f5aa10496ec71a5_0061106",
+      "prompt": "A person limps forward on their left leg with their hands behind their back.",
+      "frames": 156,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0f5aa10496ec71a5_0061106.json",
+        "kimodo": "frames/kimodo/hy_0f5aa10496ec71a5_0061106.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0f5aa10496ec71a5_0061106.json"
+      }
+    },
+    {
+      "case_id": "hy_0fc8ae7bcc0d4f1e_0080773",
+      "prompt": "A person performs a tactical walk forward while aiming an imaginary firearm.",
+      "frames": 111,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_0fc8ae7bcc0d4f1e_0080773.json",
+        "kimodo": "frames/kimodo/hy_0fc8ae7bcc0d4f1e_0080773.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_0fc8ae7bcc0d4f1e_0080773.json"
+      }
+    },
+    {
+      "case_id": "hy_107ce31d90de5344_0006454",
+      "prompt": "A person bends their knees and performs an overhand throw with their left arm.",
+      "frames": 60,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_107ce31d90de5344_0006454.json",
+        "kimodo": "frames/kimodo/hy_107ce31d90de5344_0006454.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_107ce31d90de5344_0006454.json"
+      }
+    },
+    {
+      "case_id": "hy_10a5c8a5d39b6ab6_0123130",
+      "prompt": "A person repeatedly performs an underhand throw with their left arm.",
+      "frames": 175,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_10a5c8a5d39b6ab6_0123130.json",
+        "kimodo": "frames/kimodo/hy_10a5c8a5d39b6ab6_0123130.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_10a5c8a5d39b6ab6_0123130.json"
+      }
+    },
+    {
+      "case_id": "hy_1191fa15650b7684_0319840",
+      "prompt": "A person stands with arms crossed and their left hand touching their face, then uncrosses and lowers their arms, before repeating the motion to return to the starting pose.",
+      "frames": 152,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_1191fa15650b7684_0319840.json",
+        "kimodo": "frames/kimodo/hy_1191fa15650b7684_0319840.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_1191fa15650b7684_0319840.json"
+      }
+    },
+    {
+      "case_id": "hy_11cb30f4b4c6823e_0170847",
+      "prompt": "A person first turns right and then left, and is walking slowly in a figure-8 pattern. His head is slightly down and shaking, and his hands are at his sides, swinging slightly.",
+      "frames": 221,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_11cb30f4b4c6823e_0170847.json",
+        "kimodo": "frames/kimodo/hy_11cb30f4b4c6823e_0170847.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_11cb30f4b4c6823e_0170847.json"
+      }
+    },
+    {
+      "case_id": "hy_122be1b4f5a26173_0061073",
+      "prompt": "A person walks forward with a noticeable limp in their left leg.",
+      "frames": 198,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_122be1b4f5a26173_0061073.json",
+        "kimodo": "frames/kimodo/hy_122be1b4f5a26173_0061073.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_122be1b4f5a26173_0061073.json"
+      }
+    },
+    {
+      "case_id": "hy_123ea39c0c3bc1f8_0230675",
+      "prompt": "A person stands and performs neck stretches by tilting their head to the left and then backward, while also gesturing with their left arm.",
+      "frames": 156,
+      "fps": 30,
+      "assets": {
+        "gt": "frames/gt/hy_123ea39c0c3bc1f8_0230675.json",
+        "kimodo": "frames/kimodo/hy_123ea39c0c3bc1f8_0230675.json",
+        "hymotion_g1": "frames/hymotion_g1/hy_123ea39c0c3bc1f8_0230675.json"
+      }
+    }
+  ],
+  "provenance": {
+    "source_manifest_name": "manifest.json",
+    "source_rows": 64,
+    "note": "The public viewer is a fixed qualitative subset. Metrics use the complete 1,024-case protocol."
+  }
+}

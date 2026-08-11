@@ -1,0 +1,11 @@
+{
+  "method": "gem-smpl",
+  "source": "Motius infer_monocular_motion_capture vertices_world",
+  "representation": "SMPL-6890",
+  "frames": 60,
+  "fps": 30,
+  "width": 768,
+  "height": 768,
+  "mp4": "gem_smpl_tennis_world.mp4",
+  "webp": "gem_smpl_tennis_world.webp"
+}

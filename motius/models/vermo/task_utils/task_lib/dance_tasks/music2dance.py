@@ -1,0 +1,73 @@
+from typing import List
+from ...modality import Caption, Genre, Motion, Music, NumPerson
+from ..base_task import BaseTask
+
+
+class Music2Dance(BaseTask):
+    abbr = "m2d"
+    description = "generate dance motion from music, with optional duration and caption"
+    templates = [
+        "Dance to the given music, you should also take the caption and genre into consideration if provided.",
+        "Dance to the music, using the caption and genre if provided.",
+        "Generate dance moves for this track, considering any caption and genre.",
+        "Create a dance based on the music, with optional caption and genre as context.",
+        "Make dance steps that match the song, using available caption and genre.",
+        "Produce dance animations synced to the music, guided by optional caption/genre.",
+        "Build a dance routine for this audio, using caption/genre when available.",
+        "Show me how to move to this music, considering the caption and genre.",
+        "Design dance motions for the track, using caption/genre if provided.",
+        "Create body movements matching the music and any given caption/genre.",
+        "Generate dance choreography for this song, using caption/genre as hints.",
+        "Make up dance steps that fit the music, guided by caption and genre.",
+        "Produce dance expressions aligned with the track and provided context.",
+        "Create a dance performance for this music, using caption/genre when available.",
+        "Generate rhythmic movements for the song, considering caption and genre.",
+        "Design dance sequences matching the music and any given caption/genre.",
+        "Make dance animations that follow the track, using available context info.",
+        "Build dance motions timed to the music, with caption/genre as reference.",
+        "Create dance patterns for this audio, guided by caption and genre inputs.",
+        "Generate dance responses to the music, using any provided context.",
+        "Make dynamic dance moves for the track, considering caption/genre.",
+        "Generate dance moves that match the music and any given caption/genre.",
+        "Create a dance routine for this song, using caption/genre when available.",
+        "Show me how to move to this music, considering the caption and genre.",
+        "Design dance motions for the track, using caption/genre if provided.",
+        "Create body movements matching the music and any given caption/genre.",
+        "Generate dance choreography for this song, using caption/genre as hints.",
+        "Make up dance steps that fit the music, guided by caption and genre(if provided).",
+        "Produce dance expressions aligned with the track and provided context.",
+        "Create a dance performance for this music, using caption/genre when available.",
+        "Generate rhythmic movements for the song, considering caption and genre.",
+        "Design dance sequences matching the music and any given caption/genre.",
+        "Generate dance moves that match the music.",
+        "Dance to the given music.",
+        "Create a dance routine for this song.",
+        "Show me how to move to this music.",
+        "Design dance motions for the track.",
+        "Create body movements matching the music.",
+        "Generate dance choreography for this song.",
+        "Visualize the dance moves for the given music.",
+        "Generate dance movements synchronized with the music.",
+        "Create a dance sequence that matches the rhythm of the song.",
+        "Produce dance animations that complement the musical elements.",
+        "Design dance patterns that flow with the music's tempo.",
+        "Make dance steps that harmonize with the musical composition.",
+        "Generate dance expressions that reflect the music's mood.",
+        "Create dance choreography that interprets the musical piece.",
+        "Show dance movements that embody the music's character.",
+        "Design dance routines that capture the essence of the track.",
+        "Produce dance sequences that mirror the music's dynamics.",
+        "Generate dance animations that respond to the musical cues.",
+        "Create dance patterns that align with the song's structure.",
+        "Make dance moves that echo the music's rhythm.",
+        "Design dance expressions that match the track's style.",
+        "Generate dance choreography that follows the musical flow.",
+        "Create dance sequences that complement the song's beat.",
+        "Show dance movements that interpret the music's theme.",
+        "Design dance routines that reflect the track's energy.",
+        "Produce dance animations that sync with the musical timing.",
+        "Generate dance patterns that embody the song's spirit.",
+    ]
+    input_modality: List = [Music, NumPerson]
+    optional_input_modality = [Caption, Genre]
+    output_modality: List = [Motion]

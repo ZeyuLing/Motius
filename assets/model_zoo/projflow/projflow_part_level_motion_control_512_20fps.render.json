@@ -1,0 +1,18 @@
+{
+  "audio": null,
+  "capture_mode": "synchronous-webgl-buffer",
+  "case_id": "projflow_part_level_motion_control",
+  "floor": "matte light floor with neutral gray grid",
+  "fps": 20,
+  "frame_step": 1,
+  "frames": 160,
+  "height": 512,
+  "label": "ProjFlow",
+  "method": "projflow",
+  "render_backend": "threejs",
+  "render_profile": "motius-threejs-floor-v1",
+  "representation": "humanml3d-smpl22-native-joints",
+  "schema_version": 1,
+  "source_url": "http://127.0.0.1:58413/index.html?method=projflow&case=projflow_part_level_motion_control",
+  "width": 512
+}

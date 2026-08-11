@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "task": "temporal_motion_completion",
+  "input": "person walking at an average pace forward, swaying arms and torso with a sense of swagger",
+  "condition": "First and last full-body frames observed",
+  "frames": 160,
+  "fps": 20,
+  "condition_visualization": "Observed joint positions are highlighted in coral; generated regions remain teal.",
+  "constraint_error_m_mean": 2.11357438217874e-08,
+  "constraint_error_m_max": 1.2019474127100693e-07,
+  "position_mask_count": 132
+}

@@ -1,0 +1,8 @@
+{
+  "input": "Follow the prescribed root path with natural locomotion.",
+  "condition": "Continuous trajectory plus pelvis-height control",
+  "fps": 30,
+  "render_backend": "threejs",
+  "render_profile": "motius-threejs-floor-v1",
+  "representation": "SMPL mesh with trajectory controls"
+}

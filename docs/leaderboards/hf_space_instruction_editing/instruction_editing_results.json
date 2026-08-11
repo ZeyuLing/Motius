@@ -1,0 +1,158 @@
+{
+  "title": "Motion Editing · MotionFix Instructions",
+  "updated": "2026-07-28",
+  "dataset": "MotionFix official test",
+  "count": 1013,
+  "evaluator": "MotionLab native text_mot_match evaluator",
+  "protocol": {
+    "input": "source motion + free-form edit instruction",
+    "target": "paired MotionFix target motion",
+    "fid": "MotionLab native motion-embedding FID",
+    "batch_retrieval": "target-length-sorted candidate batches of 32",
+    "rank_by": "Formal Batch-32 R@3 rank across generated methods; GT and source input are references",
+    "protocol_revision": "motionfix_motionlab_native_batch32_v1"
+  },
+  "metrics": [
+    "FID",
+    "R@1",
+    "R@2",
+    "R@3",
+    "AvgR",
+    "M2M-Dist",
+    "Diversity"
+  ],
+  "rows": [
+    {
+      "method": "GT target",
+      "method_id": "gt_target",
+      "input": "paired target motion",
+      "native_representation": "MotionFix motion135",
+      "coverage": "1013/1013",
+      "status": "reference",
+      "ranked": false,
+      "metrics": {
+        "FID": 0.0,
+        "R@1": 100.0,
+        "R@2": 100.0,
+        "R@3": 100.0,
+        "AvgR": 1.0,
+        "M2M-Dist": 0.0,
+        "Diversity": 8.351726531982422
+      },
+      "contamination_note": null,
+      "artifact": "data/eval/m2m_v2/eval_motionfix_instruction.json",
+      "rank": null,
+      "measured_rank": null
+    },
+    {
+      "method": "MotionCanvas",
+      "method_id": "motioncanvas",
+      "input": "source motion + instruction",
+      "native_representation": "SMPL-22 motion135",
+      "coverage": "1013/1013",
+      "status": "complete",
+      "ranked": true,
+      "metrics": {
+        "FID": 0.03266168544926269,
+        "R@1": 80.15794669299112,
+        "R@2": 92.79368213228035,
+        "R@3": 95.95261599210266,
+        "AvgR": 1.4274432379072064,
+        "M2M-Dist": 0.7901288866996765,
+        "Diversity": 8.281886100769043
+      },
+      "contamination_note": null,
+      "artifact": "outputs/evaluation/motion_edit/instruction_editing/motionfix_test/smplh_joints66/motioncanvas",
+      "rank": 1,
+      "measured_rank": 1
+    },
+    {
+      "method": "SimMotionEdit",
+      "method_id": "simmotionedit",
+      "input": "source motion + instruction",
+      "native_representation": "MotionFix motion135",
+      "coverage": "1013/1013",
+      "status": "complete",
+      "ranked": true,
+      "metrics": {
+        "FID": 0.49990421643938365,
+        "R@1": 40.473840078973346,
+        "R@2": 59.526159921026654,
+        "R@3": 69.79269496544916,
+        "AvgR": 4.027640671273446,
+        "M2M-Dist": 2.4369125366210938,
+        "Diversity": 7.819880485534668
+      },
+      "contamination_note": null,
+      "artifact": "outputs/evaluation/motion_edit/instruction_editing/motionfix_test/smplh_joints66/simmotionedit",
+      "rank": 3,
+      "measured_rank": 3
+    },
+    {
+      "method": "MotionFix (TMED)",
+      "method_id": "motionfix_tmed",
+      "input": "source motion + instruction",
+      "native_representation": "MotionFix motion135",
+      "coverage": "1013/1013",
+      "status": "complete",
+      "ranked": true,
+      "metrics": {
+        "FID": 0.5282222533812915,
+        "R@1": 32.477788746298124,
+        "R@2": 48.76604146100691,
+        "R@3": 59.82230997038499,
+        "AvgR": 5.3593287265547875,
+        "M2M-Dist": 3.197392225265503,
+        "Diversity": 7.886959552764893
+      },
+      "contamination_note": null,
+      "artifact": "outputs/evaluation/motion_edit/instruction_editing/motionfix_test/smplh_joints66/motionfix_tmed",
+      "rank": 4,
+      "measured_rank": 4
+    },
+    {
+      "method": "MotionLab",
+      "method_id": "motionlab",
+      "input": "source motion + instruction",
+      "native_representation": "HumanML3D 263D",
+      "coverage": "1013/1013",
+      "status": "complete",
+      "ranked": true,
+      "metrics": {
+        "FID": 0.1339166069304245,
+        "R@1": 46.10069101678184,
+        "R@2": 63.079960513326746,
+        "R@3": 73.14906219151037,
+        "AvgR": 3.753208292201382,
+        "M2M-Dist": 2.41121768951416,
+        "Diversity": 8.180389404296875
+      },
+      "contamination_note": null,
+      "artifact": "outputs/evaluation/motion_edit/instruction_editing/motionfix_test/smplh_joints66/motionlab",
+      "rank": 2,
+      "measured_rank": 2
+    },
+    {
+      "method": "Source input (no edit)",
+      "method_id": "source_input",
+      "input": "source motion only",
+      "native_representation": "SMPL-22 motion135",
+      "coverage": "1013/1013",
+      "status": "complete",
+      "ranked": false,
+      "metrics": {
+        "FID": 0.10658133437839573,
+        "R@1": 46.396841066140176,
+        "R@2": 65.25172754195458,
+        "R@3": 75.02467917077986,
+        "AvgR": 3.5054294175715697,
+        "M2M-Dist": 2.281679153442383,
+        "Diversity": 8.198084831237793
+      },
+      "contamination_note": null,
+      "artifact": "outputs/evaluation/motion_edit/instruction_editing/motionfix_test/smplh_joints66/source_input",
+      "rank": null,
+      "measured_rank": null
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Motius verified Speech-to-Gesture leaderboard on BEAT2">
+  <title>Speech-to-Gesture · BEAT2 · Motius</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap");
+    :root{color-scheme:light;--bg:#f4f6f5;--panel:#fff;--ink:#17211f;--muted:#63706c;--line:#d9dfdc;--line-strong:#bdc8c3;--teal:#087d72;--blue:#315f9d;--amber:#ad6d00;--coral:#c7563f;--shadow:0 8px 24px rgba(29,45,40,.07)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Manrope",ui-sans-serif,sans-serif;line-height:1.5}a{color:inherit}.page{width:min(1440px,calc(100vw - 32px));margin:0 auto;padding:28px 0 40px}
+    .leaderboard-nav{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:16px;color:var(--muted);font-size:12px}.nav-label{margin-right:4px;font-weight:700;text-transform:uppercase}.nav-link{border:1px solid transparent;border-radius:6px;padding:6px 9px;color:#46534f;text-decoration:none}.nav-link:hover{border-color:var(--line);background:var(--panel)}.nav-link[aria-current="page"]{border-color:var(--line-strong);background:var(--panel);color:var(--teal);font-weight:700}
+    .topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:22px}h1{margin:0;font-size:30px;line-height:1.15}.subtitle{max-width:880px;margin:10px 0 0;color:var(--muted);font-size:14px}.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.badge{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 10px;color:#3d4857;font-size:12px;white-space:nowrap}.updated{flex:0 0 auto;min-width:184px;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:10px 12px;color:var(--muted);font-size:12px;box-shadow:var(--shadow)}.updated strong{display:block;color:var(--ink);font-size:14px;font-weight:650}
+    .score-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}.score-card{border:1px solid var(--line);border-top:3px solid var(--teal);border-radius:8px;background:var(--panel);padding:14px;box-shadow:var(--shadow)}.score-card:nth-child(2){border-top-color:var(--blue)}.score-card:nth-child(3){border-top-color:var(--amber)}.score-card:nth-child(4){border-top-color:var(--coral)}.score-card .label{color:var(--muted);font-size:12px;text-transform:uppercase}.score-card .value{min-height:31px;margin-top:6px;font-size:21px;font-weight:720}.score-card .note{margin-top:4px;color:var(--muted);font-size:12px}
+    section.panel{margin:18px 0;border:1px solid var(--line);border-radius:8px;background:var(--panel);box-shadow:var(--shadow);overflow:hidden}.section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line);padding:16px 18px}.section-heading h2{margin:0;font-size:18px}.section-heading p{margin:3px 0 0;color:var(--muted);font-size:12px}.section-link{display:inline-flex;align-items:center;min-height:34px;border:1px solid var(--line-strong);border-radius:6px;padding:0 11px;background:#fff;color:var(--teal);font-size:12px;font-weight:650;text-decoration:none}.section-link:hover{border-color:var(--teal)}
+    .explorer-frame{display:block;width:100%;height:900px;border:0;background:#eef2f0}.table-wrap{overflow:auto}.leaderboard{width:100%;min-width:1360px;border-collapse:separate;border-spacing:0;font-size:13px}.leaderboard th,.leaderboard td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.leaderboard thead th{background:#f2f5f8;color:#425064;font-size:11px}.leaderboard thead tr:first-child th{border-bottom:1px solid var(--line-strong);text-align:center}.leaderboard th:first-child,.leaderboard td:first-child{text-align:left}.leaderboard tbody tr:hover{background:#f6f9f7}.leaderboard tbody tr.reference{background:#eef3f1}.method strong{display:block}.method small{color:var(--muted);font-size:11px}.rank{display:inline-grid;place-items:center;width:20px;height:20px;margin-right:8px;border-radius:50%;background:#e8eeeb;color:#46524d;font:11px "IBM Plex Mono",monospace}.status{display:inline-flex;padding:4px 7px;border:1px solid var(--line);border-radius:4px;font:9px "IBM Plex Mono",monospace;text-transform:uppercase}.status.verified{border-color:#74a995;background:#e4f0e8;color:#145b47}.best{font-weight:800;color:#086b62}.note{padding:13px 18px;color:var(--muted);font-size:12px}
+    .protocol{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}.protocol article{padding:18px;border-right:1px solid var(--line)}.protocol article:last-child{border:0}.protocol h3{margin:0 0 6px;font-size:13px}.protocol p{margin:0;color:var(--muted);font-size:12px}.protocol code{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--teal)}
+    .parity-wrap{padding:0 18px 18px}.parity{width:100%;border-collapse:collapse}.parity th,.parity td{padding:10px;border-bottom:1px solid var(--line);text-align:right}.parity th:first-child,.parity td:first-child{text-align:left}.parity td:first-child strong,.parity td:first-child span{display:block}.parity td:first-child span{color:var(--muted);font-size:11px}.parity tr.delta{background:#f6f9f7;color:var(--muted)}
+    .footer{display:flex;justify-content:space-between;gap:20px;padding:8px 0 0;color:var(--muted);font-size:12px}
+    @media(max-width:980px){.topbar{flex-direction:column}.updated{width:100%}.score-strip{grid-template-columns:repeat(2,1fr)}.protocol{grid-template-columns:1fr}.protocol article{border-right:0;border-bottom:1px solid var(--line)}.explorer-frame{height:820px}}
+    @media(max-width:620px){.page{width:min(100% - 20px,1440px);padding-top:18px}h1{font-size:27px}.score-strip{grid-template-columns:1fr}.section-heading{align-items:flex-start;flex-direction:column}.section-link{width:100%;justify-content:center}.explorer-frame{height:900px}}
+  </style>
+<!-- motius-benchmark-nav-style:start -->
+<style id="motius-benchmark-nav-style">
+  .motius-benchmark-nav {
+    position: relative;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: min(1420px, calc(100% - 36px));
+    min-height: 50px;
+    margin: 14px auto 0;
+    padding: 8px 10px 8px 14px;
+    border: 1px solid #d8dfdc;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #17211e;
+    box-shadow: 0 5px 18px rgba(23, 33, 30, 0.06);
+    font: 13px/1.4 Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    letter-spacing: 0;
+  }
+  .motius-benchmark-nav *,
+  .motius-benchmark-nav *::before,
+  .motius-benchmark-nav *::after { box-sizing: border-box; }
+  .motius-benchmark-brand {
+    color: #0a746b;
+    font-weight: 760;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .motius-benchmark-context {
+    min-width: 0;
+    margin-left: auto;
+    overflow: hidden;
+    color: #53615c;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .motius-benchmark-menu { position: relative; flex: 0 0 auto; }
+  .motius-benchmark-menu > summary {
+    display: flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 6px 10px;
+    border: 1px solid #cbd5d1;
+    border-radius: 6px;
+    background: #f7f9f8;
+    color: #26332f;
+    cursor: pointer;
+    font-weight: 680;
+    list-style: none;
+    user-select: none;
+  }
+  .motius-benchmark-menu > summary::-webkit-details-marker { display: none; }
+  .motius-benchmark-menu > summary::after {
+    content: "▾";
+    margin-left: 8px;
+    color: #0a746b;
+  }
+  .motius-benchmark-menu[open] > summary::after { content: "▴"; }
+  .motius-benchmark-list {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    width: min(720px, calc(100vw - 36px));
+    max-height: min(70vh, 620px);
+    padding: 8px;
+    overflow: auto;
+    border: 1px solid #cbd5d1;
+    border-radius: 7px;
+    background: #ffffff;
+    box-shadow: 0 16px 42px rgba(23, 33, 30, 0.16);
+  }
+  .motius-benchmark-link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    min-height: 42px;
+    padding: 8px 10px;
+    border-radius: 5px;
+    color: #26332f;
+    text-decoration: none;
+  }
+  .motius-benchmark-link:hover { background: #f0f5f3; }
+  .motius-benchmark-link[aria-current="page"] {
+    background: #e5f3ef;
+    color: #075e57;
+    font-weight: 720;
+  }
+  .motius-benchmark-status {
+    color: #69756f;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+    white-space: nowrap;
+  }
+  .motius-benchmark-status[data-status="complete"] { color: #087267; }
+  .motius-benchmark-status[data-status="metrics_complete"] { color: #946018; }
+  .motius-benchmark-status[data-status="protocol_ready"] { color: #315f9d; }
+  .motius-benchmark-status[data-status="paused"] { color: #a1453a; }
+  .motius-benchmark-status[data-status="settings"] { color: #315f9d; }
+  .motius-setting-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: min(1420px, calc(100% - 36px));
+    margin: 10px auto 0;
+    padding: 4px;
+    overflow-x: auto;
+    border: 1px solid #d8dfdc;
+    border-radius: 7px;
+    background: #eef2f0;
+    font: 13px/1.35 Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    letter-spacing: 0;
+  }
+  .motius-setting-label {
+    flex: 0 0 auto;
+    padding: 0 10px;
+    color: #69756f;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+    text-transform: uppercase;
+  }
+  .motius-setting-link {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: baseline;
+    gap: 8px;
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: #53615c;
+    text-decoration: none;
+  }
+  .motius-setting-link:hover {
+    border-color: #cbd5d1;
+    background: #ffffff;
+    color: #17211e;
+  }
+  .motius-setting-link[aria-current="page"] {
+    border-color: #adc9c2;
+    background: #ffffff;
+    color: #075e57;
+    box-shadow: 0 3px 10px rgba(23, 33, 30, 0.06);
+    font-weight: 720;
+  }
+  .motius-setting-detail {
+    color: #7a8581;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+  }
+  @media (max-width: 720px) {
+    .motius-benchmark-nav {
+      width: calc(100% - 24px);
+      margin-top: 10px;
+      gap: 8px;
+      padding-left: 10px;
+    }
+    .motius-benchmark-context { display: none; }
+    .motius-benchmark-list {
+      position: fixed;
+      top: 64px;
+      right: 12px;
+      grid-template-columns: 1fr;
+      width: calc(100vw - 24px);
+      max-height: calc(100vh - 82px);
+    }
+    .motius-setting-nav { width: calc(100% - 24px); }
+    .motius-setting-label { display: none; }
+  }
+</style>
+<!-- motius-benchmark-nav-style:end -->
+</head>
+<body data-benchmark-id="speech_to_gesture_beat2">
+  <main class="page">
+    <!-- motius-benchmark-nav:start -->
+<nav class="motius-benchmark-nav" data-benchmark-id="speech_to_gesture_beat2" aria-label="Motius benchmark navigation">
+  <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
+  <span class="motius-benchmark-context">Speech-to-Gesture · BEAT2</span>
+  <details class="motius-benchmark-menu">
+    <summary>All benchmarks</summary>
+    <div class="motius-benchmark-list">
+      <a class="motius-benchmark-link" href="https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Text-to-Motion</span><span class="motius-benchmark-status" data-status="settings">2 settings</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion-to-Text · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-babel-sequential-generation-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Sequential Text-to-Motion · BABEL</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-temporal-condition-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Temporal Motion Completion · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-body-part-condition-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Part-Level Motion Control · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-edit-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Editing · Style and Content</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-instruction-editing-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Editing · MotionFix Instructions</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-repair-brokenamass-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Repair · BrokenAMASS</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-reconstruction-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Reconstruction · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Music-to-Dance · AIST++</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-dance-to-music-aistpp-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Dance-to-Music · AIST++</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-speech-to-gesture-beat2-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer" aria-current="page"><span>Speech-to-Gesture · BEAT2</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-monocular-motion-capture-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Monocular Motion Capture · 3DPW Test</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-tracking-mujoco-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Tracking</span><span class="motius-benchmark-status" data-status="settings">2 settings</span></a>
+    </div>
+  </details>
+</nav>
+<!-- motius-benchmark-nav:end -->
+
+    <header class="topbar">
+      <div>
+        <h1>Speech-to-Gesture · BEAT2</h1>
+        <p class="subtitle">Audio-conditioned co-speech motion generation on the fixed BEAT2 English speaker-2 protocol. Every ranked row is generated and evaluated inside Motius; paper-reported values are shown only as parity targets.</p>
+        <div class="badge-row">
+          <span class="badge">Task: Speech-to-Gesture</span>
+          <span class="badge">Dataset: BEAT2 English v2.0.0</span>
+          <span class="badge">15 test clips</span>
+          <span class="badge">16 kHz audio · 30 fps motion</span>
+          <span class="badge">GT excluded from ranking</span>
+        </div>
+      </div>
+      <div class="updated"><strong>Current Public Snapshot</strong><span id="snapshot">Loading results</span></div>
+    </header>
+
+    <section class="score-strip" aria-label="summary">
+      <div class="score-card"><div class="label">Ranked methods</div><div class="value" id="method-count">0</div><div class="note">Motius-verified rows only</div></div>
+      <div class="score-card"><div class="label">Evaluation cases</div><div class="value">15</div><div class="note">All cases available in 3D</div></div>
+      <div class="score-card"><div class="label">Source representation</div><div class="value">Full SMPL-X</div><div class="note">Shared Three.js SMPL preview</div></div>
+      <div class="score-card"><div class="label">Evaluation split</div><div class="value">Speaker 2</div><div class="note">Speaker-dependent BEATv2 population</div></div>
+    </section>
+
+    <section class="panel" id="case-explorer">
+      <div class="section-heading"><div><h2>Interactive Three.js Motion Comparison</h2><p>High-resolution, camera-controllable GT, Language of Motion, EMAGE, and DiffuseStyleGesture+ previews across all 15 clips. Full native SMPL-X predictions remain downloadable as NPZ.</p></div><a class="section-link" href="cases/index.html" target="_blank" rel="noopener noreferrer">Open full screen</a></div>
+      <iframe class="explorer-frame" src="cases/index.html" title="BEAT2 audio-synchronized all-case 3D motion comparison" loading="lazy" allow="autoplay"></iframe>
+    </section>
+
+    <section class="panel" id="benchmark">
+      <div class="section-heading"><div><h2>Results</h2><p>Lower is better for FGD and paired errors; higher is better for BC and Diversity.</p></div></div>
+      <div class="table-wrap">
+        <table class="leaderboard">
+          <thead><tr><th rowspan="2">Method</th><th rowspan="2">Status</th><th colspan="3">Official BEAT2 metrics</th><th colspan="2">Joint-only uTMR</th><th colspan="3">Paired diagnostics</th></tr><tr><th>FGD ↓</th><th>BC ↑</th><th>Diversity ↑</th><th>FID ↓</th><th>Paired Dist. ↓</th><th>Rotation ↓</th><th>Expression ↓</th><th>Translation ↓</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="note">FGD and BC use the paper display scale (raw evaluator value ×10). uTMR consumes only canonical SMPL-22 joints: FID uses L2-normalized embeddings, while paired distance uses native embeddings. The metric FK sets SMPL-X translation to zero.</div>
+    </section>
+
+    <section class="panel" id="protocol">
+      <div class="section-heading"><div><h2>Evaluation Contract</h2><p>One immutable population, official metric assets, and explicit checkpoint provenance.</p></div><a class="section-link" href="https://github.com/ZeyuLing/Motius/blob/main/docs/tasks/speech_to_gesture.md">Protocol Card</a></div>
+      <div class="protocol">
+        <article><h3>Fréchet Gesture Distance</h3><p>Released <code>AESKConv_240_100</code> features over 32-frame-aligned SMPL-X rotations with the official covariance regularization.</p></article>
+        <article><h3>Beat Correlation</h3><p>Audio onsets against upper-body velocity minima, excluding the official 60-frame margin at each end.</p></article>
+        <article><h3>L1 Diversity</h3><p>Mean absolute deviation of generated 55-joint positions after the official SMPL-X metric forward kinematics.</p></article>
+        <article><h3>Joint-only uTMR</h3><p>Universal SMPL-H joints66 motion embeddings over balanced ≤20-second windows. FID uses per-sample L2 normalization; paired distance and diversity use native embeddings.</p></article>
+      </div>
+    </section>
+
+    <section class="panel" id="paper-parity">
+      <div class="section-heading"><div><h2>Paper Parity</h2><p>Paper-reported values are audit targets and never participate in ranking.</p></div><a class="section-link" href="https://openaccess.thecvf.com/content/CVPR2025/html/Chen_The_Language_of_Motion_Unifying_Verbal_and_Non-verbal_Language_of_CVPR_2025_paper.html">CVPR 2025 Paper</a></div>
+      <div class="parity-wrap"><table class="parity"><thead><tr><th>Row</th><th>FGD ↓</th><th>BC ↑</th><th>Diversity ↑</th></tr></thead><tbody id="parity-rows"></tbody></table></div>
+      <div class="note" id="parity-note">Loading paper-parity audit.</div>
+    </section>
+
+    <footer class="footer"><span>Motius open motion evaluation</span><span id="updated">—</span></footer>
+  </main>
+  <script src="leaderboard.js"></script>
+</body>
+</html>

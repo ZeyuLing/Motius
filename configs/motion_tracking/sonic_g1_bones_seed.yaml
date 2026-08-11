@@ -1,0 +1,14 @@
+schema_version: 1
+method: sonic
+module: motius.trainers.sonic.train
+num_processes: 8
+output_root: outputs/training/sonic
+arguments:
+  - +exp=manager/universal_token/all_modes/sonic_release
+  - base_dir=outputs/training/sonic
+  - num_envs=4096
+  - headless=true
+  - use_wandb=false
+  - wandb.wandb_dir=outputs/training/sonic/wandb
+  - ++manager_env.commands.motion.motion_lib_cfg.motion_file=${G1_MOTION_DIR}
+  - ++manager_env.commands.motion.motion_lib_cfg.smpl_motion_file=${SMPL_MOTION_DIR}

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "task": "kinematic_motion_control",
+  "input": "person walking at an average pace forward, swaying arms and torso with a sense of swagger",
+  "condition": "Sparse pelvis XYZ trajectory every 20 frames",
+  "frames": 160,
+  "fps": 20,
+  "condition_visualization": "Observed joint positions are highlighted in coral; generated regions remain teal.",
+  "constraint_error_m_mean": 7.49992157267343e-09,
+  "constraint_error_m_max": 1.4901161193847656e-08,
+  "position_mask_count": 27
+}

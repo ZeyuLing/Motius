@@ -1,0 +1,467 @@
+{
+  "title": "Motion Editing · Style and Content",
+  "updated": "2026-07-28",
+  "dataset": "PerMo held-out paired editing benchmark",
+  "evaluator": "Universal SMPL-H joints66 uTMR",
+  "protocol_revision": "permo_exact_source_eval30_v3",
+  "metrics": [
+    {
+      "key": "S-Acc",
+      "label": "S-Acc ↑",
+      "direction": "max",
+      "digits": 2
+    },
+    {
+      "key": "A-Acc",
+      "label": "A-Acc ↑",
+      "direction": "max",
+      "digits": 2
+    },
+    {
+      "key": "FID",
+      "label": "FID ↓",
+      "direction": "min",
+      "digits": 4
+    },
+    {
+      "key": "MM-Dist",
+      "label": "MM-Dist ↓",
+      "direction": "min",
+      "digits": 2
+    },
+    {
+      "key": "T2M R@3",
+      "label": "T2M R@3 ↑",
+      "direction": "max",
+      "digits": 2
+    },
+    {
+      "key": "M2M R@3",
+      "label": "M2M R@3 ↑",
+      "direction": "max",
+      "digits": 2
+    },
+    {
+      "key": "M2M-Dist",
+      "label": "M2M-Dist ↓",
+      "direction": "min",
+      "digits": 4
+    },
+    {
+      "key": "Diversity",
+      "label": "Diversity →",
+      "direction": "reference",
+      "digits": 2
+    },
+    {
+      "key": "Foot",
+      "label": "Foot ↓",
+      "direction": "min",
+      "digits": 2
+    },
+    {
+      "key": "Jitter",
+      "label": "Jitter ↓",
+      "direction": "min",
+      "digits": 2
+    }
+  ],
+  "tracks": [
+    {
+      "id": "style",
+      "label": "Style Editing",
+      "count": 63,
+      "description": "Change style while preserving the source action.",
+      "datalist": "data/eval/m2m_v2/eval_permo_style_edit_heldout.json",
+      "rank_metric": "M2M R@3",
+      "rows": [
+        {
+          "method": "GT target",
+          "method_id": "target",
+          "coverage": "63/63",
+          "reference": true,
+          "reference_kind": "gt",
+          "diagnostic": false,
+          "ours": false,
+          "metrics": {
+            "S-Acc": null,
+            "A-Acc": null,
+            "FID": null,
+            "MM-Dist": null,
+            "T2M R@3": null,
+            "M2M R@3": null,
+            "M2M-Dist": null,
+            "Diversity": null,
+            "Foot": null,
+            "Jitter": null
+          },
+          "fid_ci95": null,
+          "artifact": "data/eval/m2m_v2/eval_permo_style_edit_heldout.json#paired-target",
+          "rank": null
+        },
+        {
+          "method": "Source input",
+          "method_id": "source",
+          "coverage": "63/63",
+          "reference": true,
+          "diagnostic": false,
+          "ours": false,
+          "metrics": {
+            "S-Acc": 23.968254029750824,
+            "A-Acc": 97.301584482193,
+            "FID": 0.12053261683675895,
+            "MM-Dist": 18.552648544311523,
+            "T2M R@3": 66.71875,
+            "M2M R@3": 42.857142857142854,
+            "M2M-Dist": 0.47905691881641177,
+            "Diversity": 42.464934539794925,
+            "Foot": 2.694635187440911,
+            "Jitter": 22.347486704044666
+          },
+          "fid_ci95": null,
+          "artifact": "outputs/evaluation/motion_edit/permo_baselines/style/source",
+          "rank": null,
+          "reference_kind": "source"
+        },
+        {
+          "method": "TMED",
+          "method_id": "tmed",
+          "coverage": "63/63",
+          "reference": false,
+          "diagnostic": false,
+          "ours": false,
+          "metrics": {
+            "S-Acc": 23.174603283405304,
+            "A-Acc": 46.0317462682724,
+            "FID": 1.0784217868342658,
+            "MM-Dist": 54.73600120544434,
+            "T2M R@3": 22.96875,
+            "M2M R@3": 14.285714285714285,
+            "M2M-Dist": 1.2755439230213719,
+            "Diversity": 56.5786111831665,
+            "Foot": 9.933524294362066,
+            "Jitter": 42.96558325655669
+          },
+          "fid_ci95": [
+            1.0820034662930262,
+            1.253976518614319
+          ],
+          "artifact": "outputs/evaluation/motion_edit/permo_baselines/style/tmed_zup_v2",
+          "rank": 5
+        },
+        {
+          "method": "SimMotionEdit",
+          "method_id": "simmotionedit",
+          "coverage": "63/63",
+          "reference": false,
+          "diagnostic": false,
+          "ours": false,
+          "metrics": {
+            "S-Acc": 16.587302088737488,
+            "A-Acc": 71.11111283302307,
+            "FID": 0.9794007181067895,
+            "MM-Dist": 49.46094570159912,
+            "T2M R@3": 37.34375,
+            "M2M R@3": 19.047619047619047,
+            "M2M-Dist": 1.169597143103109,
+            "Diversity": 55.68187427520752,
+            "Foot": 11.185314965772163,
+            "Jitter": 11.113286262289398
+          },
+          "fid_ci95": [
+            0.9740496711144164,
+            1.1296932126423362
+          ],
+          "artifact": "outputs/evaluation/motion_edit/permo_baselines/style/simmotionedit_zup_row_v4",
+          "rank": 4
+        },
+        {
+          "method": "MotionLab",
+          "method_id": "motionlab",
+          "coverage": "63/63",
+          "reference": false,
+          "diagnostic": false,
+          "ours": false,
+          "metrics": {
+            "S-Acc": 26.66666805744171,
+            "A-Acc": 94.52381134033203,
+            "FID": 0.20963315824759693,
+            "MM-Dist": 24.75082778930664,
+            "T2M R@3": 58.4375,
+            "M2M R@3": 38.095238095238095,
+            "M2M-Dist": 0.6141390600798028,
+            "Diversity": 47.965314102172854,
+            "Foot": 2.789142732319762,
+            "Jitter": 7.535326082096804
+          },
+          "fid_ci95": [
+            0.18930507747203795,
+            0.307872414251092
+          ],
+          "artifact": "outputs/evaluation/motion_edit/permo_baselines/style/motionlab",
+          "rank": 2
+        },
+        {
+          "method": "MotionReFit",
+          "method_id": "motionrefit",
+          "coverage": "63/63",
+          "reference": false,
+          "diagnostic": false,
+          "ours": false,
+          "metrics": {
+            "S-Acc": 26.746031641960144,
+            "A-Acc": 95.31745910644531,
+            "FID": 0.1232703952076826,
+            "MM-Dist": 18.77663230895996,
+            "T2M R@3": 64.6875,
+            "M2M R@3": 36.507936507936506,
+            "M2M-Dist": 0.481839238140436,
+            "Diversity": 41.695084190368654,
+            "Foot": 3.873081938668982,
+            "Jitter": 20.051370914434155
+          },
+          "fid_ci95": [
+            0.12050701406641456,
+            0.17894367514485082
+          ],
+          "artifact": "outputs/evaluation/motion_edit/permo_baselines/style/motionrefit",
+          "rank": 3
+        },
+        {
+          "method": "MotionCanvas",
+          "method_id": "motioncanvas",
+          "coverage": "63/63",
+          "reference": false,
+          "diagnostic": false,
+          "ours": true,
+          "metrics": {
+            "S-Acc": 40.79365134239197,
+            "A-Acc": 92.53968000411987,
+            "FID": 0.06572838646071322,
+            "MM-Dist": 18.822612762451172,
+            "T2M R@3": 65.0,
+            "M2M R@3": 68.25396825396825,
+            "M2M-Dist": 0.37809336853539244,
+            "Diversity": 39.90326557159424,
+            "Foot": 3.2206152300859694,
+            "Jitter": 14.516358015253134
+          },
+          "fid_ci95": null,
+          "artifact": "outputs/evaluation/motion_edit/permo_style_transfer_test/smpl135/motioncanvas_ep1964_condkin050_20260721",
+          "rank": 1
+        },
+        {
+          "method": "MotionCLR",
+          "method_id": "motionclr",
+          "coverage": "63/63",
+          "reference": false,
+          "diagnostic": true,
+          "ours": false,
+          "metrics": {
+            "S-Acc": 15.238095819950104,
+            "A-Acc": 79.92063760757446,
+            "FID": 0.7160596693671283,
+            "MM-Dist": 43.116127014160156,
+            "T2M R@3": 47.5,
+            "M2M R@3": 23.809523809523807,
+            "M2M-Dist": 1.0469772418360253,
+            "Diversity": 55.49963665008545,
+            "Foot": 4.265629356967266,
+            "Jitter": 10.299623864407222
+          },
+          "fid_ci95": [
+            0.6463401940795016,
+            0.8715555955291603
+          ],
+          "artifact": "outputs/evaluation/motion_edit/permo_style_transfer_test/hml263/motionclr_descriptive_s9/metrics_canonfix_v2",
+          "rank": null
+        }
+      ]
+    },
+    {
+      "id": "content",
+      "label": "Content Editing",
+      "count": 67,
+      "description": "Change action while preserving the source style.",
+      "datalist": "data/eval/m2m_v2/eval_permo_content_edit_heldout.json",
+      "rank_metric": "M2M R@3",
+      "rows": [
+        {
+          "method": "GT target",
+          "method_id": "target",
+          "coverage": "67/67",
+          "reference": true,
+          "reference_kind": "gt",
+          "diagnostic": false,
+          "ours": false,
+          "metrics": {
+            "S-Acc": null,
+            "A-Acc": null,
+            "FID": null,
+            "MM-Dist": null,
+            "T2M R@3": null,
+            "M2M R@3": null,
+            "M2M-Dist": null,
+            "Diversity": null,
+            "Foot": null,
+            "Jitter": null
+          },
+          "fid_ci95": null,
+          "artifact": "data/eval/m2m_v2/eval_permo_content_edit_heldout.json#paired-target",
+          "rank": null
+        },
+        {
+          "method": "Source input",
+          "method_id": "source",
+          "coverage": "67/67",
+          "reference": true,
+          "diagnostic": false,
+          "ours": false,
+          "metrics": {
+            "S-Acc": 52.014923095703125,
+            "A-Acc": 19.25373077392578,
+            "FID": 0.48504451003032667,
+            "MM-Dist": 40.072776794433594,
+            "T2M R@3": 8.4375,
+            "M2M R@3": 8.955223880597014,
+            "M2M-Dist": 0.9507158137511657,
+            "Diversity": 27.031891059875488,
+            "Foot": 3.7634290447538747,
+            "Jitter": 23.668515989417905
+          },
+          "fid_ci95": null,
+          "artifact": "outputs/evaluation/motion_edit/permo_baselines/content/source",
+          "rank": null,
+          "reference_kind": "source"
+        },
+        {
+          "method": "TMED",
+          "method_id": "tmed",
+          "coverage": "67/67",
+          "reference": false,
+          "diagnostic": false,
+          "ours": false,
+          "metrics": {
+            "S-Acc": 25.89552104473114,
+            "A-Acc": 29.477611184120178,
+            "FID": 1.1328775169895822,
+            "MM-Dist": 56.30955829620361,
+            "T2M R@3": 14.140625000000002,
+            "M2M R@3": 4.477611940298507,
+            "M2M-Dist": 1.331915041507686,
+            "Diversity": 55.23333740234375,
+            "Foot": 12.03301424509721,
+            "Jitter": 79.53231205595587
+          },
+          "fid_ci95": [
+            1.1282077817181502,
+            1.315441960701205
+          ],
+          "artifact": "outputs/evaluation/motion_edit/permo_baselines/content/tmed_zup_v2",
+          "rank": 3
+        },
+        {
+          "method": "SimMotionEdit",
+          "method_id": "simmotionedit",
+          "coverage": "67/67",
+          "reference": false,
+          "diagnostic": false,
+          "ours": false,
+          "metrics": {
+            "S-Acc": 39.02985155582428,
+            "A-Acc": 18.35820823907852,
+            "FID": 1.2423056881981076,
+            "MM-Dist": 58.56630725860596,
+            "T2M R@3": 8.046875,
+            "M2M R@3": 2.9850746268656714,
+            "M2M-Dist": 1.3687648659557168,
+            "Diversity": 54.542513847351074,
+            "Foot": 8.152204408606117,
+            "Jitter": 10.408656332822545
+          },
+          "fid_ci95": [
+            1.2456755052625565,
+            1.4212114485194305
+          ],
+          "artifact": "outputs/evaluation/motion_edit/permo_baselines/content/simmotionedit_zup_row_v4",
+          "rank": 5
+        },
+        {
+          "method": "MotionLab",
+          "method_id": "motionlab",
+          "coverage": "67/67",
+          "reference": false,
+          "diagnostic": false,
+          "ours": false,
+          "metrics": {
+            "S-Acc": 49.10447895526886,
+            "A-Acc": 18.507462739944458,
+            "FID": 0.6337125903600795,
+            "MM-Dist": 46.92961883544922,
+            "T2M R@3": 11.015625,
+            "M2M R@3": 4.477611940298507,
+            "M2M-Dist": 1.1207857630014115,
+            "Diversity": 42.81430435180664,
+            "Foot": 2.9908196164599343,
+            "Jitter": 7.560777779383613
+          },
+          "fid_ci95": [
+            0.5604168472835545,
+            0.8426062028840932
+          ],
+          "artifact": "outputs/evaluation/motion_edit/permo_baselines/content/motionlab",
+          "rank": 3
+        },
+        {
+          "method": "MotionReFit",
+          "method_id": "motionrefit",
+          "coverage": "67/67",
+          "reference": false,
+          "diagnostic": false,
+          "ours": false,
+          "metrics": {
+            "S-Acc": 36.119404435157776,
+            "A-Acc": 32.61193931102753,
+            "FID": 0.4977580406748234,
+            "MM-Dist": 41.2325439453125,
+            "T2M R@3": 15.546874999999998,
+            "M2M R@3": 10.44776119402985,
+            "M2M-Dist": 0.9986433473835312,
+            "Diversity": 40.83207187652588,
+            "Foot": 3.724434233153757,
+            "Jitter": 30.762751558934575
+          },
+          "fid_ci95": [
+            0.461371762987038,
+            0.617220315861571
+          ],
+          "artifact": "outputs/evaluation/motion_edit/permo_baselines/content/motionrefit_prompt_v2",
+          "rank": 2
+        },
+        {
+          "method": "MotionCanvas",
+          "method_id": "motioncanvas",
+          "coverage": "67/67",
+          "reference": false,
+          "diagnostic": false,
+          "ours": true,
+          "metrics": {
+            "S-Acc": 48.20895493030548,
+            "A-Acc": 96.41790986061096,
+            "FID": 0.052309386386037694,
+            "MM-Dist": 18.75008773803711,
+            "T2M R@3": 64.765625,
+            "M2M R@3": 68.65671641791045,
+            "M2M-Dist": 0.37964831159530404,
+            "Diversity": 40.83089046478271,
+            "Foot": 2.6489176980051927,
+            "Jitter": 11.283599524393873
+          },
+          "fid_ci95": null,
+          "artifact": "outputs/evaluation/motion_edit/permo_content_edit_test/smpl135/motioncanvas_ep1964_condkin050_20260721",
+          "rank": 1
+        }
+      ]
+    }
+  ]
+}

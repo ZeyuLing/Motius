@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "method": "MotionCanvas",
+  "task": "motion_repair",
+  "input": "Repair drifting, foot sliding, over-smoothing, and jitter while preserving the valid motion.",
+  "case_id": "repair_000",
+  "frames": 100,
+  "fps": 20,
+  "training_motion_fps": 30,
+  "preview_fps": 20,
+  "capture_frame_step": 1,
+  "condition_visualization": "The corruption types and affected frame interval are embedded in the rendered video.",
+  "source": "BrokenAMASS pair-validated oracle-v6 support benchmark",
+  "viewer_url": "https://zeyuling-motion-repair-brokenamass-leaderboard.static.hf.space/cases/index.html?method=motioncanvas&case=repair_000"
+}

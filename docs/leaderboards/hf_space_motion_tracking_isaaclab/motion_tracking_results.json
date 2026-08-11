@@ -1,0 +1,207 @@
+{
+  "schema_version": 2,
+  "benchmark_id": "motion_tracking_isaaclab_g1",
+  "status": "complete",
+  "generated_at": "2026-07-29",
+  "engine": {
+    "name": "Isaac Lab",
+    "version": "2.3.2"
+  },
+  "protocol_id": "gentrack-fall-only-30fps-v020",
+  "control_hz": 50,
+  "evaluation_fps": 30,
+  "splits": [
+    {
+      "id": "lafan1_g1",
+      "label": "LAFAN1-G1",
+      "population": 40,
+      "description": "All 40 public LAFAN1 G1 references."
+    },
+    {
+      "id": "amass_test_g1",
+      "label": "AMASS-test-G1",
+      "population": 138,
+      "description": "Frozen licensed AMASS-G1 test split; BeyondMimic retains 100 per-reference fits."
+    }
+  ],
+  "metric_definitions": [
+    {
+      "key": "success_rate",
+      "label": "Success",
+      "unit": "%",
+      "direction": "higher"
+    },
+    {
+      "key": "completion_rate",
+      "label": "Completion",
+      "unit": "%",
+      "direction": "higher"
+    },
+    {
+      "key": "local_mpjpe_mm",
+      "label": "Local MPJPE",
+      "unit": "mm",
+      "direction": "lower"
+    },
+    {
+      "key": "global_mpjpe_mm",
+      "label": "Global MPJPE",
+      "unit": "mm",
+      "direction": "lower"
+    },
+    {
+      "key": "joint_mae_rad",
+      "label": "Joint MAE",
+      "unit": "rad",
+      "direction": "lower"
+    },
+    {
+      "key": "mpjve_m_s",
+      "label": "MPJVE",
+      "unit": "m/s",
+      "direction": "lower"
+    },
+    {
+      "key": "root_velocity_error_m_s",
+      "label": "Root velocity error",
+      "unit": "m/s",
+      "direction": "lower"
+    },
+    {
+      "key": "unexpected_fall_rate",
+      "label": "Unexpected fall",
+      "unit": "%",
+      "direction": "lower"
+    }
+  ],
+  "rows": [
+    {
+      "method": "GT reference",
+      "kind": "reference",
+      "rankable": false,
+      "checkpoint": null,
+      "splits": {
+        "lafan1_g1": {
+          "coverage": {
+            "evaluated": 40,
+            "population": 40
+          },
+          "metrics": {
+            "success_rate": 1.0,
+            "completion_rate": 1.0,
+            "local_mpjpe_mm": 0.0,
+            "global_mpjpe_mm": 0.0,
+            "joint_mae_rad": 0.0,
+            "mpjve_m_s": 0.0,
+            "root_velocity_error_m_s": 0.0,
+            "unexpected_fall_rate": 0.0
+          }
+        },
+        "amass_test_g1": {
+          "coverage": {
+            "evaluated": 138,
+            "population": 138
+          },
+          "metrics": {
+            "success_rate": 1.0,
+            "completion_rate": 1.0,
+            "local_mpjpe_mm": 0.0,
+            "global_mpjpe_mm": 0.0,
+            "joint_mae_rad": 0.0,
+            "mpjve_m_s": 0.0,
+            "root_velocity_error_m_s": 0.0,
+            "unexpected_fall_rate": 0.0
+          }
+        }
+      },
+      "note": "Kinematic reference; excluded from physical-policy ranking."
+    },
+    {
+      "method": "SONIC",
+      "kind": "controller",
+      "rankable": true,
+      "checkpoint": "ZeyuLing/Motius-SONIC-G1",
+      "splits": {
+        "lafan1_g1": {
+          "coverage": {
+            "evaluated": 40,
+            "population": 40
+          },
+          "metrics": {
+            "success_rate": 0.875,
+            "completion_rate": 0.9983333333333333,
+            "local_mpjpe_mm": 40.05535950418562,
+            "global_mpjpe_mm": 482.71668860688806,
+            "joint_mae_rad": 0.13475176617503165,
+            "mpjve_m_s": 0.16300261495634913,
+            "root_velocity_error_m_s": 0.25351609457284213,
+            "unexpected_fall_rate": 0.125
+          }
+        },
+        "amass_test_g1": {
+          "coverage": {
+            "evaluated": 138,
+            "population": 138
+          },
+          "metrics": {
+            "success_rate": 0.782608695652174,
+            "completion_rate": 0.9941619020237289,
+            "local_mpjpe_mm": 46.54353982709834,
+            "global_mpjpe_mm": 389.1939676866151,
+            "joint_mae_rad": 0.16159982326022093,
+            "mpjve_m_s": 0.23612299611378912,
+            "root_velocity_error_m_s": 0.32933480433168394,
+            "unexpected_fall_rate": 0.15942028985507245
+          }
+        }
+      }
+    },
+    {
+      "method": "BeyondMimic",
+      "kind": "specialist",
+      "rankable": false,
+      "checkpoint": null,
+      "splits": {
+        "lafan1_g1": {
+          "coverage": {
+            "evaluated": 40,
+            "population": 40
+          },
+          "metrics": {
+            "success_rate": 0.875,
+            "completion_rate": 1.0,
+            "local_mpjpe_mm": 51.26335578970611,
+            "global_mpjpe_mm": 295.9227990359068,
+            "joint_mae_rad": 0.10089532537385822,
+            "mpjve_m_s": 0.176221664249897,
+            "root_velocity_error_m_s": 0.21023716498166323,
+            "unexpected_fall_rate": 0.125
+          }
+        },
+        "amass_test_g1": {
+          "coverage": {
+            "evaluated": 100,
+            "population": 138
+          },
+          "metrics": {
+            "success_rate": 0.93,
+            "completion_rate": 1.0,
+            "local_mpjpe_mm": 53.596360471034004,
+            "global_mpjpe_mm": 269.012573286891,
+            "joint_mae_rad": 0.12871363490819931,
+            "mpjve_m_s": 0.2430907572595456,
+            "root_velocity_error_m_s": 0.32120729980825213,
+            "unexpected_fall_rate": 0.06
+          }
+        }
+      },
+      "note": "Per-reference optimization upper bound; unranked and coverage-disclosed."
+    }
+  ],
+  "provenance": {
+    "project": "GenTrack",
+    "result_root": "outputs/evaluation/physflow/gentrack_aaai2027/protocol_v020_paper_fall_only",
+    "success": "Complete rollout, one 30 FPS resample, reference-relative pelvis-height fall-only gate.",
+    "aggregation": "Continuous errors include successful and failed trajectories."
+  }
+}

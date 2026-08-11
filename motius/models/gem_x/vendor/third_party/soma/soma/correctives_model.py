@@ -1,0 +1,252 @@
+import os
+from typing import Any, Dict, Optional, Union
+
+import numpy as np
+import torch
+import torch.nn as nn
+
+from .units import Unit
+
+ArrayLike = Union[np.ndarray, torch.Tensor]
+
+
+def _as_float_tensor(x: ArrayLike) -> torch.Tensor:
+    if isinstance(x, torch.Tensor):
+        return x.float()
+    return torch.tensor(x, dtype=torch.float32)
+
+
+class NonPersistentModuleWrapper(nn.Module):
+    """Wrap a module but drop all of its state_dict entries."""
+
+    def __init__(self, module):
+        super().__init__()
+        self.module = module
+        # ScriptModules don't support requires_grad_(); plain nn.Modules do.
+        if not isinstance(module, torch.jit.ScriptModule):
+            module.requires_grad_(False)  # freeze: never updated by an optimizer
+
+    def train(self, mode=True):
+        # Keep wrapper itself in the requested mode but always hold the
+        # inner module in eval so its forward() stays deterministic and
+        # never returns the (pred, reg) training-only tuple.
+        super().train(mode)
+        self.module.eval()
+        return self
+
+    def forward(self, *args, **kwargs):
+        return self.module(*args, **kwargs)
+
+    def state_dict(self, destination=None, prefix="", keep_vars=False):
+        if destination is None:
+            destination = {}
+        return destination
+
+    def _save_to_state_dict(self, destination, prefix, keep_vars):
+        return
+
+    def load_state_dict(self, state_dict, strict=True):
+        return torch.nn.modules.module._IncompatibleKeys([], [])
+
+
+class CorrectivesMLP(nn.Module):
+    def __init__(
+        self,
+        *,
+        bindpose: ArrayLike,        # (J, 4, 4) or (J, 3, 3)
+        cors_per_joint: int,        # Num correctives per joint
+        num_verts: int,             # number of vertices in the target mesh
+        M1_mask: Optional[ArrayLike]=None,         # (J,J)
+        M2_mask: Optional[ArrayLike]=None,         # (J,V)
+        W1_init: Optional[torch.Tensor]=None,
+        W2_init: Optional[torch.Tensor]=None,
+        dropout_p: float = 0.0,                   # dropout probability on hidden activations
+        use_tanh: bool = True,                    # apply tanh after relu on hidden activations
+    ):
+        super().__init__()
+
+        self.use_tanh = use_tanh
+        self.J = bindpose.shape[0]      # num joints
+        self.C = int(cors_per_joint)    # num correctives per joint
+        self.K = self.J * self.C        # total num correctives
+        self.I = 6                      # num input features per joint
+        self.D = self.I * self.J        # total num input features
+        self.V = num_verts              # number of vertices in the target mesh
+
+        # ---- non persistent buffers ----
+        if M1_mask is not None:
+            assert (M1_mask.shape[0] == M1_mask.shape[1] and
+                    self.J == M1_mask.shape[0]), 'M1_mask needs to be of shape (J,J)'
+            M1_prior = _as_float_tensor(M1_mask).repeat_interleave(self.I, dim=0)
+            M1_prior = M1_prior.repeat_interleave(self.C, dim=1)
+            self.register_buffer("M1_prior", M1_prior, persistent=False)
+            self.register_buffer("M1_mask", _as_float_tensor(M1_mask), persistent=False)
+        else:
+            self.M1_prior = None
+            self.M1_mask = None
+
+        if M2_mask is not None:
+            assert (M2_mask.shape[0] == self.J and
+                    M2_mask.shape[1] == self.V), 'M2_mask needs to be of shape (J, V)'
+            M2_prior = _as_float_tensor(M2_mask).repeat_interleave(self.C, dim=0)
+            M2_prior = M2_prior.repeat_interleave(3, dim=1)
+            self.register_buffer("M2_prior", M2_prior, persistent=False)
+            self.register_buffer("M2_mask", _as_float_tensor(M2_mask), persistent=False)
+        else:
+            self.M2_prior = None
+            self.M2_mask = None
+
+        self.register_buffer("bindpose", _as_float_tensor(bindpose[:, :3, :3]), persistent=False)
+
+        self.dropout_p = dropout_p
+
+        # ---- parameters ----
+        if W1_init is None:
+            self.W1 = nn.Parameter(torch.empty(self.D, self.K))
+            nn.init.xavier_normal_(self.W1, gain=1.0)
+        else:
+            self.W1 = nn.Parameter(W1_init)
+
+        if W2_init is None:
+            self.W2 = nn.Parameter(torch.zeros(self.K, 3 * self.V))
+        else:
+            self.W2 = nn.Parameter(W2_init)
+
+    def forward(self, x: torch.Tensor, V: torch.Tensor= None):
+
+        B = x.shape[0]
+
+        x = self.bindpose.transpose(-1, -2).unsqueeze(0) @ x[..., :3, :3]
+
+        x[:, :, 0, 0] -= 1
+        x[:, :, 1, 1] -= 1
+        input = x[..., :, :2].reshape(B, -1)
+
+        W1 = (self.W1 * self.M1_prior) if self.M1_prior is not None else self.W1
+        W2 = (self.W2 * self.M2_prior) if self.M2_prior is not None else self.W2
+
+        z = input @ W1
+        z = nn.functional.relu(z)
+        if self.use_tanh:
+            z = nn.functional.tanh(z)
+        z = nn.functional.dropout(z, p=self.dropout_p, training=self.training)
+        y = z @ W2
+
+        output = {
+            "out": y.view(B, -1, 3),
+            "z": z,
+            "W2": self.W2,        # raw W2 (used for regularization)
+            "W2_masked": W2,      # W2 * M2_prior (actual geometric contribution)
+        }
+
+        return output
+
+    # ------------------------------------------------------------------------------
+    # Checkpoints
+    # ------------------------------------------------------------------------------
+
+    def save_checkpoint(
+        self,
+        path: str,
+        *,
+        native_unit: Unit = Unit.CENTIMETERS,
+        optimizer: Optional[torch.optim.Optimizer] = None,
+        scheduler: Optional[Any] = None,
+        meta: Optional[Dict[str, Any]] = None,
+        save_masks = True
+    ) -> None:
+        payload = {
+            "C_max": self.C,
+            "use_tanh": self.use_tanh,
+            "bindpose": self.bindpose.cpu(),
+            "W1": ((self.W1 * self.M1_prior) if (self.M1_prior is not None and not save_masks) else self.W1).detach().to_sparse().cpu(),
+            "W2": ((self.W2 * self.M2_prior) if (self.M2_prior is not None and not save_masks) else self.W2).detach().to_sparse().cpu(),
+            "meta": meta or {},
+        }
+        if save_masks:
+            payload["M1_mask"] = self.M1_mask.to_sparse().cpu()
+            payload["M2_mask"] = self.M2_mask.to_sparse().cpu()
+
+        if optimizer is not None:
+            payload["optimizer_state"] = optimizer.state_dict()
+
+        if scheduler is not None:
+            payload["scheduler_state"] = scheduler.state_dict()
+
+        torch.save(payload, path)
+
+    @staticmethod
+    def load_checkpoint(
+        path: str,
+        *,
+        optimizer: torch.optim.Optimizer | None = None,
+        scheduler: Any | None = None,
+        map_location: str | torch.device = "cpu",
+        v_index_map: torch.Tensor | None = None,
+        output_unit: Unit = Unit.METERS,
+    ):
+        if not os.path.exists(path):
+            return None
+
+        # Always load to CPU first.  The caller moves the resulting module to
+        # the target device afterwards via .to(device).  Loading directly to
+        # GPU fails in forked DataLoader workers where the CUDA context is
+        # unavailable.
+        #
+        # Temporarily disable sparse-tensor validation: it calls
+        # torch._validate_sparse_coo_tensor_args which triggers CUDA
+        # in forked workers.  The tensors are converted to dense
+        # immediately after loading, so validation is unnecessary.
+        _orig_validate = torch._utils._validate_loaded_sparse_tensors
+        torch._utils._validate_loaded_sparse_tensors = lambda: None
+        try:
+            ckpt = torch.load(path, map_location="cpu", weights_only=True)
+        finally:
+            torch._utils._validate_loaded_sparse_tensors = _orig_validate
+        native_unit = Unit.from_name(ckpt["unit"]) if "unit" in ckpt else Unit.CENTIMETERS
+        model_scale = native_unit.meters_per_unit / output_unit.meters_per_unit
+
+        cors_per_joint = ckpt["C_max"]
+        use_tanh = ckpt.get("use_tanh")
+        bindpose = ckpt["bindpose"]
+        W1 = ckpt["W1"].to_dense()
+        W2 = ckpt["W2"].to_dense() * model_scale
+
+        M1_mask = ckpt["M1_mask"].to_dense() if "M1_mask" in ckpt else None
+        M2_mask = ckpt["M2_mask"].to_dense() if "M2_mask" in ckpt else None
+
+        if v_index_map is not None:
+            v_index_map = v_index_map.cpu()
+            M2_mask = M2_mask[:, v_index_map] if M2_mask is not None else None
+            col_idx = (v_index_map[:, None] * 3 + torch.arange(3)).reshape(-1)
+            W2 = W2[:, col_idx]
+
+        num_verts = int(W2.shape[1] // 3)
+
+        num_verts = int(W2.shape[1] // 3)
+        model = CorrectivesMLP(
+            cors_per_joint=cors_per_joint,
+            bindpose=bindpose,
+            num_verts=num_verts,
+            M1_mask=M1_mask,
+            M2_mask=M2_mask,
+            W1_init=W1,
+            W2_init=W2,
+            use_tanh=use_tanh,
+        )
+        model = NonPersistentModuleWrapper(model)
+        model = model.to(torch.device(map_location))
+
+        if optimizer is not None and "optimizer_state" in ckpt:
+            try:
+                optimizer.load_state_dict(ckpt["optimizer_state"])
+            except Exception as e:
+                print(f"[WARN] Optimizer state not loaded: {e}")
+
+        if scheduler is not None and "scheduler_state" in ckpt:
+            try:
+                scheduler.load_state_dict(ckpt["scheduler_state"])
+            except Exception as e:
+                print(f"[WARN] Scheduler state not loaded: {e}")
+
+        return model

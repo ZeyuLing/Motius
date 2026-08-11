@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "method": "MaskControl",
+  "task": "temporal_motion_completion",
+  "input": "person walking at a average pace forward, swaying arms and torso with a sense of swagger",
+  "condition": "Adaptive sparse keyframes; 12 observed frames over a 300-frame clip",
+  "case_id": "004822",
+  "frames": 300,
+  "fps": 30,
+  "training_motion_fps": 20,
+  "preview_fps": 30,
+  "preview_duration_seconds": 10.0,
+  "timing": "Duration-preserving 20 to 30 fps resampling; every display frame is rendered once.",
+  "capture_frame_step": 1,
+  "condition_intervals": [[0, 1], [25, 26], [47, 48], [66, 67], [109, 110], [126, 127], [146, 147], [183, 184], [203, 204], [216, 217], [263, 264], [299, 300]],
+  "condition_visualization": "Observed keyframes are orange; generated frames are red; the timeline marks every observed frame.",
+  "source": "Temporal Condition leaderboard adaptive_keyframes evaluated SMPL asset",
+  "viewer_url": "https://zeyuling-temporal-condition-leaderboard.static.hf.space/cases/adaptive_keyframes/index.html?method=maskcontrol&case=004822"
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "method": "FlowMDM",
+  "task": "temporal_motion_completion",
+  "input": "person walking at a average pace forward, swaying arms and torso with a sense of swagger",
+  "condition": "Prediction: first 20%; condition frames 0-59 of 300",
+  "case_id": "004822",
+  "frames": 300,
+  "fps": 30,
+  "training_motion_fps": 20,
+  "preview_fps": 30,
+  "preview_duration_seconds": 10.0,
+  "timing": "Duration-preserving 20 to 30 fps resampling; every display frame is rendered once.",
+  "capture_frame_step": 1,
+  "condition_intervals": [
+    [
+      0,
+      60
+    ]
+  ],
+  "condition_visualization": "Condition frames are orange; generated frames are red; the timeline marks the observed interval.",
+  "source": "Temporal Condition leaderboard pre20 evaluated SMPL asset",
+  "viewer_url": "https://zeyuling-temporal-condition-leaderboard.static.hf.space/cases/pre20/index.html?method=flowmdm&case=004822"
+}

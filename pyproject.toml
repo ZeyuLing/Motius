@@ -1,0 +1,446 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "motius"
+version = "0.1.0"
+description = "A reproducible framework for human motion models"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "accelerate>=0.20",
+    "datasets>=2.0",
+    "diffusers>=0.20",
+    "huggingface_hub>=0.20",
+    "mmengine>=0.7",
+    "peft>=0.5",
+    "safetensors>=0.3",
+    "scipy>=1.9",
+    "torch>=2.0",
+    "transformers>=4.30",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+]
+prism = [
+    "einops>=0.6",
+    "sentencepiece>=0.1",
+]
+motioncanvas = [
+    "einops>=0.6",
+    "mmcv-lite>=2.0,<2.2",
+    "torchdiffeq>=0.2",
+    "tqdm>=4.65",
+]
+vimogen = [
+    "ftfy>=6.1",
+    "regex>=2023.0",
+    "sentencepiece>=0.1",
+]
+retarget = [
+    "smplx>=0.1",
+]
+condmdi = [
+    "einops>=0.6",
+    "ftfy>=6.1",
+    "regex>=2023.0",
+    "tqdm>=4.65",
+    "clip @ git+https://github.com/openai/CLIP.git",
+]
+omnicontrol = [
+    "ftfy>=6.1",
+    "regex>=2023.0",
+    "tqdm>=4.65",
+    "clip @ git+https://github.com/openai/CLIP.git",
+]
+projflow = [
+    "clip @ git+https://github.com/openai/CLIP.git",
+    "timm>=1.0",
+    "torchdiffeq>=0.2",
+]
+intergen = [
+    "clip @ git+https://github.com/openai/CLIP.git",
+    "yacs>=0.1.8",
+]
+intermask = [
+    "clip @ git+https://github.com/openai/CLIP.git",
+    "einops>=0.6",
+    "positional-encodings>=6.0",
+    "torch-geometric>=2.5",
+    "tqdm>=4.65",
+]
+motionclr = [
+    "clip @ git+https://github.com/openai/CLIP.git",
+]
+music-to-dance = [
+    "librosa>=0.9",
+    "soundfile>=0.10",
+]
+tm2d = [
+    "librosa>=0.9",
+    "soundfile>=0.10",
+    "spacy>=3.7",
+]
+unimumo = [
+    "librosa>=0.10",
+    "sentencepiece>=0.1",
+    "soundfile>=0.12",
+    "transformers>=4.57,<5",
+]
+m2t = [
+    "bert-score>=0.3.13",
+    "pycocoevalcap>=1.2",
+    "spacy>=3.7",
+]
+video-to-motion = [
+    "braceexpand>=0.1",
+    "einops>=0.7",
+    "fvcore>=0.1.5",
+    "loguru>=0.7",
+    "omegaconf>=2.3",
+    "opencv-python>=4.8",
+    "pytorch-lightning>=2.0",
+    "roma>=1.5",
+    "scikit-image>=0.22",
+    "supervision>=0.20",
+    "thop>=0.1",
+    "timm>=1.0",
+    "torchdiffeq>=0.2",
+    "torchvision>=0.15",
+    "yacs>=0.1.8",
+]
+gvhmr = [
+    "av==13.0.0",
+    "braceexpand>=0.1",
+    "cython-bbox>=0.1.5",
+    "einops>=0.7",
+    "ffmpeg-python>=0.2",
+    "hydra-colorlog>=1.2",
+    "hydra-core>=1.3",
+    "hydra-zen>=0.13",
+    "imageio==2.34.1",
+    "joblib>=1.3",
+    "lapx>=0.5",
+    "lightning==2.3.0",
+    "loguru>=0.7",
+    "mmengine>=0.10",
+    "numpy==1.23.5",
+    "opencv-python==4.10.0.84",
+    "pycolmap==0.6.1",
+    "pytorch-lightning==2.3.0",
+    "rich>=13",
+    "scikit-image>=0.22",
+    "smplx>=0.1",
+    "supervision==0.20.0",
+    "tensorboardX>=2.6",
+    "termcolor>=2",
+    "thop>=0.1",
+    "timm==0.9.12",
+    "trimesh>=4.0",
+    "ultralytics==8.2.42",
+    "wis3d==1.0.1",
+]
+gem-smpl = [
+    "av<14",
+    "einops>=0.7",
+    "ffmpeg-python>=0.2",
+    "huggingface-hub>=0.24",
+    "hydra-colorlog>=1.2",
+    "hydra-core>=1.3",
+    "hydra-zen>=0.13",
+    "imageio==2.34.1",
+    "joblib>=1.3",
+    "lightning==2.3.0",
+    "numpy==1.23.5",
+    "opencv-python>=4.8",
+    "open3d>=0.18",
+    "rich>=13",
+    "scikit-image>=0.22",
+    "scipy>=1.10",
+    "smplx>=0.1",
+    "sentencepiece>=0.1.99",
+    "termcolor>=2.4",
+    "timm==0.6.7",
+    "torch>=2.5",
+    "torchvision>=0.20",
+    "tqdm>=4.66",
+    "transformers>=4.44",
+    "trimesh>=4",
+    "ultralytics==8.3.50",
+    "wandb>=0.17",
+    "yacs>=0.1.8",
+]
+gem-x = [
+    "av<14",
+    "braceexpand>=0.1",
+    "cholespy>=2.1",
+    "einops>=0.8",
+    "ffmpeg-python>=0.2",
+    "huggingface-hub>=0.24",
+    "hydra-colorlog>=1.2",
+    "hydra-core>=1.3",
+    "imageio==2.34.1",
+    "lightning>=2.6",
+    "numpy==1.23.5",
+    "onnxruntime-gpu>=1.18",
+    "opencv-python>=4.8",
+    "open3d>=0.18",
+    "rich>=13",
+    "roma>=1.5",
+    "rtree>=1.3",
+    "scipy>=1.10",
+    "timm==0.6.7",
+    "torch>=2.5",
+    "torchvision>=0.20",
+    "tqdm>=4.66",
+    "transformers>=4.44",
+    "trimesh>=4",
+    "wandb>=0.17",
+    "warp-lang>=1.8",
+    "yacs>=0.1.8",
+]
+motiongpt3 = [
+    "einops>=0.6",
+    "matplotlib>=3.5",
+    "omegaconf>=2.3",
+    "pytorch-lightning>=2.0",
+    "torchmetrics>=1.0",
+]
+maskcontrol = [
+    "clip @ git+https://github.com/openai/CLIP.git",
+    "einops>=0.6",
+]
+flowmdm = [
+    "clip @ git+https://github.com/openai/CLIP.git",
+    "einops>=0.6",
+]
+ardy = [
+    "einops>=0.7",
+    "gradio-client>=1.0",
+    "hydra-core>=1.3",
+    "omegaconf>=2.3",
+    "pydantic>=2.0",
+    "tqdm>=4.65",
+    "vector-quantize-pytorch>=1.25,<1.26",
+]
+ardy-text = [
+    "huggingface_hub>=1.0; python_version >= '3.10'",
+    "peft>=0.19; python_version >= '3.10'",
+    "transformers==5.8.1; python_version >= '3.10'",
+]
+motionbricks = [
+    "adam-atan2-pytorch>=0.1",
+    "colorlog>=6.0",
+    "fast-simplification>=0.1",
+    "hydra-core>=1.3",
+    "matplotlib>=3.5",
+    "mujoco>=3.0",
+    "omegaconf>=2.3",
+    "pynput>=1.7",
+    "pytorch-lightning>=2.0",
+    "trimesh>=4.0",
+    "vector-quantize-pytorch>=1.25",
+]
+motion-tracking = [
+    "onnxruntime>=1.18",
+    "pyyaml>=6.0",
+]
+motion-tracking-mujoco = [
+    "imageio>=2.31",
+    "imageio-ffmpeg>=0.4",
+    "mujoco>=3.0",
+    "onnxruntime>=1.18",
+    "pillow>=10.0",
+    "pyyaml>=6.0",
+]
+gentrack = [
+    "joblib>=1.3",
+    "mujoco>=3.0",
+    "onnxruntime>=1.18",
+    "pyyaml>=6.0",
+    "scipy>=1.10",
+    "smplx>=0.1",
+    "torchdiffeq>=0.2",
+    "tqdm>=4.65",
+    "typer>=0.6.1",
+]
+gentrack-retarget = [
+    "pyroki @ git+https://github.com/chungmin99/pyroki.git@388e43e1fc0d0ee382968d3dd72970fd62a0450c",
+]
+motion-tracking-train-sonic = [
+    "accelerate>=1.3.0",
+    "easydict",
+    "hydra-core==1.3.2",
+    "joblib",
+    "lxml>=5.0",
+    "loguru",
+    "numpy==1.26.4",
+    "onnx>=1.15",
+    "onnxruntime>=1.18",
+    "open3d>=0.18",
+    "rich>=13",
+    "scipy>=1.10",
+    "tensorboard",
+    "transformers>=4.56.2",
+    "trl==0.28.0",
+    "vector-quantize-pytorch>=1.25",
+    "wandb",
+]
+motion-tracking-train-protomotions = [
+    "dm-control>=1.0",
+    "easydict",
+    "hydra-core==1.3.2",
+    "lightning",
+    "matplotlib",
+    "moviepy",
+    "onnx>=1.15",
+    "onnxruntime>=1.18",
+    "pandas",
+    "pyyaml>=6.0",
+    "rich>=13",
+    "rtree==1.2.0",
+    "scikit-image",
+    "tensordict==0.9.0",
+    "termcolor",
+    "trimesh",
+    "typer>=0.6.1",
+    "wandb==0.23.0",
+]
+motion-tracking-train-beyondmimic = [
+    "onnxscript",
+    "psutil",
+    "wandb>=0.19",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["motius*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+"motius.motion" = [
+    "assets/*.npy",
+    "retarget/_gmr/LICENSE",
+    "retarget/_gmr/assets/unitree_g1/*.xml",
+    "retarget/_gmr/ik_configs/*.json",
+]
+"motius.models.kimodo" = [
+    "network/assets/skeletons/g1skel34/meshes/g1/*.STL",
+]
+"motius.models.tmr" = ["LICENSE"]
+"motius.models.tm2t" = ["LICENSE"]
+"motius.models.condmdi" = ["LICENSE"]
+"motius.models.omnicontrol" = ["LICENSE", "assets/*.npy"]
+"motius.trainers.sonic.vendor" = [
+    "UPSTREAM_LICENSE",
+    "THIRD_PARTY_NOTICES.txt",
+    "README.md",
+]
+"motius.trainers.sonic.vendor.gear_sonic" = [
+    "**/*.json",
+    "**/*.pkl",
+    "**/*.pt",
+    "**/*.stl",
+    "**/*.STL",
+    "**/*.urdf",
+    "**/*.xml",
+    "**/*.yaml",
+]
+"motius.trainers.protomotions.vendor" = [
+    "UPSTREAM_LICENSE.md",
+    "THIRD_PARTY_NOTICES.txt",
+    "README.md",
+    "data/scripts/*.py",
+    "examples/**/*.py",
+    "pyroki/*.py",
+]
+"motius.trainers.protomotions.vendor.protomotions" = [
+    "data/assets/checkerboard/*",
+    "data/assets/mesh/G1/*",
+    "data/assets/mesh/smpl/*",
+    "data/assets/mjcf/*",
+    "data/assets/urdf/**/*",
+    "data/assets/usd/**/*",
+]
+"motius.trainers.beyondmimic.vendor" = [
+    "README.md",
+    "UPSTREAM_COMMIT",
+    "UPSTREAM_LICENSE",
+    "UPSTREAM_README.md",
+    "scripts/**/*.py",
+]
+"motius.models.projflow" = ["ATTRIBUTIONS.md", "assets/*.npy"]
+"motius.models.intergen" = ["NOTICE", "network/configs/*.yaml"]
+"motius.models.intermask" = ["LICENSE"]
+"motius.models.humanoid_gpt" = ["ATTRIBUTIONS.md"]
+"motius.models.beyondmimic" = ["ATTRIBUTIONS.md"]
+"motius.models.sonic" = ["ATTRIBUTIONS.md"]
+"motius.models.protomotions" = ["ATTRIBUTIONS.md"]
+"motius.models.motionclr" = ["LICENSE", "ATTRIBUTIONS.md"]
+"motius.models.bailando" = ["LICENSE", "ATTRIBUTIONS.md"]
+"motius.models.edge" = ["LICENSE", "ATTRIBUTIONS.md"]
+"motius.models.maskcontrol" = ["ATTRIBUTIONS.md"]
+"motius.models.tm2d" = ["ATTRIBUTIONS.md"]
+"motius.models.unimumo" = ["ATTRIBUTIONS.md"]
+"motius.models.prompthmr" = ["ATTRIBUTIONS.md"]
+"motius.models.gem_smpl" = ["ATTRIBUTIONS.md"]
+"motius.models.gem_smpl.vendor" = [
+    "GENMO_LICENSE",
+    "GENMO_ATTRIBUTIONS.md",
+    "GVHMR_LICENSE",
+    "configs/**/*.yaml",
+]
+"motius.models.gem_smpl.vendor.gem.utils.body_model" = ["*.pt", "*.pth"]
+"motius.models.gem_x" = ["ATTRIBUTIONS.md"]
+"motius.models.gem_x.vendor" = [
+    "GEM_X_LICENSE",
+    "GEM_X_ATTRIBUTIONS.md",
+    "configs/**/*.yaml",
+    "third_party/**/*.py",
+    "third_party/**/*.md",
+    "third_party/**/*LICENSE*",
+]
+"motius.models.gvhmr" = ["ATTRIBUTIONS.md"]
+"motius.models.gvhmr.vendor" = ["GVHMR_LICENSE"]
+"motius.models.gvhmr.vendor.hmr4d" = [
+    "configs/*.yaml",
+    "configs/*/*.yaml",
+    "dataset/*/*.json",
+    "dataset/*/*.pt",
+    "dataset/*/*.txt",
+    "network/hmr2/configs/*.yaml",
+    "network/hmr2/configs/*.npz",
+    "utils/body_model/*.json",
+    "utils/body_model/*.npy",
+    "utils/body_model/*.pth",
+    "utils/body_model/*.pt",
+]
+"motius.simulators.mujoco" = [
+    "ATTRIBUTIONS.md",
+    "assets/unitree_g1/*.xml",
+    "assets/unitree_g1/LICENSE",
+]
+"motius.models.ardy" = [
+    "LICENSE",
+    "ATTRIBUTIONS.md",
+    "network/assets/skeletons/cskel27/*.p",
+    "network/assets/skeletons/cskel27/*.npz",
+    "network/assets/skeletons/g1skel34/*.p",
+    "network/assets/skeletons/g1skel34/xml/*.xml",
+]
+"motius.models.motionbricks" = [
+    "ATTRIBUTIONS.md",
+    "network/assets/skeletons/g1/*.xml",
+    "network/assets/skeletons/g1/meshes/*.STL",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "smoke: startup smoke tests for training and inference entry points",
+    "gpu: tests that require CUDA-capable hardware and local pretrained checkpoints",
+]

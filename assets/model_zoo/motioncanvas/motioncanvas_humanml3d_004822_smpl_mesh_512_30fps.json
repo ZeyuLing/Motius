@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "method": "MotionCanvas",
+  "task": "text_to_motion",
+  "input": "person walking at a average pace forward, swaying arms and torso with a sense of swagger",
+  "case_id": "004822",
+  "frames": 299,
+  "fps": 30,
+  "training_motion_fps": 30,
+  "preview_fps": 30,
+  "capture_frame_step": 1,
+  "condition_visualization": "The selected input caption is embedded in the rendered video.",
+  "source": "Corrected 360-frame HumanML3D Text-to-Motion evaluation pack",
+  "viewer_url": "https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motioncanvas&case=004822"
+}

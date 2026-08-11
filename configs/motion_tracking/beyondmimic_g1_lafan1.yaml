@@ -1,0 +1,24 @@
+schema_version: 1
+method: beyondmimic
+module: motius.trainers.beyondmimic.train
+num_processes: 1
+output_root: outputs/training/beyondmimic
+arguments:
+  - --task
+  - Tracking-Flat-G1-v0
+  - --motion_file
+  - ${BEYONDMIMIC_MOTION_FILE}
+  - --asset-root
+  - checkpoints/robots
+  - --output-root
+  - outputs/training/beyondmimic
+  - --num_envs
+  - "4096"
+  - --max_iterations
+  - "30000"
+  - --headless
+  - --logger
+  - tensorboard
+  - --run_name
+  - lafan1_g1
+  - --auto-resume

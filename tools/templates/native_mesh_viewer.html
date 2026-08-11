@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Motius native motion preview</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+    body {
+      color: #17231e;
+      background: #f4f6f8;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+    main, .tile, .canvas-host { position: absolute; inset: 0; }
+    .tile { overflow: hidden; }
+    .method {
+      position: absolute;
+      z-index: 3;
+      top: 14px;
+      left: 14px;
+      padding: 5px 8px;
+      border: 1px solid rgba(255, 255, 255, .82);
+      border-radius: 4px;
+      color: #17231e;
+      background: rgba(255, 255, 255, .9);
+      font-size: 12px;
+      font-weight: 750;
+      line-height: 1;
+      pointer-events: none;
+    }
+    canvas { display: block; width: 100%; height: 100%; }
+    .player {
+      position: absolute;
+      z-index: 4;
+      right: 16px;
+      bottom: 16px;
+      left: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 88px;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 10px;
+      border: 1px solid rgba(23, 35, 30, .12);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .92);
+    }
+    input { width: 100%; accent-color: #315f9d; }
+    .time {
+      color: #65716b;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <div class="tile" data-load-state="loading">
+      <div class="method"></div>
+      <div class="canvas-host"></div>
+    </div>
+    <div class="player">
+      <input id="timeline" type="range" min="0" max="1" value="0" step="1">
+      <span id="time" class="time">0.00 / 0.00 s</span>
+    </div>
+    <span id="case-id" hidden></span>
+  </main>
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const manifest = await fetch("manifest.json").then(response => {
+      if (!response.ok) throw new Error(`manifest: ${response.status}`);
+      return response.json();
+    });
+    const item = manifest.cases[0];
+    const meshMeta = item.mesh;
+    document.querySelector(".method").textContent = manifest.method;
+    document.querySelector("#case-id").textContent = item.case_id;
+
+    async function load(file, Type) {
+      const response = await fetch(file);
+      if (!response.ok) throw new Error(`${file}: ${response.status}`);
+      return new Type(await response.arrayBuffer());
+    }
+    const [quantized, normalBytes, indices] = await Promise.all([
+      load(meshMeta.vertices_file, Uint16Array),
+      load(meshMeta.normals_file, Int8Array),
+      load(meshMeta.indices_file, Uint32Array),
+    ]);
+
+    const host = document.querySelector(".canvas-host");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xf4f6f8);
+    scene.fog = new THREE.Fog(0xf4f6f8, 14, 34);
+
+    const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 80);
+    const center = new THREE.Vector3(...meshMeta.center);
+    const span = Math.max(2.8, meshMeta.horizontal_span);
+    camera.position.set(
+      center.x + span * .9,
+      Math.max(1.45, meshMeta.height * .72),
+      center.z + span * 1.35
+    );
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      powerPreference: "high-performance",
+      preserveDrawingBuffer: true,
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
+    host.append(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(center.x, meshMeta.height * .48, center.z);
+    controls.maxPolarAngle = Math.PI * .49;
+
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x687487, 2.2));
+    const key = new THREE.DirectionalLight(0xffffff, 3.6);
+    key.position.set(center.x - 3.5, 6.5, center.z + 5.5);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    key.shadow.camera.left = -8;
+    key.shadow.camera.right = 8;
+    key.shadow.camera.top = 7;
+    key.shadow.camera.bottom = -4;
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0xb9dcff, 1.35);
+    rim.position.set(center.x + 4, 3, center.z - 5);
+    scene.add(rim);
+
+    const floorSize = Math.max(11, span * 2.3);
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(floorSize, floorSize),
+      new THREE.MeshStandardMaterial({
+        color: 0xf8faf9,
+        roughness: 1,
+        metalness: 0,
+      })
+    );
+    floor.position.set(center.x, 0, center.z);
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    scene.add(floor);
+    const grid = new THREE.GridHelper(
+      floorSize,
+      Math.max(24, Math.round(floorSize * 4)),
+      0xa8b6af,
+      0xd8dfdb
+    );
+    grid.position.set(center.x, .002, center.z);
+    grid.material.opacity = .38;
+    grid.material.transparent = true;
+    scene.add(grid);
+
+    const positions = new Float32Array(meshMeta.vertex_count * 3);
+    const normals = new Float32Array(meshMeta.vertex_count * 3);
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
+    geometry.setIndex(new THREE.BufferAttribute(indices, 1));
+    const mesh = new THREE.Mesh(
+      geometry,
+      new THREE.MeshStandardMaterial({
+        color: 0x29a6a1,
+        roughness: .72,
+        metalness: .01,
+      })
+    );
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    mesh.frustumCulled = false;
+    scene.add(mesh);
+
+    if (item.trajectory?.length > 1) {
+      const trajectoryOnFloor =
+        item.trajectory_on_floor ||
+        item.trajectory.every(value => Math.abs(value[1]) < 1e-5);
+      const points = item.trajectory.map(value =>
+        new THREE.Vector3(
+          value[0],
+          trajectoryOnFloor ? .018 : value[1],
+          value[2],
+        )
+      );
+      const trajectoryMaterial = new THREE.MeshBasicMaterial({
+        color: 0xd95f02,
+      });
+      const trajectoryCurve = new THREE.CatmullRomCurve3(
+        points,
+        false,
+        "centripetal"
+      );
+      const trajectory = new THREE.Mesh(
+        new THREE.TubeGeometry(
+          trajectoryCurve,
+          Math.max(16, points.length * 2),
+          .012,
+          8,
+          false
+        ),
+        trajectoryMaterial
+      );
+      scene.add(trajectory);
+    }
+
+    const minimum = meshMeta.quantization_min;
+    const scale = meshMeta.quantization_scale;
+    function update(frame) {
+      const vertexOffset = frame * meshMeta.vertex_count * 3;
+      for (let index = 0; index < positions.length; index += 1) {
+        const axis = index % 3;
+        positions[index] =
+          minimum[axis] + quantized[vertexOffset + index] * scale[axis];
+        normals[index] = normalBytes[vertexOffset + index] / 127;
+      }
+      geometry.attributes.position.needsUpdate = true;
+      geometry.attributes.normal.needsUpdate = true;
+      geometry.computeBoundingSphere();
+    }
+
+    const timeline = document.querySelector("#timeline");
+    const time = document.querySelector("#time");
+    timeline.max = String(item.frames - 1);
+    function setFrame(frame) {
+      const value = Math.max(0, Math.min(item.frames - 1, Number(frame)));
+      update(value);
+      time.textContent =
+        `${(value / item.fps).toFixed(2)} / ` +
+        `${(item.frames / item.fps).toFixed(2)} s`;
+    }
+    timeline.addEventListener("input", () => setFrame(timeline.value));
+
+    function resize() {
+      const width = host.clientWidth;
+      const height = host.clientHeight;
+      renderer.setSize(width, height, false);
+      camera.aspect = width / Math.max(1, height);
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener("resize", resize);
+    resize();
+    setFrame(0);
+
+    function animate() {
+      controls.update();
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+    await new Promise(resolve =>
+      requestAnimationFrame(() => requestAnimationFrame(resolve))
+    );
+    document.querySelector(".tile").dataset.loadState = "ready";
+  </script>
+</body>
+</html>

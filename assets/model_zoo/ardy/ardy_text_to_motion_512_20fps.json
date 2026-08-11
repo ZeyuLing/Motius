@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "method": "ARDY",
+  "task": "text_to_motion",
+  "input": "a person walks forward, turns right, and starts jogging",
+  "frames": 64,
+  "fps": 20,
+  "training_motion_fps": 20,
+  "preview_fps": 20,
+  "representation": "ARDY-330 native 9084-vertex body mesh",
+  "render_profile": "motius-threejs-floor-v1"
+}

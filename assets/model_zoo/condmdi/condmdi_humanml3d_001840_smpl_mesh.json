@@ -1,0 +1,30 @@
+{
+  "source": "outputs/release/condmdi/full_eval/motion135/001840.npz",
+  "keys": [
+    "motion_135",
+    "transl",
+    "canonical_transl",
+    "global_orient",
+    "body_pose",
+    "target_joints",
+    "fitted_joints",
+    "canonical_fitted_joints",
+    "fit_mpjpe_mm",
+    "output_vs_canonical_target_mpjpe_mm",
+    "source_fps",
+    "target_fps",
+    "refine_iters",
+    "rotation_init",
+    "root_translation_restore_mode",
+    "root_translation_restored",
+    "global_orient_locked"
+  ],
+  "method": "CondMDI",
+  "sample_id": "001840",
+  "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+  "gif": "assets/model_zoo/condmdi/condmdi_humanml3d_001840_smpl_mesh_512_30fps.gif",
+  "frames": 78,
+  "fps": 30,
+  "width": 512,
+  "height": 512
+}

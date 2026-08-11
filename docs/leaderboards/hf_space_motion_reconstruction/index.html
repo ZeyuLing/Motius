@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Motius Motion Reconstruction benchmark on HumanML3D.">
+  <link rel="icon" href="data:,">
+  <title>Motion Reconstruction · HumanML3D · Motius</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="leaderboard.css">
+  <!-- motius-benchmark-nav-style:start -->
+<style id="motius-benchmark-nav-style">
+  .motius-benchmark-nav {
+    position: relative;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: min(1420px, calc(100% - 36px));
+    min-height: 50px;
+    margin: 14px auto 0;
+    padding: 8px 10px 8px 14px;
+    border: 1px solid #d8dfdc;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #17211e;
+    box-shadow: 0 5px 18px rgba(23, 33, 30, 0.06);
+    font: 13px/1.4 Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    letter-spacing: 0;
+  }
+  .motius-benchmark-nav *,
+  .motius-benchmark-nav *::before,
+  .motius-benchmark-nav *::after { box-sizing: border-box; }
+  .motius-benchmark-brand {
+    color: #0a746b;
+    font-weight: 760;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .motius-benchmark-context {
+    min-width: 0;
+    margin-left: auto;
+    overflow: hidden;
+    color: #53615c;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .motius-benchmark-menu { position: relative; flex: 0 0 auto; }
+  .motius-benchmark-menu > summary {
+    display: flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 6px 10px;
+    border: 1px solid #cbd5d1;
+    border-radius: 6px;
+    background: #f7f9f8;
+    color: #26332f;
+    cursor: pointer;
+    font-weight: 680;
+    list-style: none;
+    user-select: none;
+  }
+  .motius-benchmark-menu > summary::-webkit-details-marker { display: none; }
+  .motius-benchmark-menu > summary::after {
+    content: "▾";
+    margin-left: 8px;
+    color: #0a746b;
+  }
+  .motius-benchmark-menu[open] > summary::after { content: "▴"; }
+  .motius-benchmark-list {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    width: min(720px, calc(100vw - 36px));
+    max-height: min(70vh, 620px);
+    padding: 8px;
+    overflow: auto;
+    border: 1px solid #cbd5d1;
+    border-radius: 7px;
+    background: #ffffff;
+    box-shadow: 0 16px 42px rgba(23, 33, 30, 0.16);
+  }
+  .motius-benchmark-link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    min-height: 42px;
+    padding: 8px 10px;
+    border-radius: 5px;
+    color: #26332f;
+    text-decoration: none;
+  }
+  .motius-benchmark-link:hover { background: #f0f5f3; }
+  .motius-benchmark-link[aria-current="page"] {
+    background: #e5f3ef;
+    color: #075e57;
+    font-weight: 720;
+  }
+  .motius-benchmark-status {
+    color: #69756f;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+    white-space: nowrap;
+  }
+  .motius-benchmark-status[data-status="complete"] { color: #087267; }
+  .motius-benchmark-status[data-status="metrics_complete"] { color: #946018; }
+  .motius-benchmark-status[data-status="protocol_ready"] { color: #315f9d; }
+  .motius-benchmark-status[data-status="paused"] { color: #a1453a; }
+  .motius-benchmark-status[data-status="settings"] { color: #315f9d; }
+  .motius-setting-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: min(1420px, calc(100% - 36px));
+    margin: 10px auto 0;
+    padding: 4px;
+    overflow-x: auto;
+    border: 1px solid #d8dfdc;
+    border-radius: 7px;
+    background: #eef2f0;
+    font: 13px/1.35 Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    letter-spacing: 0;
+  }
+  .motius-setting-label {
+    flex: 0 0 auto;
+    padding: 0 10px;
+    color: #69756f;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+    text-transform: uppercase;
+  }
+  .motius-setting-link {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: baseline;
+    gap: 8px;
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: #53615c;
+    text-decoration: none;
+  }
+  .motius-setting-link:hover {
+    border-color: #cbd5d1;
+    background: #ffffff;
+    color: #17211e;
+  }
+  .motius-setting-link[aria-current="page"] {
+    border-color: #adc9c2;
+    background: #ffffff;
+    color: #075e57;
+    box-shadow: 0 3px 10px rgba(23, 33, 30, 0.06);
+    font-weight: 720;
+  }
+  .motius-setting-detail {
+    color: #7a8581;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+  }
+  @media (max-width: 720px) {
+    .motius-benchmark-nav {
+      width: calc(100% - 24px);
+      margin-top: 10px;
+      gap: 8px;
+      padding-left: 10px;
+    }
+    .motius-benchmark-context { display: none; }
+    .motius-benchmark-list {
+      position: fixed;
+      top: 64px;
+      right: 12px;
+      grid-template-columns: 1fr;
+      width: calc(100vw - 24px);
+      max-height: calc(100vh - 82px);
+    }
+    .motius-setting-nav { width: calc(100% - 24px); }
+    .motius-setting-label { display: none; }
+  }
+</style>
+<!-- motius-benchmark-nav-style:end -->
+</head>
+<body data-benchmark-id="motion_reconstruction_humanml3d">
+  <main class="page">
+    <!-- motius-benchmark-nav:start -->
+<nav class="motius-benchmark-nav" data-benchmark-id="motion_reconstruction_humanml3d" aria-label="Motius benchmark navigation">
+  <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
+  <span class="motius-benchmark-context">Motion Reconstruction · HumanML3D</span>
+  <details class="motius-benchmark-menu">
+    <summary>All benchmarks</summary>
+    <div class="motius-benchmark-list">
+      <a class="motius-benchmark-link" href="https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Text-to-Motion</span><span class="motius-benchmark-status" data-status="settings">2 settings</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion-to-Text · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-babel-sequential-generation-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Sequential Text-to-Motion · BABEL</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-temporal-condition-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Temporal Motion Completion · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-body-part-condition-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Part-Level Motion Control · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-edit-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Editing · Style and Content</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-instruction-editing-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Editing · MotionFix Instructions</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-repair-brokenamass-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Repair · BrokenAMASS</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-reconstruction-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer" aria-current="page"><span>Motion Reconstruction · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Music-to-Dance · AIST++</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-dance-to-music-aistpp-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Dance-to-Music · AIST++</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-speech-to-gesture-beat2-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Speech-to-Gesture · BEAT2</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-monocular-motion-capture-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Monocular Motion Capture · 3DPW Test</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-tracking-mujoco-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Tracking</span><span class="motius-benchmark-status" data-status="settings">2 settings</span></a>
+    </div>
+  </details>
+</nav>
+<!-- motius-benchmark-nav:end -->
+
+    <header class="topbar">
+      <div>
+        <h1>Motion Reconstruction · HumanML3D</h1>
+        <p class="subtitle">Paired autoencoder reconstruction quality across semantic, geometric, and physical views. Every method is evaluated through its declared native representation or an explicitly named common bridge.</p>
+        <div class="badge-row">
+          <span class="badge">HumanML3D test</span>
+          <span class="badge">4,042 motions</span>
+          <span class="badge">SMPL-22 geometry</span>
+          <span class="badge">Normalized reconstruction FID</span>
+          <span class="badge">Physical diagnostics</span>
+        </div>
+      </div>
+      <div class="snapshot"><strong>Current public snapshot</strong><span id="snapshot">Loading verified results</span></div>
+    </header>
+
+    <section class="score-strip" aria-label="Benchmark summary">
+      <article class="score-card"><div class="label">Evaluated autoencoders</div><div class="value" id="method-count">9</div><div class="note">Complete geometry population for every method</div></article>
+      <article class="score-card"><div class="label">Best reconstruction FID</div><div class="value" id="best-rfid">–</div><div class="note" id="best-rfid-note">Generated methods only</div></article>
+      <article class="score-card"><div class="label">Lowest PA-MPJPE</div><div class="value" id="best-pa">–</div><div class="note" id="best-pa-note">Generated methods only</div></article>
+      <article class="score-card"><div class="label">Geometry population</div><div class="value" id="geometry-count">4,042</div><div class="note">Paired HumanML3D test reconstructions</div></article>
+    </section>
+
+    <section class="panel comparison-studio" aria-labelledby="comparison-title">
+      <div class="section-heading">
+        <div><h2 id="comparison-title">Method comparison</h2><p>Semantic, geometry, and physical metrics share one generated-method view.</p></div>
+        <div class="legend"><span class="best-key">Best generated</span><span class="second-key">Second generated</span><span class="reference-key">GT reference</span></div>
+      </div>
+      <div class="studio-controls">
+        <div class="control-field"><label for="metric-select">Bar metric</label><select id="metric-select"></select></div>
+        <div class="control-field wide"><label>Evaluation setting</label><input value="HumanML3D reconstruction · complete test split" readonly></div>
+      </div>
+      <div class="chart-grid">
+        <article class="chart-panel"><h3 id="bar-title">Reconstruction FID</h3><p id="bar-note">Lower is better; GT is excluded.</p><div class="chart-frame"><canvas id="bar-chart"></canvas></div></article>
+        <article class="chart-panel"><h3>Normalized profile</h3><p>100 is the best generated value on each axis; GT is excluded.</p><div class="chart-frame"><canvas id="radar-chart"></canvas></div></article>
+      </div>
+    </section>
+
+    <section class="panel case-explorer" id="case-explorer" aria-labelledby="case-explorer-title">
+      <div class="section-heading">
+        <div><h2 id="case-explorer-title">All-case motion comparison</h2><p>Inspect every paired HumanML3D reconstruction beside its GT motion in one synchronized 3D view.</p></div>
+        <span class="setting-pill">4,042 cases · 10 views</span>
+      </div>
+      <div class="case-explorer-note"><span>GT + all nine benchmarked tokenizers</span><span>Selected captions · synchronized playback</span></div>
+      <iframe src="cases/index.html" title="Motion Reconstruction all-case motion comparison" loading="lazy"></iframe>
+    </section>
+
+    <section class="panel" aria-labelledby="results-title">
+      <div class="section-heading"><div><h2 id="results-title">Complete results</h2><p>GT is pinned first; lower is better for every ranked reconstruction and physical metric.</p></div><span class="setting-pill">3 generated + GT</span></div>
+      <div class="table-wrap">
+        <table class="leaderboard">
+          <thead id="table-head"></thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+      <div class="table-note"><span>Semantic clips shorter than 60 frames are omitted only from learned reconstruction FID.</span><span>Geometry metrics use all 4,042 motions.</span></div>
+    </section>
+
+    <details class="panel protocol-details" open>
+      <summary>Protocol details</summary>
+      <div class="protocol-grid">
+        <article><h3>Semantic reconstruction</h3><p><code>rFID</code> and paired embedding L2 use the MotionStreamer HumanML3D reconstruction embedding protocol.</p></article>
+        <article><h3>Geometry reconstruction</h3><p><code>MPJPE</code>, <code>PA-MPJPE</code>, and <code>MPJRE</code> compare paired SMPL-22 geometry over the complete test population.</p></article>
+        <article><h3>Physical diagnostics</h3><p>Foot slide, float, penetration, and jitter use Motius diagnostics. MotionLCM declares its common motion135 bridge explicitly.</p></article>
+      </div>
+    </details>
+
+    <footer class="site-footer"><span>Motius open motion evaluation</span><span id="updated">–</span></footer>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="leaderboard.js"></script>
+</body>
+</html>

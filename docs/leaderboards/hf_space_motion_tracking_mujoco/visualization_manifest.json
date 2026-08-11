@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "benchmark_id": "motion_tracking_mujoco_lafan1_g1",
+  "protocol_id": "mujoco-g1-reference-tracking-50hz-v1",
+  "motion_methods": [
+    "GT reference",
+    "Any2Track",
+    "ProtoMotions"
+  ],
+  "cases": [
+    {
+      "id": "dance1_subject1__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "dance1_subject2__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "dance1_subject3__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "dance2_subject1__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "dance2_subject2__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "dance2_subject3__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "dance2_subject4__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "dance2_subject5__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "fallAndGetUp1_subject1__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "fallAndGetUp1_subject4__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "fallAndGetUp1_subject5__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "fallAndGetUp2_subject2__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "fallAndGetUp2_subject3__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "fallAndGetUp3_subject1__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "fight1_subject2__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "fight1_subject3__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "fight1_subject5__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "fightAndSports1_subject1__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "fightAndSports1_subject4__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "jumps1_subject1__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "jumps1_subject2__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "jumps1_subject5__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "run1_subject2__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "run1_subject5__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "run2_subject1__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "run2_subject4__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "sprint1_subject2__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "sprint1_subject4__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "walk1_subject1__f000000_001000",
+      "diagnostics": true,
+      "video": "assets/walk1_subject1_comparison.mp4"
+    },
+    {
+      "id": "walk1_subject2__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "walk1_subject5__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "walk2_subject1__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "walk2_subject3__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "walk2_subject4__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "walk3_subject1__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "walk3_subject2__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "walk3_subject3__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "walk3_subject4__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "walk3_subject5__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    },
+    {
+      "id": "walk4_subject1__f000000_001000",
+      "diagnostics": true,
+      "video": null
+    }
+  ]
+}

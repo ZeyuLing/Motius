@@ -1,0 +1,24 @@
+{
+  "source": "outputs/evaluation/t2m/humanml3d_official_test/motion135/maskcontrol/014457.npz",
+  "keys": [
+    "global_orient",
+    "body_pose",
+    "transl",
+    "betas",
+    "gender",
+    "mocap_framerate",
+    "fit_mpjpe_mm",
+    "source_hml263"
+  ],
+  "fit_mpjpe_mm_mean": 20.663312911987305,
+  "fit_mpjpe_mm_p95": 34.202019882202144,
+  "method": "MaskControl",
+  "sample_id": "014457",
+  "caption": "the person swings a golf club.",
+  "gif": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_014457_smpl_mesh_512_30fps.gif",
+  "frames": 90,
+  "fps": 30,
+  "width": 512,
+  "height": 512,
+  "mp4": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_014457_smpl_mesh.mp4"
+}

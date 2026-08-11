@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Motion Editing · MotionFix Instructions · Motius</title>
+  <style>
+    :root{--ink:#18231f;--muted:#63706c;--line:#dce3df;--soft:#f4f7f5;--paper:#fff;--green:#087d72;--green-soft:#e7f4f1;--blue:#315f9d;--coral:#c7563f;--amber:#ad6d00;--shadow:0 8px 24px rgba(24,35,31,.07)}
+    *{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;letter-spacing:0}a{color:inherit}button,input,select{font:inherit;letter-spacing:0}.shell{width:min(1480px,calc(100% - 40px));margin:0 auto}
+    .leaderboard-nav{display:flex;align-items:center;gap:6px;min-height:54px;border-bottom:1px solid var(--line);overflow-x:auto}.nav-label{margin-right:10px;color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase}.nav-link{padding:8px 10px;border-radius:6px;color:#47544f;text-decoration:none;white-space:nowrap}.nav-link:hover{background:var(--soft)}.nav-link[aria-current="page"]{color:var(--green);background:var(--green-soft);font-weight:700}
+    header{padding:34px 0 24px;border-bottom:1px solid var(--line)}.title-row{display:flex;justify-content:space-between;gap:28px;align-items:flex-start}h1{margin:0 0 10px;font-size:32px;line-height:1.2;font-weight:760}.lede{max-width:850px;margin:0;color:var(--muted);font-size:15px;line-height:1.65}.header-actions{flex:none;display:flex;align-items:center;gap:8px}.status-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid #b8dcd6;border-radius:6px;color:#086c63;background:#eef9f6;font-size:12px;font-weight:700}.status-chip:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green)}.audit-link{padding:8px 10px;border:1px solid #cbd5d0;border-radius:6px;color:#34423d;background:var(--paper);font-size:12px;font-weight:700;text-decoration:none}.audit-link:hover{border-color:var(--green);color:var(--green);background:var(--green-soft)}.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.badge{padding:6px 9px;border:1px solid var(--line);border-radius:5px;color:#47544f;background:var(--paper);font-size:12px}
+    .summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line)}.summary-item{padding:22px 18px;border-right:1px solid var(--line)}.summary-item:first-child{padding-left:0}.summary-item:last-child{border-right:0}.summary .value{font-size:25px;font-weight:760}.summary .label{margin-top:5px;color:var(--muted);font-size:12px}
+    section{padding:28px 0;border-bottom:1px solid var(--line)}.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:16px}h2{margin:0;font-size:19px}.caption{margin:6px 0 0;color:var(--muted);line-height:1.55}.controls{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px}.field{display:grid;gap:5px}.field label,.field-label{color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase}select,.search,button.action{height:38px;border:1px solid #cbd5d0;border-radius:6px;color:var(--ink);background:var(--paper);padding:0 10px;outline:0}select:focus,.search:focus,button.action:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(8,125,114,.12)}button.action{cursor:pointer;font-weight:700}.chart-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(360px,.8fr);gap:14px}.chart-panel{min-width:0;padding:17px;border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow)}.chart-panel h3{margin:0;font-size:14px}.chart-note{min-height:19px;margin:5px 0 12px;color:var(--muted);font-size:12px}.canvas-wrap{position:relative;height:310px}
+    .tabs{display:flex;gap:4px;padding:3px;border:1px solid var(--line);border-radius:7px;background:var(--soft)}.tab{border:0;border-radius:5px;padding:7px 11px;color:var(--muted);background:transparent;cursor:pointer}.tab[aria-selected="true"]{color:var(--ink);background:var(--paper);box-shadow:0 1px 4px rgba(24,35,31,.1);font-weight:700}.table-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.search{width:min(280px,100%)}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}table{width:100%;min-width:1000px;border-collapse:collapse}th,td{padding:11px 12px;border-bottom:1px solid #e6ebe8;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}th{position:sticky;top:0;z-index:1;color:#4a5752;background:#f8faf9;font-size:11px;text-transform:uppercase;cursor:pointer}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#fafcfb}.method{font-weight:720}.version{color:var(--muted);font-size:12px}.rank{display:inline-flex;justify-content:center;min-width:28px;margin-right:7px;padding:3px 5px;border-radius:4px;color:#187066;background:#dff1ed;font-size:10px;font-weight:800}.rank.second{color:#815600;background:#f8edcf}.rank.reference{color:#56625e;background:#e9eeeb}.best{color:#08766c;background:#edf8f5;font-weight:760}.second-best{color:#8a5b00;background:#fff8e8;font-weight:720}.state{display:inline-flex;padding:3px 7px;border-radius:4px;color:#096353;background:#dcefe9;font-size:11px;font-weight:700}.state.contaminated{color:#8b3626;background:#f7e0da}.empty{padding:36px 18px;color:var(--muted);text-align:center}.metric-key{display:flex;flex-wrap:wrap;gap:20px;margin-top:14px;color:var(--muted);font-size:13px}.key{display:inline-flex;align-items:center;gap:6px}.swatch{width:12px;height:12px;border-radius:3px;background:#edf8f5;border:1px solid #b9ddd6}.swatch.second{background:#fff8e8;border-color:#ecd598}.swatch.ref{background:#e9eeeb;border-color:#cfd7d3}
+    .audit-controls{display:grid;grid-template-columns:minmax(260px,1fr) auto auto;gap:10px;align-items:end}.timeline{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin:14px 0;color:var(--muted);font:11px ui-monospace,SFMono-Regular,Consolas,monospace}.timeline input{width:100%;accent-color:var(--green)}.audit-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.motion-panel{min-width:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--paper);box-shadow:var(--shadow)}.motion-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;min-height:58px;padding:11px 12px;border-bottom:1px solid var(--line)}.motion-head strong{font-size:13px}.motion-meta{max-width:60%;color:var(--muted);font:10px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;text-align:right}.motion-panel canvas{display:block;width:100%;height:280px;background:#f8faf9}.audit-note{display:flex;align-items:flex-start;gap:8px;margin-top:14px;color:var(--muted);font-size:12px}.audit-note:before{content:"i";display:inline-flex;align-items:center;justify-content:center;flex:none;width:17px;height:17px;border:1px solid #b9d2cc;border-radius:50%;color:var(--green);font-size:10px;font-weight:800}
+    .protocol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--line)}.protocol div{padding:16px;background:var(--paper)}.protocol dt{color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase}.protocol dd{margin:6px 0 0;line-height:1.5}.protocol .warning{border-left:3px solid var(--coral)}footer{padding:22px 0 34px;color:var(--muted);font-size:12px}footer a{color:var(--green)}
+    @media(max-width:900px){.shell{width:min(100% - 24px,1480px)}.title-row,.section-head{align-items:stretch;flex-direction:column}.header-actions{align-self:flex-start}.summary{grid-template-columns:repeat(2,1fr)}.summary-item:nth-child(2){border-right:0}.summary-item:nth-child(-n+2){border-bottom:1px solid var(--line)}.summary-item:nth-child(3){padding-left:0}.chart-grid{grid-template-columns:1fr}.audit-grid{grid-template-columns:repeat(2,1fr)}.protocol{grid-template-columns:1fr}}@media(max-width:560px){h1{font-size:27px}.table-tools{align-items:stretch;flex-direction:column}.search{width:100%}.audit-controls,.audit-grid{grid-template-columns:1fr}.canvas-wrap{height:280px}}
+  </style>
+<!-- motius-benchmark-nav-style:start -->
+<style id="motius-benchmark-nav-style">
+  .motius-benchmark-nav {
+    position: relative;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: min(1420px, calc(100% - 36px));
+    min-height: 50px;
+    margin: 14px auto 0;
+    padding: 8px 10px 8px 14px;
+    border: 1px solid #d8dfdc;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #17211e;
+    box-shadow: 0 5px 18px rgba(23, 33, 30, 0.06);
+    font: 13px/1.4 Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    letter-spacing: 0;
+  }
+  .motius-benchmark-nav *,
+  .motius-benchmark-nav *::before,
+  .motius-benchmark-nav *::after { box-sizing: border-box; }
+  .motius-benchmark-brand {
+    color: #0a746b;
+    font-weight: 760;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .motius-benchmark-context {
+    min-width: 0;
+    margin-left: auto;
+    overflow: hidden;
+    color: #53615c;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .motius-benchmark-menu { position: relative; flex: 0 0 auto; }
+  .motius-benchmark-menu > summary {
+    display: flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 6px 10px;
+    border: 1px solid #cbd5d1;
+    border-radius: 6px;
+    background: #f7f9f8;
+    color: #26332f;
+    cursor: pointer;
+    font-weight: 680;
+    list-style: none;
+    user-select: none;
+  }
+  .motius-benchmark-menu > summary::-webkit-details-marker { display: none; }
+  .motius-benchmark-menu > summary::after {
+    content: "▾";
+    margin-left: 8px;
+    color: #0a746b;
+  }
+  .motius-benchmark-menu[open] > summary::after { content: "▴"; }
+  .motius-benchmark-list {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    width: min(720px, calc(100vw - 36px));
+    max-height: min(70vh, 620px);
+    padding: 8px;
+    overflow: auto;
+    border: 1px solid #cbd5d1;
+    border-radius: 7px;
+    background: #ffffff;
+    box-shadow: 0 16px 42px rgba(23, 33, 30, 0.16);
+  }
+  .motius-benchmark-link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    min-height: 42px;
+    padding: 8px 10px;
+    border-radius: 5px;
+    color: #26332f;
+    text-decoration: none;
+  }
+  .motius-benchmark-link:hover { background: #f0f5f3; }
+  .motius-benchmark-link[aria-current="page"] {
+    background: #e5f3ef;
+    color: #075e57;
+    font-weight: 720;
+  }
+  .motius-benchmark-status {
+    color: #69756f;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+    white-space: nowrap;
+  }
+  .motius-benchmark-status[data-status="complete"] { color: #087267; }
+  .motius-benchmark-status[data-status="metrics_complete"] { color: #946018; }
+  .motius-benchmark-status[data-status="protocol_ready"] { color: #315f9d; }
+  .motius-benchmark-status[data-status="paused"] { color: #a1453a; }
+  .motius-benchmark-status[data-status="settings"] { color: #315f9d; }
+  .motius-setting-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: min(1420px, calc(100% - 36px));
+    margin: 10px auto 0;
+    padding: 4px;
+    overflow-x: auto;
+    border: 1px solid #d8dfdc;
+    border-radius: 7px;
+    background: #eef2f0;
+    font: 13px/1.35 Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    letter-spacing: 0;
+  }
+  .motius-setting-label {
+    flex: 0 0 auto;
+    padding: 0 10px;
+    color: #69756f;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+    text-transform: uppercase;
+  }
+  .motius-setting-link {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: baseline;
+    gap: 8px;
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: #53615c;
+    text-decoration: none;
+  }
+  .motius-setting-link:hover {
+    border-color: #cbd5d1;
+    background: #ffffff;
+    color: #17211e;
+  }
+  .motius-setting-link[aria-current="page"] {
+    border-color: #adc9c2;
+    background: #ffffff;
+    color: #075e57;
+    box-shadow: 0 3px 10px rgba(23, 33, 30, 0.06);
+    font-weight: 720;
+  }
+  .motius-setting-detail {
+    color: #7a8581;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+  }
+  @media (max-width: 720px) {
+    .motius-benchmark-nav {
+      width: calc(100% - 24px);
+      margin-top: 10px;
+      gap: 8px;
+      padding-left: 10px;
+    }
+    .motius-benchmark-context { display: none; }
+    .motius-benchmark-list {
+      position: fixed;
+      top: 64px;
+      right: 12px;
+      grid-template-columns: 1fr;
+      width: calc(100vw - 24px);
+      max-height: calc(100vh - 82px);
+    }
+    .motius-setting-nav { width: calc(100% - 24px); }
+    .motius-setting-label { display: none; }
+  }
+</style>
+<!-- motius-benchmark-nav-style:end -->
+</head>
+<body data-benchmark-id="motion_editing_motionfix">
+  <div class="shell">
+    <!-- motius-benchmark-nav:start -->
+<nav class="motius-benchmark-nav" data-benchmark-id="motion_editing_motionfix" aria-label="Motius benchmark navigation">
+  <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
+  <span class="motius-benchmark-context">Motion Editing · MotionFix Instructions</span>
+  <details class="motius-benchmark-menu">
+    <summary>All benchmarks</summary>
+    <div class="motius-benchmark-list">
+      <a class="motius-benchmark-link" href="https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Text-to-Motion</span><span class="motius-benchmark-status" data-status="settings">2 settings</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion-to-Text · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-babel-sequential-generation-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Sequential Text-to-Motion · BABEL</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-temporal-condition-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Temporal Motion Completion · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-body-part-condition-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Part-Level Motion Control · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-edit-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Editing · Style and Content</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-instruction-editing-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer" aria-current="page"><span>Motion Editing · MotionFix Instructions</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-repair-brokenamass-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Repair · BrokenAMASS</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-reconstruction-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Reconstruction · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Music-to-Dance · AIST++</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-dance-to-music-aistpp-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Dance-to-Music · AIST++</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-speech-to-gesture-beat2-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Speech-to-Gesture · BEAT2</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-monocular-motion-capture-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Monocular Motion Capture · 3DPW Test</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-tracking-mujoco-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Tracking</span><span class="motius-benchmark-status" data-status="settings">2 settings</span></a>
+    </div>
+  </details>
+</nav>
+<!-- motius-benchmark-nav:end -->
+    <header>
+      <div class="title-row"><div><h1>Motion Editing · MotionFix Instructions</h1><p class="lede">MotionFix official test benchmark for editing a supplied source motion with a free-form instruction. Every method is converted to the same nominal-30fps HML263 representation and evaluated against the paired target with MotionLab's released text_mot_match motion encoder.</p></div><div class="header-actions"><span class="status-chip">Native Batch-32 paired-target protocol</span><a class="audit-link" href="#qualitative">Inspect motions</a></div></div>
+      <div class="badges"><span class="badge">MotionFix official test</span><span class="badge">1,013 source–instruction–target triplets</span><span class="badge">Nominal 30 fps</span><span class="badge">MotionLab text_mot_match evaluator</span><span class="badge">Target-length-sorted Batch-32 galleries</span></div>
+    </header>
+    <div class="summary"><div class="summary-item"><div class="value" id="method-count">0</div><div class="label">Measured methods</div></div><div class="summary-item"><div class="value">1,013</div><div class="label">Paired test cases</div></div><div class="summary-item"><div class="value">R@3₃₂</div><div class="label">Displayed rank metric</div></div><div class="summary-item"><div class="value" id="audit-count">5</div><div class="label">Six-way audit cases</div></div></div>
+    <section><div class="section-head"><div><h2>Method Comparison</h2><p class="caption">All generated methods are measured under the same native Batch-32 protocol; GT and source input remain unranked references.</p></div><div class="controls"><div class="field"><label for="chart-metric">Metric</label><select id="chart-metric"></select></div></div></div><div class="chart-grid"><article class="chart-panel"><h3>Measured Values</h3><p class="chart-note" id="bar-note"></p><div class="canvas-wrap"><canvas id="bar-chart"></canvas></div></article><article class="chart-panel"><h3>Normalized Profile</h3><p class="chart-note">100 is the best generated-method value on each axis.</p><div class="canvas-wrap"><canvas id="radar-chart"></canvas></div></article></div></section>
+    <section><div class="section-head"><div><h2>Results</h2><p class="caption">GT is pinned first; generated methods are ranked by Batch-32 R@3.</p></div></div><div class="table-tools"><span class="caption">FID · Batch-32 R@1/2/3 · AvgR · M2M-Dist · Diversity</span><input class="search" id="search" type="search" placeholder="Filter method" aria-label="Filter method"></div><div class="table-wrap"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div><div class="metric-key"><span class="key"><span class="swatch"></span>Best method</span><span class="key"><span class="swatch second"></span>Second method</span><span class="key"><span class="swatch ref"></span>GT and source input are unranked references</span></div></section>
+    <section id="qualitative"><div class="section-head"><div><h2>Qualitative Audit</h2><p class="caption">All 1,013 test cases use synchronized Three.js views; case 0000 MotionLab uses the official SMPLify fit.</p></div></div><div class="audit-controls"><div class="field"><label for="case-select">MotionFix case</label><select id="case-select"></select></div><button class="action" id="play" type="button">Pause</button><div class="field"><label for="view">Camera</label><select id="view"><option value="orbit" selected>Orbit · drag any panel</option><option value="front">Front</option><option value="side">Side</option></select></div></div><div class="timeline"><span id="time-now">0.00s</span><input id="scrub" type="range" min="0" max="1000" value="0"><span id="duration">0.00s</span></div><div id="audit-grid" class="audit-grid"><div class="empty">Loading SMPL-H meshes…</div></div><div class="audit-note">All panels share the same template, lighting, camera and synchronized timeline. SMPLify-certified cases use optimized SMPL pose parameters rather than fast joint IK.</div></section>
+    <section><div class="section-head"><div><h2>Protocol</h2><p class="caption">A single native motion-embedding contract for every instruction editor.</p></div></div><dl class="protocol"><div><dt>Inputs</dt><dd>The released source motion and free-form MotionFix instruction. Methods with additional reference inputs belong to separate tracks.</dd></div><div><dt>Targets</dt><dd>The paired MotionFix target motion for all 1,013 cases; target captions are not available.</dd></div><div><dt>Retrieval</dt><dd>R@1/2/3 and AvgR use target-length-sorted candidate batches of 32, matching the released MotionLab evaluation loader.</dd></div><div><dt>Distribution</dt><dd>FID, M2M-Dist, and Diversity use the same released text_mot_match motion embeddings.</dd></div><div><dt>Ranking</dt><dd>Generated methods are formally ranked by Batch-32 R@3. GT target and the unedited source input are calibration references and never enter best/second-best selection.</dd></div></dl></section>
+    <footer>Protocol and implementation: <a href="https://github.com/ZeyuLing/Motius">ZeyuLing/Motius</a>. MotionFix benchmark and released baseline implementations are evaluated through the shared canonical adapter.</footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script type="application/json" id="leaderboard-data">{"title":"Motion Editing · MotionFix Instructions","updated":"2026-07-28","dataset":"MotionFix official test","count":1013,"evaluator":"MotionLab native text_mot_match evaluator","protocol":{"input":"source motion + free-form edit instruction","target":"paired MotionFix target motion","fid":"MotionLab native motion-embedding FID","batch_retrieval":"target-length-sorted candidate batches of 32","rank_by":"Formal Batch-32 R@3 rank across generated methods; GT and source input are references","protocol_revision":"motionfix_motionlab_native_batch32_v1"},"metrics":["FID","R@1","R@2","R@3","AvgR","M2M-Dist","Diversity"],"rows":[{"method":"GT target","method_id":"gt_target","input":"paired target motion","native_representation":"MotionFix motion135","coverage":"1013/1013","status":"reference","ranked":false,"metrics":{"FID":0.0,"R@1":100.0,"R@2":100.0,"R@3":100.0,"AvgR":1.0,"M2M-Dist":0.0,"Diversity":8.351726531982422},"contamination_note":null,"artifact":"data/eval/m2m_v2/eval_motionfix_instruction.json","rank":null,"measured_rank":null},{"method":"MotionCanvas","method_id":"motioncanvas","input":"source motion + instruction","native_representation":"SMPL-22 motion135","coverage":"1013/1013","status":"complete","ranked":true,"metrics":{"FID":0.03266168544926269,"R@1":80.15794669299112,"R@2":92.79368213228035,"R@3":95.95261599210266,"AvgR":1.4274432379072064,"M2M-Dist":0.7901288866996765,"Diversity":8.281886100769043},"contamination_note":null,"artifact":"outputs/evaluation/motion_edit/instruction_editing/motionfix_test/smplh_joints66/motioncanvas","rank":1,"measured_rank":1},{"method":"SimMotionEdit","method_id":"simmotionedit","input":"source motion + instruction","native_representation":"MotionFix motion135","coverage":"1013/1013","status":"complete","ranked":true,"metrics":{"FID":0.49990421643938365,"R@1":40.473840078973346,"R@2":59.526159921026654,"R@3":69.79269496544916,"AvgR":4.027640671273446,"M2M-Dist":2.4369125366210938,"Diversity":7.819880485534668},"contamination_note":null,"artifact":"outputs/evaluation/motion_edit/instruction_editing/motionfix_test/smplh_joints66/simmotionedit","rank":3,"measured_rank":3},{"method":"MotionFix (TMED)","method_id":"motionfix_tmed","input":"source motion + instruction","native_representation":"MotionFix motion135","coverage":"1013/1013","status":"complete","ranked":true,"metrics":{"FID":0.5282222533812915,"R@1":32.477788746298124,"R@2":48.76604146100691,"R@3":59.82230997038499,"AvgR":5.3593287265547875,"M2M-Dist":3.197392225265503,"Diversity":7.886959552764893},"contamination_note":null,"artifact":"outputs/evaluation/motion_edit/instruction_editing/motionfix_test/smplh_joints66/motionfix_tmed","rank":4,"measured_rank":4},{"method":"MotionLab","method_id":"motionlab","input":"source motion + instruction","native_representation":"HumanML3D 263D","coverage":"1013/1013","status":"complete","ranked":true,"metrics":{"FID":0.1339166069304245,"R@1":46.10069101678184,"R@2":63.079960513326746,"R@3":73.14906219151037,"AvgR":3.753208292201382,"M2M-Dist":2.41121768951416,"Diversity":8.180389404296875},"contamination_note":null,"artifact":"outputs/evaluation/motion_edit/instruction_editing/motionfix_test/smplh_joints66/motionlab","rank":2,"measured_rank":2},{"method":"Source input (no edit)","method_id":"source_input","input":"source motion only","native_representation":"SMPL-22 motion135","coverage":"1013/1013","status":"complete","ranked":false,"metrics":{"FID":0.10658133437839573,"R@1":46.396841066140176,"R@2":65.25172754195458,"R@3":75.02467917077986,"AvgR":3.5054294175715697,"M2M-Dist":2.281679153442383,"Diversity":8.198084831237793},"contamination_note":null,"artifact":"outputs/evaluation/motion_edit/instruction_editing/motionfix_test/smplh_joints66/source_input","rank":null,"measured_rank":null}]}</script>
+  <script>
+    const DATA=JSON.parse(document.getElementById("leaderboard-data").textContent);
+    const rows=Object.freeze(DATA.rows.map(row=>({method:row.method,version:row.input,coverage:row.coverage,status:row.status,rankExcluded:!row.ranked,isReference:row.method_id==="gt_target",isDiagnostic:row.method_id==="source_input",measuredRank:row.rank,fid:row.metrics["FID"],r1:row.metrics["R@1"],r2:row.metrics["R@2"],r3:row.metrics["R@3"],avgR:row.metrics["AvgR"],m2m:row.metrics["M2M-Dist"],diversity:row.metrics["Diversity"]})));
+    const groups={all:[{key:"fid",label:"FID ↓",direction:"min",digits:4},{key:"r1",label:"R@1₃₂ ↑",direction:"max",digits:2},{key:"r2",label:"R@2₃₂ ↑",direction:"max",digits:2},{key:"r3",label:"R@3₃₂ ↑",direction:"max",digits:2},{key:"avgR",label:"AvgR ↓",direction:"min",digits:2},{key:"m2m",label:"M2M-Dist ↓",direction:"min",digits:4},{key:"diversity",label:"Diversity →",direction:"max",digits:2,referenceStatistic:true}]};
+    const baseColumns=[{key:"method",label:"Method"},{key:"version",label:"Native input"},{key:"coverage",label:"Coverage"}];const colors=["#087d72","#315f9d","#c7563f","#ad6d00","#6e5aa5"];const state={view:"all",query:"",sortKey:"r3",sortDirection:"desc"};let barChart=null,radarChart=null;
+    function rankable(row){return !row.rankExcluded}function chartable(row){return!row.isReference&&!row.isDiagnostic}function colorFor(row){const i=rows.filter(chartable).indexOf(row);return colors[(i<0?0:i)%colors.length]}function metric(key){return groups[state.view].find(item=>item.key===key)}function format(value,spec){if(value===null||value===undefined||Number.isNaN(Number(value)))return"–";if(spec&&spec.digits!==undefined)return Number(value).toFixed(spec.digits);return String(value)}function ranking(spec){if(spec.referenceStatistic)return[];return rows.filter(rankable).filter(row=>Number.isFinite(Number(row[spec.key]))).sort((a,b)=>spec.direction==="min"?a[spec.key]-b[spec.key]:b[spec.key]-a[spec.key])}function classFor(row,spec){if(!rankable(row))return"";const ranked=ranking(spec);if(ranked[0]===row)return"best";if(ranked[1]===row)return"second-best";return""}
+    function filteredRows(){const q=state.query.trim().toLowerCase();const values=rows.filter(row=>!q||`${row.method} ${row.version}`.toLowerCase().includes(q));return values.sort((a,b)=>{if(a.isReference!==b.isReference)return a.isReference?-1:1;if(a.isDiagnostic!==b.isDiagnostic)return a.isDiagnostic?1:-1;const av=a[state.sortKey],bv=b[state.sortKey];if(typeof av==="number"&&typeof bv==="number")return state.sortDirection==="asc"?av-bv:bv-av;return String(av||"").localeCompare(String(bv||""))*(state.sortDirection==="asc"?1:-1)})}
+    function renderTable(){const metrics=groups[state.view],columns=[...baseColumns,...metrics];document.getElementById("table-head").innerHTML=`<tr>${columns.map(col=>`<th data-key="${col.key}">${col.label}${state.sortKey===col.key?(state.sortDirection==="asc"?" ▴":" ▾"):""}</th>`).join("")}</tr>`;const visible=filteredRows();document.getElementById("table-body").innerHTML=visible.map(row=>{const place=row.measuredRank?`<span class="rank">#${row.measuredRank}</span>`:row.isReference?`<span class="rank reference">GT</span>`:row.isDiagnostic?`<span class="rank reference">REF</span>`:"";return`<tr><td class="method">${place}${row.method}</td><td class="version">${row.version}</td><td>${row.coverage}</td>${metrics.map(spec=>`<td class="${classFor(row,spec)}">${format(row[spec.key],spec)}</td>`).join("")}</tr>`}).join("");document.querySelectorAll("th[data-key]").forEach(head=>head.addEventListener("click",()=>{const key=head.dataset.key;if(state.sortKey===key)state.sortDirection=state.sortDirection==="asc"?"desc":"asc";else{state.sortKey=key;state.sortDirection=metric(key)?.direction==="min"?"asc":"desc"}renderTable()}))}
+    function normalized(row,spec,ranked){const values=ranked.map(item=>Number(item[spec.key])).filter(Number.isFinite);if(!values.length)return 0;const min=Math.min(...values),max=Math.max(...values);if(max===min)return 100;return spec.direction==="min"?100*(max-row[spec.key])/(max-min):100*(row[spec.key]-min)/(max-min)}
+    function renderCharts(){if(typeof Chart==="undefined")return;const specs=groups[state.view].filter(item=>!item.referenceStatistic),key=document.getElementById("chart-metric").value||specs[0].key,spec=specs.find(item=>item.key===key)||specs[0],measured=rows.filter(chartable).filter(row=>specs.some(item=>Number.isFinite(Number(row[item.key])))),ordered=[...measured].filter(row=>Number.isFinite(Number(row[spec.key]))).sort((a,b)=>spec.direction==="min"?a[spec.key]-b[spec.key]:b[spec.key]-a[spec.key]);document.getElementById("bar-note").textContent=`${spec.label}; ${spec.direction==="min"?"lower":"higher"} is better.`;barChart?.destroy();radarChart?.destroy();barChart=new Chart(document.getElementById("bar-chart"),{type:"bar",data:{labels:ordered.map(row=>row.method),datasets:[{data:ordered.map(row=>row[spec.key]),backgroundColor:ordered.map(colorFor),borderRadius:4}]},options:{animation:false,indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:"#e7ebe9"}},y:{grid:{display:false},ticks:{font:{size:13,weight:"600"},color:"#34413d"}}}}});radarChart=new Chart(document.getElementById("radar-chart"),{type:"radar",data:{labels:specs.map(item=>item.label),datasets:measured.map(row=>({label:row.method,data:specs.map(item=>normalized(row,item,measured)),borderColor:colorFor(row),backgroundColor:colorFor(row)+"18",pointRadius:2,borderWidth:2}))},options:{animation:false,responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{display:false},pointLabels:{font:{size:12,weight:"600"},color:"#46534f"},grid:{color:"#e0e6e3"},angleLines:{color:"#e0e6e3"}}},plugins:{legend:{position:"bottom",labels:{boxWidth:12,boxHeight:12,padding:14,color:"#34413d"}}}}})}
+    function configureMetrics(){const select=document.getElementById("chart-metric"),specs=groups[state.view].filter(item=>!item.referenceStatistic);select.innerHTML=specs.map(item=>`<option value="${item.key}">${item.label}</option>`).join("");renderTable();renderCharts()}
+    document.getElementById("search").addEventListener("input",event=>{state.query=event.target.value;renderTable()});document.getElementById("chart-metric").addEventListener("change",renderCharts);document.getElementById("method-count").textContent=rows.filter(chartable).length;configureMetrics();
+  </script>
+  <script type="module" src="smpl_viewer.js"></script>
+</body>
+</html>

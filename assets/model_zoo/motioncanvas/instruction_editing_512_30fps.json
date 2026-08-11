@@ -1,0 +1,8 @@
+{
+  "input": "Wave with the right hand.",
+  "condition": "Preserve the lower-body motion",
+  "fps": 30,
+  "render_backend": "threejs",
+  "render_profile": "motius-threejs-floor-v1",
+  "representation": "SMPL mesh with part-preservation controls"
+}

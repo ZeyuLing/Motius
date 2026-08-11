@@ -1,0 +1,11 @@
+{
+  "method": "gem-x",
+  "source": "Motius infer_monocular_motion_capture vertices_world",
+  "representation": "SOMA-4505",
+  "frames": 60,
+  "fps": 30,
+  "width": 768,
+  "height": 768,
+  "mp4": "gem_x_tennis_world.mp4",
+  "webp": "gem_x_tennis_world.webp"
+}

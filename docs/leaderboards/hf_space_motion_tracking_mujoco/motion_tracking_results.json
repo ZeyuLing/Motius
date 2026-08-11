@@ -1,0 +1,163 @@
+{
+  "schema_version": 2,
+  "benchmark_id": "motion_tracking_mujoco_lafan1_g1",
+  "status": "complete",
+  "generated_at": "2026-07-29",
+  "engine": {
+    "name": "MuJoCo",
+    "version": "3.11.0"
+  },
+  "protocol_id": "mujoco-g1-reference-tracking-50hz-v1",
+  "control_hz": 50,
+  "splits": [
+    {
+      "id": "lafan1_g1",
+      "label": "LAFAN1-G1",
+      "population": 40,
+      "description": "All 40 OpenTrack G1 motions; fixed first 1,000 control steps."
+    }
+  ],
+  "metric_definitions": [
+    {
+      "key": "success_rate",
+      "label": "Success",
+      "unit": "%",
+      "direction": "higher"
+    },
+    {
+      "key": "completion_rate",
+      "label": "Completion",
+      "unit": "%",
+      "direction": "higher"
+    },
+    {
+      "key": "local_mpjpe_mm",
+      "label": "Local MPJPE",
+      "unit": "mm",
+      "direction": "lower"
+    },
+    {
+      "key": "joint_mae_rad",
+      "label": "Joint MAE",
+      "unit": "rad",
+      "direction": "lower"
+    },
+    {
+      "key": "root_drift_mm",
+      "label": "Root drift",
+      "unit": "mm",
+      "direction": "lower"
+    },
+    {
+      "key": "foot_slip_m_s",
+      "label": "Foot slip",
+      "unit": "m/s",
+      "direction": "lower"
+    },
+    {
+      "key": "mechanical_power_w",
+      "label": "Mechanical power",
+      "unit": "W",
+      "direction": "lower"
+    }
+  ],
+  "rows": [
+    {
+      "method": "GT reference",
+      "kind": "reference",
+      "rankable": false,
+      "checkpoint": null,
+      "splits": {
+        "lafan1_g1": {
+          "coverage": {
+            "evaluated": 40,
+            "population": 40
+          },
+          "metrics": {
+            "success_rate": 1.0,
+            "completion_rate": 1.0,
+            "local_mpjpe_mm": 0.0,
+            "joint_mae_rad": 0.0,
+            "root_drift_mm": 0.0,
+            "foot_slip_m_s": 0.0,
+            "mechanical_power_w": 0.0
+          }
+        }
+      },
+      "note": "Kinematic calibration; excluded from controller ranking."
+    },
+    {
+      "method": "Any2Track",
+      "kind": "controller",
+      "rankable": true,
+      "checkpoint": "ZeyuLing/Motius-Any2Track-G1-LAFAN1-v2",
+      "splits": {
+        "lafan1_g1": {
+          "coverage": {
+            "evaluated": 40,
+            "population": 40
+          },
+          "metrics": {
+            "success_rate": 1.0,
+            "completion_rate": 1.0,
+            "local_mpjpe_mm": 14.758140234154768,
+            "joint_mae_rad": 0.06324477497798398,
+            "root_drift_mm": 998.4701053196669,
+            "foot_slip_m_s": 0.0948060463192326,
+            "mechanical_power_w": 132.22472481332613
+          }
+        }
+      }
+    },
+    {
+      "method": "ProtoMotions",
+      "kind": "controller",
+      "rankable": true,
+      "checkpoint": "ZeyuLing/Motius-ProtoMotions-G1-BONES-SEED",
+      "splits": {
+        "lafan1_g1": {
+          "coverage": {
+            "evaluated": 40,
+            "population": 40
+          },
+          "metrics": {
+            "success_rate": 0.45,
+            "completion_rate": 0.727625,
+            "local_mpjpe_mm": 48.00683896889782,
+            "joint_mae_rad": 0.19178138375414502,
+            "root_drift_mm": 1012.5743627899568,
+            "foot_slip_m_s": 0.09632974488918257,
+            "mechanical_power_w": 140.9261345278219
+          }
+        }
+      }
+    },
+    {
+      "method": "HumanoidGPT",
+      "kind": "controller",
+      "rankable": true,
+      "checkpoint": "ZeyuLing/Motius-HumanoidGPT-G1",
+      "splits": {
+        "lafan1_g1": {
+          "coverage": {
+            "evaluated": 40,
+            "population": 40
+          },
+          "metrics": {
+            "success_rate": 0.8,
+            "completion_rate": 0.884675,
+            "local_mpjpe_mm": 27.851648671680856,
+            "joint_mae_rad": 0.07002451799764281,
+            "root_drift_mm": 651.1138777858171,
+            "foot_slip_m_s": 0.17250480456714698,
+            "mechanical_power_w": 96.05935926478433
+          }
+        }
+      }
+    }
+  ],
+  "provenance": {
+    "result_root": "outputs/motion_tracking/benchmarks/mujoco_lafan1_g1_v1",
+    "aggregation": "Episode success; completed-step-weighted physical errors."
+  }
+}

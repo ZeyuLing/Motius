@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "task": "speech_to_gesture",
+  "dataset": "BEAT2 English v2.0.0",
+  "population": 15,
+  "updated": "2026-07-22",
+  "protocol": {
+    "version": "beat2_s2g_speaker2_v1",
+    "split": "test",
+    "speaker_ids": [
+      2
+    ],
+    "motion_fps": 30,
+    "audio_sample_rate": 16000,
+    "ranking_policy": "motius_verified_only",
+    "paper_metric_display_scale": {
+      "FGD": 10.0,
+      "BC": 10.0,
+      "Diversity": 1.0
+    }
+  },
+  "paper_reference": {
+    "source": "CVPR 2025, BEATv2 co-speech gesture generation table",
+    "url": "https://openaccess.thecvf.com/content/CVPR2025/html/Chen_The_Language_of_Motion_Unifying_Verbal_and_Non-verbal_Language_of_CVPR_2025_paper.html",
+    "method": "Language of Motion",
+    "fgd": 5.301,
+    "bc": 7.78,
+    "diversity": 15.167,
+    "comparison_policy": "numerical_audit_only_different_checkpoint_and_inference_entrypoint",
+    "strictly_comparable": false,
+    "verdict": "near_parity_not_exact_reproduction"
+  },
+  "rows": [
+    {
+      "method": "BEAT2 GT",
+      "version": "English v2.0.0",
+      "kind": "reference",
+      "verified": true,
+      "submission_status": "reference_verified",
+      "fgd": 0.0,
+      "bc": 6.927973445144807,
+      "diversity": 13.118996183234406,
+      "rotation_geodesic": 6.8252387250286456e-09,
+      "expression_l2": 0.0,
+      "translation_l2": 0.0,
+      "raw_metrics": {
+        "FGD": -0.00048000000001593236,
+        "BC": 0.6927973445144807,
+        "Diversity": 13.118996183234406
+      },
+      "utmr_fid": 0.0,
+      "utmr_paired_distance": 0.0,
+      "utmr_diversity": 21.206501379625507
+    },
+    {
+      "method": "Language of Motion",
+      "version": "public LoM v1 demo checkpoint",
+      "kind": "method",
+      "verified": true,
+      "submission_status": "public_demo_verified",
+      "paper_table_eligible": false,
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-Language-of-Motion",
+      "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/language_of_motion.md",
+      "paper": "https://arxiv.org/abs/2412.10523",
+      "fgd": 5.334046622183627,
+      "bc": 7.859517115612769,
+      "diversity": 15.000945343936863,
+      "rotation_geodesic": 0.3001787459128774,
+      "expression_l2": 7.368384461095272,
+      "translation_l2": 0.8158111490154212,
+      "raw_metrics": {
+        "FGD": 0.5334046622183627,
+        "BC": 0.7859517115612769,
+        "Diversity": 15.000945343936863
+      },
+      "generation_audit": {
+        "max_static_tail_frames": 1,
+        "minimum_active_coverage": 0.9993169398907104,
+        "checkpoint_provenance": {
+          "Instruct_Mixed_A2M_LM.ckpt": {
+            "bytes": 999723659,
+            "sha256": "187571180fcf3ea2ef36d6d2ae8303b4f4ba1ed9e1c18d1662425df424aa87ff"
+          },
+          "vq_emage_speaker_2.ckpt": {
+            "bytes": 56755380,
+            "sha256": "5a75ba5720bbd82feab1ec7428ab79dc390d631809aff5cb401c25d60a1aeea1"
+          }
+        },
+        "inference_profile": {
+          "protocol": "lom_v1_official_demo_parity",
+          "torch_dtype": "bf16",
+          "test_length": 120,
+          "attention_backend": "turbot5_flash",
+          "official_profile": true,
+          "chunking": "floor(audio_tokens/chunk_size)+1",
+          "padding": "zero_motion_code_to_test_length",
+          "output_trim": "paired_reference_frame_count"
+        }
+      },
+      "utmr_fid": 0.0626219123923138,
+      "utmr_paired_distance": 20.312870025634766,
+      "utmr_diversity": 18.105557526744228,
+      "utmr_gt_diversity": 21.206501379625507,
+      "utmr_protocol": {
+        "num_windows": 56,
+        "input_representation": "canonical_smpl22_joints66",
+        "fid_embedding_space": "per_sample_l2_normalized",
+        "paired_distance_embedding_space": "native",
+        "diversity_embedding_space": "native",
+        "fps": 30.0,
+        "max_window_seconds": 20.0,
+        "min_window_seconds": 0.5,
+        "uses_text": false,
+        "uses_expression": false,
+        "uses_raw_smplx_translation": false,
+        "smplx_fk_translation": "zero"
+      }
+    },
+    {
+      "method": "EMAGE",
+      "version": "official PantoMatrix audio checkpoint",
+      "kind": "method",
+      "verified": true,
+      "submission_status": "official_checkpoint_verified",
+      "paper_table_eligible": false,
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-EMAGE-BEAT2",
+      "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/emage.md",
+      "paper": "https://arxiv.org/abs/2401.00374",
+      "fgd": 6.198973656352552,
+      "bc": 7.564133316712631,
+      "diversity": 12.475604236570534,
+      "rotation_geodesic": 0.27046809122906024,
+      "expression_l2": 4.743729881237994,
+      "translation_l2": 3.2984432561061547,
+      "raw_metrics": {
+        "FGD": 0.6198973656352552,
+        "BC": 0.7564133316712631,
+        "Diversity": 12.475604236570534
+      },
+      "generation_audit": {
+        "max_static_tail_frames": 1,
+        "minimum_active_coverage": 0.9993169398907104,
+        "checkpoint_provenance": {
+          "pytorch_model.bin": {
+            "bytes": 556156301,
+            "sha256": "09c98da6f13445b8a1de1a82cc66cc0582026eb6d1aacdf278f03ef9b665a37a",
+            "revision": "b04466b83bdebd656844a2c416797d3131e34ede"
+          },
+          "emage_vq/face/pytorch_model.bin": {
+            "bytes": 8932994,
+            "sha256": "1ddee4ad1c66a7c21d4f44a4d5ee020b970d9e6532713ec9896de1720f1531c3",
+            "revision": "b04466b83bdebd656844a2c416797d3131e34ede"
+          },
+          "emage_vq/upper/pytorch_model.bin": {
+            "bytes": 8698882,
+            "sha256": "fe2f67701f9fc63c7f1bb0857d37dec3a6cdb082e2fe92b4556d1f9cc70afb88",
+            "revision": "b04466b83bdebd656844a2c416797d3131e34ede"
+          },
+          "emage_vq/lower/pytorch_model.bin": {
+            "bytes": 14870770,
+            "sha256": "eafc580ae68c43ada6f87c83ae96924094ab7e88befbc62bd952655a576f3027",
+            "revision": "b04466b83bdebd656844a2c416797d3131e34ede"
+          },
+          "emage_vq/hands/pytorch_model.bin": {
+            "bytes": 9642306,
+            "sha256": "72872387623e13c45dea2307d61b029506fd08f5b0eb0824600fc138ad0290fb",
+            "revision": "b04466b83bdebd656844a2c416797d3131e34ede"
+          },
+          "emage_vq/global/pytorch_model.bin": {
+            "bytes": 14608303,
+            "sha256": "42d4d883ff611bc82926a246b6e21791ae0eae73efef86248b2221a19c2c5a9f",
+            "revision": "b04466b83bdebd656844a2c416797d3131e34ede"
+          }
+        },
+        "inference_profile": {
+          "protocol": "pantomatrix_emage_audio_main",
+          "official_profile": true,
+          "checkpoint_revision": "b04466b83bdebd656844a2c416797d3131e34ede",
+          "runtime_revision": "c7356f35f8e39e469e510ccd1bf37e44adf8ec0e",
+          "window_frames": 64,
+          "seed_frames": 4,
+          "audio_sample_rate": 16000,
+          "motion_fps": 30,
+          "output_trim": "paired_reference_frame_count"
+        }
+      },
+      "utmr_fid": 0.05229689071202964,
+      "utmr_paired_distance": 17.19244384765625,
+      "utmr_diversity": 15.094365157511536,
+      "utmr_gt_diversity": 21.206501379625507,
+      "utmr_protocol": {
+        "num_windows": 56,
+        "input_representation": "canonical_smpl22_joints66",
+        "fid_embedding_space": "per_sample_l2_normalized",
+        "paired_distance_embedding_space": "native",
+        "diversity_embedding_space": "native",
+        "fps": 30.0,
+        "max_window_seconds": 20.0,
+        "min_window_seconds": 0.5,
+        "uses_text": false,
+        "uses_expression": false,
+        "uses_raw_smplx_translation": false,
+        "smplx_fk_translation": "zero"
+      }
+    },
+    {
+      "method": "DiffuseStyleGesture+",
+      "version": "official DSG+ BEAT v0 checkpoint",
+      "kind": "method",
+      "verified": true,
+      "submission_status": "official_checkpoint_verified",
+      "paper_table_eligible": false,
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-DiffuseStyleGesture-BEAT",
+      "model_card": "https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/diffusestylegesture.md",
+      "paper": "https://arxiv.org/abs/2308.13879",
+      "fgd": 65.93641608158316,
+      "bc": 6.385819552207471,
+      "diversity": 12.205498290214816,
+      "rotation_geodesic": 0.3421043727834952,
+      "expression_l2": 10.92270681552773,
+      "translation_l2": 1.3352414011951241,
+      "raw_metrics": {
+        "FGD": 6.5936416081583165,
+        "BC": 0.6385819552207471,
+        "Diversity": 12.205498290214816
+      },
+      "generation_audit": {
+        "max_static_tail_frames": 1,
+        "minimum_active_coverage": 0.9993169398907104,
+        "checkpoint_provenance": {
+          "model001080000.pt": {
+            "bytes": 62077405,
+            "sha256": "2e25d8b257b44e5110a61713476a146e99c34926c763b5dd1c18a6884a857c77"
+          }
+        },
+        "inference_profile": {
+          "protocol": "official_DiffuseStyleGesturePlus_BEAT_v0",
+          "official_profile": true,
+          "runtime_revision": "9649995cdd0b8ce0d42bd02567b2bd03829a0540",
+          "window_frames": 150,
+          "seed_frames": 30,
+          "stride_frames": 120,
+          "diffusion_skip_timesteps": 0,
+          "speaker_id": 2,
+          "base_seed": 123456,
+          "motion_fps": 30,
+          "feature_protocol": "DiffuseStyleGesturePlus_BEAT_native_clock_feature_v2",
+          "output_conversion": "official_30fps_BEAT_BVH_Yup_to_SMPLX_stride1",
+          "output_trim": "crop_after_native_clock_inference",
+          "transition_blend": "corrected_30_frame_crossfade"
+        }
+      },
+      "utmr_fid": 0.09300000412822963,
+      "utmr_paired_distance": 16.025096893310547,
+      "utmr_diversity": 15.666223647386756,
+      "utmr_gt_diversity": 21.206501379625507,
+      "utmr_protocol": {
+        "num_windows": 56,
+        "input_representation": "canonical_smpl22_joints66",
+        "fid_embedding_space": "per_sample_l2_normalized",
+        "paired_distance_embedding_space": "native",
+        "diversity_embedding_space": "native",
+        "fps": 30.0,
+        "max_window_seconds": 20.0,
+        "min_window_seconds": 0.5,
+        "uses_text": false,
+        "uses_expression": false,
+        "uses_raw_smplx_translation": false,
+        "smplx_fk_translation": "zero"
+      }
+    }
+  ]
+}

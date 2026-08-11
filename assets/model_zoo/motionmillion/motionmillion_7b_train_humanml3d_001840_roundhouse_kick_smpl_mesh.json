@@ -1,0 +1,13 @@
+{
+  "source": "/apdcephfs_cq11/share_1467498/home/zeyuling/hf_trainer/outputs/evaluation/t2m/humanml3d_official_test/motion135/gotozero_7b_train/001840.npz",
+  "keys": [
+    "motion_135",
+    "source_id"
+  ],
+  "mp4": "/tmp/motius-core-export/assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4",
+  "gif": "/tmp/motius-core-export/assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif",
+  "frames": 83,
+  "fps": 30,
+  "width": 1024,
+  "height": 1024
+}

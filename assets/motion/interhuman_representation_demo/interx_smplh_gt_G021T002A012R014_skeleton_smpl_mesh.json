@@ -1,0 +1,31 @@
+{
+  "sample_id": "G021T002A012R014",
+  "source": "GT InterX smplh_52_2p/P1+P2",
+  "representation": "InterHuman-262 skeleton to SMPL mesh",
+  "route": "InterX SMPL-H GT -> InterHuman-262 skeleton decode and same-pose SMPL mesh",
+  "fps": 30,
+  "frames": 72,
+  "fit_mpjpe_mm": 0.0,
+  "gif": "assets/motion/interhuman_representation_demo/interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif",
+  "threejs_viewer": "assets/motion/interhuman_representation_demo/index.html",
+  "viewer_data": "assets/motion/interhuman_representation_demo/data.js",
+  "viewer_assets": {
+    "label": "SMPL Mesh",
+    "person_count": 2,
+    "vertex_count": 6890,
+    "index_count": 41328,
+    "vertices_file": "smpl_pair_vertices.u16",
+    "normals_file": "smpl_pair_normals.i8",
+    "indices_file": "smpl_indices.u32",
+    "quantization_min": [
+      -1.0037636756896973,
+      0.0,
+      -0.7648322582244873
+    ],
+    "quantization_scale": [
+      3.1765095627633855e-05,
+      2.6668882128433324e-05,
+      2.1388868844951503e-05
+    ]
+  }
+}

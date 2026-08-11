@@ -1,0 +1,8 @@
+{
+  "input": "Complete a natural walk through the observed footsteps.",
+  "condition": "Sparse foot positions and facing keyframes",
+  "fps": 30,
+  "render_backend": "threejs",
+  "render_profile": "motius-threejs-floor-v1",
+  "representation": "SMPL mesh with sparse keyframes"
+}

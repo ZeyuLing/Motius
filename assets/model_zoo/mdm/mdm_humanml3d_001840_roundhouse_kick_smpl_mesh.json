@@ -1,0 +1,21 @@
+{
+  "source": "/apdcephfs_cq11/share_1467498/home/zeyuling/hf_trainer/outputs/evaluation/t2m/humanml3d_official_test/motion135/mdm/001840.npz",
+  "keys": [
+    "motion_135",
+    "transl",
+    "global_orient",
+    "body_pose",
+    "target_joints",
+    "fitted_joints",
+    "fit_mpjpe_mm",
+    "source_fps",
+    "target_fps",
+    "refine_iters"
+  ],
+  "mp4": "/tmp/motius-core-export/assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4",
+  "gif": "/tmp/motius-core-export/assets/model_zoo/mdm/mdm_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif",
+  "frames": 83,
+  "fps": 30,
+  "width": 1024,
+  "height": 1024
+}

@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "navigation_label": "Motius Benchmark Hub",
+  "navigation_target": "https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards",
+  "status_definitions": {
+    "complete": "Metrics and the persisted qualitative population are public.",
+    "metrics_complete": "Metrics are public; qualitative coverage is incomplete.",
+    "protocol_ready": "The engine-specific protocol and page are public; verified result rows are pending."
+  },
+  "benchmarks": [
+    {
+      "id": "text_to_motion_humanml3d",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_t2m_humanml3d",
+      "results": "docs/leaderboards/hf_space_t2m_humanml3d/t2m_results.json",
+      "metrics": {
+        "status": "complete",
+        "generated_rows": 27
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_t2m_humanml3d/cases/index.html",
+        "manifest": "docs/leaderboards/hf_space_t2m_humanml3d/cases/manifest.json",
+        "population": 4042,
+        "method_coverage": "28/28",
+        "external_assets": true
+      }
+    },
+    {
+      "id": "text_to_motion_unitree_g1",
+      "status": "metrics_complete",
+      "source": "docs/leaderboards/hf_space_t2m_unitree_g1",
+      "results": "docs/leaderboards/hf_space_t2m_unitree_g1/g1_results.json",
+      "metrics": {
+        "status": "complete",
+        "generated_rows": 2
+      },
+      "visualization": {
+        "status": "partial",
+        "entry": "docs/leaderboards/hf_space_t2m_unitree_g1/cases/index.html",
+        "manifest": "docs/leaderboards/hf_space_t2m_unitree_g1/cases/manifest.json",
+        "population": 64,
+        "method_coverage": "GT + 2/2 generated rows",
+        "external_assets": true,
+        "reason": "The public qualitative subset covers every released method row on 64 fixed cases; metrics use the full 1,024-case population."
+      }
+    },
+    {
+      "id": "motion_to_text_humanml3d",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_m2t_humanml3d",
+      "results": "docs/leaderboards/hf_space_m2t_humanml3d/m2t_results.json",
+      "metrics": {
+        "status": "complete",
+        "generated_rows": 5
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_m2t_humanml3d/cases/index.html",
+        "manifest": "docs/leaderboards/hf_space_m2t_humanml3d/cases/manifest.json",
+        "population": 4400,
+        "method_coverage": "6/6",
+        "external_assets": true
+      }
+    },
+    {
+      "id": "sequential_text_to_motion_babel",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_babel_sequential",
+      "results": "docs/leaderboards/hf_space_babel_sequential/babel_results.json",
+      "metrics": {
+        "status": "complete",
+        "generated_rows": 5
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_babel_sequential/cases/index.html",
+        "manifest": "docs/leaderboards/hf_space_babel_sequential/cases/manifest.json",
+        "population": 1295,
+        "method_coverage": "6/6",
+        "external_assets": true
+      }
+    },
+    {
+      "id": "temporal_motion_completion_humanml3d",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_temporal_condition",
+      "results": "docs/leaderboards/hf_space_temporal_condition/temporal_control_results.json",
+      "metrics": {
+        "status": "complete",
+        "settings": 8
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_temporal_condition/cases/start_1f/index.html",
+        "manifest": "docs/leaderboards/hf_space_temporal_condition/cases/start_1f/manifest.json",
+        "population": 4012,
+        "setting_coverage": "8/8",
+        "external_assets": true
+      }
+    },
+    {
+      "id": "part_level_motion_control_humanml3d",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_body_part_condition_humanml3d",
+      "results": "docs/leaderboards/hf_space_body_part_condition_humanml3d/body_part_condition_results.json",
+      "metrics": {
+        "status": "complete",
+        "settings": 84,
+        "coverage_rule": "Every published native method-setting row has all required metrics."
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_body_part_condition_humanml3d/cases/index.html",
+        "manifest": "docs/leaderboards/hf_space_body_part_condition_humanml3d/cases/manifest.json",
+        "population": 4012,
+        "method_coverage": "GT + every method in the representative left-wrist XYZ sparse-control metric table",
+        "external_assets": true
+      }
+    },
+    {
+      "id": "motion_editing_style_content",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_motion_edit",
+      "results": "docs/leaderboards/hf_space_motion_edit/motion_edit_results.json",
+      "metrics": {
+        "status": "complete",
+        "tracks": 2
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_motion_edit/index.html",
+        "manifest": "docs/leaderboards/hf_space_motion_edit/case_index.json",
+        "population": 130,
+        "method_coverage": "all measured rows"
+      }
+    },
+    {
+      "id": "motion_editing_motionfix",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_instruction_editing",
+      "results": "docs/leaderboards/hf_space_instruction_editing/instruction_editing_results.json",
+      "metrics": {
+        "status": "complete",
+        "generated_rows": 4
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_instruction_editing/index.html",
+        "manifest": "docs/leaderboards/hf_space_instruction_editing/case_index.json",
+        "population": 1013,
+        "method_coverage": "6/6",
+        "external_assets": true
+      }
+    },
+    {
+      "id": "motion_repair_brokenamass",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_motion_repair",
+      "results": "docs/leaderboards/hf_space_motion_repair/motion_repair_results.json",
+      "metrics": {
+        "status": "complete",
+        "generated_rows": 3,
+        "primary_sort": "uTMR R@3"
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_motion_repair/cases/index.html",
+        "manifest": "docs/leaderboards/hf_space_motion_repair/cases/manifest.json",
+        "population": 299,
+        "method_coverage": "Clean GT + corrupted input + 3/3 repair methods",
+        "external_assets": true
+      }
+    },
+    {
+      "id": "motion_reconstruction_humanml3d",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_motion_reconstruction",
+      "results": "docs/leaderboards/hf_space_motion_reconstruction/reconstruction_results.json",
+      "metrics": {
+        "status": "complete",
+        "generated_rows": 9
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_motion_reconstruction/cases/index.html",
+        "manifest": "docs/leaderboards/hf_space_motion_reconstruction/cases/manifest.json",
+        "population": 4042,
+        "method_coverage": "GT + 9/9 generated reconstruction rows",
+        "external_assets": true
+      }
+    },
+    {
+      "id": "music_to_dance_aistpp",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_music_to_dance",
+      "results": "docs/leaderboards/hf_space_music_to_dance/music_to_dance_results.json",
+      "metrics": {
+        "status": "complete",
+        "generated_rows": 4
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_music_to_dance/cases/index.html",
+        "manifest": "docs/leaderboards/hf_space_music_to_dance/cases/manifest.json",
+        "population": 40,
+        "method_coverage": "5/5",
+        "audio": true
+      }
+    },
+    {
+      "id": "dance_to_music_aistpp",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_dance_to_music",
+      "results": "docs/leaderboards/hf_space_dance_to_music/dance_to_music_results.json",
+      "metrics": {
+        "status": "complete",
+        "generated_rows": 1
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_dance_to_music/cases/index.html",
+        "manifest": "docs/leaderboards/hf_space_dance_to_music/cases/manifest.json",
+        "population": 86,
+        "method_coverage": "2/2",
+        "audio": true
+      }
+    },
+    {
+      "id": "speech_to_gesture_beat2",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_speech_to_gesture",
+      "results": "docs/leaderboards/hf_space_speech_to_gesture/speech_to_gesture_results.json",
+      "metrics": {
+        "status": "complete",
+        "generated_rows": 3
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_speech_to_gesture/cases/index.html",
+        "manifest": "docs/leaderboards/hf_space_speech_to_gesture/cases/manifest.json",
+        "population": 15,
+        "method_coverage": "4/4",
+        "audio": true,
+        "external_assets": true
+      }
+    },
+    {
+      "id": "monocular_motion_capture_3dpw_test",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_monocular_capture",
+      "results": "docs/leaderboards/hf_space_monocular_capture/monocular_capture_results.json",
+      "metrics": {
+        "status": "complete",
+        "generated_rows": 4
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_monocular_capture/index.html",
+        "manifest": "docs/leaderboards/hf_space_monocular_capture/monocular_capture_results.json",
+        "population": 4,
+        "method_coverage": "4/4 video demos",
+        "external_assets": true
+      }
+    },
+    {
+      "id": "motion_tracking_mujoco_lafan1_g1",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_motion_tracking_mujoco",
+      "results": "docs/leaderboards/hf_space_motion_tracking_mujoco/motion_tracking_results.json",
+      "metrics": {
+        "status": "complete",
+        "generated_rows": 2
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_motion_tracking_mujoco/cases/index.html",
+        "manifest": "docs/leaderboards/hf_space_motion_tracking_mujoco/cases/manifest.json",
+        "population": 40,
+        "method_coverage": "GT + Any2Track + ProtoMotions for all 40 cases",
+        "external_assets": true
+      }
+    },
+    {
+      "id": "motion_tracking_isaaclab_g1",
+      "status": "complete",
+      "source": "docs/leaderboards/hf_space_motion_tracking_isaaclab",
+      "results": "docs/leaderboards/hf_space_motion_tracking_isaaclab/motion_tracking_results.json",
+      "metrics": {
+        "status": "complete",
+        "generated_rows": 2
+      },
+      "visualization": {
+        "status": "complete",
+        "entry": "docs/leaderboards/hf_space_motion_tracking_isaaclab/cases/index.html",
+        "manifest": "docs/leaderboards/hf_space_motion_tracking_isaaclab/cases/manifest.json",
+        "population": 178,
+        "method_coverage": "GT + SONIC for all 178 cases; BeyondMimic retained for 140/178 with missing panels explicit",
+        "external_assets": true
+      }
+    }
+  ]
+}

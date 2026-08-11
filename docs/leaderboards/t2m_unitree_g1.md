@@ -1,0 +1,60 @@
+# Text-to-Motion · Unitree G1 Skeleton Setting
+
+<p align="center">
+  <a href="https://huggingface.co/spaces/ZeyuLing/t2m-unitree-g1-leaderboard">↗ Open G1 Setting</a> ·
+  <a href="README.md#text-to-motion">📊 All T2M Settings</a> ·
+  <a href="../evaluator_zoo/g1_tmr.md">📐 TMR-G1 Evaluator</a> ·
+  <a href="../tasks/README.md">🧭 Task Registry</a>
+</p>
+
+This is the Unitree G1 Skeleton setting of the shared
+[Text-to-Motion Leaderboard](https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard).
+It covers methods that generate Unitree G1 motion directly and sits beside the
+SMPL Skeleton setting rather than acting as a separate leaderboard.
+
+## Fixed Protocol
+
+| Field | Contract |
+| ----- | -------- |
+| Task | Text-to-Motion |
+| Embodiment | Unitree G1, 29 actuated joints |
+| Protocol ID | `unitree-g1-paper-eval-1024-v1` |
+| Test population | Fixed 1,024-case Unitree G1 evaluation split |
+| Caption selection | One persisted caption per test sample |
+| Evaluation representation | Canonical `g1_38` at 30 fps |
+| Evaluator | [Motius TMR-G1](../evaluator_zoo/g1_tmr.md) |
+| Semantic metrics | R@1 · R@2 · R@3 · normalized FID · MM-Dist · Diversity |
+| Physical metrics | Root drift · foot slide · floating · jitter · penetration |
+
+Native G1 outputs must use a declared bridge into `g1_38`. KIMODO and ARDY
+retain their native generation tensors; MuJoCo `qpos-36` outputs use
+`convert_motion(qpos, "g1_qpos", "g1_38")`. Human-body generations retargeted
+to G1 are a separate conversion track and must not be mixed with direct
+G1-native generation.
+
+## Method Coverage
+
+| Method | Variant | Native output | Artifact | Evaluation status |
+| ------ | ------- | ------------- | -------- | ----------------- |
+| [KIMODO](../model_zoo/kimodo.md) | G1-RP | Unitree G1 native arrays | [📦 Checkpoint](https://huggingface.co/ZeyuLing/Motius-KIMODO-G1-RP) | Measured, 1,023 / 1,024 cases |
+| [KIMODO](../model_zoo/kimodo.md) | G1-SEED | Unitree G1 native arrays | [📦 Checkpoint](https://huggingface.co/ZeyuLing/Motius-KIMODO-G1-SEED) | Pending full split |
+| [HY-Motion T2M](../model_zoo/hymotion_t2m.md) | G1 | G1-38 / qpos-36 | [📦 Checkpoint](https://huggingface.co/ZeyuLing/Motius-HYMotion-G1) | Measured, 1,024 cases |
+| [ARDY](../model_zoo/ardy.md) | G1-RP Horizon-52 | ARDY G1-414 / qpos-36 | [📦 Checkpoint](https://huggingface.co/nvidia/ARDY-G1-RP-25FPS-Horizon52) | Pending full split |
+
+## Leaderboard
+
+| Method | Samples | R@1 ↑ | R@2 ↑ | R@3 ↑ | Normalized FID ↓ | MM-Dist ↓ | Diversity |
+| ------ | ------: | ----: | ----: | ----: | ----: | --------: | --------: |
+| GT calibration | 1,024 | 0.8489 | 0.9500 | 0.9796 | 0.0000 | 16.345 | 36.713 |
+| **HY-Motion G1** | 1,024 | **0.7086** | **0.8380** | **0.8935** | **0.0587** | **20.513** | **36.011** |
+| KIMODO G1-RP | 1,023 | 0.5173 | 0.6778 | 0.7545 | 0.1193 | 25.124 | 35.687 |
+| KIMODO G1-SEED | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
+| ARDY G1-RP Horizon-52 | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
+
+The measured rows use the same frozen 1,024-caption manifest, TMR-G1 epoch-139
+checkpoint, 32-sample retrieval groups, 20 deterministic repeats, and
+per-sample L2-normalized latent FID. KIMODO has one missing persisted prediction,
+so its metrics use the available 1,023 cases (`992` after retrieval chunking).
+
+The canonical storage root is
+`outputs/evaluation/text_to_motion/text_to_motion_unitree_g1/unitree-g1-paper-eval-1024-v1`.

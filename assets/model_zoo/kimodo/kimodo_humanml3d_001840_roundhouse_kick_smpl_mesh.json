@@ -1,0 +1,24 @@
+{
+  "source": "/apdcephfs_cq11/share_1467498/home/zeyuling/hf_trainer/outputs/evaluation/t2m/humanml3d_official_test/motion135/kimodo/001840.npz",
+  "keys": [
+    "motion_135",
+    "transl",
+    "trans",
+    "global_orient",
+    "body_pose",
+    "poses",
+    "mocap_frame_rate",
+    "model",
+    "gender",
+    "source_id",
+    "source_skeleton_path",
+    "retarget_method",
+    "caption"
+  ],
+  "mp4": "/tmp/motius-core-export/assets/model_zoo/kimodo/kimodo_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4",
+  "gif": "/tmp/motius-core-export/assets/model_zoo/kimodo/kimodo_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif",
+  "frames": 83,
+  "fps": 30,
+  "width": 1024,
+  "height": 1024
+}

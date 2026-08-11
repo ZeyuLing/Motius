@@ -1,0 +1,12 @@
+{
+  "method": "intermask",
+  "case_id": "gentle_push",
+  "prompt": "one person gently pushes the other person backward",
+  "seed": 2028,
+  "motion_len": 60,
+  "representation": "InterHuman-262 per person",
+  "mesh": "neutral SMPL position-IK",
+  "fit_mpjpe_mm": 37.89404106140137,
+  "gif": "assets/model_zoo/intermask/intermask_interhuman_gentle_push_smpl_pair_512_30fps.gif",
+  "mp4": "outputs/release/interaction_previews/intermask_interhuman_gentle_push_smpl_pair.mp4"
+}

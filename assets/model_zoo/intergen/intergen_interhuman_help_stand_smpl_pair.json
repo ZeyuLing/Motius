@@ -1,0 +1,12 @@
+{
+  "method": "intergen",
+  "case_id": "help_stand",
+  "prompt": "one person helps another person stand up",
+  "seed": 2028,
+  "motion_len": 60,
+  "representation": "InterHuman-262 per person",
+  "mesh": "neutral SMPL position-IK",
+  "fit_mpjpe_mm": 34.12582206726074,
+  "gif": "assets/model_zoo/intergen/intergen_interhuman_help_stand_smpl_pair_512_30fps.gif",
+  "mp4": "outputs/release/interaction_previews/intergen_interhuman_help_stand_smpl_pair.mp4"
+}

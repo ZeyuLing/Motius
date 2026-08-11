@@ -1,0 +1,2136 @@
+{
+  "schema_version": 2,
+  "caption_protocol": "HumanML3D selected-caption test protocol",
+  "preview_cases": [
+    {
+      "dataset": "HumanML3D test",
+      "sample_id": "001840",
+      "caption": "someone executes a roundhouse kick with their left foot.",
+      "format": "512px 30fps GIF"
+    },
+    {
+      "dataset": "HumanML3D test",
+      "sample_id": "004545",
+      "caption": "a person jumping while raising both hands and moving apart legs.",
+      "format": "512px 30fps GIF"
+    },
+    {
+      "dataset": "HumanML3D test",
+      "sample_id": "006944",
+      "caption": "a person moves their right hand left, right, up, and down.",
+      "format": "512px 30fps GIF"
+    }
+  ],
+  "evaluators": [
+    "HumanML3D Official",
+    "MotionStreamer Evaluator",
+    "Motius Joint-Position Evaluator"
+  ],
+  "models": {
+    "mdm": {
+      "method": "MDM",
+      "tasks": [
+        "Text-to-Motion"
+      ],
+      "motion_representation": "HumanML3D-263",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-MDM-HumanML3D",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 3970,
+          "R1": 0.4618,
+          "R2": 0.6602,
+          "R3": 0.7631,
+          "FID": 0.4,
+          "MM-Dist": 3.248,
+          "Diversity": 9.966
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": 4042,
+          "R1": 0.5208,
+          "R2": 0.6937,
+          "R3": 0.7701,
+          "FID": 35.5169,
+          "MM-Dist": 19.4246,
+          "Diversity": 25.3383,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.4501,
+          "R2": 0.629,
+          "R3": 0.7262,
+          "FID": 0.1437612,
+          "MM-Dist": 37.5544,
+          "Diversity": 56.3969,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/mdm/mdm_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mdm/mdm_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "014457",
+          "caption": "the person swings a golf club.",
+          "gif": "assets/model_zoo/mdm/mdm_humanml3d_014457_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mdm/mdm_humanml3d_014457_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/mdm/mdm_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mdm/mdm_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "t2mgpt": {
+      "method": "T2M-GPT",
+      "tasks": [
+        "Text-to-Motion"
+      ],
+      "motion_representation": "HumanML3D-263",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-T2M-GPT-HumanML3D",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 3944,
+          "R1": 0.4898,
+          "R2": 0.6784,
+          "R3": 0.7758,
+          "FID": 0.2249,
+          "MM-Dist": 3.145,
+          "Diversity": 9.6245
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": 4042,
+          "R1": 0.5516,
+          "R2": 0.7056,
+          "R3": 0.7788,
+          "FID": 25.4913,
+          "MM-Dist": 19.0912,
+          "Diversity": 25.5949,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.4869,
+          "R2": 0.652,
+          "R3": 0.7359,
+          "FID": 0.1148029,
+          "MM-Dist": 36.3177,
+          "Diversity": 55.5376,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/t2mgpt/t2mgpt_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "momask": {
+      "method": "MoMask",
+      "tasks": [
+        "Text-to-Motion"
+      ],
+      "motion_representation": "HumanML3D-263",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-MoMask-HumanML3D",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 3970,
+          "R1": 0.516,
+          "R2": 0.709,
+          "R3": 0.804,
+          "FID": 0.097,
+          "MM-Dist": 2.99,
+          "Diversity": 9.46
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": 4042,
+          "R1": 0.6404,
+          "R2": 0.7974,
+          "R3": 0.8609,
+          "FID": 21.0729,
+          "MM-Dist": 18.1216,
+          "Diversity": 25.9789,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.5665,
+          "R2": 0.754,
+          "R3": 0.8356,
+          "FID": 0.0782413,
+          "MM-Dist": 33.3118,
+          "Diversity": 56.611,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/momask/momask_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/momask/momask_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/momask/momask_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/momask/momask_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/momask/momask_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/momask/momask_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "mogents": {
+      "method": "MoGenTS",
+      "tasks": [
+        "Text-to-Motion"
+      ],
+      "motion_representation": "HumanML3D-263",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-MoGenTS-HumanML3D",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 3970,
+          "R1": 0.522,
+          "R2": 0.713,
+          "R3": 0.806,
+          "FID": 0.081,
+          "MM-Dist": 2.929,
+          "Diversity": 9.406
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": 4042,
+          "R1": 0.591,
+          "R2": 0.7523,
+          "R3": 0.8138,
+          "FID": 109.8191,
+          "MM-Dist": 18.6038,
+          "Diversity": 25.3317,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.4623,
+          "R2": 0.6238,
+          "R3": 0.7138,
+          "FID": 0.0864196,
+          "MM-Dist": 36.7141,
+          "Diversity": 56.5133,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/mogents/mogents_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mogents/mogents_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/mogents/mogents_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mogents/mogents_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/mogents/mogents_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mogents/mogents_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motiongpt": {
+      "method": "MotionGPT",
+      "tasks": [
+        "Text-to-Motion",
+        "Motion-to-Text"
+      ],
+      "motion_representation": "HumanML3D-263",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-MotionGPT-HumanML3D",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 3962,
+          "R1": 0.4341,
+          "R2": 0.5999,
+          "R3": 0.6857,
+          "FID": 0.1557,
+          "MM-Dist": 3.9195,
+          "Diversity": 9.7471
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": 4042,
+          "R1": 0.494,
+          "R2": 0.6352,
+          "R3": 0.6944,
+          "FID": 23.6811,
+          "MM-Dist": 19.6781,
+          "Diversity": 25.541,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.4325,
+          "R2": 0.5801,
+          "R3": 0.6617,
+          "FID": 0.102363,
+          "MM-Dist": 38.4534,
+          "Diversity": 56.8849,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/motiongpt/motiongpt_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motiongpt/motiongpt_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/motiongpt/motiongpt_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motiongpt/motiongpt_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/motiongpt/motiongpt_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motiongpt/motiongpt_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "flowmdm": {
+      "method": "FlowMDM",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Sequential Text-to-Motion"
+      ],
+      "motion_representation": "HumanML3D-263",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-FlowMDM-HumanML3D",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 3970,
+          "R1": 0.4388,
+          "R2": 0.6357,
+          "R3": 0.7443,
+          "FID": 0.3274,
+          "MM-Dist": 3.3868,
+          "Diversity": 9.9419
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": 4042,
+          "R1": 0.4737,
+          "R2": 0.6496,
+          "R3": 0.7312,
+          "FID": 36.3767,
+          "MM-Dist": 20.0018,
+          "Diversity": 25.1783,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.439,
+          "R2": 0.6153,
+          "R3": 0.7111,
+          "FID": 0.123925,
+          "MM-Dist": 37.4096,
+          "Diversity": 55.5127,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "sequential_metrics": {
+        "protocol": "babel-official-val-shortmerge30-llm-joints66-actiongroups-v3",
+        "evaluator": "Motius Joint-Position Evaluator",
+        "fid_embedding_space": "l2_normalized",
+        "status": "measured",
+        "cases": 1295,
+        "segments": 7285,
+        "retrieval_samples": 7264,
+        "transitions": 5990,
+        "R1": 0.2958,
+        "R2": 0.4217,
+        "R3": 0.5018,
+        "FID": 0.0843,
+        "MM-Dist": 46.7698,
+        "Diversity": 56.5743,
+        "Transition-FID": 0.1092,
+        "Transition-Diversity": 54.7209,
+        "Peak-Jerk": 335.6734,
+        "AUJ-Gap": 34.404,
+        "reference": {
+          "R1": 0.3947,
+          "R2": 0.5515,
+          "R3": 0.6327,
+          "FID": 0.0,
+          "MM-Dist": 44.5941,
+          "Diversity": 57.4816,
+          "Transition-FID": 0.0,
+          "Transition-Diversity": 54.583,
+          "Peak-Jerk": 56.3384,
+          "AUJ-Gap": 0.0
+        }
+      },
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/flowmdm/flowmdm_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/flowmdm/flowmdm_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/flowmdm/flowmdm_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/flowmdm/flowmdm_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/flowmdm/flowmdm_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/flowmdm/flowmdm_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motionclr": {
+      "method": "MotionCLR",
+      "tasks": [
+        "Text-to-Motion"
+      ],
+      "motion_representation": "HumanML3D-263",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-motionclr-humanml3d",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 3970,
+          "R1": 0.5527,
+          "R2": 0.752,
+          "R3": 0.8488,
+          "FID": 0.1045,
+          "MM-Dist": 2.7019,
+          "Diversity": 9.658
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": 4042,
+          "R1": 0.3931,
+          "R2": 0.5208,
+          "R3": 0.596,
+          "FID": 298.9693,
+          "MM-Dist": 22.5207,
+          "Diversity": 20.6074,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.3794643,
+          "R2": 0.5508433,
+          "R3": 0.6458333,
+          "FID": 0.5746048,
+          "MM-Dist": 44.5427783,
+          "Diversity": 50.3569145,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "official_protocol_audit": {
+        "protocol": "MotionCLR official HumanML3D loader, one run",
+        "samples": 4402,
+        "motius_checkpoint": {
+          "R1": 0.5447,
+          "R2": 0.7406,
+          "R3": 0.831,
+          "FID": 0.1076,
+          "MM-Dist": 2.8252,
+          "Diversity": 9.6821,
+          "Multi-Modality": 1.8293
+        },
+        "paper_dpm_solver": {
+          "R1": 0.542,
+          "R2": 0.733,
+          "R3": 0.827,
+          "FID": 0.099,
+          "MM-Dist": 2.981,
+          "Multi-Modality": 2.145
+        }
+      },
+      "physical_metrics": {
+        "samples": 4042,
+        "Slide": 3.9074,
+        "Float": 10.1052,
+        "Jitter": 8.7418,
+        "Dynamic": 23.491,
+        "Penetration": 0.0,
+        "PoseQ": 3.1287
+      },
+      "preview_cases": [
+        {
+          "sample_id": "014160",
+          "caption": "a person is waving with their right hand.",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_014160_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_014160_smpl_mesh.json"
+        },
+        {
+          "sample_id": "003424",
+          "caption": "a person hops in place twice.",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_003424_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_003424_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004822",
+          "caption": "person walking at an average pace forward, swaying arms and torso with a sense of swagger.",
+          "gif": "assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionclr/motionclr_humanml3d_004822_smpl_mesh.json"
+        }
+      ]
+    },
+    "motionmillion": {
+      "method": "MotionMillion",
+      "tasks": [
+        "Text-to-Motion"
+      ],
+      "motion_representation": "MotionStreamer-272",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-MotionMillion-7B-HumanML272",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "7B train-only",
+          "samples": 3970,
+          "R1": 0.5232,
+          "R2": 0.7206,
+          "R3": 0.8174,
+          "FID": 0.0649,
+          "MM-Dist": 2.8972,
+          "Diversity": 9.3944
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "7B train-only",
+          "samples": 4042,
+          "R1": 0.7403,
+          "R2": 0.8777,
+          "R3": 0.9236,
+          "FID": 3.0807,
+          "MM-Dist": 15.3706,
+          "Diversity": 27.5748,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "7B train-only",
+          "samples": 4034,
+          "R1": 0.6277,
+          "R2": 0.7904,
+          "R3": 0.8579,
+          "FID": 0.0183279,
+          "MM-Dist": 29.9675,
+          "Diversity": 53.4788,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "3B train-only",
+          "samples": 3970,
+          "R1": 0.5282,
+          "R2": 0.7234,
+          "R3": 0.8178,
+          "FID": 0.071,
+          "MM-Dist": 2.8816,
+          "Diversity": 9.3789
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "3B train-only",
+          "samples": 4042,
+          "R1": 0.7401,
+          "R2": 0.8772,
+          "R3": 0.9229,
+          "FID": 3.0658,
+          "MM-Dist": 15.3806,
+          "Diversity": 27.5604,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "3B train-only",
+          "samples": 4034,
+          "R1": 0.6228,
+          "R2": 0.786,
+          "R3": 0.8569,
+          "FID": 0.0185033,
+          "MM-Dist": 29.9661,
+          "Diversity": 54.6241,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionmillion/motionmillion_7b_train_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motionstreamer": {
+      "method": "MotionStreamer",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Sequential Text-to-Motion"
+      ],
+      "motion_representation": "MotionStreamer-272",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-MotionStreamer-HumanML272",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 3970,
+          "R1": 0.4085,
+          "R2": 0.588,
+          "R3": 0.6899,
+          "FID": 0.1688,
+          "MM-Dist": 3.6764,
+          "Diversity": 9.5792
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": 4042,
+          "R1": 0.6303,
+          "R2": 0.7865,
+          "R3": 0.8498,
+          "FID": 12.211,
+          "MM-Dist": 16.581,
+          "Diversity": 27.4637,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.44,
+          "R2": 0.5967,
+          "R3": 0.6811,
+          "FID": 0.0488461,
+          "MM-Dist": 35.6739,
+          "Diversity": 53.8,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionstreamer/motionstreamer_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "hymotion_t2m": {
+      "method": "HY-Motion T2M",
+      "tasks": [
+        "Text-to-Motion"
+      ],
+      "motion_representation": "HY-Motion-201 / G1-38",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-HYMotion-T2M-1.0-Lite",
+      "checkpoint_variants": {
+        "Full": "https://huggingface.co/ZeyuLing/Motius-HYMotion-T2M-1.0",
+        "Lite": "https://huggingface.co/ZeyuLing/Motius-HYMotion-T2M-1.0-Lite",
+        "G1": "https://huggingface.co/ZeyuLing/Motius-HYMotion-G1"
+      },
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Full",
+          "samples": 3970,
+          "R1": 0.561,
+          "R2": 0.761,
+          "R3": 0.853,
+          "FID": 0.103,
+          "MM-Dist": 2.532,
+          "Diversity": 10.031
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Full",
+          "samples": 4042,
+          "R1": 0.7899,
+          "R2": 0.9177,
+          "R3": 0.9516,
+          "FID": 13.5194,
+          "MM-Dist": 14.7748,
+          "Diversity": 27.6694,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Full",
+          "samples": 4034,
+          "R1": 0.7158,
+          "R2": 0.86,
+          "R3": 0.9122,
+          "FID": 0.0147197,
+          "MM-Dist": 27.1607,
+          "Diversity": 54.094,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Lite",
+          "samples": 3970,
+          "R1": 0.4881,
+          "R2": 0.6737,
+          "R3": 0.7718,
+          "FID": 0.0847,
+          "MM-Dist": 3.1795,
+          "Diversity": 9.5394
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Lite",
+          "samples": 4042,
+          "R1": 0.7877,
+          "R2": 0.91,
+          "R3": 0.9487,
+          "FID": 10.2711,
+          "MM-Dist": 14.8351,
+          "Diversity": 27.5298,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Lite",
+          "samples": 4034,
+          "R1": 0.7126,
+          "R2": 0.8607,
+          "R3": 0.9143,
+          "FID": 0.0156875,
+          "MM-Dist": 27.356,
+          "Diversity": 54.3186,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius TMR-G1",
+          "variant": "G1",
+          "samples": 1024,
+          "R1": 0.708642578125,
+          "R2": 0.83798828125,
+          "R3": 0.893505859375,
+          "FID": 0.0587378660855683,
+          "MM-Dist": 20.51283073425293,
+          "Diversity": 36.01064567565918,
+          "FID_space": "per-sample L2-normalized TMR-G1 embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "kimodo": {
+      "method": "KIMODO",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Sequential Text-to-Motion",
+        "Kinematic Motion Control"
+      ],
+      "motion_representation": "SOMA / G1 / SMPL-X",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-KIMODO-SMPLX-RP",
+      "checkpoint_variants": {
+        "SOMA-RP": "https://huggingface.co/ZeyuLing/Motius-KIMODO-SOMA-RP",
+        "G1-RP": "https://huggingface.co/ZeyuLing/Motius-KIMODO-G1-RP",
+        "G1-SEED": "https://huggingface.co/ZeyuLing/Motius-KIMODO-G1-SEED",
+        "SMPLX-RP": "https://huggingface.co/ZeyuLing/Motius-KIMODO-SMPLX-RP"
+      },
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "SMPL-X RP",
+          "samples": 3970,
+          "R1": 0.2923,
+          "R2": 0.4521,
+          "R3": 0.5584,
+          "FID": 1.5198,
+          "MM-Dist": 4.5731,
+          "Diversity": 8.875
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "SMPL-X RP",
+          "samples": 4042,
+          "R1": 0.3646,
+          "R2": 0.4998,
+          "R3": 0.5818,
+          "FID": 117.0279,
+          "MM-Dist": 21.4102,
+          "Diversity": 25.3629,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "SMPL-X RP",
+          "samples": 4034,
+          "R1": 0.3033,
+          "R2": 0.4638,
+          "R3": 0.557,
+          "FID": 0.4880503,
+          "MM-Dist": 47.8189,
+          "Diversity": 54.4397,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/kimodo/kimodo_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/kimodo/kimodo_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/kimodo/kimodo_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/kimodo/kimodo_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/kimodo/kimodo_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/kimodo/kimodo_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "mld": {
+      "method": "MLD",
+      "tasks": [
+        "Text-to-Motion"
+      ],
+      "motion_representation": "HumanML3D-263",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-MLD-HumanML3D",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 4042,
+          "R1": 0.518,
+          "R2": 0.716,
+          "R3": 0.816,
+          "FID": 0.297,
+          "MM-Dist": 2.95,
+          "Diversity": 9.628
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": null,
+          "R1": null,
+          "R2": null,
+          "R3": null,
+          "FID": null,
+          "MM-Dist": null,
+          "Diversity": null,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "not_measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.5169,
+          "R2": 0.685,
+          "R3": 0.7701,
+          "FID": 0.1399352,
+          "MM-Dist": 36.3447,
+          "Diversity": 57.3461,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/mld/mld_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mld/mld_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "M013344",
+          "caption": "in a fighting stance, person punches downward with their right hand.",
+          "gif": "assets/model_zoo/mld/mld_humanml3d_M013344_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mld/mld_humanml3d_M013344_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/mld/mld_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/mld/mld_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "motionlcm": {
+      "method": "MotionLCM",
+      "tasks": [
+        "Text-to-Motion"
+      ],
+      "motion_representation": "HumanML3D-263",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-MotionLCM-HumanML3D",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 4042,
+          "R1": 0.509,
+          "R2": 0.708,
+          "R3": 0.811,
+          "FID": 0.34,
+          "MM-Dist": 2.969,
+          "Diversity": 9.641
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": null,
+          "R1": null,
+          "R2": null,
+          "R3": null,
+          "FID": null,
+          "MM-Dist": null,
+          "Diversity": null,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "not_measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.5156,
+          "R2": 0.6915,
+          "R3": 0.7736,
+          "FID": 0.1537448,
+          "MM-Dist": 36.5871,
+          "Diversity": 56.946,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/motionlcm/motionlcm_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionlcm/motionlcm_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/motionlcm/motionlcm_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionlcm/motionlcm_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/motionlcm/motionlcm_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/motionlcm/motionlcm_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "vimogen": {
+      "method": "ViMoGen",
+      "tasks": [
+        "Text-to-Motion"
+      ],
+      "motion_representation": "DART276",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-ViMoGen-1.3B-HumanML3D",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "1.3B prompt-rewrite",
+          "samples": 3970,
+          "R1": 0.2832,
+          "R2": 0.4383,
+          "R3": 0.5471,
+          "FID": 8.3707,
+          "MM-Dist": 4.8935,
+          "Diversity": 6.7088
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "1.3B prompt-rewrite",
+          "samples": 4042,
+          "R1": 0.4291,
+          "R2": 0.5687,
+          "R3": 0.6518,
+          "FID": 152.2095,
+          "MM-Dist": 21.0737,
+          "Diversity": 24.1803,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "1.3B prompt-rewrite",
+          "samples": 4034,
+          "R1": 0.3041,
+          "R2": 0.433,
+          "R3": 0.5198,
+          "FID": 0.4910777,
+          "MM-Dist": 47.0574,
+          "Diversity": 55.6162,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/vimogen/vimogen_1_3b_prompt_rewrite_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "dart": {
+      "method": "DART",
+      "tasks": [
+        "Text-to-Motion"
+      ],
+      "motion_representation": "DART276",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-dart-humanml3d",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 3970,
+          "R1": 0.4007,
+          "R2": 0.5916,
+          "R3": 0.7001,
+          "FID": 1.8464,
+          "MM-Dist": 3.7089,
+          "Diversity": 9.8674
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": 4042,
+          "R1": 0.5476,
+          "R2": 0.7245,
+          "R3": 0.7937,
+          "FID": 127.8302,
+          "MM-Dist": 18.5312,
+          "Diversity": 26.2611,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.4249,
+          "R2": 0.6064,
+          "R3": 0.7019,
+          "FID": 0.2029241,
+          "MM-Dist": 38.7637,
+          "Diversity": 56.9485,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/dart/dart_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/dart/dart_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/dart/dart_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/dart/dart_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/dart/dart_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/dart/dart_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "condmdi": {
+      "method": "CondMDI",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Kinematic Motion Control",
+        "Part-Level Motion Control"
+      ],
+      "motion_representation": "HumanML3D-263 (absolute-root native)",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-condmdi-humanml3d",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "Default",
+          "samples": 3970,
+          "R1": 0.4488,
+          "R2": 0.6416,
+          "R3": 0.7492,
+          "FID": 0.2945,
+          "MM-Dist": 3.2183,
+          "Diversity": 9.7953
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "Default",
+          "samples": 4032,
+          "R1": 0.4526,
+          "R2": 0.6111,
+          "R3": 0.7016,
+          "FID": 121.8374,
+          "MM-Dist": 19.9702,
+          "Diversity": 25.4639,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "Default",
+          "samples": 4034,
+          "R1": 0.4296,
+          "R2": 0.6039,
+          "R3": 0.7024,
+          "FID": 0.1919,
+          "MM-Dist": 39.1271,
+          "Diversity": 55.7954,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "physical_metrics": {
+        "samples": 4042,
+        "Slide": 4.2218,
+        "Float": 18.6892,
+        "Jitter": 6.9367,
+        "Dynamic": 21.5089,
+        "Penetration": 0.0,
+        "PoseQ": 1.8304
+      },
+      "preview_cases": [
+        {
+          "sample_id": "014457",
+          "caption": "the person swings a golf club.",
+          "gif": "assets/model_zoo/condmdi/condmdi_humanml3d_014457_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/condmdi/condmdi_humanml3d_014457_smpl_mesh.json"
+        },
+        {
+          "sample_id": "001840",
+          "caption": "hands in fighting position while the left foot kicks aggressively up and over.",
+          "gif": "assets/model_zoo/condmdi/condmdi_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/condmdi/condmdi_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "the person who does arms straight out and then it's doing something with their right hand in front of their face.",
+          "gif": "assets/model_zoo/condmdi/condmdi_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/condmdi/condmdi_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "prism_1_0": {
+      "method": "PRISM 1.0",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Sequential Text-to-Motion"
+      ],
+      "motion_representation": "PRISM Motion-138",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-prism-1.0-humanml3d",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "PRISM 1.0",
+          "samples": 3970,
+          "R1": 0.556,
+          "R2": 0.7465,
+          "R3": 0.8366,
+          "FID": 0.1992,
+          "MM-Dist": 2.8057,
+          "Diversity": 9.6033
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "PRISM 1.0",
+          "samples": 4042,
+          "R1": 0.7463,
+          "R2": 0.8832,
+          "R3": 0.9241,
+          "FID": 19.0359,
+          "MM-Dist": 15.5135,
+          "Diversity": 27.4151,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "PRISM 1.0",
+          "samples": 4034,
+          "R1": 0.6483,
+          "R2": 0.8065,
+          "R3": 0.8725,
+          "FID": 0.080415,
+          "MM-Dist": 30.9335,
+          "Diversity": 57.4521,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "physical_metrics": {
+        "samples": 4042,
+        "Slide": 3.6746,
+        "Float": 7.8379,
+        "Jitter": 6.1307,
+        "Dynamic": 27.7158,
+        "PoseQ": 1.6854
+      },
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_1_0/prism_1_0_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "prism_kt": {
+      "method": "PRISM-KT",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Sequential Text-to-Motion"
+      ],
+      "motion_representation": "PRISM Motion-138",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-prism-kt-humanml3d",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "KT-RoPE + KAFS",
+          "samples": 3970,
+          "R1": 0.5448,
+          "R2": 0.7308,
+          "R3": 0.8176,
+          "FID": 0.2081,
+          "MM-Dist": 2.9067,
+          "Diversity": 9.4802
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "KT-RoPE + KAFS",
+          "samples": 4042,
+          "R1": 0.8003,
+          "R2": 0.9137,
+          "R3": 0.9477,
+          "FID": 11.8101,
+          "MM-Dist": 14.5998,
+          "Diversity": 27.3849,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "KT-RoPE + KAFS",
+          "samples": 4034,
+          "R1": 0.7197,
+          "R2": 0.8669,
+          "R3": 0.9192,
+          "FID": 0.0162,
+          "MM-Dist": 27.0247,
+          "Diversity": 53.8865,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "physical_metrics": {
+        "samples": 4042,
+        "Slide": 3.4524,
+        "Float": 7.7084,
+        "Jitter": 6.4377,
+        "Dynamic": 27.6258,
+        "PoseQ": 1.6807
+      },
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/prism_kt/prism_kt_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_kt/prism_kt_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "004545",
+          "caption": "a person jumping while raising both hands and moving apart legs.",
+          "gif": "assets/model_zoo/prism_kt/prism_kt_humanml3d_004545_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_kt/prism_kt_humanml3d_004545_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/prism_kt/prism_kt_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/prism_kt/prism_kt_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "maskcontrol": {
+      "method": "MaskControl",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Kinematic Motion Control"
+      ],
+      "motion_representation": "HumanML3D-263",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-maskcontrol-humanml3d",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "selected caption",
+          "samples": 3970,
+          "R1": 0.5381,
+          "R2": 0.7349,
+          "R3": 0.8271,
+          "FID": 0.1303,
+          "MM-Dist": 2.8631,
+          "Diversity": 9.6476
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "neutral-SMPL bridge, refk FID",
+          "samples": 4000,
+          "R1": 0.6352,
+          "R2": 0.7863,
+          "R3": 0.8475,
+          "FID": 107.8315,
+          "MM-Dist": 18.3837,
+          "Diversity": 25.5946,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "neutral-SMPL bridge, normalized FID",
+          "samples": 4034,
+          "R1": 0.3732639,
+          "R2": 0.562252,
+          "R3": 0.6614583,
+          "FID": 0.5456939,
+          "MM-Dist": 44.1736979,
+          "Diversity": 50.2912254,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "physical_metrics": {
+        "samples": 4042,
+        "Slide": 3.4631,
+        "Float": 8.6615,
+        "Jitter": 5.2908,
+        "Dynamic": 22.4043,
+        "Penetration": 0.0
+      },
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "caption": "someone executes a roundhouse kick with their left foot.",
+          "gif": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_001840_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_001840_smpl_mesh.json"
+        },
+        {
+          "sample_id": "014457",
+          "caption": "the person swings a golf club.",
+          "gif": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_014457_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_014457_smpl_mesh.json"
+        },
+        {
+          "sample_id": "006944",
+          "caption": "a person moves their right hand left, right, up, and down.",
+          "gif": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_006944_smpl_mesh_512_30fps.gif",
+          "metadata": "assets/model_zoo/maskcontrol/maskcontrol_humanml3d_006944_smpl_mesh.json"
+        }
+      ]
+    },
+    "intergen": {
+      "method": "InterGen",
+      "tasks": [
+        "Text-to-Multi-Person Motion"
+      ],
+      "motion_representation": "paired InterHuman-262",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-intergen-interhuman",
+      "metric_source": "official InterGen paper, InterCLIP protocol",
+      "metrics": [
+        {
+          "evaluator": "InterCLIP",
+          "variant": "Official reported",
+          "R1": 0.371,
+          "R2": 0.515,
+          "R3": 0.624,
+          "FID": 5.918,
+          "MM-Dist": 5.108,
+          "Diversity": 7.387,
+          "Multimodality": 2.141
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "handshake",
+          "caption": "two people shake hands and then step apart",
+          "gif": "assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair_512_30fps.gif",
+          "metadata": "assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair.json"
+        },
+        {
+          "sample_id": "help_stand",
+          "caption": "one person helps another person stand up",
+          "gif": "assets/model_zoo/intergen/intergen_interhuman_help_stand_smpl_pair_512_30fps.gif",
+          "metadata": "assets/model_zoo/intergen/intergen_interhuman_help_stand_smpl_pair.json"
+        }
+      ]
+    },
+    "intermask": {
+      "method": "InterMask",
+      "tasks": [
+        "Text-to-Multi-Person Motion"
+      ],
+      "motion_representation": "paired InterHuman-262",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-intermask-interhuman",
+      "metric_source": "official InterMask paper, InterCLIP protocol",
+      "metrics": [
+        {
+          "evaluator": "InterCLIP",
+          "variant": "Official reported",
+          "R1": 0.449,
+          "R2": 0.599,
+          "R3": 0.683,
+          "FID": 5.154,
+          "MM-Dist": 3.79,
+          "Diversity": 7.944,
+          "Multimodality": 1.737
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "hug",
+          "caption": "two people hug each other and then step back",
+          "gif": "assets/model_zoo/intermask/intermask_interhuman_hug_smpl_pair_512_30fps.gif",
+          "metadata": "assets/model_zoo/intermask/intermask_interhuman_hug_smpl_pair.json"
+        },
+        {
+          "sample_id": "gentle_push",
+          "caption": "one person gently pushes the other person backward",
+          "gif": "assets/model_zoo/intermask/intermask_interhuman_gentle_push_smpl_pair_512_30fps.gif",
+          "metadata": "assets/model_zoo/intermask/intermask_interhuman_gentle_push_smpl_pair.json"
+        }
+      ]
+    },
+    "tm2d": {
+      "method": "TM2D",
+      "tasks": [
+        "Text-to-Motion",
+        "Music-to-Dance"
+      ],
+      "motion_representation": "TM2D-287, 24 joints at 60 fps",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-TM2D-HumanML3D-AISTPP",
+      "upstream_checkpoint": "Garfield-kh/TM2D@98bef9571419b6459927630d5d96f8450898687e, E0190 VQ-VAE and E0020 joint Transformer",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "selected caption",
+          "samples": 3970,
+          "R1": 0.1817,
+          "R2": 0.3004,
+          "R3": 0.3944,
+          "FID": 2.5038,
+          "MM-Dist": 5.1678,
+          "Diversity": 8.6228
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "selected caption, position-IK bridge",
+          "samples": 4032,
+          "R1": 0.1324,
+          "R2": 0.2073,
+          "R3": 0.2674,
+          "FID": 548.5562,
+          "MM-Dist": 25.3085,
+          "Diversity": 12.2421,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "selected caption, normalized embedding FID",
+          "samples": 4032,
+          "R1": 0.2163,
+          "R2": 0.3529,
+          "R3": 0.4427,
+          "FID": 0.6703,
+          "MM-Dist": 49.0229,
+          "Diversity": 46.6538,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "AIST++ Music-to-Dance",
+          "variant": "reference-free VQ seed, 40-case protocol",
+          "samples": 40,
+          "FID_k": 43.4186,
+          "FID_g": 20.4244,
+          "FID_uTMR": 0.2623,
+          "Diversity_k": 3.7742,
+          "Diversity_g": 3.1335,
+          "BeatAlign": 0.1903
+        }
+      ],
+      "preview": "https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html",
+      "secondary_preview": "https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html",
+      "preview_cases": [
+        {
+          "sample_id": "001840",
+          "viewer": "https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html"
+        },
+        {
+          "sample_id": "gBR_sBM_cAll_d04_mBR0_ch01",
+          "viewer": "https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html"
+        }
+      ]
+    },
+    "unimumo": {
+      "method": "UniMuMo",
+      "tasks": [
+        "Text-to-Motion",
+        "Motion-to-Text",
+        "Music-to-Dance",
+        "Dance-to-Music"
+      ],
+      "motion_representation": "HumanML3D-263 at 60 fps; Encodec audio at 32 kHz",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-UniMuMo",
+      "upstream_checkpoint": "ClarenceY/unimumo@d0e4298a6b021aacb9c0616392b6abce80554ec8",
+      "metrics": [
+        {
+          "evaluator": "HumanML3D Official",
+          "variant": "selected captions, native FID space, chunk size 32",
+          "samples": 4000,
+          "R1": 0.102,
+          "R2": 0.174,
+          "R3": 0.24325,
+          "FID": 5.959406,
+          "MM-Dist": 6.651851,
+          "Diversity": 8.067502
+        },
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "variant": "MotionStreamer-272, native FID space, chunk size 32",
+          "samples": 4042,
+          "R1": 0.0655,
+          "R2": 0.1138,
+          "R3": 0.1617,
+          "FID": 373.2192,
+          "MM-Dist": 25.6637,
+          "Diversity": 18.8368,
+          "FID_space": "MotionStreamer evaluator embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "SMPL-22 joints66, normalized FID, chunk size 32",
+          "samples": 4034,
+          "R1": 0.0704,
+          "R2": 0.1471,
+          "R3": 0.2093,
+          "FID": 0.6788,
+          "MM-Dist": 54.0101,
+          "Diversity": 46.7609,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Physical",
+          "variant": "SMPL-22 joints66, table-scaled",
+          "samples": 4042,
+          "Slide": 21.737724,
+          "Float": 58.76685,
+          "Jitter": 11.878,
+          "Dynamic": 54.355233,
+          "Penetration": 0.0
+        },
+        {
+          "evaluator": "HumanML3D Motion-to-Text",
+          "variant": "TM2T token references, semantic chunk size 32",
+          "samples": 4400,
+          "Bleu_1": 0.353411,
+          "Bleu_4": 0.04573,
+          "ROUGE_L": 0.282152,
+          "CIDEr": 0.063526,
+          "Bert_F1_raw": 0.900567,
+          "R1": 0.516195,
+          "R2": 0.703239,
+          "R3": 0.798358,
+          "MM-Dist": 2.965752
+        },
+        {
+          "evaluator": "AIST++ Music-to-Dance",
+          "variant": "40-case full-timeline protocol",
+          "samples": 40,
+          "FID_k": 17.724976,
+          "FID_g": 38.644595,
+          "FID_uTMR": 0.282349,
+          "Diversity_k": 8.876717,
+          "Diversity_g": 8.465734,
+          "BeatAlign": 0.242954
+        },
+        {
+          "evaluator": "AIST++ Dance-to-Music",
+          "variant": "Motius common 40 cases, up to 10 seconds",
+          "samples": 40,
+          "Beats_Coverage": 1.003378,
+          "Beats_Hit": 0.380068
+        }
+      ],
+      "preview": "https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html",
+      "t2m_preview": "https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html",
+      "secondary_preview": "https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html",
+      "preview_cases": [
+        {
+          "sample_id": "000000",
+          "viewer": "https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html"
+        },
+        {
+          "sample_id": "gBR_sBM_cAll_d04_mBR0_ch01",
+          "viewer": "https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html"
+        }
+      ]
+    },
+    "gem_smpl": {
+      "method": "GEM-SMPL",
+      "tasks": [
+        "Monocular Motion Capture"
+      ],
+      "motion_representation": "SMPL-24",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-GEM-SMPL",
+      "checkpoint_sha256": "1d15cbe2864d6de61a75e83fdbfe83bec3c7b183eee3d3dcdbd9107e4456454a",
+      "metrics": [
+        {
+          "evaluator": "Monocular Motion Capture · 3DPW Test",
+          "protocol": "3dpw_test_camera_v1",
+          "tracks": 37,
+          "samples": 35515,
+          "coverage": 1.0,
+          "MPJPE": 64.456562,
+          "PA-MPJPE": 46.447005,
+          "Accel": 5.712936
+        }
+      ],
+      "preview_cases": [
+        "assets/model_zoo/gem_smpl/gem_smpl_tennis_world.mp4"
+      ]
+    },
+    "gem_x": {
+      "method": "GEM-X",
+      "tasks": [
+        "Monocular Motion Capture"
+      ],
+      "motion_representation": "SOMA-77",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-GEM-X",
+      "checkpoint_sha256": "4c1f85ca8c1e11e6588aead49fbc024bf660708def670043e0b537c101ee298e",
+      "metrics": [
+        {
+          "evaluator": "Monocular Motion Capture · 3DPW Test",
+          "protocol": "3dpw_test_camera_v1-common_hmr15_named_v1",
+          "tracks": 37,
+          "samples": 35515,
+          "coverage": 1.0,
+          "MPJPE": 84.380564,
+          "PA-MPJPE": 53.197379,
+          "Accel": 5.615876
+        }
+      ],
+      "preview_cases": [
+        "assets/model_zoo/gem_x/gem_x_tennis_world.mp4"
+      ]
+    },
+    "gvhmr": {
+      "method": "GVHMR",
+      "tasks": [
+        "Monocular Motion Capture"
+      ],
+      "motion_representation": "SMPL-24",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-GVHMR",
+      "checkpoint_sha256": "4fae7da2de388d5da3514cb27a2d003f364dacb280e9cf88972b710e589c6b91",
+      "metrics": [
+        {
+          "evaluator": "Monocular Motion Capture · 3DPW Test",
+          "protocol": "3dpw_test_camera_v1",
+          "tracks": 37,
+          "samples": 35515,
+          "coverage": 1.0,
+          "MPJPE": 62.64664,
+          "PA-MPJPE": 47.65936,
+          "Accel": 5.47212
+        }
+      ],
+      "preview_cases": [
+        "assets/model_zoo/gvhmr/case_01_global.mp4",
+        "assets/model_zoo/gvhmr/case_02_global.mp4",
+        "assets/model_zoo/gvhmr/case_03_global.mp4"
+      ]
+    },
+    "motioncanvas": {
+      "method": "MotionCanvas",
+      "tasks": [
+        "Text-to-Motion",
+        "Temporal Motion Completion",
+        "Kinematic Motion Control",
+        "Motion Editing",
+        "Motion Repair"
+      ],
+      "motion_representation": "MotionCanvas-198 (SMPL-22 local rotation-6D + joints)",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-MotionCanvas-0.46B",
+      "checkpoint_revision": "d0b5920fc0895a4cd8a05a1ace48015c37dab625",
+      "release_checkpoint": "epoch 2354",
+      "metrics": [
+        {
+          "evaluator": "MotionStreamer Evaluator",
+          "protocol": "humanml3d_selected_caption_fixed_360f_v1",
+          "variant": "Text-to-Motion",
+          "samples": 4042,
+          "R1": 0.7902,
+          "R2": 0.9139,
+          "R3": 0.9521,
+          "FID": 8.2765,
+          "MM-Dist": 14.763,
+          "Diversity": 27.6745,
+          "status": "measured",
+          "FID_space": "MotionStreamer evaluator embedding space"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "protocol": "humanml3d_selected_caption_fixed_360f_v1",
+          "variant": "Text-to-Motion",
+          "samples": 4034,
+          "R1": 0.7086,
+          "R2": 0.8562,
+          "R3": 0.9103,
+          "FID": 0.0107806,
+          "MM-Dist": 27.281,
+          "Diversity": 54.1697,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "protocol": "brokenamass_pair_validated_299_v1",
+          "variant": "Motion Repair · oracle v6 support",
+          "samples": 4034,
+          "R1": 0.7086,
+          "R3": 0.9103,
+          "M2M": 0.981,
+          "MPJPE_cm": 1.6483,
+          "Accel_error": 2.426,
+          "Jitter": 12.6213,
+          "status": "measured",
+          "R2": 0.8562,
+          "FID": 0.0107806,
+          "MM-Dist": 27.281,
+          "Diversity": 54.1697,
+          "FID_space": "per-sample L2-normalized embedding space"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "protocol": "humanml3d_temporal_condition_official_test_v1",
+          "variant": "Adaptive keyframes + text",
+          "samples": 4034,
+          "R1": 0.7086,
+          "R2": 0.8562,
+          "R3": 0.9103,
+          "FID": 0.0107806,
+          "MM-Dist": 27.281,
+          "condition_cm": 0.0,
+          "foot_skating": 0.1184,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured",
+          "Diversity": 54.1697
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "protocol": "humanml3d_temporal_condition_official_test_v1",
+          "variant": "First + last 10% + text",
+          "samples": 4034,
+          "R1": 0.7086,
+          "R2": 0.8562,
+          "R3": 0.9103,
+          "FID": 0.0107806,
+          "MM-Dist": 27.281,
+          "condition_cm": 0.0,
+          "foot_skating": 0.11,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured",
+          "Diversity": 54.1697
+        }
+      ],
+      "preview_cases": [
+        {
+          "sample_id": "temporal-completion",
+          "caption": "Complete a natural walk through sparse foot and facing keyframes.",
+          "gif": "assets/model_zoo/motioncanvas/keyframe_control_512_30fps.gif",
+          "metadata": "assets/model_zoo/motioncanvas/keyframe_control_512_30fps.json"
+        },
+        {
+          "sample_id": "kinematic-control",
+          "caption": "Follow a prescribed root path and pelvis-height profile.",
+          "gif": "assets/model_zoo/motioncanvas/trajectory_control_512_30fps.gif",
+          "metadata": "assets/model_zoo/motioncanvas/trajectory_control_512_30fps.json"
+        },
+        {
+          "sample_id": "motion-editing",
+          "caption": "Wave with the right hand while preserving the lower-body motion.",
+          "gif": "assets/model_zoo/motioncanvas/instruction_editing_512_30fps.gif",
+          "metadata": "assets/model_zoo/motioncanvas/instruction_editing_512_30fps.json"
+        }
+      ]
+    },
+    "prompthmr_video": {
+      "method": "PromptHMR-Video",
+      "release_status": "restricted_upstream_runtime",
+      "tasks": [
+        "Monocular Motion Capture"
+      ],
+      "motion_representation": "SMPL-X",
+      "checkpoint": "https://github.com/yufu-wang/PromptHMR#installation",
+      "checkpoint_sha256": "2a36132715b5db0ea2acb6f1f92bbf963c9cf0fb1c3aea8d0f73dfede0b9e5e5",
+      "metrics": [
+        {
+          "evaluator": "Monocular Motion Capture · 3DPW Test",
+          "protocol": "3dpw_test_camera_v1-official_full_frame_multitrack",
+          "tracks": 37,
+          "samples": 35130,
+          "coverage": 0.98915951,
+          "MPJPE": 64.495715,
+          "PA-MPJPE": 46.174819,
+          "Accel": 4.800935,
+          "ranking_eligible": false
+        }
+      ],
+      "preview_cases": []
+    },
+    "projflow": {
+      "method": "ProjFlow",
+      "tasks": [
+        "Temporal Motion Completion",
+        "Kinematic Motion Control",
+        "Part-Level Motion Control"
+      ],
+      "motion_representation": "HumanML3D SMPL-22 joint positions",
+      "checkpoint": "https://huggingface.co/ZeyuLing/motius-projflow-humanml3d",
+      "checkpoint_revision": "afbe3a0db1b50dd6c23ed8ea5ebe2ecaf9d20f16",
+      "checkpoint_sha256": "625d56ab751b1581a94cdbca30e359532b0cfd965df43bb38e9e76be2c65124c",
+      "metrics": [
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "temporal_start_1f",
+          "samples": 4012,
+          "R1": 0.5856875,
+          "R2": 0.749325,
+          "R3": 0.8226875,
+          "FID": 0.02387329596622002,
+          "MM-Dist": 30.98370361328125,
+          "Diversity": 54.53442783355713,
+          "Constraint-Error-cm": 1.3281124419782455,
+          "Foot-Skating": 0.12276323981722138,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "temporal_pre20",
+          "samples": 4012,
+          "R1": 0.6307625,
+          "R2": 0.7909875,
+          "R3": 0.8600375,
+          "FID": 0.012509498864078927,
+          "MM-Dist": 29.435155868530273,
+          "Diversity": 53.97195129394531,
+          "Constraint-Error-cm": 2.0005572637022695,
+          "Foot-Skating": 0.11158563565583664,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "temporal_pre20_uncond",
+          "samples": 4012,
+          "R1": 0.279475,
+          "R2": 0.4077625,
+          "R3": 0.4860625,
+          "FID": 0.2198830253342238,
+          "MM-Dist": 43.142555236816406,
+          "Diversity": 49.92309131622314,
+          "Constraint-Error-cm": 1.9977672849824686,
+          "Foot-Skating": 0.058106531651859424,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "temporal_both_1f",
+          "samples": 4012,
+          "R1": 0.6112375,
+          "R2": 0.7725125,
+          "R3": 0.8447875,
+          "FID": 0.019104935840385563,
+          "MM-Dist": 30.121807098388672,
+          "Diversity": 54.127499961853026,
+          "Constraint-Error-cm": 8.038689057432777,
+          "Foot-Skating": 0.1380429045110339,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "temporal_mid80",
+          "samples": 4012,
+          "R1": 0.65175,
+          "R2": 0.8095,
+          "R3": 0.8752,
+          "FID": 0.00929878028830724,
+          "MM-Dist": 28.84429359436035,
+          "Diversity": 53.74297122955322,
+          "Constraint-Error-cm": 7.573240141428757,
+          "Foot-Skating": 0.1233410961057776,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "temporal_mid80_uncond",
+          "samples": 4012,
+          "R1": 0.3595125,
+          "R2": 0.494175,
+          "R3": 0.575575,
+          "FID": 0.17627203593109397,
+          "MM-Dist": 39.862945556640625,
+          "Diversity": 51.952925491333005,
+          "Constraint-Error-cm": 7.020981730645741,
+          "Foot-Skating": 0.08027359287720516,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "temporal_adaptive_keyframes",
+          "samples": 4012,
+          "R1": 0.67875,
+          "R2": 0.8377375,
+          "R3": 0.899325,
+          "FID": 0.00747830405164549,
+          "MM-Dist": 28.431156158447266,
+          "Diversity": 53.93269634246826,
+          "Constraint-Error-cm": 7.01983297995365,
+          "Foot-Skating": 0.16851202798995943,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        },
+        {
+          "evaluator": "Motius Joint-Position Evaluator",
+          "variant": "temporal_adaptive_keyframes_uncond",
+          "samples": 4012,
+          "R1": 0.5916125,
+          "R2": 0.765225,
+          "R3": 0.842825,
+          "FID": 0.02799639380418868,
+          "MM-Dist": 31.081802368164062,
+          "Diversity": 52.913767433166505,
+          "Constraint-Error-cm": 7.231188738629954,
+          "Foot-Skating": 0.16502986276982823,
+          "FID_space": "per-sample L2-normalized embedding space",
+          "status": "measured"
+        }
+      ],
+      "preview_cases": [
+        {
+          "task": "temporal_motion_completion",
+          "caption": "person walking at an average pace forward, swaying arms and torso with a sense of swagger",
+          "gif": "assets/model_zoo/projflow/projflow_temporal_motion_completion_512_20fps.gif",
+          "metadata": "assets/model_zoo/projflow/projflow_temporal_motion_completion_512_20fps.json"
+        },
+        {
+          "task": "kinematic_motion_control",
+          "caption": "person walking at an average pace forward, swaying arms and torso with a sense of swagger",
+          "gif": "assets/model_zoo/projflow/projflow_kinematic_motion_control_512_20fps.gif",
+          "metadata": "assets/model_zoo/projflow/projflow_kinematic_motion_control_512_20fps.json"
+        },
+        {
+          "task": "part_level_motion_control",
+          "caption": "person walking at an average pace forward, swaying arms and torso with a sense of swagger",
+          "gif": "assets/model_zoo/projflow/projflow_part_level_motion_control_512_20fps.gif",
+          "metadata": "assets/model_zoo/projflow/projflow_part_level_motion_control_512_20fps.json"
+        }
+      ]
+    }
+  },
+  "metric_policy": {
+    "canonical_t2m_source": "../leaderboards/hf_space_t2m_humanml3d/t2m_results.json",
+    "motius_fid_field": "utmrFIDNorm",
+    "motius_fid_space": "per-sample L2-normalized embedding space",
+    "raw_fid_policy": "not published in Model Cards"
+  }
+}

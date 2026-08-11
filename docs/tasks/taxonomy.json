@@ -1,0 +1,277 @@
+{
+  "schema_version": 2,
+  "tasks": [
+    {
+      "id": "text_to_motion",
+      "label": "Text-to-Motion",
+      "aliases": [
+        "T2M"
+      ],
+      "model_zoo_target": "../leaderboards/README.md#text-to-motion"
+    },
+    {
+      "id": "motion_to_text",
+      "label": "Motion-to-Text",
+      "aliases": [
+        "M2T"
+      ],
+      "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard"
+    },
+    {
+      "id": "sequential_text_to_motion",
+      "label": "Sequential Text-to-Motion",
+      "aliases": [],
+      "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard"
+    },
+    {
+      "id": "text_to_multi_person_motion",
+      "label": "Text-to-Multi-Person Motion",
+      "aliases": [],
+      "model_zoo_target": "../leaderboards/text_to_multi_person_interhuman.md"
+    },
+    {
+      "id": "temporal_motion_completion",
+      "label": "Temporal Motion Completion",
+      "aliases": [
+        "TP2M"
+      ],
+      "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard"
+    },
+    {
+      "id": "kinematic_motion_control",
+      "label": "Kinematic Motion Control",
+      "aliases": [],
+      "model_zoo_target": "../leaderboards/kinematic_motion_control.md"
+    },
+    {
+      "id": "part_level_motion_control",
+      "label": "Part-Level Motion Control",
+      "aliases": [],
+      "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard"
+    },
+    {
+      "id": "motion_editing",
+      "label": "Motion Editing",
+      "aliases": [],
+      "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard"
+    },
+    {
+      "id": "motion_repair",
+      "label": "Motion Repair",
+      "aliases": [],
+      "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/motion-repair-brokenamass-leaderboard"
+    },
+    {
+      "id": "motion_reconstruction",
+      "label": "Motion Reconstruction",
+      "aliases": [],
+      "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/motion-reconstruction-humanml3d-leaderboard"
+    },
+    {
+      "id": "music_to_dance",
+      "label": "Music-to-Dance",
+      "aliases": [
+        "M2D"
+      ],
+      "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard"
+    },
+    {
+      "id": "dance_to_music",
+      "label": "Dance-to-Music",
+      "aliases": [
+        "D2M"
+      ],
+      "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard"
+    },
+    {
+      "id": "speech_to_gesture",
+      "label": "Speech-to-Gesture",
+      "aliases": [
+        "S2G"
+      ],
+      "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard"
+    },
+    {
+      "id": "monocular_motion_capture",
+      "label": "Monocular Motion Capture",
+      "aliases": [],
+      "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/monocular-motion-capture-leaderboard"
+    },
+    {
+      "id": "motion_tracking",
+      "label": "Motion Tracking",
+      "aliases": [],
+      "model_zoo_target": "https://huggingface.co/spaces/ZeyuLing/motion-tracking-mujoco-leaderboard"
+    }
+  ],
+  "benchmarks": [
+    {
+      "id": "text_to_motion_humanml3d",
+      "label": "Text-to-Motion · SMPL Skeleton",
+      "task": "text_to_motion",
+      "leaderboard": {
+        "id": "text_to_motion",
+        "label": "Text-to-Motion",
+        "target": "https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard"
+      },
+      "setting": {
+        "id": "smpl_skeleton",
+        "label": "SMPL Skeleton",
+        "detail": "HumanML3D"
+      },
+      "protocol_id": "humanml3d-selected-caption-v1",
+      "artifact_root": "outputs/evaluation/text_to_motion/text_to_motion_humanml3d/humanml3d-selected-caption-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard"
+    },
+    {
+      "id": "text_to_motion_unitree_g1",
+      "label": "Text-to-Motion · Unitree G1 Skeleton",
+      "task": "text_to_motion",
+      "leaderboard": {
+        "id": "text_to_motion",
+        "label": "Text-to-Motion",
+        "target": "https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard"
+      },
+      "setting": {
+        "id": "unitree_g1_skeleton",
+        "label": "Unitree G1 Skeleton",
+        "detail": "Native G1"
+      },
+      "protocol_id": "unitree-g1-paper-eval-1024-v1",
+      "artifact_root": "outputs/evaluation/text_to_motion/text_to_motion_unitree_g1/unitree-g1-paper-eval-1024-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/t2m-unitree-g1-leaderboard"
+    },
+    {
+      "id": "motion_to_text_humanml3d",
+      "label": "Motion-to-Text · HumanML3D",
+      "task": "motion_to_text",
+      "protocol_id": "humanml3d-selected-caption-v1",
+      "artifact_root": "outputs/evaluation/motion_to_text/motion_to_text_humanml3d/humanml3d-selected-caption-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard"
+    },
+    {
+      "id": "sequential_text_to_motion_babel",
+      "label": "Sequential Text-to-Motion · BABEL",
+      "task": "sequential_text_to_motion",
+      "protocol_id": "babel-actiongroups-v3",
+      "artifact_root": "outputs/evaluation/sequential_text_to_motion/sequential_text_to_motion_babel/babel-actiongroups-v3",
+      "target": "https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard"
+    },
+    {
+      "id": "temporal_motion_completion_humanml3d",
+      "label": "Temporal Motion Completion · HumanML3D",
+      "task": "temporal_motion_completion",
+      "protocol_id": "humanml3d-temporal-v1",
+      "artifact_root": "outputs/evaluation/temporal_motion_completion/temporal_motion_completion_humanml3d/humanml3d-temporal-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard"
+    },
+    {
+      "id": "part_level_motion_control_humanml3d",
+      "label": "Part-Level Motion Control · HumanML3D",
+      "task": "part_level_motion_control",
+      "protocol_id": "humanml3d-body-part-v1",
+      "artifact_root": "outputs/evaluation/part_level_motion_control/part_level_motion_control_humanml3d/humanml3d-body-part-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard"
+    },
+    {
+      "id": "motion_editing_style_content",
+      "label": "Motion Editing · Style and Content",
+      "task": "motion_editing",
+      "protocol_id": "style-content-v1",
+      "artifact_root": "outputs/evaluation/motion_editing/motion_editing_style_content/style-content-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard"
+    },
+    {
+      "id": "motion_editing_motionfix",
+      "label": "Motion Editing · MotionFix Instructions",
+      "task": "motion_editing",
+      "protocol_id": "motionfix-test-v1",
+      "artifact_root": "outputs/evaluation/motion_editing/motion_editing_motionfix/motionfix-test-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/instruction-editing-leaderboard"
+    },
+    {
+      "id": "motion_repair_brokenamass",
+      "label": "Motion Repair · BrokenAMASS",
+      "task": "motion_repair",
+      "protocol_id": "brokenamass-pair-validated-v1",
+      "artifact_root": "outputs/evaluation/motion_repair/motion_repair_brokenamass/brokenamass-pair-validated-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/motion-repair-brokenamass-leaderboard"
+    },
+    {
+      "id": "motion_reconstruction_humanml3d",
+      "label": "Motion Reconstruction · HumanML3D",
+      "task": "motion_reconstruction",
+      "protocol_id": "humanml3d-reconstruction-v1",
+      "artifact_root": "outputs/evaluation/motion_reconstruction/motion_reconstruction_humanml3d/humanml3d-reconstruction-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/motion-reconstruction-humanml3d-leaderboard"
+    },
+    {
+      "id": "music_to_dance_aistpp",
+      "label": "Music-to-Dance · AIST++",
+      "task": "music_to_dance",
+      "protocol_id": "aistpp-test-v1",
+      "artifact_root": "outputs/evaluation/music_to_dance/music_to_dance_aistpp/aistpp-test-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard"
+    },
+    {
+      "id": "dance_to_music_aistpp",
+      "label": "Dance-to-Music · AIST++",
+      "task": "dance_to_music",
+      "protocol_id": "aistpp-test-v1",
+      "artifact_root": "outputs/evaluation/dance_to_music/dance_to_music_aistpp/aistpp-test-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard"
+    },
+    {
+      "id": "speech_to_gesture_beat2",
+      "label": "Speech-to-Gesture · BEAT2",
+      "task": "speech_to_gesture",
+      "protocol_id": "beat2-test-v1",
+      "artifact_root": "outputs/evaluation/speech_to_gesture/speech_to_gesture_beat2/beat2-test-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/speech-to-gesture-beat2-leaderboard"
+    },
+    {
+      "id": "monocular_motion_capture_3dpw_test",
+      "label": "Monocular Motion Capture · 3DPW Test",
+      "task": "monocular_motion_capture",
+      "protocol_id": "3dpw_test_camera_v1",
+      "artifact_root": "outputs/evaluation/monocular_motion_capture/monocular_motion_capture_3dpw_test/3dpw_test_camera_v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/monocular-motion-capture-leaderboard"
+    },
+    {
+      "id": "motion_tracking_mujoco_lafan1_g1",
+      "label": "Motion Tracking · MuJoCo · LAFAN1-G1",
+      "task": "motion_tracking",
+      "leaderboard": {
+        "id": "motion_tracking",
+        "label": "Motion Tracking",
+        "target": "https://huggingface.co/spaces/ZeyuLing/motion-tracking-mujoco-leaderboard"
+      },
+      "setting": {
+        "id": "mujoco",
+        "label": "MuJoCo",
+        "detail": "LAFAN1-G1"
+      },
+      "protocol_id": "mujoco-g1-reference-tracking-50hz-v1",
+      "artifact_root": "outputs/evaluation/motion_tracking/motion_tracking_mujoco_lafan1_g1/mujoco-g1-reference-tracking-50hz-v1",
+      "target": "https://huggingface.co/spaces/ZeyuLing/motion-tracking-mujoco-leaderboard"
+    },
+    {
+      "id": "motion_tracking_isaaclab_g1",
+      "label": "Motion Tracking · Isaac Lab · Unitree G1",
+      "task": "motion_tracking",
+      "leaderboard": {
+        "id": "motion_tracking",
+        "label": "Motion Tracking",
+        "target": "https://huggingface.co/spaces/ZeyuLing/motion-tracking-mujoco-leaderboard"
+      },
+      "setting": {
+        "id": "isaaclab",
+        "label": "Isaac Lab",
+        "detail": "LAFAN1-G1 + AMASS-test-G1"
+      },
+      "protocol_id": "gentrack-fall-only-30fps-v020",
+      "artifact_root": "outputs/evaluation/motion_tracking/motion_tracking_isaaclab_g1/gentrack-fall-only-30fps-v020",
+      "target": "https://huggingface.co/spaces/ZeyuLing/motion-tracking-isaaclab-leaderboard"
+    }
+  ]
+}

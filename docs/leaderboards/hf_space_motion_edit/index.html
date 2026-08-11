@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Motion Editing · Style and Content · Motius</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
+    :root{
+      --ink:#15201d;--muted:#65716d;--line:#d9e2de;--paper:#fff;
+      --wash:#f3f6f4;--green:#087d72;--green-soft:#e7f4f1;
+      --blue:#315f9d;--coral:#c7563f;--amber:#ad6d00;--violet:#6e5aa5;
+      --shadow:0 12px 36px rgba(21,32,29,.08)
+    }
+    *{box-sizing:border-box}
+    body{margin:0;color:var(--ink);background:var(--paper);font:14px/1.5 "IBM Plex Sans",sans-serif}
+    a{color:inherit}button,input,select{font:inherit}.shell{width:min(1540px,calc(100% - 40px));margin:auto}
+    .leaderboard-nav{display:flex;align-items:center;gap:5px;min-height:54px;border-bottom:1px solid var(--line);overflow-x:auto}
+    .nav-label{margin-right:10px;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+    .nav-link{padding:8px 10px;border-radius:5px;color:#47544f;text-decoration:none;white-space:nowrap}
+    .nav-link:hover{background:var(--wash)}.nav-link[aria-current="page"]{color:var(--green);background:var(--green-soft);font-weight:700}
+    header{position:relative;padding:40px 0 28px;border-bottom:1px solid var(--line);overflow:hidden}
+    header:after{content:"PERMO / EDIT";position:absolute;right:-8px;bottom:-30px;color:#edf3f0;font:700 82px/1 "IBM Plex Mono",monospace;letter-spacing:-.08em;z-index:-1}
+    .title-row{display:flex;justify-content:space-between;gap:28px;align-items:flex-start}
+    h1{margin:0 0 10px;font-size:36px;line-height:1.12;letter-spacing:-.035em}
+    .lede{max-width:900px;margin:0;color:var(--muted);font-size:15px;line-height:1.7}
+    .header-actions{display:flex;gap:8px;flex:none}.status-chip,.audit-link{padding:8px 10px;border-radius:5px;font-size:12px;font-weight:700;text-decoration:none}
+    .status-chip{color:#086c63;background:#eef9f6;border:1px solid #b8dcd6}.audit-link{border:1px solid #cad5d0;background:#fff}
+    .badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}.badge{padding:6px 9px;border:1px solid var(--line);border-radius:4px;background:#fff;color:#4b5853;font-size:12px}
+    .summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line)}
+    .summary-item{padding:22px 18px;border-right:1px solid var(--line)}.summary-item:first-child{padding-left:0}.summary-item:last-child{border-right:0}
+    .summary .value{font-size:25px;font-weight:700}.summary .label{margin-top:4px;color:var(--muted);font-size:12px}
+    section{padding:30px 0;border-bottom:1px solid var(--line)}.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:16px}
+    h2{margin:0;font-size:20px}.caption{margin:5px 0 0;color:var(--muted);line-height:1.55}
+    .track-tabs{display:flex;gap:4px;padding:3px;border:1px solid var(--line);border-radius:7px;background:var(--wash)}
+    .track-tab{border:0;border-radius:5px;padding:8px 13px;color:var(--muted);background:transparent;cursor:pointer}
+    .track-tab[aria-selected="true"]{color:var(--ink);background:#fff;box-shadow:0 1px 5px rgba(21,32,29,.1);font-weight:700}
+    .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}.field{display:grid;gap:5px}.field label{color:var(--muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+    select,input,button.action{height:38px;border:1px solid #c8d4cf;border-radius:5px;background:#fff;color:var(--ink);padding:0 10px;outline:0}
+    select:focus,input:focus,button.action:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(8,125,114,.12)}button.action{cursor:pointer;font-weight:700}
+    .chart-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(350px,.8fr);gap:14px}
+    .chart-panel{min-width:0;padding:17px;border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow)}
+    .chart-panel h3{margin:0;font-size:14px}.chart-note{min-height:19px;margin:5px 0 12px;color:var(--muted);font-size:12px}.canvas-wrap{height:320px}
+    .table-tools{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.search{width:min(300px,100%)}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:8px}
+    table{width:100%;min-width:1250px;border-collapse:collapse}th,td{padding:11px 12px;border-bottom:1px solid #e5ebe8;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+    th:first-child,td:first-child{text-align:left}th{position:sticky;top:0;z-index:1;color:#4a5752;background:#f8faf9;font-size:10px;text-transform:uppercase;letter-spacing:.035em;cursor:pointer}
+    tbody tr:hover{background:#fafcfb}.method{font-weight:700}.rank{display:inline-flex;justify-content:center;min-width:33px;margin-right:7px;padding:3px 5px;border-radius:4px;background:#dff1ed;color:#187066;font-size:10px;font-weight:800}
+    .rank.ref{background:#e9eeeb;color:#56625e}.rank.diag{background:#f4eafb;color:#6a4b81}.ours-row{background:#f2faf7}.best{color:#08766c;background:#edf8f5;font-weight:700}.second-best{color:#8a5b00;background:#fff8e8;font-weight:700}
+    .metric-key{display:flex;flex-wrap:wrap;gap:18px;margin-top:13px;color:var(--muted);font-size:12px}.key{display:inline-flex;align-items:center;gap:6px}.swatch{width:12px;height:12px;border:1px solid #b9ddd6;border-radius:3px;background:#edf8f5}.swatch.second{border-color:#ecd598;background:#fff8e8}
+    .audit-controls{display:grid;grid-template-columns:minmax(320px,1fr) auto auto;gap:10px;align-items:end}
+    .case-context{margin:12px 0 0;padding:12px 14px;border-left:3px solid var(--green);background:var(--wash);color:#46534f}.case-context b{color:var(--ink)}
+    .timeline{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin:14px 0;color:var(--muted);font:11px "IBM Plex Mono",monospace}.timeline input{width:100%;accent-color:var(--green)}
+    .audit-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.motion-panel{min-width:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+    .motion-head{display:flex;justify-content:space-between;gap:8px;min-height:58px;padding:10px 11px;border-bottom:1px solid var(--line)}.motion-head strong{font-size:13px}.motion-meta{max-width:62%;color:var(--muted);font:9px/1.45 "IBM Plex Mono",monospace;text-align:right}
+    .motion-panel canvas{display:block;width:100%;height:260px;background:#f8faf9}.empty{grid-column:1/-1;padding:42px;color:var(--muted);text-align:center}
+    .audit-note{margin-top:13px;color:var(--muted);font-size:12px}
+    .protocol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--line)}.protocol div{padding:16px;background:#fff}.protocol dt{color:var(--muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}.protocol dd{margin:6px 0 0;line-height:1.55}
+    footer{padding:22px 0 36px;color:var(--muted);font-size:12px}footer a{color:var(--green)}
+    @media(max-width:1100px){.audit-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:900px){.shell{width:min(100% - 24px,1540px)}.title-row,.section-head{align-items:stretch;flex-direction:column}.header-actions{align-self:flex-start}.summary{grid-template-columns:repeat(2,1fr)}.chart-grid{grid-template-columns:1fr}.audit-grid{grid-template-columns:repeat(2,1fr)}.protocol{grid-template-columns:1fr}.audit-controls{grid-template-columns:1fr 1fr}}@media(max-width:560px){h1{font-size:29px}.summary{grid-template-columns:1fr}.summary-item{border-right:0}.table-tools{align-items:stretch;flex-direction:column}.search{width:100%}.audit-controls,.audit-grid{grid-template-columns:1fr}}
+  </style>
+<!-- motius-benchmark-nav-style:start -->
+<style id="motius-benchmark-nav-style">
+  .motius-benchmark-nav {
+    position: relative;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: min(1420px, calc(100% - 36px));
+    min-height: 50px;
+    margin: 14px auto 0;
+    padding: 8px 10px 8px 14px;
+    border: 1px solid #d8dfdc;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #17211e;
+    box-shadow: 0 5px 18px rgba(23, 33, 30, 0.06);
+    font: 13px/1.4 Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    letter-spacing: 0;
+  }
+  .motius-benchmark-nav *,
+  .motius-benchmark-nav *::before,
+  .motius-benchmark-nav *::after { box-sizing: border-box; }
+  .motius-benchmark-brand {
+    color: #0a746b;
+    font-weight: 760;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .motius-benchmark-context {
+    min-width: 0;
+    margin-left: auto;
+    overflow: hidden;
+    color: #53615c;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .motius-benchmark-menu { position: relative; flex: 0 0 auto; }
+  .motius-benchmark-menu > summary {
+    display: flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 6px 10px;
+    border: 1px solid #cbd5d1;
+    border-radius: 6px;
+    background: #f7f9f8;
+    color: #26332f;
+    cursor: pointer;
+    font-weight: 680;
+    list-style: none;
+    user-select: none;
+  }
+  .motius-benchmark-menu > summary::-webkit-details-marker { display: none; }
+  .motius-benchmark-menu > summary::after {
+    content: "▾";
+    margin-left: 8px;
+    color: #0a746b;
+  }
+  .motius-benchmark-menu[open] > summary::after { content: "▴"; }
+  .motius-benchmark-list {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    width: min(720px, calc(100vw - 36px));
+    max-height: min(70vh, 620px);
+    padding: 8px;
+    overflow: auto;
+    border: 1px solid #cbd5d1;
+    border-radius: 7px;
+    background: #ffffff;
+    box-shadow: 0 16px 42px rgba(23, 33, 30, 0.16);
+  }
+  .motius-benchmark-link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    min-height: 42px;
+    padding: 8px 10px;
+    border-radius: 5px;
+    color: #26332f;
+    text-decoration: none;
+  }
+  .motius-benchmark-link:hover { background: #f0f5f3; }
+  .motius-benchmark-link[aria-current="page"] {
+    background: #e5f3ef;
+    color: #075e57;
+    font-weight: 720;
+  }
+  .motius-benchmark-status {
+    color: #69756f;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+    white-space: nowrap;
+  }
+  .motius-benchmark-status[data-status="complete"] { color: #087267; }
+  .motius-benchmark-status[data-status="metrics_complete"] { color: #946018; }
+  .motius-benchmark-status[data-status="protocol_ready"] { color: #315f9d; }
+  .motius-benchmark-status[data-status="paused"] { color: #a1453a; }
+  .motius-benchmark-status[data-status="settings"] { color: #315f9d; }
+  .motius-setting-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: min(1420px, calc(100% - 36px));
+    margin: 10px auto 0;
+    padding: 4px;
+    overflow-x: auto;
+    border: 1px solid #d8dfdc;
+    border-radius: 7px;
+    background: #eef2f0;
+    font: 13px/1.35 Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    letter-spacing: 0;
+  }
+  .motius-setting-label {
+    flex: 0 0 auto;
+    padding: 0 10px;
+    color: #69756f;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+    text-transform: uppercase;
+  }
+  .motius-setting-link {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: baseline;
+    gap: 8px;
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: #53615c;
+    text-decoration: none;
+  }
+  .motius-setting-link:hover {
+    border-color: #cbd5d1;
+    background: #ffffff;
+    color: #17211e;
+  }
+  .motius-setting-link[aria-current="page"] {
+    border-color: #adc9c2;
+    background: #ffffff;
+    color: #075e57;
+    box-shadow: 0 3px 10px rgba(23, 33, 30, 0.06);
+    font-weight: 720;
+  }
+  .motius-setting-detail {
+    color: #7a8581;
+    font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+  }
+  @media (max-width: 720px) {
+    .motius-benchmark-nav {
+      width: calc(100% - 24px);
+      margin-top: 10px;
+      gap: 8px;
+      padding-left: 10px;
+    }
+    .motius-benchmark-context { display: none; }
+    .motius-benchmark-list {
+      position: fixed;
+      top: 64px;
+      right: 12px;
+      grid-template-columns: 1fr;
+      width: calc(100vw - 24px);
+      max-height: calc(100vh - 82px);
+    }
+    .motius-setting-nav { width: calc(100% - 24px); }
+    .motius-setting-label { display: none; }
+  }
+</style>
+<!-- motius-benchmark-nav-style:end -->
+</head>
+<body data-benchmark-id="motion_editing_style_content">
+  <div class="shell">
+    <!-- motius-benchmark-nav:start -->
+<nav class="motius-benchmark-nav" data-benchmark-id="motion_editing_style_content" aria-label="Motius benchmark navigation">
+  <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
+  <span class="motius-benchmark-context">Motion Editing · Style and Content</span>
+  <details class="motius-benchmark-menu">
+    <summary>All benchmarks</summary>
+    <div class="motius-benchmark-list">
+      <a class="motius-benchmark-link" href="https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Text-to-Motion</span><span class="motius-benchmark-status" data-status="settings">2 settings</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion-to-Text · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-babel-sequential-generation-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Sequential Text-to-Motion · BABEL</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-temporal-condition-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Temporal Motion Completion · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-body-part-condition-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Part-Level Motion Control · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-edit-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer" aria-current="page"><span>Motion Editing · Style and Content</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-instruction-editing-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Editing · MotionFix Instructions</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-repair-brokenamass-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Repair · BrokenAMASS</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-reconstruction-humanml3d-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Reconstruction · HumanML3D</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Music-to-Dance · AIST++</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-dance-to-music-aistpp-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Dance-to-Music · AIST++</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-speech-to-gesture-beat2-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Speech-to-Gesture · BEAT2</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-monocular-motion-capture-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Monocular Motion Capture · 3DPW Test</span><span class="motius-benchmark-status" data-status="complete">Complete</span></a>
+      <a class="motius-benchmark-link" href="https://zeyuling-motion-tracking-mujoco-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer"><span>Motion Tracking</span><span class="motius-benchmark-status" data-status="settings">2 settings</span></a>
+    </div>
+  </details>
+</nav>
+<!-- motius-benchmark-nav:end -->
+    <header>
+      <div class="title-row">
+        <div><h1>Motion Editing · Style and Content</h1><p class="lede">Exact-source motion editing on held-out PerMo pairs. Style editing changes motion character while preserving action; Content editing changes action while preserving style. Every ranked method is measured with the same ten-metric Universal SMPL-H protocol.</p></div>
+        <div class="header-actions"><span class="status-chip">Table 6.c · full protocol</span><a class="audit-link" href="#qualitative">Inspect all motions</a></div>
+      </div>
+      <div class="badges"><span class="badge">63 Style cases</span><span class="badge">67 Content cases</span><span class="badge">Exact source + instruction</span><span class="badge">30 fps physical audit</span><span class="badge">Universal SMPL-H uTMR</span></div>
+    </header>
+    <div class="summary"><div class="summary-item"><div class="value" id="method-count">0</div><div class="label">Ranked generated methods</div></div><div class="summary-item"><div class="value" id="case-count">63</div><div class="label">Held-out cases in active track</div></div><div class="summary-item"><div class="value">10</div><div class="label">Shared reported metrics</div></div><div class="summary-item"><div class="value">M2M R@3</div><div class="label">Default display rank</div></div></div>
+    <section>
+      <div class="section-head"><div><h2>Aggregate Comparison</h2><p class="caption" id="track-description"></p></div><div class="controls"><div class="track-tabs" id="track-tabs"></div><div class="field"><label for="chart-metric">Metric</label><select id="chart-metric"></select></div></div></div>
+      <div class="chart-grid"><article class="chart-panel"><h3>Measured values</h3><p class="chart-note" id="bar-note"></p><div class="canvas-wrap"><canvas id="bar-chart"></canvas></div></article><article class="chart-panel"><h3>Normalized profile</h3><p class="chart-note">100 denotes the best ranked value on each non-reference axis.</p><div class="canvas-wrap"><canvas id="radar-chart"></canvas></div></article></div>
+    </section>
+    <section>
+      <div class="section-head"><div><h2>Results</h2><p class="caption">No custom score and no native-input column: all ten paper metrics remain visible in one table.</p></div></div>
+      <div class="table-tools"><span class="caption">Click any metric header to sort.</span><input class="search" id="search" type="search" placeholder="Filter method" aria-label="Filter method"></div>
+      <div class="table-wrap"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div>
+      <div class="metric-key"><span class="key"><span class="swatch"></span>Best ranked method</span><span class="key"><span class="swatch second"></span>Second ranked method</span><span class="key">REF = source input</span><span class="key">DIAG = different condition contract</span></div>
+    </section>
+    <section id="qualitative">
+      <div class="section-head"><div><h2>Full Qualitative Audit</h2><p class="caption">Source, paired target, every reproducible baseline and MotionCanvas are synchronized case-by-case in Three.js.</p></div></div>
+      <div class="audit-controls">
+        <div class="field"><label for="case-select">Held-out case</label><select id="case-select"></select></div>
+        <button class="action" id="play" type="button">Pause</button>
+        <div class="field"><label for="view">Camera</label><select id="view"><option value="orbit">Orbit · drag</option><option value="front">Front</option><option value="side">Side</option></select></div>
+      </div>
+      <div id="case-context" class="case-context">Loading case index…</div>
+      <div class="timeline"><span id="time-now">0.00s</span><input id="scrub" type="range" min="0" max="1000" value="0"><span id="duration">0.00s</span></div>
+      <div id="audit-grid" class="audit-grid"><div class="empty">Loading SMPL-H assets…</div></div>
+      <div class="audit-note">Every panel uses the same SMPL template, skinning weights, camera, lighting, and synchronized timeline. HML263 outputs are fitted to SMPL solely for presentation; metrics remain computed from their canonical joints.</div>
+    </section>
+    <section>
+      <div class="section-head"><div><h2>Metric Contract</h2><p class="caption">The table is intentionally broad: semantic correctness alone cannot establish edit quality.</p></div></div>
+      <dl class="protocol">
+        <div><dt>Factor preservation</dt><dd>S-Acc and A-Acc use held-out style/action prototype retrieval. Style and Content tracks swap which factor should change and which should be retained.</dd></div>
+        <div><dt>Semantic alignment</dt><dd>MM-Dist and T2M R@3 compare generated motion with the paired target caption in Universal SMPL-H uTMR space.</dd></div>
+        <div><dt>Paired target</dt><dd>M2M R@3 and M2M-Dist evaluate retrieval and distance against the exact paired target motion.</dd></div>
+        <div><dt>Distribution</dt><dd>FID uses per-sample L2-normalized motion embeddings; Diversity is reported without converting it into a ranking objective.</dd></div>
+        <div><dt>Physical quality</dt><dd>Foot skating and Jitter are recomputed from canonical 30 fps motion, not copied from method papers.</dd></div>
+        <div><dt>Ranking</dt><dd>The displayed rank uses M2M R@3 among exact-source generated methods. Source and MotionCLR diagnostics remain visible but unranked.</dd></div>
+      </dl>
+    </section>
+    <footer>Canonical metrics and visualization payloads are generated from the same frozen PerMo held-out inventories. Last updated <span id="updated"></span>.</footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script type="application/json" id="leaderboard-data">{"title":"Motion Editing · Style and Content","updated":"2026-07-28","dataset":"PerMo held-out paired editing benchmark","evaluator":"Universal SMPL-H joints66 uTMR","protocol_revision":"permo_exact_source_eval30_v3","metrics":[{"key":"S-Acc","label":"S-Acc ↑","direction":"max","digits":2},{"key":"A-Acc","label":"A-Acc ↑","direction":"max","digits":2},{"key":"FID","label":"FID ↓","direction":"min","digits":4},{"key":"MM-Dist","label":"MM-Dist ↓","direction":"min","digits":2},{"key":"T2M R@3","label":"T2M R@3 ↑","direction":"max","digits":2},{"key":"M2M R@3","label":"M2M R@3 ↑","direction":"max","digits":2},{"key":"M2M-Dist","label":"M2M-Dist ↓","direction":"min","digits":4},{"key":"Diversity","label":"Diversity →","direction":"reference","digits":2},{"key":"Foot","label":"Foot ↓","direction":"min","digits":2},{"key":"Jitter","label":"Jitter ↓","direction":"min","digits":2}],"tracks":[{"id":"style","label":"Style Editing","count":63,"description":"Change style while preserving the source action.","datalist":"data/eval/m2m_v2/eval_permo_style_edit_heldout.json","rank_metric":"M2M R@3","rows":[{"method":"GT target","method_id":"target","coverage":"63/63","reference":true,"reference_kind":"gt","diagnostic":false,"ours":false,"metrics":{"S-Acc":null,"A-Acc":null,"FID":null,"MM-Dist":null,"T2M R@3":null,"M2M R@3":null,"M2M-Dist":null,"Diversity":null,"Foot":null,"Jitter":null},"fid_ci95":null,"artifact":"data/eval/m2m_v2/eval_permo_style_edit_heldout.json#paired-target","rank":null},{"method":"Source input","method_id":"source","coverage":"63/63","reference":true,"diagnostic":false,"ours":false,"metrics":{"S-Acc":23.968254029750824,"A-Acc":97.301584482193,"FID":0.12053261683675895,"MM-Dist":18.552648544311523,"T2M R@3":66.71875,"M2M R@3":42.857142857142854,"M2M-Dist":0.47905691881641177,"Diversity":42.464934539794925,"Foot":2.694635187440911,"Jitter":22.347486704044666},"fid_ci95":null,"artifact":"outputs/evaluation/motion_edit/permo_baselines/style/source","rank":null,"reference_kind":"source"},{"method":"TMED","method_id":"tmed","coverage":"63/63","reference":false,"diagnostic":false,"ours":false,"metrics":{"S-Acc":23.174603283405304,"A-Acc":46.0317462682724,"FID":1.0784217868342658,"MM-Dist":54.73600120544434,"T2M R@3":22.96875,"M2M R@3":14.285714285714285,"M2M-Dist":1.2755439230213719,"Diversity":56.5786111831665,"Foot":9.933524294362066,"Jitter":42.96558325655669},"fid_ci95":[1.0820034662930262,1.253976518614319],"artifact":"outputs/evaluation/motion_edit/permo_baselines/style/tmed_zup_v2","rank":5},{"method":"SimMotionEdit","method_id":"simmotionedit","coverage":"63/63","reference":false,"diagnostic":false,"ours":false,"metrics":{"S-Acc":16.587302088737488,"A-Acc":71.11111283302307,"FID":0.9794007181067895,"MM-Dist":49.46094570159912,"T2M R@3":37.34375,"M2M R@3":19.047619047619047,"M2M-Dist":1.169597143103109,"Diversity":55.68187427520752,"Foot":11.185314965772163,"Jitter":11.113286262289398},"fid_ci95":[0.9740496711144164,1.1296932126423362],"artifact":"outputs/evaluation/motion_edit/permo_baselines/style/simmotionedit_zup_row_v4","rank":4},{"method":"MotionLab","method_id":"motionlab","coverage":"63/63","reference":false,"diagnostic":false,"ours":false,"metrics":{"S-Acc":26.66666805744171,"A-Acc":94.52381134033203,"FID":0.20963315824759693,"MM-Dist":24.75082778930664,"T2M R@3":58.4375,"M2M R@3":38.095238095238095,"M2M-Dist":0.6141390600798028,"Diversity":47.965314102172854,"Foot":2.789142732319762,"Jitter":7.535326082096804},"fid_ci95":[0.18930507747203795,0.307872414251092],"artifact":"outputs/evaluation/motion_edit/permo_baselines/style/motionlab","rank":2},{"method":"MotionReFit","method_id":"motionrefit","coverage":"63/63","reference":false,"diagnostic":false,"ours":false,"metrics":{"S-Acc":26.746031641960144,"A-Acc":95.31745910644531,"FID":0.1232703952076826,"MM-Dist":18.77663230895996,"T2M R@3":64.6875,"M2M R@3":36.507936507936506,"M2M-Dist":0.481839238140436,"Diversity":41.695084190368654,"Foot":3.873081938668982,"Jitter":20.051370914434155},"fid_ci95":[0.12050701406641456,0.17894367514485082],"artifact":"outputs/evaluation/motion_edit/permo_baselines/style/motionrefit","rank":3},{"method":"MotionCanvas","method_id":"motioncanvas","coverage":"63/63","reference":false,"diagnostic":false,"ours":true,"metrics":{"S-Acc":40.79365134239197,"A-Acc":92.53968000411987,"FID":0.06572838646071322,"MM-Dist":18.822612762451172,"T2M R@3":65.0,"M2M R@3":68.25396825396825,"M2M-Dist":0.37809336853539244,"Diversity":39.90326557159424,"Foot":3.2206152300859694,"Jitter":14.516358015253134},"fid_ci95":null,"artifact":"outputs/evaluation/motion_edit/permo_style_transfer_test/smpl135/motioncanvas_ep1964_condkin050_20260721","rank":1},{"method":"MotionCLR","method_id":"motionclr","coverage":"63/63","reference":false,"diagnostic":true,"ours":false,"metrics":{"S-Acc":15.238095819950104,"A-Acc":79.92063760757446,"FID":0.7160596693671283,"MM-Dist":43.116127014160156,"T2M R@3":47.5,"M2M R@3":23.809523809523807,"M2M-Dist":1.0469772418360253,"Diversity":55.49963665008545,"Foot":4.265629356967266,"Jitter":10.299623864407222},"fid_ci95":[0.6463401940795016,0.8715555955291603],"artifact":"outputs/evaluation/motion_edit/permo_style_transfer_test/hml263/motionclr_descriptive_s9/metrics_canonfix_v2","rank":null}]},{"id":"content","label":"Content Editing","count":67,"description":"Change action while preserving the source style.","datalist":"data/eval/m2m_v2/eval_permo_content_edit_heldout.json","rank_metric":"M2M R@3","rows":[{"method":"GT target","method_id":"target","coverage":"67/67","reference":true,"reference_kind":"gt","diagnostic":false,"ours":false,"metrics":{"S-Acc":null,"A-Acc":null,"FID":null,"MM-Dist":null,"T2M R@3":null,"M2M R@3":null,"M2M-Dist":null,"Diversity":null,"Foot":null,"Jitter":null},"fid_ci95":null,"artifact":"data/eval/m2m_v2/eval_permo_content_edit_heldout.json#paired-target","rank":null},{"method":"Source input","method_id":"source","coverage":"67/67","reference":true,"diagnostic":false,"ours":false,"metrics":{"S-Acc":52.014923095703125,"A-Acc":19.25373077392578,"FID":0.48504451003032667,"MM-Dist":40.072776794433594,"T2M R@3":8.4375,"M2M R@3":8.955223880597014,"M2M-Dist":0.9507158137511657,"Diversity":27.031891059875488,"Foot":3.7634290447538747,"Jitter":23.668515989417905},"fid_ci95":null,"artifact":"outputs/evaluation/motion_edit/permo_baselines/content/source","rank":null,"reference_kind":"source"},{"method":"TMED","method_id":"tmed","coverage":"67/67","reference":false,"diagnostic":false,"ours":false,"metrics":{"S-Acc":25.89552104473114,"A-Acc":29.477611184120178,"FID":1.1328775169895822,"MM-Dist":56.30955829620361,"T2M R@3":14.140625000000002,"M2M R@3":4.477611940298507,"M2M-Dist":1.331915041507686,"Diversity":55.23333740234375,"Foot":12.03301424509721,"Jitter":79.53231205595587},"fid_ci95":[1.1282077817181502,1.315441960701205],"artifact":"outputs/evaluation/motion_edit/permo_baselines/content/tmed_zup_v2","rank":3},{"method":"SimMotionEdit","method_id":"simmotionedit","coverage":"67/67","reference":false,"diagnostic":false,"ours":false,"metrics":{"S-Acc":39.02985155582428,"A-Acc":18.35820823907852,"FID":1.2423056881981076,"MM-Dist":58.56630725860596,"T2M R@3":8.046875,"M2M R@3":2.9850746268656714,"M2M-Dist":1.3687648659557168,"Diversity":54.542513847351074,"Foot":8.152204408606117,"Jitter":10.408656332822545},"fid_ci95":[1.2456755052625565,1.4212114485194305],"artifact":"outputs/evaluation/motion_edit/permo_baselines/content/simmotionedit_zup_row_v4","rank":5},{"method":"MotionLab","method_id":"motionlab","coverage":"67/67","reference":false,"diagnostic":false,"ours":false,"metrics":{"S-Acc":49.10447895526886,"A-Acc":18.507462739944458,"FID":0.6337125903600795,"MM-Dist":46.92961883544922,"T2M R@3":11.015625,"M2M R@3":4.477611940298507,"M2M-Dist":1.1207857630014115,"Diversity":42.81430435180664,"Foot":2.9908196164599343,"Jitter":7.560777779383613},"fid_ci95":[0.5604168472835545,0.8426062028840932],"artifact":"outputs/evaluation/motion_edit/permo_baselines/content/motionlab","rank":3},{"method":"MotionReFit","method_id":"motionrefit","coverage":"67/67","reference":false,"diagnostic":false,"ours":false,"metrics":{"S-Acc":36.119404435157776,"A-Acc":32.61193931102753,"FID":0.4977580406748234,"MM-Dist":41.2325439453125,"T2M R@3":15.546874999999998,"M2M R@3":10.44776119402985,"M2M-Dist":0.9986433473835312,"Diversity":40.83207187652588,"Foot":3.724434233153757,"Jitter":30.762751558934575},"fid_ci95":[0.461371762987038,0.617220315861571],"artifact":"outputs/evaluation/motion_edit/permo_baselines/content/motionrefit_prompt_v2","rank":2},{"method":"MotionCanvas","method_id":"motioncanvas","coverage":"67/67","reference":false,"diagnostic":false,"ours":true,"metrics":{"S-Acc":48.20895493030548,"A-Acc":96.41790986061096,"FID":0.052309386386037694,"MM-Dist":18.75008773803711,"T2M R@3":64.765625,"M2M R@3":68.65671641791045,"M2M-Dist":0.37964831159530404,"Diversity":40.83089046478271,"Foot":2.6489176980051927,"Jitter":11.283599524393873},"fid_ci95":null,"artifact":"outputs/evaluation/motion_edit/permo_content_edit_test/smpl135/motioncanvas_ep1964_condkin050_20260721","rank":1}]}]}</script>
+  <script>
+    const DATA=JSON.parse(document.getElementById("leaderboard-data").textContent);
+    const colors=["#087d72","#315f9d","#c7563f","#ad6d00","#6e5aa5","#71817d","#8a6f42"];
+    const state={track:"style",query:"",sortKey:"M2M R@3",sortDirection:"desc"};let barChart=null,radarChart=null;
+    const track=()=>DATA.tracks.find(item=>item.id===state.track);const specs=()=>DATA.metrics;
+    const spec=key=>specs().find(item=>item.key===key);const rows=()=>track().rows;
+    function isGt(row){return row.reference_kind==="gt"}function isSource(row){return row.reference_kind==="source"}function rankable(row){return !row.reference&&!row.diagnostic}function chartable(row){return !row.reference}
+    function format(value,item){return value===null||value===undefined?"–":Number(value).toFixed(item.digits)}
+    function ranking(item){if(item.direction==="reference")return[];return rows().filter(rankable).filter(row=>Number.isFinite(Number(row.metrics[item.key]))).sort((a,b)=>item.direction==="min"?a.metrics[item.key]-b.metrics[item.key]:b.metrics[item.key]-a.metrics[item.key])}
+    function cellClass(row,item){if(!rankable(row))return"";const order=ranking(item);return order[0]===row?"best":order[1]===row?"second-best":""}function cellTitle(row,item){if(item.key!=="FID"||!row.fid_ci95)return"";return `Paired-bootstrap 95% CI: ${row.fid_ci95.map(value=>Number(value).toFixed(4)).join(" – ")}`}
+    function filtered(){const q=state.query.trim().toLowerCase();return [...rows()].filter(row=>!q||row.method.toLowerCase().includes(q)).sort((a,b)=>{if(isGt(a)!==isGt(b))return isGt(a)?-1:1;if(isSource(a)!==isSource(b))return isSource(a)?1:-1;if(a.diagnostic!==b.diagnostic)return a.diagnostic?1:-1;const av=a.metrics[state.sortKey],bv=b.metrics[state.sortKey];if(Number.isFinite(Number(av))&&Number.isFinite(Number(bv)))return state.sortDirection==="asc"?av-bv:bv-av;return a.method.localeCompare(b.method)})}
+    function renderTabs(){document.getElementById("track-tabs").innerHTML=DATA.tracks.map(item=>`<button class="track-tab" data-track="${item.id}" aria-selected="${item.id===state.track}">${item.label}</button>`).join("");document.querySelectorAll(".track-tab").forEach(button=>button.addEventListener("click",()=>setTrack(button.dataset.track)))}
+    function renderTable(){document.getElementById("table-head").innerHTML=`<tr><th data-key="method">Method</th><th>Cases</th>${specs().map(item=>`<th data-key="${item.key}">${item.label}${state.sortKey===item.key?(state.sortDirection==="asc"?" ▴":" ▾"):""}</th>`).join("")}</tr>`;document.getElementById("table-body").innerHTML=filtered().map(row=>{const badge=isGt(row)?'<span class="rank ref">GT</span>':isSource(row)?'<span class="rank ref">REF</span>':row.diagnostic?'<span class="rank diag">DIAG</span>':`<span class="rank">#${row.rank}</span>`;return`<tr class="${row.ours?"ours-row":""}"><td class="method">${badge}${row.method}</td><td>${row.coverage}</td>${specs().map(item=>`<td class="${cellClass(row,item)}" title="${cellTitle(row,item)}">${format(row.metrics[item.key],item)}</td>`).join("")}</tr>`}).join("");document.querySelectorAll("th[data-key]").forEach(head=>head.addEventListener("click",()=>{const key=head.dataset.key;if(key==="method"){state.sortKey=key;state.sortDirection=state.sortDirection==="asc"?"desc":"asc"}else if(state.sortKey===key)state.sortDirection=state.sortDirection==="asc"?"desc":"asc";else{state.sortKey=key;state.sortDirection=spec(key).direction==="min"?"asc":"desc"}renderTable()}))}
+    function colorFor(row){return colors[Math.max(0,rows().filter(chartable).indexOf(row))%colors.length]}
+    function normalized(row,item,measured){const values=measured.map(value=>Number(value.metrics[item.key])).filter(Number.isFinite);if(!values.length)return 0;const min=Math.min(...values),max=Math.max(...values);if(max===min)return 100;return item.direction==="min"?100*(max-row.metrics[item.key])/(max-min):100*(row.metrics[item.key]-min)/(max-min)}
+    function renderCharts(){if(typeof Chart==="undefined")return;const item=spec(document.getElementById("chart-metric").value)||specs()[0],measured=rows().filter(chartable).filter(row=>Number.isFinite(Number(row.metrics[item.key]))),ordered=[...measured].sort((a,b)=>item.direction==="min"?a.metrics[item.key]-b.metrics[item.key]:b.metrics[item.key]-a.metrics[item.key]);document.getElementById("bar-note").textContent=`${item.label}; ${item.direction==="min"?"lower":item.direction==="max"?"higher":"reference-matched"} is preferred.`;barChart?.destroy();radarChart?.destroy();barChart=new Chart(document.getElementById("bar-chart"),{type:"bar",data:{labels:ordered.map(row=>row.method),datasets:[{data:ordered.map(row=>row.metrics[item.key]),backgroundColor:ordered.map(colorFor),borderRadius:4}]},options:{animation:false,indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:"#e6ebe8"}},y:{grid:{display:false},ticks:{font:{family:"IBM Plex Sans",weight:"600"},color:"#34413d"}}}}});const axes=specs().filter(value=>value.direction!=="reference");const ranked=rows().filter(rankable);radarChart=new Chart(document.getElementById("radar-chart"),{type:"radar",data:{labels:axes.map(value=>value.label),datasets:ranked.map(row=>({label:row.method,data:axes.map(value=>normalized(row,value,ranked)),borderColor:colorFor(row),backgroundColor:colorFor(row)+"18",pointRadius:1.8,borderWidth:2}))},options:{animation:false,responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:"#e0e6e3"},angleLines:{color:"#e0e6e3"},pointLabels:{font:{family:"IBM Plex Sans",size:10,weight:"600"}}}},plugins:{legend:{position:"bottom",labels:{boxWidth:11,padding:12}}}}})}
+    function configureMetric(){const select=document.getElementById("chart-metric"),prior=select.value;select.innerHTML=specs().map(item=>`<option value="${item.key}">${item.label}</option>`).join("");select.value=spec(prior)?prior:"M2M R@3";renderCharts()}
+    function setTrack(id){state.track=id;state.sortKey="M2M R@3";state.sortDirection="desc";renderTabs();renderTable();configureMetric();document.getElementById("case-count").textContent=track().count;document.getElementById("method-count").textContent=rows().filter(rankable).length;document.getElementById("track-description").textContent=`${track().description} ${track().count} held-out cases.`;window.dispatchEvent(new CustomEvent("permo-track-change",{detail:{track:id}}))}
+    document.getElementById("search").addEventListener("input",event=>{state.query=event.target.value;renderTable()});document.getElementById("chart-metric").addEventListener("change",renderCharts);document.getElementById("updated").textContent=DATA.updated;setTrack("style");
+  </script>
+  <script type="module" src="smpl_viewer.js"></script>
+</body>
+</html>

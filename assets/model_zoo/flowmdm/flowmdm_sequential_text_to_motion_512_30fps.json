@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "method": "FlowMDM",
+  "task": "sequential_text_to_motion",
+  "input": "A person walks forward. → A person sits down. → A person rests. → A person stands up. → A person walks back.",
+  "condition": "Five captioned segments; the active caption and segment timeline are embedded in the video",
+  "case_id": "val_919",
+  "frames": 316,
+  "fps": 30,
+  "training_motion_fps": 30,
+  "preview_fps": 30,
+  "preview_duration_seconds": 10.5333333333,
+  "timing": "Native BABEL 30 fps timeline; every display frame is rendered once.",
+  "capture_frame_step": 1,
+  "segments": [
+    {
+      "caption": "A person walks forward.",
+      "start_frame": 0,
+      "end_frame": 71
+    },
+    {
+      "caption": "A person sits down.",
+      "start_frame": 71,
+      "end_frame": 158
+    },
+    {
+      "caption": "A person rests.",
+      "start_frame": 158,
+      "end_frame": 201
+    },
+    {
+      "caption": "A person stands up.",
+      "start_frame": 201,
+      "end_frame": 248
+    },
+    {
+      "caption": "A person walks back.",
+      "start_frame": 248,
+      "end_frame": 316
+    }
+  ],
+  "condition_visualization": "The active caption changes with the colored segment timeline and playhead.",
+  "source": "BABEL Sequential Generation leaderboard evaluated SMPL asset",
+  "viewer_url": "https://zeyuling-babel-sequential-generation-leaderboard.static.hf.space/cases/index.html?method=flowmdm&case=val_919"
+}

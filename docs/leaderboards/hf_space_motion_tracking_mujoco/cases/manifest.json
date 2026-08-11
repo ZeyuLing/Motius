@@ -1,0 +1,2276 @@
+{
+  "schema_version": 2,
+  "benchmark_id": "motion_tracking_mujoco_lafan1_g1",
+  "title": "Motion Tracking \u00b7 MuJoCo \u00b7 LAFAN1-G1",
+  "population": 40,
+  "asset_base_url": "https://huggingface.co/datasets/ZeyuLing/Motius-Leaderboard-Cases/resolve/main/motion-tracking-g1/v1/mujoco/",
+  "mesh_base_url": "https://huggingface.co/datasets/ZeyuLing/Motius-Leaderboard-Cases/resolve/main/t2m-unitree-g1/meshes/",
+  "robot": "robot.json",
+  "columns": [
+    {
+      "key": "gt",
+      "label": "GT reference"
+    },
+    {
+      "key": "any2track",
+      "label": "Any2Track"
+    },
+    {
+      "key": "protomotions",
+      "label": "ProtoMotions"
+    },
+    {
+      "key": "humanoid_gpt",
+      "label": "HumanoidGPT"
+    }
+  ],
+  "splits": [
+    {
+      "id": "lafan1_g1",
+      "label": "LAFAN1-G1",
+      "population": 40
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "dance1_subject1",
+      "split": "lafan1_g1",
+      "label": "dance1 subject1",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0000_dance1_subject1_150557d8ed.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0000_dance1_subject1_150557d8ed.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0000_dance1_subject1_150557d8ed.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0000_dance1_subject1_150557d8ed.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 12.558544142583354,
+          "joint_mae_rad": 0.04903696460944271,
+          "root_drift_mm": 328.0266291661841,
+          "foot_slip_m_s": 0.09786541178161255,
+          "mechanical_power_w": 75.8083719181646
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 39.28866947113451,
+          "joint_mae_rad": 0.15431928665516528,
+          "root_drift_mm": 804.3743393072784,
+          "foot_slip_m_s": 0.1239857168318593,
+          "mechanical_power_w": 89.94837889952836
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 23.927799799827454,
+          "joint_mae_rad": 0.059907214620163,
+          "root_drift_mm": 619.0016503859118,
+          "foot_slip_m_s": 0.15955762998595588,
+          "mechanical_power_w": 54.062437012110024
+        }
+      }
+    },
+    {
+      "case_id": "dance1_subject2",
+      "split": "lafan1_g1",
+      "label": "dance1 subject2",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0001_dance1_subject2_9b844e2b66.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0001_dance1_subject2_9b844e2b66.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0001_dance1_subject2_9b844e2b66.bin",
+          "frames": 593,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0001_dance1_subject2_9b844e2b66.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 13.237597493463428,
+          "joint_mae_rad": 0.06241958918160248,
+          "root_drift_mm": 127.70860968271982,
+          "foot_slip_m_s": 0.06426594149134547,
+          "mechanical_power_w": 121.05139508642968
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.592,
+          "local_mpjpe_mm": 37.07339787255378,
+          "joint_mae_rad": 0.21132948388654782,
+          "root_drift_mm": 571.7854654226005,
+          "foot_slip_m_s": 0.038980717731948625,
+          "mechanical_power_w": 172.39121452029505
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 27.312108910581717,
+          "joint_mae_rad": 0.07455441979247708,
+          "root_drift_mm": 237.9999863154113,
+          "foot_slip_m_s": 0.11648232801267197,
+          "mechanical_power_w": 97.01082778343857
+        }
+      }
+    },
+    {
+      "case_id": "dance1_subject3",
+      "split": "lafan1_g1",
+      "label": "dance1 subject3",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0002_dance1_subject3_c3bea5e239.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0002_dance1_subject3_c3bea5e239.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0002_dance1_subject3_c3bea5e239.bin",
+          "frames": 269,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0002_dance1_subject3_c3bea5e239.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 11.181656961466791,
+          "joint_mae_rad": 0.0561985107617438,
+          "root_drift_mm": 387.9711259487092,
+          "foot_slip_m_s": 0.05846720894899648,
+          "mechanical_power_w": 37.03691141277585
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.268,
+          "local_mpjpe_mm": 35.24069443696253,
+          "joint_mae_rad": 0.2091498515012448,
+          "root_drift_mm": 79.8128040293798,
+          "foot_slip_m_s": 0.012576832802175454,
+          "mechanical_power_w": 27.382597033936516
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 19.28671055378998,
+          "joint_mae_rad": 0.05199487202486305,
+          "root_drift_mm": 131.08177050751158,
+          "foot_slip_m_s": 0.02192150462692469,
+          "mechanical_power_w": 19.587136785148093
+        }
+      }
+    },
+    {
+      "case_id": "dance2_subject1",
+      "split": "lafan1_g1",
+      "label": "dance2 subject1",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0003_dance2_subject1_8ac13e069f.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0003_dance2_subject1_8ac13e069f.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0003_dance2_subject1_8ac13e069f.bin",
+          "frames": 527,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0003_dance2_subject1_8ac13e069f.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 12.307723887646125,
+          "joint_mae_rad": 0.05192885756520073,
+          "root_drift_mm": 193.55275785206226,
+          "foot_slip_m_s": 0.06456033458361929,
+          "mechanical_power_w": 63.55336436659341
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.526,
+          "local_mpjpe_mm": 41.659933495067634,
+          "joint_mae_rad": 0.1561894386201054,
+          "root_drift_mm": 780.8320555617935,
+          "foot_slip_m_s": 0.11392088086058229,
+          "mechanical_power_w": 78.87244127669317
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 23.24265808706423,
+          "joint_mae_rad": 0.06502148757613128,
+          "root_drift_mm": 210.3303870066412,
+          "foot_slip_m_s": 0.058711829509981654,
+          "mechanical_power_w": 36.00548607607895
+        }
+      }
+    },
+    {
+      "case_id": "dance2_subject2",
+      "split": "lafan1_g1",
+      "label": "dance2 subject2",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0004_dance2_subject2_1061edec01.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0004_dance2_subject2_1061edec01.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0004_dance2_subject2_1061edec01.bin",
+          "frames": 750,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0004_dance2_subject2_1061edec01.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 12.842580434151657,
+          "joint_mae_rad": 0.056982967892206984,
+          "root_drift_mm": 417.08157708207136,
+          "foot_slip_m_s": 0.1023077326656583,
+          "mechanical_power_w": 65.59745706370352
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.749,
+          "local_mpjpe_mm": 39.48509895387427,
+          "joint_mae_rad": 0.19927218289630985,
+          "root_drift_mm": 296.4383834961324,
+          "foot_slip_m_s": 0.08298258391764907,
+          "mechanical_power_w": 123.5331708449886
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 25.383751633451045,
+          "joint_mae_rad": 0.05776483905691001,
+          "root_drift_mm": 269.6657835078486,
+          "foot_slip_m_s": 0.14741743893000483,
+          "mechanical_power_w": 43.424202071825086
+        }
+      }
+    },
+    {
+      "case_id": "dance2_subject3",
+      "split": "lafan1_g1",
+      "label": "dance2 subject3",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0005_dance2_subject3_c326bf17f6.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0005_dance2_subject3_c326bf17f6.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0005_dance2_subject3_c326bf17f6.bin",
+          "frames": 653,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0005_dance2_subject3_c326bf17f6.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 12.428726426997262,
+          "joint_mae_rad": 0.051426408359546844,
+          "root_drift_mm": 494.2138000735561,
+          "foot_slip_m_s": 0.062397061621716904,
+          "mechanical_power_w": 35.06525288312118
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.652,
+          "local_mpjpe_mm": 42.120163330940926,
+          "joint_mae_rad": 0.19139573329123669,
+          "root_drift_mm": 159.94640238806664,
+          "foot_slip_m_s": 0.02559246238806644,
+          "mechanical_power_w": 31.502838236058682
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 20.274929942453724,
+          "joint_mae_rad": 0.05152008106602967,
+          "root_drift_mm": 239.18832358089898,
+          "foot_slip_m_s": 0.04781383103656018,
+          "mechanical_power_w": 20.30598292219888
+        }
+      }
+    },
+    {
+      "case_id": "dance2_subject4",
+      "split": "lafan1_g1",
+      "label": "dance2 subject4",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0006_dance2_subject4_4ff14cb950.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0006_dance2_subject4_4ff14cb950.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0006_dance2_subject4_4ff14cb950.bin",
+          "frames": 544,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0006_dance2_subject4_4ff14cb950.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 13.43984534215802,
+          "joint_mae_rad": 0.05336092670738437,
+          "root_drift_mm": 258.84613588234953,
+          "foot_slip_m_s": 0.08820755399006558,
+          "mechanical_power_w": 81.87202859915135
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.543,
+          "local_mpjpe_mm": 35.46803948133223,
+          "joint_mae_rad": 0.17752997530978762,
+          "root_drift_mm": 68.43359725186357,
+          "foot_slip_m_s": 0.025006395039030894,
+          "mechanical_power_w": 20.08534134447483
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 23.27797728266107,
+          "joint_mae_rad": 0.06381618283951722,
+          "root_drift_mm": 147.98471968498126,
+          "foot_slip_m_s": 0.1593852523397854,
+          "mechanical_power_w": 52.135765671839934
+        }
+      }
+    },
+    {
+      "case_id": "dance2_subject5",
+      "split": "lafan1_g1",
+      "label": "dance2 subject5",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0007_dance2_subject5_1e4190f5d8.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0007_dance2_subject5_1e4190f5d8.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0007_dance2_subject5_1e4190f5d8.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0007_dance2_subject5_1e4190f5d8.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 10.292965126377448,
+          "joint_mae_rad": 0.05138087217585693,
+          "root_drift_mm": 286.47992949740683,
+          "foot_slip_m_s": 0.09117066502161174,
+          "mechanical_power_w": 50.25331682146946
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 44.92330472044925,
+          "joint_mae_rad": 0.1848718023244828,
+          "root_drift_mm": 200.32139202006925,
+          "foot_slip_m_s": 0.030209454835579273,
+          "mechanical_power_w": 22.281478843599544
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 20.278848637219852,
+          "joint_mae_rad": 0.04614721620910936,
+          "root_drift_mm": 347.4307005710589,
+          "foot_slip_m_s": 0.08481414873874701,
+          "mechanical_power_w": 27.785548772369786
+        }
+      }
+    },
+    {
+      "case_id": "fallAndGetUp1_subject1",
+      "split": "lafan1_g1",
+      "label": "fallAndGetUp1 subject1",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0008_fallAndGetUp1_subject1_4dc20e9e59.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0008_fallAndGetUp1_subject1_4dc20e9e59.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0008_fallAndGetUp1_subject1_4dc20e9e59.bin",
+          "frames": 407,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0008_fallAndGetUp1_subject1_4dc20e9e59.bin",
+          "frames": 308,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 22.883016685968542,
+          "joint_mae_rad": 0.08390607633696515,
+          "root_drift_mm": 1827.4125708884235,
+          "foot_slip_m_s": 0.11356886089083403,
+          "mechanical_power_w": 167.38950690361017
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.406,
+          "local_mpjpe_mm": 61.63434164860785,
+          "joint_mae_rad": 0.24957183960706958,
+          "root_drift_mm": 159.07751310003587,
+          "foot_slip_m_s": 0.06750512521008473,
+          "mechanical_power_w": 77.10306904725812
+        },
+        "humanoid_gpt": {
+          "success_rate": 0.0,
+          "completion_rate": 0.307,
+          "local_mpjpe_mm": 28.790879186500682,
+          "joint_mae_rad": 0.07568728110605125,
+          "root_drift_mm": 69.19809929780311,
+          "foot_slip_m_s": 0.11763279096147043,
+          "mechanical_power_w": 106.89128608362793
+        }
+      }
+    },
+    {
+      "case_id": "fallAndGetUp1_subject4",
+      "split": "lafan1_g1",
+      "label": "fallAndGetUp1 subject4",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0009_fallAndGetUp1_subject4_cc69bd5c7a.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0009_fallAndGetUp1_subject4_cc69bd5c7a.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0009_fallAndGetUp1_subject4_cc69bd5c7a.bin",
+          "frames": 482,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0009_fallAndGetUp1_subject4_cc69bd5c7a.bin",
+          "frames": 425,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 26.267818492537202,
+          "joint_mae_rad": 0.0989431859053179,
+          "root_drift_mm": 1000.7431340909268,
+          "foot_slip_m_s": 0.09788805034870601,
+          "mechanical_power_w": 218.70206191290072
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.481,
+          "local_mpjpe_mm": 57.043102705237324,
+          "joint_mae_rad": 0.21283056023435679,
+          "root_drift_mm": 259.6030319513119,
+          "foot_slip_m_s": 0.04559870421976294,
+          "mechanical_power_w": 97.28914358367592
+        },
+        "humanoid_gpt": {
+          "success_rate": 0.0,
+          "completion_rate": 0.424,
+          "local_mpjpe_mm": 30.445218133237532,
+          "joint_mae_rad": 0.08207810586479873,
+          "root_drift_mm": 140.93033399549972,
+          "foot_slip_m_s": 0.14588509641787192,
+          "mechanical_power_w": 104.55228077631473
+        }
+      }
+    },
+    {
+      "case_id": "fallAndGetUp1_subject5",
+      "split": "lafan1_g1",
+      "label": "fallAndGetUp1 subject5",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0010_fallAndGetUp1_subject5_6fc28e0337.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0010_fallAndGetUp1_subject5_6fc28e0337.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0010_fallAndGetUp1_subject5_6fc28e0337.bin",
+          "frames": 391,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0010_fallAndGetUp1_subject5_6fc28e0337.bin",
+          "frames": 388,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 24.71678938037168,
+          "joint_mae_rad": 0.08964896540768585,
+          "root_drift_mm": 582.715501502255,
+          "foot_slip_m_s": 0.11832564010546677,
+          "mechanical_power_w": 256.21246047641097
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.39,
+          "local_mpjpe_mm": 44.83813373948227,
+          "joint_mae_rad": 0.17033724063420277,
+          "root_drift_mm": 440.32410612185276,
+          "foot_slip_m_s": 0.034890986928870125,
+          "mechanical_power_w": 91.20907884820333
+        },
+        "humanoid_gpt": {
+          "success_rate": 0.0,
+          "completion_rate": 0.387,
+          "local_mpjpe_mm": 28.602792916629188,
+          "joint_mae_rad": 0.06578505084570073,
+          "root_drift_mm": 204.7424930265157,
+          "foot_slip_m_s": 0.19518871157209158,
+          "mechanical_power_w": 101.99877439258637
+        }
+      }
+    },
+    {
+      "case_id": "fallAndGetUp2_subject2",
+      "split": "lafan1_g1",
+      "label": "fallAndGetUp2 subject2",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0011_fallAndGetUp2_subject2_6b930bd28b.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0011_fallAndGetUp2_subject2_6b930bd28b.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0011_fallAndGetUp2_subject2_6b930bd28b.bin",
+          "frames": 382,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0011_fallAndGetUp2_subject2_6b930bd28b.bin",
+          "frames": 374,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 22.231858659413476,
+          "joint_mae_rad": 0.08100639665420846,
+          "root_drift_mm": 251.99314555938813,
+          "foot_slip_m_s": 0.053913752071038316,
+          "mechanical_power_w": 57.72206132382586
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.381,
+          "local_mpjpe_mm": 61.506587700894144,
+          "joint_mae_rad": 0.23260632783585633,
+          "root_drift_mm": 149.4217039133566,
+          "foot_slip_m_s": 0.0537564349788006,
+          "mechanical_power_w": 63.94438298271303
+        },
+        "humanoid_gpt": {
+          "success_rate": 0.0,
+          "completion_rate": 0.373,
+          "local_mpjpe_mm": 33.32237016577004,
+          "joint_mae_rad": 0.09594204342219964,
+          "root_drift_mm": 105.10497032593398,
+          "foot_slip_m_s": 0.11677407137477334,
+          "mechanical_power_w": 195.18675209826907
+        }
+      }
+    },
+    {
+      "case_id": "fallAndGetUp2_subject3",
+      "split": "lafan1_g1",
+      "label": "fallAndGetUp2 subject3",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0012_fallAndGetUp2_subject3_404f940e33.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0012_fallAndGetUp2_subject3_404f940e33.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0012_fallAndGetUp2_subject3_404f940e33.bin",
+          "frames": 770,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0012_fallAndGetUp2_subject3_404f940e33.bin",
+          "frames": 326,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 27.662832424308963,
+          "joint_mae_rad": 0.11321293352094816,
+          "root_drift_mm": 258.88419800862323,
+          "foot_slip_m_s": 0.05699952643954566,
+          "mechanical_power_w": 74.49720735954756
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.769,
+          "local_mpjpe_mm": 104.6816257686503,
+          "joint_mae_rad": 0.36069158593879813,
+          "root_drift_mm": 369.2022340261614,
+          "foot_slip_m_s": 0.04535243730393098,
+          "mechanical_power_w": 53.10061394572323
+        },
+        "humanoid_gpt": {
+          "success_rate": 0.0,
+          "completion_rate": 0.325,
+          "local_mpjpe_mm": 30.635811423663004,
+          "joint_mae_rad": 0.079913975724629,
+          "root_drift_mm": 113.94969385908841,
+          "foot_slip_m_s": 0.08925120271094482,
+          "mechanical_power_w": 74.97620087214298
+        }
+      }
+    },
+    {
+      "case_id": "fallAndGetUp3_subject1",
+      "split": "lafan1_g1",
+      "label": "fallAndGetUp3 subject1",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0013_fallAndGetUp3_subject1_6f6ec647bb.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0013_fallAndGetUp3_subject1_6f6ec647bb.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0013_fallAndGetUp3_subject1_6f6ec647bb.bin",
+          "frames": 441,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0013_fallAndGetUp3_subject1_6f6ec647bb.bin",
+          "frames": 481,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 18.070722025391724,
+          "joint_mae_rad": 0.06514317741090443,
+          "root_drift_mm": 825.0629753980159,
+          "foot_slip_m_s": 0.11672989574932752,
+          "mechanical_power_w": 140.9867796280257
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.44,
+          "local_mpjpe_mm": 39.60219184195817,
+          "joint_mae_rad": 0.17411103531047845,
+          "root_drift_mm": 1785.3561233060184,
+          "foot_slip_m_s": 0.18555274762657567,
+          "mechanical_power_w": 214.13844950850523
+        },
+        "humanoid_gpt": {
+          "success_rate": 0.0,
+          "completion_rate": 0.48,
+          "local_mpjpe_mm": 28.274793609818985,
+          "joint_mae_rad": 0.07070639815005018,
+          "root_drift_mm": 291.16241658526286,
+          "foot_slip_m_s": 0.1628898290051372,
+          "mechanical_power_w": 98.25761365005505
+        }
+      }
+    },
+    {
+      "case_id": "fight1_subject2",
+      "split": "lafan1_g1",
+      "label": "fight1 subject2",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0014_fight1_subject2_df6946a438.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0014_fight1_subject2_df6946a438.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0014_fight1_subject2_df6946a438.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0014_fight1_subject2_df6946a438.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 16.30634238482145,
+          "joint_mae_rad": 0.07054726342162158,
+          "root_drift_mm": 1823.1167926456878,
+          "foot_slip_m_s": 0.1661829104801837,
+          "mechanical_power_w": 271.7459173772642
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 41.96778422442692,
+          "joint_mae_rad": 0.17768223771913363,
+          "root_drift_mm": 1416.5911949582326,
+          "foot_slip_m_s": 0.19315767328055886,
+          "mechanical_power_w": 255.21530293535923
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 43.02780431792303,
+          "joint_mae_rad": 0.11149848442584781,
+          "root_drift_mm": 1670.834409979062,
+          "foot_slip_m_s": 0.40440333546890317,
+          "mechanical_power_w": 222.03324793954263
+        }
+      }
+    },
+    {
+      "case_id": "fight1_subject3",
+      "split": "lafan1_g1",
+      "label": "fight1 subject3",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0015_fight1_subject3_73778e1ffe.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0015_fight1_subject3_73778e1ffe.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0015_fight1_subject3_73778e1ffe.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0015_fight1_subject3_73778e1ffe.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 13.912102241808414,
+          "joint_mae_rad": 0.0678483079527656,
+          "root_drift_mm": 944.3749355112307,
+          "foot_slip_m_s": 0.11280853353490682,
+          "mechanical_power_w": 221.02749792438013
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 48.30191858346281,
+          "joint_mae_rad": 0.16963048637098632,
+          "root_drift_mm": 1207.4090145290024,
+          "foot_slip_m_s": 0.1294331523743954,
+          "mechanical_power_w": 148.03242730391446
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 34.93711060122024,
+          "joint_mae_rad": 0.09252683743342865,
+          "root_drift_mm": 711.6752059640211,
+          "foot_slip_m_s": 0.30679806877338966,
+          "mechanical_power_w": 176.22114748681994
+        }
+      }
+    },
+    {
+      "case_id": "fight1_subject5",
+      "split": "lafan1_g1",
+      "label": "fight1 subject5",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0016_fight1_subject5_6ed7091266.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0016_fight1_subject5_6ed7091266.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0016_fight1_subject5_6ed7091266.bin",
+          "frames": 567,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0016_fight1_subject5_6ed7091266.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 13.419680245035885,
+          "joint_mae_rad": 0.06105014966996457,
+          "root_drift_mm": 802.9582021479067,
+          "foot_slip_m_s": 0.10869596387922482,
+          "mechanical_power_w": 175.1387801451863
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.566,
+          "local_mpjpe_mm": 54.02869767886236,
+          "joint_mae_rad": 0.1838880967704922,
+          "root_drift_mm": 1770.9477188544165,
+          "foot_slip_m_s": 0.1247661447924931,
+          "mechanical_power_w": 224.68301412428042
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 31.989397648002146,
+          "joint_mae_rad": 0.08269590561556628,
+          "root_drift_mm": 580.7752194090788,
+          "foot_slip_m_s": 0.35020737464431895,
+          "mechanical_power_w": 138.80348830048712
+        }
+      }
+    },
+    {
+      "case_id": "fightAndSports1_subject1",
+      "split": "lafan1_g1",
+      "label": "fightAndSports1 subject1",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0017_fightAndSports1_subject1_fcbc5341e6.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0017_fightAndSports1_subject1_fcbc5341e6.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0017_fightAndSports1_subject1_fcbc5341e6.bin",
+          "frames": 247,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0017_fightAndSports1_subject1_fcbc5341e6.bin",
+          "frames": 392,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 27.520927746634648,
+          "joint_mae_rad": 0.08622774409316925,
+          "root_drift_mm": 1522.8445001562586,
+          "foot_slip_m_s": 0.15176550208936873,
+          "mechanical_power_w": 145.19034243720793
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.246,
+          "local_mpjpe_mm": 42.756153878627664,
+          "joint_mae_rad": 0.18162980475783272,
+          "root_drift_mm": 124.0603250539911,
+          "foot_slip_m_s": 0.04333387528228573,
+          "mechanical_power_w": 61.36631282309013
+        },
+        "humanoid_gpt": {
+          "success_rate": 0.0,
+          "completion_rate": 0.391,
+          "local_mpjpe_mm": 35.53074898779835,
+          "joint_mae_rad": 0.07236821133765646,
+          "root_drift_mm": 128.58967276432358,
+          "foot_slip_m_s": 0.22247371119469814,
+          "mechanical_power_w": 78.66232091730737
+        }
+      }
+    },
+    {
+      "case_id": "fightAndSports1_subject4",
+      "split": "lafan1_g1",
+      "label": "fightAndSports1 subject4",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0018_fightAndSports1_subject4_e05a8f953e.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0018_fightAndSports1_subject4_e05a8f953e.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0018_fightAndSports1_subject4_e05a8f953e.bin",
+          "frames": 840,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0018_fightAndSports1_subject4_e05a8f953e.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 13.76936420159771,
+          "joint_mae_rad": 0.06246473214121188,
+          "root_drift_mm": 567.4084697651283,
+          "foot_slip_m_s": 0.08732883642561216,
+          "mechanical_power_w": 118.16375886039809
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.839,
+          "local_mpjpe_mm": 60.926609785443404,
+          "joint_mae_rad": 0.2358366838526761,
+          "root_drift_mm": 556.6597990035879,
+          "foot_slip_m_s": 0.1284453420723081,
+          "mechanical_power_w": 199.32409816561312
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 30.236914135919438,
+          "joint_mae_rad": 0.07778961773499364,
+          "root_drift_mm": 158.1390372065459,
+          "foot_slip_m_s": 0.0976028320043567,
+          "mechanical_power_w": 79.05807034792971
+        }
+      }
+    },
+    {
+      "case_id": "jumps1_subject1",
+      "split": "lafan1_g1",
+      "label": "jumps1 subject1",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0019_jumps1_subject1_0e251888c7.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0019_jumps1_subject1_0e251888c7.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0019_jumps1_subject1_0e251888c7.bin",
+          "frames": 471,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0019_jumps1_subject1_0e251888c7.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 12.927118644178513,
+          "joint_mae_rad": 0.05727185349657767,
+          "root_drift_mm": 1540.8720994260777,
+          "foot_slip_m_s": 0.05662788438056103,
+          "mechanical_power_w": 200.1069791715704
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.47,
+          "local_mpjpe_mm": 45.0821507994423,
+          "joint_mae_rad": 0.18748701701319007,
+          "root_drift_mm": 824.2708580997876,
+          "foot_slip_m_s": 0.08486548038411076,
+          "mechanical_power_w": 179.80576112703423
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 31.994600999581778,
+          "joint_mae_rad": 0.08481656467961887,
+          "root_drift_mm": 1280.4706124683005,
+          "foot_slip_m_s": 0.2544292966760791,
+          "mechanical_power_w": 168.9197641236817
+        }
+      }
+    },
+    {
+      "case_id": "jumps1_subject2",
+      "split": "lafan1_g1",
+      "label": "jumps1 subject2",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0020_jumps1_subject2_4765c8bbdc.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0020_jumps1_subject2_4765c8bbdc.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0020_jumps1_subject2_4765c8bbdc.bin",
+          "frames": 588,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0020_jumps1_subject2_4765c8bbdc.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 12.464899793082568,
+          "joint_mae_rad": 0.05296562849041387,
+          "root_drift_mm": 619.6002032049673,
+          "foot_slip_m_s": 0.12170201129193166,
+          "mechanical_power_w": 80.93676586403666
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.587,
+          "local_mpjpe_mm": 62.45127406015017,
+          "joint_mae_rad": 0.1963052826484938,
+          "root_drift_mm": 248.7717482250673,
+          "foot_slip_m_s": 0.058716176085606836,
+          "mechanical_power_w": 79.93656703915359
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 30.76195049269372,
+          "joint_mae_rad": 0.07287266725838669,
+          "root_drift_mm": 1119.881495236124,
+          "foot_slip_m_s": 0.14452289470049454,
+          "mechanical_power_w": 66.45515446196505
+        }
+      }
+    },
+    {
+      "case_id": "jumps1_subject5",
+      "split": "lafan1_g1",
+      "label": "jumps1 subject5",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0021_jumps1_subject5_5e049829c7.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0021_jumps1_subject5_5e049829c7.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0021_jumps1_subject5_5e049829c7.bin",
+          "frames": 211,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0021_jumps1_subject5_5e049829c7.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 18.34083738010935,
+          "joint_mae_rad": 0.06618479523047796,
+          "root_drift_mm": 3089.635140848931,
+          "foot_slip_m_s": 0.11623150644016735,
+          "mechanical_power_w": 247.19458530084643
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.21,
+          "local_mpjpe_mm": 43.76021118531789,
+          "joint_mae_rad": 0.19544622034207282,
+          "root_drift_mm": 211.37022665889612,
+          "foot_slip_m_s": 0.13713741808480062,
+          "mechanical_power_w": 252.66483703266255
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 46.113055858167655,
+          "joint_mae_rad": 0.11695791547227045,
+          "root_drift_mm": 1444.8786740365035,
+          "foot_slip_m_s": 0.46811220224583666,
+          "mechanical_power_w": 251.90167130186256
+        }
+      }
+    },
+    {
+      "case_id": "run1_subject2",
+      "split": "lafan1_g1",
+      "label": "run1 subject2",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0022_run1_subject2_0301f86f2b.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0022_run1_subject2_0301f86f2b.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0022_run1_subject2_0301f86f2b.bin",
+          "frames": 313,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0022_run1_subject2_0301f86f2b.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 9.971985636173926,
+          "joint_mae_rad": 0.051220213805037364,
+          "root_drift_mm": 291.43354038619646,
+          "foot_slip_m_s": 0.05328232010625087,
+          "mechanical_power_w": 107.40081932335337
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.312,
+          "local_mpjpe_mm": 43.171906260840046,
+          "joint_mae_rad": 0.23482742613161917,
+          "root_drift_mm": 403.05640150116153,
+          "foot_slip_m_s": 0.07866979692259678,
+          "mechanical_power_w": 252.49421779824772
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 23.24902948396596,
+          "joint_mae_rad": 0.06132937659981434,
+          "root_drift_mm": 169.58904173060577,
+          "foot_slip_m_s": 0.1370046368546295,
+          "mechanical_power_w": 90.8636109139835
+        }
+      }
+    },
+    {
+      "case_id": "run1_subject5",
+      "split": "lafan1_g1",
+      "label": "run1 subject5",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0023_run1_subject5_adc40d4183.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0023_run1_subject5_adc40d4183.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0023_run1_subject5_adc40d4183.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0023_run1_subject5_adc40d4183.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 15.727158611250497,
+          "joint_mae_rad": 0.06388790585423054,
+          "root_drift_mm": 2552.4813321750225,
+          "foot_slip_m_s": 0.14500383656009722,
+          "mechanical_power_w": 363.20985580327914
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 50.939261828961676,
+          "joint_mae_rad": 0.19936565529901557,
+          "root_drift_mm": 1967.4165801589172,
+          "foot_slip_m_s": 0.1433811552727495,
+          "mechanical_power_w": 337.2185610964599
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 39.971713479978646,
+          "joint_mae_rad": 0.10789334564954879,
+          "root_drift_mm": 2009.3501097257022,
+          "foot_slip_m_s": 0.17092433818841496,
+          "mechanical_power_w": 275.9283481250877
+        }
+      }
+    },
+    {
+      "case_id": "run2_subject1",
+      "split": "lafan1_g1",
+      "label": "run2 subject1",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0024_run2_subject1_cdb39d9324.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0024_run2_subject1_cdb39d9324.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0024_run2_subject1_cdb39d9324.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0024_run2_subject1_cdb39d9324.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 13.512703979241943,
+          "joint_mae_rad": 0.0582128329294063,
+          "root_drift_mm": 1092.5579238405066,
+          "foot_slip_m_s": 0.08882478877637102,
+          "mechanical_power_w": 292.5975484271836
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 46.005362671006665,
+          "joint_mae_rad": 0.19425762415377135,
+          "root_drift_mm": 1981.362188232812,
+          "foot_slip_m_s": 0.1548825517544676,
+          "mechanical_power_w": 298.91382001948926
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 36.33899720532686,
+          "joint_mae_rad": 0.09600401512818274,
+          "root_drift_mm": 1594.0301046312134,
+          "foot_slip_m_s": 0.17836220294604166,
+          "mechanical_power_w": 243.61019428297487
+        }
+      }
+    },
+    {
+      "case_id": "run2_subject4",
+      "split": "lafan1_g1",
+      "label": "run2 subject4",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0025_run2_subject4_67917ae06a.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0025_run2_subject4_67917ae06a.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0025_run2_subject4_67917ae06a.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0025_run2_subject4_67917ae06a.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 13.650150875360529,
+          "joint_mae_rad": 0.06113878179282124,
+          "root_drift_mm": 2059.9333464999468,
+          "foot_slip_m_s": 0.12505296044667988,
+          "mechanical_power_w": 280.59227376597374
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 41.517131253251506,
+          "joint_mae_rad": 0.1857301935358833,
+          "root_drift_mm": 2039.2915016164693,
+          "foot_slip_m_s": 0.14499678597284069,
+          "mechanical_power_w": 281.4033191603527
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 34.36045722165251,
+          "joint_mae_rad": 0.0902635031162705,
+          "root_drift_mm": 1048.8737184687136,
+          "foot_slip_m_s": 0.2690629419781407,
+          "mechanical_power_w": 211.8200761076927
+        }
+      }
+    },
+    {
+      "case_id": "sprint1_subject2",
+      "split": "lafan1_g1",
+      "label": "sprint1 subject2",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0026_sprint1_subject2_a66d5d2c81.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0026_sprint1_subject2_a66d5d2c81.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0026_sprint1_subject2_a66d5d2c81.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0026_sprint1_subject2_a66d5d2c81.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 12.195227750552329,
+          "joint_mae_rad": 0.05880430752302388,
+          "root_drift_mm": 2838.5913693614525,
+          "foot_slip_m_s": 0.08423988812250494,
+          "mechanical_power_w": 209.80545789377214
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 48.53479145036785,
+          "joint_mae_rad": 0.20938286421368044,
+          "root_drift_mm": 1431.4251915423242,
+          "foot_slip_m_s": 0.0888642632756016,
+          "mechanical_power_w": 183.26440488528962
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 27.341499513715405,
+          "joint_mae_rad": 0.0749171627758835,
+          "root_drift_mm": 2585.8134451287324,
+          "foot_slip_m_s": 0.16375508301977365,
+          "mechanical_power_w": 163.1928529076854
+        }
+      }
+    },
+    {
+      "case_id": "sprint1_subject4",
+      "split": "lafan1_g1",
+      "label": "sprint1 subject4",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0027_sprint1_subject4_001f384942.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0027_sprint1_subject4_001f384942.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0027_sprint1_subject4_001f384942.bin",
+          "frames": 240,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0027_sprint1_subject4_001f384942.bin",
+          "frames": 701,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 14.01438526090441,
+          "joint_mae_rad": 0.05908826530218886,
+          "root_drift_mm": 2160.4959305174657,
+          "foot_slip_m_s": 0.11045776161306455,
+          "mechanical_power_w": 211.7204429424103
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.239,
+          "local_mpjpe_mm": 54.43053583569587,
+          "joint_mae_rad": 0.19142713953824833,
+          "root_drift_mm": 2262.0031718907835,
+          "foot_slip_m_s": 0.20631264420451734,
+          "mechanical_power_w": 447.7857927401426
+        },
+        "humanoid_gpt": {
+          "success_rate": 0.0,
+          "completion_rate": 0.7,
+          "local_mpjpe_mm": 24.68888249850545,
+          "joint_mae_rad": 0.055322787227562814,
+          "root_drift_mm": 226.54175730180322,
+          "foot_slip_m_s": 0.11757245438308259,
+          "mechanical_power_w": 72.89895524258975
+        }
+      }
+    },
+    {
+      "case_id": "walk1_subject1",
+      "split": "lafan1_g1",
+      "label": "walk1 subject1",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0028_walk1_subject1_ac9057fec0.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0028_walk1_subject1_ac9057fec0.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0028_walk1_subject1_ac9057fec0.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0028_walk1_subject1_ac9057fec0.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 11.6393472099059,
+          "joint_mae_rad": 0.0563942156332326,
+          "root_drift_mm": 1330.2174344722146,
+          "foot_slip_m_s": 0.09237941801268898,
+          "mechanical_power_w": 61.197392441785354
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 44.02696823424275,
+          "joint_mae_rad": 0.15403563327428282,
+          "root_drift_mm": 715.4747098016538,
+          "foot_slip_m_s": 0.06238264500817744,
+          "mechanical_power_w": 70.60320625776065
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 23.241070207035733,
+          "joint_mae_rad": 0.05099232226012107,
+          "root_drift_mm": 655.2490482213725,
+          "foot_slip_m_s": 0.1431423421005054,
+          "mechanical_power_w": 38.14841626305501
+        }
+      }
+    },
+    {
+      "case_id": "walk1_subject2",
+      "split": "lafan1_g1",
+      "label": "walk1 subject2",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0029_walk1_subject2_3ba2de64ee.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0029_walk1_subject2_3ba2de64ee.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0029_walk1_subject2_3ba2de64ee.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0029_walk1_subject2_3ba2de64ee.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 12.104576807165856,
+          "joint_mae_rad": 0.06823735671163186,
+          "root_drift_mm": 205.61551401051602,
+          "foot_slip_m_s": 0.08893879377049706,
+          "mechanical_power_w": 49.01222769391884
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 41.13889496928963,
+          "joint_mae_rad": 0.19159845802967762,
+          "root_drift_mm": 2014.7989051889344,
+          "foot_slip_m_s": 0.13871137162827527,
+          "mechanical_power_w": 156.6178708044979
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 22.76653977815745,
+          "joint_mae_rad": 0.05503995678743079,
+          "root_drift_mm": 393.4999807015996,
+          "foot_slip_m_s": 0.11328310601931514,
+          "mechanical_power_w": 40.152423935450486
+        }
+      }
+    },
+    {
+      "case_id": "walk1_subject5",
+      "split": "lafan1_g1",
+      "label": "walk1 subject5",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0030_walk1_subject5_650c0abdb9.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0030_walk1_subject5_650c0abdb9.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0030_walk1_subject5_650c0abdb9.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0030_walk1_subject5_650c0abdb9.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 12.26309587784861,
+          "joint_mae_rad": 0.059649550594246446,
+          "root_drift_mm": 1939.6585043790103,
+          "foot_slip_m_s": 0.0850894718619061,
+          "mechanical_power_w": 127.46745838947314
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 40.93655335095617,
+          "joint_mae_rad": 0.15015646461010473,
+          "root_drift_mm": 1328.155290000801,
+          "foot_slip_m_s": 0.12139177781533066,
+          "mechanical_power_w": 146.2854359614503
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 26.497763209122002,
+          "joint_mae_rad": 0.06305364547760331,
+          "root_drift_mm": 346.34065736646994,
+          "foot_slip_m_s": 0.26119694506962604,
+          "mechanical_power_w": 84.41455382175938
+        }
+      }
+    },
+    {
+      "case_id": "walk2_subject1",
+      "split": "lafan1_g1",
+      "label": "walk2 subject1",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0031_walk2_subject1_e3ad523ff9.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0031_walk2_subject1_e3ad523ff9.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0031_walk2_subject1_e3ad523ff9.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0031_walk2_subject1_e3ad523ff9.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 12.544226959022414,
+          "joint_mae_rad": 0.05046968656844569,
+          "root_drift_mm": 1124.3162149052903,
+          "foot_slip_m_s": 0.10593502889223394,
+          "mechanical_power_w": 75.83261733308966
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 42.64872319333212,
+          "joint_mae_rad": 0.16999086349609607,
+          "root_drift_mm": 649.3472830006992,
+          "foot_slip_m_s": 0.08621737476968687,
+          "mechanical_power_w": 72.59322515244692
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 24.64782579797803,
+          "joint_mae_rad": 0.06050898441343359,
+          "root_drift_mm": 365.6049896898769,
+          "foot_slip_m_s": 0.16369696261989058,
+          "mechanical_power_w": 47.52544472962495
+        }
+      }
+    },
+    {
+      "case_id": "walk2_subject3",
+      "split": "lafan1_g1",
+      "label": "walk2 subject3",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0032_walk2_subject3_e94c02d5b5.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0032_walk2_subject3_e94c02d5b5.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0032_walk2_subject3_e94c02d5b5.bin",
+          "frames": 872,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0032_walk2_subject3_e94c02d5b5.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 12.656579051904224,
+          "joint_mae_rad": 0.06313506987255968,
+          "root_drift_mm": 1177.7922555575233,
+          "foot_slip_m_s": 0.08049928732570717,
+          "mechanical_power_w": 58.6671830247719
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.871,
+          "local_mpjpe_mm": 57.46089530139884,
+          "joint_mae_rad": 0.2112061247061554,
+          "root_drift_mm": 647.4637138503521,
+          "foot_slip_m_s": 0.03405749000063772,
+          "mechanical_power_w": 115.86581363041087
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 24.498938411668426,
+          "joint_mae_rad": 0.054133713487554094,
+          "root_drift_mm": 419.8645377911766,
+          "foot_slip_m_s": 0.1332296598740577,
+          "mechanical_power_w": 37.49441751716213
+        }
+      }
+    },
+    {
+      "case_id": "walk2_subject4",
+      "split": "lafan1_g1",
+      "label": "walk2 subject4",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0033_walk2_subject4_925fc7cf95.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0033_walk2_subject4_925fc7cf95.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0033_walk2_subject4_925fc7cf95.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0033_walk2_subject4_925fc7cf95.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 9.098873396254074,
+          "joint_mae_rad": 0.04884346143189458,
+          "root_drift_mm": 877.2190639444044,
+          "foot_slip_m_s": 0.059907519236927796,
+          "mechanical_power_w": 43.83723433685356
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 38.69148779258521,
+          "joint_mae_rad": 0.16810598521221648,
+          "root_drift_mm": 443.33146145749345,
+          "foot_slip_m_s": 0.11400081152748034,
+          "mechanical_power_w": 89.15076346915399
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 19.849319269720468,
+          "joint_mae_rad": 0.043750014472894935,
+          "root_drift_mm": 520.9682871934721,
+          "foot_slip_m_s": 0.1326431946033816,
+          "mechanical_power_w": 32.07324082434341
+        }
+      }
+    },
+    {
+      "case_id": "walk3_subject1",
+      "split": "lafan1_g1",
+      "label": "walk3 subject1",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0034_walk3_subject1_6a293f4097.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0034_walk3_subject1_6a293f4097.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0034_walk3_subject1_6a293f4097.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0034_walk3_subject1_6a293f4097.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 9.792987366394023,
+          "joint_mae_rad": 0.047355588740965356,
+          "root_drift_mm": 529.8592102185117,
+          "foot_slip_m_s": 0.08055749270231147,
+          "mechanical_power_w": 56.32819016193597
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 39.725781134705784,
+          "joint_mae_rad": 0.16749759910638212,
+          "root_drift_mm": 1828.4581247249257,
+          "foot_slip_m_s": 0.06923600755344947,
+          "mechanical_power_w": 42.71394443150276
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 22.50919301911395,
+          "joint_mae_rad": 0.05665731154315564,
+          "root_drift_mm": 450.59765219617634,
+          "foot_slip_m_s": 0.14547245085921104,
+          "mechanical_power_w": 37.847739776604065
+        }
+      }
+    },
+    {
+      "case_id": "walk3_subject2",
+      "split": "lafan1_g1",
+      "label": "walk3 subject2",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0035_walk3_subject2_ae799aae0b.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0035_walk3_subject2_ae799aae0b.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0035_walk3_subject2_ae799aae0b.bin",
+          "frames": 569,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0035_walk3_subject2_ae799aae0b.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 12.605902675375663,
+          "joint_mae_rad": 0.07533762337885198,
+          "root_drift_mm": 115.14675202724817,
+          "foot_slip_m_s": 0.06779177791445914,
+          "mechanical_power_w": 36.16139297025738
+        },
+        "protomotions": {
+          "success_rate": 0.0,
+          "completion_rate": 0.568,
+          "local_mpjpe_mm": 42.70593816524916,
+          "joint_mae_rad": 0.21093641970323168,
+          "root_drift_mm": 1509.3081133007158,
+          "foot_slip_m_s": 0.02511831642416681,
+          "mechanical_power_w": 187.8124157017321
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 23.017652568123662,
+          "joint_mae_rad": 0.05479603847109799,
+          "root_drift_mm": 66.99464331931652,
+          "foot_slip_m_s": 0.027652813260170234,
+          "mechanical_power_w": 23.486870987390787
+        }
+      }
+    },
+    {
+      "case_id": "walk3_subject3",
+      "split": "lafan1_g1",
+      "label": "walk3 subject3",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0036_walk3_subject3_9e8f0ed0e7.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0036_walk3_subject3_9e8f0ed0e7.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0036_walk3_subject3_9e8f0ed0e7.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0036_walk3_subject3_9e8f0ed0e7.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 13.798694798229615,
+          "joint_mae_rad": 0.05905450825083657,
+          "root_drift_mm": 1351.8840245236365,
+          "foot_slip_m_s": 0.11892312852235179,
+          "mechanical_power_w": 80.69215120345942
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 39.71054577704296,
+          "joint_mae_rad": 0.17481604234547582,
+          "root_drift_mm": 945.9794359451972,
+          "foot_slip_m_s": 0.1009344814683271,
+          "mechanical_power_w": 95.49898563699492
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 22.98190535020155,
+          "joint_mae_rad": 0.051079780854559505,
+          "root_drift_mm": 389.5999184919916,
+          "foot_slip_m_s": 0.15735215289547694,
+          "mechanical_power_w": 46.061576502004115
+        }
+      }
+    },
+    {
+      "case_id": "walk3_subject4",
+      "split": "lafan1_g1",
+      "label": "walk3 subject4",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0037_walk3_subject4_9fff1c8f49.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0037_walk3_subject4_9fff1c8f49.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0037_walk3_subject4_9fff1c8f49.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0037_walk3_subject4_9fff1c8f49.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 11.27862810229367,
+          "joint_mae_rad": 0.05201967421966454,
+          "root_drift_mm": 316.1062048098389,
+          "foot_slip_m_s": 0.09076396850525245,
+          "mechanical_power_w": 95.84666771102808
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 37.93437344857667,
+          "joint_mae_rad": 0.13851004087202068,
+          "root_drift_mm": 2412.9704810679605,
+          "foot_slip_m_s": 0.11140275661421896,
+          "mechanical_power_w": 117.86527610032253
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 21.501655600665156,
+          "joint_mae_rad": 0.05028831743597184,
+          "root_drift_mm": 979.1981784488062,
+          "foot_slip_m_s": 0.20820085243786143,
+          "mechanical_power_w": 52.72960092758005
+        }
+      }
+    },
+    {
+      "case_id": "walk3_subject5",
+      "split": "lafan1_g1",
+      "label": "walk3 subject5",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0038_walk3_subject5_1734acfe8b.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0038_walk3_subject5_1734acfe8b.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0038_walk3_subject5_1734acfe8b.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0038_walk3_subject5_1734acfe8b.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 15.30281320697843,
+          "joint_mae_rad": 0.05767328547524639,
+          "root_drift_mm": 1273.4735122703828,
+          "foot_slip_m_s": 0.11555592386293642,
+          "mechanical_power_w": 194.11538983085381
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 60.28827519667523,
+          "joint_mae_rad": 0.19217714920498463,
+          "root_drift_mm": 549.8707990710944,
+          "foot_slip_m_s": 0.11618442465814469,
+          "mechanical_power_w": 202.5017788339149
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 36.54728250247724,
+          "joint_mae_rad": 0.09232820790702345,
+          "root_drift_mm": 1175.683319993207,
+          "foot_slip_m_s": 0.31347926727859365,
+          "mechanical_power_w": 152.25912442496778
+        }
+      }
+    },
+    {
+      "case_id": "walk4_subject1",
+      "split": "lafan1_g1",
+      "label": "walk4 subject1",
+      "assets": {
+        "gt": {
+          "path": "frames/gt/0039_walk4_subject1_8403950606.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "any2track": {
+          "path": "frames/any2track/0039_walk4_subject1_8403950606.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "protomotions": {
+          "path": "frames/protomotions/0039_walk4_subject1_8403950606.bin",
+          "frames": 1001,
+          "fps": 50.0
+        },
+        "humanoid_gpt": {
+          "path": "frames/humanoid_gpt/0039_walk4_subject1_8403950606.bin",
+          "frames": 1001,
+          "fps": 50.0
+        }
+      },
+      "metrics": {
+        "any2track": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 9.3843216812305,
+          "joint_mae_rad": 0.050112364049857784,
+          "root_drift_mm": 550.5196445486375,
+          "foot_slip_m_s": 0.09102770230556301,
+          "mechanical_power_w": 39.251886443025406
+        },
+        "protomotions": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 69.71423441328322,
+          "joint_mae_rad": 0.23936534045488156,
+          "root_drift_mm": 747.3966439714155,
+          "foot_slip_m_s": 0.08558815182795831,
+          "mechanical_power_w": 56.21754413562028
+        },
+        "humanoid_gpt": {
+          "success_rate": 1.0,
+          "completion_rate": 1.0,
+          "local_mpjpe_mm": 24.270452447407685,
+          "joint_mae_rad": 0.05882227222188194,
+          "root_drift_mm": 115.28400478978179,
+          "foot_slip_m_s": 0.07024359586218225,
+          "mechanical_power_w": 25.192991114888784
+        }
+      }
+    }
+  ]
+}

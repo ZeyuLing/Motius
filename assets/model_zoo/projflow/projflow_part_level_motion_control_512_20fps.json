@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "task": "part_level_motion_control",
+  "input": "person walking at an average pace forward, swaying arms and torso with a sense of swagger",
+  "condition": "Left-wrist XYZ position observed at every frame",
+  "frames": 160,
+  "fps": 20,
+  "condition_visualization": "Observed joint positions are highlighted in coral; generated regions remain teal.",
+  "constraint_error_m_mean": 6.673823715885874e-09,
+  "constraint_error_m_max": 4.470348358154297e-08,
+  "position_mask_count": 480
+}

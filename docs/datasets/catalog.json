@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "datasets": [
+    {
+      "id": "motionhub",
+      "name": "MotionHub",
+      "status": "motius-hosted",
+      "local_root": "data/motionhub",
+      "tasks": [
+        "text_to_motion",
+        "motion_to_text",
+        "music_to_dance",
+        "speech_to_gesture",
+        "text_to_multi_person_motion"
+      ],
+      "benchmark_ids": [],
+      "access": [
+        {
+          "label": "Motius Hugging Face release",
+          "kind": "motius",
+          "url": "https://huggingface.co/datasets/ZeyuLing/MotionHub"
+        },
+        {
+          "label": "Source repository",
+          "kind": "upstream",
+          "url": "https://github.com/ZeyuLing/MotionHub"
+        }
+      ],
+      "download": {
+        "repo_id": "ZeyuLing/MotionHub",
+        "repo_type": "dataset"
+      }
+    },
+    {
+      "id": "humanml3d",
+      "name": "HumanML3D",
+      "status": "upstream-reconstruction",
+      "local_root": "data/HumanML3D",
+      "tasks": [
+        "text_to_motion",
+        "motion_to_text",
+        "temporal_motion_completion",
+        "part_level_motion_control",
+        "motion_reconstruction"
+      ],
+      "benchmark_ids": [
+        "text_to_motion_humanml3d",
+        "motion_to_text_humanml3d",
+        "temporal_motion_completion_humanml3d",
+        "part_level_motion_control_humanml3d",
+        "motion_reconstruction_humanml3d"
+      ],
+      "access": [
+        {
+          "label": "Official source and reconstruction workflow",
+          "kind": "upstream",
+          "url": "https://github.com/EricGuo5513/HumanML3D"
+        },
+        {
+          "label": "Motius SMPL-H AMASS subset",
+          "kind": "motius-subset",
+          "url": "https://huggingface.co/datasets/ZeyuLing/MotionHub/tree/main/HumanML3D_AMASS"
+        },
+        {
+          "label": "Motius SMPL-H HumanAct12 subset",
+          "kind": "motius-subset",
+          "url": "https://huggingface.co/datasets/ZeyuLing/MotionHub/tree/main/HumanML3D_HumanACT12"
+        }
+      ]
+    },
+    {
+      "id": "babel",
+      "name": "BABEL",
+      "status": "motius-hosted-license-bound",
+      "local_root": "data/babel",
+      "tasks": [
+        "sequential_text_to_motion"
+      ],
+      "benchmark_ids": [
+        "sequential_text_to_motion_babel"
+      ],
+      "access": [
+        {
+          "label": "Motius official-layout pack",
+          "kind": "motius",
+          "url": "https://huggingface.co/datasets/ZeyuLing/babel-official"
+        },
+        {
+          "label": "Official dataset",
+          "kind": "upstream",
+          "url": "https://babel.is.tue.mpg.de/data.html"
+        }
+      ],
+      "download": {
+        "repo_id": "ZeyuLing/babel-official",
+        "repo_type": "dataset"
+      }
+    },
+    {
+      "id": "interhuman",
+      "name": "InterHuman",
+      "status": "upstream-license-bound",
+      "local_root": "data/InterHuman",
+      "tasks": [
+        "text_to_multi_person_motion"
+      ],
+      "benchmark_ids": [],
+      "access": [
+        {
+          "label": "Official InterGen repository and dataset instructions",
+          "kind": "upstream",
+          "url": "https://github.com/tr3e/InterGen"
+        }
+      ]
+    },
+    {
+      "id": "permo",
+      "name": "PerMo",
+      "status": "motius-hosted",
+      "local_root": "data/PerMo",
+      "tasks": [
+        "text_to_motion",
+        "motion_editing"
+      ],
+      "benchmark_ids": [
+        "motion_editing_style_content"
+      ],
+      "access": [
+        {
+          "label": "Motius Hugging Face release",
+          "kind": "motius",
+          "url": "https://huggingface.co/datasets/ZeyuLing/PerMo"
+        }
+      ],
+      "download": {
+        "repo_id": "ZeyuLing/PerMo",
+        "repo_type": "dataset"
+      }
+    },
+    {
+      "id": "motionfix",
+      "name": "MotionFix",
+      "status": "motius-hosted-license-bound",
+      "local_root": "data/MotionFix",
+      "tasks": [
+        "motion_editing"
+      ],
+      "benchmark_ids": [
+        "motion_editing_motionfix"
+      ],
+      "access": [
+        {
+          "label": "Motius SMPL-H release",
+          "kind": "motius",
+          "url": "https://huggingface.co/datasets/ZeyuLing/MotionFix"
+        },
+        {
+          "label": "Official dataset and terms",
+          "kind": "upstream",
+          "url": "https://motionfix.is.tue.mpg.de/"
+        }
+      ],
+      "download": {
+        "repo_id": "ZeyuLing/MotionFix",
+        "repo_type": "dataset"
+      }
+    },
+    {
+      "id": "aistpp",
+      "name": "AIST++",
+      "status": "upstream-with-motius-subset",
+      "local_root": "data/aistpp",
+      "tasks": [
+        "music_to_dance",
+        "dance_to_music"
+      ],
+      "benchmark_ids": [
+        "music_to_dance_aistpp",
+        "dance_to_music_aistpp"
+      ],
+      "access": [
+        {
+          "label": "Official dataset",
+          "kind": "upstream",
+          "url": "https://google.github.io/aistplusplus_dataset/"
+        },
+        {
+          "label": "Official API",
+          "kind": "upstream",
+          "url": "https://github.com/google/aistplusplus_api"
+        },
+        {
+          "label": "Motius MotionHub subset",
+          "kind": "motius-subset",
+          "url": "https://huggingface.co/datasets/ZeyuLing/MotionHub/tree/main/aist"
+        }
+      ]
+    },
+    {
+      "id": "beat2",
+      "name": "BEAT2",
+      "status": "upstream-with-motius-subset",
+      "local_root": "data/beat2",
+      "tasks": [
+        "speech_to_gesture"
+      ],
+      "benchmark_ids": [
+        "speech_to_gesture_beat2"
+      ],
+      "access": [
+        {
+          "label": "Official Hugging Face release",
+          "kind": "upstream",
+          "url": "https://huggingface.co/datasets/H-Liu1997/BEAT2"
+        },
+        {
+          "label": "Motius MotionHub subset",
+          "kind": "motius-subset",
+          "url": "https://huggingface.co/datasets/ZeyuLing/MotionHub/tree/main/beat_v2.0.0"
+        }
+      ]
+    },
+    {
+      "id": "amass",
+      "name": "AMASS",
+      "status": "upstream-license-bound",
+      "local_root": "data/amass",
+      "tasks": [
+        "motion_tracking"
+      ],
+      "benchmark_ids": [
+        "motion_tracking_isaaclab_g1"
+      ],
+      "access": [
+        {
+          "label": "Official registration and download",
+          "kind": "upstream",
+          "url": "https://amass.is.tue.mpg.de/"
+        },
+        {
+          "label": "Official dataset license",
+          "kind": "upstream",
+          "url": "https://amass.is.tue.mpg.de/license.html"
+        },
+        {
+          "label": "Private user-authorized AMASS-G1 cache",
+          "kind": "private-motius-cache",
+          "url": "https://huggingface.co/datasets/ZeyuLing/AMASS_GMR_for_G1"
+        }
+      ]
+    },
+    {
+      "id": "lafan1",
+      "name": "LAFAN1",
+      "status": "upstream-license-bound",
+      "local_root": "data/LAFAN1",
+      "tasks": [
+        "motion_tracking"
+      ],
+      "benchmark_ids": [
+        "motion_tracking_mujoco_lafan1_g1"
+      ],
+      "access": [
+        {
+          "label": "Official Ubisoft dataset",
+          "kind": "upstream",
+          "url": "https://github.com/ubisoft/ubisoft-laforge-animation-dataset"
+        },
+        {
+          "label": "OpenTrack Unitree G1 retarget",
+          "kind": "upstream",
+          "url": "https://huggingface.co/datasets/robfiras/loco-mujoco-datasets/tree/main/Lafan1/mocap/UnitreeG1"
+        }
+      ],
+      "download": {
+        "repo_id": "robfiras/loco-mujoco-datasets",
+        "repo_type": "dataset",
+        "include": [
+          "Lafan1/mocap/UnitreeG1/*.npz",
+          "README.md"
+        ]
+      }
+    },
+    {
+      "id": "3dpw",
+      "name": "3DPW",
+      "status": "upstream-license-bound",
+      "local_root": "data/3DPW",
+      "tasks": [
+        "monocular_motion_capture"
+      ],
+      "benchmark_ids": [
+        "monocular_motion_capture_3dpw_test"
+      ],
+      "access": [
+        {
+          "label": "Official dataset and registration",
+          "kind": "upstream",
+          "url": "https://virtualhumans.mpi-inf.mpg.de/3DPW/"
+        }
+      ]
+    },
+    {
+      "id": "emdb",
+      "name": "EMDB",
+      "status": "upstream-license-bound",
+      "local_root": "data/EMDB",
+      "tasks": [
+        "monocular_motion_capture"
+      ],
+      "benchmark_ids": [],
+      "access": [
+        {
+          "label": "Official project",
+          "kind": "upstream",
+          "url": "https://eth-ait.github.io/emdb/"
+        },
+        {
+          "label": "Official registration and download",
+          "kind": "upstream",
+          "url": "https://emdb.ait.ethz.ch/"
+        }
+      ]
+    }
+  ],
+  "benchmark_exemptions": [
+    {
+      "id": "text_to_motion_unitree_g1",
+      "reason": "The evaluation population is a protocol-local caption manifest, not an external dataset release."
+    }
+  ],
+  "artifact_datasets": [
+    {
+      "id": "leaderboard_cases",
+      "name": "Motius Leaderboard Cases",
+      "purpose": "Persisted qualitative predictions and viewer assets; not training data.",
+      "url": "https://huggingface.co/datasets/ZeyuLing/Motius-Leaderboard-Cases"
+    }
+  ]
+}

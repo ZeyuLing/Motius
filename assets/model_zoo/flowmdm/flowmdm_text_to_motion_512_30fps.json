@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "method": "FlowMDM",
+  "task": "text_to_motion",
+  "input": "hands in fighting position while the left foot kicks aggressively up and over.",
+  "case_id": "001840",
+  "frames": 83,
+  "fps": 30,
+  "training_motion_fps": 20,
+  "preview_fps": 30,
+  "timing": "Duration-preserving 20 to 30 fps resampling.",
+  "capture_frame_step": 1,
+  "condition_visualization": "The input caption is embedded in the rendered video.",
+  "source": "T2M HumanML3D leaderboard evaluated SMPL asset",
+  "viewer_url": "https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=flowmdm&case=001840"
+}
