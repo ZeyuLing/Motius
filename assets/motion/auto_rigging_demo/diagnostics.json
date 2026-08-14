@@ -1,0 +1,1115 @@
+{
+  "schema_version": 1,
+  "rigged": "outputs/auto_rigging_demo/blender_cc0_male_004822/blender_cc0_male_rigged.fbx",
+  "animated": "outputs/auto_rigging_demo/blender_cc0_male_004822/blender_cc0_male_004822.fbx",
+  "frames": [
+    1,
+    37,
+    75,
+    112,
+    145,
+    150
+  ],
+  "renders": [
+    "rest_skeleton_front.png",
+    "rest_skeleton_side.png",
+    "dominant_weights_front.png",
+    "dominant_weights_back.png",
+    "pose_0001_front.png",
+    "pose_0037_front.png",
+    "pose_0075_front.png",
+    "pose_0112_front.png",
+    "pose_0145_front.png",
+    "pose_0150_front.png",
+    "pose_0001_side.png",
+    "pose_0037_side.png",
+    "pose_0075_side.png",
+    "pose_0112_side.png",
+    "pose_0145_side.png",
+    "pose_0150_side.png"
+  ],
+  "dominant_weight_vertices": {
+    "Head": 55462,
+    "L_Collar": 1259,
+    "L_Elbow": 1052,
+    "L_Foot": 7741,
+    "L_Hip": 8744,
+    "L_Knee": 17299,
+    "L_Shoulder": 8307,
+    "L_Wrist": 31332,
+    "Neck": 12218,
+    "Pelvis": 6872,
+    "R_Collar": 1255,
+    "R_Elbow": 1108,
+    "R_Foot": 7741,
+    "R_Hip": 8664,
+    "R_Knee": 17299,
+    "R_Shoulder": 8243,
+    "R_Wrist": 31280,
+    "Spine1": 3692,
+    "Spine2": 2910,
+    "Spine3": 8594
+  },
+  "edge_stretch": {
+    "interpretation": "Symmetric edge-length change: 1.0 is rigid, 1.5 is either 1.5x stretch or 1/1.5 compression. Maxima and p999 can be dominated by tiny finger/toe edges; p99 and the beyond-1.5 fraction are the primary robust gates. The worst-p999 frame is still rendered for visual inspection.",
+    "frames": {
+      "1": {
+        "p95_ratio_from_one": 1.1373916630615843,
+        "p99_ratio_from_one": 1.3997007406686484,
+        "p999_ratio_from_one": 2.2467162028014034,
+        "fraction_beyond_1_5x": 0.0072708568394504545,
+        "maximum_ratio_from_one": 14.662786986801686
+      },
+      "2": {
+        "p95_ratio_from_one": 1.140119274939883,
+        "p99_ratio_from_one": 1.403705436069241,
+        "p999_ratio_from_one": 2.2488669999774507,
+        "fraction_beyond_1_5x": 0.007360456627065773,
+        "maximum_ratio_from_one": 14.238412616186356
+      },
+      "3": {
+        "p95_ratio_from_one": 1.141913758150258,
+        "p99_ratio_from_one": 1.4061339535837063,
+        "p999_ratio_from_one": 2.2699610610673484,
+        "fraction_beyond_1_5x": 0.007426826840114157,
+        "maximum_ratio_from_one": 13.732149050269008
+      },
+      "4": {
+        "p95_ratio_from_one": 1.142534187894803,
+        "p99_ratio_from_one": 1.409513681194425,
+        "p999_ratio_from_one": 2.3177305465324793,
+        "fraction_beyond_1_5x": 0.007506471095772217,
+        "maximum_ratio_from_one": 11.006222590372484
+      },
+      "5": {
+        "p95_ratio_from_one": 1.1389110076078277,
+        "p99_ratio_from_one": 1.4003040776193572,
+        "p999_ratio_from_one": 2.3485285295650917,
+        "fraction_beyond_1_5x": 0.007377049180327869,
+        "maximum_ratio_from_one": 9.033211893778265
+      },
+      "6": {
+        "p95_ratio_from_one": 1.1353086485417583,
+        "p99_ratio_from_one": 1.391594522161916,
+        "p999_ratio_from_one": 2.4031751552175886,
+        "fraction_beyond_1_5x": 0.00720448662640207,
+        "maximum_ratio_from_one": 7.350485807958191
+      },
+      "7": {
+        "p95_ratio_from_one": 1.1317735186073072,
+        "p99_ratio_from_one": 1.3840040931190252,
+        "p999_ratio_from_one": 2.558760802893515,
+        "fraction_beyond_1_5x": 0.006975509391385146,
+        "maximum_ratio_from_one": 5.894019121845312
+      },
+      "8": {
+        "p95_ratio_from_one": 1.1282667895092309,
+        "p99_ratio_from_one": 1.3605099856282052,
+        "p999_ratio_from_one": 2.51269212564633,
+        "fraction_beyond_1_5x": 0.006444547686998075,
+        "maximum_ratio_from_one": 6.138130825604268
+      },
+      "9": {
+        "p95_ratio_from_one": 1.1265610768723366,
+        "p99_ratio_from_one": 1.3459174927226651,
+        "p999_ratio_from_one": 2.441183783532544,
+        "fraction_beyond_1_5x": 0.005870445344129555,
+        "maximum_ratio_from_one": 6.149672045331846
+      },
+      "10": {
+        "p95_ratio_from_one": 1.129464500545299,
+        "p99_ratio_from_one": 1.3540320277097464,
+        "p999_ratio_from_one": 2.309897027933413,
+        "fraction_beyond_1_5x": 0.005508727683015862,
+        "maximum_ratio_from_one": 5.936531262491957
+      },
+      "11": {
+        "p95_ratio_from_one": 1.1346928634680624,
+        "p99_ratio_from_one": 1.366402568524994,
+        "p999_ratio_from_one": 2.2294494764396258,
+        "fraction_beyond_1_5x": 0.005571779385411827,
+        "maximum_ratio_from_one": 5.893419341922002
+      },
+      "12": {
+        "p95_ratio_from_one": 1.1405389135532358,
+        "p99_ratio_from_one": 1.3810880912505241,
+        "p999_ratio_from_one": 2.2057963853783007,
+        "fraction_beyond_1_5x": 0.006112696621756156,
+        "maximum_ratio_from_one": 5.746706065318297
+      },
+      "13": {
+        "p95_ratio_from_one": 1.1464098468749528,
+        "p99_ratio_from_one": 1.4003186800705334,
+        "p999_ratio_from_one": 2.208686387900502,
+        "fraction_beyond_1_5x": 0.006723302581801287,
+        "maximum_ratio_from_one": 5.856908103685543
+      },
+      "14": {
+        "p95_ratio_from_one": 1.1465207401154818,
+        "p99_ratio_from_one": 1.4014868733294055,
+        "p999_ratio_from_one": 2.310158483848689,
+        "fraction_beyond_1_5x": 0.007048516625738369,
+        "maximum_ratio_from_one": 6.149147358744283
+      },
+      "15": {
+        "p95_ratio_from_one": 1.1482305849969927,
+        "p99_ratio_from_one": 1.4105102928643898,
+        "p999_ratio_from_one": 2.4084401184157502,
+        "fraction_beyond_1_5x": 0.007327271520541581,
+        "maximum_ratio_from_one": 6.323469183600552
+      },
+      "16": {
+        "p95_ratio_from_one": 1.1479184733829242,
+        "p99_ratio_from_one": 1.4099134919802083,
+        "p999_ratio_from_one": 2.487493941164525,
+        "fraction_beyond_1_5x": 0.007267538328798035,
+        "maximum_ratio_from_one": 7.984565264939058
+      },
+      "17": {
+        "p95_ratio_from_one": 1.1452180455750898,
+        "p99_ratio_from_one": 1.4063488438450185,
+        "p999_ratio_from_one": 2.635745186371703,
+        "fraction_beyond_1_5x": 0.007217760669011747,
+        "maximum_ratio_from_one": 8.27502596362058
+      },
+      "18": {
+        "p95_ratio_from_one": 1.143079027536492,
+        "p99_ratio_from_one": 1.4122393730862954,
+        "p999_ratio_from_one": 2.7816059035903686,
+        "fraction_beyond_1_5x": 0.007761996416008495,
+        "maximum_ratio_from_one": 19.867132591946397
+      },
+      "19": {
+        "p95_ratio_from_one": 1.141524709704718,
+        "p99_ratio_from_one": 1.4253199841948954,
+        "p999_ratio_from_one": 2.85476446493344,
+        "fraction_beyond_1_5x": 0.00807061790668348,
+        "maximum_ratio_from_one": 127.82921841085691
+      },
+      "20": {
+        "p95_ratio_from_one": 1.138618669957098,
+        "p99_ratio_from_one": 1.434338730432191,
+        "p999_ratio_from_one": 2.89256675614018,
+        "fraction_beyond_1_5x": 0.008269728545828633,
+        "maximum_ratio_from_one": 22.00771206289306
+      },
+      "21": {
+        "p95_ratio_from_one": 1.1400137468354787,
+        "p99_ratio_from_one": 1.4405219884395872,
+        "p999_ratio_from_one": 2.878516555459688,
+        "fraction_beyond_1_5x": 0.008306232163005243,
+        "maximum_ratio_from_one": 21.362812551466444
+      },
+      "22": {
+        "p95_ratio_from_one": 1.140585164237446,
+        "p99_ratio_from_one": 1.447053244334716,
+        "p999_ratio_from_one": 2.814333255376141,
+        "fraction_beyond_1_5x": 0.008634764717594744,
+        "maximum_ratio_from_one": 26.450634516190057
+      },
+      "23": {
+        "p95_ratio_from_one": 1.1406166680202432,
+        "p99_ratio_from_one": 1.4546601579998135,
+        "p999_ratio_from_one": 2.7904195663803395,
+        "fraction_beyond_1_5x": 0.008926793655007632,
+        "maximum_ratio_from_one": 29.128913545892484
+      },
+      "24": {
+        "p95_ratio_from_one": 1.140385676269528,
+        "p99_ratio_from_one": 1.4616335566910312,
+        "p999_ratio_from_one": 2.848430414461904,
+        "fraction_beyond_1_5x": 0.009092719187628592,
+        "maximum_ratio_from_one": 23.73778392013927
+      },
+      "25": {
+        "p95_ratio_from_one": 1.1406445855294778,
+        "p99_ratio_from_one": 1.463948209413642,
+        "p999_ratio_from_one": 2.936457067407354,
+        "fraction_beyond_1_5x": 0.00918231897524391,
+        "maximum_ratio_from_one": 21.434641322320903
+      },
+      "26": {
+        "p95_ratio_from_one": 1.1356000676592801,
+        "p99_ratio_from_one": 1.4453418997418013,
+        "p999_ratio_from_one": 3.0127030910758585,
+        "fraction_beyond_1_5x": 0.008787416207606027,
+        "maximum_ratio_from_one": 10.25250726836026
+      },
+      "27": {
+        "p95_ratio_from_one": 1.1321696747372192,
+        "p99_ratio_from_one": 1.4235592039871863,
+        "p999_ratio_from_one": 3.130168808283627,
+        "fraction_beyond_1_5x": 0.008226587907347182,
+        "maximum_ratio_from_one": 10.846142737512604
+      },
+      "28": {
+        "p95_ratio_from_one": 1.1277069086406846,
+        "p99_ratio_from_one": 1.4007749102358424,
+        "p999_ratio_from_one": 3.2115087480426894,
+        "fraction_beyond_1_5x": 0.007629255989911728,
+        "maximum_ratio_from_one": 16.961892435433242
+      },
+      "29": {
+        "p95_ratio_from_one": 1.1232013536838077,
+        "p99_ratio_from_one": 1.3910147294478232,
+        "p999_ratio_from_one": 3.042929762974182,
+        "fraction_beyond_1_5x": 0.00691909471029402,
+        "maximum_ratio_from_one": 19.896377257660696
+      },
+      "30": {
+        "p95_ratio_from_one": 1.1247487351884693,
+        "p99_ratio_from_one": 1.392709443768833,
+        "p999_ratio_from_one": 2.9236196522453803,
+        "fraction_beyond_1_5x": 0.006776398752239995,
+        "maximum_ratio_from_one": 8.05386825715026
+      },
+      "31": {
+        "p95_ratio_from_one": 1.1344072553112265,
+        "p99_ratio_from_one": 1.403423270180596,
+        "p999_ratio_from_one": 2.693199519233549,
+        "fraction_beyond_1_5x": 0.007101612796177076,
+        "maximum_ratio_from_one": 7.268897042198776
+      },
+      "32": {
+        "p95_ratio_from_one": 1.1366754328994115,
+        "p99_ratio_from_one": 1.4002934860396057,
+        "p999_ratio_from_one": 2.4476092021006814,
+        "fraction_beyond_1_5x": 0.006945642795513373,
+        "maximum_ratio_from_one": 7.0806823510796315
+      },
+      "33": {
+        "p95_ratio_from_one": 1.1383418595596948,
+        "p99_ratio_from_one": 1.4006617266518406,
+        "p999_ratio_from_one": 2.4059737721673375,
+        "fraction_beyond_1_5x": 0.006716665560496449,
+        "maximum_ratio_from_one": 6.963953497000891
+      },
+      "34": {
+        "p95_ratio_from_one": 1.1418274623778994,
+        "p99_ratio_from_one": 1.3947376761799832,
+        "p999_ratio_from_one": 2.4087154908193895,
+        "fraction_beyond_1_5x": 0.006401407048516626,
+        "maximum_ratio_from_one": 6.935202479574925
+      },
+      "35": {
+        "p95_ratio_from_one": 1.1417036132525318,
+        "p99_ratio_from_one": 1.3872926869933162,
+        "p999_ratio_from_one": 2.4362493928956623,
+        "fraction_beyond_1_5x": 0.006285259175681954,
+        "maximum_ratio_from_one": 6.857296135057543
+      },
+      "36": {
+        "p95_ratio_from_one": 1.1394023163910378,
+        "p99_ratio_from_one": 1.385946005854357,
+        "p999_ratio_from_one": 2.421893769070332,
+        "fraction_beyond_1_5x": 0.006262029601115019,
+        "maximum_ratio_from_one": 6.80383093927218
+      },
+      "37": {
+        "p95_ratio_from_one": 1.136449484061455,
+        "p99_ratio_from_one": 1.3843815252193747,
+        "p999_ratio_from_one": 2.484011565591092,
+        "fraction_beyond_1_5x": 0.006089467047189222,
+        "maximum_ratio_from_one": 6.767090087281477
+      },
+      "38": {
+        "p95_ratio_from_one": 1.1351991075831898,
+        "p99_ratio_from_one": 1.3708484971141528,
+        "p999_ratio_from_one": 2.542559201885904,
+        "fraction_beyond_1_5x": 0.0062786221543771155,
+        "maximum_ratio_from_one": 6.638894344154878
+      },
+      "39": {
+        "p95_ratio_from_one": 1.135678472665532,
+        "p99_ratio_from_one": 1.3769979962164716,
+        "p999_ratio_from_one": 2.5672902818690075,
+        "fraction_beyond_1_5x": 0.006637021304838389,
+        "maximum_ratio_from_one": 6.545401761472908
+      },
+      "40": {
+        "p95_ratio_from_one": 1.1344441346948384,
+        "p99_ratio_from_one": 1.3888335927171556,
+        "p999_ratio_from_one": 2.6130752229900627,
+        "fraction_beyond_1_5x": 0.006892546625074667,
+        "maximum_ratio_from_one": 6.630240805321688
+      },
+      "41": {
+        "p95_ratio_from_one": 1.1355932102403068,
+        "p99_ratio_from_one": 1.3980383556930056,
+        "p999_ratio_from_one": 2.627981615012432,
+        "fraction_beyond_1_5x": 0.007181257051835137,
+        "maximum_ratio_from_one": 7.0649091514576865
+      },
+      "42": {
+        "p95_ratio_from_one": 1.1385335097953937,
+        "p99_ratio_from_one": 1.4059272562143137,
+        "p999_ratio_from_one": 2.6145203731009614,
+        "fraction_beyond_1_5x": 0.007403597265547223,
+        "maximum_ratio_from_one": 7.0493694286718
+      },
+      "43": {
+        "p95_ratio_from_one": 1.1415510858411748,
+        "p99_ratio_from_one": 1.409874607742143,
+        "p999_ratio_from_one": 2.561248689751555,
+        "fraction_beyond_1_5x": 0.00761930045795447,
+        "maximum_ratio_from_one": 7.046049509398944
+      },
+      "44": {
+        "p95_ratio_from_one": 1.1403632885882908,
+        "p99_ratio_from_one": 1.4022610691597577,
+        "p999_ratio_from_one": 2.526247512513071,
+        "fraction_beyond_1_5x": 0.007546293223601248,
+        "maximum_ratio_from_one": 6.83556223211004
+      },
+      "45": {
+        "p95_ratio_from_one": 1.1377561300330683,
+        "p99_ratio_from_one": 1.3939697640370743,
+        "p999_ratio_from_one": 2.5168760213864383,
+        "fraction_beyond_1_5x": 0.007426826840114157,
+        "maximum_ratio_from_one": 6.043262541407286
+      },
+      "46": {
+        "p95_ratio_from_one": 1.1356674041032633,
+        "p99_ratio_from_one": 1.38708322021312,
+        "p999_ratio_from_one": 2.5606790443264504,
+        "fraction_beyond_1_5x": 0.007231034711621424,
+        "maximum_ratio_from_one": 6.242790540329488
+      },
+      "47": {
+        "p95_ratio_from_one": 1.1324411168770216,
+        "p99_ratio_from_one": 1.3716523310804838,
+        "p999_ratio_from_one": 2.5488509575198033,
+        "fraction_beyond_1_5x": 0.006627065772881131,
+        "maximum_ratio_from_one": 6.37497662593129
+      },
+      "48": {
+        "p95_ratio_from_one": 1.1290991397354722,
+        "p99_ratio_from_one": 1.3504750358220659,
+        "p999_ratio_from_one": 2.4729886798486564,
+        "fraction_beyond_1_5x": 0.0060396893874029335,
+        "maximum_ratio_from_one": 6.580522800210393
+      },
+      "49": {
+        "p95_ratio_from_one": 1.1284548070904263,
+        "p99_ratio_from_one": 1.3397026011844198,
+        "p999_ratio_from_one": 2.4276226076057994,
+        "fraction_beyond_1_5x": 0.005661379173027146,
+        "maximum_ratio_from_one": 6.825828403173286
+      },
+      "50": {
+        "p95_ratio_from_one": 1.1312907866188626,
+        "p99_ratio_from_one": 1.3555473459662837,
+        "p999_ratio_from_one": 2.3116644862099176,
+        "fraction_beyond_1_5x": 0.005316254065175549,
+        "maximum_ratio_from_one": 6.421281894806853
+      },
+      "51": {
+        "p95_ratio_from_one": 1.1377469992562717,
+        "p99_ratio_from_one": 1.3718042414407947,
+        "p999_ratio_from_one": 2.242518256462838,
+        "fraction_beyond_1_5x": 0.00564478661976505,
+        "maximum_ratio_from_one": 6.077531774827137
+      },
+      "52": {
+        "p95_ratio_from_one": 1.1436819723242082,
+        "p99_ratio_from_one": 1.3879561679457713,
+        "p999_ratio_from_one": 2.1816437665585835,
+        "fraction_beyond_1_5x": 0.006325081303510984,
+        "maximum_ratio_from_one": 5.79868444295143
+      },
+      "53": {
+        "p95_ratio_from_one": 1.1451546780590152,
+        "p99_ratio_from_one": 1.3948977514381644,
+        "p999_ratio_from_one": 2.2113360909966753,
+        "fraction_beyond_1_5x": 0.006736576624410964,
+        "maximum_ratio_from_one": 6.083221848804131
+      },
+      "54": {
+        "p95_ratio_from_one": 1.1468566615176374,
+        "p99_ratio_from_one": 1.4023599333231398,
+        "p999_ratio_from_one": 2.2821218799959357,
+        "fraction_beyond_1_5x": 0.0070020574766045,
+        "maximum_ratio_from_one": 5.965412597801306
+      },
+      "55": {
+        "p95_ratio_from_one": 1.1468721170270086,
+        "p99_ratio_from_one": 1.4042466340825588,
+        "p999_ratio_from_one": 2.386185301887293,
+        "fraction_beyond_1_5x": 0.007171301519877879,
+        "maximum_ratio_from_one": 9.447926543706663
+      },
+      "56": {
+        "p95_ratio_from_one": 1.1422775160463452,
+        "p99_ratio_from_one": 1.3986479345703609,
+        "p999_ratio_from_one": 2.45926219913772,
+        "fraction_beyond_1_5x": 0.007065109179000465,
+        "maximum_ratio_from_one": 11.266210033947116
+      },
+      "57": {
+        "p95_ratio_from_one": 1.1401575866749487,
+        "p99_ratio_from_one": 1.39646059107363,
+        "p999_ratio_from_one": 2.520718522998666,
+        "fraction_beyond_1_5x": 0.007214442158359328,
+        "maximum_ratio_from_one": 13.65616323393554
+      },
+      "58": {
+        "p95_ratio_from_one": 1.1386191070022247,
+        "p99_ratio_from_one": 1.4014174833077704,
+        "p999_ratio_from_one": 2.6119901985332303,
+        "fraction_beyond_1_5x": 0.0075761598194730205,
+        "maximum_ratio_from_one": 115.40823538470032
+      },
+      "59": {
+        "p95_ratio_from_one": 1.1366308918166435,
+        "p99_ratio_from_one": 1.412233825143095,
+        "p999_ratio_from_one": 2.601960529069829,
+        "fraction_beyond_1_5x": 0.007901373863410102,
+        "maximum_ratio_from_one": 16.163686300149994
+      },
+      "60": {
+        "p95_ratio_from_one": 1.136260910528294,
+        "p99_ratio_from_one": 1.4235713373923713,
+        "p999_ratio_from_one": 2.6295558303240916,
+        "fraction_beyond_1_5x": 0.00811375854516493,
+        "maximum_ratio_from_one": 12.45476388784852
+      },
+      "61": {
+        "p95_ratio_from_one": 1.137695280829861,
+        "p99_ratio_from_one": 1.4347899872644323,
+        "p999_ratio_from_one": 2.636931929733689,
+        "fraction_beyond_1_5x": 0.00823322492865202,
+        "maximum_ratio_from_one": 10.369397447037962
+      },
+      "62": {
+        "p95_ratio_from_one": 1.1389289398866804,
+        "p99_ratio_from_one": 1.443893774552245,
+        "p999_ratio_from_one": 2.656304459698548,
+        "fraction_beyond_1_5x": 0.00852193535541249,
+        "maximum_ratio_from_one": 9.868780101378938
+      },
+      "63": {
+        "p95_ratio_from_one": 1.1393738136675395,
+        "p99_ratio_from_one": 1.4495669356435454,
+        "p999_ratio_from_one": 2.6576308646717464,
+        "fraction_beyond_1_5x": 0.008684542377381031,
+        "maximum_ratio_from_one": 10.720773246559373
+      },
+      "64": {
+        "p95_ratio_from_one": 1.1397992888466202,
+        "p99_ratio_from_one": 1.4507978635022396,
+        "p999_ratio_from_one": 2.6606713035683787,
+        "fraction_beyond_1_5x": 0.008794053228910866,
+        "maximum_ratio_from_one": 12.362021326913583
+      },
+      "65": {
+        "p95_ratio_from_one": 1.1366306899223324,
+        "p99_ratio_from_one": 1.442441841513288,
+        "p999_ratio_from_one": 2.669251602318426,
+        "fraction_beyond_1_5x": 0.008591624079113293,
+        "maximum_ratio_from_one": 30.87484235303293
+      },
+      "66": {
+        "p95_ratio_from_one": 1.1345368628378285,
+        "p99_ratio_from_one": 1.4317681375135043,
+        "p999_ratio_from_one": 2.681380483797396,
+        "fraction_beyond_1_5x": 0.008286321099090728,
+        "maximum_ratio_from_one": 12.321475215162327
+      },
+      "67": {
+        "p95_ratio_from_one": 1.1311114028487355,
+        "p99_ratio_from_one": 1.4186336346139836,
+        "p999_ratio_from_one": 2.6885707942848076,
+        "fraction_beyond_1_5x": 0.00794451450189155,
+        "maximum_ratio_from_one": 14.317848385531839
+      },
+      "68": {
+        "p95_ratio_from_one": 1.1261981531875767,
+        "p99_ratio_from_one": 1.3938455504512806,
+        "p999_ratio_from_one": 2.5619743248584905,
+        "fraction_beyond_1_5x": 0.00708502024291498,
+        "maximum_ratio_from_one": 12.976988623524532
+      },
+      "69": {
+        "p95_ratio_from_one": 1.1275072582729215,
+        "p99_ratio_from_one": 1.3928865271275912,
+        "p999_ratio_from_one": 2.3764426921201323,
+        "fraction_beyond_1_5x": 0.00675316917767306,
+        "maximum_ratio_from_one": 6.490915720041145
+      },
+      "70": {
+        "p95_ratio_from_one": 1.1355926412254809,
+        "p99_ratio_from_one": 1.3994141025539772,
+        "p999_ratio_from_one": 2.2037420067376154,
+        "fraction_beyond_1_5x": 0.006945642795513373,
+        "maximum_ratio_from_one": 4.3644963902478455
+      },
+      "71": {
+        "p95_ratio_from_one": 1.1388602841235311,
+        "p99_ratio_from_one": 1.3970893832410292,
+        "p999_ratio_from_one": 2.0724158361028295,
+        "fraction_beyond_1_5x": 0.0069987389659520805,
+        "maximum_ratio_from_one": 4.562728934195788
+      },
+      "72": {
+        "p95_ratio_from_one": 1.1403632976164537,
+        "p99_ratio_from_one": 1.3985809372380675,
+        "p999_ratio_from_one": 1.9854530145341094,
+        "fraction_beyond_1_5x": 0.0068394504546359595,
+        "maximum_ratio_from_one": 4.325325970876958
+      },
+      "73": {
+        "p95_ratio_from_one": 1.1434748260356908,
+        "p99_ratio_from_one": 1.396177395474425,
+        "p999_ratio_from_one": 1.9842316011515608,
+        "fraction_beyond_1_5x": 0.006749850667020641,
+        "maximum_ratio_from_one": 4.43437608147384
+      },
+      "74": {
+        "p95_ratio_from_one": 1.1418975263368518,
+        "p99_ratio_from_one": 1.3862278843090632,
+        "p999_ratio_from_one": 1.9560801765277835,
+        "fraction_beyond_1_5x": 0.006457821729607752,
+        "maximum_ratio_from_one": 3.9177919433761508
+      },
+      "75": {
+        "p95_ratio_from_one": 1.139717094177332,
+        "p99_ratio_from_one": 1.3822965806406948,
+        "p999_ratio_from_one": 1.9932183231807474,
+        "fraction_beyond_1_5x": 0.0061359261963230905,
+        "maximum_ratio_from_one": 3.4555726803138125
+      },
+      "76": {
+        "p95_ratio_from_one": 1.1355467458506074,
+        "p99_ratio_from_one": 1.3757096214120692,
+        "p999_ratio_from_one": 2.041064772469171,
+        "fraction_beyond_1_5x": 0.005833941726952944,
+        "maximum_ratio_from_one": 3.364743853727069
+      },
+      "77": {
+        "p95_ratio_from_one": 1.1314155504246732,
+        "p99_ratio_from_one": 1.3590106147070125,
+        "p999_ratio_from_one": 2.0515353987321614,
+        "fraction_beyond_1_5x": 0.005658060662374727,
+        "maximum_ratio_from_one": 4.392678667222319
+      },
+      "78": {
+        "p95_ratio_from_one": 1.129819946542533,
+        "p99_ratio_from_one": 1.3588841619237777,
+        "p999_ratio_from_one": 2.0827883590331897,
+        "fraction_beyond_1_5x": 0.005837260237605363,
+        "maximum_ratio_from_one": 5.504464679401562
+      },
+      "79": {
+        "p95_ratio_from_one": 1.1281852117195441,
+        "p99_ratio_from_one": 1.3660961805921077,
+        "p999_ratio_from_one": 2.125544991375796,
+        "fraction_beyond_1_5x": 0.0061691113028472825,
+        "maximum_ratio_from_one": 7.192017963037297
+      },
+      "80": {
+        "p95_ratio_from_one": 1.1308873816593288,
+        "p99_ratio_from_one": 1.3755244055673868,
+        "p999_ratio_from_one": 2.1579906139174216,
+        "fraction_beyond_1_5x": 0.006481051304174686,
+        "maximum_ratio_from_one": 10.59848123845513
+      },
+      "81": {
+        "p95_ratio_from_one": 1.1351887451761016,
+        "p99_ratio_from_one": 1.3843367795209613,
+        "p999_ratio_from_one": 2.1811439201866234,
+        "fraction_beyond_1_5x": 0.006766443220282737,
+        "maximum_ratio_from_one": 11.126986846205432
+      },
+      "82": {
+        "p95_ratio_from_one": 1.139523992281248,
+        "p99_ratio_from_one": 1.3939937422093878,
+        "p999_ratio_from_one": 2.195480267365824,
+        "fraction_beyond_1_5x": 0.007108249817481914,
+        "maximum_ratio_from_one": 7.998374122546314
+      },
+      "83": {
+        "p95_ratio_from_one": 1.137591957964358,
+        "p99_ratio_from_one": 1.4016021180038025,
+        "p999_ratio_from_one": 2.214399465026669,
+        "fraction_beyond_1_5x": 0.0073040419459746465,
+        "maximum_ratio_from_one": 7.963883036343643
+      },
+      "84": {
+        "p95_ratio_from_one": 1.1348213481366274,
+        "p99_ratio_from_one": 1.398460467235317,
+        "p999_ratio_from_one": 2.247392093679493,
+        "fraction_beyond_1_5x": 0.007539656202296409,
+        "maximum_ratio_from_one": 7.336095629156236
+      },
+      "85": {
+        "p95_ratio_from_one": 1.13328377980813,
+        "p99_ratio_from_one": 1.3949901141885501,
+        "p999_ratio_from_one": 2.3592336269991256,
+        "fraction_beyond_1_5x": 0.007387004712285127,
+        "maximum_ratio_from_one": 6.169633861333871
+      },
+      "86": {
+        "p95_ratio_from_one": 1.1298317731474863,
+        "p99_ratio_from_one": 1.3798843139784744,
+        "p999_ratio_from_one": 2.4137631928484664,
+        "fraction_beyond_1_5x": 0.007078383221610141,
+        "maximum_ratio_from_one": 5.1524257448702775
+      },
+      "87": {
+        "p95_ratio_from_one": 1.126876563484725,
+        "p99_ratio_from_one": 1.365431248012515,
+        "p999_ratio_from_one": 2.4737834427140126,
+        "fraction_beyond_1_5x": 0.00659056215570452,
+        "maximum_ratio_from_one": 5.483754650042821
+      },
+      "88": {
+        "p95_ratio_from_one": 1.1249378946825535,
+        "p99_ratio_from_one": 1.347659031397758,
+        "p999_ratio_from_one": 2.4587104452350004,
+        "fraction_beyond_1_5x": 0.005976637685006969,
+        "maximum_ratio_from_one": 5.683044957567553
+      },
+      "89": {
+        "p95_ratio_from_one": 1.1275712746790918,
+        "p99_ratio_from_one": 1.3497239815028375,
+        "p999_ratio_from_one": 2.198315337757174,
+        "fraction_beyond_1_5x": 0.005468905555186832,
+        "maximum_ratio_from_one": 4.680198050436112
+      },
+      "90": {
+        "p95_ratio_from_one": 1.1347476652861395,
+        "p99_ratio_from_one": 1.3655723399364428,
+        "p999_ratio_from_one": 2.051268206126347,
+        "fraction_beyond_1_5x": 0.0055916904493263425,
+        "maximum_ratio_from_one": 5.425893807742797
+      },
+      "91": {
+        "p95_ratio_from_one": 1.1438451589065692,
+        "p99_ratio_from_one": 1.3889023401199314,
+        "p999_ratio_from_one": 2.0338185056187936,
+        "fraction_beyond_1_5x": 0.006378177473949692,
+        "maximum_ratio_from_one": 5.51546898026108
+      },
+      "92": {
+        "p95_ratio_from_one": 1.1455222775619116,
+        "p99_ratio_from_one": 1.3916950240808303,
+        "p999_ratio_from_one": 2.03833714595366,
+        "fraction_beyond_1_5x": 0.006603836198314197,
+        "maximum_ratio_from_one": 6.839469638141601
+      },
+      "93": {
+        "p95_ratio_from_one": 1.147558253938388,
+        "p99_ratio_from_one": 1.3985862162529312,
+        "p999_ratio_from_one": 2.098328715033373,
+        "fraction_beyond_1_5x": 0.006779717262892414,
+        "maximum_ratio_from_one": 5.319767353199808
+      },
+      "94": {
+        "p95_ratio_from_one": 1.14817893752864,
+        "p99_ratio_from_one": 1.4000468063349971,
+        "p999_ratio_from_one": 2.250735354777395,
+        "fraction_beyond_1_5x": 0.006962235348775469,
+        "maximum_ratio_from_one": 9.157022099807199
+      },
+      "95": {
+        "p95_ratio_from_one": 1.1453960865195765,
+        "p99_ratio_from_one": 1.3965693165764916,
+        "p999_ratio_from_one": 2.393538899799666,
+        "fraction_beyond_1_5x": 0.00679630981615451,
+        "maximum_ratio_from_one": 10.563840439495946
+      },
+      "96": {
+        "p95_ratio_from_one": 1.1437864408143426,
+        "p99_ratio_from_one": 1.3960885661663305,
+        "p999_ratio_from_one": 2.527244594682451,
+        "fraction_beyond_1_5x": 0.00692241322094644,
+        "maximum_ratio_from_one": 9.169078229077806
+      },
+      "97": {
+        "p95_ratio_from_one": 1.1424271622325624,
+        "p99_ratio_from_one": 1.3992984596869498,
+        "p999_ratio_from_one": 2.6762019101707955,
+        "fraction_beyond_1_5x": 0.007393641733589965,
+        "maximum_ratio_from_one": 21.07610226133962
+      },
+      "98": {
+        "p95_ratio_from_one": 1.1399417080500835,
+        "p99_ratio_from_one": 1.4129505874112447,
+        "p999_ratio_from_one": 2.753678745977923,
+        "fraction_beyond_1_5x": 0.007838322161014136,
+        "maximum_ratio_from_one": 26.89094185244713
+      },
+      "99": {
+        "p95_ratio_from_one": 1.1374195497440818,
+        "p99_ratio_from_one": 1.4284280633007633,
+        "p999_ratio_from_one": 2.8012061514987234,
+        "fraction_beyond_1_5x": 0.007977699608415743,
+        "maximum_ratio_from_one": 16.359951810971122
+      },
+      "100": {
+        "p95_ratio_from_one": 1.1391479105185982,
+        "p99_ratio_from_one": 1.4408696412259794,
+        "p999_ratio_from_one": 2.821123041773785,
+        "fraction_beyond_1_5x": 0.008229906417999602,
+        "maximum_ratio_from_one": 10.888069519019675
+      },
+      "101": {
+        "p95_ratio_from_one": 1.140636327897434,
+        "p99_ratio_from_one": 1.4440020844278385,
+        "p999_ratio_from_one": 2.777019326326385,
+        "fraction_beyond_1_5x": 0.008342735780181854,
+        "maximum_ratio_from_one": 9.510085246338436
+      },
+      "102": {
+        "p95_ratio_from_one": 1.140946701168334,
+        "p99_ratio_from_one": 1.447936079087534,
+        "p999_ratio_from_one": 2.6971588819976726,
+        "fraction_beyond_1_5x": 0.00856839450454636,
+        "maximum_ratio_from_one": 10.651264872785115
+      },
+      "103": {
+        "p95_ratio_from_one": 1.1411883861701162,
+        "p99_ratio_from_one": 1.4511733009825725,
+        "p999_ratio_from_one": 2.6824224761473,
+        "fraction_beyond_1_5x": 0.008767505143691512,
+        "maximum_ratio_from_one": 10.773449963919841
+      },
+      "104": {
+        "p95_ratio_from_one": 1.1378528879785608,
+        "p99_ratio_from_one": 1.4481260941236647,
+        "p999_ratio_from_one": 2.7128155438705415,
+        "fraction_beyond_1_5x": 0.008628127696289905,
+        "maximum_ratio_from_one": 17.819764012970293
+      },
+      "105": {
+        "p95_ratio_from_one": 1.13368084394513,
+        "p99_ratio_from_one": 1.4388354823192073,
+        "p999_ratio_from_one": 2.810422002453268,
+        "fraction_beyond_1_5x": 0.008455565142364107,
+        "maximum_ratio_from_one": 13.754457473347081
+      },
+      "106": {
+        "p95_ratio_from_one": 1.1302824569827017,
+        "p99_ratio_from_one": 1.4181535975356931,
+        "p999_ratio_from_one": 2.9771723458782846,
+        "fraction_beyond_1_5x": 0.008130351098427026,
+        "maximum_ratio_from_one": 10.710485677694855
+      },
+      "107": {
+        "p95_ratio_from_one": 1.1243265385393786,
+        "p99_ratio_from_one": 1.394112383945162,
+        "p999_ratio_from_one": 2.9708626897194836,
+        "fraction_beyond_1_5x": 0.007420189818809319,
+        "maximum_ratio_from_one": 14.336594609845365
+      },
+      "108": {
+        "p95_ratio_from_one": 1.1232148356981226,
+        "p99_ratio_from_one": 1.3918053574758311,
+        "p999_ratio_from_one": 2.8588091973711216,
+        "fraction_beyond_1_5x": 0.0068228579013738634,
+        "maximum_ratio_from_one": 10.494412631204572
+      },
+      "109": {
+        "p95_ratio_from_one": 1.1310791581292445,
+        "p99_ratio_from_one": 1.39593610528271,
+        "p999_ratio_from_one": 2.5883481983540264,
+        "fraction_beyond_1_5x": 0.006852724497245636,
+        "maximum_ratio_from_one": 6.539738796615402
+      },
+      "110": {
+        "p95_ratio_from_one": 1.1354310128950584,
+        "p99_ratio_from_one": 1.3938210070126908,
+        "p999_ratio_from_one": 2.3190130721280178,
+        "fraction_beyond_1_5x": 0.006690117475277095,
+        "maximum_ratio_from_one": 5.808549460977546
+      },
+      "111": {
+        "p95_ratio_from_one": 1.1378838450239004,
+        "p99_ratio_from_one": 1.391428488879533,
+        "p999_ratio_from_one": 2.149318153215532,
+        "fraction_beyond_1_5x": 0.0065839251343996815,
+        "maximum_ratio_from_one": 5.300414528145402
+      },
+      "112": {
+        "p95_ratio_from_one": 1.141404362062482,
+        "p99_ratio_from_one": 1.3929288065461363,
+        "p999_ratio_from_one": 2.091342767321183,
+        "fraction_beyond_1_5x": 0.006477732793522267,
+        "maximum_ratio_from_one": 5.007215901797288
+      },
+      "113": {
+        "p95_ratio_from_one": 1.142739547335589,
+        "p99_ratio_from_one": 1.3831062651302222,
+        "p999_ratio_from_one": 2.133163849966647,
+        "fraction_beyond_1_5x": 0.0063283998141634035,
+        "maximum_ratio_from_one": 5.0613209018328655
+      },
+      "114": {
+        "p95_ratio_from_one": 1.141676972980715,
+        "p99_ratio_from_one": 1.3809575291162068,
+        "p999_ratio_from_one": 2.109208756965193,
+        "fraction_beyond_1_5x": 0.006116015132408575,
+        "maximum_ratio_from_one": 4.686186668189558
+      },
+      "115": {
+        "p95_ratio_from_one": 1.138957330051849,
+        "p99_ratio_from_one": 1.3738844359647304,
+        "p999_ratio_from_one": 2.052288823702159,
+        "fraction_beyond_1_5x": 0.005757615981947302,
+        "maximum_ratio_from_one": 3.949390606585055
+      },
+      "116": {
+        "p95_ratio_from_one": 1.1359375205682387,
+        "p99_ratio_from_one": 1.3671582909710198,
+        "p999_ratio_from_one": 2.0802496435072366,
+        "fraction_beyond_1_5x": 0.005618238534545696,
+        "maximum_ratio_from_one": 3.8331455008671793
+      },
+      "117": {
+        "p95_ratio_from_one": 1.135408925779064,
+        "p99_ratio_from_one": 1.3584276920061304,
+        "p999_ratio_from_one": 2.0789858731456503,
+        "fraction_beyond_1_5x": 0.005986593216964226,
+        "maximum_ratio_from_one": 4.172280410779252
+      },
+      "118": {
+        "p95_ratio_from_one": 1.1351862617933417,
+        "p99_ratio_from_one": 1.3667240408553674,
+        "p999_ratio_from_one": 2.078144160320616,
+        "fraction_beyond_1_5x": 0.0061525187495851865,
+        "maximum_ratio_from_one": 5.465359681285146
+      },
+      "119": {
+        "p95_ratio_from_one": 1.1338438941385849,
+        "p99_ratio_from_one": 1.3773961178792276,
+        "p999_ratio_from_one": 2.1160437802829914,
+        "fraction_beyond_1_5x": 0.006484369814827105,
+        "maximum_ratio_from_one": 6.722992944598962
+      },
+      "120": {
+        "p95_ratio_from_one": 1.13687575405843,
+        "p99_ratio_from_one": 1.386062615375785,
+        "p999_ratio_from_one": 2.1434625934936133,
+        "fraction_beyond_1_5x": 0.00675316917767306,
+        "maximum_ratio_from_one": 7.433535499626081
+      },
+      "121": {
+        "p95_ratio_from_one": 1.140211487283008,
+        "p99_ratio_from_one": 1.3911739109324106,
+        "p999_ratio_from_one": 2.1766312777026053,
+        "fraction_beyond_1_5x": 0.006842768965288379,
+        "maximum_ratio_from_one": 7.703639990822612
+      },
+      "122": {
+        "p95_ratio_from_one": 1.141790603855164,
+        "p99_ratio_from_one": 1.3917920154809431,
+        "p999_ratio_from_one": 2.1832944301045147,
+        "fraction_beyond_1_5x": 0.0068726355611601515,
+        "maximum_ratio_from_one": 8.152549394262188
+      },
+      "123": {
+        "p95_ratio_from_one": 1.1409774773687138,
+        "p99_ratio_from_one": 1.3944118734750042,
+        "p999_ratio_from_one": 2.201823681828702,
+        "fraction_beyond_1_5x": 0.007012013008561757,
+        "maximum_ratio_from_one": 8.30638466288211
+      },
+      "124": {
+        "p95_ratio_from_one": 1.1372399490830918,
+        "p99_ratio_from_one": 1.393291773356693,
+        "p999_ratio_from_one": 2.3078784437661275,
+        "fraction_beyond_1_5x": 0.007151390455963364,
+        "maximum_ratio_from_one": 7.462034041010832
+      },
+      "125": {
+        "p95_ratio_from_one": 1.1326530101749157,
+        "p99_ratio_from_one": 1.3807366931719411,
+        "p999_ratio_from_one": 2.3161403534705385,
+        "fraction_beyond_1_5x": 0.0067100285391916105,
+        "maximum_ratio_from_one": 6.320639570869598
+      },
+      "126": {
+        "p95_ratio_from_one": 1.1301847922638517,
+        "p99_ratio_from_one": 1.361960773039443,
+        "p999_ratio_from_one": 2.3401753599551673,
+        "fraction_beyond_1_5x": 0.006255392579810181,
+        "maximum_ratio_from_one": 6.774231485223477
+      },
+      "127": {
+        "p95_ratio_from_one": 1.1272710524531928,
+        "p99_ratio_from_one": 1.3418804292564217,
+        "p999_ratio_from_one": 2.4039429473101612,
+        "fraction_beyond_1_5x": 0.005741023428685206,
+        "maximum_ratio_from_one": 8.364520297084114
+      },
+      "128": {
+        "p95_ratio_from_one": 1.12902902358343,
+        "p99_ratio_from_one": 1.3484213571716361,
+        "p999_ratio_from_one": 2.282448672087546,
+        "fraction_beyond_1_5x": 0.00526979491604168,
+        "maximum_ratio_from_one": 8.684726183548564
+      },
+      "129": {
+        "p95_ratio_from_one": 1.135268231222597,
+        "p99_ratio_from_one": 1.3598186347717711,
+        "p999_ratio_from_one": 2.2187894707749196,
+        "fraction_beyond_1_5x": 0.005332846618437645,
+        "maximum_ratio_from_one": 8.423590787423137
+      },
+      "130": {
+        "p95_ratio_from_one": 1.1419160675276465,
+        "p99_ratio_from_one": 1.3802996096749114,
+        "p999_ratio_from_one": 2.1808759451899182,
+        "fraction_beyond_1_5x": 0.00597000066370213,
+        "maximum_ratio_from_one": 8.047935046116523
+      },
+      "131": {
+        "p95_ratio_from_one": 1.144484246547107,
+        "p99_ratio_from_one": 1.3892697937467071,
+        "p999_ratio_from_one": 2.194919940087888,
+        "fraction_beyond_1_5x": 0.006421318112431141,
+        "maximum_ratio_from_one": 7.523930900309781
+      },
+      "132": {
+        "p95_ratio_from_one": 1.144904718472715,
+        "p99_ratio_from_one": 1.3948734937315401,
+        "p999_ratio_from_one": 2.244705756437761,
+        "fraction_beyond_1_5x": 0.0066635693900577424,
+        "maximum_ratio_from_one": 7.117867756161444
+      },
+      "133": {
+        "p95_ratio_from_one": 1.1454598503516271,
+        "p99_ratio_from_one": 1.392978173867002,
+        "p999_ratio_from_one": 2.3219504865946643,
+        "fraction_beyond_1_5x": 0.00691909471029402,
+        "maximum_ratio_from_one": 6.636225779656443
+      },
+      "134": {
+        "p95_ratio_from_one": 1.1426321504948558,
+        "p99_ratio_from_one": 1.39063570276057,
+        "p999_ratio_from_one": 2.41401311144687,
+        "fraction_beyond_1_5x": 0.006693435985929514,
+        "maximum_ratio_from_one": 9.066352529803893
+      },
+      "135": {
+        "p95_ratio_from_one": 1.1399564651849907,
+        "p99_ratio_from_one": 1.3829537985778664,
+        "p999_ratio_from_one": 2.516998242839184,
+        "fraction_beyond_1_5x": 0.006769761730935156,
+        "maximum_ratio_from_one": 8.975932735101354
+      },
+      "136": {
+        "p95_ratio_from_one": 1.1384741351132304,
+        "p99_ratio_from_one": 1.381434375531522,
+        "p999_ratio_from_one": 2.5363486997150915,
+        "fraction_beyond_1_5x": 0.0069821464126899845,
+        "maximum_ratio_from_one": 18.676047222467556
+      },
+      "137": {
+        "p95_ratio_from_one": 1.1363430113559916,
+        "p99_ratio_from_one": 1.3948221759678898,
+        "p999_ratio_from_one": 2.6019392997123885,
+        "fraction_beyond_1_5x": 0.007294086414017389,
+        "maximum_ratio_from_one": 38.15406031820058
+      },
+      "138": {
+        "p95_ratio_from_one": 1.1338890634050283,
+        "p99_ratio_from_one": 1.4072769199716808,
+        "p999_ratio_from_one": 2.6610981827254676,
+        "fraction_beyond_1_5x": 0.007682352160350435,
+        "maximum_ratio_from_one": 14.30029988548995
+      },
+      "139": {
+        "p95_ratio_from_one": 1.1359532300174107,
+        "p99_ratio_from_one": 1.415701791030109,
+        "p999_ratio_from_one": 2.697100611397916,
+        "fraction_beyond_1_5x": 0.00799429216167784,
+        "maximum_ratio_from_one": 9.06172373056378
+      },
+      "140": {
+        "p95_ratio_from_one": 1.1369784566577201,
+        "p99_ratio_from_one": 1.428020097913161,
+        "p999_ratio_from_one": 2.7626995250104858,
+        "fraction_beyond_1_5x": 0.008362646844096369,
+        "maximum_ratio_from_one": 10.002460844825901
+      },
+      "141": {
+        "p95_ratio_from_one": 1.1382813912941385,
+        "p99_ratio_from_one": 1.441456655308814,
+        "p999_ratio_from_one": 2.8713313156955262,
+        "fraction_beyond_1_5x": 0.00860489812172297,
+        "maximum_ratio_from_one": 9.766323706572113
+      },
+      "142": {
+        "p95_ratio_from_one": 1.1389514917179762,
+        "p99_ratio_from_one": 1.449360083888845,
+        "p999_ratio_from_one": 3.0449665043456866,
+        "fraction_beyond_1_5x": 0.008837193867392314,
+        "maximum_ratio_from_one": 9.05938704294604
+      },
+      "143": {
+        "p95_ratio_from_one": 1.1362473672999607,
+        "p99_ratio_from_one": 1.4463794817489017,
+        "p999_ratio_from_one": 3.1513710656608356,
+        "fraction_beyond_1_5x": 0.00860821663237539,
+        "maximum_ratio_from_one": 18.05067962281126
+      },
+      "144": {
+        "p95_ratio_from_one": 1.1334083821796275,
+        "p99_ratio_from_one": 1.4353275765362814,
+        "p999_ratio_from_one": 3.255406205330135,
+        "fraction_beyond_1_5x": 0.008339417269529435,
+        "maximum_ratio_from_one": 20.365172274280745
+      },
+      "145": {
+        "p95_ratio_from_one": 1.1297398584221068,
+        "p99_ratio_from_one": 1.4172189140866576,
+        "p999_ratio_from_one": 3.38075443981715,
+        "fraction_beyond_1_5x": 0.008010884714939935,
+        "maximum_ratio_from_one": 8.452121810346904
+      },
+      "146": {
+        "p95_ratio_from_one": 1.1258493304567383,
+        "p99_ratio_from_one": 1.3916189512559818,
+        "p999_ratio_from_one": 3.1977631498761165,
+        "fraction_beyond_1_5x": 0.007350501095108515,
+        "maximum_ratio_from_one": 8.092770296956576
+      },
+      "147": {
+        "p95_ratio_from_one": 1.1243975328874145,
+        "p99_ratio_from_one": 1.3894313609500406,
+        "p999_ratio_from_one": 2.9238455661265332,
+        "fraction_beyond_1_5x": 0.006826176412026283,
+        "maximum_ratio_from_one": 7.479541146298123
+      },
+      "148": {
+        "p95_ratio_from_one": 1.1300746410150606,
+        "p99_ratio_from_one": 1.3897114791628449,
+        "p999_ratio_from_one": 2.547631833060673,
+        "fraction_beyond_1_5x": 0.006703391517886772,
+        "maximum_ratio_from_one": 6.613790031361387
+      },
+      "149": {
+        "p95_ratio_from_one": 1.133418651803784,
+        "p99_ratio_from_one": 1.3879835440088304,
+        "p999_ratio_from_one": 2.2587136545797075,
+        "fraction_beyond_1_5x": 0.006613791730271454,
+        "maximum_ratio_from_one": 7.734004341252455
+      },
+      "150": {
+        "p95_ratio_from_one": 1.1370734666450264,
+        "p99_ratio_from_one": 1.387765766141577,
+        "p999_ratio_from_one": 2.187283327308193,
+        "fraction_beyond_1_5x": 0.006461140240260171,
+        "maximum_ratio_from_one": 5.357738590128925
+      }
+    },
+    "combined_p99_ratio_from_one": 1.398613095699052,
+    "combined_p999_ratio_from_one": 2.441753411337105,
+    "combined_fraction_beyond_1_5x": 0.0070742682684011415,
+    "maximum_frame_p99_ratio_from_one": 1.463948209413642,
+    "maximum_frame_p999_ratio_from_one": 3.38075443981715,
+    "maximum_frame_fraction_beyond_1_5x": 0.00918231897524391,
+    "worst_frame_p999": 145
+  }
+}

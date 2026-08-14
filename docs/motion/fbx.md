@@ -219,9 +219,12 @@ available for raw SMPL archives and direct skinned-SMPL export.
 
 ## Target Rig Contract
 
-The target FBX must contain a skeleton and at least one mesh connected to an
-FBX skin deformer. It must already be rigged and skinned; Motius does not
-auto-rig a static mesh.
+The target FBX passed to the retarget API must contain a skeleton and at least
+one mesh connected to an FBX skin deformer. If the source is an unrigged
+GLB/GLTF/FBX/OBJ/PLY/STL character, run the
+[automatic character rigging pipeline](rigging.md) first. It produces an FBX
+with canonical SMPL-22 names that this retarget API resolves without a custom
+bone map.
 
 Common Mixamo and canonical SMPL names, including namespace prefixes such as
 `mixamorig:`, are resolved automatically. A custom map is an object from the

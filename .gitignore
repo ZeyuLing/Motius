@@ -70,6 +70,7 @@ docs/leaderboards/hf_space_*/cases/**/audio/
 *.hdf5
 *.mp4
 !assets/model_zoo/gvhmr/*.mp4
+!assets/motion/auto_rigging_demo/*.mp4
 *.mov
 *.avi
 *.tar

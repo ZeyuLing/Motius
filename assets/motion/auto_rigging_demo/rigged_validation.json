@@ -1,0 +1,14 @@
+{
+  "asset": "outputs/auto_rigging_demo/blender_cc0_male_004822/blender_cc0_male_rigged.fbx",
+  "armature": "Motius_SMPL22_Rig",
+  "bones": 22,
+  "canonical_bones": 22,
+  "meshes": [
+    "Blender_CC0_Human_Base_Male"
+  ],
+  "vertices": 241072,
+  "unbound_vertices": 0,
+  "max_influences": 4,
+  "actions": [],
+  "max_vertex_deformation": 0.0
+}

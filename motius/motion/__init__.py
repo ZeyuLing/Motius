@@ -49,6 +49,16 @@ from .fbx import (
     resolve_fbxsdk_runtime,
     retarget_smpl_to_fbx,
 )
+from .rigging import (
+    CharacterRiggingError,
+    CharacterRiggingResult,
+    FittedHumanoidSkeleton,
+    SkinWeightResult,
+    TemplateRiggingConfig,
+    auto_rig_character,
+    compute_skin_weights,
+    fit_humanoid_skeleton,
+)
 
 __all__ = [
     "AISTPP_SMPL24_JOINTS",
@@ -98,4 +108,12 @@ __all__ = [
     "resolve_character_fbx",
     "resolve_character_root",
     "resolve_fbxsdk_runtime",
+    "CharacterRiggingError",
+    "CharacterRiggingResult",
+    "FittedHumanoidSkeleton",
+    "SkinWeightResult",
+    "TemplateRiggingConfig",
+    "auto_rig_character",
+    "compute_skin_weights",
+    "fit_humanoid_skeleton",
 ]

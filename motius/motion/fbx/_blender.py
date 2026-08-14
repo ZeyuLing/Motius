@@ -228,8 +228,8 @@ def _select_target_armature(imported, requested: str | None):
     if not skinned_meshes:
         raise ValueError(
             f"Armature {armature.name!r} has no skinned mesh in the character FBX. "
-            "Motius retargets animation to an already rigged/skinned FBX; it does "
-            "not automatically rig a static mesh."
+            "This retargeting endpoint requires an already rigged/skinned FBX. "
+            "Run motius.motion.auto_rig_character on a static character first."
         )
     return armature, skinned_meshes
 

@@ -179,7 +179,49 @@ Any supported human-motion representation can pass through the SMPL-22 bridge
 into a rigged FBX character. Compare the same motion as a skeleton, an SMPL
 mesh, and four Mixamo characters in the
 [30 fps character preview](assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_30fps.gif),
-then follow the [FBX export guide](docs/motion/fbx.md).
+then follow the [FBX export guide](docs/motion/fbx.md). Starting from a static
+humanoid instead? The [automatic rigging pipeline](docs/motion/rigging.md)
+imports GLB/GLTF/FBX/OBJ/PLY/STL, fits and skins a canonical SMPL-22 armature,
+and exports a rigged FBX or GLTF asset for the same motion bridge.
+
+### Automatic Rigging: Real Mesh To Motion
+
+Motius now includes an experimental, deterministic Auto-Rig baseline for a
+static, unrigged humanoid in an upright T/A/relaxed pose. It imports
+GLB/GLTF/FBX/OBJ/PLY/STL, fits a canonical SMPL-22 rest skeleton from geometry,
+estimates skin weights, and exports a rigged FBX/GLB/GLTF plus a validation
+manifest. Auto-Rig creates the rest rig and skin; animation retargeting remains
+a separate stage.
+
+The reproducible example below starts from Blender Studio's public CC0 Human
+Base Mesh. The build verifies that the input has no rig, runs the public
+`auto_rig_character()` API, validates the generated 22-bone armature and skin,
+applies a stored SMPL-22 motion, and renders the result:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/auto_rigging_demo/blender_cc0_male_autorig_004822_readme.gif" width="560" alt="A public unrigged Blender human base mesh automatically rigged by Motius and driven by HumanML3D motion 004822">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/auto_rigging_demo/blender_cc0_male_autorig_visual_qa.png" width="640" alt="Front and side auto-rigging QA: rest skeleton, dominant skin weights, and selected animated frames including the worst deformation frame">
+</p>
+
+Open the [full 640 × 640, 30 fps MP4](assets/motion/auto_rigging_demo/blender_cc0_male_autorig_004822_640_30fps.mp4),
+inspect the [machine-readable manifest](assets/motion/auto_rigging_demo/manifest.json),
+or reproduce the detailed download → validation → rig → animation → render chain:
+
+```bash
+python tools/build_auto_rigging_demo.py --blender /path/to/blender
+```
+
+The demo intentionally uses the persisted SMPL-22 joint trajectory in
+`assets/motion/representation_demo/data.json`, so reproducing this visual proof
+does not require downloading a licensed SMPL body mesh. This is a structural
+rigging and deformation smoke test, not proof of production-quality anatomy or
+of correctly recovered foot-sole and head-gaze orientation. SMPL-22 joint
+positions do not contain those full rotations. See the
+[rigging guide](docs/motion/rigging.md#verified-public-mesh-demo) for the exact
+input contract, API reference, validation fields, and method limitations.
 
 ## Train And Extend 🛠️
 

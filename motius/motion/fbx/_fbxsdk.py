@@ -177,8 +177,8 @@ def _collect_scene(scene, requested_root: str | None):
             mesh_nodes.append(node)
     if not mesh_nodes:
         raise ValueError(
-            "The target FBX has no skinned mesh. Motius animates an existing rig; "
-            "it does not auto-rig a static mesh."
+            "The target FBX has no skinned mesh. This retargeting endpoint requires "
+            "an existing rig; run motius.motion.auto_rig_character first."
         )
     return names, skeleton_nodes, mesh_nodes, armature_name
 

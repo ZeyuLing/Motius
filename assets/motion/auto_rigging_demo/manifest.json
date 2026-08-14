@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "source": {
+    "name": "Blender Human Base Meshes v1.0.0 / realistic male",
+    "url": "https://download.blender.org/demo/bundles/bundles-3.6/human-base-meshes-bundle-v1.0.0.zip",
+    "license": "CC0 1.0",
+    "archive_sha256": "46a912c0524072ac3b78c35d5d2471df7b8df102394a050ca8cd7184e3393648",
+    "source_object": "GEO-body_male_realistic",
+    "input_asset_committed": false
+  },
+  "motion": {
+    "case_id": "004822",
+    "source": "assets/motion/representation_demo/data.json",
+    "representation": "persisted HumanML3D SMPL22 joint trajectory",
+    "frames": 150,
+    "source_start_frame": 0,
+    "fps": 30
+  },
+  "pipeline": [
+    "download and SHA-256 verify public CC0 source",
+    "export static GLB and prove no armature, skin, weights, or action",
+    "Motius template auto-rig to canonical SMPL22 FBX",
+    "drive the target from persisted HumanML3D motion 004822",
+    "validate animation action and measured vertex deformation",
+    "render rest-skeleton, dominant-weight, and multi-pose diagnostics",
+    "enforce bone-direction and robust local edge-stretch limits before publication",
+    "render MP4 and README GIF with Blender EEVEE Next"
+  ],
+  "artifacts": {
+    "gif": "blender_cc0_male_autorig_004822_readme.gif",
+    "gif_sha256": "e8cd234cbcc6feed0ae81534552b585e8662eec75a5c43962af5ef0c3c9fe675",
+    "gif_frames": 51,
+    "mp4": "blender_cc0_male_autorig_004822_640_30fps.mp4",
+    "mp4_sha256": "65e325b8cb6b854415ff68ca8d69dc00651cfeb292dfa1c68ffaf4cc1766ea93",
+    "visual_qa": "blender_cc0_male_autorig_visual_qa.png",
+    "visual_qa_sha256": "b6d2466bceecb70864a59cbc52d4722507f7722ab7b60d476ade4c356438c545",
+    "deformation_quality_limits": {
+      "combined_p99_ratio_from_one": 1.65,
+      "combined_p999_ratio_from_one": 2.6,
+      "combined_fraction_beyond_1_5x": 0.02,
+      "maximum_frame_p99_ratio_from_one": 1.65,
+      "maximum_frame_fraction_beyond_1_5x": 0.02
+    },
+    "animation_direction_quality_limits": {
+      "mean_degrees": 1.0,
+      "p95_degrees": 7.5,
+      "max_degrees": 8.0,
+      "maximum_frame_mean_degrees": 1.0,
+      "maximum_frame_p95_degrees": 4.0
+    },
+    "reports": {
+      "source_export": "source_export.json",
+      "unrigged_validation": "unrigged_validation.json",
+      "rigging": "rigging.json",
+      "rigged_validation": "rigged_validation.json",
+      "animation": "animation.json",
+      "animation_validation": "animation_validation.json",
+      "render": "render.json",
+      "diagnostics": "diagnostics.json"
+    }
+  }
+}
