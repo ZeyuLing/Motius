@@ -115,7 +115,8 @@ python tools/train.py configs/gentrack/train_gentrack_g1.py \
 
 `PHYSFLOW_JUDGE_SPEC` is retained as the environment name because it is stored
 in released runtime receipts. The config uses the public
-`GenTrackG1Bundle`/`GenTrackFlowGRPOTrainer` names.
+`GenTrackG1Bundle`/`GenTrackFlowGRPOTrainer` names and the paper-reported
+immutable-reference KL weight of `0.02`.
 
 ## Multi-Round Co-Evolution
 
