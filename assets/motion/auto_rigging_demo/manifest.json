@@ -62,6 +62,8 @@
   "artifacts": {
     "mp4": "motius_multi_character_autorig_004822_960x540_30fps.mp4",
     "mp4_sha256": "74914a24bb76be896c03474191cf778de505de1602c53878cbb143d9053b14ad",
+    "readme_gif": "motius_multi_character_autorig_004822_800x450_20fps.gif",
+    "readme_gif_sha256": "e9a210a98d73fff5809f184a0068729fdd165548942b9a38fe6c0e5d28cb993b",
     "poster": "motius_multi_character_autorig_004822_poster.jpg",
     "poster_sha256": "8ec82026b8af18004d65fab3820f46d009819da4828a1f6621ac4d6268c5f3a8",
     "render_report": "render.json",

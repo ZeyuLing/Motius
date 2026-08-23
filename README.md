@@ -200,7 +200,7 @@ the generated skeleton, not a reference skeleton:
 
 <p align="center">
   <a href="assets/motion/auto_rigging_demo/motius_multi_character_autorig_004822_960x540_30fps.mp4">
-    <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/auto_rigging_demo/motius_multi_character_autorig_004822_poster.jpg" width="800" alt="Three downloaded textured characters with their generated SMPL22 skeletons, driven by one synchronized motion">
+    <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/auto_rigging_demo/motius_multi_character_autorig_004822_800x450_20fps.gif" width="800" alt="Three downloaded textured characters with their generated SMPL22 skeletons, driven by one synchronized motion">
   </a>
 </p>
 

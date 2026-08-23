@@ -9,8 +9,10 @@ driven by the same HumanML3D motion.
 
 - `motius_multi_character_autorig_004822_960x540_30fps.mp4`: complete
   150-frame, 30 fps synchronized video;
-- `motius_multi_character_autorig_004822_poster.jpg`: frame 103 used as the
-  clickable README preview;
+- `motius_multi_character_autorig_004822_800x450_20fps.gif`: optimized
+  100-frame, 20 fps looping README preview linked to the full MP4;
+- `motius_multi_character_autorig_004822_poster.jpg`: frame 103 reference
+  poster;
 - `manifest.json`: sources, licenses, pipeline provenance, and artifact hashes;
 - `validation.json`: input, rig, texture, deformation, and motion summaries;
 - `render.json`: renderer, motion, presentation, and skeleton-overlay contract.
