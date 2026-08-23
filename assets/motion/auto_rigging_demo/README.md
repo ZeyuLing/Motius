@@ -1,45 +1,50 @@
-# Public Auto-Rigging Demo
+# Multi-Character Auto-Rigging Demo
 
-This directory contains a reproducible structural smoke test for Motius's
-static-mesh rigging path. The input is Blender Studio's realistic male from
-Human Base Meshes v1.0.0, released under CC0:
+This directory contains the approved Motius AutoRig demo: three downloaded,
+textured, unrigged character meshes with different proportions are bound to
+animation-ready skeletons, normalized to Motius's canonical SMPL22 subset, and
+driven by the same HumanML3D motion.
+
+## Media
+
+- `motius_multi_character_autorig_004822_960x540_30fps.mp4`: complete
+  150-frame, 30 fps synchronized video;
+- `motius_multi_character_autorig_004822_poster.jpg`: frame 103 used as the
+  clickable README preview;
+- `manifest.json`: sources, licenses, pipeline provenance, and artifact hashes;
+- `validation.json`: input, rig, texture, deformation, and motion summaries;
+- `render.json`: renderer, motion, presentation, and skeleton-overlay contract.
+
+The video contains no text overlays. White joints and cyan limbs visualize the
+generated SMPL22-compatible skeletons in motion; they are not reference rigs.
+
+## Character Attribution
+
+| Role | Creator and model | License | Source |
+| --- | --- | --- | --- |
+| Child | CG-Moon, Little Girl | CC BY 4.0 | `https://sketchfab.com/3d-models/little-girl-rigged-3d-model-2b5c9b749a714dd6b0d04c7de83c254e` |
+| Big head | Suushimi, Running boy | CC BY-NC 4.0 | `https://sketchfab.com/3d-models/running-boy-0c80a9edd3514af0902349233d2c8d8f` |
+| High weight | kornasale, Yōkai Project: Oni | CC BY 4.0 | `https://sketchfab.com/3d-models/yokai-project-oni-62f0e50b3f3543febaddd4834b05a84d` |
+
+The source GLBs are not redistributed. The committed demo media contains
+third-party character content and retains the corresponding attribution and
+non-commercial restriction; it is not automatically covered by the license of
+Motius's source code.
+
+## Pipeline Provenance
+
+Skeleton and skin inference use the upstream Make-It-Animatable backend:
 
 ```text
-https://download.blender.org/demo/bundles/bundles-3.6/human-base-meshes-bundle-v1.0.0.zip
-SHA-256: 46a912c0524072ac3b78c35d5d2471df7b8df102394a050ca8cd7184e3393648
+https://github.com/jasongzy/Make-It-Animatable
+https://huggingface.co/spaces/jasongzy/Make-It-Animatable
 ```
 
-The source bundle and intermediate GLB/FBX files are reproducibly downloaded
-or generated and are not committed. `manifest.json` pins the source, motion,
-pipeline, media checksums, and individual validation reports. The final media
-are:
+Motius performs the public API integration, Mixamo-compatible-to-SMPL22 bone
+normalization, texture-preserving export, motion retargeting, foot/head
+orientation priors, validation, skeleton visualization, and final Blender
+render. This provenance distinction is intentional: the diverse-character
+media is not presented as output of Motius's simpler local `template` fitter.
 
-- `blender_cc0_male_autorig_004822_640_30fps.mp4`: full 150-frame Blender
-  render at 30 fps;
-- `blender_cc0_male_autorig_004822_readme.gif`: compact README preview;
-- `blender_cc0_male_autorig_visual_qa.png`: rest-skeleton and dominant-weight
-  views plus first, middle, worst-deformation, and last poses from front and
-  side;
-
-Rebuild everything from the repository root with:
-
-```bash
-python tools/build_auto_rigging_demo.py --blender /path/to/blender
-```
-
-The build uses the repository's persisted HumanML3D motion `004822`. It
-validates the input as unrigged, validates the output skin and canonical
-SMPL-22 armature, requires an imported animation Action and measured mesh
-deformation, checks source-to-target bone directions and robust edge stretch
-on every animation frame, and renders selected front/side pose diagnostics. It
-only publishes the media after all gates pass.
-
-These checks establish that the public mesh was unrigged, received a canonical
-armature and normalized skin weights, and visibly deforms under the stored
-motion. They do not establish production-quality anatomical landmarks, bone
-roll, foot contact, or head gaze. The demo retargeter consumes SMPL-22 joint
-positions: its bone-direction checks cannot observe twist around a bone, an
-ankle-to-foot vector does not define a sole plane, and a neck-to-head vector
-does not define a facial direction. Consult
-[`docs/motion/rigging.md`](../../../docs/motion/rigging.md) before treating the
-output as an accepted character asset.
+See [`docs/motion/rigging.md`](../../../docs/motion/rigging.md) for commands,
+privacy notes, method limits, and the separate fully local template backend.

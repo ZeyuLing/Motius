@@ -184,44 +184,48 @@ humanoid instead? The [automatic rigging pipeline](docs/motion/rigging.md)
 imports GLB/GLTF/FBX/OBJ/PLY/STL, fits and skins a canonical SMPL-22 armature,
 and exports a rigged FBX or GLTF asset for the same motion bridge.
 
-### Automatic Rigging: Real Mesh To Motion
+### Automatic Rigging: Diverse Meshes To Motion
 
-Motius now includes an experimental, deterministic Auto-Rig baseline for a
-static, unrigged humanoid in an upright T/A/relaxed pose. It imports
-GLB/GLTF/FBX/OBJ/PLY/STL, fits a canonical SMPL-22 rest skeleton from geometry,
-estimates skin weights, and exports a rigged FBX/GLB/GLTF plus a validation
-manifest. Auto-Rig creates the rest rig and skin; animation retargeting remains
-a separate stage.
+Motius exposes two Auto-Rig paths behind `auto_rig_character()`: a fully local,
+deterministic `template` baseline for upright T/A-pose humans, and an optional
+`make_it_animatable` backend for characters with much wider shapes and
+proportions. Both paths produce a Motius-compatible SMPL-22 bone subset that can
+be driven through the existing FBX motion bridge.
 
-The reproducible example below starts from Blender Studio's public CC0 Human
-Base Mesh. The build verifies that the input has no rig, runs the public
-`auto_rig_character()` API, validates the generated 22-bone armature and skin,
-applies a stored SMPL-22 motion, and renders the result:
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/auto_rigging_demo/blender_cc0_male_autorig_004822_readme.gif" width="560" alt="A public unrigged Blender human base mesh automatically rigged by Motius and driven by HumanML3D motion 004822">
-</p>
+The approved demo below starts from three downloaded, textured meshes. Input
+audits verify zero armatures, Armature modifiers, vertex groups, and Actions;
+the characters are then auto-rigged, normalized to the SMPL-22 contract, and
+driven by the same stored 150-frame HumanML3D motion. The cyan/white overlay is
+the generated skeleton, not a reference skeleton:
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/auto_rigging_demo/blender_cc0_male_autorig_visual_qa.png" width="640" alt="Front and side auto-rigging QA: rest skeleton, dominant skin weights, and selected animated frames including the worst deformation frame">
+  <a href="assets/motion/auto_rigging_demo/motius_multi_character_autorig_004822_960x540_30fps.mp4">
+    <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/auto_rigging_demo/motius_multi_character_autorig_004822_poster.jpg" width="800" alt="Three downloaded textured characters with their generated SMPL22 skeletons, driven by one synchronized motion">
+  </a>
 </p>
 
-Open the [full 640 × 640, 30 fps MP4](assets/motion/auto_rigging_demo/blender_cc0_male_autorig_004822_640_30fps.mp4),
+Open the [full 960 × 540, 30 fps MP4](assets/motion/auto_rigging_demo/motius_multi_character_autorig_004822_960x540_30fps.mp4),
 inspect the [machine-readable manifest](assets/motion/auto_rigging_demo/manifest.json),
-or reproduce the detailed download → validation → rig → animation → render chain:
+or read the [Auto-Rig guide](docs/motion/rigging.md#verified-multi-character-demo).
+
+The diverse-character demo uses the upstream Make-It-Animatable inference
+backend, followed by Motius's Mixamo-to-SMPL22 normalization, motion retargeting,
+orientation priors, validation, and rendering. The integration is explicit so
+the media is not misrepresented as output from the simpler local template
+fitter. Install the optional client and run it with:
 
 ```bash
-python tools/build_auto_rigging_demo.py --blender /path/to/blender
+pip install -e ".[auto-rig]"
+python tools/auto_rig_character.py character.glb rigged.fbx \
+  --method make-it-animatable --blender /path/to/blender
 ```
 
-The demo intentionally uses the persisted SMPL-22 joint trajectory in
-`assets/motion/representation_demo/data.json`, so reproducing this visual proof
-does not require downloading a licensed SMPL body mesh. This is a structural
-rigging and deformation smoke test, not proof of production-quality anatomy or
-of correctly recovered foot-sole and head-gaze orientation. SMPL-22 joint
-positions do not contain those full rotations. See the
-[rigging guide](docs/motion/rigging.md#verified-public-mesh-demo) for the exact
-input contract, API reference, validation fields, and method limitations.
+The public backend uploads the input mesh to a third-party Hugging Face Space;
+use a trusted self-hosted endpoint for private assets. Auto-Rig creates the rest
+rig and skin, while animation retargeting is a separate stage. This remains a
+rigging and deformation smoke test, not proof of production-quality anatomy on
+every mesh. See the guide for method boundaries, third-party attribution, and
+the foot/head orientation limitations of position-only SMPL-22 motion.
 
 ## Train And Extend 🛠️
 

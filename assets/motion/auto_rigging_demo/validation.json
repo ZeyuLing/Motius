@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "input_contract": {
+    "required_armatures": 0,
+    "required_armature_modifiers": 0,
+    "required_vertex_groups": 0,
+    "required_actions": 0
+  },
+  "characters": [
+    {
+      "role": "child",
+      "input": {
+        "vertices": 894,
+        "faces": 1220,
+        "armatures": 0,
+        "armature_modifiers": 0,
+        "vertex_groups": 0,
+        "actions": 0,
+        "materials": 1,
+        "packed_texture_images": 1
+      },
+      "rig": {
+        "canonical_bones": 22,
+        "unbound_vertices": 0,
+        "max_influences": 4
+      },
+      "animation": {
+        "frames": 150,
+        "max_sampled_vertex_deformation": 0.5968093770149988,
+        "bone_direction_mean_degrees": 1.7118977533895652,
+        "bone_direction_p95_degrees": 8.38536813123104,
+        "bone_direction_max_degrees": 8.391521517878509
+      }
+    },
+    {
+      "role": "big_head",
+      "input": {
+        "vertices": 44942,
+        "faces": 77466,
+        "armatures": 0,
+        "armature_modifiers": 0,
+        "vertex_groups": 0,
+        "actions": 0,
+        "materials": 1,
+        "packed_texture_images": 1
+      },
+      "rig": {
+        "canonical_bones": 22,
+        "unbound_vertices": 0,
+        "max_influences": 4
+      },
+      "animation": {
+        "frames": 150,
+        "max_sampled_vertex_deformation": 0.4680449169852139,
+        "bone_direction_mean_degrees": 1.4846940796478156,
+        "bone_direction_p95_degrees": 5.191717937379406,
+        "bone_direction_max_degrees": 5.198089628564672
+      }
+    },
+    {
+      "role": "high_weight",
+      "input": {
+        "vertices": 137955,
+        "faces": 259628,
+        "armatures": 0,
+        "armature_modifiers": 0,
+        "vertex_groups": 0,
+        "actions": 0,
+        "materials": 21,
+        "packed_texture_images": 62
+      },
+      "rig": {
+        "canonical_bones": 22,
+        "unbound_vertices": 0,
+        "max_influences": 4
+      },
+      "animation": {
+        "frames": 150,
+        "max_sampled_vertex_deformation": 0.9227140455369897,
+        "bone_direction_mean_degrees": 1.6499372965664874,
+        "bone_direction_p95_degrees": 7.685028940940117,
+        "bone_direction_max_degrees": 7.687593496562135
+      }
+    }
+  ],
+  "orientation_policy": {
+    "feet": "soft ground-height contact; terminal foot sole normal blends to world up during strong contact",
+    "head": "stabilize Neck and Head with the shoulder/torso frame because SMPL22 joint positions do not encode gaze"
+  },
+  "scope": "Visual and structural evidence for these three accepted examples; not a universal accuracy guarantee."
+}

@@ -1,62 +1,71 @@
 {
-  "schema_version": 1,
-  "source": {
-    "name": "Blender Human Base Meshes v1.0.0 / realistic male",
-    "url": "https://download.blender.org/demo/bundles/bundles-3.6/human-base-meshes-bundle-v1.0.0.zip",
-    "license": "CC0 1.0",
-    "archive_sha256": "46a912c0524072ac3b78c35d5d2471df7b8df102394a050ca8cd7184e3393648",
-    "source_object": "GEO-body_male_realistic",
-    "input_asset_committed": false
+  "schema_version": 2,
+  "demo": "textured multi-character AutoRig to synchronized motion",
+  "autorig_backend": {
+    "name": "Make-It-Animatable",
+    "mode": "public Hugging Face Space inference",
+    "space": "https://huggingface.co/spaces/jasongzy/Make-It-Animatable",
+    "upstream": "https://github.com/jasongzy/Make-It-Animatable",
+    "motius_method": "make_it_animatable"
   },
+  "characters": [
+    {
+      "role": "child",
+      "name": "Little Girl Rigged 3D Model",
+      "creator": "CG-Moon",
+      "source_url": "https://sketchfab.com/3d-models/little-girl-rigged-3d-model-2b5c9b749a714dd6b0d04c7de83c254e",
+      "source_uid": "2b5c9b749a714dd6b0d04c7de83c254e",
+      "license": "CC BY 4.0",
+      "source_glb_sha256": "b4553c9093dc43cdbe7afd2d65759d41b65929f626f4a1f4dd21facd78ee7d02",
+      "source_asset_committed": false
+    },
+    {
+      "role": "big_head",
+      "name": "Running boy",
+      "creator": "Suushimi",
+      "source_url": "https://sketchfab.com/3d-models/running-boy-0c80a9edd3514af0902349233d2c8d8f",
+      "source_uid": "0c80a9edd3514af0902349233d2c8d8f",
+      "license": "CC BY-NC 4.0",
+      "source_glb_sha256": "783b2efda5584ebdc87fc512d83af919f76ec5d421acb38ef5fa34cbbf28f6cd",
+      "source_asset_committed": false
+    },
+    {
+      "role": "high_weight",
+      "name": "Yōkai Project: Oni",
+      "creator": "kornasale",
+      "source_url": "https://sketchfab.com/3d-models/yokai-project-oni-62f0e50b3f3543febaddd4834b05a84d",
+      "source_uid": "62f0e50b3f3543febaddd4834b05a84d",
+      "license": "CC BY 4.0",
+      "source_glb_sha256": "67fd0126434c7bea873167ab9f3a40925575f161464e07f411b442e134d01699",
+      "source_asset_committed": false
+    }
+  ],
   "motion": {
     "case_id": "004822",
     "source": "assets/motion/representation_demo/data.json",
     "representation": "persisted HumanML3D SMPL22 joint trajectory",
     "frames": 150,
     "source_start_frame": 0,
-    "fps": 30
+    "fps": 30,
+    "synchronized_across_characters": true
   },
-  "pipeline": [
-    "download and SHA-256 verify public CC0 source",
-    "export static GLB and prove no armature, skin, weights, or action",
-    "Motius template auto-rig to canonical SMPL22 FBX",
-    "drive the target from persisted HumanML3D motion 004822",
-    "validate animation action and measured vertex deformation",
-    "render rest-skeleton, dominant-weight, and multi-pose diagnostics",
-    "enforce bone-direction and robust local edge-stretch limits before publication",
-    "render MP4 and README GIF with Blender EEVEE Next"
+  "motius_stages": [
+    "audit downloaded GLB as an unrigged static textured mesh",
+    "call the configured Make-It-Animatable skeleton and skin backend",
+    "normalize the Mixamo-compatible canonical subset to Motius SMPL22",
+    "preserve authored textures through the FBX working assets",
+    "drive all targets from persisted HumanML3D motion 004822",
+    "apply explicit foot-contact and head-stabilization orientation priors",
+    "validate canonical bones, normalized skin, deformation, and bone directions",
+    "render the synchronized result and generated skeleton overlay in Blender"
   ],
   "artifacts": {
-    "gif": "blender_cc0_male_autorig_004822_readme.gif",
-    "gif_sha256": "e8cd234cbcc6feed0ae81534552b585e8662eec75a5c43962af5ef0c3c9fe675",
-    "gif_frames": 51,
-    "mp4": "blender_cc0_male_autorig_004822_640_30fps.mp4",
-    "mp4_sha256": "65e325b8cb6b854415ff68ca8d69dc00651cfeb292dfa1c68ffaf4cc1766ea93",
-    "visual_qa": "blender_cc0_male_autorig_visual_qa.png",
-    "visual_qa_sha256": "b6d2466bceecb70864a59cbc52d4722507f7722ab7b60d476ade4c356438c545",
-    "deformation_quality_limits": {
-      "combined_p99_ratio_from_one": 1.65,
-      "combined_p999_ratio_from_one": 2.6,
-      "combined_fraction_beyond_1_5x": 0.02,
-      "maximum_frame_p99_ratio_from_one": 1.65,
-      "maximum_frame_fraction_beyond_1_5x": 0.02
-    },
-    "animation_direction_quality_limits": {
-      "mean_degrees": 1.0,
-      "p95_degrees": 7.5,
-      "max_degrees": 8.0,
-      "maximum_frame_mean_degrees": 1.0,
-      "maximum_frame_p95_degrees": 4.0
-    },
-    "reports": {
-      "source_export": "source_export.json",
-      "unrigged_validation": "unrigged_validation.json",
-      "rigging": "rigging.json",
-      "rigged_validation": "rigged_validation.json",
-      "animation": "animation.json",
-      "animation_validation": "animation_validation.json",
-      "render": "render.json",
-      "diagnostics": "diagnostics.json"
-    }
-  }
+    "mp4": "motius_multi_character_autorig_004822_960x540_30fps.mp4",
+    "mp4_sha256": "74914a24bb76be896c03474191cf778de505de1602c53878cbb143d9053b14ad",
+    "poster": "motius_multi_character_autorig_004822_poster.jpg",
+    "poster_sha256": "8ec82026b8af18004d65fab3820f46d009819da4828a1f6621ac4d6268c5f3a8",
+    "render_report": "render.json",
+    "validation_report": "validation.json"
+  },
+  "media_license_note": "The demo includes CC BY and CC BY-NC character content; preserve attribution and the Running boy non-commercial restriction."
 }

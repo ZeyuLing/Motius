@@ -1,12 +1,13 @@
 # Automatic Character Rigging
 
-Motius can fit a canonical SMPL-22 armature to a static humanoid mesh and
-generate skin weights without requiring a learned checkpoint:
+Motius provides two paths for fitting an animation-ready armature and skin to a
+static humanoid mesh:
 
 ```text
 GLB / GLTF / FBX / OBJ / PLY / STL
   -> Blender import and coordinate normalization
-  -> geometry-only SMPL-22 template fit
+  -> local geometry-only template fit OR Make-It-Animatable inference
+  -> canonical SMPL-22 normalization
   -> skin-weight estimation
   -> skinned FBX / GLB / GLTF + JSON manifest
 ```
@@ -16,7 +17,7 @@ retargeting are separate stages: this API creates the skeleton and skin, while
 the [FBX motion bridge](fbx.md) applies motion to a rigged target.
 
 > [!IMPORTANT]
-> The current `template` method is an experimental, deterministic baseline for
+> The local `template` method is an experimental, deterministic baseline for
 > one upright T/A-pose humanoid. A successful export proves that the mesh is
 > structurally bound; it does not prove production-quality anatomy, weights,
 > bone roll, foot contact, or facial orientation. Inspect the generated rig and
@@ -28,6 +29,16 @@ the [FBX motion bridge](fbx.md) applies motion to a rigged target.
 - Motius installed from source;
 - Blender 3.6 or newer, either on `PATH`, in `MOTIUS_BLENDER`, or passed with
   `blender_executable` / `--blender`.
+
+The optional Make-It-Animatable backend additionally requires:
+
+```bash
+pip install -e ".[auto-rig]"
+```
+
+It uses `gradio-client` to call `jasongzy/Make-It-Animatable` by default. That
+public Space receives the uploaded character file. Use `mia_space` or
+`--mia-space` to point private assets at a trusted self-hosted deployment.
 
 Blender performs scene import, armature creation, skin binding, and export. It
 is an external runtime and is not installed by the Python package.
@@ -70,9 +81,38 @@ print(result.metadata["skin_diagnostics"])
 print(result.warnings)
 ```
 
+### Diverse-character backend
+
+```bash
+python tools/auto_rig_character.py \
+  characters/stylized_or_unusual.glb \
+  outputs/characters/stylized_rigged.fbx \
+  --method make-it-animatable \
+  --blender /path/to/blender
+```
+
+The same path is available in Python:
+
+```python
+result = auto_rig_character(
+    "characters/stylized_or_unusual.glb",
+    "outputs/characters/stylized_rigged.fbx",
+    method="make_it_animatable",
+    blender_executable="/path/to/blender",
+    mia_space="jasongzy/Make-It-Animatable",
+)
+```
+
+This backend delegates skeleton and skin prediction to the upstream
+Make-It-Animatable model, then uses Blender to bake the imported FBX transform,
+map the Mixamo-compatible canonical subset to Motius SMPL22 names, preserve
+skin groups and textures, and export FBX/GLB/GLTF. Additional upstream bones,
+such as fingers, can remain in the output; the named SMPL22 subset is the
+contract consumed by Motius retargeting.
+
 ## Input Contract
 
-The built-in fitter expects all of the following:
+The built-in `template` fitter expects all of the following:
 
 - exactly one humanoid character, not a crowd or a complete environment;
 - upright body with the head above the torso and feet below the hips;
@@ -109,7 +149,7 @@ Accepted explicit axes are `X`, `Y`, `Z`, `-X`, `-Y`, and `-Z`. An explicit
 axis is rejected for FBX and GLTF because those formats already declare their
 coordinates and a second conversion would rotate the character twice.
 
-## What The Algorithm Does
+## What The Local Template Algorithm Does
 
 ### 1. Import and scene filtering
 
@@ -184,6 +224,8 @@ auto_rig_character(
     side_penalty=0.025,
     weight_method="capsules",
     replace_existing_rig=False,
+    mia_space="jasongzy/Make-It-Animatable",
+    mia_rest_pose="No",
 )
 ```
 
@@ -191,7 +233,7 @@ auto_rig_character(
 | --- | --- |
 | `character_path` | Existing unrigged source asset |
 | `output_path` | Different `.fbx`, `.glb`, or `.gltf` destination |
-| `method` | Currently only `template` |
+| `method` | `template` for the local baseline; `make_it_animatable` (or `mia`) for the optional high-coverage backend |
 | `blender_executable` | Blender path; otherwise resolve `MOTIUS_BLENDER` or `PATH` |
 | `up_axis` | `auto` or an explicit axis for OBJ/PLY/STL |
 | `top_k` | Maximum influences per vertex, from 1 to 4 |
@@ -199,6 +241,8 @@ auto_rig_character(
 | `side_penalty` | Cross-body influence multiplier in `(0, 1]`; smaller values separate left/right more strongly |
 | `weight_method` | `capsules` or Blender `automatic` |
 | `replace_existing_rig` | Permit intentional removal of an imported rig in the output scene |
+| `mia_space` | Public or trusted self-hosted Make-It-Animatable Gradio Space |
+| `mia_rest_pose` | Upstream rest-pose request: `No`, `T-pose`, or `A-pose` |
 
 The returned `CharacterRiggingResult` contains the output and manifest paths,
 method, armature name, mesh names, joint names, warnings, and the full parsed
@@ -223,6 +267,11 @@ Every run writes `<output-path>.json`. Important fields include:
 | `skin_diagnostics.weight_sum_error_max` | Maximum deviation from normalized unit weight |
 | `skin_diagnostics.max_influences` | Maximum retained influences per vertex |
 | `warnings` | Conditions that require visual inspection |
+
+The `make_it_animatable` manifest instead records the upstream Space, canonical
+SMPL22 subset, any additional upstream bones, output meshes, and normalization
+warnings. Local template fit/skin diagnostics do not exist for that backend and
+must not be fabricated from the upstream prediction.
 
 Do not use `quality_score` as an automatic acceptance threshold by itself. At
 minimum, inspect the following views before accepting a character:
@@ -260,32 +309,54 @@ representation can produce proper SMPL pose rotations. Some representations
 also require an installed SMPL body model; see the [FBX guide](fbx.md) for the
 exact route and license boundary.
 
-## Verified Public-Mesh Demo
+## Verified Multi-Character Demo
 
-`assets/motion/auto_rigging_demo/` contains a reproducible structural smoke
-test using Blender Studio's **Human Base Meshes v1.0.0**, released under CC0:
+`assets/motion/auto_rigging_demo/` contains the approved synchronized demo for
+three downloaded characters with visibly different proportions:
+
+| Demo role | Source | Source license |
+| --- | --- | --- |
+| Child | `https://sketchfab.com/3d-models/little-girl-rigged-3d-model-2b5c9b749a714dd6b0d04c7de83c254e` | CC BY 4.0 |
+| Big head | `https://sketchfab.com/3d-models/running-boy-0c80a9edd3514af0902349233d2c8d8f` | CC BY-NC 4.0 |
+| High weight | `https://sketchfab.com/3d-models/yokai-project-oni-62f0e50b3f3543febaddd4834b05a84d` | CC BY 4.0 |
+
+Despite the display name of the first source, the downloadable Sketchfab GLB
+used here contains no rig. For every input, Blender audits found zero
+armatures, Armature modifiers, vertex groups, and Actions before AutoRig. The
+three authored texture sets are retained in the rigged and animated assets.
+
+The demo pipeline is deliberately explicit:
 
 ```text
-https://download.blender.org/demo/bundles/bundles-3.6/human-base-meshes-bundle-v1.0.0.zip
-SHA-256: 46a912c0524072ac3b78c35d5d2471df7b8df102394a050ca8cd7184e3393648
+downloaded unrigged textured GLB
+  -> input-contract and material audit
+  -> Make-It-Animatable skeleton + skin inference
+  -> Motius Mixamo-compatible to SMPL22 normalization
+  -> stored HumanML3D motion 004822
+  -> Motius retargeting and orientation priors
+  -> deformation/direction diagnostics
+  -> synchronized Blender render with generated skeleton overlay
 ```
 
-The build downloads and verifies the archive, exports a body mesh, re-imports
-it in a factory Blender scene, and rejects the input if it contains an
-armature, Armature modifier, vertex group, or Action. It then runs the same
-public `auto_rig_character()` backend, validates 22 canonical bones, normalized
-weights, zero unbound vertices, and measured mesh deformation.
+Run the rendering stage on three already animated SMPL22-compatible FBX files:
 
 ```bash
-python tools/build_auto_rigging_demo.py --blender /path/to/blender
+blender --background --python tools/blender_render_textured_autorig_video.py -- \
+  --character "CHILD|CG-Moon / Little Girl|CC BY|child.fbx" \
+  --character "BIG-HEAD|Suushimi / Running boy|CC BY-NC|running_boy.fbx" \
+  --character "HIGH-WEIGHT|kornasale / Yokai Oni|CC BY|oni.fbx" \
+  --output demo.mp4 --frames-dir review_frames --report render.json --preview
 ```
 
-The committed animation is a deformation and pipeline smoke test for that
-specific mesh-motion pair. Because it is driven from a persisted SMPL-22 joint
-position trajectory, it is **not** evidence of recovered foot-sole normals,
-ground contact, gaze, or true head rotation. Read the machine reports together
-with the visual QA instead of treating the rendered video as a universal
-quality claim.
+The committed MP4 is a 150-frame, 30 fps deformation and integration smoke
+test. It demonstrates three accepted examples, not a universal guarantee for
+every mesh. It is driven from an SMPL-22 joint-position trajectory plus explicit
+Motius foot-contact and head-stabilization priors; it is not evidence that the
+static input alone exposes the true sole plane or gaze direction.
+
+`tools/build_auto_rigging_demo.py` remains available as a fully local,
+single-character `template` regression builder. Its default publication path
+is under `outputs/` so it cannot overwrite the approved multi-character media.
 
 ## Troubleshooting
 
@@ -304,8 +375,10 @@ quality claim.
 ## Reproducibility And Licensing
 
 The template and capsule methods are deterministic for the same imported
-geometry and configuration. Blender version and importer/exporter changes can
-still affect object transforms, materials, bone heat, and serialized files.
+geometry and configuration. Make-It-Animatable results depend on the configured
+upstream service and model revision. Blender version and importer/exporter
+changes can still affect object transforms, materials, bone heat, and serialized
+files.
 
 Motius does not grant rights to third-party character meshes, textures, fonts,
 or body models. Verify each source license before downloading, redistributing,

@@ -11,12 +11,19 @@ from pathlib import Path
 
 from motius.motion.fbx.api import resolve_blender_executable
 
+from .mia import (
+    DEFAULT_MIA_SPACE,
+    MIA_REST_POSES,
+    MIXAMO_TO_SMPL22,
+    request_make_it_animatable,
+)
 from .template import TemplateRiggingConfig
 
 SUPPORTED_CHARACTER_INPUTS = frozenset(
     {".fbx", ".glb", ".gltf", ".obj", ".ply", ".stl"}
 )
 SUPPORTED_RIG_OUTPUTS = frozenset({".fbx", ".glb", ".gltf"})
+AUTO_RIG_METHODS = frozenset({"template", "make_it_animatable"})
 
 
 class CharacterRiggingError(RuntimeError):
@@ -49,6 +56,8 @@ def auto_rig_character(
     side_penalty: float = 0.025,
     weight_method: str = "capsules",
     replace_existing_rig: bool = False,
+    mia_space: str = DEFAULT_MIA_SPACE,
+    mia_rest_pose: str = "No",
 ) -> CharacterRiggingResult:
     """Automatically fit and skin an upright humanoid character.
 
@@ -56,6 +65,12 @@ def auto_rig_character(
     FBX, GLB, or GLTF.  The built-in ``template`` method targets a T/A-pose
     humanoid and creates the canonical Motius SMPL22 bone names so the FBX can
     be passed directly to :func:`motius.motion.retarget_smpl_to_fbx`.
+
+    ``method="make_it_animatable"`` selects the optional, higher-coverage
+    Make-It-Animatable backend used by the public multi-character demo. It
+    uploads the source to ``mia_space``, downloads a Mixamo-compatible FBX,
+    and normalizes its canonical bone subset to Motius SMPL22 in Blender. Use
+    a trusted self-hosted Space for private character assets.
 
     Blender 3.6+ performs material-preserving asset I/O.  It is an external
     runtime, not a Python package dependency.
@@ -78,9 +93,12 @@ def auto_rig_character(
     if source == output:
         raise ValueError("character_path and output_path must be different files.")
 
-    method = str(method).casefold()
-    if method != "template":
-        raise ValueError("method must currently be 'template'.")
+    method = str(method).strip().casefold().replace("-", "_")
+    if method == "mia":
+        method = "make_it_animatable"
+    if method not in AUTO_RIG_METHODS:
+        choices = ", ".join(sorted(AUTO_RIG_METHODS))
+        raise ValueError(f"method must be one of {choices}.")
     up_axis = str(up_axis).upper() if str(up_axis).casefold() != "auto" else "auto"
     if up_axis not in {"auto", "X", "Y", "Z", "-X", "-Y", "-Z"}:
         raise ValueError("up_axis must be auto, X, Y, Z, -X, -Y, or -Z.")
@@ -89,39 +107,77 @@ def auto_rig_character(
             "Explicit up_axis is only valid for OBJ/PLY/STL. FBX and GLTF "
             "declare their coordinate system and Blender converts it on import."
         )
-    config = TemplateRiggingConfig(
-        top_k=top_k,
-        weight_falloff=weight_falloff,
-        side_penalty=side_penalty,
-    )
+    if method == "make_it_animatable" and up_axis != "auto":
+        raise ValueError(
+            "The Make-It-Animatable backend currently requires up_axis='auto'; "
+            "normalize OBJ/PLY/STL coordinates before uploading."
+        )
     weight_method = str(weight_method).casefold()
     if weight_method not in {"automatic", "capsules"}:
         raise ValueError("weight_method must be 'automatic' or 'capsules'.")
+    if mia_rest_pose not in MIA_REST_POSES:
+        choices = ", ".join(sorted(MIA_REST_POSES))
+        raise ValueError(f"mia_rest_pose must be one of {choices}.")
+    if method == "make_it_animatable" and replace_existing_rig:
+        raise ValueError(
+            "The Make-It-Animatable backend expects a static unrigged input; "
+            "replace_existing_rig is only supported by the local template method."
+        )
     blender = resolve_blender_executable(blender_executable)
     output.parent.mkdir(parents=True, exist_ok=True)
     manifest = Path(f"{output}.json")
-    script = Path(__file__).with_name("_blender.py").resolve()
-    template_module = Path(__file__).with_name("template.py").resolve()
 
     with tempfile.TemporaryDirectory(prefix=".motius_rig_", dir=output.parent) as tmp:
         job_path = Path(tmp) / "job.json"
-        job = {
-            "schema_version": 1,
-            "method": method,
-            "character_path": str(source),
-            "output_path": str(output),
-            "manifest_path": str(manifest),
-            "template_module": str(template_module),
-            "up_axis": up_axis,
-            "replace_existing_rig": bool(replace_existing_rig),
-            "weight_method": weight_method,
-            "config": {
-                "top_k": int(config.top_k),
-                "weight_falloff": float(config.weight_falloff),
-                "side_penalty": float(config.side_penalty),
-                "chunk_size": int(config.chunk_size),
-            },
-        }
+        if method == "template":
+            config = TemplateRiggingConfig(
+                top_k=top_k,
+                weight_falloff=weight_falloff,
+                side_penalty=side_penalty,
+            )
+            script = Path(__file__).with_name("_blender.py").resolve()
+            template_module = Path(__file__).with_name("template.py").resolve()
+            job = {
+                "schema_version": 1,
+                "method": method,
+                "character_path": str(source),
+                "output_path": str(output),
+                "manifest_path": str(manifest),
+                "template_module": str(template_module),
+                "up_axis": up_axis,
+                "replace_existing_rig": bool(replace_existing_rig),
+                "weight_method": weight_method,
+                "config": {
+                    "top_k": int(config.top_k),
+                    "weight_falloff": float(config.weight_falloff),
+                    "side_penalty": float(config.side_penalty),
+                    "chunk_size": int(config.chunk_size),
+                },
+            }
+        else:
+            raw_fbx = Path(tmp) / "make_it_animatable_raw.fbx"
+            try:
+                backend = request_make_it_animatable(
+                    source,
+                    raw_fbx,
+                    space=mia_space,
+                    rest_pose=mia_rest_pose,
+                )
+            except Exception as error:
+                raise CharacterRiggingError(
+                    f"Make-It-Animatable failed for {source}: {error}"
+                ) from error
+            script = Path(__file__).with_name("_blender_mia.py").resolve()
+            job = {
+                "schema_version": 1,
+                "method": method,
+                "source_character": str(source),
+                "raw_fbx": str(raw_fbx),
+                "output_path": str(output),
+                "manifest_path": str(manifest),
+                "bone_mapping": MIXAMO_TO_SMPL22,
+                "backend": backend,
+            }
         job_path.write_text(json.dumps(job, indent=2) + "\n", encoding="utf-8")
         command = [
             str(blender),
@@ -171,6 +227,7 @@ def auto_rig_character(
 
 
 __all__ = [
+    "AUTO_RIG_METHODS",
     "SUPPORTED_CHARACTER_INPUTS",
     "SUPPORTED_RIG_OUTPUTS",
     "CharacterRiggingError",

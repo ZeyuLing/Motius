@@ -1,4 +1,5 @@
 import ast
+import hashlib
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -207,6 +208,67 @@ def test_auto_rig_api_rejects_bad_paths_formats_and_axis(tmp_path: Path) -> None
         auto_rig_character(tmp_path / "missing.glb", tmp_path / "rigged.glb")
 
 
+def test_auto_rig_api_runs_mia_and_normalizes_to_smpl22(
+    tmp_path: Path, monkeypatch
+) -> None:
+    from motius.motion.rigging import api
+
+    source = tmp_path / "stylized.glb"
+    source.write_bytes(b"glTF")
+    blender = tmp_path / "blender.exe"
+    blender.write_bytes(b"test")
+    output = tmp_path / "rigged.fbx"
+    captured = {}
+
+    monkeypatch.setattr(api, "resolve_blender_executable", lambda value: blender)
+
+    def fake_mia(character, raw_fbx, **kwargs):
+        assert Path(character) == source.resolve()
+        Path(raw_fbx).write_bytes(b"FBX-MIA")
+        return {
+            "name": "Make-It-Animatable",
+            "space": kwargs["space"],
+            "rest_pose": kwargs["rest_pose"],
+            "network_upload": True,
+        }
+
+    def fake_run(command, **kwargs):
+        assert Path(command[command.index("--python") + 1]).name == "_blender_mia.py"
+        job = json.loads(Path(command[-1]).read_text())
+        captured.update(job)
+        Path(job["output_path"]).write_bytes(b"FBX-normalized")
+        Path(job["manifest_path"]).write_text(
+            json.dumps(
+                {
+                    "method": "make_it_animatable",
+                    "armature_name": "Motius_SMPL22_Rig",
+                    "mesh_names": ["Body"],
+                    "joint_names": list(SMPL22_RIG_NAMES),
+                    "warnings": [],
+                }
+            )
+        )
+        return SimpleNamespace(returncode=0, stdout="")
+
+    monkeypatch.setattr(api, "request_make_it_animatable", fake_mia)
+    monkeypatch.setattr(api.subprocess, "run", fake_run)
+    result = auto_rig_character(
+        source,
+        output,
+        method="mia",
+        blender_executable=blender,
+        mia_space="trusted/mia",
+        mia_rest_pose="A-pose",
+    )
+
+    assert result.method == "make_it_animatable"
+    assert result.joint_names == SMPL22_RIG_NAMES
+    assert captured["method"] == "make_it_animatable"
+    assert captured["backend"]["space"] == "trusted/mia"
+    assert captured["backend"]["rest_pose"] == "A-pose"
+    assert captured["bone_mapping"]["Hips"] == "Pelvis"
+
+
 def test_blender_backend_is_valid_python_and_covers_import_formats() -> None:
     root = Path(__file__).resolve().parents[1]
     backend = root / "motius/motion/rigging/_blender.py"
@@ -216,43 +278,50 @@ def test_blender_backend_is_valid_python_and_covers_import_formats() -> None:
         assert repr(suffix) in text or f'"{suffix}"' in text
 
 
-def test_real_public_mesh_demo_has_structural_and_visual_evidence() -> None:
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def test_multi_character_demo_has_structural_and_visual_evidence() -> None:
     root = Path(__file__).resolve().parents[1]
     demo = root / "assets/motion/auto_rigging_demo"
     manifest = json.loads((demo / "manifest.json").read_text())
-    unrigged = json.loads((demo / "unrigged_validation.json").read_text())
-    rigged = json.loads((demo / "rigged_validation.json").read_text())
-    animated = json.loads((demo / "animation_validation.json").read_text())
-    diagnostics = json.loads((demo / "diagnostics.json").read_text())
-    animation = json.loads((demo / "animation.json").read_text())
+    validation = json.loads((demo / "validation.json").read_text())
+    render = json.loads((demo / "render.json").read_text())
 
-    assert manifest["source"]["license"] == "CC0 1.0"
-    assert manifest["source"]["archive_sha256"] == (
-        "46a912c0524072ac3b78c35d5d2471df7b8df102394a050ca8cd7184e3393648"
-    )
-    assert unrigged["verdict"] == "unrigged static mesh"
-    assert not any(
-        unrigged[key]
-        for key in ("armatures", "armature_modifiers", "vertex_groups", "actions")
-    )
-    assert rigged["canonical_bones"] == 22
-    assert rigged["unbound_vertices"] == 0
-    assert rigged["max_influences"] <= 4
-    assert animated["actions"]
-    assert animated["max_vertex_deformation"] > 1e-4
-    stretch = diagnostics["edge_stretch"]
-    limits = manifest["artifacts"]["deformation_quality_limits"]
-    for name, limit in limits.items():
-        assert stretch[name] <= limit
-    direction = animation["bone_direction_error"]
-    assert direction["evaluated_frames"] == manifest["motion"]["frames"]
-    for name, limit in manifest["artifacts"][
-        "animation_direction_quality_limits"
-    ].items():
-        assert direction[name] <= limit
-    assert (demo / manifest["artifacts"]["visual_qa"]).stat().st_size > 0
-    for media in (manifest["artifacts"]["gif"], manifest["artifacts"]["mp4"]):
-        assert (demo / media).stat().st_size > 0
+    assert manifest["autorig_backend"]["motius_method"] == "make_it_animatable"
+    assert len(manifest["characters"]) == 3
+    assert {item["role"] for item in manifest["characters"]} == {
+        "child",
+        "big_head",
+        "high_weight",
+    }
+    assert any("BY-NC" in item["license"] for item in manifest["characters"])
+    assert manifest["motion"]["synchronized_across_characters"] is True
+    assert manifest["motion"]["frames"] == 150
+
+    for character in validation["characters"]:
+        assert not any(
+            character["input"][key]
+            for key in ("armatures", "armature_modifiers", "vertex_groups", "actions")
+        )
+        assert character["input"]["packed_texture_images"] > 0
+        assert character["rig"]["canonical_bones"] == 22
+        assert character["rig"]["unbound_vertices"] == 0
+        assert character["rig"]["max_influences"] <= 4
+        assert character["animation"]["frames"] == 150
+        assert character["animation"]["max_sampled_vertex_deformation"] > 1e-4
+
+    assert render["resolution"] == [960, 540]
+    assert render["presentation"]["text_overlays"] is False
+    assert render["presentation"]["authored_textures"] is True
+    assert render["presentation"]["skeleton_overlay"] is True
+    assert render["presentation"]["joints_per_character"] == 22
+
+    for name, hash_name in (("mp4", "mp4_sha256"), ("poster", "poster_sha256")):
+        media = demo / manifest["artifacts"][name]
+        assert media.stat().st_size > 0
+        assert _sha256(media) == manifest["artifacts"][hash_name]
 
 
 def test_auto_rigging_demo_blender_scripts_are_valid_python() -> None:
@@ -263,7 +332,9 @@ def test_auto_rigging_demo_blender_scripts_are_valid_python() -> None:
         "tools/blender_retarget_smpl22_joints.py",
         "tools/blender_render_auto_rigging_demo.py",
         "tools/blender_render_rigging_diagnostics.py",
+        "tools/blender_render_textured_autorig_video.py",
         "tools/build_auto_rigging_demo.py",
+        "motius/motion/rigging/_blender_mia.py",
     ):
         ast.parse((root / relative).read_text(encoding="utf-8"))
 
@@ -278,3 +349,5 @@ def test_auto_rigging_docs_state_the_observable_orientation_limits() -> None:
     assert "Neck -> Head" in guide
     assert "not the nose or gaze direction" in guide
     assert "rigging and deformation smoke test" in readme
+    assert "Make-It-Animatable" in guide
+    assert "public Space receives the uploaded character file" in guide

@@ -43,7 +43,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--publish-dir",
         type=Path,
-        default=Path("assets/motion/auto_rigging_demo"),
+        default=Path("outputs/auto_rigging_template_regression/published"),
     )
     parser.add_argument("--source-archive", type=Path)
     parser.add_argument("--frames", type=int, default=150)
@@ -108,7 +108,9 @@ def _source_bundle(args, work: Path) -> tuple[Path, Path]:
     if not blend.is_file():
         candidates = sorted(extracted.rglob("human_base_meshes_bundle.blend"))
         if len(candidates) != 1:
-            raise FileNotFoundError("Could not identify human_base_meshes_bundle.blend.")
+            raise FileNotFoundError(
+                "Could not identify human_base_meshes_bundle.blend."
+            )
         blend = candidates[0]
     return archive, blend
 
@@ -123,7 +125,9 @@ def _assemble_gif(frames_dir: Path, output: Path, duration_ms: int) -> int:
     paths = sorted(frames_dir.glob("frame_*.png"))
     if not paths:
         raise FileNotFoundError(f"No rendered GIF frames found under {frames_dir}.")
-    images = [Image.open(path).convert("P", palette=Image.Palette.ADAPTIVE) for path in paths]
+    images = [
+        Image.open(path).convert("P", palette=Image.Palette.ADAPTIVE) for path in paths
+    ]
     output.parent.mkdir(parents=True, exist_ok=True)
     images[0].save(
         output,
@@ -139,9 +143,7 @@ def _assemble_gif(frames_dir: Path, output: Path, duration_ms: int) -> int:
     return len(paths)
 
 
-def _assemble_visual_qa(
-    diagnostics: Path, output: Path, *, worst_frame: int
-) -> None:
+def _assemble_visual_qa(diagnostics: Path, output: Path, *, worst_frame: int) -> None:
     try:
         from PIL import Image, ImageDraw
     except ImportError as error:
@@ -154,9 +156,7 @@ def _assemble_visual_qa(
             f"Expected at least three pose diagnostics under {diagnostics}."
         )
     worst = diagnostics / f"pose_{worst_frame:04d}_front.png"
-    frame_numbers = {
-        path: int(path.stem.split("_")[1]) for path in pose_fronts
-    }
+    frame_numbers = {path: int(path.stem.split("_")[1]) for path in pose_fronts}
     midpoint = (frame_numbers[pose_fronts[0]] + frame_numbers[pose_fronts[-1]]) / 2
     middle = min(pose_fronts, key=lambda path: abs(frame_numbers[path] - midpoint))
     selected = list(
@@ -180,7 +180,10 @@ def _assemble_visual_qa(
         panels.extend(
             [
                 (front.name, f"Frame {frame} / front"),
-                (front.name.replace("_front.png", "_side.png"), f"Frame {frame} / side"),
+                (
+                    front.name.replace("_front.png", "_side.png"),
+                    f"Frame {frame} / side",
+                ),
             ]
         )
     tile = 384
@@ -221,8 +224,7 @@ def _portable_report(value, *, work: Path):
         except ValueError:
             relative = path.relative_to(work)
             return (
-                Path("outputs/auto_rigging_demo/blender_cc0_male_004822")
-                / relative
+                Path("outputs/auto_rigging_demo/blender_cc0_male_004822") / relative
             ).as_posix()
     except (OSError, ValueError):
         return value
@@ -256,16 +258,21 @@ def build(args: argparse.Namespace) -> Path:
     _blender(
         blender,
         ROOT / "tools/blender_extract_human_base_mesh.py",
-        "--output", source_glb,
-        "--report", source_export,
-        "--object-pattern", "body_male_realistic",
+        "--output",
+        source_glb,
+        "--report",
+        source_export,
+        "--object-pattern",
+        "body_male_realistic",
         blend=source_blend,
     )
     _blender(
         blender,
         ROOT / "tools/blender_validate_unrigged_asset.py",
-        "--asset", source_glb,
-        "--report", source_validation,
+        "--asset",
+        source_glb,
+        "--report",
+        source_validation,
     )
 
     rig_job = work / "rig_job.json"
@@ -298,30 +305,42 @@ def build(args: argparse.Namespace) -> Path:
     _blender(
         blender,
         ROOT / "motius/motion/rigging/_blender.py",
-        "--job", rig_job,
+        "--job",
+        rig_job,
     )
     _blender(
         blender,
         ROOT / "tests/blender_validate_rigged_asset.py",
-        "--asset", rigged_fbx,
-        "--report", rig_validation,
+        "--asset",
+        rigged_fbx,
+        "--report",
+        rig_validation,
     )
     _blender(
         blender,
         ROOT / "tools/blender_retarget_smpl22_joints.py",
-        "--input", rigged_fbx,
-        "--motion", ROOT / "assets/motion/representation_demo/data.json",
-        "--output", animated_fbx,
-        "--report", animation_report,
-        "--frames", args.frames,
-        "--start-frame", 0,
-        "--fps", args.fps,
+        "--input",
+        rigged_fbx,
+        "--motion",
+        ROOT / "assets/motion/representation_demo/data.json",
+        "--output",
+        animated_fbx,
+        "--report",
+        animation_report,
+        "--frames",
+        args.frames,
+        "--start-frame",
+        0,
+        "--fps",
+        args.fps,
     )
     _blender(
         blender,
         ROOT / "tests/blender_validate_rigged_asset.py",
-        "--asset", animated_fbx,
-        "--report", animation_validation,
+        "--asset",
+        animated_fbx,
+        "--report",
+        animation_validation,
         "--require-animation",
         "--require-deformation",
     )
@@ -330,11 +349,16 @@ def build(args: argparse.Namespace) -> Path:
     _blender(
         blender,
         ROOT / "tools/blender_render_rigging_diagnostics.py",
-        "--rigged", rigged_fbx,
-        "--animated", animated_fbx,
-        "--output-dir", diagnostics_dir,
-        "--report", diagnostics_report,
-        "--resolution", 512,
+        "--rigged",
+        rigged_fbx,
+        "--animated",
+        animated_fbx,
+        "--output-dir",
+        diagnostics_dir,
+        "--report",
+        diagnostics_report,
+        "--resolution",
+        512,
     )
     diagnostics_payload = json.loads(diagnostics_report.read_text(encoding="utf-8"))
     animation_payload = json.loads(animation_report.read_text(encoding="utf-8"))
@@ -373,15 +397,24 @@ def build(args: argparse.Namespace) -> Path:
     _blender(
         blender,
         ROOT / "tools/blender_render_auto_rigging_demo.py",
-        "--input", animated_fbx,
-        "--output", mp4,
-        "--frames-dir", frames_dir,
-        "--report", render_report,
-        "--frames", args.frames,
-        "--fps", args.fps,
-        "--resolution", args.resolution,
-        "--gif-resolution", args.gif_resolution,
-        "--gif-step", args.gif_step,
+        "--input",
+        animated_fbx,
+        "--output",
+        mp4,
+        "--frames-dir",
+        frames_dir,
+        "--report",
+        render_report,
+        "--frames",
+        args.frames,
+        "--fps",
+        args.fps,
+        "--resolution",
+        args.resolution,
+        "--gif-resolution",
+        args.gif_resolution,
+        "--gif-step",
+        args.gif_step,
     )
 
     published_mp4 = publish / mp4.name

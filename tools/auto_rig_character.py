@@ -24,6 +24,15 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("character", type=Path, help="Unrigged source character.")
     parser.add_argument("output", type=Path, help="Rigged .fbx, .glb, or .gltf output.")
     parser.add_argument(
+        "--method",
+        choices=("template", "make-it-animatable", "mia"),
+        default="template",
+        help=(
+            "Local deterministic template fitter, or the optional network-backed "
+            "Make-It-Animatable integration used by the multi-character demo."
+        ),
+    )
+    parser.add_argument(
         "--blender",
         type=Path,
         default=None,
@@ -52,6 +61,17 @@ def _parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Remove an existing armature and weights before re-rigging.",
     )
+    parser.add_argument(
+        "--mia-space",
+        default="jasongzy/Make-It-Animatable",
+        help="Public or trusted self-hosted Gradio Space for the MIA backend.",
+    )
+    parser.add_argument(
+        "--mia-rest-pose",
+        choices=("No", "T-pose", "A-pose"),
+        default="No",
+        help="Rest-pose conversion requested from Make-It-Animatable.",
+    )
     return parser
 
 
@@ -60,6 +80,7 @@ def main() -> None:
     result = auto_rig_character(
         args.character,
         args.output,
+        method=args.method,
         blender_executable=args.blender,
         up_axis=args.up_axis,
         top_k=args.top_k,
@@ -67,6 +88,8 @@ def main() -> None:
         side_penalty=args.side_penalty,
         weight_method=args.weight_method,
         replace_existing_rig=args.replace_existing_rig,
+        mia_space=args.mia_space,
+        mia_rest_pose=args.mia_rest_pose,
     )
     print(f"Rigged character: {result.output_path}")
     print(f"Manifest: {result.manifest_path}")
