@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "benchmark": "Sequential Text-to-Motion · BABEL",
+  "benchmark": "Sequential Text-to-Motion 路 BABEL",
   "protocol": "babel-actiongroups-v3",
   "retrieval_batch_size": 32,
   "fid_space": "per-sample L2-normalized uTMR embedding space",
   "rows": [
     {
       "method": "BABEL val",
-      "version": "Paired GT · action groups v3",
+      "version": "Paired GT 路 action groups v3",
       "samples": 7285,
       "isReference": true,
       "r1": 0.3614,
@@ -23,7 +23,7 @@
     },
     {
       "method": "MotionCanvas",
-      "version": "Epoch 1964 · CFG 5.0 · context 5 · seed 42 · 3-frame low-pass",
+      "version": "Epoch 1964 路 CFG 5.0 路 context 5 路 seed 42 路 3-frame low-pass",
       "samples": 7285,
       "r1": 0.424,
       "r2": 0.6049,
@@ -38,7 +38,7 @@
     },
     {
       "method": "FlowMDM",
-      "version": "Official checkpoint · seed 42 · action groups v3",
+      "version": "Official checkpoint 路 seed 42 路 action groups v3",
       "samples": 7285,
       "r1": 0.2504,
       "r2": 0.3925,
@@ -53,7 +53,7 @@
     },
     {
       "method": "MotionStreamer",
-      "version": "Official checkpoint · seed 42 · action groups v3",
+      "version": "Official checkpoint 路 seed 42 路 action groups v3",
       "samples": 7285,
       "r1": 0.213,
       "r2": 0.3303,
@@ -68,7 +68,7 @@
     },
     {
       "method": "MotionLab",
-      "version": "Official checkpoint · context 5 · seed 42",
+      "version": "Official checkpoint 路 context 5 路 seed 42",
       "samples": 7285,
       "r1": 0.258,
       "r2": 0.3793,
@@ -83,7 +83,7 @@
     },
     {
       "method": "PRISM",
-      "version": "Fixed 360 · CFG 5.0 · AR5 · seed 42",
+      "version": "Fixed 360 路 CFG 5.0 路 AR5 路 seed 42",
       "samples": 7285,
       "r1": 0.2833,
       "r2": 0.4314,
