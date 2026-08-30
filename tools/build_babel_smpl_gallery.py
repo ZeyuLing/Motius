@@ -44,7 +44,7 @@ METHODS = (
     Method("flowmdm", "FlowMDM", "#315f9d"),
     Method("motionstreamer", "MotionStreamer", "#a5412e"),
     Method("motionlab", "MotionLab", "#287147"),
-    Method("prism", "PRISM (epoch 26)", "#6d4ea2"),
+    Method("prism", "PRISM", "#6d4ea2"),
 )
 
 

@@ -62,15 +62,15 @@ intervals.
 | FlowMDM | 0.2504 | 0.3925 | 0.4818 | 0.0467 | 50.8503 | 50.3880 | 0.0555 | 44.9407 | 335.67 | 34.4040 |
 | MotionStreamer | 0.2130 | 0.3303 | 0.4175 | 0.0610 | 52.0339 | 46.5873 | 0.0702 | 40.8189 | 206.22 | 76.2889 |
 | MotionLab | 0.2580 | 0.3793 | 0.4536 | 0.2011 | 51.3873 | 41.6184 | 0.2499 | 34.3793 | 204.67 | 25.7259 |
-| PRISM (epoch 26) | 0.2833 | 0.4314 | 0.5168 | 0.0591 | 51.0135 | 50.5232 | 0.0739 | 46.7228 | 503.40 | 157.8457 |
+| PRISM | 0.2833 | 0.4314 | 0.5168 | 0.0591 | 51.0135 | 50.5232 | 0.0739 | 46.7228 | 503.40 | 157.8457 |
 
 This is a single deterministic seed-42 generation and one retrieval repeat.
 R-Precision uses 32-sample recall batches, covering 7,264 of the 7,285 paired
 segments, and accepts every same-action candidate as a positive. Distribution
 metrics use the full set. `--chunk-size 32` controls the recall candidate set;
 `--batch-size` controls only evaluator encoding throughput and does not alter
-the metric. PRISM uses `checkpoint-epoch_26`, CFG 5.0, and AR5, and fixes every
-internal model call to a 360-frame canvas; all 1,295 outputs passed exact-length
+the metric. PRISM uses CFG 5.0 and AR5, and fixes every internal model call to
+a 360-frame canvas; all 1,295 outputs passed exact-length
 and fixed-canvas validation. MotionLab uses its native five-frame autoregressive context and
 emits HML263. Its SMPL-22 evaluation input is recovered from the HML263 position
 channels and fitted to neutral SMPL; HML263 rotations are not passed directly
@@ -140,8 +140,8 @@ python tools/build_babel_sequential_viewer.py \
   --prediction MotionStreamer=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionstreamer_latest_seed42/joints66 \
   --prediction MotionLab=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v4_smplfit/joints66 \
   --smpl-parameters MotionLab=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v4_smplfit/smpl \
-  --prediction 'PRISM (epoch 26)=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/prism_epoch26_fixed360_cfg5_ar5_h20x8_resched/joints66' \
-  --smpl-parameters 'PRISM (epoch 26)=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/prism_epoch26_fixed360_cfg5_ar5_h20x8_resched/smplx' \
+  --prediction 'PRISM=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/prism_epoch26_fixed360_cfg5_ar5_h20x8_resched/joints66' \
+  --smpl-parameters 'PRISM=outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/prism_epoch26_fixed360_cfg5_ar5_h20x8_resched/smplx' \
   --retrieval-audit outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/flowmdm_seed42/retrieval_audit.json \
   --output-dir outputs/visualization/babel_sequential_audit
 ```
