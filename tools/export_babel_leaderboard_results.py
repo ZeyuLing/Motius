@@ -43,7 +43,10 @@ def main() -> int:
     args = parser.parse_args()
     rendered = json.dumps(export_payload(), indent=2, ensure_ascii=False) + "\n"
     if args.check:
-        if not OUTPUT_PATH.is_file() or OUTPUT_PATH.read_text() != rendered:
+        if (
+            not OUTPUT_PATH.is_file()
+            or OUTPUT_PATH.read_text(encoding="utf-8") != rendered
+        ):
             print(
                 f"stale: {OUTPUT_PATH.relative_to(ROOT)}; run "
                 "python tools/export_babel_leaderboard_results.py"
@@ -51,7 +54,7 @@ def main() -> int:
             return 1
         print("BABEL Leaderboard JSON matches the published HTML rows")
         return 0
-    OUTPUT_PATH.write_text(rendered)
+    OUTPUT_PATH.write_text(rendered, encoding="utf-8", newline="\n")
     print(OUTPUT_PATH.relative_to(ROOT))
     return 0
 
