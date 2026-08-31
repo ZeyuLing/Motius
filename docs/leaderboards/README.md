@@ -1,12 +1,18 @@
-# Motius Benchmark Hub
-
-<p align="center">
-  <a href="../tasks/README.md">🧭 Task Registry</a> ·
-  <a href="../datasets/README.md">Dataset Hub</a> ·
-  <a href="../model_zoo/README.md">📦 Model Zoo</a> ·
-  <a href="../evaluator_zoo/README.md">📐 Evaluator Zoo</a> ·
-  <a href="../evaluation/physical_metrics.md">🏃 Physical Metrics</a>
+<!-- MOTIUS_DOCS_NAV:START -->
+<p><a href="../../README.md"><strong>Motius</strong></a> / <a href="../README.md">Documentation</a> / <strong>Benchmark Hub</strong></p>
+<p>
+  <a href="../getting_started.md">Quickstart</a> ·
+  <a href="../tasks/README.md">Tasks</a> ·
+  <a href="../datasets/README.md">Datasets</a> ·
+  <a href="../model_zoo/README.md">Models</a> ·
+  <a href="../training/README.md">Training</a> ·
+  <a href="../evaluator_zoo/README.md">Evaluators</a> ·
+  <strong>Benchmarks</strong> ·
+  <a href="../motion/README.md">Motion I/O</a>
 </p>
+<!-- MOTIUS_DOCS_NAV:END -->
+
+# Motius Benchmark Hub
 
 Motius publishes the evaluated benchmark settings listed below. A leaderboard can expose several
 representation-specific settings when their metric spaces must remain
@@ -22,7 +28,7 @@ style/content and MotionFix remain separate benchmark settings of Motion
 Editing. The canonical vocabulary lives in the
 [Task Registry](../tasks/README.md).
 
-## Benchmark Directory 📊
+## Benchmark directory
 
 | Benchmark | Status | Metrics | Visualization | Resources |
 | --------- | ------ | ------- | ------------- | --------- |
@@ -41,7 +47,7 @@ Editing. The canonical vocabulary lives in the
 | **Monocular Motion Capture · 3DPW Test** | Complete | [4 verified methods + GT](hf_space_monocular_capture/monocular_capture_results.json) | Video demos for every integrated method | [Results and demos](https://huggingface.co/spaces/ZeyuLing/monocular-motion-capture-leaderboard) · [Dataset](../datasets/README.md#3dpw) · [Source](hf_space_monocular_capture) · [Protocol](../tasks/monocular_motion_capture.md) |
 | **Motion Tracking · Unitree G1** | Complete · 2 engine settings | [MuJoCo: GT + 3 controllers](hf_space_motion_tracking_mujoco/motion_tracking_results.json) · [Isaac Lab: GT + SONIC + BeyondMimic upper bound](hf_space_motion_tracking_isaaclab/motion_tracking_results.json) | All-case Three.js comparison: 40 MuJoCo references and 178 Isaac Lab references | [MuJoCo Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-tracking-mujoco-leaderboard) · [Isaac Lab Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-tracking-isaaclab-leaderboard) · [Protocol](../tasks/motion_tracking.md) |
 
-## Result Contract ✅
+## Result contract
 
 | Result element | Requirement |
 | -------------- | ----------- |
@@ -63,3 +69,5 @@ The machine-readable publication inventory is
 [`catalog.json`](catalog.json). Run
 `python tools/audit_leaderboards.py` before publishing a leaderboard or
 `python tools/audit_leaderboards.py --online` after deploying its Space.
+The additive, parent-pinned batch workflow is documented in
+[Hugging Face Space publishing](HUGGINGFACE_PUBLISHING.md).

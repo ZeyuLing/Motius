@@ -947,9 +947,18 @@
   }
 </style>
 <!-- motius-benchmark-nav-style:end -->
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body data-benchmark-id="temporal_motion_completion_humanml3d">
-  <main class="page">
+<body data-benchmark-id="temporal_motion_completion_humanml3d" data-motius-page="dashboard">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
+  <main class="page" id="main-content" tabindex="-1">
     <!-- motius-benchmark-nav:start -->
 <nav class="motius-benchmark-nav" data-benchmark-id="temporal_motion_completion_humanml3d" aria-label="Motius benchmark navigation">
   <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
@@ -1044,12 +1053,12 @@
         <article class="chart-panel">
           <h3 id="bar-title">Generated-method ranking</h3>
           <p class="chart-note" id="bar-note"></p>
-          <div class="canvas-wrap"><canvas id="bar-chart"></canvas></div>
+          <div class="canvas-wrap"><canvas id="bar-chart" role="img" aria-label="Leaderboard metric comparison bar chart"></canvas></div>
         </article>
         <article class="chart-panel">
           <h3>Normalized profile</h3>
           <p class="chart-note">100 is the best generated-method value on each ranked axis.</p>
-          <div class="canvas-wrap"><canvas id="radar-chart"></canvas></div>
+          <div class="canvas-wrap"><canvas id="radar-chart" role="img" aria-label="Leaderboard normalized metric radar chart"></canvas></div>
         </article>
       </div>
     </section>
@@ -1090,7 +1099,7 @@
             <span>Motion constraints + caption</span>
           </div>
           <div class="table-shell">
-            <table data-table="control-text">
+            <table data-table="control-text" aria-label="Text control evaluation results">
               <thead></thead>
               <tbody></tbody>
             </table>
@@ -1102,7 +1111,7 @@
             <span>Motion constraints, no caption</span>
           </div>
           <div class="table-shell">
-            <table data-table="control-motion">
+            <table data-table="control-motion" aria-label="Motion control evaluation results">
               <thead></thead>
               <tbody></tbody>
             </table>
@@ -1110,7 +1119,7 @@
         </section>
       </div>
       <div id="single-table-shell" class="table-shell">
-        <table data-table="temporal">
+        <table data-table="temporal" aria-label="Temporal conditioning evaluation results">
           <thead></thead>
           <tbody></tbody>
         </table>

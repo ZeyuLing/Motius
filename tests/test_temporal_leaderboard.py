@@ -4,18 +4,19 @@ from pathlib import Path
 
 import pytest
 
-
 ROOT = Path(__file__).resolve().parents[1]
 SPACE_DIR = ROOT / "docs" / "leaderboards" / "hf_space_temporal_condition"
 T2M_PAGE = ROOT / "docs" / "leaderboards" / "hf_space_t2m_humanml3d" / "index.html"
 
 
 def _temporal_data():
-    return json.loads((SPACE_DIR / "temporal_control_results.json").read_text())
+    return json.loads(
+        (SPACE_DIR / "temporal_control_results.json").read_text(encoding="utf-8")
+    )
 
 
 def _t2m_gt_row():
-    page = T2M_PAGE.read_text()
+    page = T2M_PAGE.read_text(encoding="utf-8")
     match = re.search(r'\{method: "GT", version: "0 beta"[^\n]+\}', page)
     assert match, "T2M GT row is missing"
     fields = {}
@@ -72,8 +73,8 @@ def test_temporal_control_snapshot_covers_all_official_settings():
 
 
 def test_frontend_keeps_gt_out_of_rankings_and_exposes_both_protocols():
-    page = (SPACE_DIR / "index.html").read_text()
-    script = (SPACE_DIR / "leaderboard.js").read_text()
+    page = (SPACE_DIR / "index.html").read_text(encoding="utf-8")
+    script = (SPACE_DIR / "leaderboard.js").read_text(encoding="utf-8")
     data = _temporal_data()
 
     assert 'data-protocol="control"' in page

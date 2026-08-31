@@ -1,3 +1,17 @@
+<!-- MOTIUS_DOCS_NAV:START -->
+<p><a href="../../README.md"><strong>Motius</strong></a> / <a href="../README.md">Documentation</a> / <strong>Task Registry</strong></p>
+<p>
+  <a href="../getting_started.md">Quickstart</a> ·
+  <strong>Tasks</strong> ·
+  <a href="../datasets/README.md">Datasets</a> ·
+  <a href="../model_zoo/README.md">Models</a> ·
+  <a href="../training/README.md">Training</a> ·
+  <a href="../evaluator_zoo/README.md">Evaluators</a> ·
+  <a href="../leaderboards/README.md">Benchmarks</a> ·
+  <a href="../motion/README.md">Motion I/O</a>
+</p>
+<!-- MOTIUS_DOCS_NAV:END -->
+
 # Motius Task Registry
 
 This registry is the single vocabulary used by pipelines, model cards, the
@@ -16,14 +30,7 @@ top-level families because modality, operation, actor count, and application
 domain are overlapping axes. The machine-readable source is
 [`taxonomy.json`](taxonomy.json).
 
-<p align="center">
-  <a href="../datasets/README.md">Dataset Hub</a> ·
-  <a href="../model_zoo/README.md">📦 Model Zoo</a> ·
-  <a href="../leaderboards/README.md">📊 Benchmark Hub</a> ·
-  <a href="../motion/README.md">🔄 Motion Toolkit</a>
-</p>
-
-## Task Matrix 🧭
+## Task matrix
 
 Tasks with a public leaderboard link to it. Benchmark-pending tasks link to
 their executable runtime contract.
@@ -223,7 +230,7 @@ and Isaac Lab are never mixed. See the
 [Motion Tracking runtime guide](motion_tracking.md) for the released SONIC,
 ProtoMotions, Any2Track, and BeyondMimic contracts.
 
-## Naming Contract ✅
+## Naming contract
 
 - Public task fields use only labels from
   [`taxonomy.json`](taxonomy.json).

@@ -419,9 +419,18 @@
   }
 </style>
 <!-- motius-benchmark-nav-style:end -->
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body data-benchmark-id="motion_to_text_humanml3d">
-  <main class="page">
+<body data-benchmark-id="motion_to_text_humanml3d" data-motius-page="dashboard">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
+  <main class="page" id="main-content" tabindex="-1">
     <!-- motius-benchmark-nav:start -->
 <nav class="motius-benchmark-nav" data-benchmark-id="motion_to_text_humanml3d" aria-label="Motius benchmark navigation">
   <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
@@ -481,7 +490,7 @@
         </div>
       </div>
       <div class="chart-frame">
-        <canvas id="metric-chart" aria-label="Method metric bar chart"></canvas>
+        <canvas id="metric-chart" aria-label="Method metric bar chart" role="img"></canvas>
         <div class="chart-empty" id="chart-empty" hidden>No completed full-protocol results yet.</div>
       </div>
       <div class="legend" id="legend"></div>
@@ -490,7 +499,7 @@
     <section class="table-band">
       <div class="table-heading"><div><h2>Complete results</h2><p id="table-protocol-note">Best and second-best styling excludes GT and incomplete runs.</p></div></div>
       <div class="table-shell">
-        <table>
+        <table aria-label="Complete results table">
           <thead><tr><th>Method</th><th>Status</th><th>BLEU-1 ↑</th><th>BLEU-4 ↑</th><th>ROUGE-L ↑</th><th>CIDEr ↑</th><th>BERT raw ↑</th><th>BERT rescaled ↑</th><th>R@1 ↑</th><th>R@2 ↑</th><th>R@3 ↑</th><th>Matching ↓</th></tr></thead>
           <tbody id="results-body"></tbody>
         </table>

@@ -10,7 +10,6 @@ import re
 from pathlib import Path
 from urllib.parse import urljoin
 
-
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = ROOT / "docs/leaderboards/catalog.json"
 TAXONOMY_PATH = ROOT / "docs/tasks/taxonomy.json"
@@ -206,8 +205,8 @@ STYLE = """
 
 
 def _load() -> tuple[list[dict], dict[str, dict]]:
-    taxonomy = json.loads(TAXONOMY_PATH.read_text())
-    catalog = json.loads(CATALOG_PATH.read_text())
+    taxonomy = json.loads(TAXONOMY_PATH.read_text(encoding="utf-8"))
+    catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
     catalog_by_id = {item["id"]: item for item in catalog["benchmarks"]}
     benchmarks = []
     for benchmark in taxonomy["benchmarks"]:
@@ -378,7 +377,7 @@ def _replace_block(text: str, start: str, end: str, block: str) -> str:
 
 
 def _sync_page(path: Path, benchmark: dict, benchmarks: list[dict], hub: str) -> bool:
-    original = path.read_text()
+    original = path.read_text(encoding="utf-8")
     text = original
 
     leaderboard = benchmark.get("leaderboard")
@@ -462,7 +461,7 @@ def _sync_page(path: Path, benchmark: dict, benchmarks: list[dict], hub: str) ->
         text = text.replace(END, f"{END}\n{settings_nav}", 1)
 
     if text != original:
-        path.write_text(text)
+        path.write_text(text, encoding="utf-8", newline="\n")
         return True
     return False
 
@@ -483,7 +482,7 @@ def main() -> None:
         source_path = ROOT / source
         index_path = source_path / "index.html" if source_path.is_dir() else None
         if index_path and index_path.is_file():
-            before = index_path.read_text()
+            before = index_path.read_text(encoding="utf-8")
             would_change = _sync_page(
                 index_path,
                 benchmark,
@@ -493,7 +492,11 @@ def main() -> None:
             if would_change:
                 changed.append(index_path.relative_to(ROOT))
                 if args.check:
-                    index_path.write_text(before)
+                    index_path.write_text(
+                        before,
+                        encoding="utf-8",
+                        newline="\n",
+                    )
 
     if changed:
         action = "out of date" if args.check else "updated"

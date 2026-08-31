@@ -192,9 +192,18 @@
   }
 </style>
 <!-- motius-benchmark-nav-style:end -->
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body data-benchmark-id="speech_to_gesture_beat2">
-  <main class="page">
+<body data-benchmark-id="speech_to_gesture_beat2" data-motius-page="dashboard">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
+  <main class="page" id="main-content" tabindex="-1">
     <!-- motius-benchmark-nav:start -->
 <nav class="motius-benchmark-nav" data-benchmark-id="speech_to_gesture_beat2" aria-label="Motius benchmark navigation">
   <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
@@ -251,7 +260,7 @@
     <section class="panel" id="benchmark">
       <div class="section-heading"><div><h2>Results</h2><p>Lower is better for FGD and paired errors; higher is better for BC and Diversity.</p></div></div>
       <div class="table-wrap">
-        <table class="leaderboard">
+        <table class="leaderboard" aria-label="Leaderboard results">
           <thead><tr><th rowspan="2">Method</th><th rowspan="2">Status</th><th colspan="3">Official BEAT2 metrics</th><th colspan="2">Joint-only uTMR</th><th colspan="3">Paired diagnostics</th></tr><tr><th>FGD ↓</th><th>BC ↑</th><th>Diversity ↑</th><th>FID ↓</th><th>Paired Dist. ↓</th><th>Rotation ↓</th><th>Expression ↓</th><th>Translation ↓</th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
@@ -271,7 +280,7 @@
 
     <section class="panel" id="paper-parity">
       <div class="section-heading"><div><h2>Paper Parity</h2><p>Paper-reported values are audit targets and never participate in ranking.</p></div><a class="section-link" href="https://openaccess.thecvf.com/content/CVPR2025/html/Chen_The_Language_of_Motion_Unifying_Verbal_and_Non-verbal_Language_of_CVPR_2025_paper.html">CVPR 2025 Paper</a></div>
-      <div class="parity-wrap"><table class="parity"><thead><tr><th>Row</th><th>FGD ↓</th><th>BC ↑</th><th>Diversity ↑</th></tr></thead><tbody id="parity-rows"></tbody></table></div>
+      <div class="parity-wrap"><table class="parity" aria-label="Reproducibility parity report"><thead><tr><th>Row</th><th>FGD ↓</th><th>BC ↑</th><th>Diversity ↑</th></tr></thead><tbody id="parity-rows"></tbody></table></div>
       <div class="note" id="parity-note">Loading paper-parity audit.</div>
     </section>
 

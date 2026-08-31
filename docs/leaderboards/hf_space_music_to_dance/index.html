@@ -192,9 +192,18 @@
   }
 </style>
 <!-- motius-benchmark-nav-style:end -->
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body data-benchmark-id="music_to_dance_aistpp">
-  <main class="page">
+<body data-benchmark-id="music_to_dance_aistpp" data-motius-page="dashboard">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
+  <main class="page" id="main-content" tabindex="-1">
     <!-- motius-benchmark-nav:start -->
 <nav class="motius-benchmark-nav" data-benchmark-id="music_to_dance_aistpp" aria-label="Motius benchmark navigation">
   <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
@@ -246,9 +255,9 @@
     <section class="panel" aria-labelledby="comparison-title">
       <div class="section-heading"><div><h2 id="comparison-title">Method Comparison</h2><p>Reference and generated distributions under the official and Motius evaluators.</p></div></div>
       <div class="chart-grid">
-        <article class="chart-panel"><h3>Distribution quality</h3><p>Official normalized kinetic and geometric feature spaces</p><canvas id="official-chart"></canvas></article>
-        <article class="chart-panel"><h3>Motius motion quality</h3><p>L2-normalized universal TMR motion embedding FID</p><canvas id="utmr-chart"></canvas></article>
-        <article class="chart-panel"><h3>Music synchronization</h3><p>Time-domain BeatAlign on standardized 30 fps motion</p><canvas id="beat-chart"></canvas></article>
+        <article class="chart-panel"><h3>Distribution quality</h3><p>Official normalized kinetic and geometric feature spaces</p><canvas id="official-chart" role="img" aria-label="Official evaluator metric comparison chart"></canvas></article>
+        <article class="chart-panel"><h3>Motius motion quality</h3><p>L2-normalized universal TMR motion embedding FID</p><canvas id="utmr-chart" role="img" aria-label="Universal TMR metric comparison chart"></canvas></article>
+        <article class="chart-panel"><h3>Music synchronization</h3><p>Time-domain BeatAlign on standardized 30 fps motion</p><canvas id="beat-chart" role="img" aria-label="Beat alignment metric comparison chart"></canvas></article>
       </div>
     </section>
 
@@ -259,7 +268,7 @@
 
     <section class="panel" id="benchmark" aria-labelledby="results-title">
       <div class="section-heading"><div><h2 id="results-title">Results</h2><p>Lower is better for FID and physical error; higher is better for diversity and BeatAlign.</p></div></div>
-      <div class="table-wrap"><table class="leaderboard"><thead><tr><th rowspan="2">Method</th><th colspan="4">Official Bailando protocol</th><th colspan="2">Motius protocol</th><th colspan="3">Physical diagnostics</th></tr><tr><th><span class="metric-help" title="Kinetic feature Frechet distance">FID_k ↓</span></th><th><span class="metric-help" title="Geometric feature Frechet distance">FID_g ↓</span></th><th>Div_k ↑</th><th>Div_g ↑</th><th><span class="metric-help" title="L2-normalized universal TMR motion embedding FID">uTMR FID ↓</span></th><th>BeatAlign ↑</th><th>Jitter ↓</th><th>Float ↓</th><th>Slide ↓</th></tr></thead><tbody id="rows"></tbody></table></div>
+      <div class="table-wrap"><table class="leaderboard" aria-label="Leaderboard results"><thead><tr><th rowspan="2">Method</th><th colspan="4">Official Bailando protocol</th><th colspan="2">Motius protocol</th><th colspan="3">Physical diagnostics</th></tr><tr><th><span class="metric-help" title="Kinetic feature Frechet distance">FID_k ↓</span></th><th><span class="metric-help" title="Geometric feature Frechet distance">FID_g ↓</span></th><th>Div_k ↑</th><th>Div_g ↑</th><th><span class="metric-help" title="L2-normalized universal TMR motion embedding FID">uTMR FID ↓</span></th><th>BeatAlign ↑</th><th>Jitter ↓</th><th>Float ↓</th><th>Slide ↓</th></tr></thead><tbody id="rows"></tbody></table></div>
       <div class="note">Official feature metrics use the public Bailando 60 fps protocol. uTMR FID and ranked BeatAlign use canonical SMPL-22 joints at 30 fps while preserving the original timing in seconds.</div>
     </section>
 
@@ -275,7 +284,7 @@
 
     <section class="panel" aria-labelledby="parity-title">
       <div class="section-heading"><div><h2 id="parity-title">Paper Parity</h2><p>Paper-reported values are audit targets and never participate in ranking.</p></div></div>
-      <div class="parity-wrap"><table class="parity"><thead><tr><th>Row</th><th>FID_k</th><th>FID_g</th><th>Div_k</th><th>Div_g</th><th>BeatAlign</th></tr></thead><tbody id="parity-rows"></tbody></table></div>
+      <div class="parity-wrap"><table class="parity" aria-label="Reproducibility parity report"><thead><tr><th>Row</th><th>FID_k</th><th>FID_g</th><th>Div_k</th><th>Div_g</th><th>BeatAlign</th></tr></thead><tbody id="parity-rows"></tbody></table></div>
       <div class="note" id="beat-audit">Loading BeatAlign audit.</div>
     </section>
 

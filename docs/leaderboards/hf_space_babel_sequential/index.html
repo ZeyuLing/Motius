@@ -339,9 +339,18 @@
   }
 </style>
 <!-- motius-benchmark-nav-style:end -->
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body data-benchmark-id="sequential_text_to_motion_babel">
-  <div class="shell">
+<body data-benchmark-id="sequential_text_to_motion_babel" data-motius-page="dashboard">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#motius-main">Skip to main content</a>
+<!-- motius-skip-link:end -->
+  <div class="shell" role="main" id="motius-main" tabindex="-1">
     <!-- motius-benchmark-nav:start -->
 <nav class="motius-benchmark-nav" data-benchmark-id="sequential_text_to_motion_babel" aria-label="Motius benchmark navigation">
   <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
@@ -370,7 +379,7 @@
     <header>
       <div class="title-row">
         <div>
-          <h1>Sequential Text-to-Motion · BABEL</h1>
+          <h1 id="main-content" tabindex="-1">Sequential Text-to-Motion · BABEL</h1>
           <p class="lede">Long-form human motion composition from an ordered sequence of text prompts. Every method is retargeted to the same SMPL-22 joints; uTMR FID is computed only after per-sample L2 normalization of the motion embeddings.</p>
         </div>
         <div class="header-actions">
@@ -402,8 +411,8 @@
         </div>
       </div>
       <div class="chart-grid">
-        <article class="chart-panel"><h3>Ranked Values</h3><p class="chart-note" id="bar-note"></p><div class="canvas-wrap"><canvas id="bar-chart"></canvas></div></article>
-        <article class="chart-panel"><h3>Normalized Profile</h3><p class="chart-note">100 is the best generated-method value on each axis.</p><div class="canvas-wrap"><canvas id="radar-chart"></canvas></div></article>
+        <article class="chart-panel"><h3>Ranked Values</h3><p class="chart-note" id="bar-note"></p><div class="canvas-wrap"><canvas id="bar-chart" role="img" aria-label="Leaderboard metric comparison bar chart"></canvas></div></article>
+        <article class="chart-panel"><h3>Normalized Profile</h3><p class="chart-note">100 is the best generated-method value on each axis.</p><div class="canvas-wrap"><canvas id="radar-chart" role="img" aria-label="Leaderboard normalized metric radar chart"></canvas></div></article>
       </div>
     </section>
 
@@ -421,7 +430,7 @@
         </div>
         <input class="search" id="search" type="search" placeholder="Filter method" aria-label="Filter method">
       </div>
-      <div class="table-wrap"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div>
+      <div class="table-wrap"><table aria-label="Results table"><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div>
       <div class="metric-key"><span class="key"><span class="swatch"></span>Best</span><span class="key"><span class="swatch second"></span>Second</span><span class="key"><span class="swatch ref"></span>Reference, excluded from ranking</span></div>
     </section>
 

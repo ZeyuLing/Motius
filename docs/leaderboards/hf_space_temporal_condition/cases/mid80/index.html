@@ -25,8 +25,17 @@
     @media(max-width:600px){:root{--header:198px}.topbar{grid-template-columns:minmax(0,1fr) 38px 38px;padding:8px}.topbar #case-select{grid-column:1/-1}.playback{grid-column:1/-1;grid-template-columns:38px minmax(0,1fr) 70px}.playback audio{grid-column:1/-1}.case-head{padding:12px 14px}.case-head h1{font-size:18px}.gallery-wrap{padding:10px}.tile{height:320px}}
   </style>
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js","fflate":"https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js","@comfyorg/fbx-exporter-three":"https://cdn.jsdelivr.net/npm/@comfyorg/fbx-exporter-three@1.0.1/dist/index.js"}}</script>
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="../../motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body>
+<body data-motius-page="viewer">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main">Skip to main content</a>
+<!-- motius-skip-link:end -->
   <div class="app">
     <header class="topbar">
       <input class="search" id="search" type="search" placeholder="Search case ID or caption" aria-label="Search cases">
@@ -42,9 +51,9 @@
     </header>
     <div class="workspace">
       <aside class="case-panel"><div class="case-summary" id="case-summary">Loading cases</div><div class="case-list" id="case-list"></div></aside>
-      <main class="main" id="main">
+      <main class="main" id="main" tabindex="-1">
         <section class="case-head"><div><div class="eyebrow" id="position">Complete evaluation population</div><h1 id="case-id">Loading</h1><div class="captions" id="captions"></div><div class="condition-legend" id="condition-legend"></div></div><div class="loading" id="loading">Loading SMPL motions</div></section>
-        <div class="gallery-wrap"><div class="gallery" id="gallery"><canvas class="render-canvas" id="canvas"></canvas></div></div>
+        <div class="gallery-wrap"><div class="gallery" id="gallery"><canvas class="render-canvas" id="canvas" role="img" aria-label="Interactive 3D motion preview"></canvas></div></div>
       </main>
     </div>
   </div>

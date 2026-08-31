@@ -183,9 +183,18 @@
   }
 </style>
 <!-- motius-benchmark-nav-style:end -->
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body data-benchmark-id="motion_reconstruction_humanml3d">
-  <main class="page">
+<body data-benchmark-id="motion_reconstruction_humanml3d" data-motius-page="dashboard">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
+  <main class="page" id="main-content" tabindex="-1">
     <!-- motius-benchmark-nav:start -->
 <nav class="motius-benchmark-nav" data-benchmark-id="motion_reconstruction_humanml3d" aria-label="Motius benchmark navigation">
   <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
@@ -244,8 +253,8 @@
         <div class="control-field wide"><label>Evaluation setting</label><input value="HumanML3D reconstruction · complete test split" readonly></div>
       </div>
       <div class="chart-grid">
-        <article class="chart-panel"><h3 id="bar-title">Reconstruction FID</h3><p id="bar-note">Lower is better; GT is excluded.</p><div class="chart-frame"><canvas id="bar-chart"></canvas></div></article>
-        <article class="chart-panel"><h3>Normalized profile</h3><p>100 is the best generated value on each axis; GT is excluded.</p><div class="chart-frame"><canvas id="radar-chart"></canvas></div></article>
+        <article class="chart-panel"><h3 id="bar-title">Reconstruction FID</h3><p id="bar-note">Lower is better; GT is excluded.</p><div class="chart-frame"><canvas id="bar-chart" role="img" aria-label="Leaderboard metric comparison bar chart"></canvas></div></article>
+        <article class="chart-panel"><h3>Normalized profile</h3><p>100 is the best generated value on each axis; GT is excluded.</p><div class="chart-frame"><canvas id="radar-chart" role="img" aria-label="Leaderboard normalized metric radar chart"></canvas></div></article>
       </div>
     </section>
 
@@ -261,7 +270,7 @@
     <section class="panel" aria-labelledby="results-title">
       <div class="section-heading"><div><h2 id="results-title">Complete results</h2><p>GT is pinned first; lower is better for every ranked reconstruction and physical metric.</p></div><span class="setting-pill">3 generated + GT</span></div>
       <div class="table-wrap">
-        <table class="leaderboard">
+        <table class="leaderboard" aria-label="Leaderboard results">
           <thead id="table-head"></thead>
           <tbody id="table-body"></tbody>
         </table>

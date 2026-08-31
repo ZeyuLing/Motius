@@ -5,14 +5,11 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
-import socket
 import time
 import urllib.error
 import urllib.request
 from pathlib import Path
 from urllib.parse import urljoin
-
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = ROOT / "docs/leaderboards/catalog.json"
@@ -100,8 +97,8 @@ def _navigation_targets(benchmarks: list[dict]) -> list[tuple[str, str]]:
 
 
 def _load_registry() -> tuple[list[dict], dict[str, dict], dict]:
-    taxonomy = json.loads(TAXONOMY_PATH.read_text())
-    catalog = json.loads(CATALOG_PATH.read_text())
+    taxonomy = json.loads(TAXONOMY_PATH.read_text(encoding="utf-8"))
+    catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
     catalog_by_id = {item["id"]: item for item in catalog["benchmarks"]}
     benchmarks = []
     for item in taxonomy["benchmarks"]:
@@ -116,7 +113,7 @@ def _source_file(source: str) -> Path:
 
 
 def _load_json(path: str) -> dict:
-    return json.loads((ROOT / path).read_text())
+    return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
 
 def _numeric_fields(
@@ -710,7 +707,7 @@ def _audit_visualization(audit: Audit, benchmark: dict) -> None:
     )
     if not manifest.is_file():
         return
-    data = json.loads(manifest.read_text())
+    data = json.loads(manifest.read_text(encoding="utf-8"))
     if visual.get("external_assets"):
         asset_base = data.get("asset_base_url")
         audit.require(
@@ -838,12 +835,12 @@ def _audit_page(
     audit.require(readme.is_file(), f"{benchmark['label']}: missing README.md")
     if readme.is_file():
         audit.require(
-            benchmark["label"] in readme.read_text(),
+            benchmark["label"] in readme.read_text(encoding="utf-8"),
             f"{benchmark['label']}: README does not use the canonical title",
         )
     if not page.is_file():
         return
-    text = page.read_text()
+    text = page.read_text(encoding="utf-8")
     audit.require(NAV_START in text and NAV_END in text, f"{benchmark['label']}: unsynchronized navigation")
     audit.require(
         f'data-benchmark-id="{benchmark["id"]}"' in text,
@@ -886,7 +883,7 @@ def _audit_page(
         sort_source = text
         script = source / "leaderboard.js"
         if script.is_file():
-            sort_source += script.read_text()
+            sort_source += script.read_text(encoding="utf-8")
         audit.require(
             token in sort_source,
             f"{benchmark['label']}: default ranking is not uTMR-first",
@@ -965,11 +962,7 @@ def _audit_online(audit: Audit, benchmarks: list[dict]) -> None:
                         json.load(response)
                 last_error = None
                 break
-            except (
-                urllib.error.URLError,
-                TimeoutError,
-                socket.timeout,
-            ) as error:
+            except (urllib.error.URLError, TimeoutError) as error:
                 last_error = error
                 if attempt < 2:
                     time.sleep(attempt + 1)

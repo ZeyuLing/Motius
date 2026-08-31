@@ -181,9 +181,18 @@
   }
 </style>
 <!-- motius-benchmark-nav-style:end -->
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body data-benchmark-id="motion_tracking_isaaclab_g1">
-  <main class="page">
+<body data-benchmark-id="motion_tracking_isaaclab_g1" data-motius-page="dashboard">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
+  <main class="page" id="main-content" tabindex="-1">
     <!-- motius-benchmark-nav:start -->
 <nav class="motius-benchmark-nav" data-benchmark-id="motion_tracking_isaaclab_g1" aria-label="Motius benchmark navigation">
   <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
@@ -244,8 +253,8 @@
         <div class="control-field wide"><label>Physical setting</label><input id="setting-label" readonly></div>
       </div>
       <div class="chart-grid">
-        <article class="chart-panel"><h3 id="bar-title">Success</h3><p id="bar-note">Higher is better; GT is excluded.</p><div class="chart-frame"><canvas id="bar-chart"></canvas></div></article>
-        <article class="chart-panel"><h3>Normalized profile</h3><p>100 is best among measured methods per axis; GT is excluded and no area fill is used.</p><div class="chart-frame"><canvas id="radar-chart"></canvas></div></article>
+        <article class="chart-panel"><h3 id="bar-title">Success</h3><p id="bar-note">Higher is better; GT is excluded.</p><div class="chart-frame"><canvas id="bar-chart" role="img" aria-label="Leaderboard metric comparison bar chart"></canvas></div></article>
+        <article class="chart-panel"><h3>Normalized profile</h3><p>100 is best among measured methods per axis; GT is excluded and no area fill is used.</p><div class="chart-frame"><canvas id="radar-chart" role="img" aria-label="Leaderboard normalized metric radar chart"></canvas></div></article>
       </div>
     </section>
 
@@ -261,7 +270,7 @@
     <section class="panel" aria-labelledby="results-title">
       <div class="section-heading"><div><h2 id="results-title">Complete results</h2><p>GT is pinned first. Specialist upper bounds remain visible but are excluded from rank styling.</p></div><span class="setting-pill" id="table-setting">–</span></div>
       <div class="table-wrap">
-        <table class="leaderboard"><thead id="table-head"></thead><tbody id="table-body"></tbody></table>
+        <table class="leaderboard" aria-label="Leaderboard results"><thead id="table-head"></thead><tbody id="table-body"></tbody></table>
       </div>
       <div class="table-note"><span id="table-note-left">Measured physical rollouts only.</span><span>Engine settings are never mixed in one ranking.</span></div>
     </section>

@@ -1,0 +1,1151 @@
+/*
+ * Motius research-workbench surface
+ *
+ * This file is the single source of truth for every static leaderboard Space.
+ * Run `python tools/sync_leaderboard_surface.py` after editing it.  The rules
+ * intentionally sit above the page-specific CSS: benchmark logic and layout
+ * remain local while typography, color, density, focus, and responsive polish
+ * stay coherent across the suite.
+ */
+
+:root {
+  color-scheme: light;
+  --motius-graphite: #111827;
+  --motius-ink: #182235;
+  --motius-muted: #596579;
+  --motius-subtle: #748096;
+  --motius-line: #d8e0ec;
+  --motius-line-strong: #b9c6d8;
+  --motius-canvas: #f3f6fa;
+  --motius-canvas-deep: #eaf0f7;
+  --motius-paper: #ffffff;
+  --motius-cobalt: #2563eb;
+  --motius-cobalt-deep: #1d4ed8;
+  --motius-cobalt-soft: #eaf1ff;
+  --motius-cyan: #15d5ff;
+  --motius-cyan-soft: #e6faff;
+  --motius-coral: #f9735b;
+  --motius-coral-deep: #c94d39;
+  --motius-coral-soft: #fff0ed;
+  --motius-success: #147d64;
+  --motius-success-soft: #e8f7f1;
+  --motius-warning: #936117;
+  --motius-warning-soft: #fff5df;
+  --motius-danger: #b43f3f;
+  --motius-danger-soft: #fff0f0;
+  --motius-radius-sm: 7px;
+  --motius-radius: 11px;
+  --motius-radius-lg: 15px;
+  --motius-shadow-sm: 0 1px 2px rgba(17, 24, 39, 0.04),
+    0 6px 16px rgba(30, 64, 175, 0.045);
+  --motius-shadow: 0 14px 36px rgba(26, 47, 82, 0.085);
+  --motius-focus: 0 0 0 3px rgba(37, 99, 235, 0.23);
+
+  /* Map the historic page-level tokens onto the product palette. */
+  --ink: var(--motius-ink);
+  --muted: var(--motius-muted);
+  --line: var(--motius-line);
+  --line-strong: var(--motius-line-strong);
+  --paper: var(--motius-paper);
+  --surface: var(--motius-paper);
+  --canvas: var(--motius-canvas);
+  --wash: var(--motius-canvas);
+  --soft: #f3f6fb;
+  --control: var(--motius-canvas-deep);
+  --accent: var(--motius-cobalt);
+  --teal: var(--motius-cobalt);
+  --teal-soft: var(--motius-cobalt-soft);
+  --green: var(--motius-cobalt);
+  --green-soft: var(--motius-cobalt-soft);
+  --blue: var(--motius-cobalt-deep);
+  --blue-soft: var(--motius-cobalt-soft);
+  --red: var(--motius-coral-deep);
+  --coral: var(--motius-coral-deep);
+  --amber: var(--motius-warning);
+  --rust: var(--motius-coral-deep);
+  --rust-soft: var(--motius-coral-soft);
+  --gold: var(--motius-warning);
+  --gold-soft: var(--motius-warning-soft);
+}
+
+html {
+  background: var(--motius-canvas);
+  scrollbar-color: #aab8cc transparent;
+  text-size-adjust: 100%;
+}
+
+body[data-motius-page] {
+  color: var(--motius-ink);
+  font-family: Inter, Aptos, "Segoe UI Variable", "Segoe UI", system-ui,
+    -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body[data-motius-page="dashboard"] {
+  background:
+    linear-gradient(180deg, rgba(37, 99, 235, 0.055) 0, transparent 340px),
+    var(--motius-canvas);
+}
+
+body[data-motius-page="viewer"],
+body[data-motius-page="audit"] {
+  background: var(--motius-canvas);
+}
+
+body[data-motius-page] ::selection {
+  background: rgba(21, 213, 255, 0.34);
+  color: var(--motius-graphite);
+}
+
+body[data-motius-page] :where(button, input, select, textarea, summary) {
+  accent-color: var(--motius-cobalt);
+  font: inherit;
+}
+
+body[data-motius-page] :where(button, select, summary, a[href]) {
+  -webkit-tap-highlight-color: rgba(37, 99, 235, 0.12);
+}
+
+body[data-motius-page] :where(button, input, select, textarea, summary, a[href]):focus-visible {
+  outline: 2px solid var(--motius-cobalt);
+  outline-offset: 2px;
+  box-shadow: var(--motius-focus);
+}
+
+body[data-motius-page] :where(button, input, select, textarea):disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+}
+
+body[data-motius-page] :where(a[href]) {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+body[data-motius-page] :where(code, kbd, samp, pre, .frame, .version,
+  .motion-meta, .case-number, .motius-benchmark-status,
+  .motius-setting-detail) {
+  font-family: "SFMono-Regular", "Cascadia Code", Consolas, ui-monospace,
+    monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.motius-skip-link {
+  position: fixed;
+  top: 8px;
+  left: 10px;
+  z-index: 100000;
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 2px solid var(--motius-cyan);
+  border-radius: var(--motius-radius-sm);
+  background: var(--motius-graphite);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 750;
+  text-decoration: none;
+  transform: translateY(calc(-100% - 16px));
+  transition: transform 140ms ease-out;
+}
+
+.motius-skip-link:focus {
+  color: #ffffff;
+  transform: translateY(0);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Benchmark navigation                                                       */
+/* -------------------------------------------------------------------------- */
+
+body[data-motius-page="dashboard"] .motius-benchmark-nav {
+  position: sticky;
+  top: 10px;
+  z-index: 1000;
+  width: min(1520px, calc(100% - 32px));
+  min-height: 56px;
+  margin: 10px auto 0;
+  padding: 8px 9px 8px 16px;
+  border: 1px solid rgba(185, 198, 216, 0.86);
+  border-radius: var(--motius-radius);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 9px 28px rgba(26, 47, 82, 0.09);
+  color: var(--motius-ink);
+  backdrop-filter: blur(16px) saturate(1.2);
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--motius-graphite);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-brand::before {
+  width: 5px;
+  height: 24px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--motius-cyan), var(--motius-cobalt));
+  box-shadow: 5px -7px 0 -1px var(--motius-coral);
+  content: "";
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-context {
+  color: var(--motius-muted);
+  font-size: 12px;
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-menu > summary {
+  min-height: 40px;
+  padding: 8px 12px;
+  border-color: var(--motius-line);
+  border-radius: var(--motius-radius-sm);
+  background: var(--motius-canvas);
+  color: #34425a;
+  font-size: 12px;
+  font-weight: 720;
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-menu > summary:hover {
+  border-color: #9db2d2;
+  background: var(--motius-cobalt-soft);
+  color: var(--motius-cobalt-deep);
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-menu > summary::after {
+  color: var(--motius-cobalt);
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-list {
+  top: calc(100% + 10px);
+  gap: 2px;
+  padding: 9px;
+  border-color: var(--motius-line-strong);
+  border-radius: var(--motius-radius);
+  background: rgba(255, 255, 255, 0.985);
+  box-shadow: 0 24px 62px rgba(17, 24, 39, 0.2);
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-link {
+  min-height: 46px;
+  padding: 9px 11px;
+  border: 1px solid transparent;
+  border-radius: var(--motius-radius-sm);
+  color: #2f3d52;
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-link:hover {
+  border-color: #d6e2f4;
+  background: #f4f7fc;
+  color: var(--motius-cobalt-deep);
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-link[aria-current="page"] {
+  border-color: #c4d7ff;
+  background: var(--motius-cobalt-soft);
+  color: var(--motius-cobalt-deep);
+  box-shadow: inset 3px 0 0 var(--motius-cobalt);
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-status {
+  color: var(--motius-subtle);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-status[data-status="complete"] {
+  color: var(--motius-success);
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-status[data-status="metrics_complete"],
+body[data-motius-page="dashboard"] .motius-benchmark-status[data-status="settings"],
+body[data-motius-page="dashboard"] .motius-benchmark-status[data-status="protocol_ready"] {
+  color: var(--motius-cobalt-deep);
+}
+
+body[data-motius-page="dashboard"] .motius-benchmark-status[data-status="paused"] {
+  color: var(--motius-coral-deep);
+}
+
+body[data-motius-page="dashboard"] .motius-setting-nav {
+  width: min(1520px, calc(100% - 32px));
+  min-height: 48px;
+  margin: 8px auto 0;
+  padding: 5px;
+  border-color: #d5dfed;
+  border-radius: var(--motius-radius);
+  background: #eaf0f8;
+}
+
+body[data-motius-page="dashboard"] .motius-setting-label {
+  color: var(--motius-muted);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+body[data-motius-page="dashboard"] .motius-setting-link {
+  min-height: 38px;
+  border-radius: var(--motius-radius-sm);
+  color: #526078;
+}
+
+body[data-motius-page="dashboard"] .motius-setting-link:hover {
+  border-color: #bdcae0;
+  color: var(--motius-ink);
+}
+
+body[data-motius-page="dashboard"] .motius-setting-link[aria-current="page"] {
+  border-color: #bcd0fb;
+  color: var(--motius-cobalt-deep);
+  box-shadow: var(--motius-shadow-sm);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Dashboard shell and information hierarchy                                  */
+/* -------------------------------------------------------------------------- */
+
+body[data-motius-page="dashboard"] :is(.page, .shell) {
+  width: min(1520px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+body[data-motius-page="dashboard"] :is(.page, .shell) {
+  padding-top: 16px;
+  padding-bottom: 48px;
+}
+
+body[data-motius-page="dashboard"] :is(.page, .shell) > :is(header, .topbar),
+body[data-motius-page="dashboard"] .page > header > .topbar {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--motius-line);
+  border-radius: var(--motius-radius-lg);
+  background: var(--motius-paper);
+  box-shadow: var(--motius-shadow-sm);
+}
+
+body[data-motius-page="dashboard"] :is(.page, .shell) > .topbar,
+body[data-motius-page="dashboard"] .page > header > .topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.8fr);
+  align-items: start;
+  gap: clamp(24px, 3vw, 48px);
+}
+
+/* Some product pages wrap a real topbar and its view tabs in a semantic
+   header. Keep that wrapper structural instead of rendering nested cards. */
+body[data-motius-page="dashboard"] .page > header:has(> .topbar) {
+  overflow: visible;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body[data-motius-page="dashboard"] .page > header:has(> .topbar)::before {
+  content: none;
+}
+
+body[data-motius-page="dashboard"] :is(.page, .shell) > :is(header, .topbar)::before,
+body[data-motius-page="dashboard"] .page > header > .topbar::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--motius-cobalt), var(--motius-cyan));
+  content: "";
+}
+
+body[data-motius-page="dashboard"] :is(.page, .shell) > header,
+body[data-motius-page="dashboard"] :is(.page, .shell) > .topbar,
+body[data-motius-page="dashboard"] .page > header > .topbar {
+  padding: clamp(26px, 3.2vw, 46px) clamp(24px, 3.5vw, 52px);
+}
+
+body[data-motius-page="dashboard"] :is(.updated, .snapshot) {
+  min-width: 0;
+  max-width: none;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+body[data-motius-page="dashboard"] :is(h1, h2, h3) {
+  color: var(--motius-graphite);
+  text-wrap: balance;
+}
+
+body[data-motius-page="dashboard"] h1 {
+  margin-bottom: 10px;
+  font-size: clamp(30px, 3.1vw, 46px);
+  font-weight: 790;
+  line-height: 1.06;
+  letter-spacing: -0.038em;
+}
+
+body[data-motius-page="dashboard"] h2 {
+  font-weight: 760;
+  letter-spacing: -0.018em;
+}
+
+body[data-motius-page="dashboard"] h3 {
+  font-weight: 720;
+  letter-spacing: -0.01em;
+}
+
+body[data-motius-page="dashboard"] :is(.subtitle, .lede, .caption, .topbar p,
+  .title-row p, header p) {
+  color: var(--motius-muted);
+}
+
+body[data-motius-page="dashboard"] :is(.subtitle, .lede, .title-row p, header p) {
+  max-width: 860px;
+  font-size: clamp(14px, 1.25vw, 17px);
+  line-height: 1.62;
+}
+
+body[data-motius-page="dashboard"] :is(.eyebrow, .kicker) {
+  color: var(--motius-cobalt-deep);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.105em;
+  text-transform: uppercase;
+}
+
+body[data-motius-page="dashboard"] :is(.badge-row, .badges) {
+  gap: 7px;
+}
+
+body[data-motius-page="dashboard"] :is(.badge, .setting-pill, .status-chip) {
+  min-height: 28px;
+  padding: 5px 9px;
+  border: 1px solid #d5dfed;
+  border-radius: 999px;
+  background: #f3f6fb;
+  color: #46546b;
+  font-family: "SFMono-Regular", "Cascadia Code", Consolas, ui-monospace,
+    monospace;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.015em;
+}
+
+body[data-motius-page="dashboard"] :is(.audit-link, .viewer-link, .section-link, .back) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #bcd0fb;
+  border-radius: var(--motius-radius-sm);
+  background: var(--motius-cobalt-soft);
+  color: var(--motius-cobalt-deep);
+  font-size: 12px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+body[data-motius-page="dashboard"] :is(.audit-link, .viewer-link, .section-link, .back):hover {
+  border-color: var(--motius-cobalt);
+  background: #dce8ff;
+}
+
+body[data-motius-page="dashboard"] :is(.score-strip, .summary) {
+  gap: 10px;
+  margin-block: 14px;
+}
+
+body[data-motius-page="dashboard"] :is(.score-card, .score-item, .summary-item) {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--motius-line);
+  border-radius: var(--motius-radius);
+  background: var(--motius-paper);
+  box-shadow: var(--motius-shadow-sm);
+}
+
+body[data-motius-page="dashboard"] :is(.score-card, .score-item, .summary-item)::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--motius-cobalt), var(--motius-cyan));
+  content: "";
+}
+
+body[data-motius-page="dashboard"] :is(.score-card, .score-item, .summary-item)
+  :is(.label, dt, small) {
+  color: var(--motius-muted);
+  font-family: "SFMono-Regular", "Cascadia Code", Consolas, ui-monospace,
+    monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+body[data-motius-page="dashboard"] :is(.score-card, .score-item, .summary-item)
+  :is(.value, dd, strong) {
+  color: var(--motius-graphite);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.025em;
+}
+
+body[data-motius-page="dashboard"] :is(.snapshot, .target-note, .audit-note) {
+  border-color: var(--motius-cobalt);
+  color: var(--motius-muted);
+}
+
+body[data-motius-page="dashboard"] :is(.panel, .section, .band,
+  .comparison-studio, .case-explorer, .comparison, .table-band,
+  .protocol-band, .explorer-band, .audit-band, .view) {
+  border-color: var(--motius-line);
+  border-radius: var(--motius-radius);
+  background-color: var(--motius-paper);
+  box-shadow: var(--motius-shadow-sm);
+}
+
+body[data-motius-page="dashboard"] :is(.panel, .section, .band,
+  .comparison-studio, .case-explorer, .comparison, .table-band,
+  .protocol-band, .explorer-band, .audit-band) {
+  margin-bottom: 14px;
+}
+
+body[data-motius-page="dashboard"] :is(.section-heading, .section-head, .band-head,
+  .table-heading) {
+  border-color: var(--motius-line);
+}
+
+body[data-motius-page="dashboard"] :is(.section-heading, .section-head, .band-head,
+  .table-heading) h2 {
+  color: var(--motius-graphite);
+  font-size: clamp(17px, 1.5vw, 21px);
+}
+
+body[data-motius-page="dashboard"] :is(.section-heading, .section-head, .band-head,
+  .table-heading) p {
+  color: var(--motius-muted);
+  line-height: 1.55;
+}
+
+body[data-motius-page="dashboard"] :is(.studio-controls, .controls,
+  .audit-controls, .compare-toolbar, .toolbar, .table-tools) {
+  border-color: var(--motius-line);
+  border-radius: var(--motius-radius-sm);
+  background: #f3f6fb;
+}
+
+body[data-motius-page="dashboard"] :is(.field, .control-field) label {
+  color: #5a667a;
+  font-family: "SFMono-Regular", "Cascadia Code", Consolas, ui-monospace,
+    monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+}
+
+body[data-motius-page="dashboard"] :is(input:not([type="range"]), select, button, .tab) {
+  min-height: 40px;
+  border-color: var(--motius-line-strong);
+  border-radius: var(--motius-radius-sm);
+  background-color: var(--motius-paper);
+  color: #29374c;
+}
+
+body[data-motius-page="dashboard"] :is(button, .tab):hover {
+  border-color: #91a9cb;
+  color: var(--motius-cobalt-deep);
+}
+
+body[data-motius-page="dashboard"] :is(.tab[aria-selected="true"],
+  .tab.active, button[aria-pressed="true"], .method-picker button[aria-pressed="true"]) {
+  border-color: #9ab8f7;
+  background: var(--motius-cobalt-soft);
+  color: var(--motius-cobalt-deep);
+  box-shadow: inset 0 -2px 0 var(--motius-cobalt);
+}
+
+body[data-motius-page="dashboard"] input[type="range"] {
+  accent-color: var(--motius-cobalt);
+}
+
+body[data-motius-page="dashboard"] :is(.chart-grid, .chart-panel, .canvas-wrap,
+  .chart, .chart-frame) {
+  min-width: 0;
+}
+
+body[data-motius-page="dashboard"] .chart-panel {
+  border-color: var(--motius-line);
+  border-radius: var(--motius-radius-sm);
+  background: linear-gradient(180deg, #ffffff, #fbfcfe);
+}
+
+body[data-motius-page="dashboard"] :is(.chart-note, .metric-help, .table-note,
+  .note, .detail) {
+  color: var(--motius-muted);
+}
+
+body[data-motius-page="dashboard"] :is(.table-wrap, .table-shell) {
+  scrollbar-color: #aab8cc #edf2f7;
+}
+
+body[data-motius-page="dashboard"] :is(table, .leaderboard) {
+  color: #28364a;
+  font-variant-numeric: tabular-nums;
+}
+
+body[data-motius-page="dashboard"] :is(table, .leaderboard) :is(th, td) {
+  border-color: #e2e8f1;
+}
+
+body[data-motius-page="dashboard"] :is(table, .leaderboard) thead th {
+  background: #edf2f9;
+  color: #43516a;
+  font-family: "SFMono-Regular", "Cascadia Code", Consolas, ui-monospace,
+    monospace;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.045em;
+}
+
+body[data-motius-page="dashboard"] :is(table, .leaderboard) tbody tr:nth-child(even) {
+  background: rgba(242, 246, 251, 0.54);
+}
+
+body[data-motius-page="dashboard"] :is(table, .leaderboard) tbody tr:hover {
+  background: #edf3ff;
+}
+
+body[data-motius-page="dashboard"] :is(.best, [data-rank="best"]) {
+  background: var(--motius-success-soft);
+  color: #0f6f58;
+  font-weight: 750;
+}
+
+body[data-motius-page="dashboard"] :is(.second, [data-rank="second"]) {
+  background: var(--motius-cobalt-soft);
+  color: var(--motius-cobalt-deep);
+  font-weight: 750;
+}
+
+body[data-motius-page="dashboard"] :is(.reference-row, .reference, .ref) {
+  background-color: var(--motius-warning-soft);
+}
+
+body[data-motius-page="dashboard"] .rank {
+  background: #e7edf6;
+  color: #46556c;
+}
+
+body[data-motius-page="dashboard"] .rank.reference {
+  background: var(--motius-warning-soft);
+  color: var(--motius-warning);
+}
+
+body[data-motius-page="dashboard"] :is(.legend, .metric-key, .ranking-key) {
+  color: var(--motius-muted);
+}
+
+body[data-motius-page="dashboard"] .legend .best-key::before {
+  background: var(--motius-success-soft);
+}
+
+body[data-motius-page="dashboard"] .legend .second-key::before {
+  background: var(--motius-cobalt-soft);
+}
+
+body[data-motius-page="dashboard"] .legend .reference-key::before {
+  background: var(--motius-warning-soft);
+}
+
+body[data-motius-page="dashboard"] :is(.protocol, .protocol-grid, .protocol-strip) {
+  border-color: var(--motius-line);
+}
+
+body[data-motius-page="dashboard"] :is(.protocol-grid article, .protocol > div,
+  .protocol-item) {
+  border-color: var(--motius-line);
+}
+
+body[data-motius-page="dashboard"] :is(.protocol-grid code, .method-cell a) {
+  color: var(--motius-cobalt-deep);
+}
+
+body[data-motius-page="dashboard"] :is(.case-explorer iframe, .explorer-frame iframe) {
+  background: var(--motius-canvas);
+}
+
+body[data-motius-page="dashboard"] .audit-controls {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  min-width: 0;
+}
+
+body[data-motius-page="dashboard"] .audit-controls > *,
+body[data-motius-page="dashboard"] .audit-controls :is(.field, select, button) {
+  min-width: 0;
+  max-width: 100%;
+}
+
+body[data-motius-page="dashboard"] .audit-controls select {
+  width: 100%;
+}
+
+body[data-motius-page="dashboard"] :is(.demo-card video, video) {
+  border-color: var(--motius-line);
+  border-radius: var(--motius-radius-sm);
+  background: var(--motius-graphite);
+}
+
+body[data-motius-page="dashboard"] :is(footer, .footer, .site-footer) {
+  color: var(--motius-muted);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Motion / audio / robot case viewers                                         */
+/* -------------------------------------------------------------------------- */
+
+body[data-motius-page="viewer"] :is(button, select, input:not([type="range"])) {
+  min-height: 40px;
+  border-color: var(--motius-line-strong);
+  border-radius: var(--motius-radius-sm);
+  color: var(--motius-ink);
+}
+
+body[data-motius-page="viewer"] button:hover:not(:disabled) {
+  border-color: #85a3d0;
+  color: var(--motius-cobalt-deep);
+}
+
+body[data-motius-page="viewer"] input[type="range"] {
+  min-height: 24px;
+  accent-color: var(--motius-cobalt);
+}
+
+body[data-motius-page="viewer"] .app > .topbar {
+  border-color: var(--motius-line);
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 5px 18px rgba(26, 47, 82, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+body[data-motius-page="viewer"] :is(.brand, .back) {
+  color: var(--motius-cobalt-deep);
+}
+
+body[data-motius-page="viewer"] .workspace {
+  background: var(--motius-canvas);
+}
+
+body[data-motius-page="viewer"] .case-panel {
+  border-color: var(--motius-line);
+  background: #fafdff;
+}
+
+body[data-motius-page="viewer"] .case-summary {
+  border-color: var(--motius-line);
+  background: #f3f6fb;
+  color: var(--motius-muted);
+}
+
+body[data-motius-page="viewer"] .case-button {
+  min-height: 44px;
+  border-left-width: 3px;
+  border-left-color: transparent;
+  border-radius: 6px;
+}
+
+body[data-motius-page="viewer"] .case-button:hover {
+  background: #edf3fc;
+}
+
+body[data-motius-page="viewer"] .case-button.active {
+  border-left-color: var(--motius-cobalt);
+  background: var(--motius-cobalt-soft);
+  color: var(--motius-cobalt-deep);
+}
+
+body[data-motius-page="viewer"] .case-head {
+  border-color: var(--motius-line);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+body[data-motius-page="viewer"] .case-head .eyebrow {
+  color: var(--motius-cobalt-deep);
+  letter-spacing: 0.075em;
+}
+
+body[data-motius-page="viewer"] .case-head h1 {
+  color: var(--motius-graphite);
+  font-weight: 780;
+  letter-spacing: -0.025em;
+}
+
+body[data-motius-page="viewer"] :is(.caption, .legend-chip, .tag) {
+  border-color: var(--motius-line);
+  border-radius: 999px;
+  background: #f3f6fb;
+  color: #4a5870;
+}
+
+body[data-motius-page="viewer"] :is(.caption.active, .tag.active) {
+  border-color: #a9c1f5;
+  background: var(--motius-cobalt-soft);
+  color: var(--motius-cobalt-deep);
+}
+
+body[data-motius-page="viewer"] .gallery {
+  gap: 12px;
+}
+
+body[data-motius-page="viewer"] .tile {
+  border-color: var(--motius-line);
+  border-radius: var(--motius-radius);
+  box-shadow: var(--motius-shadow-sm);
+}
+
+body[data-motius-page="viewer"] .tile-head {
+  border-color: rgba(216, 224, 236, 0.93);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+body[data-motius-page="viewer"] .download {
+  min-width: 28px;
+  min-height: 28px;
+  border-color: var(--motius-line-strong);
+  border-radius: 6px;
+  color: #526078;
+}
+
+body[data-motius-page="viewer"] .download:hover:not(:disabled) {
+  border-color: var(--motius-cobalt);
+  color: var(--motius-cobalt-deep);
+}
+
+body[data-motius-page="viewer"] .tile[data-load-state="error"] {
+  border-color: #e8afa6;
+  background: var(--motius-coral-soft);
+}
+
+body[data-motius-page="viewer"] .retry-load,
+body[data-motius-page="viewer"] .status.error {
+  color: var(--motius-danger);
+}
+
+body[data-motius-page="viewer"] :is(.toolbar, .prompt) {
+  border-color: var(--motius-line);
+  background: var(--motius-paper);
+}
+
+body[data-motius-page="viewer"] .toolbar {
+  border-radius: var(--motius-radius-sm);
+  box-shadow: var(--motius-shadow-sm);
+}
+
+body[data-motius-page="viewer"] > .page {
+  width: min(1500px, calc(100% - 32px));
+}
+
+body[data-motius-page="viewer"] > .page > header {
+  border-color: var(--motius-line);
+  border-radius: var(--motius-radius) var(--motius-radius) 0 0;
+  background: var(--motius-paper);
+}
+
+body[data-motius-page="viewer"] > .page > header h1 {
+  color: var(--motius-graphite);
+  font-weight: 780;
+  letter-spacing: -0.025em;
+}
+
+body[data-motius-page="viewer"] :is(.views, .view, .view-head, .status) {
+  border-color: #2d3a4d;
+}
+
+body[data-motius-page="viewer"] .views {
+  border-radius: 0 0 var(--motius-radius) var(--motius-radius);
+}
+
+body[data-motius-page="viewer"] .view {
+  background: #111927;
+}
+
+body[data-motius-page="viewer"] .view-head {
+  background: #172132;
+  color: #edf4ff;
+}
+
+body[data-motius-page="viewer"] .view-head :is(span, strong):last-child {
+  color: #a9b9cf;
+}
+
+body[data-motius-page="viewer"] .status {
+  background: #172132;
+  color: #b4c2d5;
+}
+
+body[data-motius-page="viewer"] :is(.audio-lab, .metrics, .metric, .tracks,
+  .wave-wrap) {
+  border-color: var(--motius-line);
+}
+
+body[data-motius-page="viewer"] .track.active {
+  background: var(--motius-graphite);
+  color: #ffffff;
+}
+
+body[data-motius-page="viewer"] .stage-label {
+  border-color: rgba(216, 224, 236, 0.95);
+  border-radius: var(--motius-radius-sm);
+  background: rgba(255, 255, 255, 0.92);
+  color: #46546b;
+}
+
+body[data-motius-page="viewer"] .loading {
+  color: var(--motius-muted);
+}
+
+/* -------------------------------------------------------------------------- */
+/* BABEL sequence audit                                                       */
+/* -------------------------------------------------------------------------- */
+
+body[data-motius-page="audit"] > header {
+  border-color: var(--motius-line);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--motius-shadow-sm);
+}
+
+body[data-motius-page="audit"] h1 {
+  color: var(--motius-graphite);
+  font-weight: 790;
+  letter-spacing: -0.025em;
+}
+
+body[data-motius-page="audit"] :is(button, select) {
+  min-height: 40px;
+  border-color: var(--motius-line-strong);
+  border-radius: var(--motius-radius-sm);
+}
+
+body[data-motius-page="audit"] :is(button, select):hover {
+  border-color: #8ea9cf;
+  background: var(--motius-cobalt-soft);
+}
+
+body[data-motius-page="audit"] input[type="range"] {
+  min-height: 24px;
+  accent-color: var(--motius-cobalt);
+}
+
+body[data-motius-page="audit"] .stage,
+body[data-motius-page="audit"] .segments {
+  overflow: hidden;
+  border-color: var(--motius-line);
+  border-radius: var(--motius-radius);
+  background: var(--motius-line);
+  box-shadow: var(--motius-shadow-sm);
+}
+
+body[data-motius-page="audit"] .viewport {
+  background: var(--motius-paper);
+}
+
+body[data-motius-page="audit"] .segment {
+  border-color: var(--motius-line);
+  background: var(--motius-paper);
+}
+
+body[data-motius-page="audit"] .segment:hover,
+body[data-motius-page="audit"] .segment.active {
+  background: var(--motius-cobalt-soft);
+}
+
+body[data-motius-page="audit"] .segment.active {
+  box-shadow: inset 3px 0 0 var(--motius-cobalt);
+}
+
+body[data-motius-page="audit"] :is(.retrieval-cell, .ranking li) {
+  border-color: var(--motius-line);
+}
+
+body[data-motius-page="audit"] .rank-status {
+  border-color: #dfba67;
+  background: var(--motius-warning-soft);
+  color: #7b5516;
+}
+
+body[data-motius-page="audit"] .rank-status.hit {
+  border-color: #88c3ae;
+  background: var(--motius-success-soft);
+  color: #176b57;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Responsive and input-mode adaptations                                      */
+/* -------------------------------------------------------------------------- */
+
+@media (max-width: 1050px) {
+  body[data-motius-page="dashboard"] :is(.page, .shell) {
+    width: min(100% - 24px, 1520px);
+  }
+
+  body[data-motius-page="dashboard"] :is(.motius-benchmark-nav,
+    .motius-setting-nav) {
+    width: calc(100% - 24px);
+  }
+}
+
+@media (max-width: 720px) {
+  body[data-motius-page="dashboard"] .motius-benchmark-nav {
+    top: 6px;
+    width: calc(100% - 16px);
+    min-height: 52px;
+    margin-top: 6px;
+    padding-left: 12px;
+    border-radius: 9px;
+  }
+
+  body[data-motius-page="dashboard"] .motius-benchmark-context {
+    display: none;
+  }
+
+  body[data-motius-page="dashboard"] .motius-benchmark-list {
+    top: 66px;
+    right: 8px;
+    width: calc(100vw - 16px);
+    max-height: calc(100dvh - 80px);
+    grid-template-columns: 1fr;
+  }
+
+  body[data-motius-page="dashboard"] .motius-benchmark-link {
+    min-height: 48px;
+  }
+
+  body[data-motius-page="dashboard"] .motius-setting-nav {
+    width: calc(100% - 16px);
+  }
+
+  body[data-motius-page="dashboard"] :is(.page, .shell) {
+    width: min(100% - 16px, 1520px);
+    padding-top: 10px;
+    padding-bottom: 32px;
+  }
+
+  body[data-motius-page="dashboard"] :is(.page, .shell) > header,
+  body[data-motius-page="dashboard"] :is(.page, .shell) > .topbar,
+  body[data-motius-page="dashboard"] .page > header > .topbar {
+    padding: 23px 18px 22px;
+  }
+
+  body[data-motius-page="dashboard"] :is(.page, .shell) > .topbar,
+  body[data-motius-page="dashboard"] .page > header > .topbar {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  body[data-motius-page="dashboard"] h1 {
+    font-size: clamp(28px, 9vw, 36px);
+  }
+
+  body[data-motius-page="dashboard"] :is(.audit-link, .viewer-link, .section-link, .back) {
+    width: 100%;
+  }
+
+  body[data-motius-page="dashboard"] :is(.section-heading, .section-head, .band-head,
+    .table-heading, .title-row, .header-actions) {
+    align-items: stretch;
+  }
+
+  body[data-motius-page="dashboard"] .audit-controls {
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    min-width: 0;
+  }
+
+  body[data-motius-page="dashboard"] .audit-controls > *,
+  body[data-motius-page="dashboard"] .audit-controls :is(.field, select, button) {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  body[data-motius-page="viewer"] > .page {
+    width: calc(100% - 16px);
+    padding-top: 8px;
+  }
+
+  body[data-motius-page="viewer"] > .page > header {
+    padding: 18px;
+  }
+
+  body[data-motius-page="viewer"] .tile {
+    box-shadow: none;
+  }
+}
+
+@media (pointer: coarse) {
+  body[data-motius-page] :where(button, select, summary, .tab, .motius-setting-link) {
+    min-height: 44px;
+  }
+
+  body[data-motius-page] input[type="range"] {
+    min-height: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motius-skip-link {
+    transition: none;
+  }
+
+  body[data-motius-page] :where(*, *::before, *::after) {
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .motius-skip-link,
+  body[data-motius-page="dashboard"] .motius-benchmark-nav,
+  body[data-motius-page="dashboard"] :is(.panel, .section, .band,
+    .comparison-studio, .case-explorer, .comparison, .table-band,
+    .protocol-band, .explorer-band, .audit-band),
+  body[data-motius-page="viewer"] .tile {
+    border: 1px solid CanvasText;
+  }
+
+  body[data-motius-page] :where(button, input, select, textarea, summary, a[href]):focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: 3px;
+    box-shadow: none;
+  }
+}
+
+@media print {
+  .motius-skip-link,
+  .motius-benchmark-menu,
+  .motius-setting-nav,
+  body[data-motius-page="dashboard"] :is(.controls, .studio-controls,
+    .audit-controls, .table-tools) {
+    display: none !important;
+  }
+
+  body[data-motius-page="dashboard"] {
+    background: #ffffff;
+  }
+
+  body[data-motius-page="dashboard"] .motius-benchmark-nav {
+    position: static;
+    box-shadow: none;
+  }
+
+  body[data-motius-page="dashboard"] :is(.panel, .section, .band,
+    .comparison-studio, .case-explorer, .comparison, .table-band,
+    .protocol-band, .explorer-band, .audit-band, .score-card, .score-item,
+    .summary-item) {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+}

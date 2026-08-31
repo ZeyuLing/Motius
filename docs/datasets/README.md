@@ -1,17 +1,23 @@
+<!-- MOTIUS_DOCS_NAV:START -->
+<p><a href="../../README.md"><strong>Motius</strong></a> / <a href="../README.md">Documentation</a> / <strong>Dataset Hub</strong></p>
+<p>
+  <a href="../getting_started.md">Quickstart</a> ·
+  <a href="../tasks/README.md">Tasks</a> ·
+  <strong>Datasets</strong> ·
+  <a href="../model_zoo/README.md">Models</a> ·
+  <a href="../training/README.md">Training</a> ·
+  <a href="../evaluator_zoo/README.md">Evaluators</a> ·
+  <a href="../leaderboards/README.md">Benchmarks</a> ·
+  <a href="../motion/README.md">Motion I/O</a>
+</p>
+<!-- MOTIUS_DOCS_NAV:END -->
+
 # Motius Dataset Hub
 
 This page is the source of truth for dataset access in Motius. It distinguishes
 an upstream dataset from a Motius-normalized copy and records the local root
 expected by released tools. Always follow the upstream license and citation
 requirements, including when a processed copy is hosted by Motius.
-
-<p align="center">
-  <a href="../tasks/README.md">Task Registry</a> ·
-  <a href="../model_zoo/README.md">Model Zoo</a> ·
-  <a href="../training/README.md">Training Hub</a> ·
-  <a href="../leaderboards/README.md">Benchmark Hub</a> ·
-  <a href="../motion/README.md">Motion Toolkit</a>
-</p>
 
 ## Dataset Directory
 
@@ -25,7 +31,7 @@ requirements, including when a processed copy is hosted by Motius.
 | <a id="motionfix"></a> **MotionFix** | [Motius SMPL-H release](https://huggingface.co/datasets/ZeyuLing/MotionFix) | [Official dataset](https://motionfix.is.tue.mpg.de/) | `data/MotionFix` | Instruction-based motion editing |
 | <a id="aistpp"></a> **AIST++** | [MotionHub subset](https://huggingface.co/datasets/ZeyuLing/MotionHub/tree/main/aist) | [Official dataset](https://google.github.io/aistplusplus_dataset/) · [API](https://github.com/google/aistplusplus_api) | `data/aistpp` | Music-to-Dance, Dance-to-Music |
 | <a id="beat2"></a> **BEAT2** | [MotionHub subset](https://huggingface.co/datasets/ZeyuLing/MotionHub/tree/main/beat_v2.0.0) | [Official Hugging Face release](https://huggingface.co/datasets/H-Liu1997/BEAT2) | `data/beat2` | Speech-to-Gesture |
-| <a id="amass"></a> **AMASS** | [Private AMASS-G1 cache](https://huggingface.co/datasets/ZeyuLing/AMASS_GMR_for_G1) · not a public release | [Official download](https://amass.is.tue.mpg.de/) · [License](https://amass.is.tue.mpg.de/license.html) | `data/amass` | Licensed local Isaac Lab tracking preparation |
+| <a id="amass"></a> **AMASS** | [Private AMASS-G1 cache](https://huggingface.co/datasets/ZeyuLing/AMASS_GMR_for_G1) · not a public release | [Official download](https://amass.is.tue.mpg.de/) · [License](https://amass.is.tue.mpg.de/license.html) | `data/amass` | BrokenAMASS motion repair; licensed local Isaac Lab tracking preparation |
 | <a id="lafan1"></a> **LAFAN1** | [OpenTrack Unitree G1 retarget](https://huggingface.co/datasets/robfiras/loco-mujoco-datasets/tree/main/Lafan1/mocap/UnitreeG1) | [Official dataset](https://github.com/ubisoft/ubisoft-laforge-animation-dataset) | `data/LAFAN1` | MuJoCo Motion Tracking benchmark |
 | <a id="3dpw"></a> **3DPW** | Not redistributed by Motius | [Official registration and download](https://virtualhumans.mpi-inf.mpg.de/3DPW/) | `data/3DPW` | Monocular Motion Capture |
 | <a id="emdb"></a> **EMDB** | Not redistributed by Motius | [Official project](https://eth-ait.github.io/emdb/) · [Download](https://emdb.ait.ethz.ch/) | `data/EMDB` | Monocular Motion Capture protocol support |
@@ -200,6 +206,10 @@ license. Its license prohibits copying, sharing, distributing, or making the
 dataset available to third parties. Motius therefore does not publish AMASS-G1
 motions. Licensed users download AMASS themselves and write any retargeted G1
 outputs under `outputs/`.
+
+BrokenAMASS is a protocol-derived repair benchmark, not an independent source
+dataset: its 299 pair-validated cases are corruptions of AMASS DanceDB clips.
+It therefore inherits AMASS access and redistribution constraints.
 
 LAFAN1 is released under CC BY-NC-ND 4.0. The Motion Tracking benchmark uses
 the 40 Unitree G1 NPZ trajectories published for OpenTrack in

@@ -133,11 +133,11 @@ def audit() -> list[str]:
     for item in RELEASES.values():
         expected_configs.update(item.get("additional_configs", ()))
     actual_configs = {
-        str(path.relative_to(ROOT))
+        path.relative_to(ROOT).as_posix()
         for path in (ROOT / "configs").glob("*/train*.py")
     }
     actual_configs.update(
-        str(path.relative_to(ROOT))
+        path.relative_to(ROOT).as_posix()
         for path in (ROOT / "configs" / "motion_tracking").glob("*.yaml")
     )
     if actual_configs != expected_configs:

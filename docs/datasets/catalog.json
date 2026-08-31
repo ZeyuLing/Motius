@@ -226,9 +226,11 @@
       "status": "upstream-license-bound",
       "local_root": "data/amass",
       "tasks": [
+        "motion_repair",
         "motion_tracking"
       ],
       "benchmark_ids": [
+        "motion_repair_brokenamass",
         "motion_tracking_isaaclab_g1"
       ],
       "access": [

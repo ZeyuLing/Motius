@@ -9,7 +9,6 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = ROOT / "docs" / "datasets" / "catalog.json"
 DATASET_DOC_PATH = ROOT / "docs" / "datasets" / "README.md"
@@ -34,7 +33,7 @@ class Audit:
 
 
 def _load_json(path: Path) -> dict:
-    return json.loads(path.read_text())
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def _online_status(url: str, timeout: float = 15.0) -> int:
@@ -75,10 +74,14 @@ def run(*, online: bool = False) -> Audit:
     audit = Audit()
     catalog = _load_json(CATALOG_PATH)
     taxonomy = _load_json(TAXONOMY_PATH)
-    dataset_doc = DATASET_DOC_PATH.read_text()
-    root_readme = (ROOT / "README.md").read_text()
-    task_doc = (ROOT / "docs" / "tasks" / "README.md").read_text()
-    benchmark_doc = (ROOT / "docs" / "leaderboards" / "README.md").read_text()
+    dataset_doc = DATASET_DOC_PATH.read_text(encoding="utf-8")
+    root_readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    task_doc = (ROOT / "docs" / "tasks" / "README.md").read_text(
+        encoding="utf-8"
+    )
+    benchmark_doc = (ROOT / "docs" / "leaderboards" / "README.md").read_text(
+        encoding="utf-8"
+    )
 
     datasets = catalog.get("datasets", [])
     ids = [item.get("id") for item in datasets]

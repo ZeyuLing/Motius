@@ -183,9 +183,18 @@
   }
 </style>
 <!-- motius-benchmark-nav-style:end -->
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body data-benchmark-id="monocular_motion_capture_3dpw_test">
-  <main class="page">
+<body data-benchmark-id="monocular_motion_capture_3dpw_test" data-motius-page="dashboard">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
+  <main class="page" id="main-content" tabindex="-1">
     <!-- motius-benchmark-nav:start -->
 <nav class="motius-benchmark-nav" data-benchmark-id="monocular_motion_capture_3dpw_test" aria-label="Motius benchmark navigation">
   <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
@@ -244,8 +253,8 @@
         <div class="control-field wide"><label>Evaluation setting</label><input value="3DPW test · camera space · native input disclosure" readonly></div>
       </div>
       <div class="chart-grid">
-        <article class="chart-panel"><h3 id="bar-title">PA-MPJPE</h3><p>Lower is better; chart colors identify input protocol.</p><div class="chart-frame"><canvas id="bar-chart"></canvas></div></article>
-        <article class="chart-panel"><h3>Normalized diagnostic profile</h3><p>100 is the best displayed value per axis; this is not a shared formal rank.</p><div class="chart-frame"><canvas id="radar-chart"></canvas></div></article>
+        <article class="chart-panel"><h3 id="bar-title">PA-MPJPE</h3><p>Lower is better; chart colors identify input protocol.</p><div class="chart-frame"><canvas id="bar-chart" role="img" aria-label="Leaderboard metric comparison bar chart"></canvas></div></article>
+        <article class="chart-panel"><h3>Normalized diagnostic profile</h3><p>100 is the best displayed value per axis; this is not a shared formal rank.</p><div class="chart-frame"><canvas id="radar-chart" role="img" aria-label="Leaderboard normalized metric radar chart"></canvas></div></article>
       </div>
     </section>
 
@@ -257,7 +266,7 @@
     <section class="panel" aria-labelledby="results-title">
       <div class="section-heading"><div><h2 id="results-title">Verified results · 3DPW camera</h2><p>GT is pinned first. Target-crop and full-frame rows remain visibly separated by their input disclosure.</p></div><span class="setting-pill">Verified rows only</span></div>
       <div class="table-wrap">
-        <table class="leaderboard">
+        <table class="leaderboard" aria-label="Leaderboard results">
           <thead><tr><th>Method</th><th>Input protocol</th><th>Coverage</th><th>PA-MPJPE ↓</th><th>MPJPE ↓</th><th>PVE ↓</th><th>Accel. error ↓</th></tr></thead>
           <tbody id="table-body"></tbody>
         </table>

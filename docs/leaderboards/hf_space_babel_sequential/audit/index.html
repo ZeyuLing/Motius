@@ -192,8 +192,17 @@
       .range { display: none; }
     }
   </style>
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="../motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body>
+<body data-motius-page="audit">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
   <div class="loading" id="loading">Loading BABEL episode</div>
   <header>
     <div class="title"><h1>BABEL Sequence Audit</h1><span class="protocol" id="protocol"></span></div>
@@ -204,7 +213,7 @@
       </select>
     </div>
   </header>
-  <main>
+  <main id="main-content" tabindex="-1">
     <section class="stage" id="stage" aria-label="Synchronized motion comparison"></section>
     <div class="transport">
       <button id="playButton" title="Play or pause" aria-label="Play or pause">▶</button>

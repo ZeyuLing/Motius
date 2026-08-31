@@ -1,6 +1,6 @@
-<p align="center">
+<h1 align="center">
   <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/brand/motius-logo-readme.png" width="520" alt="Motius">
-</p>
+</h1>
 
 <p align="center">
   <strong>Open infrastructure for human motion models, benchmarks, and interoperable motion data.</strong>
@@ -19,14 +19,15 @@
 </p>
 
 <p align="center">
-  <a href="#start-here">🚀 Start</a> ·
-  <a href="docs/tasks/README.md">🧭 Tasks</a> ·
+  <a href="docs/README.md"><strong>Documentation</strong></a> ·
+  <a href="#start-here">Quickstart</a> ·
+  <a href="docs/tasks/README.md">Tasks</a> ·
   <a href="docs/datasets/README.md">Datasets</a> ·
-  <a href="docs/model_zoo/README.md">📦 Models</a> ·
-  <a href="docs/leaderboards/README.md">📊 Benchmarks</a> ·
+  <a href="docs/model_zoo/README.md">Models</a> ·
   <a href="docs/training/README.md">Training</a> ·
-  <a href="docs/motion/README.md">🔄 Motion I/O</a> ·
-  <a href="docs/architecture.md">🏗️ Architecture</a>
+  <a href="docs/evaluator_zoo/README.md">Evaluators</a> ·
+  <a href="docs/leaderboards/README.md">Benchmarks</a> ·
+  <a href="docs/motion/README.md">Motion I/O</a>
 </p>
 
 Motius packages motion methods behind consistent bundles, task pipelines,
@@ -34,15 +35,15 @@ trainers, evaluators, and representation bridges.
 
 | Layer | Owns | Source of truth |
 | --- | --- | --- |
-| 🧭 **Task** | Input and output contract | [Task Registry](docs/tasks/README.md) |
+| **Task** | Input and output contract | [Task Registry](docs/tasks/README.md) |
 | **Dataset** | Source assets, local layout, split, and access terms | [Dataset Hub](docs/datasets/README.md) |
-| 📦 **Method** | Model, checkpoint, pipeline, and native representation | [Model Zoo](docs/model_zoo/README.md) |
-| 📊 **Benchmark** | Dataset, split, protocol, evaluator, and persisted results | [Benchmark Hub](docs/leaderboards/README.md) |
-| 🔄 **Motion data** | Representation, body, character, and robot conversion | [Motion Toolkit](docs/motion/README.md) |
+| **Method** | Model, checkpoint, pipeline, and native representation | [Model Zoo](docs/model_zoo/README.md) |
+| **Benchmark** | Dataset, split, protocol, evaluator, and persisted results | [Benchmark Hub](docs/leaderboards/README.md) |
+| **Motion data** | Representation, body, character, and robot conversion | [Motion Toolkit](docs/motion/README.md) |
 
 <a id="start-here"></a>
 
-## Start Here 🚀
+## Start here
 
 Install from source:
 
@@ -98,7 +99,7 @@ and benchmark split contract for every public dataset.
 
 [Browse all datasets, download commands, and protocol notes](docs/datasets/README.md).
 
-## Task System 🧭
+## Task system
 
 The [Task Registry](docs/tasks/README.md) is the only public task vocabulary.
 Tasks are listed flat instead of being forced into overlapping modality or
@@ -128,7 +129,7 @@ Model cards use these exact labels. Benchmark settings use
 `Text-to-Motion · SMPL Skeleton` and
 `Sequential Text-to-Motion · BABEL`.
 
-## Models And Benchmarks 📦
+## Models and benchmarks
 
 | Surface | Use it for | Includes |
 | --- | --- | --- |
@@ -138,9 +139,9 @@ Model cards use these exact labels. Benchmark settings use
 | ⚙️ **[Evaluator Zoo](docs/evaluator_zoo/README.md)** | Reuse a metric implementation | HumanML3D Official, MotionStreamer, InterCLIP, TMR-G1, AIST++, and joint-position evaluators |
 | 🩺 **[Physical Metrics](docs/evaluation/physical_metrics.md)** | Diagnose motion quality without a semantic checkpoint | Foot slide, floating, jitter, dynamics, and floor penetration |
 
-## Motion Interoperability 🔄
+## Motion interoperability
 
-### Representation And Embodiment
+### Representation and embodiment
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/representation_demo/004822_hml_smpl_soma_core_g1_1920_30fps.gif" width="920" alt="One motion converted across HumanML3D, SMPL, SOMA, ARDY, and Unitree G1">
@@ -227,7 +228,7 @@ rigging and deformation smoke test, not proof of production-quality anatomy on
 every mesh. See the guide for method boundaries, third-party attribution, and
 the foot/head orientation limitations of position-only SMPL-22 motion.
 
-## Train And Extend 🛠️
+## Train and extend
 
 The [Training Hub](docs/training/README.md) is the source of truth for which
 packages have Motius-native trainers. It documents data contracts, precision,
@@ -253,7 +254,7 @@ Use the [architecture guide](docs/architecture.md) to add a package, the
 [Training Hub](docs/training/README.md) for the supported-package matrix and
 released recipes.
 
-## Architecture 🏗️
+## Architecture
 
 ```mermaid
 flowchart LR
@@ -272,10 +273,11 @@ The split is intentional: a method can change architecture without renaming
 its task, a benchmark can change dataset without becoming a new method, and a
 motion representation can change without silently changing evaluation space.
 
-## Documentation 📚
+## Documentation
 
 | Goal | Guide |
 | --- | --- |
+| Browse the documentation by workflow | [Documentation home](docs/README.md) |
 | Install and run a first model | [Getting Started](docs/getting_started.md) |
 | Download data and select the correct dataset copy | [Dataset Hub](docs/datasets/README.md) |
 | Choose the correct public task name | [Task Registry](docs/tasks/README.md) |
@@ -285,7 +287,7 @@ motion representation can change without silently changing evaluation space.
 | Understand or extend the runtime | [Architecture](docs/architecture.md) · [Development](docs/development.md) |
 | Train or resume a supported package | [Training Hub](docs/training/README.md) · [Data Formats](docs/training/prism_tmr_hymotion_t2m.md) |
 
-## Project Status 🚦
+## Project status
 
 Motius is an active research release. Public artifacts are versioned,
 evaluation protocols are persisted with their results, and method-specific

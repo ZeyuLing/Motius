@@ -2,7 +2,6 @@ import importlib.util
 import json
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -29,7 +28,7 @@ def test_leaderboard_navigation_is_synchronized() -> None:
         path = ROOT / source / "index.html"
         if not path.is_file():
             continue
-        original = path.read_text()
+        original = path.read_text(encoding="utf-8")
         if navigation._sync_page(
             path,
             benchmark,
@@ -37,20 +36,22 @@ def test_leaderboard_navigation_is_synchronized() -> None:
             catalog["navigation_target"],
         ):
             changed.append(str(path.relative_to(ROOT)))
-            path.write_text(original)
+            path.write_text(original, encoding="utf-8", newline="\n")
     assert changed == []
 
 
 def test_leaderboard_navigation_is_safe_inside_huggingface_iframes() -> None:
     catalog = json.loads(
-        (ROOT / "docs" / "leaderboards" / "catalog.json").read_text()
+        (ROOT / "docs" / "leaderboards" / "catalog.json").read_text(
+            encoding="utf-8"
+        )
     )
     for benchmark in catalog["benchmarks"]:
         source = benchmark["source"].split("#", 1)[0]
         path = ROOT / source / "index.html"
         if not path.is_file():
             continue
-        page = path.read_text()
+        page = path.read_text(encoding="utf-8")
         nav = page.split("<!-- motius-benchmark-nav:start -->", 1)[1].split(
             "<!-- motius-benchmark-nav:end -->", 1
         )[0]
@@ -62,7 +63,9 @@ def test_leaderboard_navigation_is_safe_inside_huggingface_iframes() -> None:
 
 def test_g1_viewer_is_public_and_portable() -> None:
     catalog = json.loads(
-        (ROOT / "docs" / "leaderboards" / "catalog.json").read_text()
+        (ROOT / "docs" / "leaderboards" / "catalog.json").read_text(
+            encoding="utf-8"
+        )
     )
     benchmark = next(
         item
@@ -75,12 +78,12 @@ def test_g1_viewer_is_public_and_portable() -> None:
     assert visual["external_assets"] is True
 
     manifest_path = ROOT / visual["manifest"]
-    manifest = json.loads(manifest_path.read_text())
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assert manifest["population"] == 64
     assert manifest["benchmark_population"] == 1024
     assert len(manifest["columns"]) == 3
     assert manifest["asset_base_url"].startswith("https://huggingface.co/")
-    assert "/apdcephfs" not in manifest_path.read_text()
+    assert "/apdcephfs" not in manifest_path.read_text(encoding="utf-8")
 
 
 def test_g1_leaderboard_publishes_only_the_final_hymotion_checkpoint() -> None:
@@ -88,7 +91,7 @@ def test_g1_leaderboard_publishes_only_the_final_hymotion_checkpoint() -> None:
         ROOT
         / "docs/leaderboards/hf_space_t2m_unitree_g1/g1_results.json"
     )
-    payload = json.loads(result_path.read_text())
+    payload = json.loads(result_path.read_text(encoding="utf-8"))
     generated = [
         row
         for row in payload["comparison_snapshot"]["rows"]
@@ -100,10 +103,10 @@ def test_g1_leaderboard_publishes_only_the_final_hymotion_checkpoint() -> None:
     assert len(hymotion) == 1
     assert hymotion[0]["variant"] == "released"
     assert hymotion[0]["fid"] == 0.0587378660855683
-    assert "iter " not in result_path.read_text()
+    assert "iter " not in result_path.read_text(encoding="utf-8")
 
     catalog = json.loads(
-        (ROOT / "docs/leaderboards/catalog.json").read_text()
+        (ROOT / "docs/leaderboards/catalog.json").read_text(encoding="utf-8")
     )
     setting = next(
         item
@@ -115,5 +118,5 @@ def test_g1_leaderboard_publishes_only_the_final_hymotion_checkpoint() -> None:
 
     page = (
         ROOT / "docs/leaderboards/hf_space_t2m_unitree_g1/index.html"
-    ).read_text()
+    ).read_text(encoding="utf-8")
     assert '["released", "reference"].includes(row.variant)' in page

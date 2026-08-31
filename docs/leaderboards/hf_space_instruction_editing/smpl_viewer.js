@@ -145,6 +145,11 @@ function makeView(key, data) {
   const camera = new THREE.PerspectiveCamera(34, 1, 0.01, 100);
   cameraPose(camera);
   const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.domElement.setAttribute("role", "img");
+  renderer.domElement.setAttribute(
+    "aria-label",
+    `${data.label} motion preview`,
+  );
   renderer.setPixelRatio(Math.min(devicePixelRatio, 1.6));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NoToneMapping;

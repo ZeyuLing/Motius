@@ -35,9 +35,18 @@
   <script type="importmap">
     {"imports":{"three":"./three/three.module.js","three/addons/":"./three/"}}
   </script>
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="../motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body>
-  <main class="viewer">
+<body data-motius-page="viewer">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
+  <main class="viewer" id="main-content" tabindex="-1">
     <div class="toolbar">
       <div><label for="split-select">Split</label><select id="split-select"></select></div>
       <div><label for="case-select">Case</label><select id="case-select"></select></div>
@@ -103,7 +112,7 @@
         this.lastRoot = null;
         const root = document.createElement("article");
         root.className = "view";
-        root.innerHTML = `<div class="view-head"><strong>${column.label}</strong><span>Unitree G1</span></div><canvas></canvas><div class="status">Preparing G1 meshes…</div>`;
+        root.innerHTML = `<div class="view-head"><strong>${column.label}</strong><span>Unitree G1</span></div><canvas role="img" aria-label="Interactive 3D motion preview"></canvas><div class="status">Preparing G1 meshes…</div>`;
         document.getElementById("views").appendChild(root);
         this.canvas = root.querySelector("canvas");
         this.status = root.querySelector(".status");

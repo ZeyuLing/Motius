@@ -15,15 +15,15 @@ import re
 import sys
 import urllib.error
 import urllib.request
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 README = REPO_ROOT / "docs/model_zoo/README.md"
 MODEL_ZOO_DIR = README.parent
 TASK_REGISTRY_PATH = REPO_ROOT / "docs/tasks/taxonomy.json"
-TASK_REGISTRY = json.loads(TASK_REGISTRY_PATH.read_text())
+TASK_REGISTRY = json.loads(TASK_REGISTRY_PATH.read_text(encoding="utf-8"))
 MODEL_TABLE_METHOD_RE = re.compile(r"^\[([^\]]+)\]\(([^)]+\.md)\)$")
 HF_RE = re.compile(r"https://huggingface\.co/([^)\s|]+)")
 CARD_TASK_RE = re.compile(r"^\| Tasks \| ([^|]+?) \|$", re.MULTILINE)
@@ -78,7 +78,7 @@ class ModelRow:
 
 def _read_model_rows() -> list[ModelRow]:
     rows = []
-    catalog = README.read_text().split("## Method Catalog", 1)[1]
+    catalog = README.read_text(encoding="utf-8").split("## Method Catalog", 1)[1]
     catalog = catalog.split("\n## ", 1)[0]
     for line in catalog.splitlines():
         if not line.startswith("| ["):
@@ -296,7 +296,11 @@ def _format_markdown(rows: Iterable[dict[str, str]]) -> str:
 def run(check_hf: bool) -> str:
     audit_rows = []
     for row in _read_model_rows():
-        text = row.card_path.read_text() if row.card_path.exists() else ""
+        text = (
+            row.card_path.read_text(encoding="utf-8")
+            if row.card_path.exists()
+            else ""
+        )
         tasks, task_note = _task_status(row.task_cell, text)
         if tasks == "restricted":
             checkpoint, checkpoint_note = (
@@ -356,7 +360,7 @@ def main() -> int:
             print("error: generated audit outputs must be written under outputs/", file=sys.stderr)
             return 2
         out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(markdown)
+        out.write_text(markdown, encoding="utf-8", newline="\n")
     else:
         print(markdown)
     return 0

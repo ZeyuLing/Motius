@@ -1,3 +1,17 @@
+<!-- MOTIUS_DOCS_NAV:START -->
+<p><a href="../../README.md"><strong>Motius</strong></a> / <a href="../README.md">Documentation</a> / <strong>Training Hub</strong></p>
+<p>
+  <a href="../getting_started.md">Quickstart</a> ·
+  <a href="../tasks/README.md">Tasks</a> ·
+  <a href="../datasets/README.md">Datasets</a> ·
+  <a href="../model_zoo/README.md">Models</a> ·
+  <strong>Training</strong> ·
+  <a href="../evaluator_zoo/README.md">Evaluators</a> ·
+  <a href="../leaderboards/README.md">Benchmarks</a> ·
+  <a href="../motion/README.md">Motion I/O</a>
+</p>
+<!-- MOTIUS_DOCS_NAV:END -->
+
 # Motius Training Hub
 
 Motius exposes two explicit training runtime families. Generative and
@@ -6,13 +20,6 @@ Physical controllers keep their simulator-owned PPO loop because environment
 stepping, rollout storage, and optimizer cadence form one algorithmic unit.
 Both families use checked-in configs, write below `outputs/training/`, and
 resume complete training state.
-
-<p align="center">
-  <a href="../datasets/README.md">Dataset Hub</a> ·
-  <a href="../model_zoo/README.md">Model Zoo</a> ·
-  <a href="../evaluator_zoo/README.md">Evaluator Zoo</a> ·
-  <a href="../architecture.md">Architecture</a>
-</p>
 
 ## Training Support
 

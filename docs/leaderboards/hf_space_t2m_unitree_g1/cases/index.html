@@ -116,9 +116,18 @@
     }
   }
   </script>
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="../motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body>
-  <main class="page">
+<body data-motius-page="viewer">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
+  <main class="page" id="main-content" tabindex="-1">
     <header>
       <div>
         <h1>Text-to-Motion · Unitree G1</h1>
@@ -185,7 +194,7 @@
         root.className = "view";
         root.innerHTML = `
           <div class="view-head"><span>${column.label}</span><span>Unitree G1</span></div>
-          <canvas></canvas>
+          <canvas role="img" aria-label="Interactive 3D motion preview"></canvas>
           <div class="status">Waiting for case…</div>`;
         document.getElementById("views").appendChild(root);
         this.canvas = root.querySelector("canvas");

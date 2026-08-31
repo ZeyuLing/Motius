@@ -1,19 +1,24 @@
-# Motius Evaluator Zoo
-
-<p align="center">
-  <a href="../tasks/README.md">🧭 Task Registry</a> ·
-  <a href="../datasets/README.md">Dataset Hub</a> ·
-  <a href="../model_zoo/README.md">📦 Model Zoo</a> ·
-  <a href="../leaderboards/README.md">📊 Benchmark Hub</a> ·
-  <a href="../training/README.md">Training Hub</a> ·
-  <a href="../evaluation/physical_metrics.md">🏃 Physical Metrics</a>
+<!-- MOTIUS_DOCS_NAV:START -->
+<p><a href="../../README.md"><strong>Motius</strong></a> / <a href="../README.md">Documentation</a> / <strong>Evaluator Zoo</strong></p>
+<p>
+  <a href="../getting_started.md">Quickstart</a> ·
+  <a href="../tasks/README.md">Tasks</a> ·
+  <a href="../datasets/README.md">Datasets</a> ·
+  <a href="../model_zoo/README.md">Models</a> ·
+  <a href="../training/README.md">Training</a> ·
+  <strong>Evaluators</strong> ·
+  <a href="../leaderboards/README.md">Benchmarks</a> ·
+  <a href="../motion/README.md">Motion I/O</a>
 </p>
+<!-- MOTIUS_DOCS_NAV:END -->
+
+# Motius Evaluator Zoo
 
 The Evaluator Zoo packages metric implementations separately from model
 identity. Choose an evaluator by its declared motion space and benchmark
 contract; converting a prediction into another space must remain explicit.
 
-## Evaluator Matrix 📐
+## Evaluator matrix
 
 | Evaluator | Native input | Principal metrics | Artifact |
 | --------- | ------------ | ----------------- | -------- |
@@ -24,7 +29,7 @@ contract; converting a prediction into another space must remain explicit.
 | [InterCLIP](interclip.md) | Paired InterHuman-262 | R-Precision · normalized FID · MM-Dist · Diversity | [📦 Checkpoint](https://huggingface.co/ZeyuLing/motius-evaluator-interhuman-interclip) |
 | [AIST++ Music-to-Dance](aistpp_music_to_dance.md) | AIST++ SMPL-24 joints and music beats | `FID_k` · `FID_g` · Diversity · BeatAlign · `FID_uTMR` | [📦 Protocol artifact](https://huggingface.co/ZeyuLing/Motius-Evaluator-AISTPP-Music-to-Dance) |
 
-## Selection Rules ✅
+## Selection rules
 
 | Situation | Required action |
 | --------- | --------------- |

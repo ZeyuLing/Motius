@@ -183,8 +183,17 @@
   }
 </style>
 <!-- motius-benchmark-nav-style:end -->
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body data-benchmark-id="motion_repair_brokenamass">
+<body data-benchmark-id="motion_repair_brokenamass" data-motius-page="dashboard">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
 <!-- motius-benchmark-nav:start -->
 <nav class="motius-benchmark-nav" data-benchmark-id="motion_repair_brokenamass" aria-label="Motius benchmark navigation">
   <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
@@ -210,7 +219,7 @@
   </details>
 </nav>
 <!-- motius-benchmark-nav:end -->
-  <main class="page">
+  <main class="page" id="main-content" tabindex="-1">
     <header class="topbar">
       <div>
         <h1>Motion Repair · BrokenAMASS</h1>
@@ -243,8 +252,8 @@
         <div class="control-field wide"><label>Evaluation setting</label><input value="BrokenAMASS v2 pair-validated · 299 fixed crops" readonly></div>
       </div>
       <div class="chart-grid">
-        <article class="chart-panel"><h3 id="bar-title">uTMR R@3</h3><p id="bar-note">Higher is better; references are excluded.</p><div class="chart-frame"><canvas id="bar-chart"></canvas></div></article>
-        <article class="chart-panel"><h3>Normalized profile</h3><p>100 is the best generated value on each axis; reference rows are excluded.</p><div class="chart-frame"><canvas id="radar-chart"></canvas></div></article>
+        <article class="chart-panel"><h3 id="bar-title">uTMR R@3</h3><p id="bar-note">Higher is better; references are excluded.</p><div class="chart-frame"><canvas id="bar-chart" role="img" aria-label="Leaderboard metric comparison bar chart"></canvas></div></article>
+        <article class="chart-panel"><h3>Normalized profile</h3><p>100 is the best generated value on each axis; reference rows are excluded.</p><div class="chart-frame"><canvas id="radar-chart" role="img" aria-label="Leaderboard normalized metric radar chart"></canvas></div></article>
       </div>
     </section>
 
@@ -260,7 +269,7 @@
     <section class="panel" aria-labelledby="results-title">
       <div class="section-heading"><div><h2 id="results-title">Complete results</h2><p>GT is pinned first, followed by the corrupted input; generated methods default to uTMR R@3 order.</p></div><span class="setting-pill">3 methods + input + GT</span></div>
       <div class="table-wrap">
-        <table class="leaderboard">
+        <table class="leaderboard" aria-label="Leaderboard results">
           <thead id="table-head"></thead>
           <tbody id="table-body"></tbody>
         </table>

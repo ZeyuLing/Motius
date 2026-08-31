@@ -366,8 +366,17 @@
   }
 </style>
 <!-- motius-benchmark-nav-style:end -->
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body data-benchmark-id="text_to_motion_unitree_g1">
+<body data-benchmark-id="text_to_motion_unitree_g1" data-motius-page="dashboard">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
 <!-- motius-benchmark-nav:start -->
 <nav class="motius-benchmark-nav" data-benchmark-id="text_to_motion_unitree_g1" aria-label="Motius benchmark navigation">
   <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
@@ -400,7 +409,7 @@
   <a class="motius-setting-link" href="https://zeyuling-t2m-unitree-g1-leaderboard.static.hf.space/" target="_self" rel="noopener noreferrer" aria-current="page"><span>Unitree G1 Skeleton</span><span class="motius-setting-detail">Native G1</span></a>
 </nav>
 <!-- motius-benchmark-settings:end -->
-  <main class="page">
+  <main class="page" id="main-content" tabindex="-1">
     <header class="masthead">
       <div>
         <div class="eyebrow">Unitree G1 Skeleton setting</div>
@@ -447,7 +456,7 @@
         <div class="chart-panel">
           <h3>Normalized profile</h3>
           <p class="chart-note">100 is the best generated-method value on each axis; GT is excluded.</p>
-          <div class="radar-wrap"><canvas id="radar-chart"></canvas></div>
+          <div class="radar-wrap"><canvas id="radar-chart" role="img" aria-label="Leaderboard normalized metric radar chart"></canvas></div>
         </div>
       </div>
     </section>
@@ -469,7 +478,7 @@
         <span class="status">Protocol matched</span>
       </div>
       <div class="table-shell">
-        <table>
+        <table aria-label="Comparable Snapshot table">
           <thead><tr><th>Method</th><th>Samples</th><th>R@1 ↑</th><th>R@2 ↑</th><th>R@3 ↑</th><th>Normalized FID ↓</th><th>MM-Dist ↓</th><th>Diversity</th></tr></thead>
           <tbody id="leaderboard-body"><tr><td colspan="8">Loading persisted metrics...</td></tr></tbody>
         </table>

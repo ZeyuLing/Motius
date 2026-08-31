@@ -810,9 +810,18 @@
   }
 </style>
 <!-- motius-benchmark-nav-style:end -->
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body data-benchmark-id="text_to_motion_humanml3d">
-  <main class="page">
+<body data-benchmark-id="text_to_motion_humanml3d" data-motius-page="dashboard">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
+  <main class="page" id="main-content" tabindex="-1">
     <!-- motius-benchmark-nav:start -->
 <nav class="motius-benchmark-nav" data-benchmark-id="text_to_motion_humanml3d" aria-label="Motius benchmark navigation">
   <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
@@ -921,12 +930,12 @@
         <article class="chart-panel">
           <h3 id="bar-title">Generated-method ranking</h3>
           <p class="chart-note" id="bar-note"></p>
-          <div class="canvas-wrap"><canvas id="bar-chart"></canvas></div>
+          <div class="canvas-wrap"><canvas id="bar-chart" role="img" aria-label="Leaderboard metric comparison bar chart"></canvas></div>
         </article>
         <article class="chart-panel">
           <h3>Normalized profile</h3>
           <p class="chart-note">100 is the best generated-method value on each axis; GT is excluded.</p>
-          <div class="canvas-wrap"><canvas id="radar-chart"></canvas></div>
+          <div class="canvas-wrap"><canvas id="radar-chart" role="img" aria-label="Leaderboard normalized metric radar chart"></canvas></div>
         </article>
       </div>
     </section>
@@ -951,7 +960,7 @@
 
     <section id="semantic" class="view" aria-label="semantic metrics">
       <div class="table-shell">
-        <table data-table="semantic">
+        <table data-table="semantic" aria-label="Semantic evaluation results">
           <thead></thead>
           <tbody></tbody>
         </table>
@@ -961,7 +970,7 @@
 
     <section id="physical" class="view hidden" aria-label="physical metrics">
       <div class="table-shell">
-        <table data-table="physical">
+        <table data-table="physical" aria-label="Physical evaluation results">
           <thead></thead>
           <tbody></tbody>
         </table>
@@ -971,7 +980,7 @@
 
     <section id="paper" class="view hidden" aria-label="paper benchmark metrics">
       <div class="table-shell">
-        <table data-table="paper">
+        <table data-table="paper" aria-label="Reported paper results">
           <thead></thead>
           <tbody></tbody>
         </table>
@@ -981,7 +990,7 @@
 
     <section id="calibration" class="view hidden" aria-label="calibration metrics">
       <div class="table-shell">
-        <table data-table="calibration">
+        <table data-table="calibration" aria-label="Evaluator calibration results">
           <thead></thead>
           <tbody></tbody>
         </table>

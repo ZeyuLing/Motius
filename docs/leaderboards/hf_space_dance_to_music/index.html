@@ -185,8 +185,17 @@
   }
 </style>
 <!-- motius-benchmark-nav-style:end -->
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body data-benchmark-id="dance_to_music_aistpp">
+<body data-benchmark-id="dance_to_music_aistpp" data-motius-page="dashboard">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#main-content">Skip to main content</a>
+<!-- motius-skip-link:end -->
 <!-- motius-benchmark-nav:start -->
 <nav class="motius-benchmark-nav" data-benchmark-id="dance_to_music_aistpp" aria-label="Motius benchmark navigation">
   <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
@@ -213,10 +222,10 @@
 </nav>
 <!-- motius-benchmark-nav:end --><div class="shell">
   <header><div class="kicker">Motius / AIST++</div><div class="title-row"><div><h1>Dance-to-Music · AIST++</h1><p>Music generated from motion, evaluated on the public D2M-GAN 86-segment AIST++ protocol.</p></div><a class="viewer-link" href="cases/index.html">Open all 86 cases <span>↗</span></a></div></header>
-  <main>
+  <main id="main-content" tabindex="-1">
     <section class="section"><div class="section-head"><div><h2>UniMuMo Reproduction</h2><p>Official checkpoint, no text prompt, CFG 3, temperature 1.0, top-k 250.</p></div></div><div class="chart" id="chart"></div><div class="target-note"><span class="target-key"></span>Beat Count Ratio is best near 100%; values above 100% indicate excess detected beat bins.</div></section>
-    <section class="section"><div class="section-head"><div><h2>Motius Results</h2><p>One macro average over the same 86 two-second clips used by the paper.</p></div></div><div class="table-wrap"><table><thead><tr><th>Method</th><th>Version</th><th>Beat Count Ratio (target 100%)</th><th>Beat Hit ↑</th><th>Resources</th></tr></thead><tbody id="rows"></tbody></table></div></section>
-    <section class="section"><div class="section-head"><div><h2>Paper Results</h2><p>Values transcribed from UniMuMo Table 2 under the same D2M-GAN protocol.</p></div></div><div class="table-wrap"><table><thead><tr><th>Method</th><th>Source</th><th>Beat Count Ratio (target 100%)</th><th>Beat Hit ↑</th></tr></thead><tbody id="paper-rows"></tbody></table></div></section>
+    <section class="section"><div class="section-head"><div><h2>Motius Results</h2><p>One macro average over the same 86 two-second clips used by the paper.</p></div></div><div class="table-wrap"><table aria-label="Motius Results table"><thead><tr><th>Method</th><th>Version</th><th>Beat Count Ratio (target 100%)</th><th>Beat Hit ↑</th><th>Resources</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+    <section class="section"><div class="section-head"><div><h2>Paper Results</h2><p>Values transcribed from UniMuMo Table 2 under the same D2M-GAN protocol.</p></div></div><div class="table-wrap"><table aria-label="Paper Results table"><thead><tr><th>Method</th><th>Source</th><th>Beat Count Ratio (target 100%)</th><th>Beat Hit ↑</th></tr></thead><tbody id="paper-rows"></tbody></table></div></section>
     <section class="section"><div class="section-head"><div><h2>Protocol</h2></div></div><div class="protocol"><div><strong>86 clips</strong><span>Public D2M-GAN AIST++ test list, each clip exactly two seconds.</span></div><div><strong>22.05 kHz</strong><span>Official librosa onset detector followed by one-second binary beat bins.</span></div><div><strong>Macro average</strong><span>Per-clip Beat Count Ratio and Beat Hit, then averaged over clips.</span></div></div></section>
   </main><footer>Machine-readable results: <a href="dance_to_music_results.json">dance_to_music_results.json</a> · Built with Motius</footer>
 </div><script>

@@ -232,9 +232,18 @@
   }
 </style>
 <!-- motius-benchmark-nav-style:end -->
+<!-- motius-surface:start -->
+<link rel="stylesheet" href="motius-surface.css" data-motius-surface>
+<!-- motius-surface:end -->
+<!-- motius-theme-color:start -->
+<meta name="theme-color" content="#111827">
+<!-- motius-theme-color:end -->
 </head>
-<body data-benchmark-id="motion_editing_style_content">
-  <div class="shell">
+<body data-benchmark-id="motion_editing_style_content" data-motius-page="dashboard">
+<!-- motius-skip-link:start -->
+<a class="motius-skip-link" href="#motius-main">Skip to main content</a>
+<!-- motius-skip-link:end -->
+  <div class="shell" role="main" id="motius-main" tabindex="-1">
     <!-- motius-benchmark-nav:start -->
 <nav class="motius-benchmark-nav" data-benchmark-id="motion_editing_style_content" aria-label="Motius benchmark navigation">
   <a class="motius-benchmark-brand" href="https://github.com/ZeyuLing/Motius/tree/main/docs/leaderboards" target="_blank" rel="noopener noreferrer">Motius Benchmark Hub</a>
@@ -262,7 +271,7 @@
 <!-- motius-benchmark-nav:end -->
     <header>
       <div class="title-row">
-        <div><h1>Motion Editing · Style and Content</h1><p class="lede">Exact-source motion editing on held-out PerMo pairs. Style editing changes motion character while preserving action; Content editing changes action while preserving style. Every ranked method is measured with the same ten-metric Universal SMPL-H protocol.</p></div>
+        <div><h1 id="main-content" tabindex="-1">Motion Editing · Style and Content</h1><p class="lede">Exact-source motion editing on held-out PerMo pairs. Style editing changes motion character while preserving action; Content editing changes action while preserving style. Every ranked method is measured with the same ten-metric Universal SMPL-H protocol.</p></div>
         <div class="header-actions"><span class="status-chip">Table 6.c · full protocol</span><a class="audit-link" href="#qualitative">Inspect all motions</a></div>
       </div>
       <div class="badges"><span class="badge">63 Style cases</span><span class="badge">67 Content cases</span><span class="badge">Exact source + instruction</span><span class="badge">30 fps physical audit</span><span class="badge">Universal SMPL-H uTMR</span></div>
@@ -270,12 +279,12 @@
     <div class="summary"><div class="summary-item"><div class="value" id="method-count">0</div><div class="label">Ranked generated methods</div></div><div class="summary-item"><div class="value" id="case-count">63</div><div class="label">Held-out cases in active track</div></div><div class="summary-item"><div class="value">10</div><div class="label">Shared reported metrics</div></div><div class="summary-item"><div class="value">M2M R@3</div><div class="label">Default display rank</div></div></div>
     <section>
       <div class="section-head"><div><h2>Aggregate Comparison</h2><p class="caption" id="track-description"></p></div><div class="controls"><div class="track-tabs" id="track-tabs"></div><div class="field"><label for="chart-metric">Metric</label><select id="chart-metric"></select></div></div></div>
-      <div class="chart-grid"><article class="chart-panel"><h3>Measured values</h3><p class="chart-note" id="bar-note"></p><div class="canvas-wrap"><canvas id="bar-chart"></canvas></div></article><article class="chart-panel"><h3>Normalized profile</h3><p class="chart-note">100 denotes the best ranked value on each non-reference axis.</p><div class="canvas-wrap"><canvas id="radar-chart"></canvas></div></article></div>
+      <div class="chart-grid"><article class="chart-panel"><h3>Measured values</h3><p class="chart-note" id="bar-note"></p><div class="canvas-wrap"><canvas id="bar-chart" role="img" aria-label="Leaderboard metric comparison bar chart"></canvas></div></article><article class="chart-panel"><h3>Normalized profile</h3><p class="chart-note">100 denotes the best ranked value on each non-reference axis.</p><div class="canvas-wrap"><canvas id="radar-chart" role="img" aria-label="Leaderboard normalized metric radar chart"></canvas></div></article></div>
     </section>
     <section>
       <div class="section-head"><div><h2>Results</h2><p class="caption">No custom score and no native-input column: all ten paper metrics remain visible in one table.</p></div></div>
       <div class="table-tools"><span class="caption">Click any metric header to sort.</span><input class="search" id="search" type="search" placeholder="Filter method" aria-label="Filter method"></div>
-      <div class="table-wrap"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div>
+      <div class="table-wrap"><table aria-label="Results table"><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div>
       <div class="metric-key"><span class="key"><span class="swatch"></span>Best ranked method</span><span class="key"><span class="swatch second"></span>Second ranked method</span><span class="key">REF = source input</span><span class="key">DIAG = different condition contract</span></div>
     </section>
     <section id="qualitative">
@@ -325,6 +334,6 @@
     function setTrack(id){state.track=id;state.sortKey="M2M R@3";state.sortDirection="desc";renderTabs();renderTable();configureMetric();document.getElementById("case-count").textContent=track().count;document.getElementById("method-count").textContent=rows().filter(rankable).length;document.getElementById("track-description").textContent=`${track().description} ${track().count} held-out cases.`;window.dispatchEvent(new CustomEvent("permo-track-change",{detail:{track:id}}))}
     document.getElementById("search").addEventListener("input",event=>{state.query=event.target.value;renderTable()});document.getElementById("chart-metric").addEventListener("change",renderCharts);document.getElementById("updated").textContent=DATA.updated;setTrack("style");
   </script>
-  <script type="module" src="smpl_viewer.js"></script>
+  <script type="module" src="smpl_viewer.js?v=20260831"></script>
 </body>
 </html>

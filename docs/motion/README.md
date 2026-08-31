@@ -1,3 +1,17 @@
+<!-- MOTIUS_DOCS_NAV:START -->
+<p><a href="../../README.md"><strong>Motius</strong></a> / <a href="../README.md">Documentation</a> / <strong>Motion Toolkit</strong></p>
+<p>
+  <a href="../getting_started.md">Quickstart</a> ·
+  <a href="../tasks/README.md">Tasks</a> ·
+  <a href="../datasets/README.md">Datasets</a> ·
+  <a href="../model_zoo/README.md">Models</a> ·
+  <a href="../training/README.md">Training</a> ·
+  <a href="../evaluator_zoo/README.md">Evaluators</a> ·
+  <a href="../leaderboards/README.md">Benchmarks</a> ·
+  <strong>Motion I/O</strong>
+</p>
+<!-- MOTIUS_DOCS_NAV:END -->
+
 # Motion Representation Toolkit
 
 Motius supports HumanML3D-263, AIST++ SMPL-24 joints, MotionStreamer-272,

@@ -1,7 +1,6 @@
 import json
 from pathlib import Path
 
-
 ROOT = (
     Path(__file__).resolve().parents[1]
     / "docs"
@@ -11,7 +10,9 @@ ROOT = (
 
 
 def test_monocular_capture_leaderboard_is_verified_only():
-    data = json.loads((ROOT / "monocular_capture_results.json").read_text())
+    data = json.loads(
+        (ROOT / "monocular_capture_results.json").read_text(encoding="utf-8")
+    )
 
     assert set(data["protocols"]) == {
         "3dpw_test_camera_v1",
@@ -36,8 +37,8 @@ def test_monocular_capture_leaderboard_is_verified_only():
 
 
 def test_monocular_capture_page_publishes_demos_and_body_model_contract():
-    page = (ROOT / "index.html").read_text()
-    script = (ROOT / "leaderboard.js").read_text()
+    page = (ROOT / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "leaderboard.js").read_text(encoding="utf-8")
 
     assert "Monocular Motion Capture · 3DPW Test" in page
     assert "All-method visual comparison" in page

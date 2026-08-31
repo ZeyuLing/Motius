@@ -1,3 +1,17 @@
+<!-- MOTIUS_DOCS_NAV:START -->
+<p><a href="../../README.md"><strong>Motius</strong></a> / <a href="../README.md">Documentation</a> / <strong>Model Zoo</strong></p>
+<p>
+  <a href="../getting_started.md">Quickstart</a> ·
+  <a href="../tasks/README.md">Tasks</a> ·
+  <a href="../datasets/README.md">Datasets</a> ·
+  <strong>Models</strong> ·
+  <a href="../training/README.md">Training</a> ·
+  <a href="../evaluator_zoo/README.md">Evaluators</a> ·
+  <a href="../leaderboards/README.md">Benchmarks</a> ·
+  <a href="../motion/README.md">Motion I/O</a>
+</p>
+<!-- MOTIUS_DOCS_NAV:END -->
+
 # Motius Model Zoo
 
 The Model Zoo indexes integrated **method packages** and their public artifacts.
@@ -6,15 +20,6 @@ results live in the [Benchmark Hub](../leaderboards/README.md). A multi-task
 method appears in every applicable task row below, but only once in the
 alphabetical method catalog. Model integrations without a stable Motius task
 contract remain in the catalog but do not appear in the Task Index.
-
-<p align="center">
-  <a href="../tasks/README.md">🧭 Task Registry</a> ·
-  <a href="../datasets/README.md">Dataset Hub</a> ·
-  <a href="../leaderboards/README.md">📊 Benchmark Hub</a> ·
-  <a href="../training/README.md">Training Hub</a> ·
-  <a href="../motion/README.md">🔄 Motion Toolkit</a> ·
-  <a href="release_policy.md">✅ Release Policy</a>
-</p>
 
 Architecture, training objective, dataset, and motion representation are method
 metadata. They are never used as task categories.
@@ -189,7 +194,7 @@ PromptHMR integration. Training-free, checkpoint-free utilities such as the sour
 D3 Motion Repair Pipeline are linked from the Task Index instead of being
 presented as model packages.
 
-## Task Index 🧭
+## Task index
 
 | Task | Contract | Integrated methods |
 | --- | --- | --- |
@@ -214,7 +219,7 @@ Physical controllers use the [registered task contract](../tasks/motion_tracking
 MuJoCo and Isaac Lab are maintained as separate leaderboard settings so
 engine-specific physics results are never mixed.
 
-## Method Catalog 📦
+## Method Catalog
 
 | Method | Task coverage | Native space | Artifacts |
 | --- | --- | --- | --- |
@@ -260,7 +265,7 @@ engine-specific physics results are never mixed.
 | [VerMo](vermo.md) | [Motion-to-Text](https://huggingface.co/spaces/ZeyuLing/m2t-humanml3d-leaderboard) | `VerMo-138` | [📦 Weights](https://huggingface.co/ZeyuLing/Motius-VerMo-HumanML3D) |
 | [ViMoGen](vimogen.md) | [Text-to-Motion](../leaderboards/README.md#text-to-motion) | `DART276` | [📦 Weights](https://huggingface.co/ZeyuLing/Motius-ViMoGen-1.3B-HumanML3D) |
 
-## Package Contract ✅
+## Package contract
 
 | Component | Public requirement |
 | --- | --- |
