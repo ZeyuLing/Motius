@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import numpy as np
 import pytest
 
@@ -9,9 +12,10 @@ from motius.evaluation.dance_to_music import (
     d2mgan_beat_score,
 )
 from motius.evaluation.protocols import d2mgan_aistpp_test_segments
-from tools.build_dance_to_music_leaderboard import build_results
-from tools.infer_unimumo_d2mgan_aistpp import load_segment
-from tools.prepare_unimumo_d2mgan_aistpp_motion import required_frames_by_motion
+from tools.build_dance_to_music_leaderboard import build_results, sync_result_page
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+D2M_SPACE = REPO_ROOT / "docs" / "leaderboards" / "hf_space_dance_to_music"
 
 
 def test_d2mgan_beat_score_matches_upstream_formula() -> None:
@@ -76,13 +80,64 @@ def test_d2m_leaderboard_labels_coverage_as_a_target_ratio() -> None:
         }
     )
 
-    reproduction = next(row for row in result["rows"] if row["source"] == "motius")
+    assert result["schema_version"] == 3
+    assert result["results_scope"] == "motius_measured_only"
+    assert "paper_rows" not in result
+    assert [row["method"] for row in result["rows"]] == ["UniMuMo"]
+    reproduction = result["rows"][0]
     assert reproduction["beat_count_ratio"] == 1.08
     assert "beats_coverage" not in reproduction
-    assert result["protocol"]["coverage_note"] == "unbounded"
+    coverage_note = result["protocol"]["coverage_note"]
+    assert "target of 100%" in coverage_note
+    assert "no upper bound" in coverage_note
+    assert "paper" not in coverage_note.lower()
+
+
+def test_d2m_public_surface_omits_reference_and_paper_result_rows() -> None:
+    payload = json.loads(
+        (D2M_SPACE / "dance_to_music_results.json").read_text(encoding="utf-8")
+    )
+    page = (D2M_SPACE / "index.html").read_text(encoding="utf-8")
+
+    assert payload["results_scope"] == "motius_measured_only"
+    assert [row["method"] for row in payload["rows"]] == ["UniMuMo"]
+    assert all(row["source"] == "motius" for row in payload["rows"])
+    assert "paper_rows" not in payload
+    result = payload["rows"][0]
+    assert f"{100 * result['beat_count_ratio']:.2f}%" in page
+    assert f"{100 * result['beat_hit_rate']:.2f}%" in page
+    assert "Paper Results" not in page
+    assert "data.paper_rows" not in page
+
+
+def test_d2m_builder_synchronizes_static_result_card(tmp_path: Path) -> None:
+    result_page = tmp_path / "index.html"
+    result_page.write_text(
+        '<dd class="metric-value" data-result-field="beat_count_ratio">0%</dd>'
+        '<dd class="metric-value" data-result-field="beat_hit_rate">0%</dd>',
+        encoding="utf-8",
+    )
+    results = build_results(
+        {
+            "dataset": "official split",
+            "n_samples": 86,
+            "aggregation": "macro",
+            "protocol": "official detector",
+            "beat_count_ratio": 1.08,
+            "beat_hit_rate": 0.88,
+        }
+    )
+
+    sync_result_page(result_page, results)
+
+    page = result_page.read_text(encoding="utf-8")
+    assert "108.00%" in page
+    assert "88.00%" in page
 
 
 def test_d2m_inference_preserves_the_official_119_frame_tail(tmp_path) -> None:
+    from tools.infer_unimumo_d2mgan_aistpp import load_segment
+
     segment = next(
         item
         for item in d2mgan_aistpp_test_segments()
@@ -103,6 +158,8 @@ def test_d2m_inference_preserves_the_official_119_frame_tail(tmp_path) -> None:
 
 
 def test_d2m_motion_preparation_requires_a_valid_tail_clip() -> None:
+    from tools.prepare_unimumo_d2mgan_aistpp_motion import required_frames_by_motion
+
     required = required_frames_by_motion()
 
     assert required["gBR_sBM_cAll_d04_mBR0_ch02"] == 714

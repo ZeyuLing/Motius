@@ -50,8 +50,8 @@ def main() -> None:
             references[music_id] = load_audio(
                 args.reference_audio_root / f"{music_id}.mp3"
             )
-        start = int(
-            round(float(case["reference_start_seconds"]) * D2MGAN_SAMPLE_RATE)
+        start = round(
+            float(case["reference_start_seconds"]) * D2MGAN_SAMPLE_RATE
         )
         samples = 2 * D2MGAN_SAMPLE_RATE
         reference = references[music_id][start : start + samples]
@@ -86,8 +86,9 @@ def main() -> None:
         "aggregation": "macro average over two-second clips",
         "protocol": "D2M-GAN Beats_Scores (22.05 kHz onset detection, one-second bins)",
         "coverage_note": (
-            "The paper's Beats Coverage is an unbounded generated/reference "
-            "beat-count ratio. Values above 100% indicate excess beats."
+            "Beat Count Ratio is generated/reference beat-bin count, with a "
+            "target of 100% and no upper bound. Values above 100% indicate "
+            "excess detected beats."
         ),
         "cases": rows,
     }

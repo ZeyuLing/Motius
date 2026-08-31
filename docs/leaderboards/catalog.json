@@ -222,7 +222,7 @@
         "entry": "docs/leaderboards/hf_space_dance_to_music/cases/index.html",
         "manifest": "docs/leaderboards/hf_space_dance_to_music/cases/manifest.json",
         "population": 86,
-        "method_coverage": "2/2",
+        "method_coverage": "UniMuMo + reference audio for all 86 cases",
         "audio": true
       }
     },

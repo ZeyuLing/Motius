@@ -310,12 +310,13 @@ method and does not mix the shorter parity result into rankings.
 Motion-to-music is a zero-shot route of the same released checkpoint. Motius
 uses the D2M-GAN list of 86 two-second AIST++ clips, no text prompt, `CFG=3`,
 temperature `1.0`, top-k `250`, and the released onset detector and one-second
-beat-bin aggregation.
+beat-bin aggregation. The public leaderboard contains only methods reproduced
+and measured end to end by Motius; paper-reported result rows are not mixed into
+the benchmark. UniMuMo is currently the sole completed reproduction.
 
-| Protocol | Samples | Beat Count Ratio (target 100%) | Beat Hit |
-| -------- | ------: | -----------------------------: | -------: |
-| UniMuMo paper, D2M-GAN protocol | 86 | 93.0% | 88.4% |
-| Motius reproduction, official checkpoint | 86 | 84.30% | 80.81% |
+| Evaluated method | Samples | Beat Count Ratio (target 100%) | Beat Hit |
+| ---------------- | ------: | -----------------------------: | -------: |
+| UniMuMo, Motius reproduction with authors' released weights | 86 | 84.30% | 80.81% |
 
 The paper calls the first metric *Beats Coverage*, but its released evaluator
 defines it as generated beat bins divided by reference beat bins. It is

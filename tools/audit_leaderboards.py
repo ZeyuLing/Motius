@@ -475,8 +475,20 @@ def _audit_music_to_dance(audit: Audit, data: dict) -> None:
 def _audit_dance_to_music(audit: Audit, data: dict) -> None:
     rows = data["rows"]
     audit.require(
-        bool(rows) and rows[0].get("method") == "GT",
-        "Dance-to-Music: GT must be the first row",
+        [row.get("method") for row in rows] == ["UniMuMo"],
+        "Dance-to-Music: only the completed UniMuMo reproduction may be listed",
+    )
+    audit.require(
+        data.get("results_scope") == "motius_measured_only"
+        and all(
+            row.get("source") == "motius" and not row.get("reference", False)
+            for row in rows
+        ),
+        "Dance-to-Music: public rows must contain only Motius-measured results",
+    )
+    audit.require(
+        "paper_rows" not in data,
+        "Dance-to-Music: paper-reported result rows must be omitted",
     )
     for row in rows:
         _numeric_fields(

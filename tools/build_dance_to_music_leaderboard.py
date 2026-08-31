@@ -1,30 +1,20 @@
 #!/usr/bin/env python3
-"""Build the official D2M-GAN AIST++ leaderboard and SMPL/audio viewer."""
+"""Build the Motius-measured D2M-GAN AIST++ leaderboard and case viewer."""
 
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import shutil
 import sys
 from pathlib import Path
-
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT / "tools") not in sys.path:
     sys.path.insert(0, str(REPO_ROOT / "tools"))
 
 from smpl_gallery_assets import encode_motion135, load_motion135
-
-
-PAPER_ROWS = (
-    ("Dance2Music", 0.835, 0.824),
-    ("Foley", 0.741, 0.694),
-    ("CMT", 0.855, 0.835),
-    ("D2M-GAN", 0.882, 0.847),
-    ("CDCD", 0.939, 0.907),
-    ("UniMuMo paper", 0.930, 0.884),
-)
 
 
 def parse_args() -> argparse.Namespace:
@@ -143,22 +133,13 @@ def build_cases(
 
 
 def build_results(metrics: dict) -> dict:
-    paper_rows = [
-        {
-            "method": method,
-            "version": "paper Table 2",
-            "source": "paper",
-            "beat_count_ratio": ratio,
-            "beat_hit_rate": hit,
-        }
-        for method, ratio, hit in PAPER_ROWS
-    ]
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "task": "dance_to_music",
         "dataset": metrics["dataset"],
         "population": metrics["n_samples"],
         "updated": "2026-07-22",
+        "results_scope": "motius_measured_only",
         "protocol": {
             "aggregation": metrics["aggregation"],
             "beat_detection": metrics["protocol"],
@@ -168,20 +149,16 @@ def build_results(metrics: dict) -> dict:
                 "top_k": 250,
                 "prompt": "none",
             },
-            "coverage_note": metrics["coverage_note"],
+            "coverage_note": (
+                "Beat Count Ratio is generated/reference beat-bin count, with a "
+                "target of 100% and no upper bound. Values above 100% indicate "
+                "excess detected beats."
+            ),
         },
         "rows": [
             {
-                "method": "GT",
-                "version": "AIST++ reference music",
-                "source": "reference",
-                "reference": True,
-                "beat_count_ratio": 1.0,
-                "beat_hit_rate": 1.0,
-            },
-            {
                 "method": "UniMuMo",
-                "version": "Motius reproduction, official checkpoint, CFG 3",
+                "version": "Motius reproduction, authors' released weights",
                 "source": "motius",
                 "reference": False,
                 "checkpoint": "https://huggingface.co/ZeyuLing/Motius-UniMuMo",
@@ -194,8 +171,35 @@ def build_results(metrics: dict) -> dict:
                 "beat_hit_rate": metrics["beat_hit_rate"],
             },
         ],
-        "paper_rows": paper_rows,
     }
+
+
+def sync_result_page(path: Path, results: dict) -> None:
+    """Keep the no-JavaScript result card aligned with generated metrics."""
+    row = results["rows"][0]
+    values = {
+        "beat_count_ratio": f"{100 * row['beat_count_ratio']:.2f}%",
+        "beat_hit_rate": f"{100 * row['beat_hit_rate']:.2f}%",
+    }
+    page = path.read_text(encoding="utf-8")
+    seen: set[str] = set()
+    pattern = re.compile(
+        r'(<dd class="metric-value" data-result-field="'
+        r'(?P<field>beat_count_ratio|beat_hit_rate)">)(.*?)(</dd>)'
+    )
+
+    def replace(match: re.Match[str]) -> str:
+        field = match.group("field")
+        if field in seen:
+            raise ValueError(f"Duplicate result field in {path}: {field}")
+        seen.add(field)
+        return f"{match.group(1)}{values[field]}{match.group(4)}"
+
+    rendered = pattern.sub(replace, page)
+    missing = values.keys() - seen
+    if missing:
+        raise ValueError(f"Missing result fields in {path}: {sorted(missing)}")
+    path.write_text(rendered, encoding="utf-8")
 
 
 def copy_audio(
@@ -264,6 +268,9 @@ def main() -> None:
     copy_body_model(args.body_model_dir, args.output)
     write_json(args.output / "cases" / "manifest.json", case_manifest)
     write_json(args.output / "dance_to_music_results.json", results)
+    result_page = args.output / "index.html"
+    if result_page.is_file():
+        sync_result_page(result_page, results)
     if args.package_dir is not None:
         build_package(
             args.output,

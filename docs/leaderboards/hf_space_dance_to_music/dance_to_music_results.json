@@ -1,9 +1,10 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "task": "dance_to_music",
   "dataset": "AIST++ D2M-GAN official 86x2-second test split",
   "population": 86,
   "updated": "2026-07-22",
+  "results_scope": "motius_measured_only",
   "protocol": {
     "aggregation": "macro average over two-second clips",
     "beat_detection": "D2M-GAN Beats_Scores (22.05 kHz onset detection, one-second bins)",
@@ -13,20 +14,12 @@
       "top_k": 250,
       "prompt": "none"
     },
-    "coverage_note": "The paper's Beats Coverage is an unbounded generated/reference beat-count ratio. Values above 100% indicate excess beats."
+    "coverage_note": "Beat Count Ratio is generated/reference beat-bin count, with a target of 100% and no upper bound. Values above 100% indicate excess detected beats."
   },
   "rows": [
     {
-      "method": "GT",
-      "version": "AIST++ reference music",
-      "source": "reference",
-      "reference": true,
-      "beat_count_ratio": 1.0,
-      "beat_hit_rate": 1.0
-    },
-    {
       "method": "UniMuMo",
-      "version": "Motius reproduction, official checkpoint, CFG 3",
+      "version": "Motius reproduction, authors' released weights",
       "source": "motius",
       "reference": false,
       "checkpoint": "https://huggingface.co/ZeyuLing/Motius-UniMuMo",
@@ -34,50 +27,6 @@
       "paper": "https://arxiv.org/abs/2410.04534",
       "beat_count_ratio": 0.8430232558139535,
       "beat_hit_rate": 0.8081395348837209
-    }
-  ],
-  "paper_rows": [
-    {
-      "method": "Dance2Music",
-      "version": "paper Table 2",
-      "source": "paper",
-      "beat_count_ratio": 0.835,
-      "beat_hit_rate": 0.824
-    },
-    {
-      "method": "Foley",
-      "version": "paper Table 2",
-      "source": "paper",
-      "beat_count_ratio": 0.741,
-      "beat_hit_rate": 0.694
-    },
-    {
-      "method": "CMT",
-      "version": "paper Table 2",
-      "source": "paper",
-      "beat_count_ratio": 0.855,
-      "beat_hit_rate": 0.835
-    },
-    {
-      "method": "D2M-GAN",
-      "version": "paper Table 2",
-      "source": "paper",
-      "beat_count_ratio": 0.882,
-      "beat_hit_rate": 0.847
-    },
-    {
-      "method": "CDCD",
-      "version": "paper Table 2",
-      "source": "paper",
-      "beat_count_ratio": 0.939,
-      "beat_hit_rate": 0.907
-    },
-    {
-      "method": "UniMuMo paper",
-      "version": "paper Table 2",
-      "source": "paper",
-      "beat_count_ratio": 0.93,
-      "beat_hit_rate": 0.884
     }
   ]
 }
