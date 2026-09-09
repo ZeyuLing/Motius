@@ -61,3 +61,19 @@ requires the body model. FBX is an output format, not a substitute for missing
 geometry. A different FBX character has different proportions: label its output
 as character retargeting, and measure contact error rather than presenting it as
 an exact SMPL-H reference. Preserve one world frame for the pair throughout.
+
+### FBX-only feasibility check (2026-09-09)
+
+A local Blender EEVEE prototype transferred all 135 frames of handshake
+`G001T000A001R005` onto two copies of the existing textured SMPL22 child rig,
+using source axis-angle rotations and translations, without SMPL model files.
+The maximum cross-actor pelvis-offset error against the source translations
+was `4.0e-7 m`. However, the smallest nearest-vertex distance between the two
+rendered character meshes was about `0.135 m`. This is a sampled vertex metric,
+not a signed surface-contact/penetration test, and does **not** establish touch.
+
+The prototype passes the no-SMPL rendering feasibility check but has **not passed
+contact validation**. It is not included in public demo media. Source body
+proportions and the target rig differ; preserving world transforms alone cannot
+guarantee hand contact on another body. No independent actor translation, scaling,
+or contact snapping was used to disguise this limitation.

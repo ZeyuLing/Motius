@@ -42,3 +42,12 @@ preferences suppress autoplay. Offscreen pages pause their videos.
 
 Field Core Web Vitals and real screen-reader behavior require separate checks;
 do not infer WCAG conformance from screenshots or automated tests alone.
+
+Verified on 2026-09-09 in headless Chrome: all four viewport widths above,
+keyboard skip navigation, actual clipboard copying, reduced-motion suppression,
+enlarged text reflow and failed-media recovery. The deployed site returned HTTP
+200, with all three MP4s decoded and played (5 s AutoRig, 3 s Mixamo, 6 s
+representation conversion), no JavaScript page errors, and no mobile overflow.
+The main muted-text and primary-button contrast ratios are 6.01:1 and 5.95:1.
+Clipboard-denial messaging is implemented but was not included in the automated
+deployment check. No screen-reader or field-performance conformance claim is made.

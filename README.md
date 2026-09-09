@@ -19,6 +19,7 @@
 </p>
 
 <p align="center">
+  <a href="https://zeyuling.github.io/Motius/"><strong>Project homepage</strong></a> ·
   <a href="docs/README.md"><strong>Documentation</strong></a> ·
   <a href="#motius-in-motion">Demos</a> ·
   <a href="#start-here">Quickstart</a> ·
