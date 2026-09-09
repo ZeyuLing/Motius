@@ -69,6 +69,7 @@ docs/leaderboards/hf_space_*/cases/**/audio/
 *.h5
 *.hdf5
 *.mp4
+!site/media/generation.mp4
 !assets/model_zoo/gvhmr/*.mp4
 !assets/motion/auto_rigging_demo/*.mp4
 !assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_30fps.mp4

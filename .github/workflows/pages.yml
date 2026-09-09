@@ -2,7 +2,7 @@ name: Publish project homepage
 on:
   push:
     branches: [main]
-    paths: ['site/**', 'assets/motion/**', 'assets/brand/**', 'tools/build_project_site.py', '.github/workflows/pages.yml']
+    paths: ['site/**', 'assets/motion/**', 'assets/model_zoo/**', 'assets/brand/**', 'tools/build_project_site.py', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions:
   contents: read

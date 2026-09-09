@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Motius connects motion generation, model training, evaluation, and character retargeting in one open framework.">
+  <meta name="description" content="Motius brings motion model inference, HYMotion training, reproducible evaluation, and motion conversion into one open framework.">
   <meta name="theme-color" content="#f7f8fa">
-  <meta property="og:title" content="Motius — Motion, connected.">
-  <meta property="og:description" content="Train. Generate. Evaluate. Retarget. A shared framework for motion research.">
-  <meta property="og:image" content="https://zeyuling.github.io/Motius/media/autorig.jpg">
-  <title>Motius — Motion, connected.</title>
+  <meta property="og:title" content="Motius — Generate. Train. Evaluate.">
+  <meta property="og:description" content="An open framework connecting motion models, training recipes, evaluators, and representations.">
+  <meta property="og:image" content="https://zeyuling.github.io/Motius/media/logo.png">
+  <title>Motius — Generate. Train. Evaluate.</title>
   <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
 </head>
@@ -17,67 +17,147 @@
   <header class="header wrap">
     <a href="./" class="brand" aria-label="Motius home"><img src="media/logo.png" alt="Motius" width="174" height="60"></a>
     <nav aria-label="Main navigation">
-      <a href="#in-motion">In motion</a><a href="#framework">Framework</a>
-      <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/README.md">Docs</a>
+      <a href="#models">Models</a><a href="#workflow">Workflow</a><a href="#evaluation">Evaluation</a><a href="#motion-toolkit">Motion I/O</a>
       <a class="repo-link" href="https://github.com/ZeyuLing/Motius">GitHub <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
   <main id="main">
     <section class="hero wrap" aria-labelledby="hero-title">
       <p class="eyebrow"><span class="signal" aria-hidden="true"></span> An open framework for motion research</p>
-      <div class="hero-heading"><h1 id="hero-title">Motion,<br><span>connected.</span></h1>
-        <div class="hero-copy"><p>Different models. Different bodies.<br>One place to bring them together.</p>
-          <p class="muted">Train, generate, evaluate, and retarget motion through shared interfaces—without rebuilding your workflow for every method.</p>
-          <div class="actions"><a class="button primary" href="#start">Start building <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/README.md">Explore the models <span aria-hidden="true">→</span></a></div>
+      <div class="hero-heading">
+        <h1 id="hero-title">Generate.<br><span>Train. Evaluate.</span></h1>
+        <div class="hero-copy">
+          <p>Different methods.<br>A shared research workflow.</p>
+          <p class="muted">Run released motion models, train HYMotion, and compare results with explicit evaluation protocols. Connect their outputs across motion formats, skeletons, and characters.</p>
+          <div class="actions"><a class="button primary" href="#models">Explore models <span aria-hidden="true">↓</span></a><a class="text-link" href="https://github.com/ZeyuLing/Motius/blob/main/docs/getting_started.md">Get started <span aria-hidden="true">↗</span></a></div>
         </div>
       </div>
-      <figure class="hero-film" id="in-motion">
-        <div class="film-heading"><span>01 / Mesh to motion</span><span>Textured characters · Generated skeletons</span></div>
-        <video controls muted loop playsinline preload="metadata" poster="media/autorig.jpg" aria-describedby="autorig-caption" data-autoplay>
-          <source src="media/autorig.mp4" type="video/mp4">
-          Your browser cannot play this video. <a href="media/autorig.mp4">Download the AutoRig demo.</a>
-        </video>
-        <figcaption id="autorig-caption"><div><strong>Different characters. The same motion.</strong><p>Three downloaded characters, automatically rigged and driven by a synchronized motion. Textures and generated skeletons stay visible.</p></div><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/motion/rigging.md">How AutoRig works <span aria-hidden="true">↗</span></a></figcaption>
-      </figure>
-      <p class="media-note">AutoRig uses Make-It-Animatable, followed by Motius normalization and retargeting. <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/motion/character_assets.md">Character credits, licenses & downloads</a></p>
-    </section>
-
-    <section class="framework wrap section" id="framework" aria-labelledby="framework-title">
-      <div class="section-head"><p class="eyebrow">One workflow, end to end</p><h2 id="framework-title">Less glue code.<br>More room for research.</h2><p class="muted">Keep the method-specific details that matter. Share the infrastructure that should not need reinventing.</p></div>
-      <div class="capabilities">
-        <article><span class="index">01</span><h3>Generate</h3><p>Run released methods including HYMotion, KIMODO, and MDM through documented task pipelines.</p><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/README.md">Model zoo <span aria-hidden="true">↗</span></a></article>
-        <article><span class="index">02</span><h3>Train</h3><p>Train and fine-tune HYMotion with shared configuration, distributed execution, checkpoints, and resume support.</p><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/training/README.md">Training guides <span aria-hidden="true">↗</span></a></article>
-        <article><span class="index">03</span><h3>Evaluate</h3><p>Compare predictions with explicit datasets, protocols, and evaluators. Trace leaderboard results back to their reports.</p><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/leaderboards/README.md">Benchmarks <span aria-hidden="true">↗</span></a></article>
-        <article><span class="index">04</span><h3>Connect</h3><p>Convert common motion formats, retarget across bodies and skeletons, and export animated FBX characters.</p><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/motion/README.md">Motion toolkit <span aria-hidden="true">↗</span></a></article>
+      <div class="workflow-strip" aria-label="Framework capabilities">
+        <a href="#models"><span>01</span> Model inference</a>
+        <a href="#workflow"><span>02</span> HYMotion training</a>
+        <a href="#evaluation"><span>03</span> Evaluation & benchmarks</a>
+        <a href="#motion-toolkit"><span>04</span> Conversion & retargeting</a>
       </div>
     </section>
 
-    <section class="showcase section" aria-labelledby="showcase-title">
+    <section class="wrap section models" id="models" aria-labelledby="models-title">
+      <div class="section-head horizontal">
+        <div><p class="eyebrow">01 / Models & tasks</p><h2 id="models-title">Start with the task.<br>Choose the method.</h2></div>
+        <p class="muted">Explore established and recent methods through task-oriented pipelines, with model cards, checkpoints, and rendered outputs.</p>
+      </div>
+      <div class="generation-grid" id="in-motion">
+        <figure class="hero-film">
+          <div class="film-heading"><span>Text → motion</span><span>HYMotion</span></div>
+          <video controls muted loop playsinline preload="metadata" poster="media/generation.jpg" aria-describedby="generation-caption" data-autoplay>
+            <source src="media/generation.mp4" type="video/mp4">
+            <a href="media/generation.mp4">Download the HYMotion demo.</a>
+          </video>
+          <figcaption id="generation-caption"><div><strong>Motion from a description.</strong><p>Input: “a person jumps with legs open while clapping with hands over head simultaneously.” HYMotion output, rendered as an SMPL mesh.</p></div><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/hymotion_t2m.md">Model card ↗</a></figcaption>
+        </figure>
+        <figure class="hero-film">
+          <div class="film-heading"><span>Music → dance</span><span>Bailando</span></div>
+          <video controls muted loop playsinline preload="none" poster="media/dance.jpg" aria-describedby="dance-caption">
+            <source src="media/dance.mp4" type="video/mp4">
+            <a href="media/dance.mp4">Download the Bailando demo.</a>
+          </video>
+          <figcaption id="dance-caption"><div><strong>A different input. Another task.</strong><p>AIST++ waacking music conditions Bailando's generated dance. This mesh preview is silent; audio-synchronized comparisons are available in the benchmark.</p></div><a href="https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard">Benchmark ↗</a></figcaption>
+        </figure>
+      </div>
+      <div class="model-directory" aria-label="Selected method and task coverage">
+        <article><h3>Text-to-motion</h3><p><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/hymotion_t2m.md">HYMotion</a> · <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/kimodo.md">KIMODO</a> · <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/mdm.md">MDM</a> · <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/momask.md">MoMask</a></p></article>
+        <article><h3>Sequential generation</h3><p><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/flowmdm.md">FlowMDM</a> · <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/motionstreamer.md">MotionStreamer</a> · <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/kimodo.md">KIMODO</a></p></article>
+        <article><h3>Completion & control</h3><p><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/condmdi.md">CondMDI</a> · <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/omnicontrol.md">OmniControl</a> · <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/kimodo.md">KIMODO</a></p></article>
+        <article><h3>Music-to-dance</h3><p><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/bailando.md">Bailando</a> · <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/edge.md">EDGE</a> · <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/unimumo.md">UniMuMo</a></p></article>
+      </div>
+      <div class="section-end"><p>Selected integrations, not the full catalog. Inference and training support are documented separately.</p><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/README.md">All models & tasks <span aria-hidden="true">↗</span></a></div>
+    </section>
+
+    <section class="research section" id="workflow" aria-labelledby="workflow-title">
       <div class="wrap">
-        <div class="section-head horizontal"><div><p class="eyebrow">Beyond a single body</p><h2 id="showcase-title">Take motion<br>somewhere new.</h2></div><p class="muted">From a model's native representation to a character or robot. Conversion routes make their assumptions and approximation boundaries explicit.</p></div>
-        <figure class="wide-film"><div class="film-heading"><span>02 / Character retargeting</span><span>SMPL → Mixamo</span></div>
-          <video controls muted loop playsinline preload="none" poster="media/characters.jpg" aria-describedby="character-caption"><source src="media/characters.mp4" type="video/mp4"> <a href="media/characters.mp4">Download the character demo.</a></video>
-          <figcaption id="character-caption"><div><strong>One motion, four characters.</strong><p>Amy, Maria, Michelle, and Remy from Adobe Mixamo, shown alongside the source skeleton and SMPL mesh.</p></div><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/motion/fbx.md">FBX export guide <span aria-hidden="true">↗</span></a></figcaption>
-        </figure>
-        <figure class="wide-film"><div class="film-heading"><span>03 / Representation & embodiment</span><span>HumanML3D · SMPL · SOMA · ARDY · G1</span></div>
-          <video controls muted loop playsinline preload="none" poster="media/representations.jpg" aria-describedby="representation-caption"><source src="media/representations.mp4" type="video/mp4"> <a href="media/representations.mp4">Download the conversion demo.</a></video>
-          <figcaption id="representation-caption"><div><strong>Keep the motion. Change the representation.</strong><p>The same source clip across skeletons, body models, and Unitree G1. Joint-only and cross-skeleton conversions may be approximate.</p></div><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/motion/representations.md">Explore the routes <span aria-hidden="true">↗</span></a></figcaption>
-        </figure>
-        <a class="all-demos" href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/README.md">More generation, interaction, and music-to-dance demos <span aria-hidden="true">↗</span></a>
+        <div class="section-head horizontal"><div><p class="eyebrow">02 / Inference & training</p><h2 id="workflow-title">From a checkpoint<br>to your own experiment.</h2></div><p class="muted">Spend less time reconciling separate repositories. Use documented task APIs for inference and explicit data contracts for training.</p></div>
+        <div class="recipe-grid">
+          <article class="recipe">
+            <div class="recipe-copy"><p class="eyebrow">Run a released model</p><h3>A task-oriented inference API.</h3><p>Load a packaged checkpoint and generate motion. The HYMotion Lite example below produces a six-second sequence at its native 30 fps.</p></div>
+            <pre aria-label="HYMotion inference example"><code>from motius import Pipeline
+
+pipe = Pipeline.from_pretrained(
+    "ZeyuLing/Motius-HYMotion-T2M-1.0-Lite",
+    device="cuda",
+)
+out = pipe.infer_text_to_motion(
+    ["a person practices tai chi"],
+    num_frames=[180],
+)
+motion = out["latent"]</code></pre>
+            <div class="recipe-foot"><p>Requires model weights and a compatible GPU environment. The example is independent of the preview above.</p><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/hymotion_t2m.md#quick-start">Inference guide ↗</a></div>
+          </article>
+          <article class="recipe">
+            <div class="recipe-copy"><p class="eyebrow">Train & fine-tune HYMotion</p><h3>Your data. A repeatable recipe.</h3><p>Use the native trainer with public configurations, distributed execution, checkpoints, and full-state resume.</p></div>
+            <pre aria-label="HYMotion distributed training example"><code># Linux / Bash · replace dataset paths
+MOTIUS_DATA_ROOT=/path/to/hymotion201 \
+MOTIUS_TRAIN_MANIFEST=train.json \
+MOTIUS_MOTION_STATS=/path/to/stats \
+bash tools/dist_train.sh \
+  configs/hymotion_t2m/train_hymotion_t2m.py 8 \
+  --work-dir outputs/training/hymotion_t2m \
+  --auto-resume</code></pre>
+            <div class="recipe-foot"><p>Prepare HY-Motion-201 arrays, matching normalization statistics, and cached Qwen3/CLIP text features. This launch uses eight GPUs.</p><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/hymotion_t2m.md#training">Data preparation & training ↗</a></div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="wrap section benchmarks" aria-labelledby="benchmark-title">
-      <div class="section-head"><p class="eyebrow">Inspect the evidence</p><h2 id="benchmark-title">A result is more<br>than a number.</h2><p class="muted">Open the protocol, compare motion examples, and see which results have actually been reproduced.</p></div>
-      <div class="benchmark-links">
-        <a href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard"><span>Text-to-motion<small>HumanML3D</small></span><span aria-hidden="true">↗</span></a>
-        <a href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard"><span>Sequential generation<small>BABEL</small></span><span aria-hidden="true">↗</span></a>
-        <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/leaderboards/README.md"><span>All benchmark settings<small>Protocols, reports & visual comparisons</small></span><span aria-hidden="true">↗</span></a>
+    <section class="wrap section evaluation" id="evaluation" aria-labelledby="evaluation-title">
+      <div class="section-head horizontal"><div><p class="eyebrow">03 / Evaluation & benchmarks</p><h2 id="evaluation-title">Compare methods.<br>Keep the protocol explicit.</h2></div><p class="muted">A model name is not an evaluation setting. Keep the dataset split, representation, evaluator checkpoint, and scored predictions traceable.</p></div>
+      <div class="evaluation-grid">
+        <div class="evaluator-list">
+          <h3>Choose the evaluation space.</h3>
+          <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/evaluator_zoo/humanml3d_official.md"><strong>HumanML3D Official <span aria-hidden="true">↗</span></strong><span>HumanML3D-263 · 20 fps</span></a>
+          <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/evaluator_zoo/motionstreamer.md"><strong>MotionStreamer <span aria-hidden="true">↗</span></strong><span>MotionStreamer-272 · 30 fps</span></a>
+          <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/evaluator_zoo/motius_joint_position.md"><strong>Universal TMR <span aria-hidden="true">↗</span></strong><span>Motius-trained TMR reproduction · SMPL-22 joints · 30 fps</span></a>
+          <p class="protocol-note">Universal TMR is trained on HYMotion Data SFT and the single-person MotionHub training union. It is not an official TMR checkpoint. Compare methods within a fixed protocol, not scores across different embedding spaces.</p>
+          <a class="text-link" href="https://github.com/ZeyuLing/Motius/blob/main/docs/evaluator_zoo/README.md">All evaluators & physical diagnostics ↗</a>
+        </div>
+        <div class="benchmark-directory">
+          <h3>Inspect measured results.</h3>
+          <p class="muted">Open the leaderboard, then inspect the generated examples. Publication status distinguishes complete comparisons from metric-only settings.</p>
+          <div class="benchmark-links">
+            <a href="https://huggingface.co/spaces/ZeyuLing/t2m-humanml3d-leaderboard"><span>Text-to-motion<small>HumanML3D</small></span><span aria-hidden="true">↗</span></a>
+            <a href="https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard"><span>Sequential generation<small>BABEL</small></span><span aria-hidden="true">↗</span></a>
+            <a href="https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard"><span>Temporal completion<small>HumanML3D</small></span><span aria-hidden="true">↗</span></a>
+            <a href="https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard"><span>Music-to-dance<small>AIST++</small></span><span aria-hidden="true">↗</span></a>
+          </div>
+          <a class="text-link directory-link" href="https://github.com/ZeyuLing/Motius/blob/main/docs/leaderboards/README.md">All benchmarks, protocols & reports ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase section" id="motion-toolkit" aria-labelledby="showcase-title">
+      <div class="wrap">
+        <div class="section-head horizontal"><div><p class="eyebrow">04 / Motion conversion & character tools</p><h2 id="showcase-title">Take the output further.</h2></div><p class="muted">Bridge model representations, retarget motion to different skeletons, and export animated characters. A connected toolkit alongside the research workflow.</p></div>
+        <figure class="wide-film representation-film">
+          <div class="film-heading"><span>Motion representations</span><span>HumanML3D · SMPL · SOMA · ARDY · G1</span></div>
+          <video controls muted loop playsinline preload="none" poster="media/representations.jpg" aria-describedby="representation-caption"><source src="media/representations.mp4" type="video/mp4"><a href="media/representations.mp4">Download the conversion demo.</a></video>
+          <figcaption id="representation-caption"><div><strong>Keep the motion. Change the representation.</strong><p>The same source clip across skeletons, body models, and Unitree G1. Joint-only and cross-skeleton conversions may be approximate.</p></div><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/motion/representations.md">Conversion routes ↗</a></figcaption>
+        </figure>
+        <div class="application-grid">
+          <figure class="wide-film">
+            <div class="film-heading"><span>Character retargeting</span><span>SMPL → Mixamo</span></div>
+            <video controls muted loop playsinline preload="none" poster="media/characters.jpg" aria-describedby="character-caption"><source src="media/characters.mp4" type="video/mp4"><a href="media/characters.mp4">Download the character demo.</a></video>
+            <figcaption id="character-caption"><div><strong>One motion, four characters.</strong><p>Amy, Maria, Michelle, and Remy from Adobe Mixamo, alongside the source skeleton and SMPL mesh.</p></div><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/motion/fbx.md">FBX export ↗</a></figcaption>
+          </figure>
+          <figure class="wide-film">
+            <div class="film-heading"><span>Automatic rigging</span><span>Mesh → animated character</span></div>
+            <video controls muted loop playsinline preload="none" poster="media/autorig.jpg" aria-describedby="autorig-caption"><source src="media/autorig.mp4" type="video/mp4"><a href="media/autorig.mp4">Download the AutoRig demo.</a></video>
+            <figcaption id="autorig-caption"><div><strong>From an unrigged mesh to motion.</strong><p>Three downloaded characters with textures and generated skeletons, driven by the same motion.</p></div><a href="https://github.com/ZeyuLing/Motius/blob/main/docs/motion/rigging.md">AutoRig guide ↗</a></figcaption>
+          </figure>
+        </div>
+        <p class="media-note">AutoRig uses Make-It-Animatable, followed by Motius normalization and retargeting. <a href="https://github.com/ZeyuLing/Motius/blob/main/docs/motion/character_assets.md">Character credits, licenses & downloads</a>.</p>
       </div>
     </section>
 
     <section class="start section" id="start" aria-labelledby="start-title"><div class="wrap start-grid">
-      <div><p class="eyebrow">Make it your workflow</p><h2 id="start-title">Start with<br>one motion.</h2><p>Clone the framework, install the core, and choose a released model. Checkpoints and body-model assets are downloaded separately.</p><a class="button light" href="https://github.com/ZeyuLing/Motius/blob/main/docs/getting_started.md">Read the quickstart <span aria-hidden="true">↗</span></a></div>
+      <div><p class="eyebrow">Make it your workflow</p><h2 id="start-title">Start your<br>next experiment.</h2><p>Clone the framework, install the core, and choose a released model. Checkpoints and body-model assets are downloaded separately.</p><a class="button light" href="https://github.com/ZeyuLing/Motius/blob/main/docs/getting_started.md">Read the quickstart <span aria-hidden="true">↗</span></a></div>
       <div class="terminal"><div class="terminal-head"><span>Install from source</span><button id="copy" type="button" hidden>Copy commands</button></div><pre><code id="commands">git lfs install
 git clone https://github.com/ZeyuLing/Motius.git
 cd Motius

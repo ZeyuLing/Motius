@@ -109,17 +109,17 @@ a:hover {
 }
 .hero-heading {
   display:grid;
-  grid-template-columns:1.1fr 1fr;
+  grid-template-columns:1.3fr 1fr;
   gap:60px;
-  align-items:end;
+  align-items:center;
   margin-bottom:60px
 }
 h1,h2,h3,p {
   margin-top:0
 }
 h1 {
-  font-size:clamp(68px,7.6vw,110px);
-  line-height:.98;
+  font-size:clamp(48px,5.5vw,80px);
+  line-height:1.08;
   letter-spacing:-.065em;
   font-weight:650;
   margin-bottom:0
@@ -232,7 +232,7 @@ figcaption>a {
   margin:15px 0 0
 }
 .section {
-  padding-block:105px
+  padding-block:85px
 }
 .section-head {
   max-width:640px;
@@ -536,7 +536,7 @@ code {
     margin-bottom:35px
   }
   h1 {
-    font-size:72px
+    font-size:clamp(40px,9.5vw,62px)
   }
   .hero-copy {
     max-width:none
@@ -649,4 +649,126 @@ h1,h2,h3,.terminal-head,figcaption {
 }
 .hero-copy,.start-grid>div,.section-head {
   min-width:0
+}
+
+/* Research-first hierarchy: compact generation examples, substantive recipes
+   and evaluation, then the complete conversion/character toolkit. */
+.workflow-strip {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  border-block:1px solid var(--line)
+}
+.workflow-strip a {
+  display:flex;
+  gap:12px;
+  align-items:baseline;
+  padding:22px 12px;
+  font-size:13px;
+  font-weight:600;
+  text-decoration:none
+}
+.workflow-strip span { color:var(--blue); font-size:11px }
+.generation-grid,.application-grid,.recipe-grid,.evaluation-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:28px
+}
+.generation-grid video {
+  aspect-ratio:4/3;
+  background:white
+}
+.generation-grid figcaption,.application-grid figcaption {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:18px;
+  padding:24px
+}
+.generation-grid figure,.application-grid figure {
+  display:flex;
+  flex-direction:column
+}
+.generation-grid figcaption,.application-grid figcaption { flex:1 }
+.generation-grid figcaption>a,.application-grid figcaption>a { margin-top:auto }
+.model-directory {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:40px;
+  margin-top:35px
+}
+.model-directory article { min-width:0; padding:24px 0; border-bottom:1px solid var(--line) }
+.model-directory h3 { font-size:18px; margin-bottom:12px }
+.model-directory p { margin:0; color:var(--muted); font-size:14px; line-height:2 }
+.model-directory a { display:inline-block; max-width:100%; overflow-wrap:anywhere; padding-block:3px }
+.section-end {
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:30px;
+  margin-top:24px;
+  font-size:13px;
+  line-height:1.8
+}
+.section-end p { color:var(--muted); max-width:650px; margin:0 }
+.section-end a { flex-shrink:0; padding-block:10px }
+.research { background:#eaf0f8; border-block:1px solid var(--line) }
+.recipe {
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden
+}
+.recipe-copy { padding:30px 30px 22px }
+.recipe-copy .eyebrow { color:var(--blue); margin-bottom:18px }
+.recipe-copy h3 { font-size:25px }
+.recipe-copy>p:last-child,.recipe-foot p { color:var(--muted); font-size:14px; line-height:1.8; margin:0 }
+.recipe pre { background:#19253c; flex:1; font-size:13px }
+.recipe-foot { padding:24px 30px }
+.recipe-foot a { display:inline-block; margin-top:14px; padding-block:8px; font-size:13px; font-weight:650 }
+.evaluation-grid { gap:80px }
+.evaluator-list>a:not(.text-link) {
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  padding:23px 0;
+  border-bottom:1px solid var(--line);
+  text-decoration:none
+}
+.evaluator-list>a strong { display:flex; justify-content:space-between; gap:16px; font-size:18px; font-weight:600 }
+.evaluator-list>a>span { color:var(--muted); font-size:13px; line-height:1.7 }
+.protocol-note { font-size:13px; line-height:1.85; color:var(--muted); margin:24px 0 16px }
+.evaluator-list>.text-link,.directory-link { display:inline-block; padding-block:12px; line-height:1.7 }
+.benchmark-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:30px }
+.benchmark-links>a { font-size:17px; padding:22px 0; border-top:1px solid var(--line); margin-bottom:-1px }
+.benchmark-directory>.muted { font-size:14px }
+.directory-link { margin-top:16px }
+.representation-film video { aspect-ratio:16/9; max-height:450px; background:white }
+.application-grid .wide-film video { aspect-ratio:8/5; background:white }
+.showcase .media-note { font-size:12px; margin-top:24px }
+@media(max-width:1000px) {
+  .workflow-strip { grid-template-columns:repeat(2,minmax(0,1fr)) }
+  .evaluation-grid { gap:36px }
+  .recipe-copy,.recipe-foot { padding:24px }
+  .horizontal { gap:30px }
+  .horizontal>div { min-width:0 }
+  .horizontal>.muted { flex:0 0 30% }
+  .benchmark-links { grid-template-columns:1fr }
+}
+@media(max-width:650px) {
+  .header nav { gap:6px 16px; justify-content:flex-start }
+  .header nav a { font-size:12px }
+  .workflow-strip a { padding:16px 6px; line-height:1.7; font-size:12px }
+  .generation-grid,.application-grid,.recipe-grid,.evaluation-grid { grid-template-columns:1fr; gap:24px }
+  .model-directory { grid-template-columns:minmax(0,1fr) }
+  .section-end { display:block }
+  .section-end a { display:inline-block; margin-top:8px }
+  .generation-grid figcaption,.application-grid figcaption { padding:22px 18px }
+  .recipe-copy,.recipe-foot { padding:24px 18px }
+  .recipe pre { font-size:12px }
+  .application-grid { margin-top:24px }
+  .application-grid .wide-film { margin-top:0 }
+  .evaluation-grid { gap:42px }
 }

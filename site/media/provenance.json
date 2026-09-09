@@ -1,4 +1,15 @@
 {
+  "generation": {
+    "source": "assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_004545_smpl_mesh_512_30fps.gif",
+    "sha256": "74c0bc8af23dbd6cb66f85f07d5c6cdc982ebe4cbb3a0e2f355f4e69adc2146f",
+    "poster_frame": 30,
+    "derived_video": "site/media/generation.mp4"
+  },
+  "dance": {
+    "source": "assets/model_zoo/bailando/bailando_aistpp_waacking_gWA_mWA0_smpl_mesh_512_30fps.gif",
+    "sha256": "3588bca51b562b3eff8e049d19f853dd577e58164f764ff53d482118c9a48ed3",
+    "poster_frame": 30
+  },
   "autorig": {
     "source": "assets/motion/auto_rigging_demo/motius_multi_character_autorig_004822_800x450_20fps.gif",
     "sha256": "e9a210a98d73fff5809f184a0068729fdd165548942b9a38fe6c0e5d28cb993b",
@@ -12,6 +23,7 @@
   "representations": {
     "source": "assets/motion/representation_demo/004822_hml_smpl_soma_core_g1_1920_30fps.gif",
     "sha256": "7f990524816edcac7f393bad77ae216fe50efc37f4de3a63fdd00f8e24211720",
-    "poster_frame": 30
+    "poster_frame": 30,
+    "derived_video": "assets/motion/representation_demo/004822_hml_smpl_soma_core_g1_1920_30fps.mp4"
   }
 }
