@@ -1,0 +1,30 @@
+name: Publish project homepage
+on:
+  push:
+    branches: [main]
+    paths: ['site/**', 'assets/motion/**', 'assets/brand/**', 'tools/build_project_site.py', '.github/workflows/pages.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Stage public homepage
+        run: python3 tools/build_project_site.py --output outputs/pages
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: outputs/pages
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

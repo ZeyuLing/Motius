@@ -36,6 +36,22 @@ trainers, evaluators, and representation bridges.
 
 ## Motius in Motion
 
+### From static characters to synchronized motion
+
+<p align="center">
+  <a href="assets/motion/auto_rigging_demo/motius_multi_character_autorig_004822_960x540_30fps.mp4"><img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/auto_rigging_demo/motius_multi_character_autorig_004822_800x450_20fps.gif" width="920" alt="Three textured characters with generated skeletons driven by one motion"></a>
+</p>
+
+[Watch the AutoRig video](assets/motion/auto_rigging_demo/motius_multi_character_autorig_004822_960x540_30fps.mp4) ·
+[Method and limitations](docs/motion/rigging.md) ·
+[Character credits and downloads](docs/motion/character_assets.md)
+
+See the full-width [Mixamo character demo](#character-export) and
+[representation / robot conversion](#representation-and-embodiment) below.
+
+<details>
+<summary>More model demos — generation, interaction, and music-to-dance</summary>
+
 <table>
   <tr>
     <td width="50%" align="center">
@@ -62,6 +78,8 @@ trainers, evaluators, and representation bridges.
     </td>
   </tr>
 </table>
+
+</details>
 
 [Representation and robot conversion](#representation-and-embodiment) ·
 [Multi-character AutoRig video](#automatic-rigging-diverse-meshes-to-motion) ·
@@ -200,13 +218,11 @@ IK or retargeting diagnostics.
 
 Actor count is an orthogonal layout property. Single-person motion uses
 `(T, D)`; paired and multi-person motion use `(T, A, D)` in one shared world
-frame. The [GT InterX comparison](assets/motion/interhuman_representation_demo/interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif)
-and [Three.js viewer](assets/motion/interhuman_representation_demo/index.html)
-show InterHuman-262 and SMPL-H under the same conversion contract.
-
-<p align="center">
-  <a href="assets/motion/interhuman_representation_demo/index.html"><img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/interhuman_representation_demo/interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif" width="920" alt="Two synchronized actors shown as InterHuman skeletons and SMPL-H meshes in one shared frame"></a>
-</p>
+frame. The pair encoder now returns a shared rigid transform that can also be
+applied to the source mesh. See the [pair-render audit](docs/motion/pair_demo_audit.md).
+The [historical InterX pointing preview](assets/motion/interhuman_representation_demo/index.html)
+is retained for reference, but is not a validated contact demo: its old render
+used inconsistent skeleton/mesh transforms and modified source body parameters.
 
 ### Character Export
 

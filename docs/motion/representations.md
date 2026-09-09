@@ -116,10 +116,9 @@ Each person contributes 262 channels:
 A paired clip has shape `(T, 2, 262)`. More generally, Motius represents
 multi-actor motion as `(T, A, D)`, where `A` is actor cardinality and `D`
 depends on the selected motion representation. All tracks must remain in the
-same canonical world frame. Motius canonicalizes the pair with person 1's
-first frame, then places person 2 with the official relative yaw and root
-offset; canonicalizing each person independently would destroy the
-interaction.
+same canonical world frame. Motius applies person 1's first-frame yaw and
+root-XZ origin to both actors, with one shared floor height. Canonicalizing
+or grounding each person independently would change the interaction.
 
 The position channels decode exactly. InterHuman does not store root rotation,
 body shape, or joint twist completely, so an SMPL mesh is recovered with the
@@ -156,23 +155,30 @@ Motius applies representation conversion and retargeting per actor while
 carrying one shared canonical or world transform for the group. A conversion
 must never independently recenter, re-yaw, or normalize each actor.
 
-The InterHuman preview is a representation demo, not a model-generation demo.
-It uses InterX clip `G021T002A012R014` in both panels: one person steps forward
-and points while the other leans back. This avoids precision-contact actions
-such as high-fives or hand holding. The same motion is converted to paired
-InterHuman skeletons on the left and rendered from the original GT SMPL-H pose
-on the right. The shared canonical frame is preserved for both people.
+The [historical InterX preview](../../assets/motion/interhuman_representation_demo/index.html)
+uses `G021T002A012R014` (pointing, not physical contact). It is retained as an
+**unvalidated legacy render**, not evidence of contact-preserving conversion.
+Its exporter used inconsistent skeleton/mesh coordinate frames, replaced valid
+zero shape parameters, discarded hand poses, and grounded each mesh separately.
+See the [audit and rebuild instructions](pair_demo_audit.md).
 
-![GT InterX to InterHuman skeleton and SMPL mesh representation comparison](../../assets/motion/interhuman_representation_demo/interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif)
+The corrected builder reads the source `betas`, gender and full hand poses,
+without substituting `raw_betas` or silently falling back to another gender.
+It applies one transform to both actors and both representations:
 
-[Open the synchronized Three.js viewer](../../assets/motion/interhuman_representation_demo/index.html).
+```python
+from motius.motion.representation.interhuman262 import joints_pair_to_interhuman262
 
-The builder reads InterX `smplh_52_2p/P1` and `P2` GT arrays, including
-`raw_betas`/`betas` and `gender` when available, extracts SMPL-22 joints,
-converts them with `joints_pair_to_interhuman262`, decodes exact
-`InterHuman-262` joint positions, and renders the original GT body pose for the
-SMPL mesh preview. It also writes centered `data.js`, `smpl_pair_vertices.u16`,
-`smpl_pair_normals.i8`, and `smpl_indices.u32` for the browser viewer.
+motion, transform = joints_pair_to_interhuman262(
+    source_joints, local_rot6d, source_coordinates="y_up", return_transform=True,
+)
+canonical_mesh = transform.apply(source_vertices[:-1])
+```
+
+Encoding consumes the last frame for velocities, producing `T-1` frames. Display
+centering subsequently uses one common translation for skeletons and meshes.
+Previously encoded assets and benchmark scores are not silently recomputed by
+this change. Single-person official preprocessing is unchanged.
 
 ## Same-Motion Visual Comparison
 

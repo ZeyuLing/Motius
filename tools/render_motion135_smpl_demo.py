@@ -13,9 +13,11 @@ import argparse
 import json
 import math
 import os
+import sys
 from pathlib import Path
 
-os.environ.setdefault("PYOPENGL_PLATFORM", "osmesa")
+if sys.platform.startswith("linux"):
+    os.environ.setdefault("PYOPENGL_PLATFORM", "osmesa")
 
 import imageio.v2 as imageio
 import numpy as np

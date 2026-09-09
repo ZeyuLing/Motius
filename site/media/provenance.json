@@ -1,0 +1,17 @@
+{
+  "autorig": {
+    "source": "assets/motion/auto_rigging_demo/motius_multi_character_autorig_004822_800x450_20fps.gif",
+    "sha256": "e9a210a98d73fff5809f184a0068729fdd165548942b9a38fe6c0e5d28cb993b",
+    "poster_frame": 30
+  },
+  "characters": {
+    "source": "assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_30fps.gif",
+    "sha256": "2fc12bcac25c00b31ffc50641d6fae6cf37691bc8a7e85994c795a2e7deeef4e",
+    "poster_frame": 30
+  },
+  "representations": {
+    "source": "assets/motion/representation_demo/004822_hml_smpl_soma_core_g1_1920_30fps.gif",
+    "sha256": "7f990524816edcac7f393bad77ae216fe50efc37f4de3a63fdd00f8e24211720",
+    "poster_frame": 30
+  }
+}

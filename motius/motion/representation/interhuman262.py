@@ -39,6 +39,20 @@ class InterHumanCanonicalTransform:
     root_position_xz: np.ndarray
 
 
+@dataclass(frozen=True)
+class InterHumanPairTransform:
+    """One rigid source-to-canonical transform for both actors and their meshes."""
+
+    rotation: np.ndarray
+    translation: np.ndarray
+
+    def apply(self, points) -> np.ndarray:
+        value = np.asarray(points, dtype=np.float32)
+        if value.shape[-1] != 3:
+            raise ValueError("points must end in three coordinates")
+        return (value @ self.rotation.T + self.translation).astype(np.float32)
+
+
 def _as_motion(motion) -> np.ndarray:
     value = np.asarray(motion, dtype=np.float32)
     if value.ndim < 2 or value.shape[-1] != INTERHUMAN_DIM:
@@ -277,8 +291,15 @@ def joints_pair_to_interhuman262(
     feet_threshold: float = 0.001,
     reference_frame: int = 0,
     source_coordinates: str = "interhuman_raw",
-) -> np.ndarray:
-    """Encode a pair as ``(T-1,2,262)`` in person one's canonical frame."""
+    return_transform: bool = False,
+):
+    """Encode ``(T-1,2,262)`` using a shared floor and person one's facing.
+
+    Unlike independently grounding each actor, a single rigid transform keeps
+    all inter-person distances (including vertical contacts) unchanged. The
+    optional transform must also be applied to associated source meshes.
+    Single-person official preprocessing remains available separately.
+    """
 
     positions = np.asarray(joints, dtype=np.float32)
     rotations = np.asarray(local_rot6d, dtype=np.float32)
@@ -287,24 +308,29 @@ def joints_pair_to_interhuman262(
     if rotations.shape[:2] != positions.shape[:2]:
         raise ValueError("paired joints and rotations must share T and person dimensions")
 
-    first, first_transform = joints_to_interhuman262(
+    _, first_transform = _canonicalize_positions(
         positions[:, 0],
-        rotations[:, 0],
-        feet_threshold=feet_threshold,
         reference_frame=reference_frame,
         source_coordinates=source_coordinates,
-        return_transform=True,
     )
-    second, second_transform = joints_to_interhuman262(
-        positions[:, 1],
-        rotations[:, 1],
-        feet_threshold=feet_threshold,
-        reference_frame=reference_frame,
-        source_coordinates=source_coordinates,
-        return_transform=True,
+    source_rotation = (
+        _RAW_TO_Y_UP if source_coordinates.lower() in {"interhuman_raw", "smpl_z_up", "z_up"}
+        else np.eye(3, dtype=np.float32)
     )
-    second = _place_second_person(second, first_transform, second_transform)
-    return np.stack([first, second], axis=1)
+    yaw_rotation = _qrot(
+        np.broadcast_to(first_transform.root_quaternion, (3, 4)),
+        np.eye(3, dtype=np.float32),
+    ).T
+    y_up = positions @ source_rotation.T
+    origin = first_transform.root_position_xz.reshape(3).copy()
+    origin[1] = y_up[..., 1].min()
+    transform = InterHumanPairTransform(yaw_rotation @ source_rotation, -yaw_rotation @ origin)
+    canonical = transform.apply(positions)
+    encoded = np.stack([
+        _pack_interhuman262(canonical[:, person], rotations[:, person], feet_threshold=feet_threshold)
+        for person in range(2)
+    ], axis=1)
+    return (encoded, transform) if return_transform else encoded
 
 
 __all__ = [
@@ -312,6 +338,7 @@ __all__ = [
     "INTERHUMAN_DIM",
     "INTERHUMAN_JOINTS",
     "InterHumanCanonicalTransform",
+    "InterHumanPairTransform",
     "POSITION_SLICE",
     "ROTATION_SLICE",
     "VELOCITY_SLICE",

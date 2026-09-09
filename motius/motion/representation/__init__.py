@@ -40,6 +40,7 @@ from .babel135 import (
 )
 from .ardy import ardy_feature_slices, decode_ardy_features, split_ardy_features
 from .interhuman262 import (
+    InterHumanPairTransform,
     interhuman262_to_foot_contacts,
     interhuman262_to_joint_velocities,
     interhuman262_to_joints,
@@ -137,6 +138,7 @@ def get_spec(name: str) -> MotionRepresentationSpec:
         raise KeyError(f"unknown motion representation {name!r}; available: {sorted(SPECS)}") from exc
 
 __all__ = [
+    "InterHumanPairTransform",
     "MotionRepresentationSpec",
     "CAMERA_OPENCV",
     "GRAVITY_WORLD_Y_UP",

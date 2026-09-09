@@ -10,7 +10,8 @@ import os
 import sys
 from pathlib import Path
 
-os.environ.setdefault("PYOPENGL_PLATFORM", "osmesa")
+if sys.platform.startswith("linux"):
+    os.environ.setdefault("PYOPENGL_PLATFORM", "osmesa")
 
 import imageio.v2 as imageio
 import numpy as np
@@ -83,30 +84,36 @@ def _load_interx_smplh_pair(
         gender = gender_item.decode() if isinstance(gender_item, bytes) else str(gender_item)
         gender = gender.lower()
         betas = np.asarray(data["betas"], dtype=np.float32) if "betas" in data.files else None
-        raw_betas = np.asarray(data["raw_betas"], dtype=np.float32) if "raw_betas" in data.files else None
-        if raw_betas is not None and (betas is None or float(np.abs(betas).max()) < 1e-8):
-            betas = raw_betas
+        # Zero betas are an intentional shape, not missing data. raw_betas
+        # describe the pre-conversion body and must not replace this contract.
         if betas is None:
             betas = np.zeros((10,), dtype=np.float32)
         betas = np.asarray(betas, dtype=np.float32).reshape(-1)[:10]
         n = min(len(global_orient), len(body_pose), len(transl))
-        people.append((global_orient[:n], body_pose[:n], transl[:n], betas[:10], gender))
+        hands = []
+        for key in ("left_hand_pose", "right_hand_pose"):
+            if key not in data.files:
+                raise ValueError(f"{path} is missing {key}; cannot reproduce GT hands")
+            hand = np.asarray(data[key], dtype=np.float32)
+            if hand.shape != (n, 45):
+                raise ValueError(f"{path}: {key} must be (T,45), got {hand.shape}")
+            hands.append(hand)
+        people.append((global_orient[:n], body_pose[:n], transl[:n], betas[:10], gender, *hands))
     n = min(len(value[0]) for value in people)
-    for global_orient, body_pose, transl, betas, gender in people:
+    for global_orient, body_pose, transl, betas, gender, left_hand, right_hand in people:
         global_orient = global_orient[:n]
         body_pose = body_pose[:n]
         transl = transl[:n]
         model_gender = gender
-        try:
-            resolve_smpl_model_path(model_dir, model_type="smplh", gender=model_gender)
-        except FileNotFoundError:
-            model_gender = "neutral"
+        # Failing explicitly is preferable to silently rendering a different body.
+        resolve_smpl_model_path(model_dir, model_type="smplh", gender=model_gender)
         if model_gender not in models:
             models[model_gender] = smplx.create(
                 str(model_dir),
                 model_type="smplh",
                 gender=model_gender,
                 use_pca=False,
+                flat_hand_mean=True,
             ).to(renderer.device).eval()
         model = models[model_gender]
         beta_tensor = torch.from_numpy(np.broadcast_to(betas, (n, len(betas))).copy()).to(renderer.device)
@@ -116,8 +123,8 @@ def _load_interx_smplh_pair(
                 betas=beta_tensor,
                 global_orient=torch.from_numpy(global_orient).to(renderer.device),
                 body_pose=torch.from_numpy(body_pose).to(renderer.device),
-                left_hand_pose=torch.zeros(n, 45, device=renderer.device),
-                right_hand_pose=torch.zeros(n, 45, device=renderer.device),
+                left_hand_pose=torch.from_numpy(left_hand[:n]).to(renderer.device),
+                right_hand_pose=torch.from_numpy(right_hand[:n]).to(renderer.device),
                 transl=torch.from_numpy(transl).to(renderer.device),
             )
         joints.append(result.joints[:, :22].detach().cpu().numpy().astype(np.float32))
@@ -154,22 +161,14 @@ def _fit_pair_vertices(
         people.append(renderer.vertices(fit["global_orient"], fit["body_pose"], fit["transl"]))
         errors.append(float(np.asarray(fit["fit_mpjpe_mm"]).mean()))
     vertices = np.stack(people, axis=1).astype(np.float32)
-    vertices[..., 1] -= float(vertices[..., 1].min())
     return vertices, float(np.mean(errors))
 
 
-def _center_pair(points: np.ndarray, x_offset: float, *, per_person_floor: bool = False) -> np.ndarray:
-    value = np.asarray(points, dtype=np.float32).copy()
-    if per_person_floor:
-        for person in range(value.shape[1]):
-            value[:, person, ..., 1] -= float(value[:, person, ..., 1].min())
-    else:
-        value[..., 1] -= float(value[..., 1].min())
-    center = value[0].reshape(-1, 3).mean(axis=0)
-    center[1] = 0.0
-    value -= center
-    value[..., 0] += x_offset
-    return value
+def _center_representations(joints: np.ndarray, vertices: np.ndarray):
+    """Translate all geometry together; never ground actors independently."""
+    center = np.asarray(joints[0, :, 0].mean(axis=0), dtype=np.float32)
+    center[1] = min(float(joints[..., 1].min()), float(vertices[..., 1].min()))
+    return joints - center, vertices - center
 
 
 def _round_nested(values: np.ndarray, digits: int = 5):
@@ -212,10 +211,9 @@ def write_threejs_viewer_data(
     source_label: str,
     route: str,
     fps: int,
-    max_frames: int,
+    max_frames: int | None,
 ) -> dict:
-    skeleton = _center_pair(joints[:max_frames], 0.0)
-    mesh = _center_pair(smpl_vertices[: len(skeleton)], 0.0, per_person_floor=True)
+    skeleton, mesh = _center_representations(joints[:max_frames], smpl_vertices[:max_frames])
     quantized, minimum, scale = _quantize_pair_vertices(mesh)
     normals = _quantize_pair_normals(mesh, smpl_faces)
     quantized.tofile(out_dir / "smpl_pair_vertices.u16")
@@ -347,10 +345,11 @@ def render_interhuman_skeleton_smpl_mesh(
     fps: int,
     width: int,
     height: int,
-    max_frames: int,
+    max_frames: int | None,
 ) -> list[np.ndarray]:
-    skel = _center_pair(joints[:max_frames], -1.25)
-    mesh = _center_pair(smpl_vertices[: len(skel)], 1.25)
+    skel, mesh = _center_representations(joints[:max_frames], smpl_vertices[:max_frames])
+    skel[..., 0] -= 1.25
+    mesh[..., 0] += 1.25
     all_points = np.concatenate([skel.reshape(-1, 3), mesh.reshape(-1, 3)], axis=0)
     y_center = float(np.percentile(all_points[:, 1], 52))
     target = np.asarray([0.0, y_center, float(np.mean(all_points[:, 2]))], dtype=np.float32)
@@ -424,7 +423,9 @@ def render_interhuman_skeleton_smpl_mesh(
             frames.append(color)
     finally:
         renderer.delete()
-    imageio.mimsave(output, frames, duration=1.0 / fps, loop=0)
+    boundaries = [round(index * 100 / fps) * 10 for index in range(len(frames) + 1)]
+    durations = np.diff(boundaries).tolist()
+    imageio.mimsave(output, frames, duration=durations, loop=0)
     return frames
 
 
@@ -432,18 +433,20 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", choices=("interhuman", "interx-smplh"), default="interx-smplh")
     parser.add_argument("--data-root", type=Path, default=Path("data/motionhub/interx"))
-    parser.add_argument("--sample-id", default="G021T002A012R014")
+    parser.add_argument("--sample-id", required=True, help="Choose a documented action, not an arbitrary pair")
     parser.add_argument("--model-dir", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, default=Path("assets/motion/interhuman_representation_demo"))
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--fps", type=int, default=30)
-    parser.add_argument("--frames", type=int, default=72)
+    parser.add_argument("--frames", type=int, default=None, help="Default: the complete clip")
     parser.add_argument("--refine-iters", type=int, default=8)
     parser.add_argument("--width", type=int, default=1280)
     parser.add_argument("--height", type=int, default=720)
     parser.add_argument("--write-npz", action="store_true")
     parser.add_argument("--write-mp4", action="store_true")
     args = parser.parse_args()
+    if args.fps <= 0 or (args.frames is not None and args.frames < 2):
+        parser.error("fps must be positive and frames must be at least two")
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     renderer = SMPLRenderer(args.model_dir, args.device, args.width, args.height)
@@ -477,16 +480,17 @@ def main() -> None:
             args.model_dir,
             renderer,
         )
-        interhuman = joints_pair_to_interhuman262(
+        interhuman, pair_transform = joints_pair_to_interhuman262(
             raw_joints,
             raw_rotations,
             feet_threshold=0.001,
             reference_frame=0,
             source_coordinates="interhuman_y_up",
+            return_transform=True,
         )
         interhuman = interhuman[: args.frames]
         joints = interhuman262_to_joints(interhuman)
-        smpl_vertices = smpl_vertices[: len(joints)]
+        smpl_vertices = pair_transform.apply(smpl_vertices[: len(joints)])
         fit_mpjpe_mm = 0.0
         source_label = "GT InterX smplh_52_2p/P1+P2"
         route = "InterX SMPL-H GT -> InterHuman-262 skeleton decode and same-pose SMPL mesh"
