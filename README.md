@@ -20,6 +20,7 @@
 
 <p align="center">
   <a href="docs/README.md"><strong>Documentation</strong></a> ·
+  <a href="#motius-in-motion">Demos</a> ·
   <a href="#start-here">Quickstart</a> ·
   <a href="docs/tasks/README.md">Tasks</a> ·
   <a href="docs/datasets/README.md">Datasets</a> ·
@@ -32,6 +33,39 @@
 
 Motius packages motion methods behind consistent bundles, task pipelines,
 trainers, evaluators, and representation bridges.
+
+## Motius in Motion
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <a href="assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4"><img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_roundhouse_kick_smpl_mesh_1024_30fps.gif" width="440" alt="HYMotion generates a roundhouse kick from text"></a><br>
+      <strong>Text-to-Motion · HYMotion</strong><br>
+      <a href="assets/model_zoo/hymotion_t2m/hymotion_t2m_full_humanml3d_001840_roundhouse_kick_smpl_mesh.mp4">Video</a> · <a href="docs/model_zoo/hymotion_t2m.md">Model card</a>
+    </td>
+    <td width="50%" align="center">
+      <a href="assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair_512_30fps.mp4"><img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair_512_30fps.gif" width="440" alt="InterGen generates two people shaking hands and stepping apart"></a><br>
+      <strong>Two-Person Interaction · InterGen</strong><br>
+      <a href="assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair_512_30fps.mp4">Video</a> · <a href="docs/model_zoo/intergen.md">Model card</a>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <a href="assets/model_zoo/bailando/bailando_aistpp_break_gBR_mBR0_smpl_mesh.mp4"><img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/model_zoo/bailando/bailando_aistpp_break_gBR_mBR0_smpl_mesh_512_30fps.gif" width="440" alt="Bailando generates break dance from music"></a><br>
+      <strong>Music-to-Dance · Bailando</strong><br>
+      <a href="assets/model_zoo/bailando/bailando_aistpp_break_gBR_mBR0_smpl_mesh.mp4">Video</a> · <a href="docs/model_zoo/bailando.md">Model card</a>
+    </td>
+    <td width="50%" align="center">
+      <a href="#character-export"><img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_readme_30fps.gif" width="440" alt="The same SMPL motion retargeted to Amy, Maria, Michelle, and Remy from Mixamo"></a><br>
+      <strong>Character Retargeting · Mixamo</strong><br>
+      <a href="assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_30fps.mp4">Video</a> · <a href="#character-export">Full-size demo</a> · <a href="docs/motion/character_assets.md">Character downloads</a>
+    </td>
+  </tr>
+</table>
+
+[Representation and robot conversion](#representation-and-embodiment) ·
+[Multi-character AutoRig video](#automatic-rigging-diverse-meshes-to-motion) ·
+[All model demos](docs/model_zoo/README.md)
 
 | Layer | Owns | Source of truth |
 | --- | --- | --- |
@@ -170,6 +204,10 @@ frame. The [GT InterX comparison](assets/motion/interhuman_representation_demo/i
 and [Three.js viewer](assets/motion/interhuman_representation_demo/index.html)
 show InterHuman-262 and SMPL-H under the same conversion contract.
 
+<p align="center">
+  <a href="assets/motion/interhuman_representation_demo/index.html"><img src="https://raw.githubusercontent.com/ZeyuLing/Motius/main/assets/motion/interhuman_representation_demo/interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif" width="920" alt="Two synchronized actors shown as InterHuman skeletons and SMPL-H meshes in one shared frame"></a>
+</p>
+
 ### Character Export
 
 <p align="center">
@@ -184,6 +222,14 @@ then follow the [FBX export guide](docs/motion/fbx.md). Starting from a static
 humanoid instead? The [automatic rigging pipeline](docs/motion/rigging.md)
 imports GLB/GLTF/FBX/OBJ/PLY/STL, fits and skins a canonical SMPL-22 armature,
 and exports a rigged FBX or GLTF asset for the same motion bridge.
+
+The four target characters are **Amy, Maria, Michelle, and Remy** from
+Adobe Mixamo. The [character download and source index](docs/motion/character_assets.md)
+keeps their setup instructions together with the textured AutoRig character
+sources. The original full-resolution preview and its
+[manifest](assets/motion/fbx_character_demo/manifest.json) remain available.
+Watch the [MP4 version](assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_30fps.mp4)
+with playback controls, or use the looping preview above.
 
 ### Automatic Rigging: Diverse Meshes To Motion
 

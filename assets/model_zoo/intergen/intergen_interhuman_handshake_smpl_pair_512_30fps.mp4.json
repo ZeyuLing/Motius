@@ -1,0 +1,8 @@
+{
+  "artifact": "intergen_interhuman_handshake_smpl_pair_512_30fps.mp4",
+  "sha256": "17569652db56ebb676c1f8a566a2b5c85f09908707b32a6918bf9120798be3f2",
+  "source": "intergen_interhuman_handshake_smpl_pair_512_30fps.gif",
+  "encoding": "H.264 yuv420p, CRF 18, faststart, preserved GIF frame timing",
+  "duration_seconds": 2.0,
+  "provenance": "Encoded from the preserved published animation as a repository-hosted playback copy after the historical GitHub attachment returned 404. No inference or motion changes."
+}

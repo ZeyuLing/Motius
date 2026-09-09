@@ -39,6 +39,8 @@ with:
   Autodesk FBX SDK without Blender or Blender as an optional backend.
 - [Automatic character rigging](rigging.md): fit and skin an upright humanoid
   GLB/GLTF/FBX/OBJ/PLY/STL with a canonical SMPL-22 armature before retargeting.
+- [Character downloads and demo sources](character_assets.md): Mixamo target
+  characters, textured AutoRig assets, original source URLs, and demo links.
 - [Physical evaluation](../evaluation/physical_metrics.md): checkpoint-free
   Slide, Float, Jitter, Dynamic, and Penet metrics on canonical SMPL-22 joints.
 

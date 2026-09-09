@@ -16,6 +16,16 @@
   ],
   "artifact": "004822_skeleton_smpl_mixamo_1440_30fps.gif",
   "sha256": "2fc12bcac25c00b31ffc50641d6fae6cf37691bc8a7e85994c795a2e7deeef4e",
+  "video": {
+    "artifact": "004822_skeleton_smpl_mixamo_1440_30fps.mp4",
+    "sha256": "0dbcb93ed2982bf3db6f9a9865b7ed8bbade58d8685f4a61ed5b9dadd7c02bc5",
+    "source": "004822_skeleton_smpl_mixamo_1440_30fps.gif",
+    "encoding": "H.264 yuv420p, CRF 18, faststart, preserved GIF frame timing",
+    "duration_seconds": 3.0,
+    "provenance": "Encoded from the preserved published animation; no rig or motion changes."
+  },
+  "character_source_url": "https://www.mixamo.com/",
+  "character_source_index": "../../../docs/motion/character_assets.md",
   "fbx_assets_committed": false,
   "validation": {
     "duration_seconds": 5.966666666666667,

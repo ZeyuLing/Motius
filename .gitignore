@@ -71,6 +71,8 @@ docs/leaderboards/hf_space_*/cases/**/audio/
 *.mp4
 !assets/model_zoo/gvhmr/*.mp4
 !assets/motion/auto_rigging_demo/*.mp4
+!assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_30fps.mp4
+!assets/model_zoo/intergen/intergen_interhuman_handshake_smpl_pair_512_30fps.mp4
 *.mov
 *.avi
 *.tar

@@ -1,5 +1,10 @@
 # Character Assets
 
+For the characters shown in the README, start with the
+[character download and source index](../../docs/motion/character_assets.md).
+It links both the four-character Mixamo retargeting demo and the downloaded,
+textured multi-character AutoRig demo.
+
 Rigged target characters used for motion export live here. Motius documents
 [Mixamo character setup](mixamo/README.md); additional rig families should
 receive their own directory, mapping contract, and license notes.

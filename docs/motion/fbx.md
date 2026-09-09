@@ -11,6 +11,18 @@ The target mesh, materials, hierarchy, and authored skin weights are preserved.
 Motius does not bundle or relabel Adobe Mixamo characters. Downloaded Mixamo
 characters remain subject to Adobe's terms and stay outside the Python package.
 
+## Mixamo Character Demo
+
+![One motion retargeted to an SMPL skeleton, SMPL mesh, and four Mixamo characters](../../assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_readme_30fps.gif)
+
+The synchronized preview shows **Amy, Maria, Michelle, and Remy** driven by
+HumanML3D motion `004822`. Open the
+[original 1440-pixel, 30 fps animation](../../assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_30fps.gif),
+the [demo manifest](../../assets/motion/fbx_character_demo/manifest.json), or
+the [character download and source index](character_assets.md).
+An [MP4 version](../../assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_30fps.mp4)
+is also available, encoded from the preserved original GIF with its frame timing.
+
 ## Backends
 
 | Backend | Character retarget | Direct SMPL mesh export | Runtime |

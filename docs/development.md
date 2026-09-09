@@ -29,6 +29,22 @@ Avoid adding generic wrapper layers that only group methods by broad domain.
 Generated runtime artifacts belong under `outputs/`. Do not write checkpoints,
 logs, temporary evaluation files, or visualizations to the repository root.
 
+## Preserve Published Demos
+
+Published demo videos and animated previews are part of the public release.
+Preserve them when reorganizing documentation: keep existing media files,
+working video links, and visible animated previews in the main README.
+Moving a demo to a model card must retain a discoverable homepage preview or
+gallery entry. Do not replace an animated preview with a still image as part
+of a layout cleanup.
+
+When a corrected render replaces an inaccurate demo, document the reason and
+link the replacement. Keep valid older demos accessible; remove media only
+for a concrete correctness, licensing, or maintainer-requested reason.
+Character demos must link their source models, creators, and license records
+from the public documentation. Keep downloadable character assets and
+published demo media separate.
+
 ## Mirror Workflow
 
 Maintainers should push every public repository change to both configured
