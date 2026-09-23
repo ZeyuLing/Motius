@@ -803,12 +803,10 @@ class MotionCanvasPipeline(BasePipeline):
         position_constraints = batch.get('position_constraints')
         use_pos_constraint = position_constraints is not None and len(position_constraints) > 0
         pos_solver = None
-        pos_affected_dims = None
 
         if use_pos_constraint:
             from motius.motion.pipeline_utils.position_constraint import (
                 PositionConstraintSolver,
-                get_affected_dims,
             )
             bone_offsets = self.bundle.get_bone_offsets()
             rotation_space = getattr(self.bundle, 'rotation_space', 'local')
@@ -816,8 +814,13 @@ class MotionCanvasPipeline(BasePipeline):
                 bone_offsets=bone_offsets,
                 rotation_space=rotation_space,
             )
-            pos_affected_dims = get_affected_dims(position_constraints)
             pc_interval = self.position_constraint_interval
+            if pc_interval < 1:
+                raise ValueError('position_constraint_interval must be positive')
+            # Cue indices refer to full, unpadded sequences, not sliced frames.
+            for cue in position_constraints:
+                if not 0 <= cue.frame < T or not bool(tgt_padding_mask[:, cue.frame].all()):
+                    raise ValueError(f'Position cue frame {cue.frame} is outside a valid sequence')
 
         # -----------------------------------------------------------------
         # ODE integration
@@ -857,62 +860,35 @@ class MotionCanvasPipeline(BasePipeline):
 
                 # Position constraint projection
                 if use_pos_constraint:
-                    # Analytic IK (root/2-bone/1-bone): every step
-                    # Gradient IK: every pc_interval steps + last step
-                    # Preserve the legacy cadence on base-grid steps. The
-                    # detector-only exact substep has no position constraints,
-                    # while Step-E must keep its historical global-grid phase.
+                    # Preserve the legacy cue cadence, but solve simultaneous
+                    # cues together and batch frames with matching layouts.
                     base_step_index = _base_grid_step_index(t, t_curr)
                     do_gradient_ik = is_last_step or (
                         base_step_index % pc_interval == 0
                     )
-
-                    # Denormalize -> IK solve -> renormalize
-                    x_denorm = self.bundle.denormalize_motion(x)
-                    x_fixed = x_denorm.clone()
-
-                    for b_idx in range(B):
-                        frame_constraints = {}  # frame -> list of constraints
-                        for c in position_constraints:
-                            frame_constraints.setdefault(c.frame, []).append(c)
-
-                        for frame, cs in frame_constraints.items():
-                            if frame >= T:
-                                continue
-                            # Filter by IK type
-                            from motius.motion.pipeline_utils.ik_solver import get_ik_strategy
-                            analytic_cs = [
-                                c for c in cs
-                                if get_ik_strategy(c.joint) in ('root', 'two_bone', 'one_bone')
-                            ]
-                            gradient_cs = [
-                                c for c in cs
-                                if get_ik_strategy(c.joint) == 'gradient'
-                            ]
-
-                            active_cs = analytic_cs
-                            if do_gradient_ik:
-                                active_cs = active_cs + gradient_cs
-
-                            if active_cs:
-                                frame_motion = x_fixed[b_idx, frame]
-                                for c in active_cs:
-                                    frame_result, _ = pos_solver._solve_single(
-                                        frame_motion.unsqueeze(0), [c]
-                                    )
-                                    frame_motion = frame_result.squeeze(0)
-                                x_fixed[b_idx, frame] = frame_motion
-
-                    # Renormalize and selectively replace affected dims
-                    x_renorm = self.bundle.normalize_motion(x_fixed)
-                    if pos_affected_dims is not None:
-                        dim_idx = torch.tensor(pos_affected_dims, device=device)
-                        # Only replace affected frames and dims
-                        affected_frames = set(c.frame for c in position_constraints if c.frame < T)
-                        for f in affected_frames:
-                            x[:, f, dim_idx] = x_renorm[:, f, dim_idx]
-                    else:
-                        x = x_renorm
+                    from motius.motion.pipeline_utils.ik_solver import get_ik_strategy
+                    active_cs = [c for c in position_constraints
+                                 if do_gradient_ik or get_ik_strategy(c.joint) != 'gradient']
+                    if active_cs:
+                        # Final imputation must precede IK, otherwise changing
+                        # a fixed rotation afterwards can destroy FK accuracy.
+                        if use_replacement and is_last_step:
+                            x = torch.where(keep_mask, x_clean, x)
+                        x_denorm = self.bundle.denormalize_motion(x.float())
+                        x_fixed, _ = pos_solver.solve(
+                            x_denorm, active_cs,
+                            fixed_mask=keep_mask if use_replacement else None,
+                        )
+                        x_renorm = self.bundle.normalize_motion(x_fixed).to(x.dtype)
+                        # Preserve untouched latent/position channels exactly;
+                        # do not round-trip them through normalization.
+                        changed = x_fixed != x_denorm
+                        x = torch.where(changed, x_renorm, x)
+                        if use_replacement:
+                            locked_values = x_clean if is_last_step or rep_mode == 'all' else (
+                                x_interp if rep_mode == 'flow_interp' else x_clean
+                            )
+                            x = torch.where(keep_mask, locked_values, x)
 
             # Final hard replacement guarantees exact evidence preservation for
             # skip_last and flow_interp. Training now targets zero velocity on
@@ -945,6 +921,16 @@ class MotionCanvasPipeline(BasePipeline):
         result = self.bundle.decode_motion_from_latent(sampled)
         result['latent'] = sampled
         result['rotation_space'] = getattr(self.bundle, 'rotation_space', 'local')
+        if use_pos_constraint:
+            # Evaluate the actual returned representation after final rounding
+            # and replacement, not an intermediate solver iterate.
+            final_motion = self.bundle.denormalize_motion(sampled.float())
+            max_error = pos_solver._compute_max_error(
+                final_motion, position_constraints,
+                pos_solver.bone_offsets.to(device=final_motion.device, dtype=final_motion.dtype),
+            )
+            result['position_constraint_max_error_m'] = max_error
+            result['position_constraint_satisfied'] = max_error <= pos_solver.hard_projection_tol
         return result
 
     # ------------------------------------------------------------------ #
