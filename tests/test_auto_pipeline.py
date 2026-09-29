@@ -55,6 +55,26 @@ def test_registered_submodule_path_is_normalized_to_canonical_class(tmp_path):
     assert metadata.pipeline_class_path == "motius.pipelines.mdm.MDMPipeline"
 
 
+def test_hymotion_v2m_artifact_resolves_to_local_pipeline(tmp_path):
+    artifact = _write_index(
+        tmp_path / "artifact",
+        _class_name="HyMotionV2MPipeline",
+        pipeline_class=(
+            "motius.pipelines.hymotion_v2m."
+            "hymotion_v2m_pipeline.HyMotionV2MPipeline"
+        ),
+        bundle_class="motius.models.hymotion_v2m.bundle.HyMotionV2MBundle",
+        tasks=["monocular_motion_capture"],
+    )
+
+    metadata = Pipeline.resolve_pretrained(artifact)
+
+    assert metadata.pipeline_class_path == (
+        "motius.pipelines.hymotion_v2m.HyMotionV2MPipeline"
+    )
+    assert metadata.tasks == ("monocular_motion_capture",)
+
+
 def test_unregistered_motius_pipeline_class_is_rejected(tmp_path):
     artifact = _write_index(
         tmp_path / "artifact",

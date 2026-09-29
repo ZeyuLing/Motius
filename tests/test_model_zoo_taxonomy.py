@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_model_zoo_uses_canonical_task_labels() -> None:
     rows = _read_model_rows()
-    assert len(rows) == 41
+    assert len(rows) == 42
 
     for row in rows:
         card_text = row.card_path.read_text()

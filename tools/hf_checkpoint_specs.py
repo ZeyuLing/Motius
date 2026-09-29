@@ -144,6 +144,12 @@ CHECKPOINT_SPECS = (
         ("text_to_motion",),
     ),
     _spec(
+        "ZeyuLing/Motius-HYMotion-V2M",
+        "motius.pipelines.hymotion_v2m.HyMotionV2MPipeline",
+        "motius.models.hymotion_v2m.HyMotionV2MBundle",
+        ("monocular_motion_capture",),
+    ),
+    _spec(
         "ZeyuLing/Motius-HumanoidGPT-G1",
         "motius.pipelines.humanoid_gpt.HumanoidGPTPipeline",
         "motius.models.humanoid_gpt.HumanoidGPTBundle",

@@ -408,6 +408,12 @@ namespaces = false
 ]
 "motius.models.gvhmr" = ["ATTRIBUTIONS.md"]
 "motius.models.gvhmr.vendor" = ["GVHMR_LICENSE"]
+"motius.models.hymotion_v2m" = ["ATTRIBUTIONS.md", "License.txt", "NOTICE"]
+"motius.models.hymotion_v2m.vendor" = [
+    "DINOV3_LICENSE.md",
+    "SAM3D_LICENSE",
+    "YOLOX_LICENSE",
+]
 "motius.models.gvhmr.vendor.hmr4d" = [
     "configs/*.yaml",
     "configs/*/*.yaml",
