@@ -10,7 +10,7 @@ def test_monocular_methods_have_linked_model_cards():
         "GVHMR": ("gvhmr.md", True),
         "GEM-SMPL": ("gem_smpl.md", True),
         "GEM-X": ("gem_x.md", True),
-        "HYMotion-V2M": ("hymotion_v2m.md", False),
+        "FlowHMR": ("flowhmr.md", True),
     }
     model_zoo = (ROOT / "docs/model_zoo/README.md").read_text()
     task = (
@@ -65,7 +65,7 @@ def test_monocular_runtime_legal_files_are_packaged():
         '"motius.models.gem_x.vendor" = [',
         '"GEM_X_LICENSE",',
         '"third_party/**/*LICENSE*",',
-        '"motius.models.hymotion_v2m" = [',
-        '"motius.models.hymotion_v2m.vendor" = [',
+        '"motius.models.flowhmr" = [',
+        '"motius.models.flowhmr.vendor" = [',
     )
     assert all(entry in pyproject for entry in expected)

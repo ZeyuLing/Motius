@@ -28,7 +28,7 @@ PIPELINE_CLASS_PATHS = {
     "GVHMRPipeline": "motius.pipelines.gvhmr.GVHMRPipeline",
     "HumanoidGPTPipeline": "motius.pipelines.humanoid_gpt.HumanoidGPTPipeline",
     "HyMotionT2MPipeline": "motius.pipelines.hymotion_t2m.HyMotionT2MPipeline",
-    "HyMotionV2MPipeline": "motius.pipelines.hymotion_v2m.HyMotionV2MPipeline",
+    "FlowHMRPipeline": "motius.pipelines.flowhmr.FlowHMRPipeline",
     "InterGenPipeline": "motius.pipelines.intergen.InterGenPipeline",
     "InterMaskPipeline": "motius.pipelines.intermask.InterMaskPipeline",
     "KIMODOPipeline": "motius.pipelines.kimodo.KIMODOPipeline",

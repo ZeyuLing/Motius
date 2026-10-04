@@ -11,6 +11,14 @@ ROOT = Path(__file__).resolve().parents[1]
 TRAINING_HUB = ROOT / "docs" / "training" / "README.md"
 
 RELEASES = {
+    "flowhmr": {
+        "label": "FlowHMR",
+        "config": "configs/flowhmr/train_flowhmr.py",
+        "trainer": "motius/trainers/flowhmr/trainer.py",
+        "trainer_class": "FlowHMRTrainer",
+        "card": "docs/model_zoo/flowhmr.md",
+        "output": "outputs/training/flowhmr",
+    },
     "gentrack": {
         "label": "GenTrack",
         "config": "configs/gentrack/train_gentrack_g1.py",

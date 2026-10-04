@@ -48,6 +48,9 @@ def _spec(
 
 
 CHECKPOINT_SPECS = (
+    *(_spec(f"ZeyuLing/Motius-FlowHMR-{variant}", "motius.pipelines.flowhmr.FlowHMRPipeline",
+            "motius.models.flowhmr.FlowHMRBundle", ("monocular_motion_capture",),
+            f"ZeyuLing/Motius-FlowHMR-{variant}") for variant in ("Base", "Latest")),
     _spec(
         "ZeyuLing/Motius-Any2Track-G1-LAFAN1-v2",
         "motius.pipelines.any2track.Any2TrackPipeline",
@@ -142,12 +145,6 @@ CHECKPOINT_SPECS = (
         "motius.pipelines.hymotion_t2m.HyMotionT2MPipeline",
         "motius.models.hymotion_t2m.HyMotionT2MBundle",
         ("text_to_motion",),
-    ),
-    _spec(
-        "ZeyuLing/Motius-HYMotion-V2M",
-        "motius.pipelines.hymotion_v2m.HyMotionV2MPipeline",
-        "motius.models.hymotion_v2m.HyMotionV2MBundle",
-        ("monocular_motion_capture",),
     ),
     _spec(
         "ZeyuLing/Motius-HumanoidGPT-G1",

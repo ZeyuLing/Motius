@@ -105,6 +105,7 @@ ZOO_METRICS_START = "<!-- MOTIUS_MODEL_ZOO_METRICS:START -->"
 ZOO_METRICS_END = "<!-- MOTIUS_MODEL_ZOO_METRICS:END -->"
 
 FRAME_RATE_CONTRACTS = {
+    "flowhmr": {"training": "30 fps, 360-frame windows", "preview": "30 fps native"},
     "any2track": {
         "training": "50 Hz G1 control after reference-motion preprocessing",
         "preview": "50 Hz MuJoCo rollout; public media encoded at 30 fps",

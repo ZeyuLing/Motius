@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "motius"
-version = "0.1.0"
+version = "0.2.0"
 description = "A reproducible framework for human motion models"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -22,6 +22,19 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+flowhmr = [
+    "clip @ git+https://github.com/openai/CLIP.git",
+    "einops>=0.7",
+    "matplotlib>=3.5",
+    "mmcv-lite>=2.0,<2.2",
+    "numpy<2",
+    "opencv-python>=4.8",
+    "pyyaml>=6.0",
+    "torch>=2.6",
+    "torchvision>=0.21",
+    "torchdiffeq>=0.2",
+    "webdataset>=0.2.100",
+]
 dev = [
     "pytest>=7.4",
 ]
@@ -324,6 +337,8 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.models.flowhmr" = ["ATTRIBUTIONS.md", "assets/*.json", "assets/*.yml"]
+"motius.models.flowhmr.vendor" = ["UPSTREAM_LICENSE", "UPSTREAM_COMMIT", "VGGT_OMEGA_LICENSE", "SAM3D_LICENSE", "DINOV3_LICENSE.md", "YOLOX_LICENSE", "HY_MOTION_LICENSE", "HY_MOTION_NOTICE", "MHR_LICENSE"]
 "motius.motion" = [
     "assets/*.npy",
     "retarget/_gmr/LICENSE",
@@ -408,12 +423,6 @@ namespaces = false
 ]
 "motius.models.gvhmr" = ["ATTRIBUTIONS.md"]
 "motius.models.gvhmr.vendor" = ["GVHMR_LICENSE"]
-"motius.models.hymotion_v2m" = ["ATTRIBUTIONS.md", "License.txt", "NOTICE"]
-"motius.models.hymotion_v2m.vendor" = [
-    "DINOV3_LICENSE.md",
-    "SAM3D_LICENSE",
-    "YOLOX_LICENSE",
-]
 "motius.models.gvhmr.vendor.hmr4d" = [
     "configs/*.yaml",
     "configs/*/*.yaml",

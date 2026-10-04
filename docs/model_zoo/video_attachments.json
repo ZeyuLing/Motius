@@ -251,6 +251,42 @@
       "video_sha256": "c500720fe047b84a4f13d70c1726380e3510920adec0333eca2bb67c41d8e1d7",
       "width": 512
     },
+    "assets/model_zoo/flowhmr/base_world.webp": {
+      "audio": null,
+      "floor": "matte light floor with neutral gray grid",
+      "fps": 30,
+      "frames": 30,
+      "height": 512,
+      "public_verification": {
+        "method": "anonymous HTTP Range GET",
+        "status": "passed"
+      },
+      "render_backend": "threejs",
+      "render_profile": "motius-threejs-floor-v1",
+      "representation": "SMPL-H-6890",
+      "source_sha256": "2b3b83d3e686f520bfb3dbc688bdc8628ebaf3162f22daaa9efae25f047f9c1a",
+      "url": "https://github.com/user-attachments/assets/791ec4c4-638d-478c-b79d-7ddb09d3582b",
+      "video_sha256": "9c89851fce376a6719eac29d83a22ab9083afb656c0d4b915c892ced8e9f74bc",
+      "width": 512
+    },
+    "assets/model_zoo/flowhmr/latest_world.webp": {
+      "audio": null,
+      "floor": "matte light floor with neutral gray grid",
+      "fps": 30,
+      "frames": 30,
+      "height": 512,
+      "public_verification": {
+        "method": "anonymous HTTP Range GET",
+        "status": "passed"
+      },
+      "render_backend": "threejs",
+      "render_profile": "motius-threejs-floor-v1",
+      "representation": "SMPL-H-6890",
+      "source_sha256": "a8d2507b9921e8d3939c8db41ee9ca88c38ac93b9c99bbfee5068ff5a4a57027",
+      "url": "https://github.com/user-attachments/assets/ca588fd7-52c8-49a8-af11-e0def808a715",
+      "video_sha256": "db91b0735d42ffeefea36b6e08fcd7d54cd98d2efd7016bc7c666ce0d15ca440",
+      "width": 512
+    },
     "assets/model_zoo/flowmdm/flowmdm_humanml3d_001840_smpl_mesh_512_30fps.gif": {
       "audio": null,
       "floor": "matte light floor with neutral gray grid",

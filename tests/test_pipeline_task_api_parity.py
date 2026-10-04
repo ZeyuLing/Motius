@@ -33,8 +33,8 @@ def test_all_registered_task_routes_are_parity_verified():
     report = _load_audit_module().audit_task_apis()
 
     assert report["summary"] == {
-        "artifacts": 48,
-        "artifact_task_bindings": 82,
+        "artifacts": 49,
+        "artifact_task_bindings": 83,
         "source_pipeline_classes": 47,
         "pipeline_classes": 43,
         "task_methods": 74,

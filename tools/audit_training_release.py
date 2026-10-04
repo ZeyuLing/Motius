@@ -9,6 +9,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE_PATHS = (
+    ROOT / "configs/flowhmr/train_flowhmr.py",
+    ROOT / "motius/models/flowhmr/bundle.py",
+    ROOT / "motius/trainers/flowhmr/trainer.py",
+    ROOT / "motius/datasets/flowhmr.py",
+    ROOT / "docs/model_zoo/flowhmr.md",
     ROOT / "configs/prism/train_prism.py",
     ROOT / "configs/tmr/train_tmr_smpl22.py",
     ROOT / "configs/hymotion_t2m/train_hymotion_t2m.py",

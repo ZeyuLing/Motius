@@ -1,0 +1,18 @@
+{
+  "audio": null,
+  "capture_mode": "synchronous-webgl-buffer",
+  "case_id": "flowhmr_base",
+  "floor": "matte light floor with neutral gray grid",
+  "fps": 30,
+  "frame_step": 1,
+  "frames": 30,
+  "height": 512,
+  "label": "FlowHMR base",
+  "method": "flowhmr",
+  "render_backend": "threejs",
+  "render_profile": "motius-threejs-floor-v1",
+  "representation": "SMPL-H-6890",
+  "schema_version": 1,
+  "source_url": "http://127.0.0.1:49337/index.html?method=flowhmr&case=flowhmr_base",
+  "width": 512
+}

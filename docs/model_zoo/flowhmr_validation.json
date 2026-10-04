@@ -1,0 +1,178 @@
+{
+  "source_revision": "f12e6a2d46a63d771a66dbb6b5598a1be65b9eea",
+  "scope": "base training and base/latest inference; PHC+ GRPO training excluded",
+  "full_network": {
+    "base": {
+      "body_sha256": "a60a7e29d33f09ef1a6352907e2f485e161f471330ca40592764374063e751df",
+      "checkpoint_sha256": "77b903ba545669bafd6f7709c0f1748f5fa030a4f25f67392c8c082a21f5e672",
+      "training": [
+        {
+          "step": 1,
+          "loss": 70.8442611694336,
+          "exact_gradient_tensors": 304,
+          "atol": 0,
+          "rtol": 0
+        },
+        {
+          "step": 10001,
+          "loss": 70.8442611694336,
+          "exact_gradient_tensors": 304,
+          "atol": 0,
+          "rtol": 0
+        }
+      ],
+      "sampling": {
+        "frames": 4,
+        "seed": 13,
+        "exact_keys": [
+          "rot6d",
+          "shapes",
+          "trans",
+          "root_rot6d",
+          "body_rot6d",
+          "local_joints_positions",
+          "foot_contacts",
+          "smooth_root_pos",
+          "pelvis_world"
+        ],
+        "atol": 0,
+        "rtol": 0
+      }
+    },
+    "latest": {
+      "body_sha256": "a60a7e29d33f09ef1a6352907e2f485e161f471330ca40592764374063e751df",
+      "checkpoint_sha256": "b7eb06b119feaf5ad7287bafdb2fff38d42dfc22ea9d256f8cdd2ada26dfc53a",
+      "sampling": {
+        "frames": 4,
+        "seed": 13,
+        "exact_keys": [
+          "rot6d",
+          "shapes",
+          "trans",
+          "root_rot6d",
+          "body_rot6d",
+          "local_joints_positions",
+          "foot_contacts",
+          "smooth_root_pos",
+          "pelvis_world"
+        ],
+        "atol": 0,
+        "rtol": 0
+      }
+    }
+  },
+  "video_frontend": {
+    "frames": 30,
+    "bbox": "exact",
+    "VGGT_extrinsics": "exact",
+    "VGGT_intrinsics": "exact",
+    "SAM_tokens": "exact",
+    "atol": 0,
+    "rtol": 0
+  },
+  "video_motion": {
+    "base": {
+      "frames": 30,
+      "sampling": "exact",
+      "floor_alignment": "exact",
+      "FK_joints": "exact",
+      "shared_capture": "passed",
+      "atol": 0,
+      "rtol": 0
+    },
+    "latest": {
+      "frames": 30,
+      "sampling": "exact",
+      "floor_alignment": "exact",
+      "FK_joints": "exact",
+      "shared_capture": "passed",
+      "atol": 0,
+      "rtol": 0
+    }
+  },
+  "hub_contract": [
+    {
+      "repo_id": "ZeyuLing/Motius-FlowHMR-Base",
+      "revision": "609fc2202a817b14917de2082654ce787718127b",
+      "status": "pass",
+      "files": 20,
+      "size_bytes": 9658190522,
+      "required_files": 8,
+      "errors": []
+    },
+    {
+      "repo_id": "ZeyuLing/Motius-FlowHMR-Latest",
+      "revision": "656891b58d0ce607c23db63efaec2cf73e15185c",
+      "status": "pass",
+      "files": 20,
+      "size_bytes": 9658191362,
+      "required_files": 8,
+      "errors": []
+    }
+  ],
+  "hub_cold_load": {
+    "Base": {
+      "hub_snapshot": "609fc2202a817b14917de2082654ce787718127b",
+      "cold_load": "passed",
+      "all_outputs": "exact"
+    },
+    "Latest": {
+      "hub_snapshot": "656891b58d0ce607c23db63efaec2cf73e15185c",
+      "cold_load": "passed",
+      "all_outputs": "exact"
+    }
+  },
+  "model_card": {
+    "format": "passed",
+    "flowhmr_content": "passed",
+    "videos": {
+      "base": {
+        "url": "https://github.com/user-attachments/assets/791ec4c4-638d-478c-b79d-7ddb09d3582b",
+        "http_status": 206,
+        "content_type": "video/mp4"
+      },
+      "latest": {
+        "url": "https://github.com/user-attachments/assets/ca588fd7-52c8-49a8-af11-e0def808a715",
+        "http_status": 206,
+        "content_type": "video/mp4"
+      }
+    },
+    "global_content_audit_existing_errors": [
+      "video_attachments.json: visibility-appropriate verification count does not cover every video"
+    ]
+  },
+  "limitations": [
+    "Numerical equality covers the tested inputs and seeded executions, not arbitrary hardware/inputs.",
+    "No full-corpus training or canonical 3DPW/EMDB benchmark reproduction is claimed.",
+    "Original repository baseline has 14 failing tests in this environment."
+  ],
+  "regression_suite": {
+    "release_passed": 693,
+    "release_failed": 14,
+    "skipped": 4,
+    "baseline_passed": 694,
+    "baseline_failed": 14,
+    "new_failures": [],
+    "existing_failures": [
+      "tests/test_babel_sequential_protocol.py::test_public_sequential_leaderboard_uses_fixed_canvas_results_and_normalized_fid",
+      "tests/test_model_card_content.py::test_model_card_content_contract",
+      "tests/test_model_zoo_taxonomy.py::test_documentation_uses_one_information_architecture",
+      "tests/test_model_zoo_taxonomy.py::test_documentation_uses_scan_friendly_tables_and_navigation",
+      "tests/test_model_zoo_taxonomy.py::test_every_task_has_linked_readme_and_registry_resources",
+      "tests/test_model_zoo_taxonomy.py::test_model_zoo_task_index_covers_every_release_capability",
+      "tests/test_model_zoo_taxonomy.py::test_prompthmr_is_explicitly_restricted_and_not_task_indexed",
+      "tests/test_model_zoo_taxonomy.py::test_root_readme_uses_only_representation_conversion_visuals",
+      "tests/test_motion_tracking_trainers.py::test_public_g1_training_assets_are_materialized[motius/trainers/protomotions/vendor/protomotions/data/assets/mesh/G1/pelvis.stl]",
+      "tests/test_motion_tracking_trainers.py::test_public_g1_training_assets_are_materialized[motius/trainers/protomotions/vendor/protomotions/data/assets/usd/g1_holo_compat/configuration/g1_holo_compat_robot.usd]",
+      "tests/test_motion_tracking_trainers.py::test_public_g1_training_assets_are_materialized[motius/trainers/sonic/vendor/gear_sonic/data/assets/robot_description/meshes/g1/pelvis.STL]",
+      "tests/test_projflow.py::test_projflow_stats_match_the_official_humanml3d_joint_space",
+      "tests/test_render_model_card_threejs_media.py::test_native_jobs_do_not_claim_an_unvalidated_smpl_bridge",
+      "tests/test_tmr_evaluator.py::test_multi_actor_conversion_uses_gt_shared_frame_preview"
+    ]
+  },
+  "reproducible_command": "python tools/verify_flowhmr_source_parity.py --upstream /path/to/pinned/flowhmr --checkpoint-root outputs/checkpoints/flowhmr --output-dir outputs/validation/flowhmr",
+  "focused_tests": {
+    "passed": 33,
+    "failed": 0
+  }
+}

@@ -734,29 +734,6 @@
         }
       ]
     },
-    "hymotion_v2m": {
-      "method": "HYMotion-V2M",
-      "tasks": [
-        "Monocular Motion Capture"
-      ],
-      "motion_representation": "SMPL-H-52",
-      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-HYMotion-V2M",
-      "checkpoint_sha256": "ed301af6b6fc6bc22dc69d8c7f48c1d6b2fff31d48a1717c8f5bc5ea92bc71df",
-      "metrics": [
-        {
-          "evaluator": "Monocular Motion Capture · 3DPW Test",
-          "protocol": "3dpw_test_camera_v1",
-          "tracks": 37,
-          "samples": 35515,
-          "coverage": 1,
-          "MPJPE": 270.650253,
-          "PA-MPJPE": 139.248385,
-          "Accel": 6.117609,
-          "ranking_eligible": false
-        }
-      ],
-      "preview_cases": []
-    },
     "hymotion_t2m": {
       "method": "HY-Motion T2M",
       "tasks": [
@@ -2147,6 +2124,20 @@
           "gif": "assets/model_zoo/projflow/projflow_part_level_motion_control_512_20fps.gif",
           "metadata": "assets/model_zoo/projflow/projflow_part_level_motion_control_512_20fps.json"
         }
+      ]
+    },
+    "flowhmr": {
+      "method": "FlowHMR",
+      "tasks": [
+        "Monocular Motion Capture"
+      ],
+      "motion_representation": "SMPL-H-52 / 491D",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-FlowHMR-Latest",
+      "metrics": [],
+      "benchmark_status": "unranked; upstream PHC+ tracking results are attributed in the card",
+      "preview_cases": [
+        "assets/model_zoo/flowhmr/base_world.webp",
+        "assets/model_zoo/flowhmr/latest_world.webp"
       ]
     }
   },
