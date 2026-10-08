@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "verified_at_utc": "2026-10-08T08:16:44.641759+00:00",
+  "scope": "Restore public Model Card media and resolve inherited repository validation failures after the FlowHMR integration.",
+  "media": {
+    "total": 115,
+    "replaced_unavailable_attachments": 113,
+    "retained_flowhmr_attachments": 2,
+    "anonymous_http_range_get_passed": 115,
+    "expected_content_type": "video/mp4",
+    "local_media_audit_passed": 115,
+    "uploaded_video_sha256_matches": 115,
+    "registry_url": "https://github.com/ZeyuLing/Motius/issues/1",
+    "recovery_methods": [
+      "Rerender preserved Leaderboard motion data with Three.js",
+      "Regenerate native Pipeline outputs and render native skeletons or meshes",
+      "Re-encode every original Three.js animation frame for four MotionCanvas previews; provenance retained per entry"
+    ],
+    "native_clock": "Every source frame retained; audio tasks contain synchronized audio",
+    "regenerated_cases": "Regenerated demonstrations are new outputs from the published checkpoints; the manifest records recovery provenance."
+  },
+  "validation": {
+    "isolated_checkout": "/tmp/motius-flowhmr-release",
+    "pytest_excluding_model_card_content": {
+      "passed": 714,
+      "skipped": 3
+    },
+    "focused_media_and_monocular_tests": {
+      "passed": 52
+    },
+    "commands": [
+      "python -X frozen_modules=off -m pytest -q tests --ignore=tests/test_model_card_content.py",
+      "python tools/audit_model_card_media.py",
+      "python tools/audit_model_card_content.py"
+    ],
+    "model_card_content_test": {
+      "passed": 1
+    },
+    "pytest_total": {
+      "passed": 715,
+      "skipped": 3
+    },
+    "model_card_content_contract": {
+      "passed": 42
+    },
+    "model_card_format_contract": {
+      "passed": 42
+    }
+  },
+  "restored_pinned_source_assets_sha256": {
+    "motius/models/gem_smpl/vendor/configs/data/mocap/testY.yaml": "aaf2719ce887b2e01799d4e7050a6c5a27123c891b933ea2a00a1ff65a134237",
+    "motius/models/gem_smpl/vendor/configs/data/mocap/trainX_testY.yaml": "307a2ceef3665762a99d15782857e595a7e398505f2c6b1cee7f8e51a0afb5a4",
+    "motius/models/gem_smpl/vendor/configs/data/collate_cfg/default.yaml": "306b67507e8d9e07734b5466ecf6b7ed9bae1d3f1be00d0da2c86bf086e6509e",
+    "motius/models/gem_x/vendor/configs/data/mocap/trainX_testY.yaml": "307a2ceef3665762a99d15782857e595a7e398505f2c6b1cee7f8e51a0afb5a4",
+    "motius/models/gem_x/vendor/configs/data/collate_cfg/default.yaml": "306b67507e8d9e07734b5466ecf6b7ed9bae1d3f1be00d0da2c86bf086e6509e",
+    "motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/__init__.py": "abe836cd309d15d814afb3cf18e6eb7abd0726ea6ecc3091335bb82d7236c379",
+    "motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/utils/prepare_batch.py": "c0555035944f02cfdb9d811b377a3c1ffdd2bfbfe256ee6dc501c8d9409298d0",
+    "motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/utils/io.py": "821bd310455dafeb1bbb0314d239d4802d6c889a203462ff964a90e5a62df079",
+    "motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/transforms/common.py": "165697629df2fe23a62bb90daa2ac8a0f67cac09d70f36844b3c089a9af5a45f",
+    "motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/transforms/bbox_utils.py": "0f49a3f857a09f98d1fd9c609df42f875899515f5e10a0ea6b25acd7a9197d79",
+    "motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/transforms/__init__.py": "ca65add3a731bf54d9917382f34f4eb3c3d8a45e9813a72c7896338f331eb4fc"
+  }
+}

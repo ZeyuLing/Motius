@@ -46,7 +46,7 @@ NVlabs/GENMO at revision
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Monocular Motion Capture | Monocular RGB video | <video src="https://github.com/user-attachments/assets/6895768a-a58a-48ef-805c-8bdcebe523cc" controls></video> | [MP4](https://github.com/user-attachments/assets/6895768a-a58a-48ef-805c-8bdcebe523cc) |
+| Monocular Motion Capture | Monocular RGB video | <video src="https://github.com/user-attachments/assets/dc46324b-a630-4161-8d0e-73c1235c008e" controls></video> | [MP4](https://github.com/user-attachments/assets/dc46324b-a630-4161-8d0e-73c1235c008e) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -56,7 +56,7 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 This 768px, 30 FPS preview renders the world-space SMPL vertices returned by
 the public Motius pipeline.
 
-<video src="https://github.com/user-attachments/assets/6895768a-a58a-48ef-805c-8bdcebe523cc" controls></video>
+<video src="https://github.com/user-attachments/assets/dc46324b-a630-4161-8d0e-73c1235c008e" controls></video>
 
 ## Model Overview
 

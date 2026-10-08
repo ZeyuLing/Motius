@@ -1,12 +1,13 @@
 {
   "schema_version": 1,
   "task": "part_level_motion_control",
-  "input": "person walking at an average pace forward, swaying arms and torso with a sense of swagger",
+  "input": "a person walks forward and waves with the right hand",
   "condition": "Left-wrist XYZ position observed at every frame",
-  "frames": 160,
+  "frames": 120,
   "fps": 20,
-  "condition_visualization": "Observed joint positions are highlighted in coral; generated regions remain teal.",
-  "constraint_error_m_mean": 6.673823715885874e-09,
-  "constraint_error_m_max": 4.470348358154297e-08,
-  "position_mask_count": 480
+  "condition_visualization": "Native SMPL-22 joint positions in teal; text condition shown in the caption. Constraint errors below are measured on the saved position mask.",
+  "constraint_error_m_mean": 9.964455784938764e-07,
+  "constraint_error_m_max": 3.041890522581525e-06,
+  "position_mask_count": 360,
+  "recovery": "Regenerated through the published Motius checkpoint, seed 42; reference motion from OmniControl"
 }

@@ -51,7 +51,7 @@ runtime.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Music-to-Dance | Break music | <video src="https://github.com/user-attachments/assets/357bd5b5-7639-4dc3-a70f-99f874423a44" controls></video> | [MP4](https://github.com/user-attachments/assets/357bd5b5-7639-4dc3-a70f-99f874423a44) · [All cases](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html?method=bailando) |
+| Music-to-Dance | Break music | <video src="https://github.com/user-attachments/assets/99a666fe-7f14-4a5f-b00f-7e0dc2801de4" controls></video> | [MP4](https://github.com/user-attachments/assets/99a666fe-7f14-4a5f-b00f-7e0dc2801de4) · [All cases](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html?method=bailando) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -59,9 +59,9 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 <table>
   <tr>
-    <td width="33%"><video src="https://github.com/user-attachments/assets/357bd5b5-7639-4dc3-a70f-99f874423a44" controls></video></td>
-    <td width="33%"><video src="https://github.com/user-attachments/assets/dc1615f0-e1df-40b5-b544-f7c0f073a502" controls></video></td>
-    <td width="33%"><video src="https://github.com/user-attachments/assets/c137fb3c-3152-4a03-90c4-e244f7529805" controls></video></td>
+    <td width="33%"><video src="https://github.com/user-attachments/assets/99a666fe-7f14-4a5f-b00f-7e0dc2801de4" controls></video></td>
+    <td width="33%"><video src="https://github.com/user-attachments/assets/ad6eeb98-f6bb-4e0e-bfb1-250517318d4c" controls></video></td>
+    <td width="33%"><video src="https://github.com/user-attachments/assets/44edbdda-3208-4d53-ab0d-5dc6dc2f034e" controls></video></td>
   </tr>
   <tr>
     <td align="center"><sub>Break</sub></td>

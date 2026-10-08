@@ -160,7 +160,7 @@ def _render(package: str, engine: str, label: str, frames: int) -> None:
 
                 def preserve_canvas(route):
                     response = route.fetch()
-                    body = response.text().replace(
+                    body = response.text().replace("let playing = true;", "let playing = false;").replace(
                         (
                             "new THREE.WebGLRenderer({canvas:this.canvas, "
                             'antialias:true, powerPreference:"high-performance"})'
@@ -232,7 +232,6 @@ def _render(package: str, engine: str, label: str, frames: int) -> None:
                     raise RuntimeError(
                         f"Tracking viewer did not become ready: {state}"
                     )
-                page.locator("#play").click()
                 page.add_style_tag(
                     content="""
                 .toolbar,.timeline,.case-meta,.status{display:none!important}

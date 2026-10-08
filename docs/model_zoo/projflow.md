@@ -34,9 +34,9 @@ clone the upstream repository.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Temporal Motion Completion | person walking at an average pace forward, swaying arms and torso with a sense of swagger<br><sub>First and last full-body frames observed</sub> | <video src="https://github.com/user-attachments/assets/9f754147-2da3-4cc1-b8e4-3b091ba5c4a4" controls></video> | [MP4](https://github.com/user-attachments/assets/9f754147-2da3-4cc1-b8e4-3b091ba5c4a4) |
-| Kinematic Motion Control | person walking at an average pace forward, swaying arms and torso with a sense of swagger<br><sub>Sparse pelvis XYZ trajectory every 20 frames</sub> | <video src="https://github.com/user-attachments/assets/e23e01a8-d239-4860-89b0-8b4b5e6605fe" controls></video> | [MP4](https://github.com/user-attachments/assets/e23e01a8-d239-4860-89b0-8b4b5e6605fe) |
-| Part-Level Motion Control | person walking at an average pace forward, swaying arms and torso with a sense of swagger<br><sub>Left-wrist XYZ position observed at every frame</sub> | <video src="https://github.com/user-attachments/assets/d8b22e4f-05ff-481b-b410-4eae70e3884b" controls></video> | [MP4](https://github.com/user-attachments/assets/d8b22e4f-05ff-481b-b410-4eae70e3884b) |
+| Temporal Motion Completion | a person walks forward and waves with the right hand<br><sub>First and last full-body frames observed</sub> | <video src="https://github.com/user-attachments/assets/b2c57711-4f16-4f72-b097-2417f2dfd8b2" controls></video> | [MP4](https://github.com/user-attachments/assets/b2c57711-4f16-4f72-b097-2417f2dfd8b2) |
+| Kinematic Motion Control | a person walks forward and waves with the right hand<br><sub>Sparse pelvis XYZ trajectory every 20 frames</sub> | <video src="https://github.com/user-attachments/assets/8d453e4a-5a62-40cf-ab25-6357555a79ba" controls></video> | [MP4](https://github.com/user-attachments/assets/8d453e4a-5a62-40cf-ab25-6357555a79ba) |
+| Part-Level Motion Control | a person walks forward and waves with the right hand<br><sub>Left-wrist XYZ position observed at every frame</sub> | <video src="https://github.com/user-attachments/assets/817d7fd0-15c2-4d13-b6bb-8f764c3eb09a" controls></video> | [MP4](https://github.com/user-attachments/assets/817d7fd0-15c2-4d13-b6bb-8f764c3eb09a) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 

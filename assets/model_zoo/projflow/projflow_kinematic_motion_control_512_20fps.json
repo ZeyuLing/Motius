@@ -1,12 +1,13 @@
 {
   "schema_version": 1,
   "task": "kinematic_motion_control",
-  "input": "person walking at an average pace forward, swaying arms and torso with a sense of swagger",
+  "input": "a person walks forward and waves with the right hand",
   "condition": "Sparse pelvis XYZ trajectory every 20 frames",
-  "frames": 160,
+  "frames": 120,
   "fps": 20,
-  "condition_visualization": "Observed joint positions are highlighted in coral; generated regions remain teal.",
-  "constraint_error_m_mean": 7.49992157267343e-09,
-  "constraint_error_m_max": 1.4901161193847656e-08,
-  "position_mask_count": 27
+  "condition_visualization": "Native SMPL-22 joint positions in teal; text condition shown in the caption. Constraint errors below are measured on the saved position mask.",
+  "constraint_error_m_mean": 4.980448920832714e-06,
+  "constraint_error_m_max": 1.7763235518941656e-05,
+  "position_mask_count": 18,
+  "recovery": "Regenerated through the published Motius checkpoint, seed 42; reference motion from OmniControl"
 }

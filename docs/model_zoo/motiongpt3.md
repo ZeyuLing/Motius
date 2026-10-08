@@ -35,8 +35,8 @@ official multi-task checkpoint and all model/tokenizer configuration required by
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | Native task input | <video src="https://github.com/user-attachments/assets/9d48815f-6495-4438-aea3-43f9f753321f" controls></video> | [MP4](https://github.com/user-attachments/assets/9d48815f-6495-4438-aea3-43f9f753321f) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motiongpt3) |
-| Motion-to-Text | SMPL motion input | <video src="https://github.com/user-attachments/assets/0699f1cd-361e-4fe4-b74f-beb92b38b333" controls></video> | [MP4](https://github.com/user-attachments/assets/0699f1cd-361e-4fe4-b74f-beb92b38b333) · [All cases](https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motiongpt3) |
+| Text-to-Motion | Native task input | <video src="https://github.com/user-attachments/assets/0bc379cf-e599-4b0b-a36e-472569853314" controls></video> | [MP4](https://github.com/user-attachments/assets/0bc379cf-e599-4b0b-a36e-472569853314) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motiongpt3) |
+| Motion-to-Text | SMPL motion input | <video src="https://github.com/user-attachments/assets/8e89ec1c-3360-4ace-8832-cb6e4cdfc84d" controls></video> | [MP4](https://github.com/user-attachments/assets/8e89ec1c-3360-4ace-8832-cb6e4cdfc84d) · [All cases](https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motiongpt3) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -44,7 +44,7 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Input | MotionGPT3 SMPL Preview |
 | --- | --- |
-| person walking at a average pace forward, swaying arms and torso with a sense of swagger | <video src="https://github.com/user-attachments/assets/9d48815f-6495-4438-aea3-43f9f753321f" controls></video> |
+| person walking at a average pace forward, swaying arms and torso with a sense of swagger | <video src="https://github.com/user-attachments/assets/0bc379cf-e599-4b0b-a36e-472569853314" controls></video> |
 
 Use the unified
 [HumanML3D all-case comparison](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motiongpt3)

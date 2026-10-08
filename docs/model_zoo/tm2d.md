@@ -49,8 +49,8 @@ upstream checkout at runtime.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | Native task input | <video src="https://github.com/user-attachments/assets/2b939217-fed6-401f-9b5b-093e9cce10a1" controls></video> | [MP4](https://github.com/user-attachments/assets/2b939217-fed6-401f-9b5b-093e9cce10a1) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=tm2d) |
-| Music-to-Dance | Break music | <video src="https://github.com/user-attachments/assets/b145b0c5-6e40-483e-b23f-4d5ddf889bad" controls></video> | [MP4](https://github.com/user-attachments/assets/b145b0c5-6e40-483e-b23f-4d5ddf889bad) · [All cases](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html?method=tm2d) |
+| Text-to-Motion | Native task input | <video src="https://github.com/user-attachments/assets/6ad72c5a-9467-4fe9-ab39-9b3e88f058ed" controls></video> | [MP4](https://github.com/user-attachments/assets/6ad72c5a-9467-4fe9-ab39-9b3e88f058ed) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=tm2d) |
+| Music-to-Dance | Break music | <video src="https://github.com/user-attachments/assets/255ec559-6729-46df-868f-d0491aee2d13" controls></video> | [MP4](https://github.com/user-attachments/assets/255ec559-6729-46df-868f-d0491aee2d13) · [All cases](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html?method=tm2d) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -58,7 +58,7 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Text-to-Motion · HumanML3D | Music-to-Dance · AIST++ |
 | --- | --- |
-| <video src="https://github.com/user-attachments/assets/2b939217-fed6-401f-9b5b-093e9cce10a1" controls></video> | <video src="https://github.com/user-attachments/assets/b145b0c5-6e40-483e-b23f-4d5ddf889bad" controls></video> |
+| <video src="https://github.com/user-attachments/assets/6ad72c5a-9467-4fe9-ab39-9b3e88f058ed" controls></video> | <video src="https://github.com/user-attachments/assets/255ec559-6729-46df-868f-d0491aee2d13" controls></video> |
 | swaggering walk | Break |
 
 - [HumanML3D all-case T2M comparison](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=tm2d)

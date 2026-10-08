@@ -352,3 +352,18 @@ def test_gem_x_runner_patches_the_demo_function_globals():
 
     assert 'demo_globals = namespace["main"].__globals__' in source
     assert 'namespace["render_incam"]' not in source
+
+
+@pytest.mark.parametrize("runtime", [gem_smpl_runtime, gem_x_runtime])
+def test_vendored_demo_includes_hydra_data_config(runtime):
+    path = runtime.VENDORED_RUNTIME_ROOT / "configs/data/mocap/trainX_testY.yaml"
+    assert path.is_file(), "Hydra composes this config even for video inference"
+
+
+def test_gem_smpl_inference_assets_are_materialized():
+    root = gem_smpl_runtime.VENDORED_RUNTIME_ROOT / "gem"
+    with np.load(root / "network/hmr2/configs/smpl_mean_params.npz") as means:
+        assert means["pose"].shape == (144,)
+    for name in ("coco_aug_dict.pth", "smpl_neutral_J_regressor.pt", "smplx2smpl_sparse.pt"):
+        path = root / "utils/body_model" / name
+        assert path.stat().st_size > 256, f"Missing asset or Git LFS pointer: {path}"

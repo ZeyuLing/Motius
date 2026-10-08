@@ -32,7 +32,7 @@ the upstream training and deployment repository.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Motion Tracking | Method-native reference motion and controller state | <video src="https://github.com/user-attachments/assets/dbf58602-9523-4377-8b28-f52a711954d7" controls></video> | [MP4](https://github.com/user-attachments/assets/dbf58602-9523-4377-8b28-f52a711954d7) · [All cases](https://zeyuling-motion-tracking-mujoco-leaderboard.static.hf.space/cases/index.html?method=any2track) · [Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-tracking-mujoco-leaderboard) |
+| Motion Tracking | Method-native reference motion and controller state | <video src="https://github.com/user-attachments/assets/abd9aea3-3d44-4888-81e3-409b34526054" controls></video> | [MP4](https://github.com/user-attachments/assets/abd9aea3-3d44-4888-81e3-409b34526054) · [All cases](https://zeyuling-motion-tracking-mujoco-leaderboard.static.hf.space/cases/index.html?method=any2track) · [Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-tracking-mujoco-leaderboard) |
 
 The policy-step API and physical rollout are evaluated under the registered MuJoCo or Isaac Lab protocol stated in the Model Card.
 

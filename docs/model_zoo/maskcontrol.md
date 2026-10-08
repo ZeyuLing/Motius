@@ -35,10 +35,10 @@ importing an external MaskControl checkout at runtime.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/d26c0993-09f2-4272-bdb0-9cd37dc40bb5" controls></video> | [MP4](https://github.com/user-attachments/assets/d26c0993-09f2-4272-bdb0-9cd37dc40bb5) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=maskcontrol) |
-| Temporal Motion Completion | person walking at a average pace forward, swaying arms and torso with a sense of swagger<br><sub>Adaptive sparse keyframes; 12 observed frames over a 300-frame clip</sub> | <video src="https://github.com/user-attachments/assets/14f99d70-b17c-4eff-ac55-873ebbcb76a9" controls></video> | [MP4](https://github.com/user-attachments/assets/14f99d70-b17c-4eff-ac55-873ebbcb76a9) · [All cases](https://zeyuling-temporal-condition-leaderboard.static.hf.space/cases/adaptive_keyframes/index.html?method=maskcontrol&case=004822) |
-| Kinematic Motion Control | Text plus spatial motion constraints | <video src="https://github.com/user-attachments/assets/ef13307d-08a6-48a7-8fc4-542bed1a6983" controls></video> | [MP4](https://github.com/user-attachments/assets/ef13307d-08a6-48a7-8fc4-542bed1a6983) |
-| Part-Level Motion Control | Text plus a body-part timeline | <video src="https://github.com/user-attachments/assets/d7989e04-57bd-4a01-9ebc-28536baffeea" controls></video> | [MP4](https://github.com/user-attachments/assets/d7989e04-57bd-4a01-9ebc-28536baffeea) · [All cases](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) |
+| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/8b1cdc78-3cda-418d-8a57-521b203157f3" controls></video> | [MP4](https://github.com/user-attachments/assets/8b1cdc78-3cda-418d-8a57-521b203157f3) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=maskcontrol) |
+| Temporal Motion Completion | person walking at a average pace forward, swaying arms and torso with a sense of swagger<br><sub>Adaptive sparse keyframes; 12 observed frames over a 300-frame clip</sub> | <video src="https://github.com/user-attachments/assets/5b256b69-f96f-446d-9c28-89ccfa3e0749" controls></video> | [MP4](https://github.com/user-attachments/assets/5b256b69-f96f-446d-9c28-89ccfa3e0749) · [All cases](https://zeyuling-temporal-condition-leaderboard.static.hf.space/cases/adaptive_keyframes/index.html?method=maskcontrol&case=004822) |
+| Kinematic Motion Control | Text plus spatial motion constraints | <video src="https://github.com/user-attachments/assets/5274b8d3-8e10-4463-bf86-793bf5870d56" controls></video> | [MP4](https://github.com/user-attachments/assets/5274b8d3-8e10-4463-bf86-793bf5870d56) |
+| Part-Level Motion Control | Text plus a body-part timeline | <video src="https://github.com/user-attachments/assets/463b8364-3d86-4f65-9221-b066dda1704f" controls></video> | [MP4](https://github.com/user-attachments/assets/463b8364-3d86-4f65-9221-b066dda1704f) · [All cases](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -47,9 +47,9 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 <table>
   <tr>
-    <td width="33%"><video src="https://github.com/user-attachments/assets/d26c0993-09f2-4272-bdb0-9cd37dc40bb5" controls></video></td>
-    <td width="33%"><video src="https://github.com/user-attachments/assets/ab3f9f89-b0cb-418b-a6ff-2e1a7dd8fb31" controls></video></td>
-    <td width="33%"><video src="https://github.com/user-attachments/assets/b68a1c52-dfc7-43a8-9b4c-77f75f27a164" controls></video></td>
+    <td width="33%"><video src="https://github.com/user-attachments/assets/8b1cdc78-3cda-418d-8a57-521b203157f3" controls></video></td>
+    <td width="33%"><video src="https://github.com/user-attachments/assets/547488a0-a695-444c-981f-f763d7d695fe" controls></video></td>
+    <td width="33%"><video src="https://github.com/user-attachments/assets/0289bdd8-fa66-4e9d-bbfe-5a871c2c922c" controls></video></td>
   </tr>
   <tr>
     <td><sub>"someone executes a roundhouse kick with their left foot."</sub></td>

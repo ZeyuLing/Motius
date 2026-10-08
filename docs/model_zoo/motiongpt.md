@@ -35,8 +35,8 @@ pipeline methods without requiring the original checkout.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/39a0e36c-f1b6-4821-9348-148aaef66a30" controls></video> | [MP4](https://github.com/user-attachments/assets/39a0e36c-f1b6-4821-9348-148aaef66a30) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motiongpt) |
-| Motion-to-Text | SMPL motion input | <video src="https://github.com/user-attachments/assets/0699f1cd-361e-4fe4-b74f-beb92b38b333" controls></video> | [MP4](https://github.com/user-attachments/assets/0699f1cd-361e-4fe4-b74f-beb92b38b333) · [All cases](https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motiongpt) |
+| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/dfb5b70f-1221-4c0c-8627-b66b06052c3f" controls></video> | [MP4](https://github.com/user-attachments/assets/dfb5b70f-1221-4c0c-8627-b66b06052c3f) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motiongpt) |
+| Motion-to-Text | SMPL motion input | <video src="https://github.com/user-attachments/assets/8e89ec1c-3360-4ace-8832-cb6e4cdfc84d" controls></video> | [MP4](https://github.com/user-attachments/assets/8e89ec1c-3360-4ace-8832-cb6e4cdfc84d) · [All cases](https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motiongpt) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -45,9 +45,9 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Input | SMPL Preview |
 | ---------- | ------------ |
-| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/39a0e36c-f1b6-4821-9348-148aaef66a30" controls></video> |
-| a person jumps with legs open while clapping with hands over head simultaneously. | <video src="https://github.com/user-attachments/assets/e0620fee-a7b5-4ef6-872d-ec7000cf48bb" controls></video> |
-| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/f9d3f1f2-5a06-494e-8e70-e6653b5c8a67" controls></video> |
+| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/dfb5b70f-1221-4c0c-8627-b66b06052c3f" controls></video> |
+| a person jumps with legs open while clapping with hands over head simultaneously. | <video src="https://github.com/user-attachments/assets/2222fe39-54a4-40da-9d38-bab6818f76eb" controls></video> |
+| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/65960623-ef19-466c-892b-6d2450af5b41" controls></video> |
 
 512px / 30fps H.264 video previews rendered from released HumanML3D test outputs.
 

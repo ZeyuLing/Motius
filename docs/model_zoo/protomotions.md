@@ -32,7 +32,7 @@ PD targets, and gains remain in the released graph/contract.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Motion Tracking | Method-native reference motion and controller state | <video src="https://github.com/user-attachments/assets/5830f2f3-4693-4876-9bc8-208a2baf76f7" controls></video> | [MP4](https://github.com/user-attachments/assets/5830f2f3-4693-4876-9bc8-208a2baf76f7) · [All cases](https://zeyuling-motion-tracking-mujoco-leaderboard.static.hf.space/cases/index.html?method=protomotions) · [Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-tracking-mujoco-leaderboard) |
+| Motion Tracking | Method-native reference motion and controller state | <video src="https://github.com/user-attachments/assets/9cca8d5c-0572-4157-9683-f9136d85480a" controls></video> | [MP4](https://github.com/user-attachments/assets/9cca8d5c-0572-4157-9683-f9136d85480a) · [All cases](https://zeyuling-motion-tracking-mujoco-leaderboard.static.hf.space/cases/index.html?method=protomotions) · [Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-tracking-mujoco-leaderboard) |
 
 The policy-step API and physical rollout are evaluated under the registered MuJoCo or Isaac Lab protocol stated in the Model Card.
 

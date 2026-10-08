@@ -28,7 +28,7 @@
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Motion Tracking | Method-native reference motion and controller state | <video src="https://github.com/user-attachments/assets/d44a17dc-2caa-49db-be9e-645d911c03e1" controls></video> | [MP4](https://github.com/user-attachments/assets/d44a17dc-2caa-49db-be9e-645d911c03e1) · [All cases](https://zeyuling-motion-tracking-mujoco-leaderboard.static.hf.space/cases/index.html?method=humanoid_gpt) · [Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-tracking-mujoco-leaderboard) |
+| Motion Tracking | Method-native reference motion and controller state | <video src="https://github.com/user-attachments/assets/5fb7371e-b04f-48b6-a40f-2b99bebfb3cb" controls></video> | [MP4](https://github.com/user-attachments/assets/5fb7371e-b04f-48b6-a40f-2b99bebfb3cb) · [All cases](https://zeyuling-motion-tracking-mujoco-leaderboard.static.hf.space/cases/index.html?method=humanoid_gpt) · [Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-tracking-mujoco-leaderboard) |
 
 The policy-step API and physical rollout are evaluated under the registered MuJoCo or Isaac Lab protocol stated in the Model Card.
 

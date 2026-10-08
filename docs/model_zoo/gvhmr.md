@@ -36,7 +36,7 @@ SHA-256 is
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Monocular Motion Capture | Monocular RGB video | <video src="https://github.com/user-attachments/assets/a2547fb6-f4a0-4b27-a758-f274d96d60ab" controls></video> | [MP4](https://github.com/user-attachments/assets/a2547fb6-f4a0-4b27-a758-f274d96d60ab) |
+| Monocular Motion Capture | Monocular RGB video | <video src="https://github.com/user-attachments/assets/39ff7895-3082-43c8-a195-81314a88c8b0" controls></video> | [MP4](https://github.com/user-attachments/assets/39ff7895-3082-43c8-a195-81314a88c8b0) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -49,7 +49,7 @@ each column is a different temporal clip.
 
 | Clip 01 | Clip 02 | Clip 03 |
 | --- | --- | --- |
-| <video src="https://github.com/user-attachments/assets/a2547fb6-f4a0-4b27-a758-f274d96d60ab" controls></video> | <video src="https://github.com/user-attachments/assets/63e4ccdf-73ee-4f54-af99-0facacb1e3d8" controls></video> | <video src="https://github.com/user-attachments/assets/7534f4e5-9325-4fc2-88b0-303c74413181" controls></video> |
+| <video src="https://github.com/user-attachments/assets/39ff7895-3082-43c8-a195-81314a88c8b0" controls></video> | <video src="https://github.com/user-attachments/assets/7b5b7dbb-d200-402d-9be8-ded2bd6e740b" controls></video> | <video src="https://github.com/user-attachments/assets/42eecbc3-8bf1-4680-b1c7-45d862a5ad98" controls></video> |
 
 ## Model Overview
 

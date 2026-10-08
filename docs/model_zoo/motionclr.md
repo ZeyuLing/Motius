@@ -37,7 +37,7 @@ import an external MotionCLR checkout at runtime.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | a person hops in place twice. | <video src="https://github.com/user-attachments/assets/4e09cb36-da6e-4150-8da5-b1d6452e7953" controls></video> | [MP4](https://github.com/user-attachments/assets/4e09cb36-da6e-4150-8da5-b1d6452e7953) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motionclr) |
+| Text-to-Motion | a person hops in place twice. | <video src="https://github.com/user-attachments/assets/07dd2683-a8a3-4f35-af77-c500c7f200cb" controls></video> | [MP4](https://github.com/user-attachments/assets/07dd2683-a8a3-4f35-af77-c500c7f200cb) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motionclr) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -46,9 +46,9 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Input | SMPL Preview |
 | ------------------- | ------------ |
-| a person is waving with their right hand. | <video src="https://github.com/user-attachments/assets/052fb09b-e0ab-4bcb-8e40-c68bfc382ea1" controls></video> |
-| a person hops in place twice. | <video src="https://github.com/user-attachments/assets/4e09cb36-da6e-4150-8da5-b1d6452e7953" controls></video> |
-| person walking at a average pace forward, swaying arms and torso with a sense of swagger | <video src="https://github.com/user-attachments/assets/0ff64b61-d760-41fe-bb15-6b51213f7eed" controls></video> |
+| a person is waving with their right hand. | <video src="https://github.com/user-attachments/assets/88214bdd-7226-4f92-8dee-b3e3e9a56f50" controls></video> |
+| a person hops in place twice. | <video src="https://github.com/user-attachments/assets/07dd2683-a8a3-4f35-af77-c500c7f200cb" controls></video> |
+| person walking at a average pace forward, swaying arms and torso with a sense of swagger | <video src="https://github.com/user-attachments/assets/6c3cd5f4-c340-45e1-9f68-9b7eb0084c6a" controls></video> |
 
 512px / 30fps H.264 video previews rendered from the released HumanML3D test outputs.
 The previews use cases whose HumanML3D-to-SMPL fitting MPJPE is below 25 mm;

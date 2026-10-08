@@ -79,7 +79,7 @@ def test_prompthmr_is_explicitly_restricted_and_not_task_indexed() -> None:
     rows = {row.method: row for row in _read_model_rows()}
     row = rows["PromptHMR-Video"]
     task_index = (ROOT / "docs/model_zoo/README.md").read_text().split(
-        "## Task Index", 1
+        "## Task index", 1
     )[1].split("## Method Catalog", 1)[0]
 
     assert row.task_cell == RESTRICTED_TASK_CELL
@@ -115,15 +115,15 @@ def test_task_registry_is_flat_and_unclassified() -> None:
 
 def test_every_task_has_linked_readme_and_registry_resources() -> None:
     root_readme = (ROOT / "README.md").read_text()
-    task_system = root_readme.split("## Task System", 1)[1].split(
+    task_system = root_readme.split("## Task system", 1)[1].split(
         "\n## ", 1
     )[0]
     task_registry = (ROOT / "docs/tasks/README.md").read_text()
-    task_matrix = task_registry.split("## Task Matrix", 1)[1].split(
+    task_matrix = task_registry.split("## Task matrix", 1)[1].split(
         "\n## ", 1
     )[0]
     model_zoo = (ROOT / "docs/model_zoo/README.md").read_text()
-    task_index = model_zoo.split("## Task Index", 1)[1].split(
+    task_index = model_zoo.split("## Task index", 1)[1].split(
         "## Method Catalog", 1
     )[0]
 
@@ -168,14 +168,14 @@ def test_documentation_uses_one_information_architecture() -> None:
     model_zoo = (ROOT / "docs/model_zoo/README.md").read_text()
     benchmark_hub = (ROOT / "docs/leaderboards/README.md").read_text()
 
-    assert "## Task System" in readme
-    assert "## Models And Benchmarks" in readme
-    assert "## Motion Interoperability" in readme
+    assert "## Task system" in readme
+    assert "## Models and benchmarks" in readme
+    assert "## Motion interoperability" in readme
     assert "## Canonical Tasks" not in readme
     assert "## Model Zoo" not in readme
     assert "## Leaderboards" not in readme
 
-    assert "## Task Index" in model_zoo
+    assert "## Task index" in model_zoo
     assert "## Method Catalog" in model_zoo
     assert "## Text And Motion" not in model_zoo
     assert "## Temporal, Editing, And Control" not in model_zoo
@@ -183,7 +183,7 @@ def test_documentation_uses_one_information_architecture() -> None:
     benchmark_labels = {
         benchmark["label"] for benchmark in TASK_REGISTRY["benchmarks"]
     }
-    assert len(benchmark_labels) == 15
+    assert len(benchmark_labels) == len(TASK_REGISTRY["benchmarks"])
     grouped_labels = {
         benchmark["label"]
         for benchmark in TASK_REGISTRY["benchmarks"]
@@ -192,8 +192,8 @@ def test_documentation_uses_one_information_architecture() -> None:
     for label in benchmark_labels - grouped_labels:
         assert f"**{label}**" in benchmark_hub
     assert benchmark_hub.count("**Text-to-Motion**") == 1
-    assert "SMPL: 26 rows" in benchmark_hub
-    assert "G1: 2 rows" in benchmark_hub
+    assert "SMPL: 27 methods + GT" in benchmark_hub
+    assert "G1: 2 methods + GT" in benchmark_hub
     assert "### T2M HumanML3D" not in benchmark_hub
     assert "### M2T HumanML3D" not in benchmark_hub
     assert "### BABEL Sequential Generation" not in benchmark_hub
@@ -201,7 +201,7 @@ def test_documentation_uses_one_information_architecture() -> None:
 
 def test_model_zoo_task_index_covers_every_release_capability() -> None:
     model_zoo = (ROOT / "docs/model_zoo/README.md").read_text()
-    task_index = model_zoo.split("## Task Index", 1)[1].split(
+    task_index = model_zoo.split("## Task index", 1)[1].split(
         "## Method Catalog", 1
     )[0]
 
@@ -231,9 +231,9 @@ def test_documentation_uses_scan_friendly_tables_and_navigation() -> None:
 
     assert "| Layer | Owns | Source of truth |" in readme
     assert "| Goal | Guide |" in readme
-    assert "🧭 Tasks" in readme
-    assert "📦 Models" in readme
-    assert "📊 Benchmarks" in readme
+    assert 'href="docs/tasks/README.md">Tasks</a>' in readme
+    assert 'href="docs/model_zoo/README.md">Models</a>' in readme
+    assert 'href="docs/leaderboards/README.md">Benchmarks</a>' in readme
 
     assert (
         "| Task | Condition → output | Principal scope / tracks | "
@@ -365,14 +365,17 @@ def test_g1_setting_has_the_shared_t2m_page_contract() -> None:
     assert '<nav class="nav"' not in page
 
 
-def test_root_readme_uses_only_representation_conversion_visuals() -> None:
+def test_root_readme_separates_model_demos_from_representation_conversion() -> None:
     readme = (ROOT / "README.md").read_text()
-    assert "<table>" not in readme
-    assert "assets/model_zoo/" not in readme
+    section = readme.split("## Motion interoperability", 1)[1].split("\n## ", 1)[0]
+    assert "assets/model_zoo/" not in section
+    assert "<summary>More model demos" in readme
     assert "### Two-Person Representation Demo" not in readme
     assert "(T, A, D)" in readme
     assert "004822_hml_smpl_soma_core_g1_1920_30fps.gif" in readme
-    assert "interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif" in readme
+    assert "historical InterX pointing preview" in section
+    assert "not a validated contact demo" in section
+    assert "docs/motion/pair_demo_audit.md" in section
     assert "004822_skeleton_smpl_mixamo_1440_readme_30fps.gif" in readme
     assert "004822_skeleton_smpl_mixamo_1440_30fps.gif" in readme
 

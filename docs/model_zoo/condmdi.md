@@ -36,9 +36,9 @@ control.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/40124d7f-8d77-48ff-8fc3-072c56eb0eb5" controls></video> | [MP4](https://github.com/user-attachments/assets/40124d7f-8d77-48ff-8fc3-072c56eb0eb5) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=condmdi) |
-| Temporal Motion Completion | person walking at a average pace forward, swaying arms and torso with a sense of swagger<br><sub>Prediction: first 20%; condition frames 0-59 of 300</sub> | <video src="https://github.com/user-attachments/assets/5b89ea1a-77ae-4d83-8be4-4c08b3726137" controls></video> | [MP4](https://github.com/user-attachments/assets/5b89ea1a-77ae-4d83-8be4-4c08b3726137) · [All cases](https://zeyuling-temporal-condition-leaderboard.static.hf.space/cases/pre20/index.html?method=condmdi&case=004822) |
-| Kinematic Motion Control | Text plus spatial motion constraints | <video src="https://github.com/user-attachments/assets/6ca7d278-9f4d-4c14-a50f-9b148e683bfe" controls></video> | [MP4](https://github.com/user-attachments/assets/6ca7d278-9f4d-4c14-a50f-9b148e683bfe) |
+| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/2d9d0ce9-b0d1-4edc-8f7a-bf727febceda" controls></video> | [MP4](https://github.com/user-attachments/assets/2d9d0ce9-b0d1-4edc-8f7a-bf727febceda) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=condmdi) |
+| Temporal Motion Completion | person walking at a average pace forward, swaying arms and torso with a sense of swagger<br><sub>Prediction: first 20%; condition frames 0-59 of 300</sub> | <video src="https://github.com/user-attachments/assets/894b491d-d3b0-4699-8b6f-e4264585f496" controls></video> | [MP4](https://github.com/user-attachments/assets/894b491d-d3b0-4699-8b6f-e4264585f496) · [All cases](https://zeyuling-temporal-condition-leaderboard.static.hf.space/cases/pre20/index.html?method=condmdi&case=004822) |
+| Kinematic Motion Control | Text plus spatial motion constraints | <video src="https://github.com/user-attachments/assets/49f6edaf-5c83-44be-bde7-a76912035bf5" controls></video> | [MP4](https://github.com/user-attachments/assets/49f6edaf-5c83-44be-bde7-a76912035bf5) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -47,9 +47,9 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Input | SMPL Preview |
 | ---------- | ------------ |
-| the person swings a golf club. | <video src="https://github.com/user-attachments/assets/cfd76ccc-cc41-477f-ae7c-4a46dacd6698" controls></video> |
-| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/40124d7f-8d77-48ff-8fc3-072c56eb0eb5" controls></video> |
-| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/c70c7c82-d6a7-49cd-8186-8adfdce63cf9" controls></video> |
+| the person swings a golf club. | <video src="https://github.com/user-attachments/assets/779c5fde-b74f-40a4-8af3-452d536fb9a0" controls></video> |
+| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/2d9d0ce9-b0d1-4edc-8f7a-bf727febceda" controls></video> |
+| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/13eda08b-56a7-48a2-b8cc-7009501ed66c" controls></video> |
 
 512px / 30fps H.264 video previews rendered from released HumanML3D test outputs.
 

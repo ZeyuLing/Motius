@@ -36,11 +36,11 @@ checkout.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | person walking at a average pace forward, swaying arms and torso with a sense of swagger | <video src="https://github.com/user-attachments/assets/743d0fb5-6494-4c3c-97e7-76ba72d8d0d0" controls></video> | [MP4](https://github.com/user-attachments/assets/743d0fb5-6494-4c3c-97e7-76ba72d8d0d0) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motioncanvas&case=004822) |
-| Temporal Motion Completion | Complete a natural walk through the observed footsteps.<br><sub>Sparse foot positions and facing keyframes</sub> | <video src="https://github.com/user-attachments/assets/e36fd6d4-e84a-4c72-a20e-b9a68d3c4c1f" controls></video> | [MP4](https://github.com/user-attachments/assets/e36fd6d4-e84a-4c72-a20e-b9a68d3c4c1f) |
-| Kinematic Motion Control | Follow the prescribed root path with natural locomotion.<br><sub>Continuous trajectory plus pelvis-height control</sub> | <video src="https://github.com/user-attachments/assets/cee52e8f-0b1f-4a72-927c-d35b76f0f5fb" controls></video> | [MP4](https://github.com/user-attachments/assets/cee52e8f-0b1f-4a72-927c-d35b76f0f5fb) |
-| Motion Editing | Wave with the right hand.<br><sub>Preserve the lower-body motion</sub> | <video src="https://github.com/user-attachments/assets/5cee1790-ee46-4dea-ac91-3e532a58720c" controls></video> | [MP4](https://github.com/user-attachments/assets/5cee1790-ee46-4dea-ac91-3e532a58720c) |
-| Motion Repair | Repair drifting, foot sliding, over-smoothing, and jitter while preserving the valid motion. | <video src="https://github.com/user-attachments/assets/67fa7324-7e1a-428c-949e-2757659e1293" controls></video> | [MP4](https://github.com/user-attachments/assets/67fa7324-7e1a-428c-949e-2757659e1293) · [All cases](https://zeyuling-motion-repair-brokenamass-leaderboard.static.hf.space/cases/index.html?method=motioncanvas&case=repair_000) |
+| Text-to-Motion | person walking at a average pace forward, swaying arms and torso with a sense of swagger | <video src="https://github.com/user-attachments/assets/3d1e6450-e1a2-45d9-9c39-47a5b4221343" controls></video> | [MP4](https://github.com/user-attachments/assets/3d1e6450-e1a2-45d9-9c39-47a5b4221343) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motioncanvas&case=004822) |
+| Temporal Motion Completion | Complete a natural walk through the observed footsteps.<br><sub>Sparse foot positions and facing keyframes</sub> | <video src="https://github.com/user-attachments/assets/35227ee9-6676-4c96-a51d-380511276b6d" controls></video> | [MP4](https://github.com/user-attachments/assets/35227ee9-6676-4c96-a51d-380511276b6d) |
+| Kinematic Motion Control | Follow the prescribed root path with natural locomotion.<br><sub>Continuous trajectory plus pelvis-height control</sub> | <video src="https://github.com/user-attachments/assets/91198a75-7c44-4a26-a7ad-c3b16e2fa03a" controls></video> | [MP4](https://github.com/user-attachments/assets/91198a75-7c44-4a26-a7ad-c3b16e2fa03a) |
+| Motion Editing | Wave with the right hand.<br><sub>Preserve the lower-body motion</sub> | <video src="https://github.com/user-attachments/assets/85de17df-afa7-4405-a40e-9ddaf78af565" controls></video> | [MP4](https://github.com/user-attachments/assets/85de17df-afa7-4405-a40e-9ddaf78af565) |
+| Motion Repair | Repair drifting, foot sliding, over-smoothing, and jitter while preserving the valid motion. | <video src="https://github.com/user-attachments/assets/96569490-1207-48fe-afff-39e40cad58db" controls></video> | [MP4](https://github.com/user-attachments/assets/96569490-1207-48fe-afff-39e40cad58db) · [All cases](https://zeyuling-motion-repair-brokenamass-leaderboard.static.hf.space/cases/index.html?method=motioncanvas&case=repair_000) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -50,7 +50,7 @@ The additional jump-apex edit below exposes source, goal, and generated
 trajectory together. All previews are actual Three.js renders with a shared
 floor scene at 512 px and 30 fps; the artifact includes the 1080p MP4 sources.
 
-<video src="https://github.com/user-attachments/assets/58f24f63-2b4f-4c83-8883-ec0821f1fd88" controls></video>
+<video src="https://github.com/user-attachments/assets/23aa1fdd-68c6-4fa5-b622-e54f497f0edd" controls></video>
 
 ## Model Overview
 

@@ -658,7 +658,7 @@ def _install_render_route(page, unify_scene: bool) -> None:
             body = body.replace(source, target)
         route.fulfill(response=response, body=body)
 
-    page.route("**/cases/index.html*", handle)
+    page.route("**/index.html*", handle)
 
 
 def capture(args: argparse.Namespace) -> None:
@@ -667,10 +667,11 @@ def capture(args: argparse.Namespace) -> None:
         base = args.url
     else:
         viewer = args.viewer.expanduser().resolve()
-        server = _serve(viewer.parent)
+        serve_root = ROOT if viewer.is_relative_to(ROOT) else viewer.parent
+        server = _serve(serve_root)
         base = (
             f"http://127.0.0.1:{server.server_address[1]}/"
-            f"{viewer.name}"
+            f"{viewer.relative_to(serve_root).as_posix()}"
         )
     query = {"method": args.method}
     if args.case:
@@ -698,6 +699,8 @@ def capture(args: argparse.Namespace) -> None:
                     },
                     device_scale_factor=1,
                 )
+                if args.sync_canvas_buffer:
+                    page.add_init_script("globalThis.__MOTIUS_FRAME_CAPTURE__ = true")
                 _install_render_route(
                     page,
                     unify_scene=args.layout == "stage",
@@ -812,6 +815,7 @@ def capture(args: argparse.Namespace) -> None:
                         """,
                         args.label,
                     )
+                page.evaluate("window.dispatchEvent(new Event('resize'))")
                 target.scroll_into_view_if_needed()
                 if args.show_input_condition:
                     _install_input_overlay(page, target)
@@ -839,26 +843,27 @@ def capture(args: argparse.Namespace) -> None:
                         f"Viewer exposes only {len(source_frames)} frame(s)"
                     )
                 for source_frame in source_frames:
-                    timeline.evaluate(
-                        """
-                        (element, frame) => {
-                          element.value = String(frame);
-                          element.dispatchEvent(
-                            new Event('input', {bubbles: true})
-                          );
-                        }
-                        """,
-                        source_frame,
-                    )
-                    if args.show_input_condition:
-                        page.evaluate(
+                    if not args.sync_canvas_buffer:
+                        timeline.evaluate(
                             """
-                            frame => globalThis
-                              .__MOTIUS_CAPTURE_OVERLAY__
-                              ?.update(frame)
+                            (element, frame) => {
+                              element.value = String(frame);
+                              element.dispatchEvent(
+                                new Event('input', {bubbles: true})
+                              );
+                            }
                             """,
                             source_frame,
                         )
+                        if args.show_input_condition:
+                            page.evaluate(
+                                """
+                                frame => globalThis
+                                  .__MOTIUS_CAPTURE_OVERLAY__
+                                  ?.update(frame)
+                                """,
+                                source_frame,
+                            )
                     data_url = None
                     if args.sync_canvas_buffer:
                         data_url = target.evaluate(
@@ -900,13 +905,14 @@ def capture(args: argparse.Namespace) -> None:
                         )
                     )
                 browser.close()
+        if output.suffix.lower() == ".mp4":
+            _write_mp4(output, images, args.fps, audio)
     finally:
         if server is not None:
             server.shutdown()
             server.server_close()
 
     if output.suffix.lower() == ".mp4":
-        _write_mp4(output, images, args.fps, audio)
         render_metadata = {
             "schema_version": 1,
             "render_backend": "threejs",

@@ -54,10 +54,10 @@ checkout or download a second text, audio, motion, or caption model.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | Native task input | <video src="https://github.com/user-attachments/assets/fda4c999-d3e9-402d-b27c-c1fa8371fc77" controls></video> | [MP4](https://github.com/user-attachments/assets/fda4c999-d3e9-402d-b27c-c1fa8371fc77) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=unimumo) |
-| Motion-to-Text | SMPL motion input | <video src="https://github.com/user-attachments/assets/0699f1cd-361e-4fe4-b74f-beb92b38b333" controls></video> | [MP4](https://github.com/user-attachments/assets/0699f1cd-361e-4fe4-b74f-beb92b38b333) · [All cases](https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html?method=unimumo) |
-| Music-to-Dance | Break music | <video src="https://github.com/user-attachments/assets/453a18ae-10d7-476a-9f43-2bdddda38218" controls></video> | [MP4](https://github.com/user-attachments/assets/453a18ae-10d7-476a-9f43-2bdddda38218) · [All cases](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html?method=unimumo) |
-| Dance-to-Music | AIST++ dance motion | <video src="https://github.com/user-attachments/assets/76fa2e28-b63b-4dee-b473-967d89da463a" controls></video> | [MP4](https://github.com/user-attachments/assets/76fa2e28-b63b-4dee-b473-967d89da463a) · [All cases](https://zeyuling-dance-to-music-aistpp-leaderboard.static.hf.space/cases/index.html) |
+| Text-to-Motion | Native task input | <video src="https://github.com/user-attachments/assets/91e4a51f-3a2b-4b32-b8e1-94f44f6161a8" controls></video> | [MP4](https://github.com/user-attachments/assets/91e4a51f-3a2b-4b32-b8e1-94f44f6161a8) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=unimumo) |
+| Motion-to-Text | SMPL motion input | <video src="https://github.com/user-attachments/assets/8e89ec1c-3360-4ace-8832-cb6e4cdfc84d" controls></video> | [MP4](https://github.com/user-attachments/assets/8e89ec1c-3360-4ace-8832-cb6e4cdfc84d) · [All cases](https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html?method=unimumo) |
+| Music-to-Dance | Break music | <video src="https://github.com/user-attachments/assets/04c1e2ca-bdfd-4239-bbc2-a975492f9ef7" controls></video> | [MP4](https://github.com/user-attachments/assets/04c1e2ca-bdfd-4239-bbc2-a975492f9ef7) · [All cases](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html?method=unimumo) |
+| Dance-to-Music | AIST++ dance motion | <video src="https://github.com/user-attachments/assets/62dc3ba1-d577-4da8-b36d-d2e29110b8c1" controls></video> | [MP4](https://github.com/user-attachments/assets/62dc3ba1-d577-4da8-b36d-d2e29110b8c1) · [All cases](https://zeyuling-dance-to-music-aistpp-leaderboard.static.hf.space/cases/index.html) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -65,7 +65,7 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Text-to-Motion · HumanML3D | Music-to-Dance · AIST++ |
 | --- | --- |
-| <video src="https://github.com/user-attachments/assets/fda4c999-d3e9-402d-b27c-c1fa8371fc77" controls></video> | <video src="https://github.com/user-attachments/assets/453a18ae-10d7-476a-9f43-2bdddda38218" controls></video> |
+| <video src="https://github.com/user-attachments/assets/91e4a51f-3a2b-4b32-b8e1-94f44f6161a8" controls></video> | <video src="https://github.com/user-attachments/assets/04c1e2ca-bdfd-4239-bbc2-a975492f9ef7" controls></video> |
 | swaggering walk | Break |
 
 - [HumanML3D all-case text-to-motion comparison](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=unimumo)

@@ -37,9 +37,9 @@ official MIT inference runtime and uses the released HumanML3D checkpoint.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | Native task input | <video src="https://github.com/user-attachments/assets/41dc67e4-aca8-4d33-9fb5-0203690e4c14" controls></video> | [MP4](https://github.com/user-attachments/assets/41dc67e4-aca8-4d33-9fb5-0203690e4c14) |
-| Temporal Motion Completion | person walking at a average pace forward, swaying arms and torso with a sense of swagger<br><sub>Adaptive sparse keyframes; 12 observed frames over a 300-frame clip</sub> | <video src="https://github.com/user-attachments/assets/4e6e1699-1a23-41d6-8d25-dfca67851af3" controls></video> | [MP4](https://github.com/user-attachments/assets/4e6e1699-1a23-41d6-8d25-dfca67851af3) · [All cases](https://zeyuling-temporal-condition-leaderboard.static.hf.space/cases/adaptive_keyframes/index.html?method=omnicontrol&case=004822) |
-| Kinematic Motion Control | Text plus spatial motion constraints | <video src="https://github.com/user-attachments/assets/288899b9-e744-4c91-9192-d74cffe56c8d" controls></video> | [MP4](https://github.com/user-attachments/assets/288899b9-e744-4c91-9192-d74cffe56c8d) |
+| Text-to-Motion | Native task input | <video src="https://github.com/user-attachments/assets/05b45456-fed8-4449-9b11-b38376f6e927" controls></video> | [MP4](https://github.com/user-attachments/assets/05b45456-fed8-4449-9b11-b38376f6e927) |
+| Temporal Motion Completion | person walking at a average pace forward, swaying arms and torso with a sense of swagger<br><sub>Adaptive sparse keyframes; 12 observed frames over a 300-frame clip</sub> | <video src="https://github.com/user-attachments/assets/a8137a69-d9ef-424a-8812-89630125921b" controls></video> | [MP4](https://github.com/user-attachments/assets/a8137a69-d9ef-424a-8812-89630125921b) · [All cases](https://zeyuling-temporal-condition-leaderboard.static.hf.space/cases/adaptive_keyframes/index.html?method=omnicontrol&case=004822) |
+| Kinematic Motion Control | Text plus spatial motion constraints | <video src="https://github.com/user-attachments/assets/99db2104-c52d-470d-994a-fe02cf4b55b5" controls></video> | [MP4](https://github.com/user-attachments/assets/99db2104-c52d-470d-994a-fe02cf4b55b5) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 

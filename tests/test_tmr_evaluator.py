@@ -216,15 +216,16 @@ def test_representation_demo_contains_synchronized_routes() -> None:
     assert "HumanML3D test" not in viewer
 
 
-def test_multi_actor_conversion_uses_gt_shared_frame_preview() -> None:
+def test_multi_actor_conversion_labels_legacy_preview_and_preserves_asset_contract() -> None:
     readme = (ROOT / "README.md").read_text()
-    section = readme.split("## Motion Interoperability", 1)[1].split("\n## ", 1)[0]
+    section = readme.split("## Motion interoperability", 1)[1].split("\n## ", 1)[0]
     assert "### Two-Person Representation Demo" not in readme
     assert "(T, A, D)" in section
     assert "one shared world frame" in " ".join(section.split())
-    assert "interx_smplh_gt_G021T002A012R014_skeleton_smpl_mesh.gif" in section
+    assert "historical InterX pointing preview" in section
+    assert "not a validated contact demo" in section
+    assert "docs/motion/pair_demo_audit.md" in section
     assert "assets/motion/interhuman_representation_demo/index.html" in section
-    assert "Three.js viewer" in section
     assert "assets/model_zoo/intergen" not in section
     assert "assets/model_zoo/intermask" not in section
     representation_doc = (ROOT / "docs/motion/representations.md").read_text()
@@ -234,8 +235,8 @@ def test_multi_actor_conversion_uses_gt_shared_frame_preview() -> None:
     )[0]
     assert "### Shared-Frame Multi-Actor Conversion" in interhuman_section
     assert "Actor count is a layout property" in interhuman_section
-    assert "model-generation demo" in interhuman_section
-    assert "smpl_pair_vertices.u16" in interhuman_section
+    assert "unvalidated legacy render" in interhuman_section
+    assert "pair_demo_audit.md" in interhuman_section
 
     metadata = json.loads(
         (

@@ -153,13 +153,24 @@ def _sidecar_jobs() -> list[RenderJob]:
         case_id = query.get("case", [None])[0]
         if not method or not case_id:
             raise ValueError(f"Incomplete viewer URL in {sidecar}")
+        viewer = _local_viewer(viewer_url.split("?", 1)[0])
+        label = str(payload["method"])
+        if isinstance(viewer, Path):
+            manifest_path = viewer.parent / "manifest.json"
+            if manifest_path.is_file():
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                label = next(
+                    (
+                        entry["label"]
+                        for entry in manifest.get("motion_methods", [])
+                        if entry["key"] == method
+                    ),
+                    label,
+                )
         jobs.append(
             RenderJob(
-                source=source,
-                method=method,
-                label=str(payload["method"]),
-                case_id=case_id,
-                viewer=_local_viewer(viewer_url.split("?", 1)[0]),
+                source=source, method=method, label=label,
+                case_id=case_id, viewer=viewer,
             )
         )
     return jobs
@@ -220,11 +231,24 @@ def _music_to_dance_jobs() -> list[RenderJob]:
             viewer=M2D_VIEWER,
             include_audio=True,
             representation="smpl-plus-native-skeleton",
-            layout="stage",
+            layout="tile",
         )
         for source, method, label, case_id in specs
         if source in attachments["videos"]
     ]
+
+
+def _dance_to_music_jobs() -> list[RenderJob]:
+    source = "assets/model_zoo/unimumo/unimumo_dance_to_music_input_smpl_512_30fps.gif"
+    if source not in json.loads(ATTACHMENTS.read_text(encoding="utf-8"))["videos"]:
+        return []
+    return [RenderJob(
+        source=source, method="unimumo", label="UniMuMo",
+        case_id="gPO_sBM_c01_d11_mPO1_ch02_seg1",
+        viewer=ROOT / "docs/leaderboards/hf_space_dance_to_music/cases/index.html",
+        include_audio=True, audio_track="unimumo", layout="stage",
+        representation="smpl", fps=30,
+    )]
 
 
 def _motioncanvas_jobs() -> list[RenderJob]:
@@ -258,7 +282,8 @@ def _motioncanvas_jobs() -> list[RenderJob]:
     ]
 
 
-def _native_jobs() -> list[RenderJob]:
+def _native_job_specs() -> list[RenderJob]:
+    """Declare native representations independently of generated viewer files."""
     specs = (
         ("assets/model_zoo/condmdi/condmdi_kinematic_motion_control_512_30fps.gif", "condmdi", "CondMDI", "condmdi_kinematic_motion_control", "condmdi/kinematic_motion_control", "humanml3d-263-native-skeleton", 30),
         ("assets/model_zoo/ardy/ardy_kinematic_motion_control_512_30fps.gif", "ardy", "ARDY", "ardy_kinematic_native", "ardy/kinematic_motion_control", "ardy-330-native-mesh", 20),
@@ -276,8 +301,8 @@ def _native_jobs() -> list[RenderJob]:
         ("assets/model_zoo/kimodo/kimodo_kinematic_motion_control_512_30fps.gif", "kimodo", "KIMODO", "kimodo_kinematic_motion_control", "kimodo/kinematic_motion_control", "soma-30-native-skeleton", 30),
         ("assets/model_zoo/kimodo/kimodo_sequential_text_to_motion_512_30fps.gif", "kimodo", "KIMODO", "kimodo_sequential_text_to_motion", "kimodo/sequential_text_to_motion", "soma-30-native-skeleton", 30),
         ("assets/model_zoo/kimodo/kimodo_temporal_motion_completion_512_30fps.gif", "kimodo", "KIMODO", "kimodo_temporal_motion_completion", "kimodo/temporal_motion_completion", "soma-30-native-skeleton", 30),
-        ("assets/model_zoo/maskcontrol/maskcontrol_kinematic_motion_control_512_30fps.gif", "maskcontrol", "MaskControl", "maskcontrol_body_control", "maskcontrol/body_control", "smpl-native-mesh", 30),
-        ("assets/model_zoo/maskcontrol/maskcontrol_part_level_motion_control_512_30fps.gif", "maskcontrol", "MaskControl", "maskcontrol_body_part", "maskcontrol/body_part", "smpl-native-mesh", 30),
+        ("assets/model_zoo/maskcontrol/maskcontrol_kinematic_motion_control_512_30fps.gif", "maskcontrol", "MaskControl", "maskcontrol_body_control", "maskcontrol/body_control", "humanml3d-263-native-skeleton", 30),
+        ("assets/model_zoo/maskcontrol/maskcontrol_part_level_motion_control_512_30fps.gif", "maskcontrol", "MaskControl", "maskcontrol_body_part", "maskcontrol/body_part", "humanml3d-263-native-skeleton", 30),
         ("assets/model_zoo/maskcontrol/maskcontrol_temporal_motion_completion_512_30fps.gif", "maskcontrol", "MaskControl", "maskcontrol_temporal_motion_completion", "maskcontrol/temporal_motion_completion", "humanml3d-263-native-skeleton", 30),
         ("assets/model_zoo/motionbricks/motionbricks_g1_random_rollout.gif", "motionbricks", "MotionBricks", "motionbricks_random_rollout", "motionbricks/random_rollout", "motionbricks-g1-414-native-mesh", 30),
         ("assets/model_zoo/motionstreamer/motionstreamer_temporal_motion_completion_512_30fps.gif", "motionstreamer", "MotionStreamer", "motionstreamer_temporal_motion_completion", "motionstreamer/temporal_motion_completion", "motionstreamer-272-native-skeleton", 30),
@@ -289,14 +314,11 @@ def _native_jobs() -> list[RenderJob]:
         ("assets/model_zoo/projflow/projflow_kinematic_motion_control_512_20fps.gif", "projflow", "ProjFlow", "projflow_kinematic_motion_control", "projflow/kinematic_motion_control", "humanml3d-smpl22-native-joints", 20),
         ("assets/model_zoo/projflow/projflow_part_level_motion_control_512_20fps.gif", "projflow", "ProjFlow", "projflow_part_level_motion_control", "projflow/part_level_motion_control", "humanml3d-smpl22-native-joints", 20),
     )
-    attachments = json.loads(ATTACHMENTS.read_text(encoding="utf-8"))
     jobs = []
     for source, method, label, case_id, viewer, representation, fps in specs:
         viewer_path = (
             ROOT / "outputs/model_card_native_viewers" / viewer / "index.html"
         )
-        if source not in attachments["videos"] or not viewer_path.is_file():
-            continue
         jobs.append(
             RenderJob(
                 source=source,
@@ -311,6 +333,14 @@ def _native_jobs() -> list[RenderJob]:
     return jobs
 
 
+def _native_jobs() -> list[RenderJob]:
+    attachments = json.loads(ATTACHMENTS.read_text(encoding="utf-8"))
+    return [
+        job for job in _native_job_specs()
+        if job.source in attachments["videos"] and job.viewer.is_file()
+    ]
+
+
 def _jobs() -> list[RenderJob]:
     by_source = {
         job.source: job
@@ -318,6 +348,7 @@ def _jobs() -> list[RenderJob]:
             *_t2m_jobs(),
             *_sidecar_jobs(),
             *_music_to_dance_jobs(),
+            *_dance_to_music_jobs(),
             *_motioncanvas_jobs(),
             *_native_jobs(),
         ]
@@ -401,11 +432,18 @@ def _render(
     metadata = output.with_suffix(".render.json")
     if output.is_file() and metadata.is_file() and not overwrite:
         try:
-            _audit_one(job.source, output_root)
+            _, cached_metadata = _audit_one(job.source, output_root)
         except Exception:
             pass
         else:
-            return job.source, "cached"
+            expected = {
+                "method": job.method,
+                "case_id": job.case_id,
+                "representation": job.representation,
+                "fps": job.fps,
+            }
+            if all(cached_metadata.get(key) == value for key, value in expected.items()):
+                return job.source, "cached"
     if output.is_file() and adopt_existing and not overwrite:
         frames, duration = imageio_ffmpeg.count_frames_and_secs(str(output))
         metadata.write_text(

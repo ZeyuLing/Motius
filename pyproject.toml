@@ -412,6 +412,7 @@ namespaces = false
     "configs/**/*.yaml",
 ]
 "motius.models.gem_smpl.vendor.gem.utils.body_model" = ["*.pt", "*.pth"]
+"motius.models.gem_smpl.vendor.gem.network.hmr2.configs" = ["*.yaml", "*.npz"]
 "motius.models.gem_x" = ["ATTRIBUTIONS.md"]
 "motius.models.gem_x.vendor" = [
     "GEM_X_LICENSE",

@@ -36,7 +36,7 @@ denormalization behind a consistent inference pipeline.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/cb678b01-8b12-456b-a0db-9bb28d999827" controls></video> | [MP4](https://github.com/user-attachments/assets/cb678b01-8b12-456b-a0db-9bb28d999827) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=mogents) |
+| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/3a1c9d8f-08fa-4220-952f-00aca483e1ef" controls></video> | [MP4](https://github.com/user-attachments/assets/3a1c9d8f-08fa-4220-952f-00aca483e1ef) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=mogents) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -45,9 +45,9 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Input | SMPL Preview |
 | ---------- | ------------ |
-| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/cb678b01-8b12-456b-a0db-9bb28d999827" controls></video> |
-| a person jumps with legs open while clapping with hands over head simultaneously. | <video src="https://github.com/user-attachments/assets/6951e102-c01d-43c7-9147-5fe0e8fcf1a4" controls></video> |
-| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/a0d96ab5-c5f3-4dfc-94f9-23f77c14a8b4" controls></video> |
+| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/3a1c9d8f-08fa-4220-952f-00aca483e1ef" controls></video> |
+| a person jumps with legs open while clapping with hands over head simultaneously. | <video src="https://github.com/user-attachments/assets/cb812d74-674b-4c39-87d5-75a64ad2c690" controls></video> |
+| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/3b514b79-e25b-4a40-876c-a59b9b79eff1" controls></video> |
 
 512px / 30fps H.264 video previews rendered from released HumanML3D test outputs.
 

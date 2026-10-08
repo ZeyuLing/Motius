@@ -40,9 +40,9 @@ stateful streaming APIs without a runtime dependency on a reference checkout.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | a person walks forward, turns right, and starts jogging | <video src="https://github.com/user-attachments/assets/b4b5c83f-d19a-4d7e-81f2-b29604198152" controls></video> | [MP4](https://github.com/user-attachments/assets/b4b5c83f-d19a-4d7e-81f2-b29604198152) |
-| Sequential Text-to-Motion | Continue twice: a person walks forward, turns right, and starts jogging<br><sub>Two stateful 40-frame autoregressive horizons</sub> | <video src="https://github.com/user-attachments/assets/b4903132-f291-4ea3-9660-3e680dbf6fdf" controls></video> | [MP4](https://github.com/user-attachments/assets/b4903132-f291-4ea3-9660-3e680dbf6fdf) |
-| Kinematic Motion Control | a person walks forward, turns right, and starts jogging<br><sub>Five root-position and heading constraints over 80 frames</sub> | <video src="https://github.com/user-attachments/assets/fbaf6520-6824-43c7-ad28-ee820882c459" controls></video> | [MP4](https://github.com/user-attachments/assets/fbaf6520-6824-43c7-ad28-ee820882c459) |
+| Text-to-Motion | a person walks forward, turns right, and starts jogging | <video src="https://github.com/user-attachments/assets/3154c40a-67ea-43f7-a163-0ca1fb385526" controls></video> | [MP4](https://github.com/user-attachments/assets/3154c40a-67ea-43f7-a163-0ca1fb385526) |
+| Sequential Text-to-Motion | Continue twice: a person walks forward, turns right, and starts jogging<br><sub>Two stateful 40-frame autoregressive horizons</sub> | <video src="https://github.com/user-attachments/assets/20655595-bf83-41d0-8814-4e6fd2c0c55f" controls></video> | [MP4](https://github.com/user-attachments/assets/20655595-bf83-41d0-8814-4e6fd2c0c55f) |
+| Kinematic Motion Control | a person walks forward, turns right, and starts jogging<br><sub>Five root-position and heading constraints over 80 frames</sub> | <video src="https://github.com/user-attachments/assets/e5764048-5b8b-4462-87db-43c2f484d21e" controls></video> | [MP4](https://github.com/user-attachments/assets/e5764048-5b8b-4462-87db-43c2f484d21e) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 

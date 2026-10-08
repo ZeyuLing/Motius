@@ -36,7 +36,7 @@ methods.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/d073e5ff-bcf5-4a2c-b3b2-e701f198ed79" controls></video> | [MP4](https://github.com/user-attachments/assets/d073e5ff-bcf5-4a2c-b3b2-e701f198ed79) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=mdm) |
+| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/89549616-5949-46a0-a057-9546af42b878" controls></video> | [MP4](https://github.com/user-attachments/assets/89549616-5949-46a0-a057-9546af42b878) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=mdm) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -45,9 +45,9 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Input | SMPL Preview |
 | ---------- | ------------ |
-| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/d073e5ff-bcf5-4a2c-b3b2-e701f198ed79" controls></video> |
-| the person swings a golf club. | <video src="https://github.com/user-attachments/assets/d6db6f62-37ad-447c-bf6c-47d6c78c255f" controls></video> |
-| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/3785cf60-15f8-4f9f-b88f-2803a50285ee" controls></video> |
+| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/89549616-5949-46a0-a057-9546af42b878" controls></video> |
+| the person swings a golf club. | <video src="https://github.com/user-attachments/assets/f21d5ae3-0b43-4d9b-87a7-c32c47c12b77" controls></video> |
+| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/c6cfb1dd-19aa-40cd-90c5-2ed5c281bdfd" controls></video> |
 
 512px / 30fps H.264 video previews rendered from released HumanML3D test outputs.
 

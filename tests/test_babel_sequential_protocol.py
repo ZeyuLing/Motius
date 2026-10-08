@@ -222,11 +222,11 @@ def test_public_sequential_leaderboard_uses_fixed_canvas_results_and_normalized_
 
     assert 'method:"MotionLab"' in page
     assert 'version:"Official checkpoint · context 5 · seed 42"' in page
-    assert 'version:"Epoch 26 · fixed 360 · CFG 5.0 · AR5 · seed 42"' in page
+    assert 'version:"Fixed 360 · CFG 5.0 · AR5 · seed 42"' in page
     assert "Normalized FID" in page
     assert "Normalized Transition FID" in page
     assert "epoch 8" not in page
     assert "checkpoint-epoch_8" not in protocol
     assert "--prediction MotionLab=" in protocol
     assert "--smpl-parameters MotionLab=" in protocol
-    assert "--smpl-parameters 'PRISM (epoch 26)=" in protocol
+    assert "--smpl-parameters 'PRISM=" in protocol

@@ -36,7 +36,7 @@ weights outside the repository.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| No registered public task | Native capability input | <video src="https://github.com/user-attachments/assets/a4306fa5-3b7a-4baa-bd81-3ad1028e351a" controls></video> | — |
+| No registered public task | Native capability input | <video src="https://github.com/user-attachments/assets/425a675c-416f-4643-b7ac-9e93a79470d6" controls></video> | — |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 

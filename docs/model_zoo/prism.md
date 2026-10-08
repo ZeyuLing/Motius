@@ -44,9 +44,9 @@ that keeps the root on the base schedule while refining distal joints later.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/d78929a3-f7b7-4d60-a4fa-4ed5540b530b" controls></video> | [MP4](https://github.com/user-attachments/assets/d78929a3-f7b7-4d60-a4fa-4ed5540b530b) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=prismkafs) |
-| Temporal Motion Completion | Swaggering walk with observed frames / keyframes | <video src="https://github.com/user-attachments/assets/5e55fa78-7171-4d91-a900-93aa8962048c" controls></video> | [MP4](https://github.com/user-attachments/assets/5e55fa78-7171-4d91-a900-93aa8962048c) · [All cases](https://zeyuling-babel-sequential-generation-leaderboard.static.hf.space/cases/index.html?method=prism) |
-| Sequential Text-to-Motion | A person walks forward. → A person sits down. → A person rests. → A person stands up. → A person walks back.<br><sub>Five captioned segments; the active caption and segment timeline are embedded in the video</sub> | <video src="https://github.com/user-attachments/assets/ceb83791-6797-4389-805a-ff9135459f97" controls></video> | [MP4](https://github.com/user-attachments/assets/ceb83791-6797-4389-805a-ff9135459f97) · [All cases](https://zeyuling-babel-sequential-generation-leaderboard.static.hf.space/cases/index.html?method=prism&case=val_919) |
+| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/2a28e5bd-900a-48b6-bc9e-03859d7fca85" controls></video> | [MP4](https://github.com/user-attachments/assets/2a28e5bd-900a-48b6-bc9e-03859d7fca85) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=prismkafs) |
+| Temporal Motion Completion | Swaggering walk with observed frames / keyframes | <video src="https://github.com/user-attachments/assets/b0abd039-c73a-4147-b606-38067c64dd19" controls></video> | [MP4](https://github.com/user-attachments/assets/b0abd039-c73a-4147-b606-38067c64dd19) · [All cases](https://zeyuling-babel-sequential-generation-leaderboard.static.hf.space/cases/index.html?method=prism) |
+| Sequential Text-to-Motion | A person walks forward. → A person sits down. → A person rests. → A person stands up. → A person walks back.<br><sub>Five captioned segments; the active caption and segment timeline are embedded in the video</sub> | <video src="https://github.com/user-attachments/assets/7b02a95f-3916-47b1-895d-d41b164e8d3e" controls></video> | [MP4](https://github.com/user-attachments/assets/7b02a95f-3916-47b1-895d-d41b164e8d3e) · [All cases](https://zeyuling-babel-sequential-generation-leaderboard.static.hf.space/cases/index.html?method=prism&case=val_919) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -57,15 +57,15 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Input | SMPL Preview |
 | ------------------- | ------------ |
-| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/158f9df4-6dbc-4b48-84e3-7ceb1e2694d9" controls></video> |
-| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/428fb002-7f68-487d-a779-52e7b3e7fcb3" controls></video> |
+| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/45c50174-8b62-42b5-bef7-2acc44ba1929" controls></video> |
+| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/4869d4fd-fbb5-4521-b8d1-00c0f15c940b" controls></video> |
 
 ### PRISM-KT
 
 | Input | SMPL Preview |
 | ------------------- | ------------ |
-| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/d78929a3-f7b7-4d60-a4fa-4ed5540b530b" controls></video> |
-| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/52742994-9bd8-4db1-a1c4-cab6ea954f86" controls></video> |
+| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/2a28e5bd-900a-48b6-bc9e-03859d7fca85" controls></video> |
+| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/bdfcf83e-d7ac-4676-9c99-53409662982b" controls></video> |
 
 All previews are 512px / 30fps SMPL mesh renders generated with the selected
 HumanML3D captions used by the benchmark.

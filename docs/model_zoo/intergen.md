@@ -34,7 +34,7 @@ SafeTensors pipeline without importing an upstream checkout.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Multi-Person Motion | Native task input | <video src="https://github.com/user-attachments/assets/09d7b6a5-b203-4be0-a0ca-3258a480165f" controls></video> | [MP4](https://github.com/user-attachments/assets/09d7b6a5-b203-4be0-a0ca-3258a480165f) |
+| Text-to-Multi-Person Motion | Native task input | <video src="https://github.com/user-attachments/assets/85402f20-9d37-4009-959e-c0f7f6744399" controls></video> | [MP4](https://github.com/user-attachments/assets/85402f20-9d37-4009-959e-c0f7f6744399) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -43,8 +43,8 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Input Text | Native InterHuman-262 Preview |
 | ---------- | ------------------- |
-| two people shake hands and then step apart | <video src="https://github.com/user-attachments/assets/09d7b6a5-b203-4be0-a0ca-3258a480165f" controls></video> |
-| one person helps another person stand up | <video src="https://github.com/user-attachments/assets/3be9194a-a9db-4d39-9668-76d485863dfc" controls></video> |
+| two people shake hands and then step apart | <video src="https://github.com/user-attachments/assets/85402f20-9d37-4009-959e-c0f7f6744399" controls></video> |
+| one person helps another person stand up | <video src="https://github.com/user-attachments/assets/aeddaf9d-9d63-4f58-8596-ec4716086a9a" controls></video> |
 
 The blue and coral figures are rendered directly from the paired
 InterHuman-262 joints. The public preview deliberately avoids an IK-derived

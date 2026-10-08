@@ -33,7 +33,7 @@ attention. This Motius release packages the official InterHuman model.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Multi-Person Motion | Native task input | <video src="https://github.com/user-attachments/assets/e939fb25-4b84-417d-b7e5-2339422f16bf" controls></video> | [MP4](https://github.com/user-attachments/assets/e939fb25-4b84-417d-b7e5-2339422f16bf) |
+| Text-to-Multi-Person Motion | Native task input | <video src="https://github.com/user-attachments/assets/f239d86e-8386-4def-aea6-f10989699513" controls></video> | [MP4](https://github.com/user-attachments/assets/f239d86e-8386-4def-aea6-f10989699513) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -42,8 +42,8 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Input Text | Native InterHuman-262 Preview |
 | ---------- | ------------------- |
-| two people hug each other and then step back | <video src="https://github.com/user-attachments/assets/f8087bb6-e25d-4eff-8bed-ccba0ecb441f" controls></video> |
-| one person gently pushes the other person backward | <video src="https://github.com/user-attachments/assets/e939fb25-4b84-417d-b7e5-2339422f16bf" controls></video> |
+| two people hug each other and then step back | <video src="https://github.com/user-attachments/assets/3b17de45-4a92-45ad-b45c-1ecd9697802f" controls></video> |
+| one person gently pushes the other person backward | <video src="https://github.com/user-attachments/assets/f239d86e-8386-4def-aea6-f10989699513" controls></video> |
 
 Both figures are rendered directly from the model's paired InterHuman-262
 joints. The public preview does not pass through an SMPL fitting stage.

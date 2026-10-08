@@ -249,7 +249,11 @@
     const timeline = document.querySelector("#timeline");
     const time = document.querySelector("#time");
     timeline.max = String(item.frames - 1);
-    timeline.addEventListener("input", () => setFrame(timeline.value));
+    timeline.addEventListener("input", () => {
+      setFrame(timeline.value);
+      controls.update();
+      renderer.render(scene, camera);
+    });
     function resize() {
       const width = host.clientWidth;
       const height = host.clientHeight;
@@ -263,7 +267,7 @@
     function animate() {
       controls.update();
       renderer.render(scene, camera);
-      requestAnimationFrame(animate);
+      if (!globalThis.__MOTIUS_FRAME_CAPTURE__) requestAnimationFrame(animate);
     }
     animate();
     await new Promise(resolve =>

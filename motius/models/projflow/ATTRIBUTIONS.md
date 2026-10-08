@@ -17,3 +17,14 @@ The implementation is packaged under `motius.models.projflow` and does not
 import or execute code from an external ProjFlow checkout at runtime. The
 upstream repository did not include a standalone license file at the reference
 revision; downstream users should review the upstream terms before reuse.
+
+## Joint normalization assets
+
+`assets/joints_mean.npy` and `assets/joints_std.npy` are byte-for-byte copies of
+`utils/22x3_mean_std/t2m/22x3_mean.npy` and `22x3_std.npy` at the reference
+revision above. They normalize the official HumanML3D joint coordinates.
+
+| File | SHA-256 |
+| --- | --- |
+| `joints_mean.npy` | `ebfe87efeb6828b33c69f9df88d7a0373b9af7ac546496a4c7701112a748f12f` |
+| `joints_std.npy` | `4733059903169bc95993999fde322d8e84fb95f3e6ff1b277c283a0eb877d0c5` |

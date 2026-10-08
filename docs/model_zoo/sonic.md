@@ -32,7 +32,7 @@ remote code execution is required.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Motion Tracking | Method-native reference motion and controller state | <video src="https://github.com/user-attachments/assets/19b1ef53-773f-4362-b53c-4da3068dcd97" controls></video> | [MP4](https://github.com/user-attachments/assets/19b1ef53-773f-4362-b53c-4da3068dcd97) · [All cases](https://zeyuling-motion-tracking-isaaclab-leaderboard.static.hf.space/cases/index.html?method=sonic) · [Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-tracking-isaaclab-leaderboard) |
+| Motion Tracking | Method-native reference motion and controller state | <video src="https://github.com/user-attachments/assets/9c14cab1-63b7-4f48-b85d-6728007d8707" controls></video> | [MP4](https://github.com/user-attachments/assets/9c14cab1-63b7-4f48-b85d-6728007d8707) · [All cases](https://zeyuling-motion-tracking-isaaclab-leaderboard.static.hf.space/cases/index.html?method=sonic) · [Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-tracking-isaaclab-leaderboard) |
 
 The policy-step API and physical rollout are evaluated under the registered MuJoCo or Isaac Lab protocol stated in the Model Card.
 

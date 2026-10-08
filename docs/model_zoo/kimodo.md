@@ -35,10 +35,10 @@ keyframes, end-effector controls, root paths, and prefix-conditioned TP2M.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/078ea591-3110-4ebe-88b1-fe102a1e7e0e" controls></video> | [MP4](https://github.com/user-attachments/assets/078ea591-3110-4ebe-88b1-fe102a1e7e0e) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=kimodo) |
-| Temporal Motion Completion | person walking at a average pace forward, swaying arms and torso with a sense of swagger<br><sub>Prediction: first 20%; condition frames 0-59 of 300</sub> | <video src="https://github.com/user-attachments/assets/ad327700-9523-4c1c-b0a8-75eb5c14bd19" controls></video> | [MP4](https://github.com/user-attachments/assets/ad327700-9523-4c1c-b0a8-75eb5c14bd19) · [All cases](https://zeyuling-temporal-condition-leaderboard.static.hf.space/cases/pre20/index.html?method=kimodo&case=004822) |
-| Sequential Text-to-Motion | “A person walks forward, then lifts.” → “A person walks back.” | <video src="https://github.com/user-attachments/assets/1ad2661c-58d0-4a39-8c8d-ceaa35c7fd7d" controls></video> | [MP4](https://github.com/user-attachments/assets/1ad2661c-58d0-4a39-8c8d-ceaa35c7fd7d) |
-| Kinematic Motion Control | Text plus spatial motion constraints | <video src="https://github.com/user-attachments/assets/60483c7c-344d-4dab-a812-dd354b86125e" controls></video> | [MP4](https://github.com/user-attachments/assets/60483c7c-344d-4dab-a812-dd354b86125e) |
+| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/b7a7a021-a946-4b29-9784-11723f9812e8" controls></video> | [MP4](https://github.com/user-attachments/assets/b7a7a021-a946-4b29-9784-11723f9812e8) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=kimodo) |
+| Temporal Motion Completion | person walking at a average pace forward, swaying arms and torso with a sense of swagger<br><sub>Prediction: first 20%; condition frames 0-59 of 300</sub> | <video src="https://github.com/user-attachments/assets/b97eb169-f432-4ff4-81f5-bb26cd5babf8" controls></video> | [MP4](https://github.com/user-attachments/assets/b97eb169-f432-4ff4-81f5-bb26cd5babf8) · [All cases](https://zeyuling-temporal-condition-leaderboard.static.hf.space/cases/pre20/index.html?method=kimodo&case=004822) |
+| Sequential Text-to-Motion | “A person walks forward, then lifts.” → “A person walks back.” | <video src="https://github.com/user-attachments/assets/d8a33a80-c362-436c-a5a3-c6993e54220a" controls></video> | [MP4](https://github.com/user-attachments/assets/d8a33a80-c362-436c-a5a3-c6993e54220a) |
+| Kinematic Motion Control | Text plus spatial motion constraints | <video src="https://github.com/user-attachments/assets/39efdc19-33ca-49d5-862b-09dff695d9d7" controls></video> | [MP4](https://github.com/user-attachments/assets/39efdc19-33ca-49d5-862b-09dff695d9d7) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -47,9 +47,9 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Input | SMPL Preview |
 | ---------- | ------------ |
-| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/078ea591-3110-4ebe-88b1-fe102a1e7e0e" controls></video> |
-| a person jumps with legs open while clapping with hands over head simultaneously. | <video src="https://github.com/user-attachments/assets/ec7d7aaa-b747-4946-ba7b-e388c3126f1a" controls></video> |
-| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/9a90d84d-c4fe-473c-90d2-54e48d21b323" controls></video> |
+| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/b7a7a021-a946-4b29-9784-11723f9812e8" controls></video> |
+| a person jumps with legs open while clapping with hands over head simultaneously. | <video src="https://github.com/user-attachments/assets/4aa00f87-9922-4685-ad96-6186b43fbf10" controls></video> |
+| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/f175dd2c-a931-43d4-b011-e5c2bae62a2d" controls></video> |
 
 512px / 30fps H.264 video previews rendered from released HumanML3D test outputs.
 

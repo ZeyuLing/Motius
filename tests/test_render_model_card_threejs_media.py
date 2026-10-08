@@ -7,6 +7,7 @@ from tools.render_model_card_threejs_media import (
     _jobs,
     _music_to_dance_jobs,
     _native_jobs,
+    _native_job_specs,
     _sidecar_jobs,
     _t2m_jobs,
 )
@@ -35,7 +36,7 @@ def test_music_to_dance_jobs_require_audio_and_native_overlay():
     jobs = _music_to_dance_jobs()
     assert len(jobs) == 6
     assert all(job.include_audio for job in jobs)
-    assert all(job.layout == "stage" for job in jobs)
+    assert all(job.layout == "tile" for job in jobs)
     assert all(
         job.representation == "smpl-plus-native-skeleton"
         for job in jobs
@@ -43,9 +44,8 @@ def test_music_to_dance_jobs_require_audio_and_native_overlay():
 
 
 def test_native_jobs_do_not_claim_an_unvalidated_smpl_bridge():
-    jobs = _native_jobs()
+    jobs = _native_job_specs()
     assert len(jobs) >= 15
-    assert all(job.viewer.is_file() for job in jobs)
     ardy = [job for job in jobs if job.method == "ardy"]
     assert ardy
     assert all(job.representation == "ardy-330-native-mesh" for job in ardy)
@@ -53,10 +53,9 @@ def test_native_jobs_do_not_claim_an_unvalidated_smpl_bridge():
 
 
 def test_temporal_previews_prefer_native_viewers():
-    jobs = {job.method: job for job in _native_jobs() if "temporal" in job.source}
+    jobs = {job.method: job for job in _native_job_specs() if "temporal" in job.source}
     for method in {"kimodo", "maskcontrol", "motionstreamer", "omnicontrol", "prism"}:
-        if method not in jobs:
-            continue
+        assert method in jobs
         assert "model_card_native_viewers" in str(jobs[method].viewer)
         assert "native" in jobs[method].representation
 
@@ -73,3 +72,40 @@ def test_kimodo_native_preview_rejects_unknown_topology():
         _kimodo_native_joints(
             {"posed_joints": np.zeros((2, 31, 3), dtype=np.float32)}
         )
+
+
+def test_native_jobs_only_schedule_published_sources_with_local_viewers(tmp_path, monkeypatch):
+    import json
+    from tools import render_model_card_threejs_media as media
+
+    monkeypatch.setattr(media, "ROOT", tmp_path)
+    specs = media._native_job_specs()
+    published, missing_viewer, unpublished = specs[:3]
+    for job in (published, unpublished):
+        job.viewer.parent.mkdir(parents=True, exist_ok=True)
+        job.viewer.write_text("<html></html>")
+    attachments = tmp_path / "attachments.json"
+    attachments.write_text(json.dumps({"videos": {
+        published.source: {}, missing_viewer.source: {},
+    }}))
+    monkeypatch.setattr(media, "ATTACHMENTS", attachments)
+    assert media._native_jobs() == [published]
+
+
+@pytest.mark.parametrize("representation, expected", [("smpl", "rendered"), ("native-joints", "cached")])
+def test_render_cache_requires_the_requested_representation(tmp_path, monkeypatch, representation, expected):
+    from tools import render_model_card_threejs_media as media
+
+    job = media.RenderJob(source="assets/model_zoo/demo/preview.gif", method="demo", label="Demo", case_id="case", representation="native-joints")
+    output = job.output(tmp_path)
+    output.parent.mkdir(parents=True)
+    output.write_bytes(b"cached video")
+    output.with_suffix(".render.json").write_text("{}")
+    monkeypatch.setattr(media, "_audit_one", lambda *args: (None, {
+        "method": "demo", "case_id": "case", "fps": 30,
+        "representation": representation,
+    }))
+    commands = []
+    monkeypatch.setattr(media.subprocess, "run", lambda command, **kwargs: commands.append(command))
+    assert media._render(job, tmp_path, False, False) == (job.source, expected)
+    assert bool(commands) == (expected == "rendered")

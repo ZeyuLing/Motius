@@ -46,7 +46,7 @@ checkout at runtime.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Music-to-Dance | Break music | <video src="https://github.com/user-attachments/assets/d03b6962-c83e-4238-9d91-5c558f22883d" controls></video> | [MP4](https://github.com/user-attachments/assets/d03b6962-c83e-4238-9d91-5c558f22883d) · [All cases](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html?method=edge) |
+| Music-to-Dance | Break music | <video src="https://github.com/user-attachments/assets/b7c8bb88-5181-4cee-b67d-6f8a2049297e" controls></video> | [MP4](https://github.com/user-attachments/assets/b7c8bb88-5181-4cee-b67d-6f8a2049297e) · [All cases](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html?method=edge) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -54,7 +54,7 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Music | SMPL and native-skeleton preview |
 | --- | --- |
-| Break | <video src="https://github.com/user-attachments/assets/d03b6962-c83e-4238-9d91-5c558f22883d" controls></video> |
+| Break | <video src="https://github.com/user-attachments/assets/b7c8bb88-5181-4cee-b67d-6f8a2049297e" controls></video> |
 
 [Open the unified audio-synchronized 40-case M2D comparison](https://zeyuling-music-to-dance-aistpp-leaderboard.static.hf.space/cases/index.html?method=edge).
 Every case shows GT, Bailando, and EDGE in one comparison page. The EDGE scene

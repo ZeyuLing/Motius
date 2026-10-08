@@ -34,7 +34,7 @@ repository checkout.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Motion-to-Text | SMPL motion input | <video src="https://github.com/user-attachments/assets/0699f1cd-361e-4fe4-b74f-beb92b38b333" controls></video> | [MP4](https://github.com/user-attachments/assets/0699f1cd-361e-4fe4-b74f-beb92b38b333) · [All cases](https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html?method=tm2t) |
+| Motion-to-Text | SMPL motion input | <video src="https://github.com/user-attachments/assets/8e89ec1c-3360-4ace-8832-cb6e4cdfc84d" controls></video> | [MP4](https://github.com/user-attachments/assets/8e89ec1c-3360-4ace-8832-cb6e4cdfc84d) · [All cases](https://zeyuling-m2t-humanml3d-leaderboard.static.hf.space/cases/index.html?method=tm2t) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 

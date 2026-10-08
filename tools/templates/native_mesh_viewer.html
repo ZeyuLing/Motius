@@ -106,10 +106,10 @@
     const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 80);
     const center = new THREE.Vector3(...meshMeta.center);
     const span = Math.max(2.8, meshMeta.horizontal_span);
-    camera.position.set(
-      center.x + span * .9,
-      Math.max(1.45, meshMeta.height * .72),
-      center.z + span * 1.35
+    const radius = Math.hypot(span, meshMeta.height, span) / 2;
+    const distance = 1.15 * radius / Math.sin(THREE.MathUtils.degToRad(camera.fov / 2));
+    camera.position.copy(center).add(
+      new THREE.Vector3(.9, .35, 1.35).normalize().multiplyScalar(distance)
     );
 
     const renderer = new THREE.WebGLRenderer({
@@ -240,6 +240,8 @@
     function setFrame(frame) {
       const value = Math.max(0, Math.min(item.frames - 1, Number(frame)));
       update(value);
+      controls.update();
+      renderer.render(scene, camera);
       time.textContent =
         `${(value / item.fps).toFixed(2)} / ` +
         `${(item.frames / item.fps).toFixed(2)} s`;
@@ -260,7 +262,7 @@
     function animate() {
       controls.update();
       renderer.render(scene, camera);
-      requestAnimationFrame(animate);
+      if (!globalThis.__MOTIUS_FRAME_CAPTURE__) requestAnimationFrame(animate);
     }
     animate();
     await new Promise(resolve =>

@@ -47,7 +47,7 @@ SHA-256 is
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Monocular Motion Capture | Monocular RGB video | <video src="https://github.com/user-attachments/assets/5759b5ca-d4fd-45de-acfd-ca3b58109dd1" controls></video> | [MP4](https://github.com/user-attachments/assets/5759b5ca-d4fd-45de-acfd-ca3b58109dd1) |
+| Monocular Motion Capture | Monocular RGB video | <video src="https://github.com/user-attachments/assets/d03339f3-c270-4b34-8302-189e86358256" controls></video> | [MP4](https://github.com/user-attachments/assets/d03339f3-c270-4b34-8302-189e86358256) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -57,7 +57,7 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 This 768px, 30 FPS preview renders the world-space SOMA-X mesh returned by the
 public Motius pipeline.
 
-<video src="https://github.com/user-attachments/assets/5759b5ca-d4fd-45de-acfd-ca3b58109dd1" controls></video>
+<video src="https://github.com/user-attachments/assets/d03339f3-c270-4b34-8302-189e86358256" controls></video>
 
 ## Model Overview
 

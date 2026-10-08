@@ -33,7 +33,7 @@ policy, so artifacts are exported from the user's own training run.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Motion Tracking | Method-native reference motion and controller state | <video src="https://github.com/user-attachments/assets/d6191b1a-e8f2-4626-b9ba-bb0b8f29d013" controls></video> | [MP4](https://github.com/user-attachments/assets/d6191b1a-e8f2-4626-b9ba-bb0b8f29d013) · [All cases](https://zeyuling-motion-tracking-isaaclab-leaderboard.static.hf.space/cases/index.html?method=beyondmimic) · [Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-tracking-isaaclab-leaderboard) |
+| Motion Tracking | Method-native reference motion and controller state | <video src="https://github.com/user-attachments/assets/24721206-03bc-482f-b63e-8c43b61171d8" controls></video> | [MP4](https://github.com/user-attachments/assets/24721206-03bc-482f-b63e-8c43b61171d8) · [All cases](https://zeyuling-motion-tracking-isaaclab-leaderboard.static.hf.space/cases/index.html?method=beyondmimic) · [Leaderboard](https://huggingface.co/spaces/ZeyuLing/motion-tracking-isaaclab-leaderboard) |
 
 The policy-step API and physical rollout are evaluated under the registered MuJoCo or Isaac Lab protocol stated in the Model Card.
 

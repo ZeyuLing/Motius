@@ -65,6 +65,7 @@ docs/leaderboards/hf_space_*/cases/**/audio/
 *.npy
 !motius/models/omnicontrol/assets/
 !motius/models/omnicontrol/assets/*.npy
+!motius/models/projflow/assets/*.npy
 *.pkl
 *.h5
 *.hdf5
@@ -118,3 +119,16 @@ motius/trainers/protomotions/vendor/**/*.py[cod]
 !motius/trainers/beyondmimic/vendor/**
 motius/trainers/beyondmimic/vendor/**/__pycache__/
 motius/trainers/beyondmimic/vendor/**/*.py[cod]
+
+# Pinned inference configuration and public regressors are source assets.
+!motius/models/gem_smpl/vendor/configs/data/
+!motius/models/gem_smpl/vendor/configs/data/**
+!motius/models/gem_x/vendor/configs/data/
+!motius/models/gem_x/vendor/configs/data/**
+!motius/models/gem_smpl/vendor/gem/utils/body_model/*.pt
+!motius/models/gem_smpl/vendor/gem/utils/body_model/*.pth
+!motius/models/gem_smpl/vendor/gem/network/hmr2/configs/smpl_mean_params.npz
+!motius/models/gvhmr/vendor/hmr4d/network/hmr2/configs/smpl_mean_params.npz
+!motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/
+!motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/**/
+!motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/**/*.py

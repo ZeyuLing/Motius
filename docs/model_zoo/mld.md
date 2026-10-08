@@ -34,7 +34,7 @@ denoiser, DDIM scheduler, and frozen SentenceT5 text wrapper.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/3ed06140-49fc-4826-9d78-25d178e752ee" controls></video> | [MP4](https://github.com/user-attachments/assets/3ed06140-49fc-4826-9d78-25d178e752ee) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=mld) |
+| Text-to-Motion | hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/830252da-fcaa-4d58-847a-936f792a15f3" controls></video> | [MP4](https://github.com/user-attachments/assets/830252da-fcaa-4d58-847a-936f792a15f3) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=mld) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -43,9 +43,9 @@ Every public `infer_*` API is represented by a GitHub-native H.264 video player.
 
 | Input | SMPL Preview |
 | ---------- | ------------ |
-| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/3ed06140-49fc-4826-9d78-25d178e752ee" controls></video> |
-| in a fighting stance, person punches downward with their right hand. | <video src="https://github.com/user-attachments/assets/d81f4fbf-72af-4017-adbb-771c6ea8e355" controls></video> |
-| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/385e885a-b125-4986-8a03-87c51685da40" controls></video> |
+| hands in fighting position while the left foot kicks aggressively up and over. | <video src="https://github.com/user-attachments/assets/830252da-fcaa-4d58-847a-936f792a15f3" controls></video> |
+| in a fighting stance, person punches downward with their right hand. | <video src="https://github.com/user-attachments/assets/b001d7eb-8fe6-46f4-b2c2-be9f1647d58b" controls></video> |
+| the person who does arms straight out and then it’s doing something with their right hand in front of their face. | <video src="https://github.com/user-attachments/assets/5caed5bc-cf54-4c39-84d9-913c7824c8fa" controls></video> |
 
 512px / 30fps H.264 video previews rendered from released HumanML3D test outputs.
 
