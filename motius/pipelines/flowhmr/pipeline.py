@@ -37,20 +37,22 @@ class FlowHMRPipeline(BasePipeline):
                            ground_align=True, postprocess=False):
         """SAM tokens (T,3072), OpenCV camera-from-world RT (T,4,4), 30 fps.
 
-        The OpenCV → Y-up change of basis matches the official video path.
+        Camera rotations are relative to the first frame, matching training.
         Output is native SMPL-H, with a separate first-frame floor-aligned view.
         Camera translation is a conditioning asset, not a calibrated transform
         into the generated motion's independently reconstructed world.
         """
         from motius.pipelines.flowhmr.camera import validate_extrinsics
-        from motius.models.flowhmr.vendor.flowhmr.utils.runtime_vggt_camera import _vggt_opencv_to_yup_rt
         feature = torch.as_tensor(feature, dtype=torch.float32)
         if feature.ndim != 2 or len(feature) == 0 or not torch.isfinite(feature).all():
             raise ValueError("feature must be a finite nonempty (T,D) tensor")
         rt = validate_extrinsics(camera_RT, len(feature))
-        yup = _vggt_opencv_to_yup_rt(rt)
+        # Match training's compute_camera_features and official build_feature_dict.
+        # A common world-axis change (including OpenCV -> Y-up) cancels here.
+        camera_r = rt[:, :3, :3]
+        camera_r = camera_r @ camera_r[0].transpose(-1, -2)
         output = self.bundle.generate_from_feature(feature[None],
-                   yup[:, :3, :3].reshape(1, len(feature), 9), seeds=seeds, cfg_scale=cfg_scale)
+                   camera_r.reshape(1, len(feature), 9), seeds=seeds, cfg_scale=cfg_scale)
         raw = {k: v.clone() for k, v in output.items() if torch.is_tensor(v)}
         if postprocess:
             from motius.models.flowhmr.vendor.flowhmr.utils.runtime_v2m_postprocess_simple import PostprocessPipeline
@@ -75,7 +77,7 @@ class FlowHMRPipeline(BasePipeline):
         joints = self.bundle.inference_model.body_model(params)["keypoints3d"].reshape(b, t, 52, 3)
         return {**{k: v.detach().cpu() for k, v in output.items() if torch.is_tensor(v)},
                 "raw_trans": raw["trans"].cpu(), "joints_world": joints.cpu(),
-                "camera_RT": rt.cpu(), "camera_R_condition": yup[:, :3, :3].cpu()}
+                "camera_RT": rt.cpu(), "camera_R_condition": camera_r.cpu()}
 
     @torch.no_grad()
     def infer_v2m(self, video_path, *, work_dir="outputs/inference/flowhmr",

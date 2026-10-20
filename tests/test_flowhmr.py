@@ -101,9 +101,42 @@ def test_camera_conversion_and_multi_seed(assets, config):
     pipe = FlowHMRPipeline(bundle)
     out = pipe.infer_from_feature(torch.randn(4,8), torch.eye(4), seeds=[0,1], ground_align=False)
     assert out["joints_world"].shape == (2,4,52,3)
-    torch.testing.assert_close(out["camera_R_condition"], torch.diag(torch.tensor([1.,-1.,-1.])).expand(4,3,3))
+    torch.testing.assert_close(out["camera_R_condition"], torch.eye(3).expand(4,3,3))
     with pytest.raises(ValueError, match="cfg_scale"):
         bundle.generate_from_feature(torch.zeros(1,4,8), torch.zeros(1,4,9), cfg_scale=0.5)
+
+
+def test_relative_camera_conditioning_is_world_axis_invariant(assets, config, monkeypatch):
+    from motius.pipelines.flowhmr import FlowHMRPipeline
+    bundle = FlowHMRBundle(config=config, **assets)
+    pipe = FlowHMRPipeline(bundle)
+    received = []
+    generate = bundle.generate_from_feature
+
+    def capture(feature, camera_r, **kwargs):
+        received.append(camera_r.clone())
+        return generate(feature, camera_r, **kwargs)
+
+    monkeypatch.setattr(bundle, "generate_from_feature", capture)
+    # Noncommuting rotations distinguish R_t @ R_0.T from reversed products.
+    rx = torch.tensor([[1.,0.,0.], [0.,0.,-1.], [0.,1.,0.]])
+    ry = torch.tensor([[0.,0.,1.], [0.,1.,0.], [-1.,0.,0.]])
+    rt = torch.eye(4).repeat(4, 1, 1)
+    rt[:, :3, :3] = torch.stack([ry, rx @ ry, ry @ rx @ ry, ry])
+    expected = torch.stack([torch.eye(3), rx, ry @ rx, torch.eye(3)])
+    feature = torch.randn(4, 8)
+    out = pipe.infer_from_feature(feature, rt, ground_align=False)
+    torch.testing.assert_close(received[0], expected.reshape(1, 4, 9))
+    torch.testing.assert_close(out["camera_R_condition"], expected)
+    torch.testing.assert_close(out["camera_RT"], rt)
+
+    world_change = torch.eye(4)
+    world_change[:3, :3] = rx @ ry
+    world_change[:3, 3] = torch.tensor([1., 2., 3.])
+    changed = pipe.infer_from_feature(feature, rt @ world_change, ground_align=False)
+    torch.testing.assert_close(received[1], received[0])
+    torch.testing.assert_close(changed["camera_R_condition"], expected)
+    torch.testing.assert_close(changed["joints_world"], out["joints_world"])
 
 
 def test_config_registration():

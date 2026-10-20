@@ -110,6 +110,10 @@ Provide the official AMASS neutral SMPL-H model (52 joints, 16 shape parameters)
 `infer_from_feature(tokens, camera_RT)` accepts precomputed `(T,3072)` tokens
 and OpenCV world-to-camera transforms at 30 fps. `infer_v2m` transcodes video,
 tracks a person with YOLOX, predicts VGGT cameras and extracts SAM features.
+Rotation conditioning uses `R_t @ R_0.T`, matching training and the corrected
+upstream inference path. The first frame is identity, and changing the world
+coordinate axes does not change conditioning. `camera_R_condition` returns
+these relative rotations; `camera_RT` retains the supplied extrinsics.
 `postprocess=True` enables upstream contact/IK cleanup for one seed.
 The CLI is `tools/infer_flowhmr.py`; local artifact export is
 `tools/export_flowhmr_hf.py`. No assets are downloaded implicitly during training.
