@@ -1,0 +1,42 @@
+{
+  "renderer": "motius-threejs-smooth-mesh",
+  "checkpoint_label": "FlowHMR Latest",
+  "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+  "source_revision": "f12e6a2d46a63d771a66dbb6b5598a1be65b9eea",
+  "frames": 750,
+  "fps": 30.0,
+  "width": 1600,
+  "height": 800,
+  "vertices": 6890,
+  "faces": 13776,
+  "view": "root-centered world; fixed camera; original Y retained",
+  "camera": {
+    "width": 500,
+    "height": 585,
+    "frames": 750,
+    "vertex_count": 6890,
+    "half_height": 1.1555242160887533,
+    "camera_target": [
+      0.01125761379322961,
+      0.8669598787713986,
+      0.1328583852640172
+    ],
+    "camera_position": [
+      1.4513036960051875,
+      1.7309875280985734,
+      -5.6273259435838145
+    ]
+  },
+  "source_sha256": "8f9e9c1193163940eafb512e9a0621a31fe316406e7a69aa3a357f6deceb17f1",
+  "video_sha256": "76b0c753a950b2b6fd43f9dab38f41371a9aa9eb1d5d33077cf589cc245a0960",
+  "inference": {
+    "camera_translation": "conditioning only; no metric world alignment",
+    "cfg_scale": 1.0,
+    "euler_steps": 20,
+    "seed": 0,
+    "shared_frontend_sha256": "c26b81670919b5b78b3661a022e3e7db294078cfbb464825fdd8246ea5b8419b",
+    "source_video_sha256": "8f9e9c1193163940eafb512e9a0621a31fe316406e7a69aa3a357f6deceb17f1",
+    "vggt_frame_interval": 100
+  },
+  "camera_reference_sha256": "29177e7879f9753cf84ce32714b5107f2e3125ea49db8292d3a9f5fdcfab7f1d"
+}

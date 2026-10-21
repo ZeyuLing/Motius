@@ -1,0 +1,80 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>
+html,body{margin:0;overflow:hidden;background:#f1f4f6}canvas{display:block}
+</style></head><body><script type="module">
+import * as THREE from './three.module.js';
+
+const spec = await fetch('./scene.json').then(r => r.json());
+const [vertexData, faceData] = await Promise.all([
+  fetch('./vertices.bin').then(r => r.arrayBuffer()),
+  fetch('./faces.bin').then(r => r.arrayBuffer()),
+]);
+const vertices = new Float32Array(vertexData);
+const faces = new Uint32Array(faceData);
+const renderer = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true});
+renderer.setSize(spec.width, spec.height);
+renderer.setPixelRatio(2);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.12;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf1f4f6);
+scene.fog = new THREE.Fog(0xf1f4f6, 10, 26);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8795a4, 2.1));
+const key = new THREE.DirectionalLight(0xfff8ee, 3.0);
+key.position.set(-3, 6, -4);
+key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+Object.assign(key.shadow.camera, {left:-3,right:3,top:4,bottom:-3,near:0.1,far:20});
+key.shadow.normalBias = 0.018;
+key.shadow.bias = -0.00015;
+key.shadow.radius = 3;
+key.target.position.set(0, 0.9, 0);
+scene.add(key, key.target);
+const fill = new THREE.DirectionalLight(0xdceeff, 1.2);
+fill.position.set(4, 3, 2);
+scene.add(fill);
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(30,30),
+  new THREE.MeshStandardMaterial({color:0xf4f7f9,roughness:1}));
+floor.rotation.x = -Math.PI / 2;
+floor.position.y = -0.015;
+floor.receiveShadow = true;
+scene.add(floor);
+const grid = new THREE.GridHelper(30,60,0xcbd4dd,0xdfe5eb);
+grid.position.y = -0.013;
+grid.material.transparent = true;
+grid.material.opacity = 0.5;
+scene.add(grid);
+
+const geometry = new THREE.BufferGeometry();
+geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(spec.vertex_count*3),3));
+geometry.setIndex(new THREE.BufferAttribute(faces,1));
+const body = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({
+  color:0x4c8eaf,roughness:0.62,metalness:0.04,flatShading:false,
+}));
+body.castShadow = true;
+body.receiveShadow = true;
+body.frustumCulled = false;
+scene.add(body);
+const aspect = spec.width/spec.height;
+const half = spec.half_height;
+const camera = new THREE.OrthographicCamera(-half*aspect,half*aspect,half,-half,0.01,50);
+camera.position.fromArray(spec.camera_position);
+camera.lookAt(new THREE.Vector3(...spec.camera_target));
+
+window.renderFrame = index => {
+  if (!Number.isInteger(index) || index<0 || index>=spec.frames) throw Error('Invalid frame');
+  const offset=index*spec.vertex_count*3;
+  geometry.attributes.position.array.set(vertices.subarray(offset,offset+spec.vertex_count*3));
+  geometry.attributes.position.needsUpdate=true;
+  geometry.computeVertexNormals();
+  renderer.render(scene,camera);
+  return renderer.domElement.toDataURL('image/png').split(',')[1];
+};
+window.renderFrame(0);
+window.sceneReady=true;
+</script></body></html>

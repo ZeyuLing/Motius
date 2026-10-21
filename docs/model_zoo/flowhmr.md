@@ -27,6 +27,34 @@ Official source: [FlowHMR](https://github.com/flowhmr/flowhmr), revision
 
 ## Visual Results
 
+**Supplied-video cases — Base and Latest, 25 seconds each:**
+
+| Checkpoint | Full result: input with tracking bbox + SMPL-H mesh | Model card |
+| --- | --- | --- |
+| Base | [Watch Base](../../assets/model_zoo/flowhmr/demo_base_mesh.mp4) | [Hugging Face Base](https://huggingface.co/ZeyuLing/Motius-FlowHMR-Base#visual-results) |
+| Latest (PHC+ GRPO) | [Watch Latest](../../assets/model_zoo/flowhmr/demo_latest_mesh.mp4) | [Hugging Face Latest](https://huggingface.co/ZeyuLing/Motius-FlowHMR-Latest#visual-results) |
+
+Both checkpoints run the same [supplied input video](../../assets/model_zoo/flowhmr/demo_input.mp4)
+through the public Motius pipeline: 750 frames at 30 fps, seed 0, 20 Euler
+steps and CFG 1. They share the exact cached tracking boxes, SAM features and
+VGGT camera estimates (9 keyframes at interval 100, interpolated to 750).
+Each video is generated from its own checkpoint prediction. Inference safetensors:
+
+- Base: `f8dca504bfe1682ab0a8ec6cb99e555b4c93e77220cc5c80636a87f0492ced46`.
+- Latest: `f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912`.
+
+The left panel shows the tracking bbox. The right panel reconstructs the
+predicted SMPL-H mesh from saved rotations, shape and translation, with
+Three.js smooth normals, depth-tested surfaces, lighting and floor shadows.
+Both renders use the same fixed camera, fitted to the union of both sequences.
+Horizontal root motion is centered for display; vertical motion is retained.
+This is a world view, not a reprojection into the source camera. Original audio
+is retained. Weight hashes, shared-input hashes and rendering settings are
+recorded in the [Base provenance](../../assets/model_zoo/flowhmr/demo_base_mesh.json)
+and [Latest provenance](../../assets/model_zoo/flowhmr/demo_latest_mesh.json).
+
+The older validation clips below use a separate 30-frame input.
+
 <!-- MOTIUS_TASK_DEMOS:START -->
 
 ### Task Demos
@@ -48,6 +76,12 @@ Real-video previews are generated with the public Motius pipeline, seed 0,
 20 Euler steps, CFG 1 and the official first-frame floor alignment.
 
 ## Model Overview
+
+### Supplied-video previews
+
+| Base | Latest (PHC+ GRPO) |
+| --- | --- |
+| [![Base: tracking bbox and predicted mesh](../../assets/model_zoo/flowhmr/demo_base_mesh_preview.png)](../../assets/model_zoo/flowhmr/demo_base_mesh.mp4) | [![Latest: tracking bbox and predicted mesh](../../assets/model_zoo/flowhmr/demo_latest_mesh_preview.png)](../../assets/model_zoo/flowhmr/demo_latest_mesh.mp4) |
 
 <!-- MOTIUS_MODEL_CARD_TASKS:START -->
 
@@ -92,6 +126,7 @@ pip install -e '.[flowhmr,video-to-motion]'
 
 ```python
 from motius import Pipeline
+from motius.motion.representation.monocular_capture import save_monocular_capture_result
 
 pipe = Pipeline.from_pretrained(
     "ZeyuLing/Motius-FlowHMR-Latest",  # or ZeyuLing/Motius-FlowHMR-Base
@@ -102,9 +137,30 @@ pipe = Pipeline.from_pretrained(
     ),
 )
 result = pipe.infer_monocular_motion_capture(
-    "input.mp4", work_dir="outputs/inference/flowhmr", seeds=[0],
+    "assets/model_zoo/flowhmr/demo_input.mp4",
+    work_dir="outputs/inference/flowhmr", vggt_frame_interval=100, seeds=[0],
 )
+save_monocular_capture_result(result, "outputs/inference/flowhmr/result.npz")
 ```
+
+The `vggt_frame_interval=100` setting fits this 25-second demo on a 15 GB T4;
+use a denser camera sample on a larger GPU. Render the side-by-side preview with:
+
+```bash
+pip install -e '.[flowhmr-render]'
+python -m playwright install chromium
+python tools/render_flowhmr_demo.py assets/model_zoo/flowhmr/demo_input.mp4 \
+  outputs/inference/flowhmr/result.npz outputs/inference/flowhmr/demo.mp4 \
+  --body-model outputs/checkpoints/flowhmr/body_models/smplh/neutral/model.npz \
+  --checkpoint-label 'FlowHMR Latest'
+```
+
+`--preview` writes a five-frame PNG contact sheet for visual inspection before
+encoding the video. For a matched Base/Latest comparison, pass each result as
+`--camera-reference` when rendering the other result; both cameras then fit the
+union of the two sequences. Rendering uses the Three.js module shipped with Motius;
+only the licensed body model is supplied separately. The MP4 sidecar records
+the inference checkpoint hash, camera, frame count and media hashes.
 
 Provide the official AMASS neutral SMPL-H model (52 joints, 16 shape parameters).
 `infer_from_feature(tokens, camera_RT)` accepts precomputed `(T,3072)` tokens

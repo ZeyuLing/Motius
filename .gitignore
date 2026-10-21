@@ -70,6 +70,13 @@ docs/leaderboards/hf_space_*/cases/**/audio/
 *.h5
 *.hdf5
 *.mp4
+!assets/model_zoo/flowhmr/demo_input.mp4
+!assets/model_zoo/flowhmr/demo_latest_mesh.mp4
+!assets/model_zoo/flowhmr/demo_latest_mesh_preview.png
+!assets/model_zoo/flowhmr/demo_latest_mesh.json
+!assets/model_zoo/flowhmr/demo_base_mesh.mp4
+!assets/model_zoo/flowhmr/demo_base_mesh_preview.png
+!assets/model_zoo/flowhmr/demo_base_mesh.json
 !site/media/generation.mp4
 !assets/model_zoo/gvhmr/*.mp4
 !assets/motion/auto_rigging_demo/*.mp4

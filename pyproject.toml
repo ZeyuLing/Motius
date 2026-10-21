@@ -25,15 +25,22 @@ dependencies = [
 flowhmr = [
     "clip @ git+https://github.com/openai/CLIP.git",
     "einops>=0.7",
+    "imageio-ffmpeg>=0.4",
     "matplotlib>=3.5",
     "mmcv-lite>=2.0,<2.2",
     "numpy<2",
     "opencv-python>=4.8",
     "pyyaml>=6.0",
+    "supervision==0.20.0",
     "torch>=2.6",
     "torchvision>=0.21",
     "torchdiffeq>=0.2",
     "webdataset>=0.2.100",
+]
+flowhmr-render = [
+    "imageio-ffmpeg>=0.4",
+    "pillow>=10.0",
+    "playwright>=1.48",
 ]
 dev = [
     "pytest>=7.4",
