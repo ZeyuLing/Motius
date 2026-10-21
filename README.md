@@ -21,6 +21,7 @@
 <p align="center">
   <a href="https://zeyuling.github.io/Motius/"><strong>Project homepage</strong></a> ·
   <a href="docs/README.md"><strong>Documentation</strong></a> ·
+  <a href="#news">News</a> ·
   <a href="#motius-in-motion">Demos</a> ·
   <a href="#start-here">Quickstart</a> ·
   <a href="docs/tasks/README.md">Tasks</a> ·
@@ -34,6 +35,15 @@
 
 Motius packages motion methods behind consistent bundles, task pipelines,
 trainers, evaluators, and representation bridges.
+
+## News
+
+<!-- Keep newest entries first. Group related changes into one feature announcement and link to its documentation or demos. -->
+
+- **2026-10-21 — FlowHMR.** Native Base training and Base/Latest inference, with Hugging Face checkpoints and full-video tracking + SMPL-H mesh demos. [Model card and demos](docs/model_zoo/flowhmr.md).
+- **2026-09-23 — MotionCanvas position control.** Improved position-constrained IK with simultaneous joint targets, axis-specific controls, and preservation of locked motion channels. [Details](docs/position_ik.md).
+- **2026-08-23 — Automatic character rigging.** Added humanoid mesh rigging and skinned character export, with a multi-character demo driven by shared motion. [Guide](docs/motion/rigging.md) · [Demo](#motius-in-motion).
+- **2026-08-11 — Initial public release.** Released Motius's shared framework for motion models, training, evaluation, and motion I/O. [Get started](docs/getting_started.md).
 
 ## Motius in Motion
 
