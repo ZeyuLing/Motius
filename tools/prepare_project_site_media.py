@@ -44,6 +44,17 @@ def main():
                             '-n', '-i', str(source), '-fps_mode', 'vfr', '-c:v', 'libx264',
                             '-crf', '18', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', str(target)], check=True)
         provenance[name]['derived_video'] = target.relative_to(ROOT).as_posix()
+    # A static, lossless thumbnail avoids LFS downloads in the Pages build and
+    # keeps the release preview still for visitors who request reduced motion.
+    release_source = ROOT / 'assets/model_zoo/flowhmr/demo_latest_mesh_preview.png'
+    with Image.open(release_source) as image:
+        image.convert('RGB').save(output / 'flowhmr.webp', format='WEBP', lossless=True)
+    provenance['flowhmr'] = {
+        'source': release_source.relative_to(ROOT).as_posix(),
+        'sha256': hashlib.sha256(release_source.read_bytes()).hexdigest(),
+        'derived_image': 'site/media/flowhmr.webp',
+        'conversion': 'static lossless WebP; no pixel or timing edits',
+    }
     (output / 'provenance.json').write_text(json.dumps(provenance, indent=2)+'\n', encoding='utf-8')
 
 if __name__ == '__main__':

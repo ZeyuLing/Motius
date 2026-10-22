@@ -25,5 +25,11 @@
     "sha256": "7f990524816edcac7f393bad77ae216fe50efc37f4de3a63fdd00f8e24211720",
     "poster_frame": 30,
     "derived_video": "assets/motion/representation_demo/004822_hml_smpl_soma_core_g1_1920_30fps.mp4"
+  },
+  "flowhmr": {
+    "source": "assets/model_zoo/flowhmr/demo_latest_mesh_preview.png",
+    "sha256": "162c53435da3bcfbeef986c1c6912ef2ecf1e50ab7c80b6f7db660d247e8f8c7",
+    "derived_image": "site/media/flowhmr.webp",
+    "conversion": "static lossless WebP; no pixel or timing edits"
   }
 }

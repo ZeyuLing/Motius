@@ -12,7 +12,7 @@ MEDIA = {
     'autorig.mp4': 'assets/motion/auto_rigging_demo/motius_multi_character_autorig_004822_960x540_30fps.mp4',
     'characters.mp4': 'assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_30fps.mp4',
     'representations.mp4': 'assets/motion/representation_demo/004822_hml_smpl_soma_core_g1_1920_30fps.mp4',
-    'flowhmr.png': 'assets/model_zoo/flowhmr/demo_latest_mesh_preview.png',
+    'flowhmr.webp': 'site/media/flowhmr.webp',
 }
 VENDOR = ('gsap.min.js', 'ScrollTrigger.min.js', 'GSAP-LICENSE.txt', 'Outfit.ttf', 'Outfit-OFL.txt', 'README.md')
 
