@@ -77,6 +77,8 @@ def render(key, date, title, description, mobile=False, featured=False):
             text(title, x-2, 139 if mobile else 145, 70 if mobile else 82, ink, 550, -2),
             text(description, x, 189 if mobile else 195, 25 if mobile else 29, muted),
             text('Explore the integration', x, 254 if mobile else 239, 20, ink),
+            text('Original project', 315 if mobile else 865, 225 if mobile else 212, 18, muted),
+            text('github.com/flowhmr/flowhmr', 315 if mobile else 865, 254 if mobile else 239, 17 if mobile else 20, ink),
             arrow(width-35, 35, ink),
         ])
     else:
@@ -97,7 +99,24 @@ def render(key, date, title, description, mobile=False, featured=False):
             ])
     pieces.append('</svg>')
     suffix = '-mobile' if mobile else ''
-    (DEST / f'{key}{suffix}.svg').write_text('\n'.join(pieces)+'\n')
+    artwork = '\n'.join(pieces)+'\n'
+    (DEST / f'{key}{suffix}.svg').write_text(artwork)
+    if featured:
+        # GitHub displays SVGs as images, so embedded SVG anchors cannot be
+        # clicked. Two adjacent image links preserve the continuous banner and
+        # give the integration and original project independent real targets.
+        for side, origin in [('left', 0), ('right', width // 2)]:
+            cropped = artwork.replace(
+                f'viewBox="0 0 {width} {height}"',
+                f'viewBox="{origin} 0 {width // 2} {height}"',
+                1,
+            )
+            if side == 'right':
+                cropped = cropped.replace(
+                    f'<title id="title">{escape(title)} — {escape(date)}</title>',
+                    '<title id="title">Original FlowHMR project: github.com/flowhmr/flowhmr</title>',
+                )
+            (DEST / f'{key}{suffix}-{side}.svg').write_text(cropped)
 
 
 def main():

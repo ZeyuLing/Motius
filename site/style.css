@@ -89,6 +89,7 @@ main {
 .release-link {margin-top:auto;display:flex;justify-content:space-between;gap:12px;font-size:13px;font-weight:550}
 .release-links {margin-top:auto;display:flex;flex-wrap:wrap;gap:12px 20px;font-size:13px;font-weight:550}
 .release-links a {text-decoration:none}
+.release-featured .release-links a:last-child {margin-left:auto}
 .release-links a:hover {text-decoration:underline}
 .release-featured a:hover {color:#fff}
 .release-featured a:focus-visible {outline-color:#c6d5ef}

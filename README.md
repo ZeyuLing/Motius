@@ -40,16 +40,7 @@ trainers, evaluators, and representation bridges.
 
 <!-- Integration and framework release announcements only, newest first. Keep fixes and implementation details in CHANGELOG.md. -->
 
-<p>
-  <a href="docs/model_zoo/flowhmr.md">
-    <picture>
-      <source media="(max-width: 600px)" srcset="assets/news/flowhmr-mobile.svg">
-      <img src="assets/news/flowhmr.svg" width="1200" alt="October 21, 2026 — FlowHMR integrated into Motius for monocular motion capture.">
-    </picture>
-  </a>
-</p>
-
-<p><a href="https://github.com/flowhmr/flowhmr">Original project: flowhmr/flowhmr ↗</a> · <a href="docs/model_zoo/flowhmr.md">Motius integration ↗</a></p>
+<p><a href="docs/model_zoo/flowhmr.md"><picture><source media="(max-width: 600px)" srcset="assets/news/flowhmr-mobile-left.svg"><img src="assets/news/flowhmr-left.svg" width="50%" alt="October 21, 2026 — FlowHMR integrated into Motius. Explore the Motius integration."></picture></a><a href="https://github.com/flowhmr/flowhmr"><picture><source media="(max-width: 600px)" srcset="assets/news/flowhmr-mobile-right.svg"><img src="assets/news/flowhmr-right.svg" width="50%" alt="Original FlowHMR project: github.com/flowhmr/flowhmr."></picture></a></p>
 
 <p>
   <a href="docs/motion/rigging.md">
@@ -59,8 +50,6 @@ trainers, evaluators, and representation bridges.
     </picture>
   </a>
 </p>
-
-<p><a href="https://github.com/jasongzy/Make-It-Animatable">Original project: Make-It-Animatable ↗</a> · <a href="docs/motion/rigging.md">Motius integration ↗</a></p>
 
 <p>
   <a href="docs/getting_started.md">
