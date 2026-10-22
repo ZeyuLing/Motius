@@ -40,23 +40,32 @@ trainers, evaluators, and representation bridges.
 
 <!-- Release announcements only, newest first. Keep fixes and implementation details in CHANGELOG.md. -->
 
-<table>
-  <tr>
-    <td width="160"><sub>OCT 21, 2026</sub></td>
-    <td><strong><a href="docs/model_zoo/flowhmr.md">FlowHMR is available</a></strong><br><sub>A new release for monocular motion capture.</sub></td>
-    <td align="right"><a href="docs/model_zoo/flowhmr.md">Explore ↗</a></td>
-  </tr>
-  <tr>
-    <td><sub>AUG 23, 2026</sub></td>
-    <td><strong><a href="docs/motion/rigging.md">Introducing AutoRig</a></strong><br><sub>Automatic character rigging joins Motius.</sub></td>
-    <td align="right"><a href="docs/motion/rigging.md">Explore ↗</a></td>
-  </tr>
-  <tr>
-    <td><sub>AUG 11, 2026</sub></td>
-    <td><strong><a href="docs/getting_started.md">Motius is open source</a></strong><br><sub>The first public release of the framework.</sub></td>
-    <td align="right"><a href="docs/getting_started.md">Get started ↗</a></td>
-  </tr>
-</table>
+<p>
+  <a href="docs/model_zoo/flowhmr.md">
+    <picture>
+      <source media="(max-width: 600px)" srcset="assets/news/flowhmr-mobile.svg">
+      <img src="assets/news/flowhmr.svg" width="1200" alt="October 21, 2026 — FlowHMR is available: monocular motion capture.">
+    </picture>
+  </a>
+</p>
+
+<p>
+  <a href="docs/motion/rigging.md">
+    <picture>
+      <source media="(max-width: 600px)" srcset="assets/news/autorig-mobile.svg">
+      <img src="assets/news/autorig.svg" width="1200" alt="August 23, 2026 — Introducing AutoRig: automatic character rigging joins Motius.">
+    </picture>
+  </a>
+</p>
+
+<p>
+  <a href="docs/getting_started.md">
+    <picture>
+      <source media="(max-width: 600px)" srcset="assets/news/motius-mobile.svg">
+      <img src="assets/news/motius.svg" width="1200" alt="August 11, 2026 — Motius is open source: the first public release of the framework.">
+    </picture>
+  </a>
+</p>
 
 ## Motius in Motion
 
