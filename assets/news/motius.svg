@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 122" role="img" aria-labelledby="title desc">
 <title id="title">Motius is open source — AUG 11, 2026</title>
-<desc id="desc">The first public release of the framework. Open the release documentation.</desc>
+<desc id="desc">The first public release of the framework. Open the Motius documentation.</desc>
 <defs><linearGradient id="paper" x2="1" y2="1"><stop stop-color="#10294e"/><stop offset="1" stop-color="#143e87"/></linearGradient>
 <linearGradient id="trail" x2="0" y2="1"><stop stop-color="#79b9ff" stop-opacity="0"/><stop offset=".5" stop-color="#9bd8ff"/><stop offset="1" stop-color="#79b9ff" stop-opacity="0"/></linearGradient>
 <clipPath id="bounds"><rect width="1200" height="122" rx="8"/></clipPath></defs>

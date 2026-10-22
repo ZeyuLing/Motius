@@ -38,25 +38,29 @@ trainers, evaluators, and representation bridges.
 
 ## News
 
-<!-- Release announcements only, newest first. Keep fixes and implementation details in CHANGELOG.md. -->
+<!-- Integration and framework release announcements only, newest first. Keep fixes and implementation details in CHANGELOG.md. -->
 
 <p>
   <a href="docs/model_zoo/flowhmr.md">
     <picture>
       <source media="(max-width: 600px)" srcset="assets/news/flowhmr-mobile.svg">
-      <img src="assets/news/flowhmr.svg" width="1200" alt="October 21, 2026 — FlowHMR is available: monocular motion capture.">
+      <img src="assets/news/flowhmr.svg" width="1200" alt="October 21, 2026 — FlowHMR integrated into Motius for monocular motion capture.">
     </picture>
   </a>
 </p>
+
+<p><a href="https://github.com/flowhmr/flowhmr">Original project: flowhmr/flowhmr ↗</a> · <a href="docs/model_zoo/flowhmr.md">Motius integration ↗</a></p>
 
 <p>
   <a href="docs/motion/rigging.md">
     <picture>
       <source media="(max-width: 600px)" srcset="assets/news/autorig-mobile.svg">
-      <img src="assets/news/autorig.svg" width="1200" alt="August 23, 2026 — Introducing AutoRig: automatic character rigging joins Motius.">
+      <img src="assets/news/autorig.svg" width="1200" alt="August 23, 2026 — AutoRig support with Make-It-Animatable integration.">
     </picture>
   </a>
 </p>
+
+<p><a href="https://github.com/jasongzy/Make-It-Animatable">Original project: Make-It-Animatable ↗</a> · <a href="docs/motion/rigging.md">Motius integration ↗</a></p>
 
 <p>
   <a href="docs/getting_started.md">

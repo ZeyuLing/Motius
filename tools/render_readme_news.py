@@ -63,7 +63,7 @@ def render(key, date, title, description, mobile=False, featured=False):
     pieces = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
         f'<title id="title">{escape(title)} — {escape(date)}</title>',
-        f'<desc id="desc">{escape(description)} Open the release documentation.</desc>',
+        f'<desc id="desc">{escape(description)} Open the Motius documentation.</desc>',
         '<defs><linearGradient id="paper" x2="1" y2="1"><stop stop-color="#10294e"/><stop offset="1" stop-color="#143e87"/></linearGradient>',
         '<linearGradient id="trail" x2="0" y2="1"><stop stop-color="#79b9ff" stop-opacity="0"/><stop offset=".5" stop-color="#9bd8ff"/><stop offset="1" stop-color="#79b9ff" stop-opacity="0"/></linearGradient>',
         f'<clipPath id="bounds"><rect width="{width}" height="{height}" rx="8"/></clipPath></defs>',
@@ -76,7 +76,7 @@ def render(key, date, title, description, mobile=False, featured=False):
             text(date, x, 48 if mobile else 48, 21 if mobile else 20, muted, tracking=.8),
             text(title, x-2, 139 if mobile else 145, 70 if mobile else 82, ink, 550, -2),
             text(description, x, 189 if mobile else 195, 25 if mobile else 29, muted),
-            text('Explore the release', x, 254 if mobile else 239, 20, ink),
+            text('Explore the integration', x, 254 if mobile else 239, 20, ink),
             arrow(width-35, 35, ink),
         ])
     else:
@@ -103,8 +103,8 @@ def render(key, date, title, description, mobile=False, featured=False):
 def main():
     DEST.mkdir(parents=True, exist_ok=True)
     releases = (
-        ('flowhmr', 'OCT 21, 2026', 'FlowHMR', 'Monocular motion capture.', True),
-        ('autorig', 'AUG 23, 2026', 'Introducing AutoRig', 'Automatic character rigging joins Motius.', False),
+        ('flowhmr', 'OCT 21, 2026', 'FlowHMR', 'Integrated into Motius.', True),
+        ('autorig', 'AUG 23, 2026', 'AutoRig support', 'With Make-It-Animatable integration.', False),
         ('motius', 'AUG 11, 2026', 'Motius is open source', 'The first public release of the framework.', False),
     )
     for key, date, title, description, featured in releases:

@@ -87,6 +87,11 @@ main {
 .release-copy h3 {font-size:clamp(25px,2.6vw,37px);line-height:1.08;letter-spacing:-.045em;margin-bottom:16px}
 .release-copy p {font-size:15px;line-height:1.6;color:var(--muted);margin:0 0 28px;max-width:29ch}
 .release-link {margin-top:auto;display:flex;justify-content:space-between;gap:12px;font-size:13px;font-weight:550}
+.release-links {margin-top:auto;display:flex;flex-wrap:wrap;gap:12px 20px;font-size:13px;font-weight:550}
+.release-links a {text-decoration:none}
+.release-links a:hover {text-decoration:underline}
+.release-featured a:hover {color:#fff}
+.release-featured a:focus-visible {outline-color:#c6d5ef}
 .release-featured {background:#173da5;border-color:#173da5;color:#fff}
 .release-featured:hover {background:#173da5;color:#fff;border-color:#173da5}
 .release-featured .release-meta,.release-featured .release-copy p {color:#dce5ff}

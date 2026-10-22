@@ -50,7 +50,7 @@ The build copies an explicit allowlist including the locally served animation
 runtime and font, never the working tree, checkpoints,
 private sources, or downloaded character models.
 
-News contains release announcements only. Fixes and implementation updates belong
+News contains integration and framework release announcements only. Fixes and implementation updates belong
 in `CHANGELOG.md`. Keep its release dates and copy synchronized with README News.
 Without JavaScript, all cards and links stay visible. Reduced motion disables
 release animations and hover scaling; native focus outlines remain available.
