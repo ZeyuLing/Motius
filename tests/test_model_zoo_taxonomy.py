@@ -49,10 +49,10 @@ def test_model_zoo_catalog_covers_every_public_artifact_package() -> None:
     }
     assert catalog_cards == artifact_packages | catalog_exemptions
 
-    motioncanvas = next(
-        row for row in rows if row.card_path.name == "motioncanvas.md"
+    animatecanvas = next(
+        row for row in rows if row.card_path.name == "animatecanvas.md"
     )
-    assert motioncanvas.method == "HYMotion M2M (MotionCanvas)"
+    assert animatecanvas.method == "HYMotion M2M (AnimateCanvas)"
 
 
 def test_release_audit_requires_one_visible_demo_per_supported_task() -> None:

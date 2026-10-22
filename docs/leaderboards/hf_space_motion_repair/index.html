@@ -236,7 +236,7 @@
     </header>
 
     <section class="score-strip" aria-label="Benchmark summary">
-      <article class="score-card"><div class="label">Repair methods</div><div class="value" id="method-count">3</div><div class="note">MoGenDiT, StableMotion, MotionCanvas</div></article>
+      <article class="score-card"><div class="label">Repair methods</div><div class="value" id="method-count">3</div><div class="note">MoGenDiT, StableMotion, AnimateCanvas</div></article>
       <article class="score-card"><div class="label">Best uTMR R@3</div><div class="value" id="best-r3">–</div><div class="note" id="best-r3-note">Generated methods only</div></article>
       <article class="score-card"><div class="label">Lowest MPJPE</div><div class="value" id="best-mpjpe">–</div><div class="note" id="best-mpjpe-note">Generated methods only</div></article>
       <article class="score-card"><div class="label">Visual population</div><div class="value">299</div><div class="note">Five synchronized SMPL views per case</div></article>
@@ -281,7 +281,7 @@
       <summary>Protocol details</summary>
       <div class="protocol-grid">
         <article><h3>Paired population</h3><p>All methods use the same 299 pair-validated BrokenAMASS clips, fixed to 100 frames at 20 fps in right-handed Z-up metres.</p></article>
-        <article><h3>Support tracks</h3><p>MoGenDiT uses its method-native adaptive estimate. StableMotion and MotionCanvas use the same oracle-v6 support contract. The table never hides this distinction.</p></article>
+        <article><h3>Support tracks</h3><p>MoGenDiT uses its method-native adaptive estimate. StableMotion and AnimateCanvas use the same oracle-v6 support contract. The table never hides this distinction.</p></article>
         <article><h3>Primary evaluator</h3><p><code>uTMR R@3</code> is the default sort. MPJPE, global-boundary MPJPE, root error, acceleration error, skating, penetration, and jitter are paired diagnostics.</p></article>
       </div>
     </details>

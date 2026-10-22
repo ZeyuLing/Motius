@@ -38,12 +38,25 @@ trainers, evaluators, and representation bridges.
 
 ## News
 
-<!-- Keep newest entries first. Group related changes into one feature announcement and link to its documentation or demos. -->
+<!-- Release announcements only, newest first. Keep fixes and implementation details in CHANGELOG.md. -->
 
-- **2026-10-21 — FlowHMR.** Native Base training and Base/Latest inference, with Hugging Face checkpoints and full-video tracking + SMPL-H mesh demos. [Model card and demos](docs/model_zoo/flowhmr.md).
-- **2026-09-23 — MotionCanvas position control.** Improved position-constrained IK with simultaneous joint targets, axis-specific controls, and preservation of locked motion channels. [Details](docs/position_ik.md).
-- **2026-08-23 — Automatic character rigging.** Added humanoid mesh rigging and skinned character export, with a multi-character demo driven by shared motion. [Guide](docs/motion/rigging.md) · [Demo](#motius-in-motion).
-- **2026-08-11 — Initial public release.** Released Motius's shared framework for motion models, training, evaluation, and motion I/O. [Get started](docs/getting_started.md).
+<table>
+  <tr>
+    <td width="160"><sub>OCT 21, 2026</sub></td>
+    <td><strong><a href="docs/model_zoo/flowhmr.md">FlowHMR is available</a></strong><br><sub>A new release for monocular motion capture.</sub></td>
+    <td align="right"><a href="docs/model_zoo/flowhmr.md">Explore ↗</a></td>
+  </tr>
+  <tr>
+    <td><sub>AUG 23, 2026</sub></td>
+    <td><strong><a href="docs/motion/rigging.md">Introducing AutoRig</a></strong><br><sub>Automatic character rigging joins Motius.</sub></td>
+    <td align="right"><a href="docs/motion/rigging.md">Explore ↗</a></td>
+  </tr>
+  <tr>
+    <td><sub>AUG 11, 2026</sub></td>
+    <td><strong><a href="docs/getting_started.md">Motius is open source</a></strong><br><sub>The first public release of the framework.</sub></td>
+    <td align="right"><a href="docs/getting_started.md">Get started ↗</a></td>
+  </tr>
+</table>
 
 ## Motius in Motion
 
@@ -179,7 +192,7 @@ keyframes, and TP2M remain inside their parent task.
 | [Kinematic Motion Control](docs/leaderboards/kinematic_motion_control.md) | Numeric geometry → motion | Native-skeleton protocol |
 | [Part-Level Motion Control](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) | Body-region semantics → motion | [HumanML3D](docs/datasets/README.md#humanml3d) |
 | [Motion Editing](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) | Motion + semantic edit → motion | [PerMo](docs/datasets/README.md#permo) style/content · [MotionFix](docs/datasets/README.md#motionfix) |
-| [Motion Repair](https://huggingface.co/spaces/ZeyuLing/motion-repair-brokenamass-leaderboard) | Corrupted motion ± support → motion | BrokenAMASS fixed-support · MoGenDiT, StableMotion, MotionCanvas |
+| [Motion Repair](https://huggingface.co/spaces/ZeyuLing/motion-repair-brokenamass-leaderboard) | Corrupted motion ± support → motion | BrokenAMASS fixed-support · MoGenDiT, StableMotion, AnimateCanvas |
 | [Motion Reconstruction](docs/leaderboards/README.md#motion-reconstruction-humanml3d) | Motion → reconstructed motion | [HumanML3D](docs/datasets/README.md#humanml3d) |
 | [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) | Music ± text → dance | [AIST++](docs/datasets/README.md#aistpp) |
 | [Dance-to-Music](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) | Dance → music | [AIST++](docs/datasets/README.md#aistpp) |

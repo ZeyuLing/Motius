@@ -1,4 +1,4 @@
-"""Prepare arbitrary motion evidence for MotionCanvas training."""
+"""Prepare arbitrary motion evidence for AnimateCanvas training."""
 
 from __future__ import annotations
 

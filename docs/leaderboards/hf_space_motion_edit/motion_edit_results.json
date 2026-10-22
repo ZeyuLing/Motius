@@ -228,7 +228,7 @@
           "rank": 3
         },
         {
-          "method": "MotionCanvas",
+          "method": "AnimateCanvas",
           "method_id": "motioncanvas",
           "coverage": "63/63",
           "reference": false,
@@ -439,7 +439,7 @@
           "rank": 2
         },
         {
-          "method": "MotionCanvas",
+          "method": "AnimateCanvas",
           "method_id": "motioncanvas",
           "coverage": "67/67",
           "reference": false,

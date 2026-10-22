@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Rename MotionCanvas to AnimateCanvas across model, pipeline, trainer, configs,
+  model cards and local demo assets. Continue loading previously released
+  checkpoint metadata through compatibility aliases.
+- Redesign the homepage News section and README release list. Keep News limited
+  to release announcements; record implementation updates here.
+
 ## 0.2.0 — 2026-10-05
 
 - Replace retired HYMotionV2M with the official FlowHMR 491-D, 0.46B release.

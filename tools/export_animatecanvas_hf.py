@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Convert a converged MotionCanvas checkpoint to a Motius Hub artifact."""
+"""Convert a converged AnimateCanvas checkpoint to a Motius Hub artifact."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from motius.models.motioncanvas import MotionCanvasBundle
+from motius.models.animatecanvas import AnimateCanvasBundle
 
 
 LEARNED_BUNDLE_TENSORS = (
@@ -35,7 +35,7 @@ def parse_args():
     parser.add_argument(
         '--config',
         type=Path,
-        default=Path('configs/motioncanvas/train_motioncanvas_0p46b.py'),
+        default=Path('configs/animatecanvas/train_animatecanvas_0p46b.py'),
     )
     parser.add_argument('--stats-dir', type=Path, required=True)
     parser.add_argument('--bone-offsets', type=Path, required=True)
@@ -44,9 +44,9 @@ def parse_args():
     parser.add_argument(
         '--output-dir',
         type=Path,
-        default=Path('outputs/releases/motioncanvas_0p46b'),
+        default=Path('outputs/releases/animatecanvas_0p46b'),
     )
-    parser.add_argument('--repo-id', default='ZeyuLing/Motius-MotionCanvas-0.46B')
+    parser.add_argument('--repo-id', default='ZeyuLing/Motius-AnimateCanvas-0.46B')
     parser.add_argument(
         '--demo',
         action='append',
@@ -62,7 +62,7 @@ def parse_args():
     parser.add_argument(
         '--model-card',
         type=Path,
-        default=Path('configs/motioncanvas/huggingface_model_card.md'),
+        default=Path('configs/animatecanvas/huggingface_model_card.md'),
     )
     parser.add_argument('--upload', action='store_true')
     return parser.parse_args()
@@ -105,7 +105,7 @@ def build_bundle(args, transformer_state, learned):
     model_cfg = dict(Config.fromfile(args.config).model)
     model_cfg.pop('type', None)
     model_cfg['motion_transformer'] = dict(model_cfg['motion_transformer'])
-    model_cfg['motion_transformer']['type'] = 'MotionCanvasMMDiT'
+    model_cfg['motion_transformer']['type'] = 'AnimateCanvasMMDiT'
     model_cfg['mean_std_dir'] = str(args.stats_dir)
     model_cfg['t2m_pretrained_path'] = None
     model_cfg['text_encoder'] = {
@@ -120,7 +120,7 @@ def build_bundle(args, transformer_state, learned):
         'max_length_sentence_emb': 77,
         'enable_llm_padding': True,
     }
-    bundle = MotionCanvasBundle(**model_cfg)
+    bundle = AnimateCanvasBundle(**model_cfg)
     bundle.motion_transformer.load_state_dict(transformer_state, strict=True)
     for name in LEARNED_BUNDLE_TENSORS:
         target = getattr(bundle, name)
@@ -141,12 +141,12 @@ def build_bundle(args, transformer_state, learned):
 
 def write_release_metadata(args, source_checkpoint, transformer_state):
     metadata = {
-        'format': 'motius-motioncanvas-source-audit-v1',
+        'format': 'motius-animatecanvas-source-audit-v1',
         'source_checkpoint': source_checkpoint.name,
         'source_epoch': 2354,
         'transformer_tensor_count': len(transformer_state),
         'training_config': args.config.name,
-        'native_representation': 'MotionCanvas-198',
+        'native_representation': 'AnimateCanvas-198',
         'native_fps': 30,
     }
     (args.output_dir / 'source_checkpoint.json').write_text(
@@ -172,10 +172,10 @@ def copy_demos(args):
     previews = args.preview
     if previews is None:
         previews = [
-            'assets/model_zoo/motioncanvas/keyframe_control_512_30fps.gif',
-            'assets/model_zoo/motioncanvas/trajectory_control_512_30fps.gif',
-            'assets/model_zoo/motioncanvas/instruction_editing_512_30fps.gif',
-            'assets/model_zoo/motioncanvas/motion_editing_512_30fps.gif',
+            'assets/model_zoo/animatecanvas/keyframe_control_512_30fps.gif',
+            'assets/model_zoo/animatecanvas/trajectory_control_512_30fps.gif',
+            'assets/model_zoo/animatecanvas/instruction_editing_512_30fps.gif',
+            'assets/model_zoo/animatecanvas/motion_editing_512_30fps.gif',
         ]
     for value in previews:
         source = Path(value)

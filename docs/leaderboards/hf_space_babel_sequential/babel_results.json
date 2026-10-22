@@ -22,7 +22,7 @@
       "aujGap": 0.0
     },
     {
-      "method": "MotionCanvas",
+      "method": "AnimateCanvas",
       "version": "Epoch 1964 · CFG 5.0 · context 5 · seed 42 · 3-frame low-pass",
       "samples": 7285,
       "r1": 0.424,

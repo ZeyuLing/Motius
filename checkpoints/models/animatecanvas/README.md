@@ -1,9 +1,9 @@
-# MotionCanvas Checkpoint
+# AnimateCanvas Checkpoint
 
 The complete release is hosted at
-[`ZeyuLing/Motius-MotionCanvas-0.46B`](https://huggingface.co/ZeyuLing/Motius-MotionCanvas-0.46B).
+[`ZeyuLing/Motius-AnimateCanvas-0.46B`](https://huggingface.co/ZeyuLing/Motius-AnimateCanvas-0.46B).
 It includes the motion transformer, learned M2M condition parameters,
-MotionCanvas-198 statistics, SMPL-22 rest offsets, Qwen3, and CLIP.
+AnimateCanvas-198 statistics, SMPL-22 rest offsets, Qwen3, and CLIP.
 
 `Mean.npy`, `Std.npy`, `normalization_provenance.md`, and
 `bone_offsets_22.pt` are deliberately tracked here because they are small and
@@ -16,7 +16,7 @@ No manual download is required:
 from motius import Pipeline
 
 pipe = Pipeline.from_pretrained(
-    "ZeyuLing/Motius-MotionCanvas-0.46B",
+    "ZeyuLing/Motius-AnimateCanvas-0.46B",
     cache_dir="/path/to/large/huggingface-cache",
     bundle_kwargs={"device": "cuda", "text_dtype": "bf16"},
 )

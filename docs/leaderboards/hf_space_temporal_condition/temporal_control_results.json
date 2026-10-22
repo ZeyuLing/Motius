@@ -357,7 +357,7 @@
           }
         },
         {
-          "method": "MotionCanvas",
+          "method": "AnimateCanvas",
           "method_id": "ours",
           "samples": 4012,
           "metrics": {
@@ -523,7 +523,7 @@
           }
         },
         {
-          "method": "MotionCanvas",
+          "method": "AnimateCanvas",
           "method_id": "ours",
           "samples": 4012,
           "metrics": {
@@ -689,7 +689,7 @@
           }
         },
         {
-          "method": "MotionCanvas",
+          "method": "AnimateCanvas",
           "method_id": "ours",
           "samples": 4012,
           "metrics": {
@@ -855,7 +855,7 @@
           }
         },
         {
-          "method": "MotionCanvas",
+          "method": "AnimateCanvas",
           "method_id": "ours",
           "samples": 4012,
           "metrics": {
@@ -1021,7 +1021,7 @@
           }
         },
         {
-          "method": "MotionCanvas",
+          "method": "AnimateCanvas",
           "method_id": "ours",
           "samples": 4012,
           "metrics": {
@@ -1187,7 +1187,7 @@
           }
         },
         {
-          "method": "MotionCanvas",
+          "method": "AnimateCanvas",
           "method_id": "ours",
           "samples": 4012,
           "metrics": {
@@ -1336,7 +1336,7 @@
           }
         },
         {
-          "method": "MotionCanvas",
+          "method": "AnimateCanvas",
           "method_id": "ours",
           "samples": 4012,
           "metrics": {
@@ -1485,7 +1485,7 @@
           }
         },
         {
-          "method": "MotionCanvas",
+          "method": "AnimateCanvas",
           "method_id": "ours",
           "samples": 4012,
           "metrics": {

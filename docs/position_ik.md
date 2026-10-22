@@ -1,4 +1,4 @@
-# MotionCanvas position IK
+# AnimateCanvas position IK
 
 This is the engineering position-projection implementation, not the temporal
 SQP solver described in the paper. No paper metrics are populated by this change.
@@ -46,7 +46,7 @@ Jitter and renders on real outputs before enabling the path in a production run.
 Run in an approved environment with the Motius core dependencies:
 
 ```console
-python -m pytest tests/test_position_constraint_ik.py tests/test_motioncanvas.py -q
+python -m pytest tests/test_position_constraint_ik.py tests/test_animatecanvas.py -q
 python tools/benchmark_position_ik.py --device cpu --frames 120 --repeats 5
 python tools/benchmark_position_ik.py --device cuda --frames 300 --repeats 20
 ```

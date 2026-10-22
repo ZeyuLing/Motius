@@ -49,13 +49,13 @@ RELEASES = {
         "card": "docs/model_zoo/prism.md",
         "output": "outputs/training/prism",
     },
-    "motioncanvas": {
-        "label": "MotionCanvas",
-        "config": "configs/motioncanvas/train_motioncanvas_0p46b.py",
-        "trainer": "motius/trainers/motioncanvas/sparse_rollout_join_trainer.py",
-        "trainer_class": "MotionCanvasSparseRolloutJoinTrainer",
-        "card": "docs/model_zoo/motioncanvas.md",
-        "output": "outputs/training/motioncanvas_0p46b",
+    "animatecanvas": {
+        "label": "AnimateCanvas",
+        "config": "configs/animatecanvas/train_animatecanvas_0p46b.py",
+        "trainer": "motius/trainers/animatecanvas/sparse_rollout_join_trainer.py",
+        "trainer_class": "AnimateCanvasSparseRolloutJoinTrainer",
+        "card": "docs/model_zoo/animatecanvas.md",
+        "output": "outputs/training/animatecanvas_0p46b",
     },
     "tmr": {
         "label": "Motius Joint-Position Evaluator",
@@ -129,6 +129,8 @@ def audit() -> list[str]:
         path.name
         for path in (ROOT / "motius" / "trainers").iterdir()
         if path.is_dir() and not path.name.startswith("__")
+        # Import aliases for old configs are not a separate method release.
+        and path.name != "motioncanvas"
     }
     if actual_packages != expected_packages:
         errors.append(

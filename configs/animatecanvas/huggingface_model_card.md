@@ -8,12 +8,12 @@ tags:
   - smpl
 ---
 
-# Motius MotionCanvas 0.46B
+# Motius AnimateCanvas 0.46B
 
-MotionCanvas is the Motius-native HYMotion M2M checkpoint for temporal motion
+AnimateCanvas is the Motius-native HYMotion M2M checkpoint for temporal motion
 completion, kinematic control, and text-guided motion editing. This epoch 2354
 artifact is self-contained: it includes the motion transformer, learned M2M
-condition parameters, MotionCanvas-198 normalization statistics, SMPL-22 rest
+condition parameters, AnimateCanvas-198 normalization statistics, SMPL-22 rest
 offsets, Qwen3, and CLIP.
 
 ## Load
@@ -28,7 +28,7 @@ import torch
 from motius import Pipeline
 
 pipe = Pipeline.from_pretrained(
-    "ZeyuLing/Motius-MotionCanvas-0.46B",
+    "ZeyuLing/Motius-AnimateCanvas-0.46B",
     cache_dir="/path/to/large/huggingface-cache",
     bundle_kwargs={"device": "cuda", "text_dtype": "bf16"},
     num_steps=50,
@@ -76,7 +76,7 @@ The `demos/` directory also contains the original 1080p MP4 renders.
 
 ## Representation
 
-MotionCanvas-198 runs at 30 fps on a 360-frame canvas:
+AnimateCanvas-198 runs at 30 fps on a 360-frame canvas:
 
 - 3 world-space root translation values
 - 132 row-major local rotation-6D values for 22 SMPL joints
@@ -102,13 +102,13 @@ in per-sample L2-normalized uTMR embedding space.
 | Adaptive keyframes | no | 0.6589 | 0.8218 | 0.8878 | 0.0031 | 28.6949 | 0.0000 | 0.1358 |
 
 The complete protocol and physical metrics are maintained in the
-[MotionCanvas Model Card](https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/motioncanvas.md)
+[AnimateCanvas Model Card](https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/animatecanvas.md)
 and the
 [Temporal Condition Leaderboard](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard).
 
 ## Provenance
 
-MotionCanvas is implemented and trained in
+AnimateCanvas is implemented and trained in
 [Motius](https://github.com/ZeyuLing/Motius). Its transformer and
 text-conditioning design build on
 [HY-Motion 1.0](https://arxiv.org/abs/2512.23464). The M2M objective,

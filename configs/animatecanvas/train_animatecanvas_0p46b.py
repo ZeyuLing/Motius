@@ -3,9 +3,9 @@ custom_imports = dict(
         'motius.datasets.motion',
         'motius.datasets.motion.motionhub',
         'motius.datasets.motion.motionhub.transforms',
-        'motius.models.motioncanvas',
-        'motius.models.motioncanvas.network',
-        'motius.trainers.motioncanvas',
+        'motius.models.animatecanvas',
+        'motius.models.animatecanvas.network',
+        'motius.trainers.animatecanvas',
     ],
     allow_failed_imports=False,
 )
@@ -72,7 +72,7 @@ load_from = None
 lr_scheduler = None
 model = dict(
     body_model_path=None,
-    bone_offsets_path='checkpoints/models/motioncanvas/bone_offsets_22.pt',
+    bone_offsets_path='checkpoints/models/animatecanvas/bone_offsets_22.pt',
     caption_freeze_strategy='encoders',
     cond_mask_prob=0.1,
     ctxt_input_dim=4096,
@@ -115,7 +115,7 @@ model = dict(
         timestep_squared_weighting=True,
         velocity_loss_reduction='component_mean',
         velocity_weight=1.0),
-    mean_std_dir='checkpoints/models/motioncanvas',
+    mean_std_dir='checkpoints/models/animatecanvas',
     motion_cond_mask_prob=0.0,
     motion_transformer=dict(
         apply_rope_to_single_branch=False,
@@ -137,7 +137,7 @@ model = dict(
         text_refiner_cfg=dict(num_layers=2),
         time_factor=1000.0,
         trainable=True,
-        type='MotionCanvasMMDiT',
+        type='AnimateCanvasMMDiT',
         vtxt_input_dim=768,
         with_long_skip_connection=False),
     motion_type='smpl_22',
@@ -150,7 +150,7 @@ model = dict(
     text_encoder=dict(),
     train_null_embeddings=True,
     train_special_game_embeddings=True,
-    type='MotionCanvasBundle',
+    type='AnimateCanvasBundle',
     uncondition_mode=False,
     vtxt_input_dim=768)
 optimizer = dict(
@@ -495,9 +495,9 @@ trainer = dict(
     sparse_rollout_join_tail_fraction=0.2,
     sparse_rollout_join_weight=0.05,
     sparse_rollout_min_steps=8,
-    type='MotionCanvasSparseRolloutJoinTrainer',
+    type='AnimateCanvasSparseRolloutJoinTrainer',
     val_num_steps=10)
 val_dataloader = None
 val_evaluator = None
 val_visualizer = None
-work_dir = 'outputs/training/motioncanvas_0p46b'
+work_dir = 'outputs/training/animatecanvas_0p46b'

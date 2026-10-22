@@ -12,7 +12,9 @@ MEDIA = {
     'autorig.mp4': 'assets/motion/auto_rigging_demo/motius_multi_character_autorig_004822_960x540_30fps.mp4',
     'characters.mp4': 'assets/motion/fbx_character_demo/004822_skeleton_smpl_mixamo_1440_30fps.mp4',
     'representations.mp4': 'assets/motion/representation_demo/004822_hml_smpl_soma_core_g1_1920_30fps.mp4',
+    'flowhmr.png': 'assets/model_zoo/flowhmr/demo_latest_mesh_preview.png',
 }
+VENDOR = ('gsap.min.js', 'ScrollTrigger.min.js', 'GSAP-LICENSE.txt', 'Outfit.ttf', 'Outfit-OFL.txt', 'README.md')
 
 
 def build(destination):
@@ -25,6 +27,7 @@ def build(destination):
     required += [ROOT / 'site' / p for p in ('index.html', 'style.css', 'app.js')]
     posters = [ROOT / 'site/media' / f'{Path(name).stem}.jpg' for name in MEDIA if name.endswith('.mp4')]
     required += posters
+    required += [ROOT / 'site/vendor' / name for name in VENDOR]
     for path in required:
         if not path.is_file():
             raise FileNotFoundError(path)
@@ -35,6 +38,9 @@ def build(destination):
         shutil.copy2(ROOT / source, destination / 'media' / name)
     for path in posters:
         shutil.copy2(path, destination / 'media' / path.name)
+    (destination / 'vendor').mkdir()
+    for name in VENDOR:
+        shutil.copy2(ROOT / 'site/vendor' / name, destination / 'vendor' / name)
     (destination / '.nojekyll').touch()
     print(f'Staged {sum(p.is_file() for p in destination.rglob("*"))} files at {destination}')
 

@@ -49,7 +49,7 @@ T2M_PACKAGES = {
     "motiongpt": "motiongpt",
     "motiongpt3": "motiongpt3",
     "motionlcm": "motionlcm",
-    "motioncanvas": "motioncanvas",
+    "animatecanvas": "motioncanvas",
     "motionmillion": "gotozero7b",
     "motionstreamer": "motionstreamer",
     "prism_1_0": "prism1",
@@ -251,24 +251,24 @@ def _dance_to_music_jobs() -> list[RenderJob]:
     )]
 
 
-def _motioncanvas_jobs() -> list[RenderJob]:
+def _animatecanvas_jobs() -> list[RenderJob]:
     specs = (
         RenderJob(
             source=(
-                "assets/model_zoo/motioncanvas/"
-                "motioncanvas_humanml3d_004822_smpl_mesh_512_30fps.gif"
+                "assets/model_zoo/animatecanvas/"
+                "animatecanvas_humanml3d_004822_smpl_mesh_512_30fps.gif"
             ),
             method="motioncanvas",
-            label="MotionCanvas 0.46B",
+            label="AnimateCanvas 0.46B",
             case_id="004822",
         ),
         RenderJob(
             source=(
-                "assets/model_zoo/motioncanvas/"
-                "motioncanvas_motion_repair_512_20fps.gif"
+                "assets/model_zoo/animatecanvas/"
+                "animatecanvas_motion_repair_512_20fps.gif"
             ),
             method="motioncanvas",
-            label="MotionCanvas",
+            label="AnimateCanvas",
             case_id="repair_000",
             viewer=(
                 ROOT
@@ -349,7 +349,7 @@ def _jobs() -> list[RenderJob]:
             *_sidecar_jobs(),
             *_music_to_dance_jobs(),
             *_dance_to_music_jobs(),
-            *_motioncanvas_jobs(),
+            *_animatecanvas_jobs(),
             *_native_jobs(),
         ]
     }

@@ -1,4 +1,26 @@
 "use strict";
+// Content stays visible when JavaScript or an animation dependency is unavailable.
+if (window.gsap && window.ScrollTrigger) {
+  gsap.registerPlugin(ScrollTrigger);
+  const releaseMotion = gsap.matchMedia();
+  releaseMotion.add("(prefers-reduced-motion: no-preference)", () => {
+    gsap.utils.toArray(".release-card").forEach((card, index) => {
+      gsap.from(card, {
+        y: 24 + index * 14,
+        duration: .8,
+        ease: "power2.out",
+        clearProps: "transform",
+        scrollTrigger: {trigger: card, start: "top 94%", once: true},
+      });
+      gsap.fromTo(card.querySelector(".release-image img"),
+        {scale: .8, opacity: .65},
+        {scale: 1, opacity: 1, ease: "none", scrollTrigger: {
+          trigger: card, start: "top 95%", end: "top 55%", scrub: .5,
+        }},
+      );
+    });
+  });
+}
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const videos = document.querySelectorAll("video");
 videos.forEach(video => {

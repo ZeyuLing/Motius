@@ -89,7 +89,9 @@ def main():
 
     # Load config
     from mmengine.config import Config
-    cfg = Config.fromfile(args.config)
+    # Public recipes use classic _base_ inheritance, including standard-library
+    # imports that some MMEngine versions otherwise treat as lazy configs.
+    cfg = Config.fromfile(args.config, lazy_import=False)
     _import_custom_modules(cfg)
 
     # Apply CLI overrides

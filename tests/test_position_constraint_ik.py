@@ -225,7 +225,7 @@ class _ProjectionBundle(torch.nn.Module):
 
 @pytest.mark.parametrize('mode', ['all', 'skip_last', 'flow_interp'])
 def test_pipeline_nonzero_frame_198_and_fixed_cues(mode):
-    from motius.pipelines.motioncanvas import MotionCanvasPipeline
+    from motius.pipelines.animatecanvas import AnimateCanvasPipeline
 
     offsets = skeleton(torch.float32)
     rotations, translation = pose()
@@ -235,7 +235,7 @@ def test_pipeline_nonzero_frame_198_and_fixed_cues(mode):
     mask[:, :, 3 + 16 * 6:3 + 17 * 6] = 1
     mask[:, :, 3 + 18 * 6:3 + 19 * 6] = 1
     target = motion135_to_fk(motion[0, 4, :135], offsets)[0][20] + torch.tensor([-.15, .1, 0.])
-    pipeline = MotionCanvasPipeline(_ProjectionBundle(motion, offsets), num_steps=1,
+    pipeline = AnimateCanvasPipeline(_ProjectionBundle(motion, offsets), num_steps=1,
                                     replacement_guidance=mode, official_t2m_frames=6)
     result = pipeline._inference({'src_motion': motion, 'src_mask': mask, 'clean_motion': motion,
                                    'position_constraints': [PositionConstraint(4, 20, target)]})
@@ -245,13 +245,13 @@ def test_pipeline_nonzero_frame_198_and_fixed_cues(mode):
 
 
 def test_pipeline_rejects_padding_cue():
-    from motius.pipelines.motioncanvas import MotionCanvasPipeline
+    from motius.pipelines.animatecanvas import AnimateCanvasPipeline
 
     offsets = skeleton(torch.float32)
     rotations, translation = pose()
     motion = fk_to_motion135(rotations.float(), translation.float()).repeat(1, 6, 1)
     motion = torch.cat((motion, torch.zeros(1, 6, 63)), dim=-1)
-    pipeline = MotionCanvasPipeline(_ProjectionBundle(motion, offsets), num_steps=1, official_t2m_frames=6)
+    pipeline = AnimateCanvasPipeline(_ProjectionBundle(motion, offsets), num_steps=1, official_t2m_frames=6)
     with pytest.raises(ValueError, match='valid sequence'):
         pipeline._inference({'src_motion': motion, 'src_length': [3],
                              'position_constraints': [PositionConstraint(4, 20, torch.zeros(3))]})

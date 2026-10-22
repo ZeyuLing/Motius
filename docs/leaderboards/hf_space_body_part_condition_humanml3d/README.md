@@ -16,7 +16,7 @@ HumanML3D official test split. The page includes an embedded, synchronized
 Three.js comparison over all 4,012 test cases for the left-wrist XYZ
 sparse-control setting. The viewer and metric table contain the same five
 protocol-compatible methods: OmniControl, CondMDI, MaskControl, MotionLab, and
-MotionCanvas.
+AnimateCanvas.
 
 [ProjFlow](../../model_zoo/projflow.md) is integrated for Cartesian position
 masks and has a verified public API/demo. It is intentionally absent from

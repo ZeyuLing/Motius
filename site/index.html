@@ -10,6 +10,8 @@
   <meta property="og:image" content="https://zeyuling.github.io/Motius/media/logo.png">
   <title>Motius — Generate. Train. Evaluate.</title>
   <link rel="stylesheet" href="style.css">
+  <script src="vendor/gsap.min.js" defer></script>
+  <script src="vendor/ScrollTrigger.min.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -17,7 +19,7 @@
   <header class="header wrap">
     <a href="./" class="brand" aria-label="Motius home"><img src="media/logo.png" alt="Motius" width="174" height="60"></a>
     <nav aria-label="Main navigation">
-      <a href="#models">Models</a><a href="#workflow">Workflow</a><a href="#evaluation">Evaluation</a><a href="#motion-toolkit">Motion I/O</a>
+      <a href="#news">News</a><a href="#models">Models</a><a href="#workflow">Workflow</a><a href="#evaluation">Evaluation</a><a href="#motion-toolkit">Motion I/O</a>
       <a class="repo-link" href="https://github.com/ZeyuLing/Motius">GitHub <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
@@ -37,6 +39,32 @@
         <a href="#workflow"><span>02</span> HYMotion training</a>
         <a href="#evaluation"><span>03</span> Evaluation & benchmarks</a>
         <a href="#motion-toolkit"><span>04</span> Conversion & retargeting</a>
+      </div>
+    </section>
+
+    <section class="news section" id="news" aria-labelledby="news-title">
+      <div class="wrap">
+        <div class="news-heading">
+          <div><p class="eyebrow">News</p><h2 id="news-title">Fresh releases.<br>More <span class="news-inline"><img src="media/generation.jpg" alt="" width="76" height="40"></span> possibilities.</h2></div>
+          <p>New models. New tools.<br>The latest from Motius.</p>
+        </div>
+        <div class="release-grid">
+          <a class="release-card release-featured" href="https://github.com/ZeyuLing/Motius/blob/main/docs/model_zoo/flowhmr.md">
+            <div class="release-meta"><time datetime="2026-10-21">Oct 21, 2026</time><span class="release-arrow" aria-hidden="true">↗</span></div>
+            <div class="release-image"><img src="media/flowhmr.png" alt="FlowHMR reconstructed body motion" width="960" height="540" loading="lazy"></div>
+            <div class="release-copy"><h3>FlowHMR<br>is available.</h3><p>A new release for monocular motion capture.</p><span class="release-link">Explore the release <span aria-hidden="true">↗</span></span></div>
+          </a>
+          <a class="release-card" href="https://github.com/ZeyuLing/Motius/blob/main/docs/motion/rigging.md">
+            <div class="release-meta"><time datetime="2026-08-23">Aug 23, 2026</time><span class="release-arrow" aria-hidden="true">↗</span></div>
+            <div class="release-image"><img src="media/autorig.jpg" alt="Automatically rigged characters" width="960" height="540" loading="lazy"></div>
+            <div class="release-copy"><h3>Introducing<br>AutoRig.</h3><p>Automatic character rigging joins Motius.</p><span class="release-link">Explore the release <span aria-hidden="true">↗</span></span></div>
+          </a>
+          <a class="release-card release-framework" href="https://github.com/ZeyuLing/Motius/blob/main/docs/getting_started.md">
+            <div class="release-meta"><time datetime="2026-08-11">Aug 11, 2026</time><span class="release-arrow" aria-hidden="true">↗</span></div>
+            <div class="release-image release-brand"><img src="media/logo.png" alt="Motius" width="174" height="60" loading="lazy"></div>
+            <div class="release-copy"><h3>Motius<br>is open source.</h3><p>The first public release of the framework.</p><span class="release-link">Get started <span aria-hidden="true">↗</span></span></div>
+          </a>
+        </div>
       </div>
     </section>
 

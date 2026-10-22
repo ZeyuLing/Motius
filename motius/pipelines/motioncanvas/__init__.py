@@ -1,5 +1,5 @@
-"""MotionCanvas inference pipeline."""
+"""Compatibility imports for previously released checkpoint class paths."""
+from motius.pipelines.animatecanvas import AnimateCanvasPipeline
 
-from motius.pipelines.motioncanvas.motioncanvas_pipeline import MotionCanvasPipeline
-
+MotionCanvasPipeline = AnimateCanvasPipeline
 __all__ = ['MotionCanvasPipeline']

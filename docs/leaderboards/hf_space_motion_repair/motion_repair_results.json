@@ -47,7 +47,7 @@
       "penetration_ratio": 0.1261
     },
     {
-      "method": "MotionCanvas",
+      "method": "AnimateCanvas",
       "version": "0.46B",
       "support": "oracle v6",
       "track": "oracle_support",

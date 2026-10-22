@@ -52,7 +52,7 @@ prism = [
     "einops>=0.6",
     "sentencepiece>=0.1",
 ]
-motioncanvas = [
+animatecanvas = [
     "einops>=0.6",
     "mmcv-lite>=2.0,<2.2",
     "torchdiffeq>=0.2",

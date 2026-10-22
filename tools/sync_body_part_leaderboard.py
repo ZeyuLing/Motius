@@ -24,7 +24,7 @@ DEFAULT_ARTIFACT_ROOT = Path(
     "evaluation/body_part/humanml3d_official_test_4012"
 )
 METHOD_DIRECTORIES = {
-    "MotionCanvas": "ours",
+    "AnimateCanvas": "ours",
     "OmniControl": "omnicontrol",
     "CondMDI": "condmdi",
     "MaskControl": "maskcontrol",

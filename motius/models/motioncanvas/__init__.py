@@ -1,5 +1,5 @@
-"""MotionCanvas: unified text-guided motion generation and editing."""
+"""Compatibility imports for previously released checkpoint class paths."""
+from motius.models.animatecanvas import AnimateCanvasBundle
 
-from motius.models.motioncanvas.bundle import MotionCanvasBundle
-
+MotionCanvasBundle = AnimateCanvasBundle
 __all__ = ['MotionCanvasBundle']

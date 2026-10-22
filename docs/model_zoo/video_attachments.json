@@ -1456,7 +1456,7 @@
       "video_sha256": "fbc1ced0847756af14a732ab03533c7570cf9dfceb4d4a3d1f92e9dce8a6a709",
       "width": 512
     },
-    "assets/model_zoo/motioncanvas/instruction_editing_512_30fps.gif": {
+    "assets/model_zoo/animatecanvas/instruction_editing_512_30fps.gif": {
       "audio": null,
       "floor": "matte light floor with neutral gray grid",
       "fps": 30,
@@ -1469,9 +1469,9 @@
       "recovery": {
         "method": "H.264 re-encode of every frame in the published Three.js animation",
         "original_video_frames": 240,
-        "provenance": "assets/model_zoo/motioncanvas/instruction_editing_512_30fps.json",
-        "render_metadata": "outputs/model_card_video_uploads/assets/model_zoo/motioncanvas/instruction_editing_512_30fps.render.json",
-        "source": "assets/model_zoo/motioncanvas/instruction_editing_512_30fps.gif",
+        "provenance": "assets/model_zoo/animatecanvas/instruction_editing_512_30fps.json",
+        "render_metadata": "outputs/model_card_video_uploads/assets/model_zoo/animatecanvas/instruction_editing_512_30fps.render.json",
+        "source": "assets/model_zoo/animatecanvas/instruction_editing_512_30fps.gif",
         "source_sha256": "6dd39caa4657aebd95163aa8b5004788e51ebce3b4c85c4789506dc48bf24b12",
         "time_unix": 1791444517
       },
@@ -1483,7 +1483,7 @@
       "video_sha256": "fd1ede0dd8ecd673e3ce618bd070d956226d3385cc772d2600621644a52c1ec7",
       "width": 512
     },
-    "assets/model_zoo/motioncanvas/keyframe_control_512_30fps.gif": {
+    "assets/model_zoo/animatecanvas/keyframe_control_512_30fps.gif": {
       "audio": null,
       "floor": "matte light floor with neutral gray grid",
       "fps": 30,
@@ -1496,9 +1496,9 @@
       "recovery": {
         "method": "H.264 re-encode of every frame in the published Three.js animation",
         "original_video_frames": 240,
-        "provenance": "assets/model_zoo/motioncanvas/keyframe_control_512_30fps.json",
-        "render_metadata": "outputs/model_card_video_uploads/assets/model_zoo/motioncanvas/keyframe_control_512_30fps.render.json",
-        "source": "assets/model_zoo/motioncanvas/keyframe_control_512_30fps.gif",
+        "provenance": "assets/model_zoo/animatecanvas/keyframe_control_512_30fps.json",
+        "render_metadata": "outputs/model_card_video_uploads/assets/model_zoo/animatecanvas/keyframe_control_512_30fps.render.json",
+        "source": "assets/model_zoo/animatecanvas/keyframe_control_512_30fps.gif",
         "source_sha256": "1a5e920678d214d4907bf5db3175a0822d03b9744d0faa1f097f94058aec655d",
         "time_unix": 1791444520
       },
@@ -1510,7 +1510,7 @@
       "video_sha256": "e5c9d9df3084b4adbc35954a98091827e36ee770ac875490d5d281cd52987a02",
       "width": 512
     },
-    "assets/model_zoo/motioncanvas/motion_editing_512_30fps.gif": {
+    "assets/model_zoo/animatecanvas/motion_editing_512_30fps.gif": {
       "audio": null,
       "floor": "matte light floor with neutral gray grid",
       "fps": 30,
@@ -1523,9 +1523,9 @@
       "recovery": {
         "method": "H.264 re-encode of every frame in the published Three.js animation",
         "original_video_frames": 240,
-        "provenance": "assets/model_zoo/motioncanvas/motion_editing_512_30fps.json",
-        "render_metadata": "outputs/model_card_video_uploads/assets/model_zoo/motioncanvas/motion_editing_512_30fps.render.json",
-        "source": "assets/model_zoo/motioncanvas/motion_editing_512_30fps.gif",
+        "provenance": "assets/model_zoo/animatecanvas/motion_editing_512_30fps.json",
+        "render_metadata": "outputs/model_card_video_uploads/assets/model_zoo/animatecanvas/motion_editing_512_30fps.render.json",
+        "source": "assets/model_zoo/animatecanvas/motion_editing_512_30fps.gif",
         "source_sha256": "0f40a2cbd871c940c6a832c89300176e8e4feb78f99b7d8ae23b80c9a880f2d1",
         "time_unix": 1791444522
       },
@@ -1537,7 +1537,7 @@
       "video_sha256": "de8fa542e805f7eead962e8c5c6d93ceed3e73321a473f95d91f5064ef5810de",
       "width": 512
     },
-    "assets/model_zoo/motioncanvas/motioncanvas_humanml3d_004822_smpl_mesh_512_30fps.gif": {
+    "assets/model_zoo/animatecanvas/animatecanvas_humanml3d_004822_smpl_mesh_512_30fps.gif": {
       "audio": null,
       "floor": "matte light floor with neutral gray grid",
       "fps": 30,
@@ -1549,7 +1549,7 @@
       },
       "recovery": {
         "method": "rerender from saved motion data",
-        "render_metadata": "outputs/model_card_video_uploads/assets/model_zoo/motioncanvas/motioncanvas_humanml3d_004822_smpl_mesh_512_30fps.render.json",
+        "render_metadata": "outputs/model_card_video_uploads/assets/model_zoo/animatecanvas/animatecanvas_humanml3d_004822_smpl_mesh_512_30fps.render.json",
         "time_unix": 1791445626
       },
       "render_backend": "threejs",
@@ -1560,7 +1560,7 @@
       "video_sha256": "7385e294da58179e717f877aa11ef4b09ff1d39d2456592eccd3cc6b07f06db2",
       "width": 512
     },
-    "assets/model_zoo/motioncanvas/motioncanvas_motion_repair_512_20fps.gif": {
+    "assets/model_zoo/animatecanvas/animatecanvas_motion_repair_512_20fps.gif": {
       "audio": null,
       "floor": "matte light floor with neutral gray grid",
       "fps": 20,
@@ -1572,7 +1572,7 @@
       },
       "recovery": {
         "method": "rerender from saved motion data",
-        "render_metadata": "outputs/model_card_video_uploads/assets/model_zoo/motioncanvas/motioncanvas_motion_repair_512_20fps.render.json",
+        "render_metadata": "outputs/model_card_video_uploads/assets/model_zoo/animatecanvas/animatecanvas_motion_repair_512_20fps.render.json",
         "time_unix": 1791444525
       },
       "render_backend": "threejs",
@@ -1583,7 +1583,7 @@
       "video_sha256": "532de167956f3ebafe1703d09a203605bb47c16725d0398edda79e668af93a77",
       "width": 512
     },
-    "assets/model_zoo/motioncanvas/trajectory_control_512_30fps.gif": {
+    "assets/model_zoo/animatecanvas/trajectory_control_512_30fps.gif": {
       "audio": null,
       "floor": "matte light floor with neutral gray grid",
       "fps": 30,
@@ -1596,9 +1596,9 @@
       "recovery": {
         "method": "H.264 re-encode of every frame in the published Three.js animation",
         "original_video_frames": 240,
-        "provenance": "assets/model_zoo/motioncanvas/trajectory_control_512_30fps.json",
-        "render_metadata": "outputs/model_card_video_uploads/assets/model_zoo/motioncanvas/trajectory_control_512_30fps.render.json",
-        "source": "assets/model_zoo/motioncanvas/trajectory_control_512_30fps.gif",
+        "provenance": "assets/model_zoo/animatecanvas/trajectory_control_512_30fps.json",
+        "render_metadata": "outputs/model_card_video_uploads/assets/model_zoo/animatecanvas/trajectory_control_512_30fps.render.json",
+        "source": "assets/model_zoo/animatecanvas/trajectory_control_512_30fps.gif",
         "source_sha256": "77ba2329ade1c8b330ff90f5a2a928779c9ec32dff83b1402053c4c6f3e713c9",
         "time_unix": 1791444528
       },

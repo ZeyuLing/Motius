@@ -1,7 +1,8 @@
 # Motius project homepage
 
 Static GitHub Pages source: HTML, CSS and a small progressive-enhancement script.
-No package manager, third-party fonts, UI framework, analytics or WebGL runtime.
+No package manager, UI framework, analytics or WebGL runtime. Outfit and the
+GSAP/ScrollTrigger runtime are served locally, with notices in `site/vendor`.
 Documentation links point to the repository's canonical Markdown guides.
 
 ## Design
@@ -16,7 +17,7 @@ pair-contact renders or imply every method supports training.
 The reading order follows the framework's purpose, not the availability of
 character-rendering assets:
 
-1. Models and tasks: generation examples and a selected method directory.
+1. News: dated release announcements, followed by models and tasks.
 2. Research workflow: a real inference API example and the public HYMotion
    training recipe, with data and hardware prerequisites.
 3. Evaluation: HumanML3D Official, MotionStreamer, and Motius-trained universal
@@ -45,8 +46,14 @@ python -m http.server 8080 --directory outputs/pages
 
 The preparation command needs Pillow and imageio-ffmpeg; the build uses only
 Python's standard library. Media provenance is in `site/media/provenance.json`.
-The build copies an explicit allowlist, never the working tree, checkpoints,
+The build copies an explicit allowlist including the locally served animation
+runtime and font, never the working tree, checkpoints,
 private sources, or downloaded character models.
+
+News contains release announcements only. Fixes and implementation updates belong
+in `CHANGELOG.md`. Keep its release dates and copy synchronized with README News.
+Without JavaScript, all cards and links stay visible. Reduced motion disables
+release animations and hover scaling; native focus outlines remain available.
 
 `.github/workflows/pages.yml` publishes `main` to GitHub Pages. Set the repository's
 Pages source to **GitHub Actions**. Expected URL: https://zeyuling.github.io/Motius/.

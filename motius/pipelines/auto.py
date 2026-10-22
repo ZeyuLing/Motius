@@ -38,6 +38,7 @@ PIPELINE_CLASS_PATHS = {
     "MoGenTSPipeline": "motius.pipelines.mogents.MoGenTSPipeline",
     "MoMaskPipeline": "motius.pipelines.momask.MoMaskPipeline",
     "MotionBricksPipeline": "motius.pipelines.motionbricks.MotionBricksPipeline",
+    "AnimateCanvasPipeline": "motius.pipelines.animatecanvas.AnimateCanvasPipeline",
     "MotionCanvasPipeline": "motius.pipelines.motioncanvas.MotionCanvasPipeline",
     "MotionCLRPipeline": "motius.pipelines.motionclr.MotionCLRPipeline",
     "MotionGPTPipeline": "motius.pipelines.motiongpt.MotionGPTPipeline",

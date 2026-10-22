@@ -243,9 +243,9 @@ CHECKPOINT_SPECS = (
         ("g1_realtime_navigation", "g1_qpos_generation"),
     ),
     _spec(
-        "ZeyuLing/Motius-MotionCanvas-0.46B",
-        "motius.pipelines.motioncanvas.MotionCanvasPipeline",
-        "motius.models.motioncanvas.MotionCanvasBundle",
+        "ZeyuLing/Motius-AnimateCanvas-0.46B",
+        "motius.pipelines.animatecanvas.AnimateCanvasPipeline",
+        "motius.models.animatecanvas.AnimateCanvasBundle",
         (
             "temporal_motion_completion",
             "kinematic_motion_control",

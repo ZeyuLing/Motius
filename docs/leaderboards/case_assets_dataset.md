@@ -14,7 +14,7 @@ dataset.
 | `m2t-humanml3d/` | 4,400 | HumanML3D GT motion plus TM2T, MotionGPT, MotionGPT3, and VerMo captions |
 | `t2m-humanml3d/` | 4,042 | HumanML3D selected captions and aligned outputs from every measured T2M variant |
 | `babel-sequential/` | 1,295 | BABEL GT, FlowMDM, MotionStreamer, MotionLab, and PRISM long-form episodes |
-| `temporal-condition/` | 4,012 per setting | Six Temporal Control settings with aligned GT, CondMDI, FlowMDM, KIMODO, MotionLab, and MotionCanvas outputs |
+| `temporal-condition/` | 4,012 per setting | Six Temporal Control settings with aligned GT, CondMDI, FlowMDM, KIMODO, MotionLab, and AnimateCanvas outputs |
 
 Trajectories are SMPL-22 joint positions quantized per case to unsigned 16-bit
 values. Explorers retain every second or third source frame and linearly

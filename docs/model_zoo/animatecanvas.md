@@ -1,4 +1,4 @@
-<h1 align="center">HYMotion M2M (MotionCanvas) Model Card</h1>
+<h1 align="center">HYMotion M2M (AnimateCanvas) Model Card</h1>
 
 <p align="center">
   <strong>One 360-frame canvas for generation, completion, spatial control, editing, and repair.</strong>
@@ -7,16 +7,22 @@
 <p align="center">
   <a href="https://arxiv.org/abs/2512.23464">HY-Motion Backbone Paper</a> ·
   <a href="https://github.com/ZeyuLing/Motius">Motius Source</a> ·
-  <a href="https://huggingface.co/ZeyuLing/Motius-MotionCanvas-0.46B">Motius Checkpoint</a>
+  <a href="https://huggingface.co/ZeyuLing/Motius-AnimateCanvas-0.46B">Motius Checkpoint</a>
 </p>
 
-HYMotion M2M, released as MotionCanvas, is a Motius-native motion-to-motion
+HYMotion M2M, released as AnimateCanvas, is a Motius-native motion-to-motion
 model. It extends the HY-Motion
 flow-matching backbone with clean motion imputation, arbitrary channel masks,
 edit context, sparse-rollout training, and position-constraint projection. The
 released implementation, trainer, data pipeline, text encoders, normalization
 statistics, bone offsets, and inference pipeline run without another source
 checkout.
+
+AnimateCanvas is the current name of the previously released MotionCanvas
+integration. New imports, training configs and exported artifacts use
+`animatecanvas` / `AnimateCanvas`. Existing Hub revisions and checkpoint metadata
+remain readable through compatibility aliases; the network and weights are
+unchanged. Published benchmark asset identifiers retain their original names.
 
 <!-- MOTIUS_MODEL_CARD_NAV:START -->
 <p align="center">
@@ -36,11 +42,11 @@ checkout.
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| Text-to-Motion | person walking at a average pace forward, swaying arms and torso with a sense of swagger | <video src="https://github.com/user-attachments/assets/3d1e6450-e1a2-45d9-9c39-47a5b4221343" controls></video> | [MP4](https://github.com/user-attachments/assets/3d1e6450-e1a2-45d9-9c39-47a5b4221343) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=motioncanvas&case=004822) |
+| Text-to-Motion | person walking at a average pace forward, swaying arms and torso with a sense of swagger | <video src="https://github.com/user-attachments/assets/3d1e6450-e1a2-45d9-9c39-47a5b4221343" controls></video> | [MP4](https://github.com/user-attachments/assets/3d1e6450-e1a2-45d9-9c39-47a5b4221343) · [All cases](https://zeyuling-t2m-humanml3d-leaderboard.static.hf.space/cases/index.html?method=animatecanvas&case=004822) |
 | Temporal Motion Completion | Complete a natural walk through the observed footsteps.<br><sub>Sparse foot positions and facing keyframes</sub> | <video src="https://github.com/user-attachments/assets/35227ee9-6676-4c96-a51d-380511276b6d" controls></video> | [MP4](https://github.com/user-attachments/assets/35227ee9-6676-4c96-a51d-380511276b6d) |
 | Kinematic Motion Control | Follow the prescribed root path with natural locomotion.<br><sub>Continuous trajectory plus pelvis-height control</sub> | <video src="https://github.com/user-attachments/assets/91198a75-7c44-4a26-a7ad-c3b16e2fa03a" controls></video> | [MP4](https://github.com/user-attachments/assets/91198a75-7c44-4a26-a7ad-c3b16e2fa03a) |
 | Motion Editing | Wave with the right hand.<br><sub>Preserve the lower-body motion</sub> | <video src="https://github.com/user-attachments/assets/85de17df-afa7-4405-a40e-9ddaf78af565" controls></video> | [MP4](https://github.com/user-attachments/assets/85de17df-afa7-4405-a40e-9ddaf78af565) |
-| Motion Repair | Repair drifting, foot sliding, over-smoothing, and jitter while preserving the valid motion. | <video src="https://github.com/user-attachments/assets/96569490-1207-48fe-afff-39e40cad58db" controls></video> | [MP4](https://github.com/user-attachments/assets/96569490-1207-48fe-afff-39e40cad58db) · [All cases](https://zeyuling-motion-repair-brokenamass-leaderboard.static.hf.space/cases/index.html?method=motioncanvas&case=repair_000) |
+| Motion Repair | Repair drifting, foot sliding, over-smoothing, and jitter while preserving the valid motion. | <video src="https://github.com/user-attachments/assets/96569490-1207-48fe-afff-39e40cad58db" controls></video> | [MP4](https://github.com/user-attachments/assets/96569490-1207-48fe-afff-39e40cad58db) · [All cases](https://zeyuling-motion-repair-brokenamass-leaderboard.static.hf.space/cases/index.html?method=animatecanvas&case=repair_000) |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
@@ -84,12 +90,12 @@ Training FPS is the checkpoint's native temporal clock. Preview FPS only control
 | Item | Value |
 | --- | --- |
 | Tasks | Text-to-Motion, Temporal Motion Completion, Kinematic Motion Control, Motion Editing, Motion Repair |
-| Native representation | MotionCanvas-198, local SMPL-22 rotations, 30 fps |
+| Native representation | AnimateCanvas-198, local SMPL-22 rotations, 30 fps |
 | Context | 360 frames (12 seconds) |
 | Parameters | 0.46B motion transformer |
-| Checkpoint | [`ZeyuLing/Motius-MotionCanvas-0.46B`](https://huggingface.co/ZeyuLing/Motius-MotionCanvas-0.46B) |
-| Release revision | [`d0b5920`](https://huggingface.co/ZeyuLing/Motius-MotionCanvas-0.46B/tree/d0b5920fc0895a4cd8a05a1ace48015c37dab625) |
-| Pipeline | `motius.pipelines.motioncanvas.MotionCanvasPipeline` |
+| Checkpoint | [`ZeyuLing/Motius-AnimateCanvas-0.46B`](https://huggingface.co/ZeyuLing/Motius-AnimateCanvas-0.46B) |
+| Release revision | [`d0b5920`](https://huggingface.co/ZeyuLing/Motius-AnimateCanvas-0.46B/tree/d0b5920fc0895a4cd8a05a1ace48015c37dab625) |
+| Pipeline | `motius.pipelines.animatecanvas.AnimateCanvasPipeline` |
 | Release checkpoint | epoch 2354 |
 
 The final training recipe samples 630,000 examples per epoch. Its sampling
@@ -97,14 +103,14 @@ mixture is 30% full-mask HYMotion text-to-motion, 60% arbitrary HYMotion
 conditions, 5% MotionFix edits, and 5% PerMo edits. Training uses FP32,
 batch size 96 per process, AdamW at `1e-5`, and the released sparse-rollout
 join objective. The exact configuration is
-[`configs/motioncanvas/train_motioncanvas_0p46b.py`](../../configs/motioncanvas/train_motioncanvas_0p46b.py).
+[`configs/animatecanvas/train_animatecanvas_0p46b.py`](../../configs/animatecanvas/train_animatecanvas_0p46b.py).
 
 ## Quick Start
 
-Install the MotionCanvas dependencies and load the complete Hub artifact:
+Install the AnimateCanvas dependencies and load the complete Hub artifact:
 
 ```bash
-python -m pip install -e '.[motioncanvas]'
+python -m pip install -e '.[animatecanvas]'
 ```
 
 ```python
@@ -112,13 +118,13 @@ import torch
 from motius import Pipeline
 
 pipe = Pipeline.from_pretrained(
-    "ZeyuLing/Motius-MotionCanvas-0.46B",
+    "ZeyuLing/Motius-AnimateCanvas-0.46B",
     cache_dir="/path/to/large/huggingface-cache",
     bundle_kwargs={"device": "cuda", "text_dtype": "bf16"},
     num_steps=50,
 )
 
-# Native physical-space MotionCanvas-198, shape (B, T, 198).
+# Native physical-space AnimateCanvas-198, shape (B, T, 198).
 source = torch.from_numpy(reference_motion)[None].cuda()
 generate = torch.zeros(1, source.shape[1], device="cuda")
 generate[:, 90:180] = 1  # 1=regenerate, 0=preserve clean evidence
@@ -149,7 +155,7 @@ system disk.
 `generation_mask` uses `1` for values to generate and `0` for clean evidence
 to preserve. All three APIs also return `rot6d`, `transl`, `keypoints3d`,
 normalized `latent`, and valid `lengths`. Inputs and outputs remain on the
-Pipeline device; `MotionCanvas-198` uses meters and 30 fps.
+Pipeline device; `AnimateCanvas-198` uses meters and 30 fps.
 
 The same mask contract drives motion editing. In edit mode, generated cells
 also receive the source motion as editable context:
@@ -181,25 +187,25 @@ it. The lower-level `infer_m2m` entry point covers all three modes directly.
 
 ### Training
 
-MotionCanvas has a Motius-native `MotionCanvasSparseRolloutJoinTrainer`,
+AnimateCanvas has a Motius-native `AnimateCanvasSparseRolloutJoinTrainer`,
 dataset pipeline, and public
-[0.46B configuration](../../configs/motioncanvas/train_motioncanvas_0p46b.py).
+[0.46B configuration](../../configs/animatecanvas/train_animatecanvas_0p46b.py).
 It warm-starts the Text-to-Motion backbone from
-`ZeyuLing/Motius-HYMotion-T2M-1.0-Lite` and trains the MotionCanvas-198 M2M
+`ZeyuLing/Motius-HYMotion-T2M-1.0-Lite` and trains the AnimateCanvas-198 M2M
 network on 360-frame, 30 fps crops.
 
 The exact released mixture is 30% HYMotion full-mask generation, 60% HYMotion
 arbitrary conditions, 5% MotionFix edits, and 5% PerMo edits. MotionFix and
 PerMo can be downloaded through the [Dataset Hub](../datasets/README.md);
 HYMotion Data requires separate authorized access. Follow the
-[MotionCanvas data and export guide](../../configs/motioncanvas/README.md)
+[AnimateCanvas data and export guide](../../configs/animatecanvas/README.md)
 before changing paths in the config.
 
 Train or resume with:
 
 ```bash
-bash tools/dist_train.sh configs/motioncanvas/train_motioncanvas_0p46b.py 8 \
-  --work-dir outputs/training/motioncanvas_0p46b \
+bash tools/dist_train.sh configs/animatecanvas/train_animatecanvas_0p46b.py 8 \
+  --work-dir outputs/training/animatecanvas_0p46b \
   --auto-resume
 ```
 
@@ -212,7 +218,7 @@ bash tools/dist_train.sh configs/motioncanvas/train_motioncanvas_0p46b.py 8 \
 | Geometry terms | FK consistency, joint position/velocity, conditioned-root, transition endpoint/Sobolev, and sparse-rollout join losses |
 | Schedule | Up to 10,000 epochs, gradient norm clipped to `2.0` |
 | Checkpoints | Every epoch, latest state saved, 30 historical checkpoints retained |
-| Outputs | `outputs/training/motioncanvas_0p46b` |
+| Outputs | `outputs/training/animatecanvas_0p46b` |
 
 The config enables automatic resume. Use
 `--load-from CHECKPOINT --load-scope full` to select an explicit full-state
@@ -270,7 +276,7 @@ rounded estimate of an unconstrained prediction.
 
 ## Motion Representation
 
-MotionCanvas-198 stores one frame as:
+AnimateCanvas-198 stores one frame as:
 
 | Block | Dimensions | Meaning |
 | --- | ---: | --- |
@@ -293,7 +299,7 @@ clean evidence at initialization and after every ODE step.
 
 ## Citation and License
 
-MotionCanvas is a Motius-native method; no external MotionCanvas paper or
+AnimateCanvas is a Motius-native method; no external AnimateCanvas paper or
 source repository is claimed. Its transformer and text-conditioning design
 build on [HY-Motion 1.0](https://arxiv.org/abs/2512.23464), while the M2M
 training objective, arbitrary-condition data pipeline, clean-imputation

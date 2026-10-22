@@ -203,7 +203,7 @@ FRAME_RATE_CONTRACTS = {
         "training": "30 fps (Unitree G1)",
         "preview": "30 fps native",
     },
-    "motioncanvas": {
+    "animatecanvas": {
         "training": "30 fps on a 360-frame canvas",
         "preview": "30 fps native",
     },
@@ -369,7 +369,7 @@ T2M_ROW_KEYS = {
     "motiongpt": {"default": ("MotionGPT", "official")},
     "motiongpt3": {"default": ("MotionGPT3", "official")},
     "motionlcm": {"default": ("MotionLCM", "canonical")},
-    "motioncanvas": {"default": ("MotionCanvas", "0.46B · 360f")},
+    "animatecanvas": {"default": ("AnimateCanvas", "0.46B · 360f")},
     "motionmillion": {
         "7b train-only": ("GoToZero", "7B-train"),
         "3b train-only": ("GoToZero", "3B-train"),
@@ -407,7 +407,7 @@ TP2M_METHODS = {
 }
 
 TEMPORAL_METHOD_IDS = {
-    "motioncanvas": "ours",
+    "animatecanvas": "ours",
 }
 
 METRIC_SOURCES = {
@@ -523,25 +523,25 @@ TASK_PREVIEW_OVERRIDES = {
         "assets/model_zoo/maskcontrol/"
         "maskcontrol_part_level_motion_control_512_30fps.gif"
     ),
-    ("motioncanvas", "temporal_motion_completion"): (
-        "assets/model_zoo/motioncanvas/"
+    ("animatecanvas", "temporal_motion_completion"): (
+        "assets/model_zoo/animatecanvas/"
         "keyframe_control_512_30fps.gif"
     ),
-    ("motioncanvas", "kinematic_motion_control"): (
-        "assets/model_zoo/motioncanvas/"
+    ("animatecanvas", "kinematic_motion_control"): (
+        "assets/model_zoo/animatecanvas/"
         "trajectory_control_512_30fps.gif"
     ),
-    ("motioncanvas", "motion_editing"): (
-        "assets/model_zoo/motioncanvas/"
+    ("animatecanvas", "motion_editing"): (
+        "assets/model_zoo/animatecanvas/"
         "instruction_editing_512_30fps.gif"
     ),
-    ("motioncanvas", "text_to_motion"): (
-        "assets/model_zoo/motioncanvas/"
-        "motioncanvas_humanml3d_004822_smpl_mesh_512_30fps.gif"
+    ("animatecanvas", "text_to_motion"): (
+        "assets/model_zoo/animatecanvas/"
+        "animatecanvas_humanml3d_004822_smpl_mesh_512_30fps.gif"
     ),
-    ("motioncanvas", "motion_repair"): (
-        "assets/model_zoo/motioncanvas/"
-        "motioncanvas_motion_repair_512_20fps.gif"
+    ("animatecanvas", "motion_repair"): (
+        "assets/model_zoo/animatecanvas/"
+        "animatecanvas_motion_repair_512_20fps.gif"
     ),
     ("humanoid_gpt", "motion_tracking"): (
         "assets/model_zoo/humanoid_gpt/"
@@ -1530,14 +1530,14 @@ def _monocular_snapshot(package: str) -> list[str]:
 
 
 def _motion_repair_snapshot(package: str) -> list[str]:
-    if package != "motioncanvas":
+    if package != "animatecanvas":
         return []
     payload = json.loads(MOTION_REPAIR_RESULTS.read_text(encoding="utf-8"))
     result = next(
         (
             row
             for row in payload["rows"]
-            if row["method"] == "MotionCanvas"
+            if row["method"] == "AnimateCanvas"
         ),
         None,
     )

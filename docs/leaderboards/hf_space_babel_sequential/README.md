@@ -28,7 +28,7 @@ into this leaderboard.
 | Method | R@1 | R@2 | R@3 | Normalized FID | MM-Dist | Normalized Transition FID | AUJ Gap |
 | ------ | --: | --: | --: | --: | ------: | -------------: | ------: |
 | BABEL GT | 0.3614 | 0.5284 | 0.6317 | 0.0000 | 47.8378 | 0.0000 | 0.0000 |
-| MotionCanvas | 0.4240 | 0.6049 | 0.7134 | 0.0587 | 46.2662 | 0.0481 | 80.0543 |
+| AnimateCanvas | 0.4240 | 0.6049 | 0.7134 | 0.0587 | 46.2662 | 0.0481 | 80.0543 |
 | FlowMDM | 0.2504 | 0.3925 | 0.4818 | 0.0467 | 50.8503 | 0.0555 | 34.4040 |
 | MotionStreamer | 0.2130 | 0.3303 | 0.4175 | 0.0610 | 52.0339 | 0.0702 | 76.2889 |
 | MotionLab | 0.2580 | 0.3793 | 0.4536 | 0.2011 | 51.3873 | 0.2499 | 25.7259 |
@@ -46,14 +46,14 @@ the complete 1,295-episode run contains no legacy
 365-frame calls.
 MotionLab uses its official five-frame autoregressive context. Both rows are
 converted to the same canonical SMPL-22 joints before evaluation.
-MotionCanvas uses `checkpoint-epoch_1964`, CFG 5.0, and five conditioned
+AnimateCanvas uses `checkpoint-epoch_1964`, CFG 5.0, and five conditioned
 frames between adjacent actions. Its final joints use a fixed zero-phase
 three-frame `[1, 2, 1] / 4` filter followed by canonical SMPL-22 bone-length
 projection; the frozen 128-episode control changes semantic FID by only
 `+0.0002` while reducing Peak Jerk from `635.6` to `162.4`.
 
 The Space also includes a synchronized Three.js neutral-SMPL-mesh comparison
-of BABEL GT, MotionCanvas, FlowMDM, MotionStreamer, PRISM, and MotionLab. FlowMDM and
+of BABEL GT, AnimateCanvas, FlowMDM, MotionStreamer, PRISM, and MotionLab. FlowMDM and
 MotionStreamer are fitted from the same native `joints66` sequences used by
 evaluation; PRISM and MotionLab use their fitted SMPL parameters. Each episode is
 canonicalized once at frame zero to the same +Z-facing convention while its

@@ -48,7 +48,7 @@ METHODS = (
     Method("maskcontrol", "MaskControl", "#d95f02"),
     Method("motionlab", "MotionLab", "#287147"),
     Method("omnicontrol", "OmniControl", "#b34b8c"),
-    Method("ours", "MotionCanvas", "#087d72"),
+    Method("ours", "AnimateCanvas", "#087d72"),
 )
 
 KEYFRAME_METHOD_KEYS = {

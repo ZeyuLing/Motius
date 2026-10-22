@@ -2,7 +2,7 @@
 
 This module is the single source of truth for the adaptive-mask post-processing
 used by HyMotion-M2M motion repair. Both
-:meth:`motius.pipelines.motioncanvas.MotionCanvasPipeline.infer_repair`
+:meth:`motius.pipelines.animatecanvas.AnimateCanvasPipeline.infer_repair`
 and the offline eval (``scripts/eval/eval_m2m_v2_all_tasks.py``) import from here,
 so there is exactly one place that defines "how a raw defect mask is tightened".
 

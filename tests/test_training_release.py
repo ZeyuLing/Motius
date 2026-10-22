@@ -23,13 +23,13 @@ def test_training_configs_register_their_components():
             "HyMotionT2MBundle",
             "HyMotionT2MTrainer",
         ),
-        "configs/motioncanvas/train_motioncanvas_0p46b.py": (
-            "MotionCanvasBundle",
-            "MotionCanvasSparseRolloutJoinTrainer",
+        "configs/animatecanvas/train_animatecanvas_0p46b.py": (
+            "AnimateCanvasBundle",
+            "AnimateCanvasSparseRolloutJoinTrainer",
         ),
     }
     for relative_path, (bundle_name, trainer_name) in expected.items():
-        cfg = Config.fromfile(root / relative_path)
+        cfg = Config.fromfile(root / relative_path, lazy_import=False)
         _import_custom_modules(cfg)
         assert MODEL_BUNDLES.get(bundle_name) is not None
         assert TRAINERS.get(trainer_name) is not None

@@ -174,7 +174,7 @@ def _audit_t2m(audit: Audit, data: dict) -> None:
             "utmrR3": 0.9143,
             "utmrFIDNorm": 0.0156875,
         },
-        ("MotionCanvas", "0.46B · 360f"): {
+        ("AnimateCanvas", "0.46B · 360f"): {
             "msR3": 0.9521,
             "msFID": 8.2765,
             "utmrR3": 0.9103,
@@ -225,13 +225,13 @@ def _audit_motion_repair(audit: Audit, data: dict) -> None:
     ]
     audit.require(
         {row["method"] for row in generated}
-        == {"MoGenDiT", "StableMotion", "MotionCanvas"},
-        "Motion Repair: expected MoGenDiT, StableMotion, and MotionCanvas",
+        == {"MoGenDiT", "StableMotion", "AnimateCanvas"},
+        "Motion Repair: expected MoGenDiT, StableMotion, and AnimateCanvas",
     )
     expected_support = {
         "MoGenDiT": ("method-native adaptive", "predicted_support"),
         "StableMotion": ("oracle v6", "oracle_support"),
-        "MotionCanvas": ("oracle v6", "oracle_support"),
+        "AnimateCanvas": ("oracle v6", "oracle_support"),
     }
     for row in rows:
         _numeric_fields(audit, row, required, f"Motion Repair {row['method']}")
@@ -435,12 +435,12 @@ def _audit_instruction_edit(audit: Audit, data: dict) -> None:
         bool(rows) and rows[0].get("method") == "GT target",
         "MotionFix: GT target must be the first row",
     )
-    motioncanvas = [row for row in rows if row.get("method") == "MotionCanvas"]
+    animatecanvas = [row for row in rows if row.get("method") == "AnimateCanvas"]
     audit.require(
-        len(motioncanvas) == 1
-        and motioncanvas[0].get("ranked") is True
-        and motioncanvas[0].get("rank") == 1,
-        "MotionFix: MotionCanvas must be a formal rank-1 measured row",
+        len(animatecanvas) == 1
+        and animatecanvas[0].get("ranked") is True
+        and animatecanvas[0].get("rank") == 1,
+        "MotionFix: AnimateCanvas must be a formal rank-1 measured row",
     )
     for row in rows:
         _numeric_fields(

@@ -14,7 +14,7 @@
     "recovery_methods": [
       "Rerender preserved Leaderboard motion data with Three.js",
       "Regenerate native Pipeline outputs and render native skeletons or meshes",
-      "Re-encode every original Three.js animation frame for four MotionCanvas previews; provenance retained per entry"
+      "Re-encode every original Three.js animation frame for four AnimateCanvas previews; provenance retained per entry"
     ],
     "native_clock": "Every source frame retained; audio tasks contain synchronized audio",
     "regenerated_cases": "Regenerated demonstrations are new outputs from the published checkpoints; the manifest records recovery provenance."

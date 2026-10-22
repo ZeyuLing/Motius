@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify bit-exact MotionCanvas source-to-Hugging-Face conversion."""
+"""Verify bit-exact AnimateCanvas source-to-Hugging-Face conversion."""
 
 from __future__ import annotations
 

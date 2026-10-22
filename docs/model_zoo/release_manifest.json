@@ -1834,8 +1834,8 @@
         "assets/model_zoo/gvhmr/case_03_global.mp4"
       ]
     },
-    "motioncanvas": {
-      "method": "MotionCanvas",
+    "animatecanvas": {
+      "method": "AnimateCanvas",
       "tasks": [
         "Text-to-Motion",
         "Temporal Motion Completion",
@@ -1843,8 +1843,8 @@
         "Motion Editing",
         "Motion Repair"
       ],
-      "motion_representation": "MotionCanvas-198 (SMPL-22 local rotation-6D + joints)",
-      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-MotionCanvas-0.46B",
+      "motion_representation": "AnimateCanvas-198 (SMPL-22 local rotation-6D + joints)",
+      "checkpoint": "https://huggingface.co/ZeyuLing/Motius-AnimateCanvas-0.46B",
       "checkpoint_revision": "d0b5920fc0895a4cd8a05a1ace48015c37dab625",
       "release_checkpoint": "epoch 2354",
       "metrics": [
@@ -1931,20 +1931,20 @@
         {
           "sample_id": "temporal-completion",
           "caption": "Complete a natural walk through sparse foot and facing keyframes.",
-          "gif": "assets/model_zoo/motioncanvas/keyframe_control_512_30fps.gif",
-          "metadata": "assets/model_zoo/motioncanvas/keyframe_control_512_30fps.json"
+          "gif": "assets/model_zoo/animatecanvas/keyframe_control_512_30fps.gif",
+          "metadata": "assets/model_zoo/animatecanvas/keyframe_control_512_30fps.json"
         },
         {
           "sample_id": "kinematic-control",
           "caption": "Follow a prescribed root path and pelvis-height profile.",
-          "gif": "assets/model_zoo/motioncanvas/trajectory_control_512_30fps.gif",
-          "metadata": "assets/model_zoo/motioncanvas/trajectory_control_512_30fps.json"
+          "gif": "assets/model_zoo/animatecanvas/trajectory_control_512_30fps.gif",
+          "metadata": "assets/model_zoo/animatecanvas/trajectory_control_512_30fps.json"
         },
         {
           "sample_id": "motion-editing",
           "caption": "Wave with the right hand while preserving the lower-body motion.",
-          "gif": "assets/model_zoo/motioncanvas/instruction_editing_512_30fps.gif",
-          "metadata": "assets/model_zoo/motioncanvas/instruction_editing_512_30fps.json"
+          "gif": "assets/model_zoo/animatecanvas/instruction_editing_512_30fps.gif",
+          "metadata": "assets/model_zoo/animatecanvas/instruction_editing_512_30fps.json"
         }
       ]
     },

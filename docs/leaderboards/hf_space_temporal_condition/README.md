@@ -39,7 +39,7 @@ maintained separately on the Sequential Text-to-Motion · BABEL benchmark.
 
 Temporal Control also provides six all-case Three.js explorers. Each contains
 all 4,012 official cases and the aligned GT, CondMDI, FlowMDM, KIMODO,
-MotionLab, and MotionCanvas motions as synchronized neutral SMPL meshes rather
+MotionLab, and AnimateCanvas motions as synchronized neutral SMPL meshes rather
 than joint-only skeletons. The selected setting can be switched
 without loading unrelated motion chunks; large assets live in the public
 [`ZeyuLing/Motius-Leaderboard-Cases`](https://huggingface.co/datasets/ZeyuLing/Motius-Leaderboard-Cases)

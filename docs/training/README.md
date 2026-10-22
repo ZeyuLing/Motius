@@ -33,7 +33,7 @@ unless its card is promoted into this table.
 | FlowHMR | Official 491-D base flow-matching training | [`configs/flowhmr/train_flowhmr.py`](../../configs/flowhmr/train_flowhmr.py) | `FlowHMRTrainer` | `outputs/training/flowhmr` | [FlowHMR model card](../model_zoo/flowhmr.md) |
 | GenTrack | Online G1 generator post-training with a lagged physical tracker, immutable-G0 control variate, Flow-GRPO replay, and tracker replay exchange | [`configs/gentrack/train_gentrack_g1.py`](../../configs/gentrack/train_gentrack_g1.py) · [offline control](../../configs/gentrack/train_gentrack_offline_g1.py) | `GenTrackFlowGRPOTrainer` | `outputs/training/gentrack_g1` | [GenTrack reproduction guide](gentrack.md) |
 | PRISM | Continued training/fine-tuning from a released PRISM artifact | [`configs/prism/train_prism.py`](../../configs/prism/train_prism.py) | `PrismTrainer` | `outputs/training/prism` | [Training section](../model_zoo/prism.md#training) |
-| MotionCanvas | Full M2M training from a HY-Motion T2M warm start | [`configs/motioncanvas/train_motioncanvas_0p46b.py`](../../configs/motioncanvas/train_motioncanvas_0p46b.py) | `MotionCanvasSparseRolloutJoinTrainer` | `outputs/training/motioncanvas_0p46b` | [Training section](../model_zoo/motioncanvas.md#training) |
+| AnimateCanvas | Full M2M training from a HY-Motion T2M warm start | [`configs/animatecanvas/train_animatecanvas_0p46b.py`](../../configs/animatecanvas/train_animatecanvas_0p46b.py) | `AnimateCanvasSparseRolloutJoinTrainer` | `outputs/training/animatecanvas_0p46b` | [Training section](../model_zoo/animatecanvas.md#training) |
 | ProtoMotions | G1 physical motion tracking with native PPO | [`configs/motion_tracking/protomotions_g1_bones_seed.yaml`](../../configs/motion_tracking/protomotions_g1_bones_seed.yaml) | `ProtoMotionsTrainer` | `outputs/training/protomotions` | [Training section](../model_zoo/protomotions.md#training) |
 | SONIC | G1 universal-token tracking with PPO and auxiliary losses | [`configs/motion_tracking/sonic_g1_bones_seed.yaml`](../../configs/motion_tracking/sonic_g1_bones_seed.yaml) | `SonicTrainer` | `outputs/training/sonic` | [Training section](../model_zoo/sonic.md#training) |
 | BeyondMimic | Per-reference G1 tracking with the official Isaac Lab/RSL-RL PPO loop | [`configs/motion_tracking/beyondmimic_g1_lafan1.yaml`](../../configs/motion_tracking/beyondmimic_g1_lafan1.yaml) | `BeyondMimicTrainer` | `outputs/training/beyondmimic` | [Training section](../model_zoo/beyondmimic.md#training) |
@@ -147,7 +147,7 @@ batch_size_per_process * world_size * gradient_accumulation_steps
 
 Mixed precision is declared by each config under `accelerator`. Do not
 override it casually: PRISM keeps its VAE path in FP32 while training the
-transformer in BF16, HY-Motion T2M uses BF16, and MotionCanvas and TMR use
+transformer in BF16, HY-Motion T2M uses BF16, and AnimateCanvas and TMR use
 FP32 in their released recipes.
 
 ## Data
@@ -156,7 +156,7 @@ Download public sources through the [Dataset Hub](../datasets/README.md). The
 compact PRISM/HY-Motion manifest and materialized TMR layouts are documented in
 [PRISM, TMR, and HY-Motion data formats](prism_tmr_hymotion_t2m.md).
 
-MotionCanvas uses the exact mixture declared in its config:
+AnimateCanvas uses the exact mixture declared in its config:
 
 - 30% HYMotion full-mask Text-to-Motion examples.
 - 60% HYMotion arbitrary-condition examples.
@@ -165,9 +165,9 @@ MotionCanvas uses the exact mixture declared in its config:
 
 MotionFix and PerMo are public Motius dataset releases. HYMotion Data is not
 currently distributed through the public Dataset Hub, so reproducing the exact
-released MotionCanvas mixture requires separately authorized HYMotion access.
+released AnimateCanvas mixture requires separately authorized HYMotion access.
 The trainer remains usable with a replacement dataset mixture that emits the
-same MotionCanvas-198 batch contract, but that is a different training run and
+same AnimateCanvas-198 batch contract, but that is a different training run and
 must not be presented as an exact reproduction.
 
 ## Outputs

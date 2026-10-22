@@ -103,13 +103,13 @@ CLAUDE.md
 motius/models/gvhmr/vendor/**/__pycache__/
 motius/models/gvhmr/vendor/**/*.py[cod]
 
-# Small MotionCanvas authority assets required by the public training recipe.
-!checkpoints/models/motioncanvas/
-!checkpoints/models/motioncanvas/README.md
-!checkpoints/models/motioncanvas/Mean.npy
-!checkpoints/models/motioncanvas/Std.npy
-!checkpoints/models/motioncanvas/bone_offsets_22.pt
-!checkpoints/models/motioncanvas/normalization_provenance.md
+# Small AnimateCanvas authority assets required by the public training recipe.
+!checkpoints/models/animatecanvas/
+!checkpoints/models/animatecanvas/README.md
+!checkpoints/models/animatecanvas/Mean.npy
+!checkpoints/models/animatecanvas/Std.npy
+!checkpoints/models/animatecanvas/bone_offsets_22.pt
+!checkpoints/models/animatecanvas/normalization_provenance.md
 
 # Source-pinned physical-controller trainers and their small runtime assets.
 !motius/trainers/sonic/vendor/

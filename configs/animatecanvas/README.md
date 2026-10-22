@@ -1,7 +1,7 @@
-# MotionCanvas Training
+# AnimateCanvas Training
 
-`train_motioncanvas_0p46b.py` is the release recipe for the 0.46B
-MotionCanvas checkpoint. It uses the same 30 fps, 360-frame, 198-D motion
+`train_animatecanvas_0p46b.py` is the release recipe for the 0.46B
+AnimateCanvas checkpoint. It uses the same 30 fps, 360-frame, 198-D motion
 space as the public artifact.
 
 See the [Motius Training Hub](../../docs/training/README.md) for distributed
@@ -21,22 +21,22 @@ Each 630,000-sample training epoch draws:
 The dataset paths in the config are deployment-specific. Set them to the
 materialized HYMotion and MotionHub roots on the training cluster.
 
-The exact MotionCanvas-198 `Mean.npy`, `Std.npy`, normalization provenance,
+The exact AnimateCanvas-198 `Mean.npy`, `Std.npy`, normalization provenance,
 and 22-joint FK rest offsets are small tracked files under
-`checkpoints/models/motioncanvas/`. The training recipe references them
+`checkpoints/models/animatecanvas/`. The training recipe references them
 explicitly and does not depend on normalizer or body-model files under
 `data/`.
 
 ## Train
 
 ```bash
-bash tools/dist_train.sh configs/motioncanvas/train_motioncanvas_0p46b.py 8 \
-  --work-dir outputs/training/motioncanvas_0p46b \
+bash tools/dist_train.sh configs/animatecanvas/train_animatecanvas_0p46b.py 8 \
+  --work-dir outputs/training/animatecanvas_0p46b \
   --auto-resume
 ```
 
 The config enables automatic resume. Logs and checkpoints are kept below
-`outputs/training/motioncanvas_0p46b`; no training output is written to the
+`outputs/training/animatecanvas_0p46b`; no training output is written to the
 repository root.
 
 The released run uses FP32, AdamW with a `1e-5` learning rate, and batch size
@@ -46,13 +46,13 @@ cluster launcher rather than hard-coded in this config.
 ## Export
 
 ```bash
-python tools/export_motioncanvas_hf.py \
-  --checkpoint outputs/training/motioncanvas_0p46b/checkpoint-epoch_2354 \
-  --stats-dir /path/to/motioncanvas_198_stats \
+python tools/export_animatecanvas_hf.py \
+  --checkpoint outputs/training/animatecanvas_0p46b/checkpoint-epoch_2354 \
+  --stats-dir /path/to/animatecanvas_198_stats \
   --bone-offsets /path/to/bone_offsets_22.pt \
   --llm-path /path/to/Qwen3-8B \
   --sentence-encoder-path /path/to/clip-vit-large-patch14 \
-  --output-dir outputs/releases/motioncanvas_0p46b
+  --output-dir outputs/releases/animatecanvas_0p46b
 ```
 
 The exporter fails on missing or unexpected model keys and packages the
@@ -63,9 +63,9 @@ rest offsets, text encoders, configuration, and inference demos into one
 Verify exact tensor identity before publishing:
 
 ```bash
-python tools/audit_motioncanvas_checkpoint.py \
-  --source outputs/training/motioncanvas_0p46b/checkpoint-epoch_2354 \
-  --artifact outputs/releases/motioncanvas_0p46b \
-  --stats-dir /path/to/motioncanvas_198_stats \
+python tools/audit_animatecanvas_checkpoint.py \
+  --source outputs/training/animatecanvas_0p46b/checkpoint-epoch_2354 \
+  --artifact outputs/releases/animatecanvas_0p46b \
+  --stats-dir /path/to/animatecanvas_198_stats \
   --bone-offsets /path/to/bone_offsets_22.pt
 ```

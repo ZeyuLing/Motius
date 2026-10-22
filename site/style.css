@@ -1,3 +1,9 @@
+@font-face {
+  font-family:Outfit;
+  src:url("vendor/Outfit.ttf") format("truetype");
+  font-weight:100 900;
+  font-display:swap
+}
 :root {
   color-scheme:light;
   --ink:#111827;
@@ -7,7 +13,7 @@
   --paper:#f7f8fa;
   --white:#fff;
   --radius:18px;
-  font-family:Inter,"Segoe UI",Arial,sans-serif;
+  font-family:Outfit,"Segoe UI",Arial,sans-serif;
   color:var(--ink);
   background:var(--paper);
   font-synthesis:none
@@ -21,6 +27,89 @@ html {
 }
 body {
   margin:0
+}
+main {
+  width:100%;
+  max-width:100%;
+  overflow-x:clip
+}
+.news {
+  padding-block:112px;
+  background:radial-gradient(ellipse at 12% 0%,#e5ebfc 0%,transparent 58%),#eef1f6
+}
+.news-heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:32px;
+  margin-bottom:44px
+}
+.news-heading h2 {
+  max-width:1024px;
+  font-size:clamp(36px,4.5vw,64px);
+  line-height:1.08;
+  letter-spacing:-.055em;
+  margin:0
+}
+.news-heading .eyebrow {margin-bottom:18px;color:var(--blue)}
+.news-heading>p {color:var(--muted);line-height:1.7;margin:0 0 4px}
+.news-inline {display:inline-block;width:1.2em;height:.62em;vertical-align:.05em;border-radius:100px;overflow:hidden}
+.news-inline img {width:100%;height:100%;object-fit:cover}
+.release-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-auto-flow:dense;
+  gap:16px;
+  transition:grid-template-columns .65s cubic-bezier(.2,.7,.2,1)
+}
+.release-card {
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  padding:26px;
+  background:#fff;
+  color:var(--ink);
+  border:1px solid #dce2eb;
+  border-radius:8px;
+  text-decoration:none;
+  overflow:hidden;
+  box-shadow:0 3px 10px #12224904;
+  transition:box-shadow .4s,border-color .4s
+}
+.release-card:hover {color:var(--ink);border-color:#aebddb;box-shadow:0 12px 36px #12224912}
+.release-meta {display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;color:var(--muted);font-size:13px}
+.release-arrow {display:grid;place-items:center;width:30px;height:30px;border:1px solid #dce2eb;border-radius:50%;font-size:17px;transition:transform .4s}
+.release-card:hover .release-arrow {transform:rotate(45deg)}
+.release-image {height:164px;border-radius:4px;overflow:hidden;background:#e7ecf3;margin-bottom:26px}
+.release-image img {width:100%;height:100%;object-fit:cover;transition:scale .7s cubic-bezier(.2,.7,.2,1)}
+.release-card:hover .release-image img {scale:1.05}
+.release-copy {display:flex;flex-direction:column;flex:1}
+.release-copy h3 {font-size:clamp(25px,2.6vw,37px);line-height:1.08;letter-spacing:-.045em;margin-bottom:16px}
+.release-copy p {font-size:15px;line-height:1.6;color:var(--muted);margin:0 0 28px;max-width:29ch}
+.release-link {margin-top:auto;display:flex;justify-content:space-between;gap:12px;font-size:13px;font-weight:550}
+.release-featured {background:#173da5;border-color:#173da5;color:#fff}
+.release-featured:hover {background:#173da5;color:#fff;border-color:#173da5}
+.release-featured .release-meta,.release-featured .release-copy p {color:#dce5ff}
+.release-featured .release-arrow {border-color:#718bcd}
+.release-brand {background:radial-gradient(circle at 50% 50%,#fff,#e3e9f6);display:grid;place-items:center}
+.release-brand img {width:70%;height:auto;object-fit:contain;mix-blend-mode:multiply}
+@media (hover:hover) and (min-width:900px) {
+  .release-grid:has(.release-card:nth-child(1):hover) {grid-template-columns:1.12fr .94fr .94fr}
+  .release-grid:has(.release-card:nth-child(2):hover) {grid-template-columns:.94fr 1.12fr .94fr}
+  .release-grid:has(.release-card:nth-child(3):hover) {grid-template-columns:.94fr .94fr 1.12fr}
+}
+@media (max-width:700px) {
+  .news {padding-block:72px}
+  .news-heading {display:block;margin-bottom:32px}
+  .news-heading>p {margin-top:22px}
+  .release-grid {grid-template-columns:minmax(0,1fr);gap:18px}
+  .release-card {padding:24px}
+  .release-copy h3 {font-size:34px}
+  .release-image {height:180px}
+}
+@media (prefers-reduced-motion:reduce) {
+  .release-grid,.release-card,.release-arrow,.release-image img {transition:none!important}
+  .release-card,.release-image img {transform:none!important;scale:1!important;opacity:1!important}
 }
 a {
   color:inherit;

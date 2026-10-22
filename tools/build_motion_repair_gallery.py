@@ -31,7 +31,7 @@ METHODS = (
     ("corrupted", "Corrupted input", "#a5412e", "motion"),
     ("mogendit", "MoGenDiT", "#315f9d", "motion_fix"),
     ("stablemotion", "StableMotion", "#956000", "motion_fix"),
-    ("motioncanvas", "MotionCanvas", "#7a4e98", "motion_fix"),
+    ("motioncanvas", "AnimateCanvas", "#7a4e98", "motion_fix"),
 )
 
 
@@ -41,7 +41,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--corrupted", required=True, type=Path)
     parser.add_argument("--mogendit", required=True, type=Path)
     parser.add_argument("--stablemotion", required=True, type=Path)
-    parser.add_argument("--motioncanvas", required=True, type=Path)
+    parser.add_argument("--animatecanvas", required=True, type=Path)
     parser.add_argument("--dataset-manifest", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--asset-base-url", required=True)
@@ -106,7 +106,7 @@ def build(args: argparse.Namespace) -> dict:
         "corrupted": load_packed(args.corrupted),
         "mogendit": load_packed(args.mogendit),
         "stablemotion": load_packed(args.stablemotion),
-        "motioncanvas": load_packed(args.motioncanvas),
+        "motioncanvas": load_packed(args.animatecanvas),
     }
     reference = packed["gt"]
     case_keys = [str(value) for value in reference["case_keys"]]

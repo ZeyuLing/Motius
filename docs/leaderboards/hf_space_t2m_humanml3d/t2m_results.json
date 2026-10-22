@@ -72,7 +72,7 @@
       "utmrDiv": 54.3186
     },
     {
-      "method": "MotionCanvas",
+      "method": "AnimateCanvas",
       "version": "0.46B · 360f",
       "ref": "raw/refk",
       "msN": 4042,

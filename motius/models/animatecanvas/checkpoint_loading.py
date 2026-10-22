@@ -2,7 +2,7 @@
 Selective T2M-to-M2M v2 Checkpoint Loading.
 
 This module implements selective checkpoint loading from HyMotion-T2M pretrained
-weights into MotionCanvas v2 bundle, handling architecture differences:
+weights into AnimateCanvas v2 bundle, handling architecture differences:
 
 - **Reusable modules** (exact shape match):
   - Text encoders (ctxt_encoder, vtxt_encoder, text_refiner)
@@ -20,7 +20,7 @@ weights into MotionCanvas v2 bundle, handling architecture differences:
   - mean, std: M2M uses strict 198-dim stats derived from T2M 201-dim stats
 
 **Usage**:
-  from motius.models.motioncanvas.checkpoint_loading import load_t2m_pretrained_selective
+  from motius.models.animatecanvas.checkpoint_loading import load_t2m_pretrained_selective
 
   stats = load_t2m_pretrained_selective(
       bundle=m2m_bundle,
@@ -339,7 +339,7 @@ def load_t2m_pretrained_selective(
     (input_encoder, final_layer).
 
     Args:
-        bundle: MotionCanvasBundle instance
+        bundle: AnimateCanvasBundle instance
         t2m_checkpoint_path: Path to T2M pretrained checkpoint (.ckpt or .pt)
         freeze_strategy: Which modules to freeze after loading:
             - 'none': Don't freeze anything (default)
@@ -527,7 +527,7 @@ def _apply_freeze_strategy(bundle, freeze_strategy: str) -> list:
     Apply freezing strategy to specify which modules are frozen after loading.
 
     Args:
-        bundle: MotionCanvasBundle instance
+        bundle: AnimateCanvasBundle instance
         freeze_strategy: 'none', 'encoders', 'text_refiner', 'blocks', 'full'
 
     Returns:
@@ -585,7 +585,7 @@ def verify_loading(bundle, t2m_checkpoint_path: str) -> Dict[str, Any]:
     comparing specific parameters.
 
     Args:
-        bundle: MotionCanvasBundle instance (after loading)
+        bundle: AnimateCanvasBundle instance (after loading)
         t2m_checkpoint_path: Path to T2M checkpoint for verification
 
     Returns:

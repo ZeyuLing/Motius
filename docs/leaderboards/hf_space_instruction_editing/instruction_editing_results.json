@@ -45,7 +45,7 @@
       "measured_rank": null
     },
     {
-      "method": "MotionCanvas",
+      "method": "AnimateCanvas",
       "method_id": "motioncanvas",
       "input": "source motion + instruction",
       "native_representation": "SMPL-22 motion135",
