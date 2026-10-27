@@ -71,8 +71,8 @@ def pytorch_profile(devices):
     # Modern CUDA builds may drop old architectures; reject an unverified mix.
     capabilities = [device['capability'] for device in devices]
     if any(major >= 10 for major, _ in capabilities):
-        if any(major < 7 for major, _ in capabilities):
-            raise RuntimeError('This mixed GPU system includes Blackwell and a pre-Volta GPU; use an external environment for the intended device.')
+        if any(capability < (7, 5) for capability in capabilities):
+            raise RuntimeError('This mixed GPU system includes Blackwell and a pre-Turing GPU; use an external environment for the intended device.')
         return dict(cuda='cu128', torch='2.7.1+cu128', torchvision='0.22.1+cu128')
     return dict(cuda='cu124', torch='2.6.0+cu124', torchvision='0.21.0+cu124')
 

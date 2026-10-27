@@ -70,9 +70,10 @@ def test_gpu_profile_matches_architecture(caps, cuda, version):
     assert profile['cuda'] == cuda and profile['torch'] == version
 
 
-def test_gpu_profile_rejects_unverified_mixed_blackwell_and_pre_volta():
+@pytest.mark.parametrize('old', [(6, 1), (7, 0)])
+def test_gpu_profile_rejects_unverified_mixed_blackwell_and_pre_turing(old):
     with pytest.raises(RuntimeError, match='mixed GPU'):
-        bootstrap.pytorch_profile([{'capability': (6, 1)}, {'capability': (12, 0)}])
+        bootstrap.pytorch_profile([{'capability': old}, {'capability': (12, 0)}])
 
 
 def test_nvidia_smi_detects_multiple_windows_gpus(monkeypatch):

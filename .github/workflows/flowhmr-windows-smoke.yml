@@ -4,6 +4,7 @@ on:
     paths:
       - 'blender_extension/motius_flowhmr/**'
       - 'tests/test_flowhmr_runtime_install.py'
+      - 'tests/test_flowhmr_windows.py'
       - '.github/workflows/flowhmr-windows-smoke.yml'
   workflow_dispatch:
 permissions:
@@ -19,4 +20,4 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install pytest
       - name: Installer and simulated GPU checks
-        run: python -m pytest tests/test_flowhmr_runtime_install.py -q -k "windows_bootstrap or gpu_profile or nvidia_smi or cuda_probe"
+        run: python -m pytest tests/test_flowhmr_runtime_install.py tests/test_flowhmr_windows.py -q -k "windows or gpu_profile or nvidia_smi or cuda_probe"

@@ -56,7 +56,7 @@ VGGT 默认仍处理所有帧，原始 SAM 网络、权重和 decoder 中间预�
 
 安装期间可以继续使用或关闭 Blender；重新打开后插件会接续显示仍在运行的安装任务。若更改运行时目录，请保存 Blender 偏好设置，使下次启动仍能找到该目录。
 
-安装器先通过 `nvidia-smi` 检测计算能力：Blackwell（如 RTX 50）选择 PyTorch 2.7.1 / CUDA 12.8，其余支持的 GPU 保留 PyTorch 2.6.0 / CUDA 12.4；下载权重前检查 CUDA 矩阵运算及 TorchVision CUDA 算子。RTX 50 需兼容的新 NVIDIA 驱动；Windows 的 CUDA 12.8 工具链对应驱动版本为 570.65 或更新。Blackwell 和早于 Volta 的 GPU 混用时自动安装会拒绝，请为目标 GPU 配置外部环境。
+安装器先通过 `nvidia-smi` 检测计算能力：Blackwell（如 RTX 50）选择 PyTorch 2.7.1 / CUDA 12.8，其余支持的 GPU 保留 PyTorch 2.6.0 / CUDA 12.4；下载权重前检查 CUDA 矩阵运算及 TorchVision CUDA 算子。RTX 50 需兼容的新 NVIDIA 驱动；Windows 的 CUDA 12.8 工具链对应驱动版本为 570.65 或更新。Blackwell 和早于 Turing 的 GPU 混用时自动安装会拒绝，请为目标 GPU 配置外部环境。
 
 自动安装适配 **Linux / Windows x86_64 与 NVIDIA GPU**；完整流程在 Blender 4.5.3 / Linux / H200 上验证。Windows 和消费级 NVIDIA GPU 尚未实机验证，macOS 和 AMD GPU 不支持 CUDA 推理。默认遵循上游 BF16 精度；Options 中可显式选择 FP16 混合精度或 FP32 前端计算。安装包不含权重或 SMPL-H；首次安装需联网，下载耗时不计入推理时间。Blender 关闭联网时不会启动自动安装，推理只读取已有本地权重。
 
