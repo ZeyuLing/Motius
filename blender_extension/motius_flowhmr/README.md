@@ -27,7 +27,7 @@
 
 ## 推理模式
 
-只需安装 `motius-flowhmr-0.2.12.zip`。在面板中选择 **Standard** 或 **Lightweight**：Standard 使用官方 SAM 裁剪和单手解码；Lightweight 使用 Fast SAM GPU 预处理与双手合批。两种模式均包含在同一安装包，可在提交任务前切换。
+只需安装 `motius-flowhmr-0.2.13.zip`。在面板中选择 **Standard** 或 **Lightweight**：Standard 使用官方 SAM 裁剪和单手解码；Lightweight 使用 Fast SAM GPU 预处理与双手合批。两种模式均包含在同一安装包，可在提交任务前切换。
 
 普通模式保留官方 SAM 的 CPU 图像裁剪和左右手分开解码，使用逐帧身体与双手 token；两种模式共用帧合批、流式 VGGT、注意力查询分块、模块分阶段驻留和推理无用输出的消除。低显存模式使用 Fast SAM 图像预处理与双手合批：
 每帧上传一次 RGB 图像，身体与手部裁剪、翻转、像素缩放和归一化在 GPU 执行；
@@ -55,6 +55,8 @@ VGGT 默认仍处理所有帧，原始 SAM 网络、权重和 decoder 中间预�
 5. 在 **Options → Backend setup** 可更改运行时目录，或为开发用途手动配置 **External Python**、**Motius checkout** 和权重缓存。默认目录为 `~/.cache/motius/flowhmr-runtime`；自动安装和推理不会往 Blender 内置 Python 安装 Torch。
 
 安装期间可以继续使用或关闭 Blender；重新打开后插件会接续显示仍在运行的安装任务。若更改运行时目录，请保存 Blender 偏好设置，使下次启动仍能找到该目录。
+
+安装器先通过 `nvidia-smi` 检测计算能力：Blackwell（如 RTX 50）选择 PyTorch 2.7.1 / CUDA 12.8，其余支持的 GPU 保留 PyTorch 2.6.0 / CUDA 12.4；下载权重前检查 CUDA 矩阵运算及 TorchVision CUDA 算子。RTX 50 需兼容的新 NVIDIA 驱动；Windows 的 CUDA 12.8 工具链对应驱动版本为 570.65 或更新。Blackwell 和早于 Volta 的 GPU 混用时自动安装会拒绝，请为目标 GPU 配置外部环境。
 
 自动安装适配 **Linux / Windows x86_64 与 NVIDIA GPU**；完整流程在 Blender 4.5.3 / Linux / H200 上验证。Windows 和消费级 NVIDIA GPU 尚未实机验证，macOS 和 AMD GPU 不支持 CUDA 推理。默认遵循上游 BF16 精度；Options 中可显式选择 FP16 混合精度或 FP32 前端计算。安装包不含权重或 SMPL-H；首次安装需联网，下载耗时不计入推理时间。Blender 关闭联网时不会启动自动安装，推理只读取已有本地权重。
 

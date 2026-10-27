@@ -49,6 +49,12 @@ def inspect_runtime(request, torch):
     if index < 0 or index >= torch.cuda.device_count():
         raise PreflightError(f'CUDA device {index} does not exist')
     torch.cuda.set_device(index)
+    capability = torch.cuda.get_device_capability(device)
+    arch_list = getattr(torch.cuda, 'get_arch_list', lambda: [])()
+    majors = {int(arch.split('_', 1)[1]) // 10 for arch in arch_list
+              if arch.startswith('sm_') and arch.split('_', 1)[1].isdigit()}
+    if majors and capability[0] not in majors:
+        raise PreflightError(f"GPU {torch.cuda.get_device_name(device)} (compute {capability[0]}.{capability[1]}) is unsupported by the installed PyTorch CUDA build. Update the runtime or select a compatible External Python.")
     # Reject instead of silently changing BF16 weights to FP16 on older cards.
     use_source_precision = request.get('frontend_precision', 'source') == 'source'
     if use_source_precision and (torch.cuda.get_device_capability(device)[0] < 8 or not torch.cuda.is_bf16_supported()):

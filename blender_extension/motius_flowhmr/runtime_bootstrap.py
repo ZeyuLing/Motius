@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Install an isolated NVIDIA runtime without modifying Blender Python."""
 import argparse
+import csv
 try:
     import fcntl
 except ImportError:
@@ -31,6 +32,49 @@ REVISION = 'e77d64daaf23a030d6908c843b2f4e36888097b3'
 
 class InstallationInProgress(RuntimeError):
     pass
+
+
+def discover_nvidia_gpus():
+    """Detect physical GPUs before installing Torch; do not infer from model names."""
+    candidates = [shutil.which('nvidia-smi')]
+    if platform.system() == 'Windows':
+        for variable, suffix in [('SystemRoot', 'System32/nvidia-smi.exe'),
+                                 ('ProgramFiles', 'NVIDIA Corporation/NVSMI/nvidia-smi.exe')]:
+            root = os.environ.get(variable)
+            if root:
+                candidate = Path(root)/suffix
+                if candidate.is_file():
+                    candidates.append(str(candidate))
+    executable = next((p for p in candidates if p), None)
+    if not executable:
+        raise RuntimeError('NVIDIA GPU detection failed: nvidia-smi was not found. Install an NVIDIA driver and retry.')
+    try:
+        result = subprocess.run([executable, '--query-gpu=index,uuid,name,compute_cap,driver_version',
+                                 '--format=csv,noheader,nounits'], capture_output=True, text=True,
+                                encoding='utf-8', errors='replace', timeout=20, check=True)
+        devices = []
+        for row in csv.reader(result.stdout.splitlines(), skipinitialspace=True):
+            if len(row) != 5:
+                raise ValueError('unexpected nvidia-smi output')
+            major, minor = (int(part) for part in row[3].strip().split('.'))
+            devices.append(dict(index=int(row[0]), uuid=row[1].strip(), name=row[2].strip(),
+                                capability=(major, minor), driver=row[4].strip()))
+        if not devices:
+            raise ValueError('no NVIDIA GPU detected')
+        return devices
+    except (OSError, ValueError, subprocess.SubprocessError) as error:
+        raise RuntimeError('Could not identify NVIDIA GPU architecture. Check the driver and nvidia-smi, then retry.') from error
+
+
+def pytorch_profile(devices):
+    # A mixed-GPU machine must have kernels for every visible physical GPU.
+    # Modern CUDA builds may drop old architectures; reject an unverified mix.
+    capabilities = [device['capability'] for device in devices]
+    if any(major >= 10 for major, _ in capabilities):
+        if any(major < 7 for major, _ in capabilities):
+            raise RuntimeError('This mixed GPU system includes Blackwell and a pre-Volta GPU; use an external environment for the intended device.')
+        return dict(cuda='cu128', torch='2.7.1+cu128', torchvision='0.22.1+cu128')
+    return dict(cuda='cu124', torch='2.6.0+cu124', torchvision='0.21.0+cu124')
 
 
 def write_status(path, **data):
@@ -141,6 +185,10 @@ def main(home, bundle, requirements, body):
     except OSError:
         raise InstallationInProgress('Another FlowHMR runtime installation is already running')
     write_status(status, state='running', phase='bootstrap', message='Preparing installer', current=0, total=0, unit='indeterminate')
+    devices = discover_nvidia_gpus()
+    profile = pytorch_profile(devices)
+    print('Detected NVIDIA GPUs:', ', '.join(f"{d['name']} (compute {d['capability'][0]}.{d['capability'][1]}, driver {d['driver']})" for d in devices), flush=True)
+    print(f"Selected PyTorch {profile['torch']} / CUDA {profile['cuda']}", flush=True)
     uv = download_uv(home, status)
     write_status(status, state='running', phase='backend', message='Preparing bundled Motius backend', current=0, total=0, unit='indeterminate')
     project = extract_backend(bundle, home)
@@ -157,14 +205,20 @@ def main(home, bundle, requirements, body):
     venv = home/'envs'/('runtime-' + uuid.uuid4().hex[:12]); venv.parent.mkdir(parents=True, exist_ok=True)
     run_command([str(uv), 'venv', '--python', '3.12.12', '--python-preference', 'only-managed', str(venv)], env, status, 'python', 'Installing Python 3.12.12')
     python = venv/('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
-    run_command([str(uv), 'pip', 'install', '--python', str(python), '--index-url', 'https://download.pytorch.org/whl/cu124',
+    run_command([str(uv), 'pip', 'install', '--python', str(python), '--index-url', f"https://download.pytorch.org/whl/{profile['cuda']}",
                  '--extra-index-url', 'https://pypi.org/simple', '--index-strategy', 'unsafe-best-match',
-                 'torch==2.6.0+cu124', 'torchvision==0.21.0+cu124', 'numpy==1.26.4', 'scipy==1.14.1'],
-                env, status, 'pytorch', 'Installing CUDA PyTorch')
+                 f"torch=={profile['torch']}", f"torchvision=={profile['torchvision']}", 'numpy==1.26.4', 'scipy==1.14.1'],
+                env, status, 'pytorch', f"Installing PyTorch ({profile['cuda']})")
     run_command([str(uv), 'pip', 'install', '--python', str(python), '--no-deps', '-r', str(requirements)],
                 env, status, 'dependencies', 'Installing FlowHMR dependencies')
     weights = home/'weights'/REVISION
     helper = project/'blender_extension/motius_flowhmr/runtime_helper.py'
+    write_status(status, state='running', phase='check', message='Checking GPU and CUDA before downloading weights', current=0, total=0, unit='indeterminate')
+    probe = subprocess.run([str(python), '-u', str(helper), 'probe', '--target', str(weights), '--status', str(status)], env=env, text=True, capture_output=True)
+    if probe.returncode:
+        print(probe.stdout, probe.stderr, file=sys.stderr, flush=True)
+        detail = (probe.stderr.strip().splitlines() or ['Unknown CUDA failure'])[-1]
+        raise RuntimeError(f'GPU compatibility check failed: {detail}; see setup.log')
     write_status(status, state='running', phase='weights', message='Preparing model download', current=0, total=0, unit='indeterminate')
     env['HF_HOME'] = str(home/'hf-cache')
     subprocess.run([str(python), '-u', str(helper), 'download', '--target', str(weights), '--status', str(status)], env=env, check=True)

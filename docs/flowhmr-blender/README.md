@@ -4,14 +4,14 @@ Turn a video into a 52-joint body and hand capture, then retarget and ground it 
 
 ![Three retargeted characters alongside the input video in Blender](assets/cast-final.jpg)
 
-[Watch the complete Blender workflow](assets/demo.mp4) · [Download the extension ZIP](https://github.com/ZeyuLing/Motius/raw/main/docs/flowhmr-blender/motius-flowhmr-0.2.12.zip)
+[Watch the complete Blender workflow](assets/demo.mp4) · [Download the extension ZIP](https://github.com/ZeyuLing/Motius/raw/main/docs/flowhmr-blender/motius-flowhmr-0.2.13.zip)
 
 The video shows the capture result followed by selecting the video and person, inference, retargeting and grounding. It was recorded with an earlier interface; the labels and options below describe the current extension.
 
 ## Requirements
 
-- Blender 4.2 or newer and a 64-bit Linux or Windows machine with an NVIDIA CUDA GPU and a compatible driver. The full workflow has been tested on **Linux / H200**. Windows support has code-level tests only; Windows and consumer GPUs still need physical validation. macOS and AMD GPUs are not supported by this CUDA backend.
-- Internet access for the initial one-click setup and enough free disk space for Python, CUDA packages, approximately **9.66 GB of model files**, and caches. FFmpeg and FFprobe are installed and verified if missing.
+- Blender 4.2 or newer and a 64-bit Linux or Windows machine with an NVIDIA CUDA GPU and a compatible driver. The full workflow has been tested on **Linux / H200**. Windows and RTX 50 support have code-level tests only; Windows and consumer GPUs still need physical end-to-end validation. macOS and AMD GPUs are not supported by this CUDA backend.
+- Internet access for the initial one-click setup and enough free disk space for Python, CUDA packages, approximately **9.66 GB of model files**, and caches. FFmpeg and FFprobe are installed and verified if missing. The installer detects GPU compute capability using `nvidia-smi` and selects PyTorch 2.7.1 / CUDA 12.8 for Blackwell (including RTX 50) or PyTorch 2.6.0 / CUDA 12.4 for older supported GPUs. It checks CUDA and TorchVision kernels before downloading model weights. RTX 50 requires a compatible recent NVIDIA driver (NVIDIA lists 570.65 for CUDA 12.8 on Windows). Mixed Blackwell and pre-Volta GPU systems are rejected by automatic setup; use a compatible external environment for the intended GPU.
 - An authorized **neutral SMPL-H `.npz`** model with 52 joints and 16 shape coefficients. This model is not included in the ZIP or downloaded automatically. Obtain it under its original license; male or female models are not substitutes.
 - One or more editable standard Mixamo T-pose characters for retargeting. The extension does not supply character meshes or rigging.
 
@@ -20,7 +20,7 @@ The video shows the capture result followed by selecting the video and person, i
 1. Download the ZIP above. In Blender, open **Edit → Preferences → Get Extensions → Install from Disk…**, select the ZIP and enable the extension.
 2. Enable Blender's online access. Open the 3D Viewport sidebar (**N → FlowHMR**) and select your neutral SMPL-H model.
 3. Click **Install / update runtime**. The extension installs a separate Python environment, CUDA PyTorch, dependencies and pinned model weights. Progress shows the current stage, package and actual weight-download bytes. Blender remains usable; reopening it can reconnect to an ongoing install.
-4. Click **Check environment**. GPU, TorchVision, model files, SMPL-H and video tools are checked before inference. Keep the NVIDIA driver up to date. The installer does not install packages into Blender's own Python.
+4. Click **Check environment**. GPU architecture, CUDA and TorchVision kernels, model files, SMPL-H and video tools are checked before inference. Keep the NVIDIA driver up to date. The installer does not install packages into Blender's own Python.
 
 The runtime is stored under `~/.cache/motius/flowhmr-runtime` by default. To use a different folder or your own Python environment, open **Options → Backend setup**; save Blender preferences after changing the runtime folder. An interrupted model download can reuse its cache.
 
@@ -46,7 +46,7 @@ The measurements below use the supplied **750-frame, 30 fps video**, a single NV
 
 The rows come from separate measurements with different optimization configurations and are not a controlled head-to-head guarantee. Batch sizes, attention kernels and mixed precision may change numerical results. The upstream default uses BF16 where supported; FP16 and strict FP32 frontend options are explicit alternatives. An older GPU that cannot execute the selected precision is rejected rather than silently changing it. Available VRAM is checked and workspace batches are adjusted; very long videos or competing applications can still run out of memory.
 
-See the [standard benchmark](../architecture/validation/flowhmr-shared-standard-20261027.md), [Lightweight measurement](../architecture/validation/flowhmr-productization-20261027.md), and [native installer validation](../architecture/validation/flowhmr-blender-native-installer-20261027.md) for methodology, precision and limitations.
+See the [standard benchmark](../architecture/validation/flowhmr-shared-standard-20261027.md), [Lightweight measurement](../architecture/validation/flowhmr-productization-20261027.md), [native installer validation](../architecture/validation/flowhmr-blender-native-installer-20261027.md), and [Windows / GPU compatibility checks](../architecture/validation/flowhmr-windows-compat-20261027.md) for methodology, precision and limitations.
 
 ## Licenses and attribution
 

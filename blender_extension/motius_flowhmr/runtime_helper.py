@@ -112,6 +112,32 @@ def activate_static_ffmpeg():
             sys.modules['progress'] = shadow
 
 
+def probe_cuda(torch, torchvision):
+    if not torch.cuda.is_available():
+        raise RuntimeError('CUDA is unavailable: check the NVIDIA driver and CUDA-enabled PyTorch installation.')
+    if torch.cuda.device_count() < 1:
+        raise RuntimeError('No CUDA devices are visible to PyTorch; check CUDA_VISIBLE_DEVICES and the NVIDIA driver.')
+    for index in range(torch.cuda.device_count()):
+        capability = torch.cuda.get_device_capability(index)
+        supported = torch.cuda.get_arch_list()
+        majors = {int(arch.split('_', 1)[1]) // 10 for arch in supported
+                  if arch.startswith('sm_') and arch.split('_', 1)[1].isdigit()}
+        if majors and capability[0] not in majors:
+            raise RuntimeError(f"GPU {torch.cuda.get_device_name(index)} has compute capability {capability[0]}.{capability[1]}, unsupported by PyTorch {torch.__version__} (architectures: {', '.join(supported)}). Update the runtime or use a compatible external Python.")
+        try:
+            device = f'cuda:{index}'
+            test = torch.ones((16, 16), device=device); test = test @ test
+            torchvision.ops.nms(torch.tensor([[0., 0., 1., 1.]], device=device),
+                                torch.tensor([1.], device=device), .5)
+            torch.cuda.synchronize(index)
+            del test
+        except Exception as error:
+            raise RuntimeError(f'GPU {index} ({torch.cuda.get_device_name(index)}) failed a CUDA and TorchVision kernel check. Check the NVIDIA driver and installed PyTorch build: {error}') from error
+    return dict(torch=torch.__version__, cuda=torch.version.cuda,
+                devices=[dict(name=torch.cuda.get_device_name(i), capability=list(torch.cuda.get_device_capability(i)))
+                         for i in range(torch.cuda.device_count())])
+
+
 def check(project, weights, body):
     import sys
     sys.path.insert(0, str(project))
@@ -124,10 +150,7 @@ def check(project, weights, body):
     from motius.models.vision.vggt_omega.bundle import VGGTOmegaBundle  # noqa: F401
     # Check a compiled TorchVision operator without loading model weights.
     torchvision.ops.nms(torch.tensor([[0., 0., 1., 1.]]), torch.tensor([1.]), .5)
-    if not torch.cuda.is_available():
-        raise RuntimeError('CUDA is unavailable: check your NVIDIA driver and CUDA-enabled PyTorch installation.')
-    test = torch.ones((16, 16), device='cuda'); test = test @ test
-    torch.cuda.synchronize(); del test
+    probe_cuda(torch, torchvision)
     downloaded_tools = not shutil.which('ffmpeg') or not shutil.which('ffprobe')
     if downloaded_tools:
         activate_static_ffmpeg()
@@ -163,7 +186,7 @@ def check(project, weights, body):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('action', choices=['download', 'check'])
+    parser.add_argument('action', choices=['download', 'check', 'probe'])
     parser.add_argument('--target', required=True)
     parser.add_argument('--status', required=True)
     parser.add_argument('--project')
@@ -171,5 +194,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.action == 'download':
         download(args.target, args.status)
-    else:
+    elif args.action == 'check':
         print(json.dumps(check(args.project, args.target, args.body)), flush=True)
+    else:
+        import torch
+        import torchvision
+        print(json.dumps(probe_cuda(torch, torchvision)), flush=True)
