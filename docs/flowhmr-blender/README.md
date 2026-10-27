@@ -37,16 +37,16 @@ The tracker can lose identity through occlusion or crossings; inspect the select
 
 ## Measured performance
 
-The measurements below use the supplied **750-frame, 30 fps video**, a single NVIDIA H200, 20 sampling steps, every camera frame, and per-frame body and hand features. Times include model loading and computation, but exclude user actions. The memory numbers are the inference process's sampled driver peaks, not a minimum GPU requirement. These are single-run observations on one server, not Windows or consumer-GPU benchmarks.
+A controlled test of extension 0.2.13 used the supplied 750-frame, 30 fps video on one NVIDIA H200, the same selected-person track, upstream frontend precision, batch size 8, all camera frames, all body and hand features, 20 sampling steps, and no preprocessing cache. Each mode ran in a fresh process under the same environment. Reported milliseconds per frame divide the measured inference time by the processed frames and include model loading. They exclude the separate person-detection operation, Blender import, retargeting, and interaction. GPU memory is the inference process's sampled driver peak (once per second), not minimum required VRAM.
 
-| Mode and measurement | Time | GPU memory |
-| --- | ---: | ---: |
-| Standard, upstream frontend precision | 108.64 s | 5.11 GiB |
-| Lightweight, upstream frontend precision | 96.43 s | 6.28 GiB |
+| Mode | Average inference | Throughput | Sampled GPU peak |
+| --- | ---: | ---: | ---: |
+| Standard | 166.5 ms/frame | 6.0 frames/s | 5.10 GiB |
+| Lightweight 0.2.13 | 149.0 ms/frame | 6.7 frames/s | 6.18 GiB |
 
-The rows come from separate measurements with different optimization configurations and are not a controlled head-to-head guarantee. Batch sizes, attention kernels and mixed precision may change numerical results. The upstream default uses BF16 where supported; FP16 and strict FP32 frontend options are explicit alternatives. An older GPU that cannot execute the selected precision is rejected rather than silently changing it. Available VRAM is checked and workspace batches are adjusted; very long videos or competing applications can still run out of memory.
+In 0.2.13 Lightweight is faster on this sample but uses more memory: its combined left/right hand decoder batch creates a larger workspace. Both modes already share staged residency and streamed camera processing. This is a single H200 measurement, not a Windows or consumer-GPU benchmark. The average amortizes startup costs and is not a guarantee for other video lengths: global camera attention and GPU characteristics make runtime and memory vary with the sequence. Both runs selected the same `torch` attention backend. Different batching and kernels can produce numerical output differences.
 
-See the [standard benchmark](../architecture/validation/flowhmr-shared-standard-20261027.md), [Lightweight measurement](../architecture/validation/flowhmr-productization-20261027.md), [native installer validation](../architecture/validation/flowhmr-blender-native-installer-20261027.md), and [Windows / GPU compatibility checks](../architecture/validation/flowhmr-windows-compat-20261027.md) for methodology, precision and limitations.
+See the [standard benchmark](../architecture/validation/flowhmr-shared-standard-20261027.md), [native installer validation](../architecture/validation/flowhmr-blender-native-installer-20261027.md), and [Windows / GPU compatibility checks](../architecture/validation/flowhmr-windows-compat-20261027.md) for methodology, precision and limitations.
 
 ## Licenses and attribution
 
