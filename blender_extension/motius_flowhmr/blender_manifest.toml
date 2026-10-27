@@ -1,0 +1,15 @@
+schema_version = "1.0.0"
+id = "motius_flowhmr"
+version = "0.2.12"
+name = "Motius FlowHMR"
+tagline = "Capture video motion and animate SMPL-H or Mixamo rigs"
+maintainer = "Motius contributors"
+type = "add-on"
+tags = ["Animation", "Rigging"]
+blender_version_min = "4.2.0"
+license = ["SPDX:GPL-3.0-or-later"]
+
+[permissions]
+files = "Read videos and motion files, write inference results and logs"
+network = "Install isolated Python, dependencies, and model weights"
+
