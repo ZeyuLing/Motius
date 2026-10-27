@@ -1,0 +1,22 @@
+name: Publish FlowHMR Blender 0.2.13
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/publish-flowhmr-0213.yml']
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify and publish the extension
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd docs/flowhmr-blender
+          sha256sum -c checksums.sha256
+          gh release create flowhmr-blender-v0.2.13 motius-flowhmr-0.2.13.zip checksums.sha256 \
+            --target 06d3bb205ceb21e358c75ba4571e1745e4f374f4 \
+            --title 'FlowHMR for Blender 0.2.13' \
+            --notes 'Unified Standard and Lightweight extension. Windows and RTX 50 installation paths have automated compatibility tests; physical Windows and RTX 50 inference remains unverified. See the FlowHMR Blender guide for installation, hardware requirements, and measured results.'
