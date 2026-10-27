@@ -4,7 +4,7 @@ Turn a video into a 52-joint body and hand capture, then retarget and ground it 
 
 ![Three retargeted characters alongside the input video in Blender](assets/cast-final.jpg)
 
-[Watch the complete Blender workflow](assets/demo.mp4) · [Download the extension ZIP](https://github.com/ZeyuLing/Motius/raw/main/docs/flowhmr-blender/motius-flowhmr-0.2.13.zip)
+[Watch the complete Blender workflow](assets/demo.mp4) · [Download the extension ZIP](https://github.com/ZeyuLing/Motius/releases/download/flowhmr-blender-v0.2.13/motius-flowhmr-0.2.13.zip) · [Release notes and checksums](https://github.com/ZeyuLing/Motius/releases/tag/flowhmr-blender-v0.2.13)
 
 The video shows the capture result followed by selecting the video and person, inference, retargeting and grounding. It was recorded with an earlier interface; the labels and options below describe the current extension.
 

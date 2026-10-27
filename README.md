@@ -23,6 +23,7 @@
   <a href="docs/README.md"><strong>Documentation</strong></a> ·
   <a href="#news">News</a> ·
   <a href="#motius-in-motion">Demos</a> ·
+  <a href="docs/flowhmr-blender/README.md">FlowHMR Blender</a> ·
   <a href="#start-here">Quickstart</a> ·
   <a href="docs/tasks/README.md">Tasks</a> ·
   <a href="docs/datasets/README.md">Datasets</a> ·
