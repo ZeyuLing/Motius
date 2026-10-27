@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "motius_flowhmr"
-version = "0.2.13"
+version = "0.2.14"
 name = "Motius FlowHMR"
 tagline = "Capture video motion and animate SMPL-H or Mixamo rigs"
 maintainer = "Motius contributors"

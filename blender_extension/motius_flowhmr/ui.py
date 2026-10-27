@@ -201,7 +201,7 @@ class FlowHMRSettings(PropertyGroup):
     show_queue: BoolProperty(name='Task queue', default=True)
     queue_page: IntProperty(name='Queue page', default=1, min=1)
     show_history: BoolProperty(name='Completed and failed tasks', default=False)
-    sam_frame_batch_size: IntProperty(name='Frames per feature batch', description='Keep every frame; use a smaller batch if GPU memory is limited', default=8, min=1, max=8)
+    sam_frame_batch_size: IntProperty(name='Frames per feature batch', description='Keep every frame; smaller batches can reduce GPU memory', default=8, min=1, max=8)
     query_chunk_size: IntProperty(name='Attention query batch', default=256, min=1, max=4096)
     seed: IntProperty(name='Seed', default=0, min=0)
     max_frames: IntProperty(name='Frame limit (0 = all)', default=0, min=0)
@@ -1092,6 +1092,8 @@ def _draw_queue(layout, props):
         if record['state']=='running' and status.get('rate_per_second',0)>0:
             eta=status.get('eta_seconds',-1)
             item.label(text=f"{status['rate_per_second']:.1f} {status.get('rate_unit','units/s')}"+(f" · about {int(eta)//60}:{int(eta)%60:02d} left in stage" if eta>=0 else ''))
+        if record['state']=='completed' and status.get('inference_ms_per_frame', 0)>0:
+            item.label(text=f"Inference: {status['inference_ms_per_frame']:.1f} ms/frame · {status['inference_frames_per_second']:.1f} frames/s")
         preflight=Path(status['attempt_directory'])/'preflight.json'
         if preflight.is_file():
             try:

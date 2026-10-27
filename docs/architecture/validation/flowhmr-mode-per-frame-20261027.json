@@ -1,0 +1,290 @@
+{
+  "gpu": "NVIDIA H200",
+  "precision": "source",
+  "description": "Full 750-frame user video; selected track, 4 CPU threads, no frontend cache; same torch 2.6.0/cu124, both auto-selected torch attention; one sample each.",
+  "standard_0213": {
+    "frames": 750,
+    "total_seconds_including_loading": 124.85069754905999,
+    "ms_per_frame": 166.46759673207998,
+    "inference_frames_per_second": 6.007175087710568,
+    "driver_peak_mib_sampled": 5222,
+    "driver_sample_count": 122,
+    "peak_allocated_bytes": 4188000768,
+    "peak_reserved_bytes": 4752146432,
+    "model_loading_seconds": 2.186393553391099,
+    "stages": [
+      {
+        "stage": "transcode",
+        "seconds": 1.2509524822235107e-05,
+        "completed": true,
+        "allocated_bytes": 33554432,
+        "reserved_bytes": 33554432,
+        "cumulative_peak_allocated_bytes": 1968187392
+      },
+      {
+        "stage": "tracking",
+        "seconds": 0.20538607984781265,
+        "completed": true,
+        "allocated_bytes": 33554432,
+        "reserved_bytes": 33554432,
+        "cumulative_peak_allocated_bytes": 1968187392
+      },
+      {
+        "stage": "camera",
+        "seconds": 66.88931601401418,
+        "completed": true,
+        "allocated_bytes": 33554432,
+        "reserved_bytes": 35651584,
+        "cumulative_peak_allocated_bytes": 3960987136
+      },
+      {
+        "stage": "features",
+        "seconds": 52.34274787083268,
+        "completed": true,
+        "allocated_bytes": 3586999808,
+        "reserved_bytes": 4752146432,
+        "cumulative_peak_allocated_bytes": 4188000768
+      },
+      {
+        "stage": "sampling_and_decode",
+        "seconds": 1.4993223119527102,
+        "completed": true,
+        "allocated_bytes": 1968187392,
+        "reserved_bytes": 2264924160,
+        "cumulative_peak_allocated_bytes": 4188000768
+      }
+    ],
+    "inference_settings": {
+      "lightweight": false,
+      "staged_resources": true,
+      "attention_query_chunk_size": 256,
+      "full_hand_features": true,
+      "sam_backend": "official",
+      "sam_token_only": true,
+      "frontend_precision": "source",
+      "sam_checkpoint_backbone_dtypes": [
+        "torch.bfloat16"
+      ],
+      "sam_conditioning_optimized": true,
+      "camera_frame_interval": 1,
+      "vggt_memory_mode": "streamed",
+      "vggt_schedule": {
+        "frame_batch_size": 8,
+        "query_chunk_size": 4096,
+        "token_chunk_size": 4096
+      },
+      "vggt_attention_backend": "torch",
+      "vggt_attention_selection": {
+        "seconds": {
+          "torch": 0.023552501884599526,
+          "cudnn": 0.02335959952324629
+        },
+        "fallback_reasons": []
+      },
+      "sam_frame_batch_size": 8,
+      "camera_subsampled": false
+    }
+  },
+  "lightweight_0213": {
+    "frames": 750,
+    "total_seconds_including_loading": 111.76438224036247,
+    "ms_per_frame": 149.0191763204833,
+    "inference_frames_per_second": 6.7105457478129,
+    "driver_peak_mib_sampled": 6330,
+    "driver_sample_count": 109,
+    "peak_allocated_bytes": 4813654016,
+    "peak_reserved_bytes": 5913968640,
+    "model_loading_seconds": 2.106201824732125,
+    "stages": [
+      {
+        "stage": "transcode",
+        "seconds": 1.3232231140136719e-05,
+        "completed": true,
+        "allocated_bytes": 33554432,
+        "reserved_bytes": 33554432,
+        "cumulative_peak_allocated_bytes": 1968187392
+      },
+      {
+        "stage": "tracking",
+        "seconds": 0.24193675071001053,
+        "completed": true,
+        "allocated_bytes": 33554432,
+        "reserved_bytes": 33554432,
+        "cumulative_peak_allocated_bytes": 1968187392
+      },
+      {
+        "stage": "camera",
+        "seconds": 66.98719996307045,
+        "completed": true,
+        "allocated_bytes": 33554432,
+        "reserved_bytes": 35651584,
+        "cumulative_peak_allocated_bytes": 3960987136
+      },
+      {
+        "stage": "features",
+        "seconds": 39.317189362831414,
+        "completed": true,
+        "allocated_bytes": 3595835904,
+        "reserved_bytes": 5913968640,
+        "cumulative_peak_allocated_bytes": 4813654016
+      },
+      {
+        "stage": "sampling_and_decode",
+        "seconds": 1.4819405348971486,
+        "completed": true,
+        "allocated_bytes": 1968187392,
+        "reserved_bytes": 2264924160,
+        "cumulative_peak_allocated_bytes": 4813654016
+      }
+    ],
+    "inference_settings": {
+      "lightweight": true,
+      "staged_resources": true,
+      "attention_query_chunk_size": 256,
+      "full_hand_features": true,
+      "sam_backend": "fast",
+      "sam_token_only": true,
+      "frontend_precision": "source",
+      "sam_checkpoint_backbone_dtypes": [
+        "torch.bfloat16"
+      ],
+      "sam_conditioning_optimized": true,
+      "camera_frame_interval": 1,
+      "vggt_memory_mode": "streamed",
+      "vggt_schedule": {
+        "frame_batch_size": 8,
+        "query_chunk_size": 4096,
+        "token_chunk_size": 4096
+      },
+      "vggt_attention_backend": "torch",
+      "vggt_attention_selection": {
+        "seconds": {
+          "torch": 0.023558905348181725,
+          "cudnn": 0.023456939185659092
+        },
+        "fallback_reasons": []
+      },
+      "sam_frame_batch_size": 8,
+      "camera_subsampled": false
+    }
+  },
+  "lightweight_chunked_0214": {
+    "frames": 750,
+    "total_seconds_including_loading": 116.62017038464546,
+    "ms_per_frame": 155.49356051286063,
+    "inference_frames_per_second": 6.4311344900825755,
+    "driver_peak_mib_sampled": 5174,
+    "driver_sample_count": 114,
+    "peak_allocated_bytes": 4153376768,
+    "peak_reserved_bytes": 4701814784,
+    "model_loading_seconds": 2.1815792601555586,
+    "stages": [
+      {
+        "stage": "transcode",
+        "seconds": 1.1757947504520416e-05,
+        "completed": true,
+        "allocated_bytes": 33554432,
+        "reserved_bytes": 33554432,
+        "cumulative_peak_allocated_bytes": 1968187392
+      },
+      {
+        "stage": "tracking",
+        "seconds": 0.21027751080691814,
+        "completed": true,
+        "allocated_bytes": 33554432,
+        "reserved_bytes": 33554432,
+        "cumulative_peak_allocated_bytes": 1968187392
+      },
+      {
+        "stage": "camera",
+        "seconds": 66.6848452379927,
+        "completed": true,
+        "allocated_bytes": 33554432,
+        "reserved_bytes": 35651584,
+        "cumulative_peak_allocated_bytes": 3960987136
+      },
+      {
+        "stage": "features",
+        "seconds": 44.61851692199707,
+        "completed": true,
+        "allocated_bytes": 3599177728,
+        "reserved_bytes": 4701814784,
+        "cumulative_peak_allocated_bytes": 4153376768
+      },
+      {
+        "stage": "sampling_and_decode",
+        "seconds": 1.3229732867330313,
+        "completed": true,
+        "allocated_bytes": 1968187392,
+        "reserved_bytes": 2264924160,
+        "cumulative_peak_allocated_bytes": 4153376768
+      }
+    ],
+    "inference_settings": {
+      "lightweight": true,
+      "staged_resources": true,
+      "attention_query_chunk_size": 256,
+      "full_hand_features": true,
+      "sam_backend": "fast",
+      "sam_token_only": true,
+      "frontend_precision": "source",
+      "sam_checkpoint_backbone_dtypes": [
+        "torch.bfloat16"
+      ],
+      "sam_conditioning_optimized": true,
+      "camera_frame_interval": 1,
+      "vggt_memory_mode": "streamed",
+      "vggt_schedule": {
+        "frame_batch_size": 8,
+        "query_chunk_size": 4096,
+        "token_chunk_size": 4096
+      },
+      "vggt_attention_backend": "torch",
+      "vggt_attention_selection": {
+        "seconds": {
+          "torch": 0.023519834503531456,
+          "cudnn": 0.023451716949542362
+        },
+        "fallback_reasons": []
+      },
+      "sam_frame_batch_size": 8,
+      "camera_subsampled": false
+    }
+  },
+  "new_vs_standard": {
+    "same_frames": true,
+    "world_joint_mm": {
+      "mean": 0.7205389142036438,
+      "p95": 1.1503802955150604,
+      "max": 1.333093523979187
+    },
+    "body_rotation_deg": {
+      "mean": 0.008296176460410054,
+      "p95": 0.025490871933947355,
+      "max": 0.28437541680869793
+    },
+    "hand_rotation_deg": {
+      "mean": 0.011895386061755183,
+      "p95": 0.04214860912030763,
+      "max": 0.27916905978273543
+    }
+  },
+  "new_vs_old_lightweight": {
+    "same_frames": true,
+    "world_joint_mm": {
+      "mean": 0.5499531030654907,
+      "p95": 0.8705462783575058,
+      "max": 1.0762782096862793
+    },
+    "body_rotation_deg": {
+      "mean": 0.007887008536357668,
+      "p95": 0.024224211825797492,
+      "max": 0.6895313351216561
+    },
+    "hand_rotation_deg": {
+      "mean": 0.013560238525618886,
+      "p95": 0.05168361528568609,
+      "max": 0.34578081311991465
+    }
+  }
+}

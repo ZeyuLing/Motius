@@ -120,6 +120,7 @@ def run(request, status_path):
     from motius.motion.representation.monocular_capture import (
         load_monocular_capture_result, save_monocular_capture_result)
     output = Path(request['output_dir'])
+    performance = None
     if request.get('capture'):
         status('running', 'Preparing existing FlowHMR capture for Blender')
         capture = load_monocular_capture_result(request['capture'])
@@ -222,10 +223,18 @@ def run(request, status_path):
         np.savez_compressed(output/'surface.blender.npz',
             vertices=(np.concatenate(vertices) @ YUP_TO_BLENDER.T).astype(np.float32),
             faces=np.asarray(model.faces, dtype=np.int32))
-    status('completed', f'Ready: {frames} frames at {capture.output_fps:g} fps',
+    rates = {}
+    if performance is not None and frames > 0:
+        seconds = performance['total_seconds_including_model_loading']
+        if seconds > 0:
+            rates = dict(inference_ms_per_frame=1000.0*seconds/frames,
+                         inference_frames_per_second=frames/seconds)
+            performance.update(frames=frames, **rates)
+            write_json(output/'inference_profile.json', performance)
+    status('completed', f'Ready: {frames} frames · source {capture.output_fps:g} fps',
            motion_file=str(motion), frames=frames, fps=capture.output_fps,
            checkpoint_sha256=capture.checkpoint_sha256,
-           inference_settings=capture.metadata.get('inference_settings', {}))
+           inference_settings=capture.metadata.get('inference_settings', {}), **rates)
 
 
 def main():

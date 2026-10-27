@@ -27,18 +27,15 @@
 
 ## 推理模式
 
-只需安装 `motius-flowhmr-0.2.13.zip`。在面板中选择 **Standard** 或 **Lightweight**：Standard 使用官方 SAM 裁剪和单手解码；Lightweight 使用 Fast SAM GPU 预处理与双手合批。两种模式均包含在同一安装包，可在提交任务前切换。
+只需安装 `motius-flowhmr-0.2.14.zip`。在面板中选择 **Standard** 或 **Lightweight**：Standard 使用官方 SAM 裁剪和单手解码；Lightweight 使用 Fast SAM GPU 预处理与双手合批。两种模式均包含在同一安装包，可在提交任务前切换。
 
 普通模式保留官方 SAM 的 CPU 图像裁剪和左右手分开解码，使用逐帧身体与双手 token；两种模式共用帧合批、流式 VGGT、注意力查询分块、模块分阶段驻留和推理无用输出的消除。低显存模式使用 Fast SAM 图像预处理与双手合批：
 每帧上传一次 RGB 图像，身体与手部裁剪、翻转、像素缩放和归一化在 GPU 执行；
-左右手按 `[left, right]` 合成一次网络调用，保留每帧真实的身体与双手 token。
+左右手按 `[left, right]` 合批，手部解码按至多 4 帧为一组执行，以限制峰值显存，保留每帧真实的身体与双手 token。
 VGGT 默认仍处理所有帧，原始 SAM 网络、权重和 decoder 中间预测保持不变。
 少量仿射元数据保留原来的 CPU 计算，以匹配 OpenCV 的参考裁剪几何。
 
-完整视频对照见仓库的 `docs/architecture/validation/flowhmr-fast-sam-20261026.md`。
-0.3.6 的约 366 秒结果属于之前的部分优化，不能代表本版 Fast SAM。
-每次实际运行的记录见输出目录的 `inference_profile.json`。全视频逐帧 VGGT
-仍可能需要较高显存；H200 数据不代表消费级显卡的速度或兼容性。
+同条件的平均毫秒/帧、吞吐和显存测量见[产品指南](https://github.com/ZeyuLing/Motius/tree/main/docs/flowhmr-blender)。每次实际运行的记录见输出目录的 `inference_profile.json`。全视频逐帧 VGGT 仍可能需要较高显存；H200 数据不代表消费级显卡的速度或兼容性。
 
 单个安装包含两种模式，**无需安装两个插件**。
 面板可以随时切换两种模式；已有 `.blend` 保存的模式会继续保留。
@@ -143,11 +140,6 @@ VGGT 默认仍处理所有帧，原始 SAM 网络、权重和 decoder 中间预�
   加速注意力无法消除长视频 VGGT 的显存增长。
 - **Frame limit** 可先测试短片段；**Seed / Motion post-processing** 在比较两种模式时
   应保持一致。后处理可能放大微小数值差异。
-
-此前 Motius 的 H200 单次测量：30 帧完整视频的峰值分配显存从 9.70 降到
-7.23 GiB，最大旋转差 0.0265°、根位移差 0.122 mm；3,789 帧**采样阶段**
-从 11.68 降到 2.81 GiB、8.73 降到 4.76 秒。长采样重复使用 30 帧的已测特征，
-不包含实时 SAM/VGGT，不能视为完整长视频显存保证或所有硬件的性能承诺。
 
 ## 来源与许可
 

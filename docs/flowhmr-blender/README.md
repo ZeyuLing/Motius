@@ -4,7 +4,7 @@ Turn a video into a 52-joint body and hand capture, then retarget and ground it 
 
 ![Three retargeted characters alongside the input video in Blender](assets/cast-final.jpg)
 
-[Watch the complete Blender workflow](assets/demo.mp4) · [Download the extension ZIP](https://github.com/ZeyuLing/Motius/releases/download/flowhmr-blender-v0.2.13/motius-flowhmr-0.2.13.zip) · [Release notes and checksums](https://github.com/ZeyuLing/Motius/releases/tag/flowhmr-blender-v0.2.13)
+[Watch the complete Blender workflow](assets/demo.mp4) · [Download the extension ZIP](https://github.com/ZeyuLing/Motius/releases/download/flowhmr-blender-v0.2.14/motius-flowhmr-0.2.14.zip) · [Release notes and checksums](https://github.com/ZeyuLing/Motius/releases/tag/flowhmr-blender-v0.2.14)
 
 The video shows the capture result followed by selecting the video and person, inference, retargeting and grounding. It was recorded with an earlier interface; the labels and options below describe the current extension.
 
@@ -22,7 +22,7 @@ The video shows the capture result followed by selecting the video and person, i
 3. Click **Install / update runtime**. The extension installs a separate Python environment, CUDA PyTorch, dependencies and pinned model weights. Progress shows the current stage, package and actual weight-download bytes. Blender remains usable; reopening it can reconnect to an ongoing install.
 4. Click **Check environment**. GPU architecture, CUDA and TorchVision kernels, model files, SMPL-H and video tools are checked before inference. Keep the NVIDIA driver up to date. The installer does not install packages into Blender's own Python.
 
-The runtime is stored under `~/.cache/motius/flowhmr-runtime` by default. To use a different folder or your own Python environment, open **Options → Backend setup**; save Blender preferences after changing the runtime folder. An interrupted model download can reuse its cache.
+The extension ZIP includes the exact Motius backend source snapshot in `backend.tar.gz`; it does not contain model weights or the licensed body model. The runtime is stored under `~/.cache/motius/flowhmr-runtime` by default. To use a different folder or your own Python environment, open **Options → Backend setup**; save Blender preferences after changing the runtime folder. An interrupted model download can reuse its cache.
 
 ## Capture and animate
 
@@ -37,16 +37,19 @@ The tracker can lose identity through occlusion or crossings; inspect the select
 
 ## Measured performance
 
-A controlled test of extension 0.2.13 used the supplied 750-frame, 30 fps video on one NVIDIA H200, the same selected-person track, upstream frontend precision, batch size 8, all camera frames, all body and hand features, 20 sampling steps, and no preprocessing cache. Each mode ran in a fresh process under the same environment. Reported milliseconds per frame divide the measured inference time by the processed frames and include model loading. They exclude the separate person-detection operation, Blender import, retargeting, and interaction. GPU memory is the inference process's sampled driver peak (once per second), not minimum required VRAM.
+A controlled H200 test used the supplied 750-frame video and the same selected-person track, PyTorch 2.6 / CUDA 12.4, upstream frontend precision, 8-frame body batches, all camera frames, full body and hand features, 20 sampling steps, and no preprocessing cache. Each run used a fresh process. The Standard and previous Lightweight runs use 0.2.13; the optimized Lightweight run uses the 0.2.14 frontend implementation in the same backend environment. Both modes selected the same `torch` attention backend.
 
-| Mode | Average inference | Throughput | Sampled GPU peak |
-| --- | ---: | ---: | ---: |
-| Standard | 166.5 ms/frame | 6.0 frames/s | 5.10 GiB |
-| Lightweight 0.2.13 | 149.0 ms/frame | 6.7 frames/s | 6.18 GiB |
+| Mode | Average inference | Throughput | Driver peak | PyTorch allocated peak |
+| --- | ---: | ---: | ---: | ---: |
+| Standard | 166.5 ms/frame | 6.01 frames/s | 5.10 GiB | 3.90 GiB |
+| Lightweight 0.2.14 | 155.5 ms/frame | 6.43 frames/s | 5.05 GiB | 3.87 GiB |
+| Lightweight 0.2.13, before workspace changes | 149.0 ms/frame | 6.71 frames/s | 6.18 GiB | 4.48 GiB |
 
-In 0.2.13 Lightweight is faster on this sample but uses more memory: its combined left/right hand decoder batch creates a larger workspace. Both modes already share staged residency and streamed camera processing. This is a single H200 measurement, not a Windows or consumer-GPU benchmark. The average amortizes startup costs and is not a guarantee for other video lengths: global camera attention and GPU characteristics make runtime and memory vary with the sequence. Both runs selected the same `torch` attention backend. Different batching and kernels can produce numerical output differences.
+The new Lightweight path keeps body batches of eight, batches left and right hands together in groups of at most four frames, and releases temporary GPU crops sooner. It lowers the measured peak compared with the previous Lightweight implementation, at a throughput cost. Its memory advantage over Standard in this one test is small and is not a guarantee for every video or GPU: both share the same camera stage.
 
-See the [standard benchmark](../architecture/validation/flowhmr-shared-standard-20261027.md), [native installer validation](../architecture/validation/flowhmr-blender-native-installer-20261027.md), and [Windows / GPU compatibility checks](../architecture/validation/flowhmr-windows-compat-20261027.md) for methodology, precision and limitations.
+Milliseconds per frame divide measured inference time by processed frames and include model loading. They exclude the separate person-detection operation, Blender import, retargeting, and interaction. Driver peaks are sampled once per second and can miss brief spikes; PyTorch allocated peaks cover its allocator, not the entire process. These are single-run H200 measurements, not Windows or consumer-GPU benchmarks. Averages amortize startup costs; global camera attention, video length, resolution and hardware affect runtime and memory.
+
+The optimized output retained all 750 frame IDs. Compared with Standard, world-joint differences averaged 0.721 mm (maximum 1.333 mm) and hand-rotation differences averaged 0.012° (maximum 0.279°). These are differences between outputs, not ground-truth accuracy or bitwise-equivalence claims. See the [measurement methodology and results](../architecture/validation/flowhmr-mode-per-frame-20261027.md) and [Windows / GPU compatibility checks](../architecture/validation/flowhmr-windows-compat-20261027.md).
 
 ## Licenses and attribution
 
