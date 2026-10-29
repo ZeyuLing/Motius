@@ -353,6 +353,7 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.licenses.edge" = ["*"]
 "motius.licenses.mld" = ["*"]
 "motius.licenses.motionlcm" = ["*"]
 "motius.licenses.vimogen" = ["ATTRIBUTIONS.md", "UPSTREAM_COPYRIGHT_NOTICE"]
@@ -421,7 +422,6 @@ namespaces = false
 "motius.models.protomotions" = ["ATTRIBUTIONS.md"]
 "motius.models.motionclr" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.models.bailando" = ["LICENSE", "ATTRIBUTIONS.md"]
-"motius.models.edge" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.models.maskcontrol" = ["ATTRIBUTIONS.md"]
 "motius.models.tm2d" = ["ATTRIBUTIONS.md"]
 "motius.models.unimumo" = ["ATTRIBUTIONS.md"]

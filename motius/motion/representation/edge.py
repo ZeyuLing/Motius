@@ -11,8 +11,30 @@ EDGE_MOTION_DIM = 3 + 24 * 6
 EDGE_REPR_DIM = EDGE_CONTACT_DIM + EDGE_MOTION_DIM
 
 EDGE_SMPL24_PARENTS = (
-    -1, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8,
-    9, 9, 9, 12, 13, 14, 16, 17, 18, 19, 20, 21,
+    -1,
+    0,
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    9,
+    9,
+    12,
+    13,
+    14,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
 )
 EDGE_SMPL24_OFFSETS = (
     (0.0, 0.0, 0.0),
@@ -42,6 +64,36 @@ EDGE_SMPL24_OFFSETS = (
 )
 
 
+def edge_axis_angle_forward_kinematics(rotations, root_positions):
+    """Preserve original EDGE quaternion FK and its floating-point order."""
+    from .edge_rotation import (
+        axis_angle_to_quaternion,
+        quaternion_apply,
+        quaternion_multiply,
+    )
+
+    rotations = axis_angle_to_quaternion(rotations)
+    offsets = rotations.new_tensor(EDGE_SMPL24_OFFSETS).expand(
+        rotations.shape[0], rotations.shape[1], 24, 3
+    )
+    positions_world, rotations_world = [], []
+    for joint, parent in enumerate(EDGE_SMPL24_PARENTS):
+        if parent == -1:
+            positions_world.append(root_positions)
+            rotations_world.append(rotations[:, :, 0])
+        else:
+            positions_world.append(
+                quaternion_apply(rotations_world[parent], offsets[:, :, joint])
+                + positions_world[parent]
+            )
+            rotations_world.append(
+                quaternion_multiply(rotations_world[parent], rotations[:, :, joint])
+                if joint in EDGE_SMPL24_PARENTS
+                else None
+            )
+    return torch.stack(positions_world, dim=3).permute(0, 1, 3, 2)
+
+
 def rotation_6d_to_matrix(value: torch.Tensor) -> torch.Tensor:
     """Convert PyTorch3D row-major 6D rotations to matrices."""
 
@@ -65,7 +117,9 @@ def edge_forward_kinematics(
     """Apply the fixed 24-joint skeleton used by the released EDGE model."""
 
     if rotations.ndim != 5 or rotations.shape[-3:] != (24, 3, 3):
-        raise ValueError(f"Expected rotations (B,T,24,3,3), got {tuple(rotations.shape)}")
+        raise ValueError(
+            f"Expected rotations (B,T,24,3,3), got {tuple(rotations.shape)}"
+        )
     if root_positions.shape != rotations.shape[:2] + (3,):
         raise ValueError("root_positions must match the rotation batch and timeline")
     offsets = torch.as_tensor(
@@ -122,9 +176,7 @@ def edge_motion_to_motion135(motion: torch.Tensor) -> torch.Tensor:
     inverse_basis = rotations.new_tensor(
         ((1.0, 0.0, 0.0), (0.0, 0.0, 1.0), (0.0, -1.0, 0.0))
     )
-    rotations[..., 0, :, :] = torch.matmul(
-        inverse_basis, rotations[..., 0, :, :]
-    )
+    rotations[..., 0, :, :] = torch.matmul(inverse_basis, rotations[..., 0, :, :])
     # Motius motion135 historically stores the first two matrix columns with
     # row-wise flattening: [R00,R01,R10,R11,R20,R21]. EDGE's native PyTorch3D
     # rot6d stores the first two rows, so copying the six values is incorrect.

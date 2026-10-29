@@ -14,7 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import numpy as np
 import torch
 
-from motius.models.edge.audio import extract_edge_jukebox_features
+from motius.pipelines.edge.audio import extract_edge_jukebox_features
 from motius.pipelines.edge import EDGEPipeline
 
 

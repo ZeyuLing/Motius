@@ -3,6 +3,7 @@ from importlib import import_module
 
 _EXPORTS = {
     "AISTPPMusicDanceDataset": ("motius.datasets.aistpp_music_to_dance", "AISTPPMusicDanceDataset"),
+    "PreparedEDGEDataset": ("motius.datasets.prepared_dance", "PreparedEDGEDataset"),
     "PipelineDataset": ("motius.datasets.base_dataset", "PipelineDataset"),
     "TMRTextMotionDataset": ("motius.datasets.motion", "TMRTextMotionDataset"),
     "ManifestTextMotionDataset": ("motius.datasets.text_motion", "ManifestTextMotionDataset"),

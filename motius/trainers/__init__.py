@@ -14,6 +14,7 @@ _EXPORTS = {
     "ViMoGenTrainer": "vimogen",
     "MotionLCMTrainer": "motionlcm",
     "MLDTrainer": "mld",
+    "EDGETrainer": "edge",
     "GenTrackFlowGRPOTrainer": "gentrack",
     "HyMotionT2MTrainer": "hymotion_t2m",
     "PrismTrainer": "prism",

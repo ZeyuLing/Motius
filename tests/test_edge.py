@@ -4,20 +4,17 @@ import torch
 from torch import nn
 import json
 
-from motius.models.edge.audio import (
-    edge_audio_window_count,
-    validate_edge_music_features,
-)
-from motius.models.edge.network.motion import (
-    EDGE_REPR_DIM,
-    EDGE_SMPL24_OFFSETS,
-    edge_forward_kinematics,
-    edge_motion_to_motion135,
-    edge_zup_to_aistpp_yup,
-    matrix_to_rotation_6d,
-    rotation_6d_to_matrix,
-)
-from motius.models.edge.network.sampler import edge_ddim_sample, stitch_edge_windows
+from motius.pipelines.edge.audio import edge_audio_window_count
+from motius.pipelines.edge.audio import validate_edge_music_features
+from motius.motion.representation.edge import EDGE_REPR_DIM
+from motius.motion.representation.edge import EDGE_SMPL24_OFFSETS
+from motius.motion.representation.edge import edge_forward_kinematics
+from motius.motion.representation.edge import edge_motion_to_motion135
+from motius.motion.representation.edge import edge_zup_to_aistpp_yup
+from motius.motion.representation.edge import matrix_to_rotation_6d
+from motius.motion.representation.edge import rotation_6d_to_matrix
+from motius.pipelines.edge.sampler import edge_ddim_sample
+from motius.pipelines.edge.sampler import stitch_edge_windows
 from motius.motion.representation.rotation import rotation_6d_to_matrix as motius_rot6d_to_matrix
 from tools.infer_edge_aistpp import _load_cases
 
@@ -137,8 +134,8 @@ class _ZeroPrediction(nn.Module):
         super().__init__()
         self.anchor = nn.Parameter(torch.zeros(()))
 
-    def guided_forward(self, sample, condition, timestep, weight):
-        del condition, timestep, weight
+    def forward(self, sample, condition, timestep, cond_drop_prob):
+        del condition, timestep, cond_drop_prob
         return sample * 0 + self.anchor
 
 
@@ -160,3 +157,31 @@ def test_edge_sampler_shape_and_seed_are_deterministic():
 
     assert first.shape == (1, 150, EDGE_REPR_DIM)
     torch.testing.assert_close(first, second)
+
+
+def test_native_edge_trainer_backpropagates_objective():
+    from motius.trainers.edge import EDGETrainer
+
+    class Network(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.weight = nn.Parameter(torch.tensor(0.5))
+        def forward(self, noisy, condition, timesteps, cond_drop_prob):
+            return noisy * self.weight
+
+    class Bundle(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.network = Network()
+            self.config = {'sampling': {'train_timesteps': 1000}}
+        @property
+        def device(self):
+            return self.network.weight.device
+
+    bundle = Bundle()
+    trainer = EDGETrainer(bundle)
+    result = trainer.train_step({'motion': torch.randn(1, 150, 151),
+                                 'music_features': torch.randn(1, 150, 4800)})
+    result['loss'].backward()
+    assert torch.isfinite(result['loss'])
+    assert bundle.network.weight.grad is not None
