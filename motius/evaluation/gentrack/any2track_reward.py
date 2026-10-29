@@ -28,12 +28,12 @@ class Any2TrackJudgeReward:
         **kwargs,
     ) -> None:
         import json
-        from motius.models.gentrack.any2track_runtime import OpenTrackRollout
+        from motius.simulators.gentrack.any2track import OpenTrackRollout
         from motius.evaluation.gentrack.scoring import (
             DEFAULT_G1_SCORE_CONFIG,
             compute_g1_adversarial_score,
         )
-        from motius.models.gentrack.tracker_paths import (
+        from motius.configuration.gentrack import (
             ANY2TRACK_CONFIG,
             ANY2TRACK_G1_MJCF,
             ANY2TRACK_ONNX,

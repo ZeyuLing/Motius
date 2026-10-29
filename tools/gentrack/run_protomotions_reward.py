@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from motius.models.gentrack.protomotions_runtime import main
+from motius.simulators.gentrack.protomotions import main
 
 
 if __name__ == "__main__":

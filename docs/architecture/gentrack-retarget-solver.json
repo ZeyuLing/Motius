@@ -1,0 +1,36 @@
+{
+  "complete": true,
+  "scope": "Actual pinned PyRoki G1 robot and complete original ProtoMotions trajectory least-squares solver versus native workflow. Four nonconstant frames, original objectives/initialization/default 800-iteration termination, CPU JAX backend. No SMPL frontend or full-dataset retargeting claim.",
+  "tests": [
+    {
+      "tensor": "root",
+      "shape": [
+        4,
+        7
+      ],
+      "exact": true
+    },
+    {
+      "tensor": "joints",
+      "shape": [
+        4,
+        29
+      ],
+      "exact": true
+    },
+    {
+      "tensor": "fk",
+      "shape": [
+        4,
+        40,
+        7
+      ],
+      "exact": true
+    }
+  ],
+  "runtime": {
+    "jax": "0.12.0",
+    "backend": "cpu",
+    "frames": 4
+  }
+}

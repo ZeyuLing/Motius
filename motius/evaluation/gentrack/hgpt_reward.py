@@ -32,7 +32,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-from motius.models.gentrack.tracker_paths import (
+from motius.configuration.gentrack import (
     HUMANOID_GPT_ONNX,
     HUMANOID_GPT_ROOT,
     HUMANOID_GPT_VENV_PYTHON,

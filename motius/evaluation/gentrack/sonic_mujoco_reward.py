@@ -10,7 +10,7 @@ from typing import Dict, Optional
 
 import numpy as np
 
-from motius.models.gentrack.sonic_reward import SonicJudgeReward
+from motius.evaluation.gentrack.sonic_reward import SonicJudgeReward
 
 
 class SonicMujocoJudgeReward(SonicJudgeReward):

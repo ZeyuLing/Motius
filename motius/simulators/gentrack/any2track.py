@@ -937,7 +937,7 @@ def main() -> None:
                 args.canonical_method,
                 {
                     "method": args.canonical_method,
-                    "runner": "motius.models.gentrack.any2track_runtime",
+                    "runner": "motius.simulators.gentrack.any2track",
                     "motion_dir": str(args.motion_dir),
                     "manifest": str(args.manifest) if args.manifest else None,
                     "xml": str(args.xml),

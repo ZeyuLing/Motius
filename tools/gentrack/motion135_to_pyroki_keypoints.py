@@ -12,6 +12,6 @@ if str(ROOT) not in sys.path:
 
 if __name__ == "__main__":
     runpy.run_module(
-        "motius.models.gentrack.motion135_to_pyroki_keypoints",
+        "motius.motion.retarget.gentrack_pyroki",
         run_name="__main__",
     )

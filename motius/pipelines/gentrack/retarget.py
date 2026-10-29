@@ -38,16 +38,13 @@ import shutil
 
 SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
 PROJECT_ROOT = pathlib.Path(__file__).resolve().parents[3]
-from motius.models.gentrack.tracker_paths import PROTOMOTIONS_ROOT
+from motius.configuration.gentrack import PROTOMOTIONS_G1_URDF, PROTOMOTIONS_G1_ONNX
 
-# PyRoki scripts in ProtoMotions
-PYROKI_RETARGET_SCRIPT = PROTOMOTIONS_ROOT / "pyroki" / "batch_retarget_to_g1_from_keypoints.py"
-PROTO_CONVERT_SCRIPT = PROTOMOTIONS_ROOT / "data" / "scripts" / "convert_pyroki_retargeted_robot_motions_to_proto.py"
-
-# Default paths
-DEFAULT_SMPL_MODEL = PROJECT_ROOT / "checkpoints" / "smpl_models"
-DEFAULT_URDF = PROTOMOTIONS_ROOT / "protomotions" / "data" / "assets" / "urdf" / "for_retargeting" / "g1.urdf"
-DEFAULT_ONNX = PROTOMOTIONS_ROOT / "data" / "pretrained_models" / "motion_tracker" / "g1-bones-deploy" / "compiled_models" / "unified_pipeline.onnx"
+PYROKI_RETARGET_SCRIPT = PROJECT_ROOT / "tools/gentrack/retarget_keypoints_g1.py"
+PROTO_CONVERT_SCRIPT = PROJECT_ROOT / "tools/convert_protomotions_retargeted.py"
+DEFAULT_SMPL_MODEL = PROJECT_ROOT / "checkpoints/smpl_models"
+DEFAULT_URDF = PROTOMOTIONS_G1_URDF
+DEFAULT_ONNX = PROTOMOTIONS_G1_ONNX
 
 
 def run_step(cmd, step_name, cwd=None, env_extra=None):
@@ -149,7 +146,7 @@ def main():
         # Step 1: motion_135 -> PyRoki keypoints
         # ==================================================================
         run_step([
-            sys.executable, SCRIPT_DIR / "motion135_to_pyroki_keypoints.py",
+            sys.executable, PROJECT_ROOT / "tools/gentrack/motion135_to_pyroki_keypoints.py",
             str(input_path),
             str(keypoints_path),
             "--smpl-model-path", str(args.smpl_model_path),
@@ -227,7 +224,7 @@ def main():
         if data_scripts_dir not in pythonpath_extra:
             pythonpath_extra = f"{data_scripts_dir}:{pythonpath_extra}" if pythonpath_extra else data_scripts_dir
         run_step(proto_cmd, "Retargeted NPZ -> ProtoMotions .motion",
-                 cwd=str(PROTOMOTIONS_ROOT),
+                 cwd=str(PROJECT_ROOT),
                  env_extra={"PYTHONPATH": pythonpath_extra, "MUJOCO_GL": "disable"})
 
         # ==================================================================
@@ -259,15 +256,24 @@ def main():
                 print(f"\nWARNING: ONNX model not found: {args.onnx}")
                 print("  Skipping validation.")
             else:
-                tracker_script = PROTOMOTIONS_ROOT / "deployment" / "test_tracker_mujoco.py"
+                from motius.configuration.gentrack import PROTOMOTIONS_G1_MJCF
+                from motius.simulators.gentrack.protomotions import (
+                    parse_body_mesh_mapping,
+                    simulate_and_export,
+                )
+
+                mjcf = str(PROTOMOTIONS_G1_MJCF)
+                meshes = parse_body_mesh_mapping(mjcf)
                 for motion_file in motion_files:
-                    run_step([
-                        sys.executable, str(tracker_script),
-                        "--onnx", str(args.onnx),
-                        "--motion", str(motion_file),
-                        "--loops", "1",
-                        "--no-realtime",
-                    ], f"ONNX Tracker Validation ({motion_file.name})")
+                    stats = simulate_and_export(
+                        onnx_path=str(args.onnx),
+                        motion_file=str(motion_file),
+                        output_json_path=str(output_dir / f"{motion_file.stem}.validation.json"),
+                        mjcf_path=mjcf,
+                        body_mesh_mapping=meshes,
+                        export_frames=False,
+                    )
+                    print(f"ONNX Tracker Validation ({motion_file.name}): {stats}")
 
     finally:
         if not args.keep_intermediates:

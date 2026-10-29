@@ -1,6 +1,9 @@
 """Offline reward-filtered SFT control for the G1-native generator."""
 
 from __future__ import annotations
+from motius.motion.representation.hymotion_runtime.codecs import HyMotionCodec
+
+from motius.trainers.gentrack.objective import sft_loss_g1
 
 from typing import Any, Dict
 
@@ -40,12 +43,12 @@ class PhysFlowG1OfflineTrainer(PhysFlowG1Trainer):
         *,
         anchor_weight: float,
     ) -> Dict[str, Any]:
-        target = self.bundle.normalize_motion(
+        target = HyMotionCodec(self.bundle).normalize_motion(
             batch[target_key].to(self.bundle._device()).float()
         ).detach()
         lengths = batch[length_key]
         batch_size = int(target.shape[0])
-        out = self.bundle.sft_loss_g1(
+        out = sft_loss_g1(self.bundle,
             batch["text_vec_raw"],
             list(batch["text_ctxt_raw"]),
             batch["text_ctxt_raw_length"],

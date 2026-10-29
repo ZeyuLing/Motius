@@ -1,6 +1,12 @@
 """Tracker-rewarded Flow-GRPO post-training for the G1-native generator."""
 
 from __future__ import annotations
+from motius.motion.representation.hymotion_runtime.codecs import HyMotionCodec
+
+from motius.trainers.gentrack.objective import grpo_loss_g1
+from motius.pipelines.gentrack.sampling import latents_to_qpos
+from motius.pipelines.gentrack.sampling import sample_motion_grpo
+from motius.trainers.gentrack.objective import sft_loss_g1
 
 import os
 import tempfile
@@ -9,7 +15,7 @@ from typing import Any, Dict
 import numpy as np
 import torch
 
-from motius.models.gentrack.flow_grpo import (
+from motius.trainers.gentrack.flow_grpo import (
     group_relative_advantages,
     paired_reference_advantages,
 )
@@ -175,7 +181,7 @@ class PhysFlowG1GRPOTrainer(PhysFlowG1Trainer):
         return -float(metric.get("physical_score", metric.get("score", 1e6)))
 
     def _grpo_loss_from_cache(self, cache: Dict[str, Any]) -> Dict[str, Any]:
-        return self.bundle.grpo_loss_g1(
+        return grpo_loss_g1(self.bundle,
             cache["vtxt"],
             cache["ctxt"],
             cache["ctxt_len"],
@@ -294,7 +300,7 @@ class PhysFlowG1GRPOTrainer(PhysFlowG1Trainer):
         latents: torch.Tensor,
         lengths: torch.Tensor,
     ) -> list:
-        raw = self.bundle.denormalize_motion(
+        raw = HyMotionCodec(self.bundle).denormalize_motion(
             latents.to(self.bundle._device()).float()
         ).detach().cpu().numpy()
         return [
@@ -529,11 +535,11 @@ class PhysFlowG1GRPOTrainer(PhysFlowG1Trainer):
     def _gt_anchor_step(self, batch: Dict[str, Any]) -> Dict[str, Any]:
         if "motion" not in batch:
             raise ValueError("GT anchor step requires batch['motion']")
-        target = self.bundle.normalize_motion(
+        target = HyMotionCodec(self.bundle).normalize_motion(
             batch["motion"].to(self.bundle._device()).float()
         ).detach()
         batch_size = target.shape[0]
-        out = self.bundle.sft_loss_g1(
+        out = sft_loss_g1(self.bundle,
             batch["text_vec_raw"],
             list(batch["text_ctxt_raw"]),
             batch["text_ctxt_raw_length"],
@@ -659,7 +665,7 @@ class PhysFlowG1GRPOTrainer(PhysFlowG1Trainer):
             [length for length in num_frames for _ in range(group_size)],
             dtype=torch.long,
         )
-        behavior = self.bundle.sample_motion_grpo(
+        behavior = sample_motion_grpo(self.bundle,
             vtxt_rep,
             ctxt_rep,
             ctxt_len_rep,
@@ -669,7 +675,7 @@ class PhysFlowG1GRPOTrainer(PhysFlowG1Trainer):
             eta=self.grpo_eta,
         )
         latents = behavior["sample"]
-        qpos = self.bundle.latents_to_qpos(latents)
+        qpos = latents_to_qpos(self.bundle, latents)
         reference_latents = None
         reference_qpos = None
         if self._needs_reference_samples:
@@ -678,7 +684,7 @@ class PhysFlowG1GRPOTrainer(PhysFlowG1Trainer):
                 raise RuntimeError(
                     "paired G0 reward requested but immutable reference is unavailable"
                 )
-            reference_behavior = self.bundle.sample_motion_grpo(
+            reference_behavior = sample_motion_grpo(self.bundle,
                 vtxt_rep,
                 ctxt_rep,
                 ctxt_len_rep,
@@ -692,7 +698,7 @@ class PhysFlowG1GRPOTrainer(PhysFlowG1Trainer):
                 return_policy_artifacts=False,
             )
             reference_latents = reference_behavior["sample"]
-            reference_qpos = self.bundle.latents_to_qpos(reference_latents)
+            reference_qpos = latents_to_qpos(self.bundle, reference_latents)
 
         rollout = tempfile.TemporaryDirectory(
             prefix=f"physflow_g1_grpo_step{step}_",
@@ -910,7 +916,7 @@ class PhysFlowG1RewardWeightedSFTTrainer(PhysFlowG1GRPOTrainer):
             torch.zeros_like(positive),
         ).reshape(-1)
         good_mask = (weights > 0).float()
-        out = self.bundle.sft_loss_g1(
+        out = sft_loss_g1(self.bundle,
             cache["vtxt"],
             cache["ctxt"],
             cache["ctxt_len"],

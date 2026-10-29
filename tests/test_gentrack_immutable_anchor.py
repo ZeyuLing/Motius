@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from motius.pipelines.gentrack.sampling import sample_motion_grpo
+
 import os
 from types import SimpleNamespace
 
@@ -105,7 +107,7 @@ def test_grpo_sampler_replays_complete_stochastic_path() -> None:
     ctxt_len = torch.tensor([2, 3], dtype=torch.long)
     lengths = torch.tensor([5, 4], dtype=torch.long)
 
-    first = bundle.sample_motion_grpo(
+    first = sample_motion_grpo(bundle,
         text_vec,
         text_ctxt,
         ctxt_len,
@@ -114,7 +116,7 @@ def test_grpo_sampler_replays_complete_stochastic_path() -> None:
         eta=0.7,
         transformer=core,
     )
-    second = bundle.sample_motion_grpo(
+    second = sample_motion_grpo(bundle,
         text_vec,
         text_ctxt,
         ctxt_len,
@@ -142,10 +144,12 @@ def test_missing_immutable_checkpoint_fail_closed(tmp_path) -> None:
         bundle.init_immutable_g0_anchor()
 
 
-def test_gt_anchor_step_forwards_g0_velocity_distill_weight() -> None:
+def test_gt_anchor_step_forwards_g0_velocity_distill_weight(monkeypatch) -> None:
     class _DistillBundle:
         def __init__(self) -> None:
             self.anchor_weight = None
+            self.mean = torch.zeros(4)
+            self.std = torch.ones(4)
 
         @staticmethod
         def _device() -> torch.device:
@@ -163,6 +167,7 @@ def test_gt_anchor_step_forwards_g0_velocity_distill_weight() -> None:
                 "anchor_mse": torch.tensor(0.5),
             }
 
+    monkeypatch.setattr("motius.trainers.gentrack.physflow_g1_grpo_trainer.sft_loss_g1", lambda bundle,*a,**kw:bundle.sft_loss_g1(*a,**kw))
     trainer = object.__new__(PhysFlowG1GRPOTrainer)
     trainer.bundle = _DistillBundle()
     trainer.gt_weight = 1.0

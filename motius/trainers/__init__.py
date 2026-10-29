@@ -17,6 +17,7 @@ _EXPORTS = {
     "SonicTrainer": "sonic",
     "ProtoMotionsTrainer": "protomotions",
     "ProtoMotionsPPOTrainer": "protomotions",
+    "GenTrackFlowGRPOTrainer": "gentrack",
     "ViMoGenTrainer": "vimogen",
     "MotionBricksPoseTrainer": "motionbricks",
     "MotionBricksRootTrainer": "motionbricks",
@@ -45,11 +46,8 @@ _EXPORTS = {
     "MoGenDiTTrainer": "mogendit",
     "GemSmplTrainer": "gem_smpl",
     "GemXTrainer": "gem_x",
-    "GenTrackFlowGRPOTrainer": "gentrack",
     "HyMotionT2MTrainer": "hymotion_t2m",
     "PrismTrainer": "prism",
-    "ProtoMotionsTrainer": "protomotions",
-    "SonicTrainer": "sonic",
     "TMRTrainer": "tmr",
 }
 __all__ = ["BaseTrainer", *_EXPORTS]

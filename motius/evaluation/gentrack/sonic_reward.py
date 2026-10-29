@@ -589,7 +589,7 @@ class SonicJudgeReward:
     def _prepare_service_motion_dir(
         self, protocol_root: Path, stems: list[str], work_dir: Path
     ) -> Path:
-        from motius.models.gentrack.sonic_motion import (
+        from motius.motion.representation.gentrack_sonic import (
             _load_qpos,
             qpos_to_sonic_motion,
         )

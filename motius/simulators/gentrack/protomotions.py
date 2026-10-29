@@ -73,25 +73,20 @@ try:
         PROTOMOTIONS_ROOT,
     )
 except ImportError:
-    from motius.models.gentrack.tracker_paths import (
+    from motius.configuration.gentrack import (
         PROTOMOTIONS_G1_MJCF,
         PROTOMOTIONS_G1_ONNX,
         PROTOMOTIONS_G1_URDF,
         PROTOMOTIONS_ROOT,
     )
 
-# Add ProtoMotions to path for deployment utilities
-_PROTO_ROOT = str(PROTOMOTIONS_ROOT)
-if _PROTO_ROOT not in sys.path:
-    sys.path.insert(0, _PROTO_ROOT)
-
-from deployment.state_utils import (
+from motius.motion.representation.protomotions.deployment_state import (
     mujoco_wxyz_to_xyzw,
     compute_anchor_rot_np,
     compute_yaw_offset_np,
     apply_heading_offset_np,
 )
-from deployment.motion_utils import MotionPlayer
+from motius.motion.representation.protomotions.playback import MotionPlayer
 
 # Default paths
 DEFAULT_ONNX = PROTOMOTIONS_G1_ONNX
@@ -100,7 +95,7 @@ DEFAULT_SMPL_MODEL = PROJECT_ROOT / "checkpoints" / "smpl_models"
 DEFAULT_URDF = PROTOMOTIONS_G1_URDF
 
 # Retargeting scripts
-PIPELINE_SCRIPT = SCRIPT_DIR / "pipeline_motion_to_robot.py"
+PIPELINE_SCRIPT = PROJECT_ROOT / "tools/gentrack/pipeline_motion_to_robot.py"
 
 log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(levelname)s  %(message)s")

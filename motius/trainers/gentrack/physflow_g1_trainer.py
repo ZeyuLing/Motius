@@ -11,6 +11,11 @@ uses a single 4096 ``text_feat`` and diffusion.
 """
 
 from __future__ import annotations
+from motius.motion.representation.hymotion_runtime.codecs import HyMotionCodec
+
+from motius.pipelines.gentrack.sampling import latents_to_qpos
+from motius.pipelines.gentrack.sampling import sample_motion
+from motius.trainers.gentrack.objective import sft_loss_g1
 
 import os
 import tempfile
@@ -44,17 +49,17 @@ class PhysFlowG1Trainer(PhysFlowTrainer):
         # 1) sample candidates from the live policy (no grad)
         sample_noise = None
         if self.relative_to_base:
-            latents, sample_noise = self.bundle.sample_motion(
+            latents, sample_noise = sample_motion(self.bundle,
                 vtxt_rep, ctxt_rep, ctxt_len_rep, lengths_rep,
                 num_steps=self.diffusion_steps,
                 return_initial_noise=True,
             )
         else:
-            latents = self.bundle.sample_motion(
+            latents = sample_motion(self.bundle,
                 vtxt_rep, ctxt_rep, ctxt_len_rep, lengths_rep,
                 num_steps=self.diffusion_steps,
             )  # normalized (B*N, Lmax, 38)
-        qpos = self.bundle.latents_to_qpos(latents)  # numpy (B*N, Lmax, 36)
+        qpos = latents_to_qpos(self.bundle, latents)  # numpy (B*N, Lmax, 36)
 
         # 2) score with the frozen judge tracker (lower == more trackable)
         ctx = tempfile.TemporaryDirectory(
@@ -83,13 +88,13 @@ class PhysFlowG1Trainer(PhysFlowTrainer):
                     self.bundle._maybe_init_anchor()
                     base_transformer = getattr(self.bundle, "_anchor_transformer", None)
                 if base_transformer:
-                    base_latents = self.bundle.sample_motion(
+                    base_latents = sample_motion(self.bundle,
                         vtxt_rep, ctxt_rep, ctxt_len_rep, lengths_rep,
                         num_steps=self.diffusion_steps,
                         initial_noise=sample_noise,
                         transformer=base_transformer,
                     )
-                    base_qpos = self.bundle.latents_to_qpos(base_latents)
+                    base_qpos = latents_to_qpos(self.bundle, base_latents)
                     base_metrics = self._score_samples(
                         base_qpos, num_frames, N, os.path.join(ctx.name, "base"))
                     for b in range(B):
@@ -335,8 +340,8 @@ class PhysFlowG1Trainer(PhysFlowTrainer):
                 and (self.tracker_pool_dir or self.tracker_qpos_pool_dir)
                 and self.enable_reward
                 and "motion" in batch and self._global_step() % self.gt_pool_freq == 0):
-            gt_qpos = self.bundle.latents_to_qpos(
-                self.bundle.normalize_motion(
+            gt_qpos = latents_to_qpos(self.bundle,
+                HyMotionCodec(self.bundle).normalize_motion(
                     batch["motion"].to(self.bundle._device()).float()
                 )
             )  # (B, Lclip, 36)
@@ -391,11 +396,11 @@ class PhysFlowG1Trainer(PhysFlowTrainer):
         #    the reward target, so the bundle fuses both into ONE forward).
         gt_target = gt_lengths = None
         if self.gt_weight > 0 and "motion" in batch:
-            gt_target = self.bundle.normalize_motion(
+            gt_target = HyMotionCodec(self.bundle).normalize_motion(
                 batch["motion"].to(self.bundle._device()).float()
             ).detach()
             gt_lengths = batch["tgt_length"]
-        out = self.bundle.sft_loss_g1(
+        out = sft_loss_g1(self.bundle,
             sel_vtxt_t, sel_ctxt, sel_ctxt_len_t, target, lengths,
             good_mask=train_mask,
             sample_weights=torch.tensor(sel_train_weights, dtype=torch.float32),

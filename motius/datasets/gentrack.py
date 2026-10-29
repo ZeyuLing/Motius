@@ -107,3 +107,6 @@ class PhysFlowPromptDataset(Dataset):
             "text_pad_mask": text_pad_mask,
             "num_frames": [b["num_frames"] for b in batch],
         }
+
+DATASETS.register_module(name="GenTrackPromptDataset",module=PhysFlowPromptDataset,force=True)
+GenTrackPromptDataset=PhysFlowPromptDataset

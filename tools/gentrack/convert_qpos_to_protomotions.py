@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Convert the immutable G0 qpos pool with the official ProtoMotions converter.
+"""Convert the immutable G0 qpos pool with native ProtoMotions data components.
 
-The wrapper adds the pieces the vendor converter intentionally does not own:
+The wrapper adds the pieces the data converter intentionally does not own:
 
 * strict source/output protocol validation;
 * deterministic multi-process sharding and resumable logs;
@@ -31,7 +31,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from motius.models.gentrack.tracker_paths import PROTOMOTIONS_ROOT
+from motius.configuration.gentrack import PROTOMOTIONS_ROOT
 
 
 DEFAULT_INPUT_DIR = (
@@ -51,8 +51,8 @@ DEFAULT_PROTO_PYTHON = Path(
         os.environ.get("PHYSFLOW_PROTO_PYTHON", sys.executable),
     )
 )
-CONVERTER_REL = Path("data/scripts/convert_g1_qpos_npz_to_proto.py")
-MJCF_REL = Path("protomotions/data/assets/mjcf/g1_bm_box_feet.xml")
+CONVERTER_REL = Path("tools/convert_protomotions_qpos.py")
+MJCF_REL = Path("checkpoints/robots/protomotions/mjcf/g1_bm_box_feet.xml")
 
 SCHEMA_VERSION = 1
 EXPECTED_COUNT = 13_337
@@ -81,12 +81,6 @@ def atomic_write_json(path: Path, payload: Any) -> None:
         os.fsync(handle.fileno())
     os.replace(temporary, path)
 
-
-def add_proto_paths(proto_root: Path) -> None:
-    for path in (proto_root, proto_root / "data/scripts"):
-        text = str(path)
-        if text not in sys.path:
-            sys.path.insert(0, text)
 
 
 def scalar(value: Any) -> float:
@@ -177,10 +171,8 @@ def extract_joint_order(mjcf_path: Path) -> list[str]:
 
 
 def _torch_load(path: Path) -> dict[str, Any]:
-    try:
-        payload = torch.load(path, map_location="cpu", weights_only=False)
-    except TypeError:
-        payload = torch.load(path, map_location="cpu")
+    from motius.configuration.protomotions.environment import load_environment_configuration
+    payload = load_environment_configuration(path, map_location='cpu')
     if not isinstance(payload, dict):
         raise ValueError(f"{path}: expected dict payload, got {type(payload).__name__}")
     return payload
@@ -298,7 +290,7 @@ def run_converter_rank(
 ) -> dict[str, Any]:
     log_path = log_dir / f"converter_rank_{rank:03d}.log"
     environment = dict(os.environ)
-    python_paths = [str(proto_root), str(proto_root / "data/scripts")]
+    python_paths = [str(PROJECT_ROOT)]
     if environment.get("PYTHONPATH"):
         python_paths.append(environment["PYTHONPATH"])
     environment["PYTHONPATH"] = os.pathsep.join(python_paths)
@@ -327,9 +319,9 @@ def run_converter_rank(
 
 
 def validate_converter_python(python: Path, proto_root: Path) -> None:
-    """Fail before the 13k-file preflight when the vendor env is incomplete."""
+    """Fail before the 13k-file preflight when the data environment is incomplete."""
     environment = dict(os.environ)
-    python_paths = [str(proto_root), str(proto_root / "data/scripts")]
+    python_paths = [str(PROJECT_ROOT)]
     if environment.get("PYTHONPATH"):
         python_paths.append(environment["PYTHONPATH"])
     environment["PYTHONPATH"] = os.pathsep.join(python_paths)
@@ -574,7 +566,6 @@ def main() -> None:
     done_path = (args.done_file or output_dir / "_CONVERSION_DONE.json").resolve()
     if not args.skip_finalize:
         done_path.unlink(missing_ok=True)
-    add_proto_paths(proto_root)
     for required in (converter, mjcf):
         if not required.is_file():
             raise FileNotFoundError(required)

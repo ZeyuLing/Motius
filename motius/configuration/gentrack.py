@@ -1,18 +1,37 @@
-"""Canonical runtime paths for GenTrack's physical judge backends.
+"""Self-describing metadata for the GenTrack specialization of HYMotion."""
 
-The public repository ships the tracker source snapshots but not third-party
-pretrained weights.  Every artifact path can therefore be overridden without
-editing code.  Legacy ``PHYSFLOW_*`` variables remain accepted so checkpoints
-and launch manifests produced by the research code stay reproducible.
-"""
+import json
+from pathlib import Path
 
-from __future__ import annotations
+
+def specialize_artifact(directory):
+    directory = Path(directory)
+    classes = dict(
+        pipeline_class="motius.pipelines.gentrack.GenTrackPipeline",
+        bundle_class="motius.models.gentrack.GenTrackG1Bundle",
+    )
+    for filename in ["hymotion_t2m_config.json", "model_index.json"]:
+        path = directory / filename
+        metadata = json.loads(path.read_text())
+        metadata.update(classes)
+        metadata.update(
+            _class_name="GenTrackPipeline",
+            tasks=["text_to_motion"],
+            specialization="gentrack_g1",
+        )
+        if "api" in metadata:
+            metadata["api"] = {
+                key: classes["bundle_class"] + "." + key
+                for key in ["from_pretrained", "from_config"]
+            }
+        path.write_text(json.dumps(metadata, indent=2) + "\n")
+
 
 import os
 from pathlib import Path
 
 
-MOTIUS_ROOT = Path(__file__).resolve().parents[3]
+MOTIUS_ROOT = Path(__file__).resolve().parents[2]
 
 
 def _path_from_env(primary: str, legacy: str, default: Path) -> Path:
@@ -23,16 +42,14 @@ def _path_from_env(primary: str, legacy: str, default: Path) -> Path:
 PROTOMOTIONS_ROOT = _path_from_env(
     "MOTIUS_GENTRACK_PROTOMOTIONS_ROOT",
     "PHYSFLOW_PROTOMOTIONS_ROOT",
-    MOTIUS_ROOT / "motius" / "trainers" / "protomotions" / "vendor",
+    MOTIUS_ROOT,
 )
+PROTOMOTIONS_ASSETS_ROOT = MOTIUS_ROOT / "checkpoints" / "robots" / "protomotions"
+
 PROTOMOTIONS_G1_TRACKER_ROOT = _path_from_env(
     "MOTIUS_GENTRACK_PROTOMOTIONS_ARTIFACT",
     "PHYSFLOW_PROTOMOTIONS_ARTIFACT",
-    PROTOMOTIONS_ROOT
-    / "data"
-    / "pretrained_models"
-    / "motion_tracker"
-    / "g1-bones-deploy",
+    MOTIUS_ROOT / "checkpoints" / "models" / "protomotions",
 )
 PROTOMOTIONS_G1_ONNX = _path_from_env(
     "MOTIUS_GENTRACK_PROTOMOTIONS_ONNX",
@@ -48,29 +65,20 @@ PROTOMOTIONS_G1_CKPT = _path_from_env(
 PROTOMOTIONS_G1_MJCF = _path_from_env(
     "MOTIUS_GENTRACK_G1_MJCF",
     "PHYSFLOW_G1_MJCF",
-    PROTOMOTIONS_ROOT
-    / "protomotions"
-    / "data"
-    / "assets"
+    PROTOMOTIONS_ASSETS_ROOT
     / "mjcf"
     / "g1_holo_compat.xml",
 )
 PROTOMOTIONS_G1_URDF = _path_from_env(
     "MOTIUS_GENTRACK_G1_URDF",
     "PHYSFLOW_G1_URDF",
-    PROTOMOTIONS_ROOT
-    / "protomotions"
-    / "data"
-    / "assets"
+    PROTOMOTIONS_ASSETS_ROOT
     / "urdf"
     / "for_retargeting"
     / "g1.urdf",
 )
 PROTOMOTIONS_G1_MESH_DIR = (
-    PROTOMOTIONS_ROOT
-    / "protomotions"
-    / "data"
-    / "assets"
+    PROTOMOTIONS_ASSETS_ROOT
     / "mesh"
     / "G1"
 )

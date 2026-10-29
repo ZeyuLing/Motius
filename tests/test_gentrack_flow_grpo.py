@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+from motius.trainers.gentrack.objective import flow_dpo_loss_g1
+from motius.trainers.gentrack.objective import grpo_loss_g1
+
 import numpy as np
 import torch
 
 from motius.models.gentrack.g1_bundle import PhysFlowG1Bundle
-from motius.models.gentrack.flow_grpo import (
+from motius.trainers.gentrack.flow_grpo import (
     clipped_grpo_loss,
     flow_dpo_pair_loss,
     flow_grpo_transition,
@@ -87,7 +90,7 @@ def test_execution_reward_modes_use_dense_or_fall_only_signal() -> None:
     assert trainer._execution_reward(metric) == 0.0
 
 
-def test_reward_weighted_sft_normalizes_positive_advantages_per_prompt() -> None:
+def test_reward_weighted_sft_normalizes_positive_advantages_per_prompt(monkeypatch) -> None:
     class TinyBundle:
         def sft_loss_g1(self, *args, **kwargs):
             del args
@@ -96,6 +99,7 @@ def test_reward_weighted_sft_normalizes_positive_advantages_per_prompt() -> None
             loss = torch.tensor(2.0, requires_grad=True)
             return {"loss": loss, "sft_mse": loss.detach()}
 
+    monkeypatch.setattr("motius.trainers.gentrack.physflow_g1_grpo_trainer.sft_loss_g1", lambda bundle,*a,**kw:bundle.sft_loss_g1(*a,**kw))
     trainer = object.__new__(PhysFlowG1RewardWeightedSFTTrainer)
     trainer.bundle = TinyBundle()
     trainer.num_samples = 4
@@ -279,7 +283,7 @@ def test_unique_timestep_sampling_covers_multiple_flow_times_per_trajectory() ->
 
 def test_g1_grpo_loss_batches_multiple_flow_times_per_trajectory() -> None:
     class TinyBundle:
-        grpo_loss_g1 = PhysFlowG1Bundle.grpo_loss_g1
+        _ctxt_input_dim = 1
 
         def __init__(self) -> None:
             self.bias = torch.nn.Parameter(torch.tensor(0.0))
@@ -312,7 +316,7 @@ def test_g1_grpo_loss_batches_multiple_flow_times_per_trajectory() -> None:
     sigmas = torch.linspace(1.0, 0.0, transitions + 1)
     indices = torch.arange(transitions).repeat(batch, 1)
 
-    result = bundle.grpo_loss_g1(
+    result = grpo_loss_g1(bundle,
         text_vec=torch.zeros(batch, 1),
         text_ctxt=[torch.zeros(1, 1) for _ in range(batch)],
         ctxt_len=torch.ones(batch, dtype=torch.long),
@@ -339,7 +343,7 @@ def test_g1_grpo_loss_batches_multiple_flow_times_per_trajectory() -> None:
 
 def test_g1_grpo_transition_microbatch_preserves_gradient() -> None:
     class TinyBundle:
-        grpo_loss_g1 = PhysFlowG1Bundle.grpo_loss_g1
+        _ctxt_input_dim = 1
 
         def __init__(self) -> None:
             self.bias = torch.nn.Parameter(torch.tensor(0.0))
@@ -367,7 +371,7 @@ def test_g1_grpo_transition_microbatch_preserves_gradient() -> None:
 
     bundle = TinyBundle()
     batch, transitions, frames, dims = 4, 4, 3, 2
-    result = bundle.grpo_loss_g1(
+    result = grpo_loss_g1(bundle,
         text_vec=torch.zeros(batch, 1),
         text_ctxt=[torch.zeros(1, 1) for _ in range(batch)],
         ctxt_len=torch.ones(batch, dtype=torch.long),
@@ -562,7 +566,7 @@ def test_g1_flow_dpo_averages_multiple_shared_pair_timesteps() -> None:
             return torch.zeros_like(x)
 
     class TinyBundle:
-        flow_dpo_loss_g1 = PhysFlowG1Bundle.flow_dpo_loss_g1
+        _ctxt_input_dim = 1
         pred_type = "velocity"
 
         def __init__(self) -> None:
@@ -589,7 +593,7 @@ def test_g1_flow_dpo_averages_multiple_shared_pair_timesteps() -> None:
             return self.reference
 
     bundle = TinyBundle()
-    output = bundle.flow_dpo_loss_g1(
+    output = flow_dpo_loss_g1(bundle,
         text_vec=torch.zeros(2, 1),
         text_ctxt=[torch.zeros(1, 1), torch.zeros(1, 1)],
         ctxt_len=torch.ones(2, dtype=torch.long),
