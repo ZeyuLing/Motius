@@ -1,0 +1,2193 @@
+{
+  "complete": true,
+  "scope": "Check MotionCLIP NN/loss relocation against pre-migration code.\n\nSynthetic tiny architecture and original snapshot, not released-weight or\nindependent upstream certification. Runs the actual snapshot neural/loss code.\n",
+  "snapshot": "pre-migration source at 91ca24257ceb8f0f6d2ec6421ac726ddcc32aa38",
+  "source_files": {
+    "configuration_motionclip.py": "a040a846dcf50170645b981a88cb7353f914f8c914fd2404b70c4c4608b73ba8",
+    "modeling_motionclip.py": "5a33f9115890972c3f3dd6dc647d496b6242f06b95695b6d37ea5ec0dcfe6450",
+    "modeling_motionclip_base.py": "34f990b928a31d35d912935730111eeb0b95e879f381b398d74b22db178ec63f",
+    "modeling_motionclip_text.py": "e1f9e040600bc1f39862c1ee0103560b765a368ccd038d533367928ee4b10126",
+    "modeling_motionclip_motion.py": "57a2ec0aab25418d7c74f1d79cd58b725460d06808cefac4487c99aa0adc21a0"
+  },
+  "comparisons": [
+    {
+      "tensor": "train=True/freeze=False/batch=3/text_embeds",
+      "shape": [
+        3,
+        8
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/motion_embeds",
+      "shape": [
+        3,
+        8
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/logits_per_text",
+      "shape": [
+        3,
+        3
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/logits_per_motion",
+      "shape": [
+        3,
+        3
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/loss",
+      "shape": [],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/logit_scale",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.embeddings.token_embedding.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.embeddings.position_embedding.weight",
+      "shape": [
+        12,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.0.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.encoder.layers.1.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.final_layer_norm.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_model.final_layer_norm.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.embeddings.class_embedding",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.embeddings.motion_projection.weight",
+      "shape": [
+        16,
+        6
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.embeddings.position_embedding.weight",
+      "shape": [
+        13,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.pre_layernorm.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.pre_layernorm.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.post_layernorm.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_model.post_layernorm.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/motion_projection.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=3/gradient/text_projection.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/text_embeds",
+      "shape": [
+        3,
+        8
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/motion_embeds",
+      "shape": [
+        3,
+        8
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/logits_per_text",
+      "shape": [
+        3,
+        3
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/logits_per_motion",
+      "shape": [
+        3,
+        3
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/loss",
+      "shape": [],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/logit_scale",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.embeddings.class_embedding",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.embeddings.motion_projection.weight",
+      "shape": [
+        16,
+        6
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.embeddings.position_embedding.weight",
+      "shape": [
+        13,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.pre_layernorm.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.pre_layernorm.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.0.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.encoder.layers.1.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.post_layernorm.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_model.post_layernorm.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=True/batch=3/gradient/motion_projection.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/text_embeds",
+      "shape": [
+        3,
+        8
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/motion_embeds",
+      "shape": [
+        3,
+        8
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/logits_per_text",
+      "shape": [
+        3,
+        3
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/logits_per_motion",
+      "shape": [
+        3,
+        3
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/loss",
+      "shape": [],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/logit_scale",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.embeddings.token_embedding.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.embeddings.position_embedding.weight",
+      "shape": [
+        12,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.0.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.encoder.layers.1.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.final_layer_norm.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_model.final_layer_norm.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.embeddings.class_embedding",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.embeddings.motion_projection.weight",
+      "shape": [
+        16,
+        6
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.embeddings.position_embedding.weight",
+      "shape": [
+        13,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.pre_layernorm.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.pre_layernorm.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.0.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.encoder.layers.1.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.post_layernorm.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_model.post_layernorm.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/motion_projection.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=False/freeze=False/batch=3/gradient/text_projection.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/text_embeds",
+      "shape": [
+        1,
+        8
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/motion_embeds",
+      "shape": [
+        1,
+        8
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/logits_per_text",
+      "shape": [
+        1,
+        1
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/logits_per_motion",
+      "shape": [
+        1,
+        1
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/loss",
+      "shape": [],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/logit_scale",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.embeddings.token_embedding.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.embeddings.position_embedding.weight",
+      "shape": [
+        12,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.0.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.encoder.layers.1.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.final_layer_norm.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_model.final_layer_norm.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.embeddings.class_embedding",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.embeddings.motion_projection.weight",
+      "shape": [
+        16,
+        6
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.embeddings.position_embedding.weight",
+      "shape": [
+        13,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.pre_layernorm.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.pre_layernorm.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.0.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.self_attn.k_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.self_attn.k_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.self_attn.v_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.self_attn.v_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.self_attn.q_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.self_attn.q_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.self_attn.out_proj.weight",
+      "shape": [
+        16,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.self_attn.out_proj.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.layer_norm1.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.layer_norm1.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.mlp.fc1.weight",
+      "shape": [
+        32,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.mlp.fc1.bias",
+      "shape": [
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.mlp.fc2.weight",
+      "shape": [
+        16,
+        32
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.mlp.fc2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.layer_norm2.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.encoder.layers.1.layer_norm2.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.post_layernorm.weight",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_model.post_layernorm.bias",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/motion_projection.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "bitwise_equal": true
+    },
+    {
+      "tensor": "train=True/freeze=False/batch=1/gradient/text_projection.weight",
+      "shape": [
+        8,
+        16
+      ],
+      "bitwise_equal": true
+    }
+  ],
+  "device": "cpu"
+}

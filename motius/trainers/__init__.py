@@ -10,6 +10,7 @@ _EXPORTS = {
     "OmniControlTrainer": "omnicontrol",
     "MoMaskTrainer": "momask",
     "MaskControlTrainer": "maskcontrol",
+    "MotionCLIPTrainer": "motion_clip",
     "GenTrackFlowGRPOTrainer": "gentrack",
     "HyMotionT2MTrainer": "hymotion_t2m",
     "PrismTrainer": "prism",

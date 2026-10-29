@@ -30,8 +30,16 @@ class MotionCLIPPipeline(BasePipeline):
 
     def __init__(self, bundle, device: Optional[str] = None, **kwargs):
         super().__init__(bundle, **kwargs)
+        from motius.motion.representation.motion_clip.processor import MotionCLIPProcessor
+        self.processor = MotionCLIPProcessor(bundle)
         if device is not None:
             self.to(device)
+
+    def save_pretrained(self, save_directory, **kwargs):
+        from pathlib import Path
+        self.bundle.save_pretrained(save_directory, **kwargs)
+        self.processor.save_pretrained(save_directory)
+        return str(Path(save_directory))
 
     def to(self, device):
         self.bundle.to(device)
@@ -57,7 +65,7 @@ class MotionCLIPPipeline(BasePipeline):
     ) -> Tensor:
         if isinstance(texts, str):
             texts = [texts]
-        enc = self.bundle.tokenize(texts)
+        enc = self.processor.tokenize(texts)
         input_ids = enc['input_ids'].to(self.device)
         attn = enc['attention_mask'].to(self.device)
         feats = self.bundle.encode_text(input_ids, attn)
@@ -86,8 +94,8 @@ class MotionCLIPPipeline(BasePipeline):
             motion = motion.unsqueeze(0)
         motion = motion.to(self.device, dtype=torch.float32)
 
-        if not already_normalized and self.bundle.smpl_pose_processor is not None:
-            motion = self.bundle.smpl_pose_processor.normalize(motion)
+        if not already_normalized:
+            motion = self.processor.normalize_motion(motion)
 
         B, T, D = motion.shape
         if num_frames is None:
