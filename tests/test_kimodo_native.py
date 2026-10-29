@@ -40,3 +40,18 @@ def test_atomic_denoiser_forward_backward_and_checkpoint(tmp_path):
     assert saved
     bundle.load_state_dict_selective(saved)
     handle.remove()
+
+
+def test_g1_mujoco_qpos_conversion_completes_motion():
+    from motius.motion.body_models.kimodo.registry import build_skeleton
+    from motius.motion.export.kimodo import MujocoQposConverter
+
+    converter = MujocoQposConverter(build_skeleton(34))
+    qpos = torch.zeros(8, 36)
+    qpos[:, 3] = 1.0
+    qpos[:, 2] = 0.8
+    motion = converter.qpos_to_motion_dict(qpos, 30.0)
+    assert motion["posed_joints"].shape == (8, 34, 3)
+    assert motion["foot_contacts"].shape == (8, 4)
+    recovered = converter.dict_to_qpos(motion, numpy=False)
+    torch.testing.assert_close(recovered.squeeze(0), qpos, atol=1e-5, rtol=1e-5)

@@ -356,6 +356,7 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.licenses.humanml3d_evaluator" = ["*"]
 "motius.licenses.beyondmimic" = ["*"]
 "motius.configuration.beyondmimic" = ["*.json"]
 "motius.licenses.protomotions" = ["*"]
