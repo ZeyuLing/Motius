@@ -5,8 +5,8 @@ import torch
 import torch.nn as nn
 from torch import Tensor, nn
 from torch.distributions.distribution import Distribution
-from .tools.resnet import Resnet1D
-from .tools.quantize_cnn import QuantizeEMAReset, Quantizer, QuantizeEMA, QuantizeReset
+from .resnet import Resnet1D
+from .quantize_cnn import QuantizeEMAReset, Quantizer, QuantizeEMA, QuantizeReset
 from collections import OrderedDict
 
 

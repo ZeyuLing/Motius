@@ -99,7 +99,7 @@ The checkpoint artifact contains `motiongpt_s3_h3d.tar`,
 | --------- | ---- |
 | Pipeline | `motius.pipelines.motiongpt.MotionGPTPipeline` |
 | Bundle | `motius.models.motiongpt.MotionGPTBundle` |
-| Runtime | `motius.models.motiongpt.network.mGPT.archs` |
+| Runtime | `motius.models.motiongpt` and `motius.pipelines.motiongpt` |
 
 Only the inference-time MotionGPT modules required by the bundle are included
 in this public package.

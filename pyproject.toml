@@ -354,6 +354,7 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.licenses.motiongpt" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.licenses.dart" = ["*"]
 "motius.configuration.prompthmr" = ["stats.json", "joint_names.json", "droid.json", "metric3d.json", "pipeline.yaml", "sam2_hiera_t.yaml", "detectron2/*.yaml"]
 "motius.licenses.prompthmr" = ["LICENSE", "ATTRIBUTIONS.md", "DROID_CALIB_LICENSE", "DROID_CALIB_THIRD_PARTY_LICENSES.txt", "METRIC3D_LICENSE"]
