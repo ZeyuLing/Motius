@@ -32,6 +32,8 @@ _EXPORTS = {
     "MotionGPTTrainer": "motiongpt",
     "MotionGPT3Trainer": "motiongpt3",
     "MoGenDiTTrainer": "mogendit",
+    "GemSmplTrainer": "gem_smpl",
+    "GemXTrainer": "gem_x",
     "GenTrackFlowGRPOTrainer": "gentrack",
     "HyMotionT2MTrainer": "hymotion_t2m",
     "PrismTrainer": "prism",

@@ -1,0 +1,248 @@
+{
+  "complete": true,
+  "comparison": "Full original cold video preprocessing, released GEM-SMPL diffusion/global/contact IK and original SMPL mesh materialization versus public native Pipeline",
+  "upstream_commit": "16bebf402d8893184249ee206d957b8248cd8310",
+  "video_sha256": "88a01c4d075b20664b7fcfe6e2bceb8e6068328faf82e7ebcd02d93d44ea13bd",
+  "static_camera": false,
+  "tests": [
+    {
+      "tensor": "/body_params_incam/body_pose",
+      "shape": [
+        30,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/body_params_incam/global_orient",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/body_params_incam/transl",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/body_params_incam/betas",
+      "shape": [
+        30,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/body_params_global/body_pose",
+      "shape": [
+        30,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/body_params_global/global_orient",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/body_params_global/transl",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/body_params_global/betas",
+      "shape": [
+        30,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/K_fullimg",
+      "shape": [
+        30,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vertices_camera",
+      "shape": [
+        30,
+        6890,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/joints_camera",
+      "shape": [
+        30,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vertices_world",
+      "shape": [
+        30,
+        6890,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/joints_world",
+      "shape": [
+        30,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "native_sha256": {
+    "motius/models/gem_smpl/denoiser.py": "66d2ab976afb4a13e86f760549307fe3ec8cc65faad66c7a44739deacc698d67",
+    "motius/models/gem_smpl/rotary.py": "9e84097bf1c7a38c343947359b75efbb0d3dcda2ad3abf5c62b6dcb92384fc5f",
+    "motius/models/gem_smpl/conditioning.py": "d92f9479c57fb66f6e23b6284874d8c7a269e1c7a67a40e64c6085258f00ca34",
+    "motius/models/gem_smpl/bundle.py": "4ca23af9c7a69268b3c4ef5fdfc1af7ad5428823b8099881b5812f5135f2ad69",
+    "motius/models/gem_smpl/attention.py": "c3651012116da460873d77ea44a98e9e65bb166b7764b02acce2ab48c51749dd",
+    "motius/models/gem_smpl/__init__.py": "9a99b88b80c73a72e360b1f942bb62e637d40d35fc2ba3a84b292595d9867313",
+    "motius/models/gem_smpl/layers.py": "0f00258abb0a4d58bc97a436b8221e74f0cf9ef7793c4656cadc6fb930fec964",
+    "motius/models/gem_smpl/positions.py": "0c7e530c1c64bfb826d9104595732059d6e0ec4e07d9fcebc316f7418d15d924",
+    "motius/models/gem_x/denoiser.py": "77ebd4caee989d120bfac0fd3051df7841ee5334b9a97397f7b86e12f5faaf4f",
+    "motius/models/gem_x/rotary.py": "b317dbe8fd420f920328ee427c46f267b485d0afdbd1f89f75bc048d276fbe6a",
+    "motius/models/gem_x/conditioning.py": "444392e5686e257c956c383b38b013bba94c4446c33198e37a722076ed7f8f24",
+    "motius/models/gem_x/bundle.py": "2db977afd2c8bf15174f740f8492123befa6efa130723b37600b8d5c032c132a",
+    "motius/models/gem_x/attention.py": "522f2b57526651c9fec5a311a89dc025905aa0aa94908cbc0fbbb123d854c73f",
+    "motius/models/gem_x/__init__.py": "094c62ba88e146bba2a1f5014a706594d0d50fdfaff5feaece9fcbcc4c1cbec4",
+    "motius/models/gem_x/layers.py": "cc6e5f75171904fea644c801f1edcfc9db45a35ae45dbca6e4c6daf6d42c77de",
+    "motius/models/gem_x/positions.py": "500d32aa72a372b6b83db41864f571e587864a3e1f8b5db27c30592d6d8a8b67",
+    "motius/models/vision/gem_smpl/pose.py": "7702b9182577772f183d53abb49269e71d2190127ace9a3b7eafcaeac8a4a1a2",
+    "motius/models/vision/gem_smpl/bundle.py": "544412678f757118e594d63e7bbcc4eeaf4e0df8b110d574a5ab348a8cc0737b",
+    "motius/models/vision/gem_smpl/__init__.py": "574257ba27caf6cdc5fcacd7cb4468ba09e43717cd76b4817b7891ff4c420f05",
+    "motius/models/vision/gem_x/pose.py": "b9ba34f99c3e80297839270da2be43292d981aebf512dc891dad9c1f465aadac",
+    "motius/models/vision/gem_x/bundle.py": "c419530d812676e21f3e5765e610874a096503125f2b9feffef065304c47e747",
+    "motius/models/vision/gem_x/__init__.py": "6451e87d78209f681eb50ceccd972ab374990baef1c3d78637791886695b68df",
+    "motius/motion/body_models/gem_x.py": "fd5375c62fe36b30b859e9f6a6c530f98a4c179ccb93f80c8d3542af500f7b90",
+    "motius/motion/body_models/soma/correctives_model.py": "3e30e2c85144b0f36386f8dabaaad00c9c7bc965c4451282a4e09d49a8143965",
+    "motius/motion/body_models/soma/units.py": "dba9a4d23917336be7186cab977a4d5e848eb6bbd8e7d6bd3b2afe3f103fed9c",
+    "motius/motion/body_models/soma/identity_model.py": "15fbc5c192141900a7a515a4e8882520e52c3d927155858802f4cceeec50fae2",
+    "motius/motion/body_models/soma/soma.py": "6c211dc2d558490ceffc9838e9e370af64f0e091d591a99c4503954accc55859",
+    "motius/motion/body_models/soma/__init__.py": "c458eb00dbcb057a486b21001e3bc6e2106de3e10584639d79c17cfa74f1f9e9",
+    "motius/motion/body_models/gem_smpl/body.py": "8a2f8a18b3061ec0c7ef9862a4eb5ab013770e9a7f69ad8cf71614058b0d06c3",
+    "motius/motion/body_models/gem_smpl/smplx.py": "ab46b1c8c5216fbb91d9231d0e4228207e57e8db38b95530cbfd06c468149901",
+    "motius/motion/body_models/gem_smpl/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/motion/body_models/soma/geometry/skeleton_transfer.py": "a56d7e434a2637820f4acd36aea8aa3e9f3710048835307d3057463e57ea6d3a",
+    "motius/motion/body_models/soma/geometry/align_vectors_warp.py": "fb57c93fd6686ffee24f400250ea0c311b78cc0139f645ec1a7c051e45b59c9e",
+    "motius/motion/body_models/soma/geometry/lbs.py": "9bf6cccca2ce348a697ab6871e742c08c0d3b59506e8f5ffc6a83e443839191c",
+    "motius/motion/body_models/soma/geometry/laplacian.py": "9416e7538e21a381992f5bcf40af9ed0d9f128c239f8b76675f936ef7a7682c2",
+    "motius/motion/body_models/soma/geometry/batched_skinning.py": "b565d1da67af54f7455b967a684f6acc3c128a3e382f29fe17b57b65a80a18ed",
+    "motius/motion/body_models/soma/geometry/transforms.py": "6d80af058436010e02c3448ea4cc262bb1e01ee3d5c476fb7f4f9339eca0cd27",
+    "motius/motion/body_models/soma/geometry/interpolate.py": "61553d38c476dda0f8453099819f4a129cec77954118999740e08c47671045b5",
+    "motius/motion/body_models/soma/geometry/barycentric_interp.py": "6421dd8d7af79ea345505d20a252d314df410eb4fbe1001e631c4776f99f385b",
+    "motius/motion/body_models/soma/geometry/lbs_warp.py": "7a3e8fca5a667d721dd43745d792454781a262a4327639e155c46634c63bbbf9",
+    "motius/motion/body_models/soma/geometry/rig_utils.py": "746d653b0b8828bcb0a5f7e78e009fb34c9c562ef17b714c91b4dd654b0e6676",
+    "motius/motion/body_models/soma/geometry/_warp_init.py": "dc77c62c622d75a171b6749e42ad706968a0cb90019efe0540bdfaba009ae63f",
+    "motius/motion/body_models/soma/geometry/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/motion/body_models/soma/geometry/_utils.py": "878efe73f1845f98388a43da4acbd55890158e95d2bc39ad39d13ccab9fba0c2",
+    "motius/motion/conditioning/gem_x_augmentation.py": "e75290fa01ba6ed59662d62a7e015bfdf903c8cc95120aa5820bbfda663ccc2e",
+    "motius/motion/conditioning/gem_smpl_processor.py": "cc2320daac43ea1867726b7c5beec7a75bd7703bda67707bfdb612755a35b0eb",
+    "motius/motion/conditioning/gem_smpl_augmentation.py": "fe9f1bfad4a239c3bf197b45b301da1fd0fe99330888d718e485640f6cd7faa1",
+    "motius/motion/conditioning/gem_x_processor.py": "21c92ebe82bdb5360918326785a5d3406dc65bdad80a0e042a4eea7e22324f3c",
+    "motius/motion/conditioning/gem_smpl.py": "935c8dc403a02bebf0531b6cc14f91492d3bf01f3311a4792a35329b2edb2d0e",
+    "motius/motion/conditioning/gem_x.py": "66624bd856f377911a811e8284dec1d1ac6a2d4b9e4bd4c943694be227b07e37",
+    "motius/motion/conditioning/gem_processor.py": "f05e016994250f0bcf838df3851dbf172339f9a1fadaedce0c21398c89f9051b",
+    "motius/motion/representation/gem_smpl/camera.py": "b3365d6ce74b8f18138d8f40371f5eba967be5891f7a493f990249c55133d14d",
+    "motius/motion/representation/gem_smpl/body_params.py": "2d16394d3b5b29dac7f6279e6fc1c229867978e57a3162254dd286282f1abd91",
+    "motius/motion/representation/gem_smpl/matrix.py": "c1be1eb8afd2ac0f3dcd0f160b621287349fbaf539eaae43136cb8a434aec699",
+    "motius/motion/representation/gem_smpl/codec.py": "b8919283de03d2b40e16363a9ba4d594221afc571e15d70040bead32d7cbc0cc",
+    "motius/motion/representation/gem_smpl/motion.py": "1923204fc94712d47c99934d5fcef7dab975d035622e3f3cda04268d771da466",
+    "motius/motion/representation/gem_smpl/quaternion.py": "6fd48234e8752ac2d3a863a795061b251787153192624868119374eb241eec4d",
+    "motius/motion/representation/gem_smpl/geometry.py": "f5b80ba3c24cbe4223c5e57dbbade687bb8a55fe8698089f99606c1730e64681",
+    "motius/motion/representation/gem_smpl/stats_compose.py": "1c0bca139ea2712ff39697847ebae5b81111b5716d1593e75950060bdd1068ba",
+    "motius/motion/representation/gem_smpl/ik.py": "a45be15f266b833c9d921f34c155ee967c16d7eb694c5e61defe6bb1ec47f376",
+    "motius/motion/representation/gem_smpl/__init__.py": "3550313bc0d36a603ce7f9cb4083ebe2bc8d120599951cdf587613189cd5ef64",
+    "motius/motion/representation/gem_smpl/rotation.py": "0072f7b50527ac30ab0e0d78ea2960f78b7a77af2080862f230051ae6bdbf707",
+    "motius/motion/representation/gem_smpl/smoothing.py": "c47b97f59f99b902d03710b572d184da5f08af3c18b2b99fd7d709c8720da564",
+    "motius/motion/representation/gem_x/camera.py": "af8f6da9c6b234094b15056ad88ed963d8ea60ef81743334602c74b2f9a7dc2f",
+    "motius/motion/representation/gem_x/body_params.py": "d24b587415b71e93acca9b24a9b06b37dbd8667afd70b09ae4dbfb18c8e2d192",
+    "motius/motion/representation/gem_x/matrix.py": "e43dbbbd57ad4b1b3f16dc8c9a4dbf92aae92f97ad5d7d23e914610b2aa66d2b",
+    "motius/motion/representation/gem_x/codec.py": "783641b53e122584553bc0a1064333aff4529a871f815fc22822d45e2d468c19",
+    "motius/motion/representation/gem_x/motion.py": "b574fe18576843fc91c0d26e2392db6438e03ea573d4e4125b69def5562432f5",
+    "motius/motion/representation/gem_x/quaternion.py": "a7630be056867b6a4eed95ab6721b3fe58ff50e774aa1f9dbee5d1d171c72aff",
+    "motius/motion/representation/gem_x/geometry.py": "cbe42bd2410cfba93d9e93d091d60f4c2e4fafa5f7684121be82ff3478ce01f7",
+    "motius/motion/representation/gem_x/stats_compose.py": "dafe4ef6a62e824b0b325f54e42d508015785509bc478ef76e4208ae1f95ba7c",
+    "motius/motion/representation/gem_x/ik.py": "6c9106c1f4bbbeb2373089b6a6723ff8a9f35b7f89a1a48221acd1a6dd6417d5",
+    "motius/motion/representation/gem_x/__init__.py": "a814c341a8b87f8c079e769693e184c2e0b4cc68ed644f586db8397b29ce0e38",
+    "motius/motion/representation/gem_x/rotation.py": "2576e5deb36be16eca3a26793b86b420b1366d711577925d98ee5b192e80943c",
+    "motius/motion/representation/gem_x/smoothing.py": "c47b97f59f99b902d03710b572d184da5f08af3c18b2b99fd7d709c8720da564",
+    "motius/pipelines/gem_smpl/parser.py": "bc083993eba895be60de3bb0ae7aadc7f1f4c45c6aebe3ef28c1d05b841bc70e",
+    "motius/pipelines/gem_smpl/decoding.py": "ed8ffba69fee3291afc3b602c4f24a133e7364430d67ee804784d48339ee9ac8",
+    "motius/pipelines/gem_smpl/sampling.py": "a91e5936a4e3d2dd40e3a02f8293473d9694ad75af11f077356a6cb776c3ac4c",
+    "motius/pipelines/gem_smpl/postprocessing.py": "7c9f8618ed8c2e63d77f5fc207e13249594668d02015d085e6bf73f69ebbb232",
+    "motius/pipelines/gem_smpl/inference.py": "8717637f431a18407d297b70936de8964825b302751e8b6c832d2225212babb8",
+    "motius/pipelines/gem_smpl/features.py": "96c4bd7733c5ffe60a13409026c64b6d4616263ac91ffc07491d84017441aa06",
+    "motius/pipelines/gem_smpl/pipeline.py": "45d050084db8cfdfeacb25623161b23b06a20ae86653e32e5c3da1677382e6db",
+    "motius/pipelines/gem_smpl/composition.py": "28d3bd8215dc2db67373afada42d5c5a1b35bbf4547d94f864585a61e8903622",
+    "motius/pipelines/gem_smpl/frontend.py": "2a0099babafbeee15e258e130aeb9ded46ca0c74bd513d7e1e40597c8d1e7236",
+    "motius/pipelines/gem_smpl/__init__.py": "169d8806ebbfec2bb94e8e36867897bfbae6c3d4d812b834a7585adf8dbba502",
+    "motius/pipelines/gem_smpl/guidance.py": "f7f507ebd7816da21b29bd2546979e4d7b8d330b6ab2b9a03ee4e2195e6eaa98",
+    "motius/pipelines/gem_smpl/export_native.py": "10b41513e832b657fe436c5465f9bf9b69cc4d5aad38553d536f315e75f7b85b",
+    "motius/pipelines/gem_x/parser.py": "4e1d6c37870a915047ef65f6c6bad909e1326c9d0cfb0a7a23f645157fbca74f",
+    "motius/pipelines/gem_x/decoding.py": "91e18d60bc4a284b6b3e5ef86c8236488e05b3ea96fa1c41c9242e3c33c93006",
+    "motius/pipelines/gem_x/sampling.py": "5ec1e13f3ba9567348dddc6fb6c6efeebd92e04147438ba5647271afa045e4e9",
+    "motius/pipelines/gem_x/postprocessing.py": "76e65bf6c68679648833592a3f679c016f22f7e4d904fe7ae56c5575a96d778d",
+    "motius/pipelines/gem_x/tracking.py": "583f7fadeded71f5a00af1bcaec091fed45ec974ca9340610f29a13cb21ebf6c",
+    "motius/pipelines/gem_x/inference.py": "83c8aea41ee47974ba43d48835eca5b8f2801d0011adac43e9509c449964bc46",
+    "motius/pipelines/gem_x/features.py": "6279a95f0c05803e49c860d527ceae359920613dbcce875314fe5db674e82154",
+    "motius/pipelines/gem_x/pose.py": "7e07df49eb8b0e885f024881ffd9d9dbcb9c5ca8c93cc0bd6539e1d50daf6118",
+    "motius/pipelines/gem_x/pipeline.py": "2b7ca5af010ae460627110063e200096aaffe46899bfd250cec404b7131ccc27",
+    "motius/pipelines/gem_x/composition.py": "3502ce1b8d880990ccfa2ddb7ff7cecd1163cc61e4862ec22ff91c1b6674d230",
+    "motius/pipelines/gem_x/frontend.py": "6d42ff365cf938556e758300f4ea3f8395a36eeab94b9b5fc1fd596c32cabe7b",
+    "motius/pipelines/gem_x/__init__.py": "520b5951a37cc9172fb98ee7dde027f788f71f51b022823727ee100a80a64a4c",
+    "motius/pipelines/gem_x/guidance.py": "c8b549f53d006a2b3889cdd40ce1452aa694d70bf8f539fe7b344288f12fcf3f",
+    "motius/pipelines/gem_x/export_native.py": "89361a1f1259f0a969fb53bb78a3c45ccacdbe20c453162ebcbf6fc9bd26d1bb",
+    "motius/diffusion/gem_smpl/resample.py": "55728da36c2e0d00c0ee134e69eaec277f02fd0a238078417349a37b0360f3ff",
+    "motius/diffusion/gem_smpl/losses.py": "bee0bde5fea250888cbbc1b6b8d690afe68f3c6924fac125176eeb302b068346",
+    "motius/diffusion/gem_smpl/gaussian.py": "f88e1eb5b67acbdee87a4d4c9c1a51d43057be6310a34bb20cf4818fe1962773",
+    "motius/diffusion/gem_smpl/respace.py": "ea711088356c9de09ef5899a768eaa560679fff04c04dbc09ea7a6fa4c505a54",
+    "motius/diffusion/gem_smpl/math.py": "148e4c32759fb30ba82476f1eaa5ed11f8526d2500061e12fbfad8e8af99dcd0",
+    "motius/diffusion/gem_smpl/__init__.py": "9f16247e620b7c4c0e91093239562e5e6c50a96307b6a008bbc254d12184f11a",
+    "motius/diffusion/gem_x/resample.py": "e8b599ba03af698b68f008b7bb9a3bea16e7ad5aae52062ed7088d379c4d8055",
+    "motius/diffusion/gem_x/losses.py": "0dd079f7671e7e42806a84575a418baf677a04b2c92246f1736ed970320721b1",
+    "motius/diffusion/gem_x/gaussian.py": "c44bb72cb2a3a9265d341aa0cc3e6415133b4be2cfcb03c2f1941a3215125057",
+    "motius/diffusion/gem_x/respace.py": "ba174df27cc60f6c800116af5e71e5df6fc83d3cbef096969f9f65b50814b6b9",
+    "motius/diffusion/gem_x/math.py": "148e4c32759fb30ba82476f1eaa5ed11f8526d2500061e12fbfad8e8af99dcd0",
+    "motius/diffusion/gem_x/__init__.py": "7ed409ea25234f3f09f288a6cdc72af3074292b573a525fb0f6bcb726af66388",
+    "motius/models/gem_bundle.py": "ffce4e2461fa499ff469c7ab50a0d060b2e1b0e2fabf939a06067000670eb0b3"
+  }
+}

@@ -11,9 +11,9 @@ from pathlib import Path
 from huggingface_hub import hf_hub_download
 
 from motius.models.gem_smpl import GemSmplBundle
-from motius.models.gem_smpl.bundle import OFFICIAL_HF_REVISION as GEM_SMPL_HF_REVISION
+from motius.configuration.gem_smpl_provenance import HF_REVISION as GEM_SMPL_HF_REVISION
 from motius.models.gem_x import GemXBundle
-from motius.models.gem_x.bundle import OFFICIAL_HF_REVISION as GEM_X_HF_REVISION
+from motius.configuration.gem_x_provenance import HF_REVISION as GEM_X_HF_REVISION
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,24 +28,24 @@ RELEASE_FILES = {
         "card": ROOT / "docs/model_zoo/gem_smpl.md",
         "demo": ROOT / "assets/model_zoo/gem_smpl",
         "licenses": (
-            ROOT / "motius/models/gem_smpl/ATTRIBUTIONS.md",
-            ROOT / "motius/models/gem_smpl/vendor/GENMO_LICENSE",
-            ROOT / "motius/models/gem_smpl/vendor/GENMO_ATTRIBUTIONS.md",
-            ROOT / "motius/models/gem_smpl/vendor/GVHMR_LICENSE",
+            ROOT / "motius/licenses/gem_smpl/ATTRIBUTIONS.md",
+            ROOT / "motius/licenses/gem_smpl/GENMO_LICENSE",
+            ROOT / "motius/licenses/gem_smpl/GENMO_ATTRIBUTIONS.md",
+            ROOT / "motius/licenses/gem_smpl/GVHMR_LICENSE",
         ),
     },
     "gem-x": {
         "card": ROOT / "docs/model_zoo/gem_x.md",
         "demo": ROOT / "assets/model_zoo/gem_x",
         "licenses": (
-            ROOT / "motius/models/gem_x/ATTRIBUTIONS.md",
-            ROOT / "motius/models/gem_x/vendor/GEM_X_LICENSE",
-            ROOT / "motius/models/gem_x/vendor/GEM_X_ATTRIBUTIONS.md",
-            ROOT / "motius/models/gem_x/vendor/third_party/dinov3-repo/DINOV3_LICENSE.md",
+            ROOT / "motius/licenses/gem_x/ATTRIBUTIONS.md",
+            ROOT / "motius/licenses/gem_x/GEM_X_LICENSE",
+            ROOT / "motius/licenses/gem_x/GEM_X_ATTRIBUTIONS.md",
+            ROOT / "motius/licenses/flowhmr/DINOV3_LICENSE.md",
             ROOT
-            / "motius/models/gem_x/vendor/third_party/sam-3d-body/SAM3D_BODY_LICENSE",
-            ROOT / "motius/models/gem_x/vendor/third_party/soma/SOMA_LICENSE",
-            ROOT / "motius/models/gem_x/vendor/third_party/soma/SOMA_ATTRIBUTIONS.md",
+            / "motius/licenses/flowhmr/SAM3D_LICENSE",
+            ROOT / "motius/licenses/soma/SOMA_LICENSE",
+            ROOT / "motius/licenses/soma/SOMA_ATTRIBUTIONS.md",
         ),
     },
 }
@@ -91,6 +91,25 @@ def _download_yolox(cache_dir: Path) -> Path:
     return target
 
 
+def _assemble_assets(output,sources,variant):
+    import json
+    from motius.utils.hashing import sha256_file
+    import importlib
+    provenance=importlib.import_module('motius.configuration.'+variant+'_provenance')
+    output.mkdir(parents=True,exist_ok=True)
+    for relative,source in sources.items():
+        source=Path(source)
+        if not source.is_file():raise FileNotFoundError(source)
+        destination=output/relative;destination.parent.mkdir(parents=True,exist_ok=True)
+        if source.resolve()!=destination.resolve():shutil.copy2(source,destination)
+    checkpoint='inputs/pretrained/'+provenance.CHECKPOINT_FILENAME
+    provenance.verify_checkpoint(output/checkpoint)
+    metadata=dict(artifact_format='motius-'+variant.replace('_','-')+'-v2',model_type=variant,
+        source_revision=provenance.SOURCE_REVISION,source_repository=provenance.SOURCE_REPOSITORY,
+        checkpoint=checkpoint,assets=list(sources),sha256={key:sha256_file(output/key) for key in sources})
+    (output/(variant+'_config.json')).write_text(json.dumps(metadata,indent=2)+'\n')
+
+
 def export_gem_smpl(args: argparse.Namespace) -> None:
     sources = {
         "inputs/pretrained/gem_smpl.ckpt": _download_hf(
@@ -102,12 +121,13 @@ def export_gem_smpl(args: argparse.Namespace) -> None:
         "inputs/checkpoints/vitpose/vitpose-h-multi-coco.pth": args.vitpose_coco17,
         "yolov8x.pt": args.yolov8x,
     }
+    _assemble_assets(args.output,sources,"gem_smpl")
     bundle = GemSmplBundle(
         artifact_root=args.output,
         body_models_root=args.body_models,
-        manifest={},
+        device="cpu",
     )
-    bundle.save_pretrained(str(args.output), source_assets=sources)
+    bundle.save_pretrained(str(args.output))
     _attach_release_files("gem-smpl", args.output)
 
 
@@ -145,8 +165,9 @@ def export_gem_x(args: argparse.Namespace) -> None:
         "MHR/SOMA_wrap_lod1.obj",
     ):
         sources[f"inputs/soma_assets/{relative}"] = soma_assets / relative
-    bundle = GemXBundle(artifact_root=args.output, manifest={})
-    bundle.save_pretrained(str(args.output), source_assets=sources)
+    _assemble_assets(args.output,sources,"gem_x")
+    bundle = GemXBundle(artifact_root=args.output,device="cpu")
+    bundle.save_pretrained(str(args.output))
     _attach_release_files("gem-x", args.output)
 
 

@@ -212,7 +212,7 @@ different topology. Cross-model 3DPW evaluation uses the audited
 GEM-X source is Apache-2.0 and the public weights use the NVIDIA Open Model
 License. SAM-3D-Body, DINOv3, SOMA-X, MHR, and their assets retain their own
 terms. See the
-[GEM-X attributions](https://github.com/ZeyuLing/Motius/blob/main/motius/models/gem_x/ATTRIBUTIONS.md)
+[GEM-X attributions](https://github.com/ZeyuLing/Motius/blob/main/motius/licenses/gem_x/ATTRIBUTIONS.md)
 and the packaged third-party notices before use.
 
 <!-- MOTIUS_MODEL_CARD_FOOTER:START -->

@@ -209,7 +209,7 @@ SMPL-X-to-SMPL map used by the pinned implementation.
 The vendored source retains the NVIDIA OneWay Noncommercial license. Public
 weights retain the NVIDIA Open Model License. SMPL and SMPL-X have separate
 terms. See the
-[GEM-SMPL attributions](https://github.com/ZeyuLing/Motius/blob/main/motius/models/gem_smpl/ATTRIBUTIONS.md)
+[GEM-SMPL attributions](https://github.com/ZeyuLing/Motius/blob/main/motius/licenses/gem_smpl/ATTRIBUTIONS.md)
 and the packaged license files before use.
 
 <!-- MOTIUS_MODEL_CARD_FOOTER:START -->

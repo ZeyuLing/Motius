@@ -356,9 +356,13 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.configuration.gem_smpl" = ["body/*.pt", "body/*.pth"]
+"motius.licenses.gem_smpl" = ["*"]
+"motius.licenses.gem_x" = ["*"]
+"motius.licenses.soma" = ["*"]
 "motius.licenses.mogendit" = ["*.md", "*.json", "*LICENSE"]
 "motius.licenses.motiongpt3" = ["ATTRIBUTIONS.md", "UPSTREAM_LICENSE_NOTICE"]
-"motius.configuration" = ["motiongpt3_text_parameters.json"]
+"motius.configuration" = ["motiongpt3_text_parameters.json", "gem_smpl.json", "gem_x.json"]
 "motius.licenses.motiongpt" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.licenses.dart" = ["*"]
 "motius.configuration.prompthmr" = ["stats.json", "joint_names.json", "droid.json", "metric3d.json", "pipeline.yaml", "sam2_hiera_t.yaml", "detectron2/*.yaml"]
@@ -441,24 +445,6 @@ namespaces = false
 "motius.models.maskcontrol" = ["ATTRIBUTIONS.md"]
 "motius.models.tm2d" = ["ATTRIBUTIONS.md"]
 "motius.models.unimumo" = ["ATTRIBUTIONS.md"]
-"motius.models.gem_smpl" = ["ATTRIBUTIONS.md"]
-"motius.models.gem_smpl.vendor" = [
-    "GENMO_LICENSE",
-    "GENMO_ATTRIBUTIONS.md",
-    "GVHMR_LICENSE",
-    "configs/**/*.yaml",
-]
-"motius.models.gem_smpl.vendor.gem.utils.body_model" = ["*.pt", "*.pth"]
-"motius.models.gem_smpl.vendor.gem.network.hmr2.configs" = ["*.yaml", "*.npz"]
-"motius.models.gem_x" = ["ATTRIBUTIONS.md"]
-"motius.models.gem_x.vendor" = [
-    "GEM_X_LICENSE",
-    "GEM_X_ATTRIBUTIONS.md",
-    "configs/**/*.yaml",
-    "third_party/**/*.py",
-    "third_party/**/*.md",
-    "third_party/**/*LICENSE*",
-]
 "motius.simulators.mujoco" = [
     "ATTRIBUTIONS.md",
     "assets/unitree_g1/*.xml",

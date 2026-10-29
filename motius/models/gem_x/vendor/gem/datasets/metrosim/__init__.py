@@ -1,1 +1,0 @@
-"""Vendored package marker."""

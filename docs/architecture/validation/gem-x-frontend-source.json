@@ -1,0 +1,238 @@
+{
+  "complete": true,
+  "deterministic_geometry": true,
+  "comparison": "Original unchanged GEM-X video detection/ByteTrack, DINOv3 SOMA-77 heatmaps, SAM3D primary body-token features and camera preparation versus native components",
+  "upstream_commit": "32992550dba114c62243fb55e361311972dce8f9",
+  "dinov3_commit": "6876159a11b4df116f30f667f8c9888617df0751",
+  "video_sha256": "88a01c4d075b20664b7fcfe6e2bceb8e6068328faf82e7ebcd02d93d44ea13bd",
+  "tests": [
+    {
+      "tensor": "/length",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/bbx_xys",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/kp2d",
+      "shape": [
+        30,
+        77,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/K_fullimg",
+      "shape": [
+        30,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cam_angvel",
+      "shape": [
+        30,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cam_tvel",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/R_w2c",
+      "shape": [
+        30,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/T_w2c",
+      "shape": [
+        30,
+        4,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/f_imgseq",
+      "shape": [
+        30,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/noisy_pred_cam",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/has_text",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mask/valid",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mask/has_img_mask",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mask/has_2d_mask",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mask/has_cam_mask",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mask/has_audio_mask",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mask/has_music_mask",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "native_sha256": {
+    "motius/configuration/gem_x_provenance.py": "d2ce34bead9b48c343489fd94a3c7cb1208960bc39d707869b5fc37620afc8ee",
+    "motius/diffusion/gem_x/__init__.py": "7ed409ea25234f3f09f288a6cdc72af3074292b573a525fb0f6bcb726af66388",
+    "motius/diffusion/gem_x/gaussian.py": "c44bb72cb2a3a9265d341aa0cc3e6415133b4be2cfcb03c2f1941a3215125057",
+    "motius/diffusion/gem_x/losses.py": "0dd079f7671e7e42806a84575a418baf677a04b2c92246f1736ed970320721b1",
+    "motius/diffusion/gem_x/math.py": "148e4c32759fb30ba82476f1eaa5ed11f8526d2500061e12fbfad8e8af99dcd0",
+    "motius/diffusion/gem_x/resample.py": "e8b599ba03af698b68f008b7bb9a3bea16e7ad5aae52062ed7088d379c4d8055",
+    "motius/diffusion/gem_x/respace.py": "ba174df27cc60f6c800116af5e71e5df6fc83d3cbef096969f9f65b50814b6b9",
+    "motius/models/gem_bundle.py": "4f7c6268cc7597aece1daefa663708e2e6132ce5c9f371e7501cf27e34887b2e",
+    "motius/models/gem_x/__init__.py": "094c62ba88e146bba2a1f5014a706594d0d50fdfaff5feaece9fcbcc4c1cbec4",
+    "motius/models/gem_x/attention.py": "522f2b57526651c9fec5a311a89dc025905aa0aa94908cbc0fbbb123d854c73f",
+    "motius/models/gem_x/bundle.py": "2db977afd2c8bf15174f740f8492123befa6efa130723b37600b8d5c032c132a",
+    "motius/models/gem_x/conditioning.py": "444392e5686e257c956c383b38b013bba94c4446c33198e37a722076ed7f8f24",
+    "motius/models/gem_x/denoiser.py": "7d77deff9247cba5dd2b2b208e3b390ca2a21098ecd61f40169b7602f657cd23",
+    "motius/models/gem_x/layers.py": "cc6e5f75171904fea644c801f1edcfc9db45a35ae45dbca6e4c6daf6d42c77de",
+    "motius/models/gem_x/positions.py": "500d32aa72a372b6b83db41864f571e587864a3e1f8b5db27c30592d6d8a8b67",
+    "motius/models/gem_x/rotary.py": "b317dbe8fd420f920328ee427c46f267b485d0afdbd1f89f75bc048d276fbe6a",
+    "motius/models/vision/gem_x/__init__.py": "6451e87d78209f681eb50ceccd972ab374990baef1c3d78637791886695b68df",
+    "motius/models/vision/gem_x/bundle.py": "c419530d812676e21f3e5765e610874a096503125f2b9feffef065304c47e747",
+    "motius/models/vision/gem_x/pose.py": "b9ba34f99c3e80297839270da2be43292d981aebf512dc891dad9c1f465aadac",
+    "motius/motion/body_models/gem_x.py": "fd5375c62fe36b30b859e9f6a6c530f98a4c179ccb93f80c8d3542af500f7b90",
+    "motius/motion/body_models/soma/__init__.py": "c458eb00dbcb057a486b21001e3bc6e2106de3e10584639d79c17cfa74f1f9e9",
+    "motius/motion/body_models/soma/correctives_model.py": "3e30e2c85144b0f36386f8dabaaad00c9c7bc965c4451282a4e09d49a8143965",
+    "motius/motion/body_models/soma/geometry/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/motion/body_models/soma/geometry/_utils.py": "878efe73f1845f98388a43da4acbd55890158e95d2bc39ad39d13ccab9fba0c2",
+    "motius/motion/body_models/soma/geometry/_warp_init.py": "dc77c62c622d75a171b6749e42ad706968a0cb90019efe0540bdfaba009ae63f",
+    "motius/motion/body_models/soma/geometry/align_vectors_warp.py": "fb57c93fd6686ffee24f400250ea0c311b78cc0139f645ec1a7c051e45b59c9e",
+    "motius/motion/body_models/soma/geometry/barycentric_interp.py": "6421dd8d7af79ea345505d20a252d314df410eb4fbe1001e631c4776f99f385b",
+    "motius/motion/body_models/soma/geometry/batched_skinning.py": "b565d1da67af54f7455b967a684f6acc3c128a3e382f29fe17b57b65a80a18ed",
+    "motius/motion/body_models/soma/geometry/interpolate.py": "61553d38c476dda0f8453099819f4a129cec77954118999740e08c47671045b5",
+    "motius/motion/body_models/soma/geometry/laplacian.py": "9416e7538e21a381992f5bcf40af9ed0d9f128c239f8b76675f936ef7a7682c2",
+    "motius/motion/body_models/soma/geometry/lbs.py": "9bf6cccca2ce348a697ab6871e742c08c0d3b59506e8f5ffc6a83e443839191c",
+    "motius/motion/body_models/soma/geometry/lbs_warp.py": "7a3e8fca5a667d721dd43745d792454781a262a4327639e155c46634c63bbbf9",
+    "motius/motion/body_models/soma/geometry/rig_utils.py": "746d653b0b8828bcb0a5f7e78e009fb34c9c562ef17b714c91b4dd654b0e6676",
+    "motius/motion/body_models/soma/geometry/skeleton_transfer.py": "a56d7e434a2637820f4acd36aea8aa3e9f3710048835307d3057463e57ea6d3a",
+    "motius/motion/body_models/soma/geometry/transforms.py": "6d80af058436010e02c3448ea4cc262bb1e01ee3d5c476fb7f4f9339eca0cd27",
+    "motius/motion/body_models/soma/identity_model.py": "15fbc5c192141900a7a515a4e8882520e52c3d927155858802f4cceeec50fae2",
+    "motius/motion/body_models/soma/soma.py": "6c211dc2d558490ceffc9838e9e370af64f0e091d591a99c4503954accc55859",
+    "motius/motion/body_models/soma/units.py": "dba9a4d23917336be7186cab977a4d5e848eb6bbd8e7d6bd3b2afe3f103fed9c",
+    "motius/motion/conditioning/gem_processor.py": "f05e016994250f0bcf838df3851dbf172339f9a1fadaedce0c21398c89f9051b",
+    "motius/motion/conditioning/gem_x.py": "66624bd856f377911a811e8284dec1d1ac6a2d4b9e4bd4c943694be227b07e37",
+    "motius/motion/conditioning/gem_x_augmentation.py": "e75290fa01ba6ed59662d62a7e015bfdf903c8cc95120aa5820bbfda663ccc2e",
+    "motius/motion/conditioning/gem_x_processor.py": "21c92ebe82bdb5360918326785a5d3406dc65bdad80a0e042a4eea7e22324f3c",
+    "motius/motion/representation/gem_x/__init__.py": "a814c341a8b87f8c079e769693e184c2e0b4cc68ed644f586db8397b29ce0e38",
+    "motius/motion/representation/gem_x/body_params.py": "d24b587415b71e93acca9b24a9b06b37dbd8667afd70b09ae4dbfb18c8e2d192",
+    "motius/motion/representation/gem_x/camera.py": "af8f6da9c6b234094b15056ad88ed963d8ea60ef81743334602c74b2f9a7dc2f",
+    "motius/motion/representation/gem_x/codec.py": "783641b53e122584553bc0a1064333aff4529a871f815fc22822d45e2d468c19",
+    "motius/motion/representation/gem_x/geometry.py": "cbe42bd2410cfba93d9e93d091d60f4c2e4fafa5f7684121be82ff3478ce01f7",
+    "motius/motion/representation/gem_x/ik.py": "6c9106c1f4bbbeb2373089b6a6723ff8a9f35b7f89a1a48221acd1a6dd6417d5",
+    "motius/motion/representation/gem_x/matrix.py": "e43dbbbd57ad4b1b3f16dc8c9a4dbf92aae92f97ad5d7d23e914610b2aa66d2b",
+    "motius/motion/representation/gem_x/motion.py": "b574fe18576843fc91c0d26e2392db6438e03ea573d4e4125b69def5562432f5",
+    "motius/motion/representation/gem_x/quaternion.py": "a7630be056867b6a4eed95ab6721b3fe58ff50e774aa1f9dbee5d1d171c72aff",
+    "motius/motion/representation/gem_x/rotation.py": "2576e5deb36be16eca3a26793b86b420b1366d711577925d98ee5b192e80943c",
+    "motius/motion/representation/gem_x/smoothing.py": "c47b97f59f99b902d03710b572d184da5f08af3c18b2b99fd7d709c8720da564",
+    "motius/motion/representation/gem_x/stats_compose.py": "dafe4ef6a62e824b0b325f54e42d508015785509bc478ef76e4208ae1f95ba7c",
+    "motius/pipelines/gem_x/__init__.py": "520b5951a37cc9172fb98ee7dde027f788f71f51b022823727ee100a80a64a4c",
+    "motius/pipelines/gem_x/composition.py": "3502ce1b8d880990ccfa2ddb7ff7cecd1163cc61e4862ec22ff91c1b6674d230",
+    "motius/pipelines/gem_x/decoding.py": "91e18d60bc4a284b6b3e5ef86c8236488e05b3ea96fa1c41c9242e3c33c93006",
+    "motius/pipelines/gem_x/export_native.py": "89361a1f1259f0a969fb53bb78a3c45ccacdbe20c453162ebcbf6fc9bd26d1bb",
+    "motius/pipelines/gem_x/features.py": "2ec16d82cc37ffb78044ce8a5c1f0c875b20a37375d121ce0c60b85a4660977c",
+    "motius/pipelines/gem_x/frontend.py": "375dbe2366cfc3a98415744fb7afbe54a3d28b37eeab6dbbf80cee40c3942712",
+    "motius/pipelines/gem_x/guidance.py": "c8b549f53d006a2b3889cdd40ce1452aa694d70bf8f539fe7b344288f12fcf3f",
+    "motius/pipelines/gem_x/inference.py": "83c8aea41ee47974ba43d48835eca5b8f2801d0011adac43e9509c449964bc46",
+    "motius/pipelines/gem_x/parser.py": "4e1d6c37870a915047ef65f6c6bad909e1326c9d0cfb0a7a23f645157fbca74f",
+    "motius/pipelines/gem_x/pipeline.py": "fb2a39625ceff71fcc47fc02610f36c35eb964cd1dd7eb6a7c7919c62996b584",
+    "motius/pipelines/gem_x/pose.py": "7e07df49eb8b0e885f024881ffd9d9dbcb9c5ca8c93cc0bd6539e1d50daf6118",
+    "motius/pipelines/gem_x/postprocessing.py": "76e65bf6c68679648833592a3f679c016f22f7e4d904fe7ae56c5575a96d778d",
+    "motius/pipelines/gem_x/sampling.py": "5ec1e13f3ba9567348dddc6fb6c6efeebd92e04147438ba5647271afa045e4e9",
+    "motius/pipelines/gem_x/tracking.py": "583f7fadeded71f5a00af1bcaec091fed45ec974ca9340610f29a13cb21ebf6c",
+    "motius/trainers/gem_trainer.py": "15ad893fb2d0e0caf10c99235f352043321d8e4b1775a8112302643ceee5bdb4",
+    "motius/trainers/gem_x/__init__.py": "13eec8e17c582b1ca7ba3fd29b70963f09996648d88415dbf70d216095cb0d12",
+    "motius/trainers/gem_x/objective.py": "41b18b5bc035147af3862cf0526f7223f77dd13301929549f49a517fbba0260e",
+    "motius/trainers/gem_x/trainer.py": "d075c10fe55f1d2eff786dde179741af0b5128a81bc317e0bd45dd719cd72e20",
+    "motius/utils/deterministic_geometry.py": "1bc6054fd3431e6da381151410782aa1822735d73c6b1e90fb755f973062a47d"
+  },
+  "artifact": {
+    "repository": "ZeyuLing/motius-gem-x",
+    "revision": "2699b6c54229616681334698c5bb7b4d21382d4e"
+  },
+  "runtime_policy": "PyTorch deterministic algorithms plus identical constant sparse-map dispatch in original and native workers; unconstrained original CUDA sparse/index-add kernels are nondeterministic"
+}

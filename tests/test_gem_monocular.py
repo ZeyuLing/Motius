@@ -6,18 +6,11 @@ import numpy as np
 import pytest
 
 from motius.models.gem_smpl import GemSmplBundle
-from motius.models.gem_smpl.bundle import GEM_SMPL_ARTIFACT_FORMAT
-from motius.models.gem_smpl import runtime as gem_smpl_runtime
+from motius.configuration.gem_smpl_provenance import GEM_SMPL_ARTIFACT_FORMAT
+from motius.configuration import gem_smpl_provenance as gem_smpl_runtime
 from motius.models.gem_x import GemXBundle
-from motius.models.gem_x.bundle import GEM_X_ARTIFACT_FORMAT
-from motius.models.gem_x import runtime as gem_x_runtime
-from motius.models.gem_runtime import (
-    PACKAGE_ROOT,
-    ensure_outputs_path,
-    process_env,
-    project_root,
-    resolve_python,
-)
+from motius.configuration.gem_x_provenance import GEM_X_ARTIFACT_FORMAT
+from motius.configuration import gem_x_provenance as gem_x_runtime
 from motius.motion.representation.monocular_joints import (
     COMMON_HMR15_NAMES,
     SMPL24_NAMES,
@@ -82,64 +75,9 @@ def test_pinned_revisions_and_checkpoints_are_independent():
     assert gem_x_runtime.CHECKPOINT_SHA256 == (
         "4c1f85ca8c1e11e6588aead49fbc024bf660708def670043e0b537c101ee298e"
     )
-    assert gem_smpl_runtime.VENDORED_RUNTIME_ROOT.is_dir()
-    assert gem_x_runtime.VENDORED_RUNTIME_ROOT.is_dir()
-    assert (
-        gem_smpl_runtime.VENDORED_RUNTIME_ROOT
-        / "scripts/demo/demo_smpl_hpe.py"
-    ).is_file()
-    assert (
-        gem_x_runtime.VENDORED_RUNTIME_ROOT / "scripts/demo/demo_soma.py"
-    ).is_file()
 
 
-def test_external_runtime_checkouts_are_rejected(tmp_path: Path):
-    for runtime in (gem_smpl_runtime, gem_x_runtime):
-        with pytest.raises(ValueError, match="external runtime checkout"):
-            runtime.verify_runtime_checkout(tmp_path)
-        assert runtime.verify_runtime_checkout() == runtime.VENDORED_RUNTIME_ROOT
 
-
-def test_gem_methods_use_canonical_motius_bundle_pipeline_layers(tmp_path: Path):
-    smpl_root = _artifact(
-        tmp_path / "gem_smpl",
-        filename="gem_smpl_config.json",
-        artifact_format=GEM_SMPL_ARTIFACT_FORMAT,
-        source_revision=gem_smpl_runtime.SOURCE_REVISION,
-    )
-    x_root = _artifact(
-        tmp_path / "gem_x",
-        filename="gem_x_config.json",
-        artifact_format=GEM_X_ARTIFACT_FORMAT,
-        source_revision=gem_x_runtime.SOURCE_REVISION,
-    )
-    smpl_bundle = GemSmplBundle(
-        artifact_root=smpl_root,
-        python_executable="/usr/bin/python3",
-    )
-    x_bundle = GemXBundle(
-        artifact_root=x_root,
-        python_executable="/usr/bin/python3",
-    )
-
-    smpl_pipeline = GemSmplPipeline(smpl_bundle)
-    x_pipeline = GemXPipeline(x_bundle)
-
-    assert smpl_pipeline.bundle is smpl_bundle
-    assert x_pipeline.bundle is x_bundle
-    assert smpl_bundle.source_revision == gem_smpl_runtime.SOURCE_REVISION
-    assert x_bundle.source_revision == gem_x_runtime.SOURCE_REVISION
-    assert hasattr(smpl_pipeline, "infer_monocular_motion_capture")
-    assert hasattr(x_pipeline, "infer_monocular_motion_capture")
-
-    assert GemSmplBundle.from_pretrained(
-        str(smpl_root),
-        python_executable="/usr/bin/python3",
-    ).artifact_root == smpl_root
-    assert GemXBundle.from_pretrained(
-        str(x_root),
-        python_executable="/usr/bin/python3",
-    ).artifact_root == x_root
 
 
 def test_gem_smpl_parser_preserves_official_fields_and_named_smpl_joints():
@@ -250,120 +188,25 @@ def test_gem_smpl_sparse_vertex_map_matches_dense_batch_definition():
     torch.testing.assert_close(actual, expected, rtol=0.0, atol=0.0)
 
 
-def test_outputs_contract_and_external_setup_scripts_are_removed(tmp_path: Path):
-    root = Path(__file__).resolve().parents[1]
-    assert not (root / "motius/models/gem_smpl/setup_runtime.sh").exists()
-    assert not (root / "motius/models/gem_x/setup_runtime.sh").exists()
-    assert ensure_outputs_path(root / "outputs/gem", method="GEM") == (
-        root / "outputs/gem"
-    )
-    with pytest.raises(ValueError, match="outputs"):
-        ensure_outputs_path(tmp_path / "gem", method="GEM")
 
 
-def test_outputs_contract_uses_caller_project_root(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-):
-    monkeypatch.chdir(tmp_path)
-    output = tmp_path / "outputs/gem/run"
-
-    assert project_root() == tmp_path
-    assert ensure_outputs_path(output, method="GEM") == output
-    with pytest.raises(ValueError, match="outputs"):
-        ensure_outputs_path(tmp_path / "run", method="GEM")
 
 
-def test_outputs_contract_honors_explicit_project_root(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-):
-    monkeypatch.setenv("MOTIUS_PROJECT_ROOT", str(tmp_path))
-
-    assert project_root() == tmp_path
-    assert ensure_outputs_path(tmp_path / "outputs/run", method="GEM") == (
-        tmp_path / "outputs/run"
-    )
 
 
-def test_subprocess_environment_does_not_inherit_external_pythonpath(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-):
-    external = tmp_path / "external_checkout"
-    vendor = tmp_path / "vendor"
-    artifact = tmp_path / "artifact"
-    monkeypatch.setenv("PYTHONPATH", str(external))
-
-    env = process_env(
-        vendor_root=vendor,
-        artifact_root=artifact,
-        method_prefix="GEM_TEST",
-    )
-
-    assert env["PYTHONPATH"].split(os.pathsep) == [
-        str(vendor.resolve()),
-        str(PACKAGE_ROOT),
-    ]
-    assert str(external) not in env["PYTHONPATH"]
-    assert env["MOTIUS_GEM_TEST_ARTIFACT_ROOT"] == str(artifact)
 
 
-def test_explicit_python_path_is_resolved_before_runtime_chdir(tmp_path: Path):
-    base_python = tmp_path / "base" / "python"
-    base_python.parent.mkdir(parents=True)
-    base_python.write_text("#!/bin/sh\n")
-    python = tmp_path / "venv" / "bin" / "python"
-    python.parent.mkdir(parents=True)
-    python.symlink_to(base_python)
-
-    original = Path.cwd()
-    try:
-        os.chdir(tmp_path)
-        resolved = resolve_python(Path("venv/bin/python"))
-    finally:
-        os.chdir(original)
-
-    assert resolved == str(python)
 
 
-def test_every_vendored_python_directory_is_wheel_discoverable():
-    root = Path(__file__).resolve().parents[1]
-    for vendor in (
-        root / "motius/models/gem_smpl/vendor",
-        root / "motius/models/gem_x/vendor",
-    ):
-        missing = []
-        for directory in sorted({path.parent for path in vendor.rglob("*.py")}):
-            # Third-party roots with a dash are shipped as package data and put
-            # on sys.path by the isolated runner.
-            if any("-" in part for part in directory.relative_to(vendor).parts):
-                continue
-            if not (directory / "__init__.py").is_file():
-                missing.append(str(directory.relative_to(root)))
-        assert not missing, missing
 
 
-def test_gem_x_runner_patches_the_demo_function_globals():
-    source = (
-        Path(__file__).resolve().parents[1]
-        / "motius/models/gem_x/vendor/runner.py"
-    ).read_text()
-
-    assert 'demo_globals = namespace["main"].__globals__' in source
-    assert 'namespace["render_incam"]' not in source
 
 
-@pytest.mark.parametrize("runtime", [gem_smpl_runtime, gem_x_runtime])
-def test_vendored_demo_includes_hydra_data_config(runtime):
-    path = runtime.VENDORED_RUNTIME_ROOT / "configs/data/mocap/trainX_testY.yaml"
-    assert path.is_file(), "Hydra composes this config even for video inference"
 
 
-def test_gem_smpl_inference_assets_are_materialized():
-    root = gem_smpl_runtime.VENDORED_RUNTIME_ROOT / "gem"
-    with np.load(root / "network/hmr2/configs/smpl_mean_params.npz") as means:
-        assert means["pose"].shape == (144,)
-    for name in ("coco_aug_dict.pth", "smpl_neutral_J_regressor.pt", "smplx2smpl_sparse.pt"):
-        path = root / "utils/body_model" / name
-        assert path.stat().st_size > 256, f"Missing asset or Git LFS pointer: {path}"
+
+
+def test_native_gem_public_geometry_assets_are_materialized():
+    root=Path(__file__).resolve().parents[1]/'motius/configuration/gem_smpl/body'
+    for name in ('coco_aug_dict.pth','smpl_neutral_J_regressor.pt','smplx2smpl_sparse.pt'):
+        assert (root/name).stat().st_size>256

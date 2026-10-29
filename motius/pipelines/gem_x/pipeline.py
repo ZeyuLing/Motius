@@ -10,8 +10,13 @@ import numpy as np
 from motius.models.gem_x import GemXBundle
 from motius.motion.representation.monocular_capture import MonocularCaptureResult
 from motius.pipelines.base_pipeline import BasePipeline
-from motius.pipelines.gem_x.parser import load_gem_x_payload, parse_gem_x_file
+from motius.pipelines.gem_x.composition import GemXComposition
+from motius.pipelines.gem_x.parser import (
+    load_gem_x_payload,
+    parse_gem_x_file,
+)
 from motius.registry import PIPELINES
+from motius.utils.deterministic_geometry import reproducible_geometry_when_requested
 from motius.utils.monocular_parity import MonocularParityTrace
 
 
@@ -38,11 +43,12 @@ def _capture_official_trace(
     seed: Optional[int],
     deterministic: bool,
 ) -> MonocularParityTrace:
-    """Capture every persisted boundary of the fixed official demo."""
+    """Capture all persisted boundaries of the fixed official four-stage demo."""
 
     import torch
 
-    preprocess = result_path.parent / "preprocess"
+    output_dir = result_path.parent
+    preprocess = output_dir / "preprocess"
     trace = MonocularParityTrace(
         "motius-gem-x",
         metadata={
@@ -54,33 +60,30 @@ def _capture_official_trace(
     )
     trace.capture(
         "01_tracking",
-        torch.load(preprocess / "bbx.pt", map_location="cpu", weights_only=False),
+        torch.load(preprocess / "bbx.pt", map_location="cpu"),
     )
     trace.capture(
         "02_keypoints",
         {"kp2d": torch.load(preprocess / "vitpose.pt", map_location="cpu")},
     )
+    features = torch.load(preprocess / "vit_features.pt", map_location="cpu")
     trace.capture(
-        "03_camera",
-        {"trajectory": torch.load(preprocess / "camera.pt", map_location="cpu")},
+        "03_visual_features",
+        {
+            "f_imgseq": features["pose_tokens"],
+            "noisy_pred_cam": features.get("pred_cam"),
+            "has_img_mask": torch.ones(len(features["pose_tokens"]), dtype=torch.bool),
+        },
     )
     trace.capture(
-        "04_visual_features",
-        torch.load(
-            preprocess / "vit_features.pt",
-            map_location="cpu",
-            weights_only=False,
-        ),
-    )
-    trace.capture(
-        "05_model_input",
+        "04_model_input",
         torch.load(
             preprocess / "model_input.pt",
             map_location="cpu",
             weights_only=False,
         ),
     )
-    trace.capture("06_model_output", load_gem_x_payload(result_path))
+    trace.capture("05_model_output", load_gem_x_payload(result_path))
     trace.save(trace_path)
     return trace
 
@@ -92,7 +95,7 @@ def _append_result_trace(
     trace = MonocularParityTrace.load(trace_path)
     track = result.tracks[0]
     trace.capture(
-        "07_geometry",
+        "06_geometry",
         {
             "joints_camera": track.joints_camera,
             "joints_world": track.joints_world,
@@ -101,11 +104,12 @@ def _append_result_trace(
         },
     )
     trace.capture(
-        "08_public_result",
+        "07_public_result",
         {
             "frame_ids": track.frame_ids,
             "valid": track.valid,
             "poses_axis_angle": track.poses_axis_angle,
+            "shape_parameters": track.shape_parameters,
             "joints_camera": track.joints_camera,
             "joints_world": track.joints_world,
             "root_translation_camera": track.root_translation_camera,
@@ -118,14 +122,16 @@ def _append_result_trace(
 
 
 @PIPELINES.register_module()
-class GemXPipeline(BasePipeline):
+class GemXPipeline(BasePipeline, GemXComposition):
     """Run source-pinned GEM-X through the standard Motius V2M API."""
 
     BUNDLE_CLS = "motius.models.gem_x.GemXBundle"
 
     def __init__(self, bundle: GemXBundle):
-        super().__init__(bundle)
+        BasePipeline.__init__(self, bundle)
+        GemXComposition.__init__(self, bundle)
 
+    @reproducible_geometry_when_requested
     def infer_monocular_motion_capture(
         self,
         video: str | Path,
@@ -142,20 +148,43 @@ class GemXPipeline(BasePipeline):
         extra_args: Sequence[str] = (),
         timeout: Optional[float] = None,
     ) -> MonocularCaptureResult:
-        """Recover camera/world SOMA-77 motion from a monocular RGB video."""
+        """Recover camera/world SOMA motion from a monocular RGB video."""
 
         fps = _video_fps(video) if original_fps is None else float(original_fps)
-        official = self.bundle.run_official_demo(
-            video,
-            output_root,
-            static_camera=static_camera,
-            render=render,
-            seed=seed,
-            deterministic=deterministic,
-            precomputed_stage_dir=precomputed_stage_dir,
-            extra_args=extra_args,
-            timeout=timeout,
-        )
+        import shutil
+        import random
+        import torch
+        from motius.configuration.gem_x_provenance import expected_output_path
+        from motius.pipelines.gem_x.frontend import prepare_video
+        if extra_args:
+            raise ValueError('The native Pipeline accepts explicit keyword arguments, not source CLI arguments')
+        if timeout is not None:
+            raise ValueError('timeout applies to external processes; this Pipeline executes in the caller process')
+        official = expected_output_path(video, output_root)
+        official.parent.mkdir(parents=True, exist_ok=True)
+        preprocess = official.parent / 'preprocess'
+        preprocess.mkdir(exist_ok=True)
+        if precomputed_stage_dir is not None:
+            source=Path(precomputed_stage_dir)
+            for name in ('bbx.pt','vitpose.pt','vit_features.pt','slam_results.pt'):
+                path=source/name
+                if not path.is_file():raise FileNotFoundError(path)
+                if path.resolve() != (preprocess/name).resolve():shutil.copy2(path,preprocess/name)
+        # Match the source load order: initialize networks before seeding sampling.
+        if deterministic:
+            torch.use_deterministic_algorithms(True)
+            torch.backends.cudnn.benchmark=False
+            torch.backends.cudnn.deterministic=True
+        data=prepare_video(video,preprocess,self.bundle.artifact_root,device=self.bundle.device,static_camera=static_camera)
+        torch.save(data,preprocess/'model_input.pt')
+        if seed is not None:
+            random.seed(seed);np.random.seed(seed);torch.manual_seed(seed)
+            if torch.cuda.is_available():torch.cuda.manual_seed_all(seed)
+        with torch.no_grad():prediction=self.predict(data,static_cam=static_camera)
+        payload={group:{name:value.detach().cpu() for name,value in prediction[group].items()}
+                 for group in ('body_params_incam','body_params_global')}
+        payload['K_fullimg']=prediction['K_fullimg'].detach().cpu()
+        torch.save(payload,official)
         if parity_trace is not None:
             _capture_official_trace(
                 official,
@@ -164,14 +193,24 @@ class GemXPipeline(BasePipeline):
                 seed=seed,
                 deterministic=deterministic,
             )
-        numeric = (
-            self.bundle.convert_official_result(official, timeout=timeout)
-            if materialize_geometry
-            else official
-        )
+        numeric=official
+        if materialize_geometry or render:
+            from motius.pipelines.gem_x.export_native import materialize_prediction
+            arrays=materialize_prediction(payload,self.bundle.artifact_root/'inputs/soma_assets',self.bundle.device)
+            numeric=official.with_suffix('.npz')
+            np.savez_compressed(numeric,**arrays)
+            if render:
+                from motius.pipelines.gvhmr.rendering import render_prediction
+                geometry={key:torch.from_numpy(value) for key,value in arrays.items() if '.' not in key}
+                render_prediction(geometry,video,official.parent,None,self.bundle.device,faces=self.body_model.faces)
         result = parse_gem_x_file(numeric, original_fps=fps)
         if parity_trace is not None:
             _append_result_trace(parity_trace, result)
+        return result
+
+    def save_pretrained(self,save_directory,**kwargs):
+        result=self.bundle.save_pretrained(save_directory,**kwargs)
+        if self.tokenizer is not None:self.tokenizer.save_pretrained(Path(save_directory)/'text_encoder')
         return result
 
     def run(self, video: str | Path, output_root: str | Path, **kwargs):

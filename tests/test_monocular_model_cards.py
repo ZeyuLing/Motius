@@ -57,13 +57,10 @@ def test_monocular_runtime_legal_files_are_packaged():
     expected = (
         '"motius.licenses.gvhmr" = ["LICENSE", "ATTRIBUTIONS.md"]',
         '"motius.licenses.prompthmr" = [',
-        '"motius.models.gem_smpl" = ["ATTRIBUTIONS.md"]',
-        '"motius.models.gem_smpl.vendor" = [',
-        '"GENMO_LICENSE",',
-        '"motius.models.gem_x" = ["ATTRIBUTIONS.md"]',
-        '"motius.models.gem_x.vendor" = [',
-        '"GEM_X_LICENSE",',
-        '"third_party/**/*LICENSE*",',
+        '"motius.licenses.gem_smpl" = [',
+        '"motius.configuration.gem_smpl" = [',
+        '"motius.licenses.gem_x" = [',
+        '"motius.licenses.soma" = [',
         '"motius.licenses.flowhmr" = [',
     )
     assert all(entry in pyproject for entry in expected)

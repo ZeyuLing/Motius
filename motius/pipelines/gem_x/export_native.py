@@ -1,4 +1,4 @@
-"""Run inside the pinned GEM-X environment to export SOMA-native numeric results."""
+"""Materialize SOMA-77 joints and vertices from native GEM-X predictions."""
 
 from __future__ import annotations
 
@@ -30,7 +30,14 @@ def export(
     """Forward native SOMA parameters to 77 named joints, never to SMPL."""
 
     payload = _load(input_path)
-    from gem.utils.soma_utils.soma_layer import SomaLayer
+    arrays = materialize_prediction(payload,soma_assets,device)
+    output_path.parent.mkdir(parents=True,exist_ok=True)
+    np.savez_compressed(output_path,**arrays)
+
+
+@torch.no_grad()
+def materialize_prediction(payload,soma_assets,device):
+    from motius.motion.body_models.gem_x import SomaLayer
 
     soma = SomaLayer(
         data_root=str(soma_assets),
@@ -66,8 +73,7 @@ def export(
             arrays[vertices_name] = _cpu_array(output["vertices"])
     if "K_fullimg" in payload:
         arrays["K_fullimg"] = _cpu_array(payload["K_fullimg"])
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(output_path, **arrays)
+    return arrays
 
 
 def main() -> None:

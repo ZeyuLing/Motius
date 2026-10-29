@@ -9,7 +9,7 @@ from typing import Any
 
 import numpy as np
 
-from motius.models.gem_smpl.runtime import CHECKPOINT_SHA256, SOURCE_REVISION
+from motius.configuration.gem_smpl_provenance import CHECKPOINT_SHA256, SOURCE_REVISION
 from motius.motion.representation.monocular_capture import (
     GRAVITY_WORLD_Y_UP,
     MonocularCaptureResult,
