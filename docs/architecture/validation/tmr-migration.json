@@ -1,0 +1,32 @@
+{
+  "complete": true,
+  "comparison": "pre-migration Motius TMR implementation; not upstream repository certification",
+  "atol": 0,
+  "rtol": 0,
+  "cases": [
+    {
+      "vae": false,
+      "sample_mean": false,
+      "loss": 1.0010136365890503,
+      "exact_gradient_tensors": 50
+    },
+    {
+      "vae": false,
+      "sample_mean": true,
+      "loss": 1.0010136365890503,
+      "exact_gradient_tensors": 50
+    },
+    {
+      "vae": true,
+      "sample_mean": false,
+      "loss": 1.1652837991714478,
+      "exact_gradient_tensors": 50
+    },
+    {
+      "vae": true,
+      "sample_mean": true,
+      "loss": 1.0541762113571167,
+      "exact_gradient_tensors": 50
+    }
+  ]
+}
