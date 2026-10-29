@@ -22,6 +22,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+motionstreamer = ["numpy>=1.26,<2", "sentencepiece>=0.2", "torch>=2.6", "tqdm>=4.65", "transformers>=4.46,<5"]
 flowhmr = [
     "clip @ git+https://github.com/openai/CLIP.git",
     "einops>=0.7",

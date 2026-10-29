@@ -1,0 +1,18 @@
+{
+  "complete": true,
+  "scope": "Native shared Runner, real SentenceT5 and original token reader, three AR updates on two H200 GPUs. Static-graph DDP supports the original detached attention-scale parameters and diffusion head execution in the Trainer. Every trained neural tensor SHA256 identical across replicas and exactly one LR step per optimizer update. Synthetic filesystem fixture; not independent original distributed training or full-dataset convergence.",
+  "cuda_precision": {
+    "allow_tf32": false,
+    "float32_matmul_precision": "highest"
+  },
+  "sdpa_backends": {
+    "flash": false,
+    "mem_efficient": false,
+    "math": true
+  },
+  "world_size": 2,
+  "updates": 3,
+  "neural_tensors": 187,
+  "all_replica_neural_tensors_sha256_equal": true,
+  "scheduler_iterations": 3
+}

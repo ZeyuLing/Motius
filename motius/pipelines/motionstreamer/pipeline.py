@@ -12,6 +12,8 @@ reproduced metrics align with the released checkpoints.
 """
 
 from __future__ import annotations
+from motius.motion.representation.normalization import affine_denormalize
+
 
 from typing import List, Optional, Sequence
 
@@ -20,6 +22,7 @@ import torch
 
 from motius.pipelines.base_pipeline import BasePipeline
 from motius.registry import PIPELINES
+from . import sampling
 
 # MotionStreamer token unit length (TAE temporal downsample = stride_t**down_t = 4).
 MS_UNIT_LENGTH = 4
@@ -34,7 +37,9 @@ def _to_2d_latents(latents: torch.Tensor) -> torch.Tensor:
     if latents.ndim == 2 and latents.shape[0] == 16 and latents.shape[1] != 16:
         latents = latents.transpose(0, 1).contiguous()
     if latents.ndim != 2 or latents.shape[-1] != 16:
-        raise ValueError(f"expected MotionStreamer latents shaped (*, 16), got {tuple(latents.shape)}")
+        raise ValueError(
+            f"expected MotionStreamer latents shaped (*, 16), got {tuple(latents.shape)}"
+        )
     return latents.contiguous()
 
 
@@ -63,12 +68,30 @@ class MotionStreamerPipeline(BasePipeline):
 
     def __init__(self, bundle, device: Optional[str] = None, **kwargs):
         super().__init__(bundle, **kwargs)
+        self._text_frontend = None
         if device is not None:
             self.to(device)
+
+    @property
+    def text_frontend(self):
+        if self._text_frontend is None:
+            if self.bundle.text_model is None:
+                raise RuntimeError("The actual SentenceT5 neural encoder is required")
+            from motius.motion.representation.motionstreamer_text import (
+                SentenceT5Frontend,
+            )
+
+            self._text_frontend = SentenceT5Frontend(
+                self.bundle.text_model, self.bundle.text_model_name
+            )
+        return self._text_frontend
 
     def to(self, device):
         self.bundle.to_device(device)
         return self
+
+    def save_pretrained(self, directory, **kwargs):
+        return self.bundle.save_pretrained(directory, **kwargs)
 
     @property
     def device(self) -> torch.device:
@@ -111,26 +134,32 @@ class MotionStreamerPipeline(BasePipeline):
                 "the SentenceT5 text encoder is required for generation."
             )
         device = self.device
-        scale = bundle.guidance_param if guidance_param is None else float(guidance_param)
+        scale = (
+            bundle.guidance_param if guidance_param is None else float(guidance_param)
+        )
 
         outputs: List[np.ndarray] = []
         for i, (cap, raw_len) in enumerate(zip(captions, lengths)):
             length = self.clamp_length(raw_len)
             # Upstream calls sample_for_eval_CFG with a single-caption list.
-            latent = bundle.ar.sample_for_eval_CFG(
+            latent = sampling.sample_for_eval_CFG(
+                bundle.ar,
                 [cap],
                 length=length,
-                tokenize_model=bundle.text_model,
+                tokenize_model=self.text_frontend,
                 device=device,
                 unit_length=MS_UNIT_LENGTH,
                 cfg=scale,
             )  # (1, length//unit, latent_dim)
             motion = bundle.tae.forward_decoder(latent)  # (1, T, 272)
-            motion = bundle.denormalize(motion[0])  # (T, 272)
+            motion = affine_denormalize(motion[0], bundle.mean, bundle.std)  # (T, 272)
             motion = motion[:length].cpu().numpy().astype(np.float32)
             outputs.append(motion)
             if progress:
-                print(f"[ms] {i + 1}/{len(captions)} len={length} -> {motion.shape}", flush=True)
+                print(
+                    f"[ms] {i + 1}/{len(captions)} len={length} -> {motion.shape}",
+                    flush=True,
+                )
 
         return outputs
 
@@ -180,7 +209,9 @@ class MotionStreamerPipeline(BasePipeline):
     ) -> List[np.ndarray]:
         """Generate TP2M continuations from text plus GT MotionStreamer-272 prefix."""
         if not (len(captions) == len(lengths) == len(gt_motions_272)):
-            raise ValueError("captions, lengths, and gt_motions_272 must have equal length")
+            raise ValueError(
+                "captions, lengths, and gt_motions_272 must have equal length"
+            )
         if self.bundle.text_model is None:
             raise RuntimeError(
                 "MotionStreamerBundle was built with load_text_model=False; "
@@ -189,7 +220,11 @@ class MotionStreamerPipeline(BasePipeline):
         if sampling_method not in {"new_demo", "new"}:
             raise ValueError(f"unsupported sampling_method={sampling_method!r}")
 
-        scale = self.bundle.guidance_param if guidance_param is None else float(guidance_param)
+        scale = (
+            self.bundle.guidance_param
+            if guidance_param is None
+            else float(guidance_param)
+        )
         device = self.device
         outputs: List[np.ndarray] = []
         for i, (caption, raw_len, gt_motion) in enumerate(
@@ -201,27 +236,35 @@ class MotionStreamerPipeline(BasePipeline):
                 prefix_latent_source,
             )
             prefix_tokens = int(prefix_latents.shape[0])
-            eval_len = (min(int(raw_len), int(max_motion_length)) // MS_UNIT_LENGTH) * MS_UNIT_LENGTH
+            eval_len = (
+                min(int(raw_len), int(max_motion_length)) // MS_UNIT_LENGTH
+            ) * MS_UNIT_LENGTH
             sample_total_frames = max(eval_len, (prefix_tokens + 1) * MS_UNIT_LENGTH)
             if sampling_method == "new_demo":
-                _xs, new_latents = self.bundle.ar.sample_for_eval_CFG_babel_inference_new_demo(
-                    B_text=str(caption),
-                    A_motion=prefix_latents,
-                    length=sample_total_frames,
-                    clip_model=self.bundle.text_model,
-                    device=device,
-                    tokenizer="t5-xxl",
-                    unit_length=MS_UNIT_LENGTH,
-                    cfg=scale,
-                    temperature=float(temperature),
+                _xs, new_latents = (
+                    sampling.sample_for_eval_CFG_babel_inference_new_demo(
+                        self.bundle.ar,
+                        B_text=str(caption),
+                        A_motion=prefix_latents,
+                        length=sample_total_frames,
+                        clip_model=self.text_frontend,
+                        device=device,
+                        tokenizer="t5-xxl",
+                        unit_length=MS_UNIT_LENGTH,
+                        cfg=scale,
+                        temperature=float(temperature),
+                    )
                 )
             else:
-                continuation_frames = max(eval_len - prefix_tokens * MS_UNIT_LENGTH, MS_UNIT_LENGTH)
-                _xs, new_latents = self.bundle.ar.sample_for_eval_CFG_babel_inference_new(
+                continuation_frames = max(
+                    eval_len - prefix_tokens * MS_UNIT_LENGTH, MS_UNIT_LENGTH
+                )
+                _xs, new_latents = sampling.sample_for_eval_CFG_babel_inference_new(
+                    self.bundle.ar,
                     B_text=[str(caption)],
                     A_motion=prefix_latents,
                     length=continuation_frames,
-                    clip_model=self.bundle.text_model,
+                    clip_model=self.text_frontend,
                     device=device,
                     tokenizer="t5-xxl",
                     unit_length=MS_UNIT_LENGTH,
@@ -229,7 +272,9 @@ class MotionStreamerPipeline(BasePipeline):
                 )
             full_latents = torch.cat([prefix_latents.unsqueeze(0), new_latents], dim=1)
             motion = self.bundle.tae.forward_decoder(full_latents).squeeze(0)
-            motion = self.bundle.denormalize(motion)[:eval_len]
+            motion = affine_denormalize(motion, self.bundle.mean, self.bundle.std)[
+                :eval_len
+            ]
             outputs.append(motion.detach().cpu().numpy().astype(np.float32))
             if progress:
                 print(
@@ -265,7 +310,9 @@ class MotionStreamerPipeline(BasePipeline):
         transformer.
         """
         if len(captions_per_sample) != len(lengths_per_sample):
-            raise ValueError("captions_per_sample and lengths_per_sample must have equal length")
+            raise ValueError(
+                "captions_per_sample and lengths_per_sample must have equal length"
+            )
         bundle = self.bundle
         if bundle.text_model is None:
             raise RuntimeError(
@@ -273,10 +320,14 @@ class MotionStreamerPipeline(BasePipeline):
                 "the SentenceT5 text encoder is required for generation."
             )
         device = self.device
-        scale = bundle.guidance_param if guidance_param is None else float(guidance_param)
+        scale = (
+            bundle.guidance_param if guidance_param is None else float(guidance_param)
+        )
 
         outputs: List[np.ndarray] = []
-        for i, (captions, raw_lengths) in enumerate(zip(captions_per_sample, lengths_per_sample)):
+        for i, (captions, raw_lengths) in enumerate(
+            zip(captions_per_sample, lengths_per_sample)
+        ):
             if len(captions) != len(raw_lengths):
                 raise ValueError(
                     f"sample {i} has {len(captions)} captions but {len(raw_lengths)} lengths"
@@ -287,22 +338,28 @@ class MotionStreamerPipeline(BasePipeline):
             if any(n < 1 for n in target_lengths):
                 raise ValueError(f"sample {i} contains a non-positive segment length")
             if exact_lengths:
-                seg_lengths = [((n + MS_UNIT_LENGTH - 1) // MS_UNIT_LENGTH) * MS_UNIT_LENGTH for n in target_lengths]
+                seg_lengths = [
+                    ((n + MS_UNIT_LENGTH - 1) // MS_UNIT_LENGTH) * MS_UNIT_LENGTH
+                    for n in target_lengths
+                ]
             else:
                 seg_lengths = [self.clamp_length(n) for n in target_lengths]
 
             if seed is not None:
-                torch.manual_seed(int(seed) + int(shard_index) * 100000 + int(sample_offset) + i)
+                torch.manual_seed(
+                    int(seed) + int(shard_index) * 100000 + int(sample_offset) + i
+                )
                 if torch.cuda.is_available():
                     torch.cuda.manual_seed_all(
                         int(seed) + int(shard_index) * 100000 + int(sample_offset) + i
                     )
 
             first_tokens = min(seg_lengths[0] // MS_UNIT_LENGTH, MS_MAX_TOKENS)
-            first_latent = bundle.ar.sample_for_eval_CFG(
+            first_latent = sampling.sample_for_eval_CFG(
+                bundle.ar,
                 [str(captions[0])],
                 length=first_tokens * MS_UNIT_LENGTH,
-                tokenize_model=bundle.text_model,
+                tokenize_model=self.text_frontend,
                 device=device,
                 unit_length=MS_UNIT_LENGTH,
                 cfg=scale,
@@ -320,16 +377,19 @@ class MotionStreamerPipeline(BasePipeline):
                     prefix_len = max(1, min(prefix_len, int(block_tokens) - 1))
                     take = min(remaining, max(1, int(block_tokens) - prefix_len))
                     prefix = acc[-prefix_len:].contiguous()
-                    _, new_latents = bundle.ar.sample_for_eval_CFG_babel_inference_new_demo(
-                        B_text=caption,
-                        A_motion=prefix,
-                        length=(prefix_len + take) * MS_UNIT_LENGTH,
-                        clip_model=bundle.text_model,
-                        device=device,
-                        tokenizer="t5-xxl",
-                        unit_length=MS_UNIT_LENGTH,
-                        cfg=scale,
-                        temperature=float(temperature),
+                    _, new_latents = (
+                        sampling.sample_for_eval_CFG_babel_inference_new_demo(
+                            bundle.ar,
+                            B_text=caption,
+                            A_motion=prefix,
+                            length=(prefix_len + take) * MS_UNIT_LENGTH,
+                            clip_model=self.text_frontend,
+                            device=device,
+                            tokenizer="t5-xxl",
+                            unit_length=MS_UNIT_LENGTH,
+                            cfg=scale,
+                            temperature=float(temperature),
+                        )
                     )
                     new_latents = _to_2d_latents(new_latents)[:take]
                     if int(new_latents.shape[0]) != take:
@@ -342,12 +402,21 @@ class MotionStreamerPipeline(BasePipeline):
 
             motion = bundle.tae.forward_decoder(acc.unsqueeze(0))[0]
             total_len = sum(seg_lengths)
-            motion = bundle.denormalize(motion)[:total_len].cpu().numpy().astype(np.float32)
+            motion = (
+                affine_denormalize(motion, bundle.mean, bundle.std)[:total_len]
+                .cpu()
+                .numpy()
+                .astype(np.float32)
+            )
             if exact_lengths:
                 segments = []
                 start = 0
                 for aligned_len, target_len in zip(seg_lengths, target_lengths):
-                    segments.append(_resample_frames(motion[start : start + aligned_len], target_len))
+                    segments.append(
+                        _resample_frames(
+                            motion[start : start + aligned_len], target_len
+                        )
+                    )
                     start += aligned_len
                 motion = np.concatenate(segments, axis=0)
             outputs.append(motion)

@@ -3,6 +3,9 @@ from importlib import import_module
 
 _EXPORTS = {
     "AISTPPMusicDanceDataset": ("motius.datasets.aistpp_music_to_dance", "AISTPPMusicDanceDataset"),
+    "MotionStreamerTextTokenDataset": ("motius.datasets.motionstreamer", "MotionStreamerTextTokenDataset"),
+    "MotionStreamerStreamingTokenDataset": ("motius.datasets.motionstreamer", "MotionStreamerStreamingTokenDataset"),
+    "MotionStreamerTAEDataset": ("motius.datasets.motionstreamer", "MotionStreamerTAEDataset"),
     "PreparedEDGEDataset": ("motius.datasets.prepared_dance", "PreparedEDGEDataset"),
     "PipelineDataset": ("motius.datasets.base_dataset", "PipelineDataset"),
     "TMRTextMotionDataset": ("motius.datasets.motion", "TMRTextMotionDataset"),

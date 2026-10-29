@@ -3,6 +3,7 @@ import pytest
 import torch
 
 from motius.models.motionstreamer.network.llama_model import LLaMAHF, LLaMAHFConfig
+from motius.pipelines.motionstreamer import sampling
 from motius.pipelines.motionstreamer.pipeline import (
     MotionStreamerPipeline,
     _resample_frames,
@@ -34,6 +35,8 @@ class _FakeTAE:
 
 class _FakeBundle:
     def __init__(self):
+        self.mean = torch.zeros(272)
+        self.std = torch.ones(272)
         self.ar = _FakeAR()
         self.tae = _FakeTAE()
         self.text_model = object()
@@ -94,9 +97,22 @@ def test_exact_length_resampling_rejects_invalid_targets(target):
         _resample_frames(np.ones((4, 272), dtype=np.float32), target)
 
 
-def test_exact_sequential_generation_supports_long_first_segment():
+def test_exact_sequential_generation_supports_long_first_segment(monkeypatch):
+    monkeypatch.setattr(
+        sampling,
+        "sample_for_eval_CFG",
+        lambda network, *args, **kwargs: network.sample_for_eval_CFG(*args, **kwargs),
+    )
+    monkeypatch.setattr(
+        sampling,
+        "sample_for_eval_CFG_babel_inference_new_demo",
+        lambda network, *args, **kwargs: network.sample_for_eval_CFG_babel_inference_new_demo(
+            *args, **kwargs
+        ),
+    )
     bundle = _FakeBundle()
     pipeline = MotionStreamerPipeline(bundle)
+    pipeline._text_frontend = object()
     result = pipeline.infer_sequential_t2m(
         [["a long first action", "then stop"]],
         [[313, 5]],
@@ -121,7 +137,12 @@ def test_t5_continuation_does_not_require_clip(monkeypatch):
         return original_import(name, *args, **kwargs)
 
     monkeypatch.setattr("builtins.__import__", guarded_import)
-    _, latents = LLaMAHF.sample_for_eval_CFG_babel_inference_new_demo(
+    monkeypatch.setattr(
+        sampling,
+        "sample_token",
+        lambda head, *args, **kwargs: head.sample(*args, **kwargs),
+    )
+    _, latents = sampling.sample_for_eval_CFG_babel_inference_new_demo(
         _FakeLlama(),
         B_text="then stop",
         A_motion=torch.zeros((1, 16), dtype=torch.float32),
