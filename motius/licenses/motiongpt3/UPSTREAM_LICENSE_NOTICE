@@ -1,0 +1,9 @@
+OpenMotionLab/MotionGPT3 README.md at cf5bab7daa568ce472e7201cc2bf8b83d8c1b732:
+
+## License
+
+This code is distributed under an [MIT LICENSE](LICENSE).
+
+Note that our code depends on other libraries, including SMPL, SMPL-X, PyTorch3D, and uses datasets which each have their own respective licenses that must also be followed.
+
+The linked LICENSE file is absent from this pinned checkout.
