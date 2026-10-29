@@ -314,10 +314,14 @@ class _FakeBundle:
     def eval(self):
         return self
 
+    def encode_motion(self,motion):
+        return self.vae.encode(motion)
+
 
 def test_motiongpt_m2t_normalizes_before_tokenization():
     bundle = _FakeBundle()
     pipeline = MotionGPTPipeline(bundle)
+    pipeline._decoder=bundle.lm
     motion = np.array([[3.0, 6.0], [5.0, 10.0]], dtype=np.float32)
 
     with pytest.raises(ValueError, match="HML3D-263"):
@@ -339,6 +343,7 @@ def test_motiongpt_m2t_reproduces_official_batch_padding():
     bundle.mean = torch.zeros(263)
     bundle.std = torch.full((263,), 2.0)
     pipeline = MotionGPTPipeline(bundle)
+    pipeline._decoder=bundle.lm
     motions = [
         np.full((3, 263), 4.0, dtype=np.float32),
         np.full((2, 263), 6.0, dtype=np.float32),
@@ -359,6 +364,7 @@ def test_motiongpt_m2t_default_is_batch_invariant():
     bundle.mean = torch.zeros(263)
     bundle.std = torch.full((263,), 2.0)
     pipeline = MotionGPTPipeline(bundle)
+    pipeline._decoder=bundle.lm
     motions = [
         np.full((3, 263), 4.0, dtype=np.float32),
         np.full((2, 263), 6.0, dtype=np.float32),
@@ -391,6 +397,7 @@ class _FakeMotionGPT3Bundle:
             (),
             {"lm": _FakeMotionGPT3LM(), "vae": object()},
         )()
+        self.vae=self.model.vae
 
     @property
     def device(self):
@@ -403,6 +410,7 @@ class _FakeMotionGPT3Bundle:
 def test_motiongpt3_m2t_builds_padded_normalized_batch():
     bundle = _FakeMotionGPT3Bundle()
     pipeline = MotionGPT3Pipeline(bundle)
+    pipeline._decoder=bundle.model.lm
     motions = [
         np.full((3, 263), 5.0, dtype=np.float32),
         np.full((2, 263), 3.0, dtype=np.float32),
@@ -469,8 +477,20 @@ class _FakeTM2TBundle:
         return self
 
 
-def test_tm2t_m2t_tokenizes_hml263_with_official_layout():
+def test_tm2t_m2t_tokenizes_hml263_with_official_layout(monkeypatch):
     bundle = _FakeTM2TBundle()
+    bundle.artifact_dir = "unused"
+    bundle.transformer = object()
+    bundle.beam_size = 1
+    bundle.max_text_length = 10
+    bundle.text_pad_index = 0
+    bundle.text_start_index = 100
+    bundle.text_end_index = 101
+    import motius.motion.conditioning.tm2t as conditioning
+    import motius.pipelines.tm2t.beam_search as beam_search
+    monkeypatch.setattr(conditioning, "TM2TVocabulary", lambda _: bundle.vocabulary)
+    bundle.translator.to = lambda device: bundle.translator
+    monkeypatch.setattr(beam_search, "Translator", lambda *args, **kwargs: bundle.translator)
     pipeline = TM2TPipeline(bundle)
     motion = np.full((43, 263), 5.0, dtype=np.float32)
 

@@ -36,5 +36,5 @@ PYTHON="${ENV_PREFIX}/bin/python"
 "${PYTHON}" -m pip install --no-deps -e "${MOTIUS_ROOT}"
 
 echo "GVHMR environment: ${ENV_PREFIX}"
-echo "Set MOTIUS_GVHMR_PYTHON=${PYTHON}"
+echo "Run your Motius program with ${PYTHON}; inference executes in this process."
 echo "No external GVHMR source checkout is required."

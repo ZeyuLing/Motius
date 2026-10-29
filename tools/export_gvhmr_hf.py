@@ -40,30 +40,9 @@ def main() -> None:
         raise ValueError("--output-dir must live under repository outputs/.") from exc
 
     asset_root = args.asset_root.expanduser().resolve()
-    bootstrap = output.parent / ".gvhmr_export_bootstrap"
-    bootstrap.mkdir(parents=True, exist_ok=True)
-    (bootstrap / "gvhmr_config.json").write_text(
-        json.dumps(
-            {
-                "artifact_format": GVHMR_ARTIFACT_FORMAT,
-                "source_revision": OFFICIAL_RUNTIME_REVISION,
-            }
-        )
-        + "\n"
-    )
-    bundle = GVHMRBundle(artifact_root=bootstrap)
-    bundle.save_pretrained(
-        str(output),
-        source_assets={
-            relative: _asset_path(asset_root, relative)
-            for relative in (
-                "inputs/checkpoints/gvhmr/gvhmr_siga24_release.ckpt",
-                "inputs/checkpoints/hmr2/epoch=10-step=25000.ckpt",
-                "inputs/checkpoints/vitpose/vitpose-h-multi-coco.pth",
-                "inputs/checkpoints/yolo/yolov8x.pt",
-            )
-        },
-    )
+    from motius.pipelines.gvhmr import GVHMRPipeline
+    bundle=GVHMRBundle(artifact_root=asset_root)
+    GVHMRPipeline(bundle).save_pretrained(output,include_frontends=True)
     print(output)
 
 

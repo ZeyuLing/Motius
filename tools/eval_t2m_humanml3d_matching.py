@@ -17,7 +17,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from motius.evaluation.metrics.t2m import aggregate_t2m_metrics
-from motius.models.humanml3d_evaluator import HumanML3DMatchingBundle
+from motius.pipelines.humanml3d_matching import HumanML3DMatchingPipeline
 from motius.motion.representation.convert import motion272_to_hml263
 from tools.infer_unimumo_humanml3d import selected_caption
 
@@ -117,8 +117,8 @@ def main() -> None:
         references.append(reference)
         sample_ids.append(name)
 
-    evaluator = HumanML3DMatchingBundle.from_pretrained(
-        args.evaluator, device=args.device
+    evaluator = HumanML3DMatchingPipeline.from_pretrained(
+        args.evaluator, bundle_kwargs={"device": args.device}
     )
     text_embeddings = evaluator.encode_texts(captions)
     reference_embeddings = evaluator.encode_motions(references)

@@ -75,9 +75,9 @@ def main() -> None:
         bundle_kwargs={"local_files_only": True},
         device=args.device,
     )
-    motius_motion = motius.bundle.encode_motion(motion)
+    motius_motion = motius.encode_motion(motion)
     generator = torch.Generator(device=args.device).manual_seed(args.seed)
-    motius_music, conditioned_motion = motius.bundle.generate_codes(
+    motius_music, conditioned_motion = motius.generate_codes(
         ["<separation>"],
         timesteps=motius_motion.shape[-1],
         mode="motion2music",
@@ -87,7 +87,7 @@ def main() -> None:
         top_k=250,
         generator=generator,
     )
-    motius_waveform = motius.bundle.decode_audio(
+    motius_waveform = motius.decode_audio(
         official_music.to(motius.device)
     ).detach().cpu()
     report = {

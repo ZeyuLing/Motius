@@ -267,7 +267,7 @@ def main():
         audio_codec=audio_codec,
         text_encoder=text_encoder,
         captioner=captioner,
-        tokenizer=tokenizer,
+        tokenizer_path=None,
         mean=np.asarray(package["motion_mean"], dtype=np.float32),
         std=np.asarray(package["motion_std"], dtype=np.float32),
         provenance={
@@ -341,7 +341,8 @@ def main():
     if any(report.missing_keys or report.unexpected_keys for report in reports):
         raise RuntimeError(f"Strict component load failed: {reports}")
 
-    bundle.save_pretrained(args.output)
+    from motius.pipelines.unimumo import UniMuMoPipeline
+    UniMuMoPipeline(bundle,tokenizer=tokenizer).save_pretrained(args.output)
     print(
         json.dumps(
             {

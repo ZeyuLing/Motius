@@ -58,11 +58,11 @@ def main() -> None:
     args = parse_args()
     semantic_evaluator = None
     if args.semantic_artifact:
-        from motius.models.humanml3d_evaluator import HumanML3DMatchingBundle
+        from motius.pipelines.humanml3d_matching import HumanML3DMatchingPipeline
 
-        semantic_evaluator = HumanML3DMatchingBundle.from_pretrained(
+        semantic_evaluator = HumanML3DMatchingPipeline.from_pretrained(
             args.semantic_artifact,
-            device=args.semantic_device,
+            bundle_kwargs={"device": args.semantic_device},
         )
     evaluator = HumanMLM2TEvaluator(
         semantic_evaluator=semantic_evaluator,

@@ -33,7 +33,6 @@ case "${METHOD}" in
     PYTHON_BIN="${GVHMR_PYTHON:-${ROOT}/outputs/envs/gvhmr/bin/python}"
     METHOD_ARGS=(
       --gvhmr-artifact "${METHOD_ROOT}"
-      --gvhmr-python "${PYTHON_BIN}"
       --gvhmr-body-models-root "${GVHMR_BODY_MODELS_ROOT:-${ROOT}/checkpoints/body_models}"
     )
     ;;

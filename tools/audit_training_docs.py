@@ -11,6 +11,14 @@ ROOT = Path(__file__).resolve().parents[1]
 TRAINING_HUB = ROOT / "docs" / "training" / "README.md"
 
 RELEASES = {
+    "motionstreamer": {
+        "label": "MotionStreamer",
+        "config": "configs/motionstreamer/train_motionstreamer.py",
+        "trainer": "motius/trainers/motionstreamer/trainer.py",
+        "trainer_class": "MotionStreamerTrainer",
+        "card": "docs/model_zoo/motionstreamer.md",
+        "output": "outputs/training/motionstreamer_",
+    },
     "flowhmr": {
         "label": "FlowHMR",
         "config": "configs/flowhmr/train_flowhmr.py",
@@ -68,8 +76,8 @@ RELEASES = {
     "protomotions": {
         "label": "ProtoMotions",
         "config": "configs/motion_tracking/protomotions_g1_bones_seed.yaml",
-        "trainer": "motius/trainers/protomotions/train.py",
-        "trainer_class": "ProtoMotionsTrainer",
+        "trainer": "motius/trainers/protomotions/trainer.py",
+        "trainer_class": "ProtoMotionsPPOTrainer",
         "card": "docs/model_zoo/protomotions.md",
         "output": "outputs/training/protomotions",
         "card_requirements": (
@@ -96,7 +104,7 @@ RELEASES = {
     "beyondmimic": {
         "label": "BeyondMimic",
         "config": "configs/motion_tracking/beyondmimic_g1_lafan1.yaml",
-        "trainer": "motius/trainers/beyondmimic/train.py",
+        "trainer": "motius/trainers/beyondmimic/trainer.py",
         "trainer_class": "BeyondMimicTrainer",
         "card": "docs/model_zoo/beyondmimic.md",
         "output": "outputs/training/beyondmimic",
@@ -108,6 +116,35 @@ RELEASES = {
             "outputs/training/",
         ),
     },
+}
+
+# Components introduced during the native architecture migration are documented
+# separately from protocol-complete training releases; a package is never hidden.
+TRAINER_COMPONENTS = {
+    "motionmillion": ("motius/trainers/motionmillion/trainer.py", "MotionMillionTrainer"),
+    "tm2t": ("motius/trainers/tm2t/trainer.py", "TM2TTrainer"),
+    "t2mgpt": ("motius/trainers/t2mgpt/trainer.py", "T2MGPTTrainer"),
+    "motion_clip": ("motius/trainers/motion_clip/trainer.py", "MotionCLIPTrainer"),
+    "prompthmr": ("motius/trainers/prompthmr/trainer.py", "PromptHMRVideoTrainer"),
+    "motionbricks": ("motius/trainers/motionbricks/pose.py", "MotionBricksPoseTrainer"),
+    "gem_smpl": ("motius/trainers/gem_smpl/trainer.py", "GemSmplTrainer"),
+    "gem_x": ("motius/trainers/gem_x/trainer.py", "GemXTrainer"),
+    "vermo": ("motius/trainers/vermo/trainer.py", "VermoTrainer"),
+    "dart": ("motius/trainers/dart/trainer.py", "DARTTrainer"),
+    "vimogen": ("motius/trainers/vimogen/trainer.py", "ViMoGenTrainer"),
+    "unimumo": ("motius/trainers/unimumo/trainer.py", "UniMuMoTrainer"),
+    "motiongpt3": ("motius/trainers/motiongpt3/trainer.py", "MotionGPT3Trainer"),
+    "motiongpt": ("motius/trainers/motiongpt/trainer.py", "MotionGPTTrainer"),
+    "mogents": ("motius/trainers/mogents/trainer.py", "MoGenTSTrainer"),
+    "gvhmr": ("motius/trainers/gvhmr/trainer.py", "GVHMRTrainer"),
+    "flowmdm": ("motius/trainers/flowmdm/trainer.py", "FlowMDMTrainer"),
+    "maskcontrol": ("motius/trainers/maskcontrol/trainer.py", "MaskControlTrainer"),
+    "momask": ("motius/trainers/momask/trainer.py", "MoMaskTrainer"),
+    "bailando": ("motius/trainers/bailando/trainer.py", "BailandoTrainer"),
+    "intergen": ("motius/trainers/intergen/trainer.py", "InterGenTrainer"),
+    "intermask": ("motius/trainers/intermask/trainer.py", "InterMaskTrainer"),
+    "mogendit": ("motius/trainers/mogendit/trainer.py", "MoGenDiTTrainer"),
+    "vision": ("motius/trainers/vision/yolox.py", "YOLOXTrainer"),
 }
 
 CARD_REQUIREMENTS = (
@@ -124,7 +161,7 @@ def audit() -> list[str]:
     errors: list[str] = []
     hub = TRAINING_HUB.read_text(encoding="utf-8")
 
-    expected_packages = set(RELEASES)
+    expected_packages = set(RELEASES) | set(TRAINER_COMPONENTS)
     actual_packages = {
         path.name
         for path in (ROOT / "motius" / "trainers").iterdir()
@@ -138,6 +175,16 @@ def audit() -> list[str]:
             f"actual={sorted(actual_packages)}, "
             f"documented={sorted(expected_packages)}"
         )
+
+    for package, (trainer, class_name) in TRAINER_COMPONENTS.items():
+        source = ROOT / trainer
+        if not source.is_file():
+            errors.append(f"{package}: missing trainer component {trainer}")
+        elif not re.search(rf"class\s+{re.escape(class_name)}\s*(?:\(|:)", source.read_text()):
+            errors.append(f"{package}: missing trainer class {class_name}")
+        for value in (trainer, class_name):
+            if value not in hub:
+                errors.append(f"{package}: Training Hub missing component {value!r}")
 
     expected_configs = {item["config"] for item in RELEASES.values()}
     for item in RELEASES.values():

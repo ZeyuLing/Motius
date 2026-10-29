@@ -60,31 +60,21 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--prompthmr-root",
         type=Path,
-        default=ROOT / "outputs/tmp/prompthmr/upstream",
-    )
-    parser.add_argument(
-        "--prompthmr-python",
-        type=Path,
-        default=ROOT / "outputs/tmp/conda-envs/phmr_pt2.4/bin/python",
+        default=ROOT / "checkpoints/prompthmr",
     )
     parser.add_argument(
         "--gem-smpl-root",
         type=Path,
-        default=ROOT / "outputs/tmp/gem_smpl/upstream",
+        default=ROOT / "checkpoints/gem_smpl",
     )
     parser.add_argument(
         "--gem-x-root",
         type=Path,
-        default=ROOT / "outputs/tmp/gem_x/upstream",
+        default=ROOT / "checkpoints/gem_x",
     )
     parser.add_argument(
         "--gvhmr-artifact",
         default=GVHMR_REPO_ID,
-    )
-    parser.add_argument(
-        "--gvhmr-python",
-        type=Path,
-        default=ROOT / "outputs/envs/gvhmr/bin/python",
     )
     parser.add_argument(
         "--gvhmr-body-models-root",
@@ -106,35 +96,23 @@ def _parser() -> argparse.ArgumentParser:
 
 def _pipeline(args: argparse.Namespace):
     if args.method == "prompthmr":
-        bundle = PromptHMRBundle(
-            upstream_dir=str(args.prompthmr_root),
-            video_checkpoint="bedlam1+2",
-            python_command=(str(args.prompthmr_python),),
-        )
-        return PromptHMRPipeline(bundle)
+        return PromptHMRPipeline.from_pretrained(args.prompthmr_root,
+            body_models_root=args.smplx_model.resolve().parent.parent)
     if args.method == "gem_smpl":
         root = args.gem_smpl_root.resolve()
         return GemSmplPipeline(
-            GemSmplBundle(
-                runtime_root=str(root),
-                checkpoint=str(root / "inputs/pretrained/gem_smpl.ckpt"),
-            )
+            GemSmplBundle(root,body_models_root=args.smplx_model.resolve().parent.parent)
         )
     if args.method == "gvhmr":
         return GVHMRPipeline.from_pretrained(
             args.gvhmr_artifact,
             bundle_kwargs={
-                "python_executable": args.gvhmr_python.resolve(),
                 "body_models_root": args.gvhmr_body_models_root.resolve(),
             },
         )
     root = args.gem_x_root.resolve()
     return GemXPipeline(
-        GemXBundle(
-            runtime_root=str(root),
-            checkpoint=str(root / "inputs/pretrained/gem_soma.ckpt"),
-            soma_assets=str(root / "inputs/soma_assets"),
-        )
+        GemXBundle(root)
     )
 
 
@@ -245,7 +223,7 @@ def _run_gem_smpl_targets(
         preprocess = target_work_dir / video.stem / "preprocess"
         preprocess.mkdir(parents=True, exist_ok=True)
         torch.save(torch.from_numpy(bbox_xys), preprocess / "bbx.pt")
-        result = pipeline.run(
+        result = pipeline.infer_monocular_motion_capture(
             video,
             target_work_dir,
             original_fps=30.0,
@@ -371,7 +349,7 @@ def _run_gem_x_targets(
             },
             preprocess / "bbx.pt",
         )
-        result = pipeline.run(
+        result = pipeline.infer_monocular_motion_capture(
             video,
             target_work_dir,
             original_fps=30.0,
@@ -430,7 +408,8 @@ def _run_one(
             video,
             original_fps=30.0,
             output_fps=30.0,
-            reuse_existing=True,
+            output_dir=work_dir,
+            deterministic=True,
         )
         result = pipeline.replay_licensed_geometry(
             result,
@@ -467,7 +446,7 @@ def _run_one(
             work_dir=work_dir,
         )
     else:
-        result = pipeline.run(
+        result = pipeline.infer_monocular_motion_capture(
             video,
             work_dir,
             original_fps=30.0,

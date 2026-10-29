@@ -118,10 +118,10 @@ def main() -> None:
         bundle_kwargs={"local_files_only": True},
         device=args.device,
     )
-    motius_normalized = motius.bundle.normalize_motion(
+    motius_normalized = motius.normalize_motion(
         torch.as_tensor(motion, dtype=torch.float32, device=motius.device)
     )
-    motius_music_embeddings = motius.bundle._zero_audio_embeddings(
+    motius_music_embeddings = motius._zero_audio_embeddings(
         len(motius_normalized), motius_normalized.shape[1]
     )
     motius_raw_motion_embeddings = motius.bundle.motion_codec.encoder(
@@ -130,12 +130,12 @@ def main() -> None:
     motius_motion_embeddings = motius.bundle.motion_codec.encode_embeddings(
         motius_normalized, motius_music_embeddings
     )
-    motius_motion_codes = motius.bundle.encode_motion(motion).cpu()
+    motius_motion_codes = motius.encode_motion(motion).cpu()
     motius_caption = list(
         motius.infer_motion_to_text(motion, input_fps=60).captions
     )
     generator = torch.Generator(device=args.device).manual_seed(args.seed)
-    motius_music, motius_motion = motius.bundle.generate_codes(
+    motius_music, motius_motion = motius.generate_codes(
         description,
         timesteps=round(args.duration * 50),
         mode="music_motion",
@@ -147,7 +147,7 @@ def main() -> None:
     motius_music = motius_music.cpu()
     motius_motion = motius_motion.cpu()
     motius_decoded_motion = (
-        motius.bundle.decode_motion(
+        motius.decode_motion(
             official_music.to(motius.device),
             official_motion.to(motius.device),
         )

@@ -35,13 +35,13 @@ def test_all_registered_task_routes_are_parity_verified():
     assert report["summary"] == {
         "artifacts": 49,
         "artifact_task_bindings": 83,
-        "source_pipeline_classes": 47,
-        "pipeline_classes": 43,
-        "task_methods": 74,
-        "native": 26,
+        "source_pipeline_classes": 52,
+        "pipeline_classes": 45,
+        "task_methods": 76,
+        "native": 27,
         "identity": 43,
-        "verified_adapters": 5,
-        "class_exclusions": 4,
+        "verified_adapters": 6,
+        "class_exclusions": 7,
         "failed": 0,
     }
     assert report["coverage_errors"] == []
@@ -51,8 +51,11 @@ def test_all_registered_task_routes_are_parity_verified():
     } == {
         "BasePipeline": "abstract pipeline base class",
         "MotionCLIPPipeline": "evaluator/retrieval API, not a method Pipeline",
+        "MotionStreamerMatchingPipeline": "evaluator/retrieval API, not a method Pipeline",
+        "HumanML3DMatchingPipeline": "evaluator/retrieval API, not a method Pipeline",
         "Pipeline": "automatic artifact loader that returns a method Pipeline",
         "PrismARPipeline": "internal Diffusers backend used by PRISMPipeline",
+        "PostprocessPipeline": "internal FlowHMR motion postprocessing component",
     }
 
 
@@ -60,8 +63,8 @@ def test_ardy_sequential_adapter_matches_manual_stream_steps_bit_exact():
     pipeline = ARDYPipeline.__new__(ARDYPipeline)
     pipeline.bundle = SimpleNamespace(
         fps=30.0,
-        model=SimpleNamespace(skeleton=SimpleNamespace(name="G1")),
     )
+    pipeline._runtime = SimpleNamespace(skeleton=SimpleNamespace(name="G1"))
 
     def stream_step(caption, state=None, **kwargs):
         state = 0 if state is None else int(state)
@@ -113,6 +116,30 @@ def test_hymotion_text_adapter_forwards_the_exact_legacy_batch():
         "num_frames": [120, 180],
         "data_src": ["HYMotion", "MotionHub"],
     }
+
+
+def test_gentrack_text_adapter_preserves_cached_conditions_and_sampling_options():
+    from motius.pipelines.gentrack import GenTrackPipeline
+
+    result = {"qpos": np.arange(12).reshape(2, 6)}
+
+    class ProbePipeline(GenTrackPipeline):
+        def __call__(self, batch, **options):
+            self.received = batch, options
+            return result
+
+    pipeline = ProbePipeline.__new__(ProbePipeline)
+    context = object()
+    noise = object()
+    actual = pipeline.infer_text_to_motion(
+        ["walk", "turn"], [24, 20], num_steps=5, guidance=2.5,
+        initial_noise=noise, text_ctxt_raw=context,
+    )
+    assert actual is result
+    assert pipeline.received == (
+        {"caption": ["walk", "turn"], "num_frames": [24, 20], "text_ctxt_raw": context},
+        {"num_steps": 5, "guidance": 2.5, "initial_noise": noise},
+    )
 
 
 def test_kimodo_scalar_text_adapter_matches_legacy_call_bit_exact():
