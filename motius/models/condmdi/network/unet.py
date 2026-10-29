@@ -754,33 +754,10 @@ class MDM_UNET(nn.Module):
         else:
             return cond
 
-    def encode_text(self, raw_text):
-        # raw_text - list (batch_size length) of strings with input text prompts
-        device = next(self.parameters()).device
-        max_text_len = 20 if self.dataset in [
-            'humanml', 'kit'
-        ] else None  # Specific hardcoding for humanml dataset
-        if max_text_len is not None:
-            default_context_length = 77
-            context_length = max_text_len + 2  # start_token + 20 + end_token
-            assert context_length < default_context_length
-            texts = clip.tokenize(
-                raw_text, context_length=context_length, truncate=True
-            ).to(
-                device
-            )  # [bs, context_length] # if n_tokens > context_length -> will truncate
-            # print('texts', texts.shape)
-            zero_pad = torch.zeros(
-                [texts.shape[0], default_context_length - context_length],
-                dtype=texts.dtype,
-                device=texts.device)
-            texts = torch.cat([texts, zero_pad], dim=1)
-            # print('texts after pad', texts.shape, texts)
-        else:
-            texts = clip.tokenize(raw_text, truncate=True).to(
-                device
-            )  # [bs, context_length] # if n_tokens > 77 -> will truncate
+    def encode_text(self, tokens):
+        texts = tokens.to(next(self.parameters()).device)
         return self.clip_model.encode_text(texts).float()
+
 
     def forward(self, x, timesteps, y=None, obs_x0=None, obs_mask=None):
         """
@@ -813,7 +790,7 @@ class MDM_UNET(nn.Module):
 
         force_mask = y.get('uncond', False)
         if 'text' in self.cond_mode:
-            enc_text = self.encode_text(y['text'])
+            enc_text = self.encode_text(y['text_tokens'])
             emb += self.embed_text(
                 self.mask_cond(enc_text, force_mask=force_mask))
         if 'action' in self.cond_mode:
@@ -888,7 +865,8 @@ class PositionalEncoding(nn.Module):
         pe[:, 1::2] = torch.cos(position * div_term)
         pe = pe.unsqueeze(0).transpose(0, 1)
 
-        self.register_buffer('pe', pe)
+        # Canonical singleton strides avoid aliasing in DDP's coalesced broadcast.
+        self.register_buffer('pe', pe.clone(memory_format=torch.contiguous_format))
 
     def forward(self, x):
         # not used in the final model

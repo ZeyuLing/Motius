@@ -13,11 +13,13 @@ import numpy as np
 import torch
 import torch as th
 from copy import deepcopy
-from .nn import mean_flat, sum_flat
-from .losses import normal_kl, discretized_gaussian_log_likelihood
+from motius.diffusion.condmdi.nn import mean_flat
+from motius.diffusion.condmdi.nn import sum_flat
+from motius.diffusion.condmdi.losses import normal_kl
+from motius.diffusion.condmdi.losses import discretized_gaussian_log_likelihood
 from torch.cuda import amp
 from typing import List
-from .. import editing as inpainting_util
+from motius.diffusion.condmdi import editing as inpainting_util
 
 
 def get_named_beta_schedule(schedule_name,

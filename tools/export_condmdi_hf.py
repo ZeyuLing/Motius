@@ -17,7 +17,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from motius.models.condmdi.network.model_util import normalize_config
+from motius.configuration.condmdi import normalize_config
 
 
 def main():

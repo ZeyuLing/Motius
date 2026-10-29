@@ -1,11 +1,9 @@
 import numpy as np
 import torch
 
-from motius.models.condmdi.network.masks import build_observation_mask
-from motius.models.condmdi.network.representation import (
-    absolute_to_relative,
-    relative_to_absolute,
-)
+from motius.motion.conditioning.condmdi_masks import build_observation_mask
+from motius.motion.representation.condmdi import absolute_to_relative
+from motius.motion.representation.condmdi import relative_to_absolute
 from motius.pipelines.condmdi import CondMDIPipeline
 
 
@@ -21,15 +19,12 @@ class _TestBundle:
         self.config = {"diffusion_steps": 1000}
         self.diffusion = _RandomDiffusion()
         self.net = torch.nn.Identity()
+        self.net.dataset = "humanml"
+        self.mean_abs = torch.zeros(263)
+        self.std_abs = torch.ones(263)
 
     def eval(self):
         return self
-
-    def normalize_absolute(self, motion):
-        return motion
-
-    def denormalize_absolute(self, motion):
-        return motion
 
 
 def test_condmdi_absolute_root_round_trip():
@@ -74,10 +69,43 @@ def test_condmdi_joint_control_does_not_select_unrequested_joint_features():
 
 
 def test_condmdi_seed_controls_the_complete_sampling_process():
-    pipeline = CondMDIPipeline(_TestBundle())
+    bundle = _TestBundle()
+    pipeline = CondMDIPipeline(bundle, diffusion=bundle.diffusion)
     first = pipeline.infer_t2m(["walk"], [24], seed=19)[0]
     torch.manual_seed(999)
     second = pipeline.infer_t2m(["walk"], [24], seed=19)[0]
     third = pipeline.infer_t2m(["walk"], [24], seed=20)[0]
     np.testing.assert_array_equal(first, second)
     assert not np.array_equal(first, third)
+
+
+def test_condmdi_native_trainer_backpropagates_with_prepared_observation():
+    from motius.trainers.condmdi import CondMDITrainer
+
+    class Net(torch.nn.Module):
+        zero_keyframe_loss = False
+        keyframe_conditioned = False
+        def __init__(self):
+            super().__init__()
+            self.weight = torch.nn.Parameter(torch.tensor(0.5))
+        def forward(self, motion, timesteps, y, **kwargs):
+            return motion * self.weight
+
+    class Bundle(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.net = Net()
+            self.config = {'diffusion_steps': 1000}
+        @property
+        def device(self):
+            return self.net.weight.device
+
+    bundle = Bundle()
+    trainer = CondMDITrainer(bundle)
+    motion = torch.randn(2, 8, 263)
+    out = trainer.train_step(dict(motion=motion, motion_lens=[8, 6],
+        conditions={'text_tokens': torch.zeros(2, 77, dtype=torch.long)},
+        obs_mask=torch.zeros(2, 263, 1, 8, dtype=torch.bool), timesteps=[20, 40]))
+    out['loss'].backward()
+    assert torch.isfinite(out['loss'])
+    assert bundle.net.weight.grad is not None

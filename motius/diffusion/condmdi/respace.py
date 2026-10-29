@@ -3,7 +3,8 @@ from copy import deepcopy
 import numpy as np
 import torch as th
 
-from .gaussian_diffusion import GaussianDiffusion, DiffusionConfig
+from motius.diffusion.condmdi.gaussian_diffusion import GaussianDiffusion
+from motius.diffusion.condmdi.gaussian_diffusion import DiffusionConfig
 
 
 def space_timesteps(num_timesteps, section_counts):

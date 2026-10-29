@@ -107,12 +107,15 @@ checkout, dataset directory, or second model download is needed at runtime.
 | --------- | ---- |
 | Pipeline | `motius.pipelines.condmdi.CondMDIPipeline` |
 | Bundle | `motius.models.condmdi.CondMDIBundle` |
-| UNet and diffusion runtime | `motius.models.condmdi.network` |
+| UNet | `motius.models.condmdi.network` |
+| Diffusion and training | `motius.diffusion.condmdi`, `motius.trainers.condmdi` |
 | HumanML3D selected-caption runner | `tools/eval_condmdi_humanml3d.py` |
 | Official checkpoint exporter | `tools/export_condmdi_hf.py` |
 
-The vendored method runtime retains the upstream MIT license in
-`motius/models/condmdi/LICENSE`.
+The upstream MIT license and attribution are retained in
+`motius/licenses/condmdi`. Source comparisons are recorded for
+[training](../architecture/condmdi-training-source.json) and
+[inference](../architecture/condmdi-inference-source.json).
 
 ## Quick Start
 

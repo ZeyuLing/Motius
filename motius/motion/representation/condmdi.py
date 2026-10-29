@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import torch
 
+
 def _qrot(quaternion: torch.Tensor, vector: torch.Tensor) -> torch.Tensor:
     qvec = quaternion[..., 1:]
     uv = torch.cross(qvec, vector, dim=-1)
@@ -18,10 +19,14 @@ def relative_to_absolute(motion: torch.Tensor) -> torch.Tensor:
     root_angle = torch.zeros_like(motion[..., 0])
     root_angle[..., 1:] = motion[..., :-1, 0]
     root_angle = torch.cumsum(root_angle, dim=-1)
-    root_quat = torch.zeros(root_angle.shape + (4,), dtype=motion.dtype, device=motion.device)
+    root_quat = torch.zeros(
+        root_angle.shape + (4,), dtype=motion.dtype, device=motion.device
+    )
     root_quat[..., 0] = torch.cos(root_angle)
     root_quat[..., 2] = torch.sin(root_angle)
-    root_pos = torch.zeros(motion.shape[:-1] + (3,), dtype=motion.dtype, device=motion.device)
+    root_pos = torch.zeros(
+        motion.shape[:-1] + (3,), dtype=motion.dtype, device=motion.device
+    )
     root_pos[..., 1:, [0, 2]] = motion[..., :-1, 1:3]
     inverse_quat = root_quat.clone()
     inverse_quat[..., 1:] *= -1
@@ -43,8 +48,12 @@ def absolute_to_relative(motion: torch.Tensor) -> torch.Tensor:
     root_pos = motion[..., 1:4][..., [0, 2, 1]]
 
     relative_pos = torch.zeros_like(root_pos)
-    relative_pos[..., 1:, [0, 2]] = root_pos[..., 1:, [0, 2]] - root_pos[..., :-1, [0, 2]]
-    root_quat = torch.zeros(root_angle.shape + (4,), dtype=motion.dtype, device=motion.device)
+    relative_pos[..., 1:, [0, 2]] = (
+        root_pos[..., 1:, [0, 2]] - root_pos[..., :-1, [0, 2]]
+    )
+    root_quat = torch.zeros(
+        root_angle.shape + (4,), dtype=motion.dtype, device=motion.device
+    )
     root_quat[..., 0] = torch.cos(root_angle)
     root_quat[..., 2] = torch.sin(root_angle)
     relative_pos = _qrot(root_quat, relative_pos)
@@ -59,3 +68,27 @@ def absolute_to_relative(motion: torch.Tensor) -> torch.Tensor:
 
 
 __all__ = ["absolute_to_relative", "relative_to_absolute"]
+
+
+def recover_from_absolute(motion: torch.Tensor) -> torch.Tensor:
+    """Original CondMDI world-space SMPL-22 joints without losing the root frame."""
+    if motion.shape[-1] != 263:
+        raise ValueError("Expected absolute-root HumanML263 features")
+    angle = motion[..., 0]
+    quaternion = torch.zeros(
+        motion.shape[:-1] + (4,), dtype=motion.dtype, device=motion.device
+    )
+    quaternion[..., 0] = torch.cos(angle)
+    quaternion[..., 2] = -torch.sin(angle)
+    root = torch.zeros(
+        motion.shape[:-1] + (3,), dtype=motion.dtype, device=motion.device
+    )
+    root[..., [0, 2]] = motion[..., 1:3]
+    root[..., 1] = motion[..., 3]
+    positions = motion[..., 4:67].reshape(motion.shape[:-1] + (21, 3))
+    positions = _qrot(
+        quaternion[..., None, :].expand(positions.shape[:-1] + (4,)), positions
+    )
+    positions[..., 0] += root[..., 0:1]
+    positions[..., 2] += root[..., 2:3]
+    return torch.cat([root.unsqueeze(-2), positions], dim=-2)
