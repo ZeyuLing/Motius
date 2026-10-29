@@ -101,7 +101,8 @@ Motius model index.
 | --------- | ---- |
 | Pipeline | `motius.pipelines.flowmdm.FlowMDMPipeline` |
 | Bundle | `motius.models.flowmdm.FlowMDMBundle` |
-| Runtime | `motius.models.flowmdm.network` |
+| Network | `motius.models.flowmdm.network` |
+| Diffusion and sampling | `motius.diffusion.flowmdm`, `motius.pipelines.flowmdm` |
 
 The SMPL visualizer branch from the original implementation is stubbed for T2M
 inference because the released HumanML3D checkpoint predicts HumanML3D-263

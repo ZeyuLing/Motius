@@ -15,8 +15,6 @@ from einops import rearrange, repeat, reduce
 from einops.layers.torch import Rearrange
 
 from motius.models.flowmdm.network.model.x_transformers.attend import Attend, Intermediates, CascadingHeads
-import matplotlib.pyplot as plt
-import os
 
 # constants
 
@@ -1004,18 +1002,7 @@ class Attention(nn.Module):
                 attn_bias = attn_bias.unsqueeze(0) # head dimension is needed for relative positional bias
             attn_bias = attn_bias + rel_pos(i, j) if exists(attn_bias) else rel_pos(i, j)
 
-            """
-            path = f"plots/{rel_pos.__class__.__name__}"
-            os.makedirs(path, exist_ok=True)
-            for i in range(attn_bias.shape[0]):
-                subpath = f"{path}/{i}.png"
-                if os.path.exists(subpath):
-                    break
-                plt.imshow(attn_bias[i].cpu().detach().numpy())
-                plt.colorbar()
-                plt.savefig(subpath)
-                plt.close()
-            """
+
 
         # attention is all we need
 

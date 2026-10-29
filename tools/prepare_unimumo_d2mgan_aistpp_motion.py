@@ -19,12 +19,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-import motius.models.flowmdm.network.data_loaders.humanml.scripts.motion_process as hml
+import motius.datasets.motion.humanml_preprocessing.motion_process as hml
 from motius.evaluation.protocols import d2mgan_aistpp_test_segments
-from motius.models.flowmdm.network.data_loaders.humanml.common.skeleton import (
+from motius.datasets.motion.humanml_preprocessing.skeleton import (
     Skeleton,
 )
-from motius.models.flowmdm.network.data_loaders.humanml.utils.paramUtil import (
+from motius.datasets.motion.humanml_preprocessing.param_util import (
     t2m_kinematic_chain,
     t2m_raw_offsets,
 )

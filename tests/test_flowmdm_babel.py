@@ -5,7 +5,7 @@ import pytest
 import torch
 
 from motius.models.flowmdm.bundle import _maybe_download_hub
-from motius.models.flowmdm.network.model.cfg_sampler import ClassifierFreeSampleModel
+from motius.pipelines.flowmdm.guidance import ClassifierFreeSampleModel
 from motius.pipelines.flowmdm import FlowMDMPipeline
 
 

@@ -1,6 +1,8 @@
 """FlowMDM text-to-motion pipeline."""
 
 from __future__ import annotations
+from motius.motion.representation.normalization import matched_denormalize
+
 
 from typing import List, Optional, Sequence
 
@@ -19,6 +21,12 @@ class FlowMDMPipeline(BasePipeline):
 
     def __init__(self, bundle, device=None, **kwargs):
         super().__init__(bundle, **kwargs)
+        from motius.configuration.flowmdm import create_gaussian_diffusion
+        from .sampling import DiffusionWrapper_FlowMDM
+        from .guidance import wrap_model
+        self.sampler = DiffusionWrapper_FlowMDM(bundle.flow_args,
+            create_gaussian_diffusion(bundle.flow_args), wrap_model(bundle.model, bundle.flow_args))
+
         if device is not None:
             self.to(device)
 
@@ -97,8 +105,8 @@ class FlowMDMPipeline(BasePipeline):
             y["inpainting_mask"] = inpainting_mask
             y["inpainted_motion"] = inpainted_motion
         model_kwargs = {"y": y}
-        self._clear_embedding_cache(self.bundle.sampler)
-        sample = self.bundle.sampler.p_sample_loop(
+        self._clear_embedding_cache(self.sampler)
+        sample = self.sampler.p_sample_loop(
             clip_denoised=False,
             model_kwargs=model_kwargs,
             progress=False,
@@ -118,8 +126,8 @@ class FlowMDMPipeline(BasePipeline):
                 "scale": torch.ones(len(captions), device=device) * self.bundle.guidance_param,
             }
         }
-        self._clear_embedding_cache(self.bundle.sampler)
-        sample = self.bundle.sampler.p_sample_loop(
+        self._clear_embedding_cache(self.sampler)
+        sample = self.sampler.p_sample_loop(
             clip_denoised=False,
             model_kwargs=model_kwargs,
             progress=False,
@@ -143,7 +151,7 @@ class FlowMDMPipeline(BasePipeline):
             length = self.resolve_length(int(length))
             torch.manual_seed(int(seed) + int(shard_index) * 100000 + int(sample_offset) + i)
             pred_norm = self._sample_one(str(caption), length)
-            pred = self.bundle.denormalize(pred_norm).detach().cpu().numpy().astype(np.float32)
+            pred = matched_denormalize(pred_norm, self.bundle.mean, self.bundle.std).detach().cpu().numpy().astype(np.float32)
             out.append(pred)
         return out
 
@@ -192,7 +200,7 @@ class FlowMDMPipeline(BasePipeline):
             torch.manual_seed(int(seed) + int(shard_index) * 100000 + int(sample_offset) + i)
             inpainting = self._build_prefix_inpainting(gt, length, condition_num_frames)
             pred_norm = self._sample_one(str(caption), length, inpainting=inpainting)
-            pred = self.bundle.denormalize(pred_norm).detach().cpu().numpy().astype(np.float32)
+            pred = matched_denormalize(pred_norm, self.bundle.mean, self.bundle.std).detach().cpu().numpy().astype(np.float32)
             out.append(pred)
         return out
 
@@ -218,7 +226,7 @@ class FlowMDMPipeline(BasePipeline):
             seg_lengths = [self.resolve_sequential_length(int(n)) for n in lengths]
             torch.manual_seed(int(seed) + int(shard_index) * 100000 + int(sample_offset) + i)
             pred_norm = self._sample_sequence(captions, seg_lengths)
-            pred = self.bundle.denormalize(pred_norm).detach().cpu().numpy().astype(np.float32)
+            pred = matched_denormalize(pred_norm, self.bundle.mean, self.bundle.std).detach().cpu().numpy().astype(np.float32)
             out.append(pred)
         return out
 
