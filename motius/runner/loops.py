@@ -56,23 +56,29 @@ class IterBasedLoop:
         max_iters: int,
         val_interval: int = 1000,   # in iters
         save_interval: Optional[int] = None,  # in iters, default = val_interval
+        start_iter: int = 0,
     ):
         self.dataloader = dataloader
         self.max_iters = max_iters
         self.val_interval = val_interval
         self.save_interval = save_interval if save_interval is not None else val_interval
+        self.start_iter = int(start_iter)
 
     def iter_batches(self):
         """
         Yields (global_step, batch) tuples, cycling through the dataloader.
         """
-        global_step = 0
+        global_step = self.start_iter
         while global_step < self.max_iters:
             for batch in self.dataloader:
                 if global_step >= self.max_iters:
                     return
                 yield global_step, batch
                 global_step += 1
+                # Online loaders advance the simulator while fetching a batch.
+                # Stop before requesting a rollout past the iteration budget.
+                if global_step >= self.max_iters:
+                    return
 
     @property
     def total_iters(self) -> int:

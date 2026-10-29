@@ -20,7 +20,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, Sampler
 
-from accelerate import Accelerator
+from accelerate import Accelerator, DataLoaderConfiguration
 from accelerate.utils import (
     DistributedDataParallelKwargs,
     DistributedType,
@@ -596,15 +596,20 @@ class AccelerateRunner:
                 torch.cuda.set_device(int(local_rank_env) % device_count)
 
         rng_types_cfg = accel_cfg.get('rng_types', None)
+        dataloader_config = accel_cfg.get('dataloader_config', None)
+        if dataloader_config is not None:
+            dataloader_config = DataLoaderConfiguration(**dict(dataloader_config))
 
         accelerator = Accelerator(
             mixed_precision=accel_cfg.get('mixed_precision', 'no'),
             gradient_accumulation_steps=accel_cfg.get('gradient_accumulation_steps', 1),
+            step_scheduler_with_optimizer=accel_cfg.get('step_scheduler_with_optimizer', True),
             log_with=accel_cfg.get('log_with', 'tensorboard'),
             project_dir=run_dir,
             fsdp_plugin=fsdp_plugin,
             deepspeed_plugin=deepspeed_plugin,
             rng_types=rng_types_cfg,
+            dataloader_config=dataloader_config,
             kwargs_handlers=kwargs_handlers,
         )
         logger.info(
@@ -617,6 +622,9 @@ class AccelerateRunner:
             f"CUDA_VISIBLE_DEVICES={os.environ.get('CUDA_VISIBLE_DEVICES')}"
         )
         _warmup_cuda_libraries(accelerator)
+        if getattr(cfg, 'seed', None) is not None:
+            from accelerate.utils import set_seed
+            set_seed(int(cfg.seed), device_specific=True)
 
         # ── File logging, config dump, env info (main process only) ──
         if accelerator.is_main_process:
@@ -1455,6 +1463,11 @@ class AccelerateRunner:
         opt_cfg = copy.deepcopy(opt_cfg)
         opt_type = opt_cfg.pop('type')
 
+        if isinstance(opt_type, str) and '.' in opt_type:
+            from importlib import import_module
+            module, name = opt_type.rsplit('.', 1)
+            return getattr(import_module(module), name)(params, **opt_cfg)
+
         # Import from torch.optim, then transformers.optimization, then registry
         import torch.optim as optim
         if hasattr(optim, opt_type):
@@ -1510,6 +1523,12 @@ class AccelerateRunner:
         """Build a single LR scheduler. Supports HF get_scheduler API."""
         sched_cfg = copy.deepcopy(sched_cfg)
         sched_type = sched_cfg.pop('type')
+
+        if isinstance(sched_type, str) and '.' in sched_type:
+            from importlib import import_module
+
+            module, name = sched_type.rsplit('.', 1)
+            return getattr(import_module(module), name)(optimizer, **sched_cfg)
 
         # Alias mapping for convenience
         SCHEDULER_ALIASES = {
@@ -1752,6 +1771,7 @@ class AccelerateRunner:
                     "HF/Accelerate state omitted a tied or duplicate LM head."
                 )
                 self.accelerator.load_state(path, strict=False)
+            self._restore_unprepared_checkpoint_modules(path)
             self._normalize_resumed_optimizer_state()
             # Try to restore global_step from metadata
             meta_path = os.path.join(path, 'meta.pt')
@@ -1811,6 +1831,28 @@ class AccelerateRunner:
                 )
         else:
             raise ValueError(f"Unknown load_scope: {load_scope}. Expected 'model' or 'full'.")
+
+    def _restore_unprepared_checkpoint_modules(self, path):
+        """Restore saved neural roots that Accelerator never prepared."""
+        names = [
+            name for name in self.bundle._save_ckpt_modules
+            if name not in self.bundle._trainable_modules
+            and isinstance(getattr(self.bundle, name, None), nn.Module)
+        ]
+        model_path = os.path.join(path, 'model.pt')
+        if not names or not os.path.isfile(model_path):
+            return
+        from motius.utils.torch_checkpoint import load_torch_checkpoint
+
+        state = load_torch_checkpoint(model_path, map_location='cpu', weights_only=False)
+        selected = {name: state[name] for name in names if name in state}
+        if not selected:
+            return
+        restored = list(selected)
+        if '__motius_meta__' in state:
+            selected['__motius_meta__'] = state['__motius_meta__']
+        self.bundle.load_state_dict_selective(selected, strict=True)
+        logger.info(f"Restored saved unprepared neural modules: {', '.join(restored)}")
 
     def save_checkpoint(self, by_epoch=None, save_accelerator_state: bool = True):
         """Save checkpoint. Directory name reflects the SAVE trigger basis.
@@ -2224,11 +2266,28 @@ class AccelerateRunner:
         loop = IterBasedLoop(
             self.train_dataloader, max_iters,
             val_interval=val_interval or max_iters,
+            # A fresh online rollout stream must not simulate and discard all
+            # previously completed iterations while resuming a policy.
+            start_iter=0 if train_cfg.get('resume_skip_batches',True) else self.global_step,
         )
 
-        for step_idx, batch in loop.iter_batches():
-            if step_idx < self.global_step:
-                continue  # skip already-trained steps when resuming
+        batches = loop.iter_batches()
+        if self.global_step and train_cfg.get('resume_skip_batches', True):
+            # Replaying the loader must not advance the checkpoint's model RNG.
+            # Deterministic samplers reconstruct their own original sample order.
+            import random
+            import numpy as np
+            python_state, numpy_state = random.getstate(), np.random.get_state()
+            devices = list(range(torch.cuda.device_count())) if torch.cuda.is_available() else []
+            try:
+                with torch.random.fork_rng(devices=devices):
+                    for _ in range(self.global_step):
+                        next(batches)
+            finally:
+                random.setstate(python_state)
+                np.random.set_state(numpy_state)
+
+        for step_idx, batch in batches:
 
             # Before-iter hooks
             for hook in self.hooks:

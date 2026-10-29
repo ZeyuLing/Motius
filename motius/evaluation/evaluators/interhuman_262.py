@@ -15,6 +15,7 @@ self-contained Motius evaluator artifact from the Hugging Face Hub.
 """
 
 from __future__ import annotations
+from motius.motion.conditioning.clip_text import tokenize_clip
 
 import json
 from pathlib import Path
@@ -184,7 +185,7 @@ class InterHuman262Evaluator:
             align_idx = np.argsort(motion_lens.detach().cpu().tolist())[::-1].copy()
             batch["motions"] = batch["motions"][align_idx]
             batch["motion_lens"] = batch["motion_lens"][align_idx]
-            text_emb = self._model.encode_text(dict(batch))["text_emb"][align_idx]
+            text_emb = self._model.encode_text(dict(batch, text_tokens=tokenize_clip(batch["text"])))["text_emb"][align_idx]
             motion_emb = self._model.encode_motion(dict(batch))["motion_emb"]
             text_chunks.append(text_emb.detach().cpu().numpy())
             motion_chunks.append(motion_emb.detach().cpu().numpy())

@@ -9,7 +9,7 @@ description = "A reproducible framework for human motion models"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "accelerate>=0.20",
+    "accelerate>=0.28",
     "datasets>=2.0",
     "diffusers>=0.20",
     "huggingface_hub>=0.20",

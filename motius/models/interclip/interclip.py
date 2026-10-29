@@ -135,10 +135,10 @@ class InterCLIP(nn.Module):
         return batch
 
     def encode_text(self, batch: Dict[str, object]) -> Dict[str, torch.Tensor]:
+        tokens = batch["text_tokens"]
         device = next(self.parameters()).device
-        raw_text: List[str] = list(batch["text"])
         with torch.no_grad():
-            text = clip.tokenize(raw_text, truncate=True).to(device)
+            text = tokens.to(device)
             x = self.token_embedding(text).type(self.dtype)
             pe_tokens = x + self.positional_embedding.type(self.dtype)
         out = self.textTransEncoder(pe_tokens)
