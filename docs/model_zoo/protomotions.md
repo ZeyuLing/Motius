@@ -121,47 +121,40 @@ rollout = pipe.rollout_motion_tracking(
 
 ### Training
 
-The official modular PPO trainer, G1 configuration, simulator adapters, and
-mimic experiment are packaged under
-[`motius/trainers/protomotions`](../../motius/trainers/protomotions). No
-ProtoMotions checkout or `ref_repo` import is used. Install an Isaac Lab
-environment first, followed by the Python dependencies:
+The native `ProtoMotionsPPOTrainer` (also exported as `ProtoMotionsTrainer`)
+runs through the shared AccelerateRunner. Reference motion, expert observations,
+rollout collection, PPO/AMP objectives and Isaac Lab physics are separate
+framework components; no copied upstream application package is imported.
 
 | Item | Training contract |
 | --- | --- |
-| Objective | PPO with pose, rotation, velocity, root-height, contact-match, action-smoothness, and mechanical-power rewards |
-| Precision | FP32 by default; the released mimic experiment does not enable mixed-precision optimization |
-| Checkpoints | Full `last.ckpt` state every 10 epochs and numbered epoch checkpoints every 1,000 epochs |
+| Objective | Original PPO, L2C2, task/style value objectives and AMP discriminator with gradient penalty |
+| Precision | FP32, with matmul precision matching the configured runtime |
+| Checkpoints | Native Accelerate model/optimizer/RNG/progress state under `outputs/training/protomotions/`; `--auto-resume` restores native runs |
 
 ```bash
 pip install -e ".[motion-tracking-train-protomotions]"
-```
-
-Point the config at a processed G1 motion library and start training:
-
-```bash
+python tools/download_protomotions_assets.py
 export G1_MOTION_FILE=/path/to/bones_seed_g1_train.motion
+export PROTOMOTIONS_CHECKPOINT=/path/to/released_g1/last.ckpt
 python tools/train_motion_tracking.py \
   configs/motion_tracking/protomotions_g1_bones_seed.yaml
 ```
 
-The native trainer automatically resumes when
-`outputs/training/protomotions/g1_bones_seed/last.ckpt` exists. Pass
-`--checkpoint /path/to/last.ckpt` to warm-start a new experiment. All configs,
-logs, and checkpoints stay below `outputs/training/protomotions/`.
+Install Isaac Sim 5.1 and Isaac Lab 2.3.2 separately in their compatible Python
+environment. The original checkpoint must be accompanied by its resolved
+training and inference YAML/PT files. Original checkpoint loading starts with
+released neural weights and fresh optimizers; native `--auto-resume` restores
+complete framework checkpoints. The final current-weight Pipeline is exported
+to the run's `exported` directory and loads through `Pipeline.from_pretrained`.
 
-Export the native checkpoint directly into the standard Hugging Face layout:
-
-```bash
-python -m motius.trainers.protomotions.export_policy \
-  --checkpoint outputs/training/protomotions/g1_bones_seed/last.ckpt \
-  --output outputs/checkpoints/protomotions
-```
-
-The exporter validates all four ONNX outputs against PyTorch and writes the
-actual observation names, shapes, timing, gains, and future-step contract to
-`unified_pipeline.yaml`. The resulting directory loads with
-`Pipeline.from_pretrained`.
+See [native training and validation details](../tasks/protomotions_native_training.md).
+Four real G1 environments passed two 32x4 rollout/update iterations against
+original AMP.fit, including actual reference-library expert observations and
+all optimizer states. This uses a short synthetic reference and controlled
+FP32/eager execution; it does not establish full-dataset convergence or
+compiled-runtime equivalence. Published MuJoCo metrics below describe the
+existing released deployment artifact.
 
 ## Evaluation Results
 
@@ -196,7 +189,7 @@ and tensor order.
 
 See the [ProtoMotions paper](https://arxiv.org/abs/2507.14320),
 [official source](https://github.com/NVlabs/ProtoMotions), and
-[attribution note](../../motius/models/protomotions/ATTRIBUTIONS.md).
+[attribution note](../../motius/licenses/protomotions/ATTRIBUTIONS.md).
 ProtoMotions and the redistributed artifact are Apache-2.0 licensed.
 
 <!-- MOTIUS_MODEL_CARD_FOOTER:START -->

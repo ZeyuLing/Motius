@@ -1,0 +1,9 @@
+{
+  "complete": true,
+  "world_size": 2,
+  "rollout_iterations": 3,
+  "optimizer_updates": 12,
+  "neural_tensors": 72,
+  "all_replica_state_sha256_equal": true,
+  "scope": "Released SONIC neural roots and native online collector/PPO Trainer through the shared AccelerateRunner, two GPUs, three rollouts and twelve AdamW updates; all policy/value parameters and buffers agree across replicas. Checkpoint saved. Controlled tensor environment; not independent original distributed or physical simulation evidence."
+}

@@ -1,0 +1,575 @@
+{
+  "upstream_commit": "49fe5ad69de67ebbc07ea2b25d41b0f622c15c3c",
+  "module_mapping": {
+    "protomotions.envs.obs.humanoid_historical": "motius.simulators.isaaclab.protomotions.mdp.obs.humanoid_historical",
+    "protomotions.envs.obs.utils": "motius.simulators.isaaclab.protomotions.mdp.obs.utils",
+    "protomotions.utils.rotations": "motius.motion.representation.protomotions.rotations",
+    "protomotions.utils": "motius.simulators.isaaclab.protomotions.support",
+    "protomotions.envs.obs.humanoid": "motius.simulators.isaaclab.protomotions.mdp.obs.humanoid",
+    "protomotions.components.pose_lib": "motius.motion.kinematics.protomotions",
+    "protomotions.simulator.base_simulator.simulator_state": "motius.simulators.isaaclab.protomotions.physics.simulator_state",
+    "protomotions.envs.terminations.tracking": "motius.simulators.isaaclab.protomotions.mdp.terminations.tracking",
+    "protomotions.envs.action.action_functions": "motius.simulators.isaaclab.protomotions.mdp.action.action_functions",
+    "protomotions.envs.obs.target_poses": "motius.simulators.isaaclab.protomotions.mdp.obs.target_poses",
+    "protomotions.utils.odom_corruption": "motius.simulators.isaaclab.protomotions.support.odom_corruption",
+    "protomotions.envs.control.mimic_control": "motius.simulators.isaaclab.protomotions.mdp.control.mimic_control",
+    "protomotions.envs.base_env.env": "motius.simulators.isaaclab.protomotions.mdp.base_env.env",
+    "protomotions.components.motion_lib": "motius.datasets.protomotions_motion",
+    "protomotions.utils.motion_interpolation_utils": "motius.motion.representation.protomotions.interpolation",
+    "protomotions.components.scene_lib": "motius.simulators.scenes.protomotions",
+    "protomotions.utils.mesh_utils": "motius.simulators.geometry.protomotions_mesh",
+    "protomotions.components.terrains.terrain": "motius.simulators.terrains.protomotions.terrain",
+    "protomotions.components.terrains.config": "motius.simulators.terrains.protomotions.config",
+    "protomotions.components.terrains.terrain_utils": "motius.simulators.terrains.protomotions.terrain_utils",
+    "protomotions.components.terrains.subterrain_generator": "motius.simulators.terrains.protomotions.subterrain_generator",
+    "protomotions.components.terrains.shape_utils": "motius.simulators.terrains.protomotions.shape_utils",
+    "protomotions.components.terrains.subterrain": "motius.simulators.terrains.protomotions.subterrain",
+    "protomotions.robot_configs.base": "motius.configuration.protomotions.base",
+    "protomotions.simulator.mujoco.config": "motius.configuration.protomotions.compatibility_mujoco",
+    "protomotions.simulator.base_simulator.config": "motius.simulators.isaaclab.protomotions.physics.config",
+    "protomotions.simulator.newton.config": "motius.configuration.protomotions.compatibility_newton",
+    "protomotions.simulator.genesis.config": "motius.configuration.protomotions.compatibility_genesis",
+    "protomotions.simulator.isaaclab.config": "motius.simulators.isaaclab.protomotions.backend.config",
+    "protomotions.simulator.isaacgym.config": "motius.configuration.protomotions.compatibility_isaacgym",
+    "protomotions.envs.base_env.utils": "motius.simulators.isaaclab.protomotions.mdp.base_env.utils",
+    "protomotions.envs.mdp_component": "motius.simulators.isaaclab.protomotions.mdp.mdp_component",
+    "protomotions.envs.context_views": "motius.simulators.isaaclab.protomotions.mdp.context_views",
+    "protomotions.envs.obs.state_history_buffer": "motius.simulators.isaaclab.protomotions.mdp.obs.state_history_buffer",
+    "protomotions.envs.context_paths": "motius.simulators.isaaclab.protomotions.mdp.context_paths",
+    "protomotions.envs.component_manager": "motius.simulators.isaaclab.protomotions.mdp.component_manager",
+    "protomotions.envs.control.manager": "motius.simulators.isaaclab.protomotions.mdp.control.manager",
+    "protomotions.envs.control.base": "motius.simulators.isaaclab.protomotions.mdp.control.base",
+    "protomotions.utils.hydra_replacement": "motius.simulators.isaaclab.protomotions.support.construction",
+    "protomotions.envs.base_env.config": "motius.simulators.isaaclab.protomotions.mdp.base_env.config",
+    "protomotions.envs.motion_manager.config": "motius.simulators.isaaclab.protomotions.mdp.motion_manager.config",
+    "protomotions.envs.obs.scene_obs": "motius.simulators.isaaclab.protomotions.mdp.obs.scene_obs",
+    "protomotions.envs.utils.scene": "motius.simulators.isaaclab.protomotions.mdp.utils.scene",
+    "protomotions.envs.obs.terrain_obs": "motius.simulators.isaaclab.protomotions.mdp.obs.terrain_obs",
+    "protomotions.envs.obs.observation_noise": "motius.simulators.isaaclab.protomotions.mdp.obs.observation_noise",
+    "protomotions.envs.terminations": "motius.simulators.isaaclab.protomotions.mdp.terminations",
+    "protomotions.envs.terminations.task": "motius.simulators.isaaclab.protomotions.mdp.terminations.task",
+    "protomotions.envs.terminations.base": "motius.simulators.isaaclab.protomotions.mdp.terminations.base",
+    "protomotions.simulator.base_simulator.simulator": "motius.simulators.isaaclab.protomotions.physics.simulator",
+    "protomotions.simulator.base_simulator.user_interface": "motius.simulators.isaaclab.protomotions.physics.user_interface",
+    "protomotions.simulator.base_simulator.record": "motius.simulators.isaaclab.protomotions.physics.record",
+    "protomotions.simulator.base_simulator.utils": "motius.simulators.isaaclab.protomotions.physics.utils",
+    "protomotions.envs.rewards.regularization": "motius.simulators.isaaclab.protomotions.mdp.rewards.regularization",
+    "protomotions.envs.rewards.base": "motius.simulators.isaaclab.protomotions.mdp.rewards.base",
+    "protomotions.envs.rewards.tracking": "motius.simulators.isaaclab.protomotions.mdp.rewards.tracking",
+    "protomotions.robot_configs.g1": "motius.configuration.protomotions.g1",
+    "protomotions.utils.component_builder": "motius.simulators.isaaclab.protomotions.factory",
+    "protomotions.envs.motion_manager.mimic_motion_manager": "motius.simulators.isaaclab.protomotions.mdp.motion_manager.mimic_motion_manager",
+    "protomotions.envs.motion_manager.motion_manager": "motius.simulators.isaaclab.protomotions.mdp.motion_manager.motion_manager",
+    "protomotions.simulator.isaaclab.simulator": "motius.simulators.isaaclab.protomotions.backend.simulator",
+    "protomotions.simulator.isaaclab.utils.perspective_viewer": "motius.simulators.isaaclab.protomotions.backend.utils.perspective_viewer",
+    "protomotions.simulator.isaaclab.utils.collision_baking": "motius.simulators.isaaclab.protomotions.backend.utils.collision_baking",
+    "protomotions.simulator.isaaclab.utils.scene": "motius.simulators.isaaclab.protomotions.backend.utils.scene",
+    "protomotions.simulator.isaaclab.utils.usd_utils": "motius.simulators.isaaclab.protomotions.backend.utils.usd_utils"
+  },
+  "discarded_agent_config_classes": [
+    [
+      "protomotions.agents.amp.config",
+      "AMPAgentConfig"
+    ],
+    [
+      "protomotions.agents.amp.config",
+      "AMPModelConfig"
+    ],
+    [
+      "protomotions.agents.ppo.config",
+      "PPOActorConfig"
+    ],
+    [
+      "protomotions.agents.common.config",
+      "MLPWithConcatConfig"
+    ],
+    [
+      "protomotions.agents.common.config",
+      "MLPLayerConfig"
+    ],
+    [
+      "protomotions.agents.common.config",
+      "ModuleOperationForwardConfig"
+    ],
+    [
+      "protomotions.agents.base_agent.config",
+      "OptimizerConfig"
+    ],
+    [
+      "protomotions.agents.amp.config",
+      "DiscriminatorConfig"
+    ],
+    [
+      "protomotions.agents.common.config",
+      "ModuleContainerConfig"
+    ],
+    [
+      "protomotions.agents.evaluators.config",
+      "MimicEvaluatorConfig"
+    ],
+    [
+      "protomotions.agents.evaluators.config",
+      "MotionWeightsRulesConfig"
+    ],
+    [
+      "protomotions.agents.ppo.config",
+      "L2C2Config"
+    ],
+    [
+      "protomotions.agents.ppo.config",
+      "AdaptiveLRConfig"
+    ],
+    [
+      "protomotions.agents.ppo.config",
+      "AdvantageNormalizationConfig"
+    ],
+    [
+      "protomotions.agents.amp.config",
+      "AMPParametersConfig"
+    ]
+  ],
+  "files": [
+    {
+      "upstream": "protomotions/envs/obs/humanoid_historical.py",
+      "upstream_sha256": "e6017552e3abe2bcf79728110762e396134966c43c777b25cde07d0a5bc11df0",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/obs/humanoid_historical.py",
+      "native_sha256": "a86fb693ae9ab45d8c7ffa68fa1f0cd988eb0d4c5cbb9617af5c2e39416cc3ba"
+    },
+    {
+      "upstream": "protomotions/envs/obs/utils.py",
+      "upstream_sha256": "0df8325dd8b3107cae7cdf35885a031b345f206dd7fa91b7d493c7bf7256d27f",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/obs/utils.py",
+      "native_sha256": "72dd3f0c91395d4a4d04af8722ae7edb68db14e51740fa45c250d61e721f3f52"
+    },
+    {
+      "upstream": "protomotions/utils/rotations.py",
+      "upstream_sha256": "ef1475d33d6f941ccdea4a612477483db4fad8236ba7786fbe8bf91a65c1cef8",
+      "native": "motius/motion/representation/protomotions/rotations.py",
+      "native_sha256": "c15f982c8caafb644a1dbfe78ea73e16699b2c6f6cfbadc930144a4f5e487c1b"
+    },
+    {
+      "upstream": "protomotions/utils/__init__.py",
+      "upstream_sha256": "5cb3b4f448bc834954ee1625cca0af86f4212c505ee42070138bf63ea2bdc566",
+      "native": "motius/simulators/isaaclab/protomotions/support/__init__.py",
+      "native_sha256": "05f5298811b90269cc676b7c31bb9344e07aadcd5fdd96182cf20331c28c7aa6"
+    },
+    {
+      "upstream": "protomotions/envs/obs/humanoid.py",
+      "upstream_sha256": "54e2f718695d8982e23c619ee7c45f2d00430eee8e3572e06567ee67db4f0ac2",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/obs/humanoid.py",
+      "native_sha256": "941a51b6554769907c10facb5da689670b65af4fa352ecd19759111ee34b5447"
+    },
+    {
+      "upstream": "protomotions/components/pose_lib.py",
+      "upstream_sha256": "a1c2622ca40d3d7fa0d04032bbb5cc032d56927e9c903b4e14080a098e844f81",
+      "native": "motius/motion/kinematics/protomotions.py",
+      "native_sha256": "ba5cf090eb017ae64d2f42ac16fec0f07bfe3111d2689bc651274a4e020eb845"
+    },
+    {
+      "upstream": "protomotions/simulator/base_simulator/simulator_state.py",
+      "upstream_sha256": "31cf14fab319151602f43fcf6ad2751b71088cda3a3f4feefadfa61262102731",
+      "native": "motius/simulators/isaaclab/protomotions/physics/simulator_state.py",
+      "native_sha256": "f934120ce49b7b3f7624b817ec8d8b566a711a8716f3335a6c2f0884724d6e55"
+    },
+    {
+      "upstream": "protomotions/envs/terminations/tracking.py",
+      "upstream_sha256": "4bacef0a915b36c960030759cb101e2ca52880c19cffebe34892dbfe7c97499e",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/terminations/tracking.py",
+      "native_sha256": "9ec834e7091874ae9e9f81a70b5f7a4ee6c970e6d38b0f16e7d2c77adb45d951"
+    },
+    {
+      "upstream": "protomotions/envs/action/action_functions.py",
+      "upstream_sha256": "bc06c792178e5d6921fc3fb39aae71859c92183ead729db93cfd291db06ea299",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/action/action_functions.py",
+      "native_sha256": "66756854af8dd90de62520cbbac4b879516204ebabd3004a03fff9a3c4ffe007"
+    },
+    {
+      "upstream": "protomotions/envs/obs/target_poses.py",
+      "upstream_sha256": "2bea2098a64cc8882cb78a80f659e81b21eea036f1c41bf587e3c66608a4736c",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/obs/target_poses.py",
+      "native_sha256": "a013592dd3600a3b81f69168207df412cd5e878eb15e439b397d71a4fa3196eb"
+    },
+    {
+      "upstream": "protomotions/utils/odom_corruption.py",
+      "upstream_sha256": "64b9d9b20bc1bac5abb4dd9eae8c6dfbc641e69953db641b63a6fe09c5eaa6b2",
+      "native": "motius/simulators/isaaclab/protomotions/support/odom_corruption.py",
+      "native_sha256": "d3c5a2c21e699383f7587f6e8c285192fa8f966f897e43c5af1fb0ffc8fdcd58"
+    },
+    {
+      "upstream": "protomotions/envs/control/mimic_control.py",
+      "upstream_sha256": "39050c7bd40371e9eb1c5796743f81faf9cc2090e699a96fa9cf60f00ef7319c",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/control/mimic_control.py",
+      "native_sha256": "dadcb0fa8850fd9dfc4d129cc165770e715439500a3972231ed5a2f0ab498008"
+    },
+    {
+      "upstream": "protomotions/envs/base_env/env.py",
+      "upstream_sha256": "8c2228218ffb7eb20e98c7b20e12def6a247a81f86ab6e6194d5f1161a83decd",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/base_env/env.py",
+      "native_sha256": "0fa8bd5e46539ea14573297d0966ba287ef833c4efa1d6c90d4b1c4b7d74fe48"
+    },
+    {
+      "upstream": "protomotions/components/motion_lib.py",
+      "upstream_sha256": "a375ba98cd6b00023d02184239e2dbb62bc7865370876e519bba41ee833fab04",
+      "native": "motius/datasets/protomotions_motion.py",
+      "native_sha256": "99af8fa721b0928e516347d5b43468c5978f7b3e14e9c6172e4df6c4b96ff3a4"
+    },
+    {
+      "upstream": "protomotions/utils/motion_interpolation_utils.py",
+      "upstream_sha256": "5de11616661e0dd70e858b3bb009ba1c5fd10435cd36ae6938d728070b147f9e",
+      "native": "motius/motion/representation/protomotions/interpolation.py",
+      "native_sha256": "1f158ee312511b8e1ef0d16874779eb37574d4a80e1e1844fc28c29e7a2bdc3d"
+    },
+    {
+      "upstream": "protomotions/components/scene_lib.py",
+      "upstream_sha256": "84469ae2b00fcee4470c3c07c998bf18e1c1bdd501de66dae5dff13eba6a5c90",
+      "native": "motius/simulators/scenes/protomotions.py",
+      "native_sha256": "9e08e608b0b367022ede86839ad6b68095a6a36190bac984badb14addee6da94"
+    },
+    {
+      "upstream": "protomotions/utils/mesh_utils.py",
+      "upstream_sha256": "9722614022ed2957881318994825e1c5bff9bd25eed6b47a4eeb295f81e1050d",
+      "native": "motius/simulators/geometry/protomotions_mesh.py",
+      "native_sha256": "755f91f79b1a528856e0de956d919e4bf11811b21ee187ea4c78803f219b5659"
+    },
+    {
+      "upstream": "protomotions/components/terrains/terrain.py",
+      "upstream_sha256": "c6987425462c2a69181d6df58c8eaa551b5fe3a1420aa9eab1e1dbb773cc0998",
+      "native": "motius/simulators/terrains/protomotions/terrain.py",
+      "native_sha256": "519e30337ee54d4834681b0e742e56dff02a6a1b4e40ad6cfbe9e290f66e843a"
+    },
+    {
+      "upstream": "protomotions/components/terrains/config.py",
+      "upstream_sha256": "498fc6dfe21ef6249bd9dc3fe773e214c519fd2e2c38be97c7f9cce43b649c0e",
+      "native": "motius/simulators/terrains/protomotions/config.py",
+      "native_sha256": "e9fbbd9ca86f4b45f93714776d5c4e140ae23ad368b2fc3deeeb2c15f0a527de"
+    },
+    {
+      "upstream": "protomotions/components/terrains/terrain_utils.py",
+      "upstream_sha256": "c6f6f2147fdc87809bfb1774f42620b982a0c3f3c835b95f43a95bb4ec830775",
+      "native": "motius/simulators/terrains/protomotions/terrain_utils.py",
+      "native_sha256": "2e875aacec7b52da31b31c7b605ce3ac592fb69342d6d8012195361753cc4f37"
+    },
+    {
+      "upstream": "protomotions/components/terrains/subterrain_generator.py",
+      "upstream_sha256": "309b3af644669866992e3f36075c375c2e1a0033b7d940eed6e05008d608fe6f",
+      "native": "motius/simulators/terrains/protomotions/subterrain_generator.py",
+      "native_sha256": "661ad1ad0d14b97fd9c11aac261cb767ba7d3846a404eae54b6975c0ff3a7ee1"
+    },
+    {
+      "upstream": "protomotions/components/terrains/shape_utils.py",
+      "upstream_sha256": "957ae946faf8ff7e823881c8708ee7c614e2d3e60a4a2ab65177e9a9dccccca5",
+      "native": "motius/simulators/terrains/protomotions/shape_utils.py",
+      "native_sha256": "8f02c4fee0645979a2bc5a09ac8ef3d5694addd870be2c14368ab0d1c5054a91"
+    },
+    {
+      "upstream": "protomotions/components/terrains/subterrain.py",
+      "upstream_sha256": "b1ea2dde472d4445eb73aebc86524a7f4f66b1b6bc2f070c30c06984da786246",
+      "native": "motius/simulators/terrains/protomotions/subterrain.py",
+      "native_sha256": "6d1cfb04bc6759ba24f518df781b36919a6f9d398b8d4e797f71afe92d6dd550"
+    },
+    {
+      "upstream": "protomotions/robot_configs/base.py",
+      "upstream_sha256": "64c6a5e8d0d8fd030b8058714760bb233e191a00213f5daa92e74ae812a8b8ac",
+      "native": "motius/configuration/protomotions/base.py",
+      "native_sha256": "82ca451c7865d07ccc45645bd497da66c7578ed99a707d0a399fb6c99a32e233"
+    },
+    {
+      "upstream": "protomotions/simulator/mujoco/config.py",
+      "upstream_sha256": "ec3f2f1e423f6dfba7d3bab7911669fbbb5df91db481c287b783bf12f13de7ac",
+      "native": "motius/configuration/protomotions/compatibility_mujoco.py",
+      "native_sha256": "edefbb72a25413a69f0c21e073b283db3f0cfa2586c1859f7cef7bcceeb7a66e"
+    },
+    {
+      "upstream": "protomotions/simulator/base_simulator/config.py",
+      "upstream_sha256": "78b07f9c1302e90e94c14cab5a619f9bb34b8d10e453b67b5f772707ef224563",
+      "native": "motius/simulators/isaaclab/protomotions/physics/config.py",
+      "native_sha256": "b7cfc30acd82249e060e42378f1b3dd1121f671d717e0f8d57f689d6fd09a98a"
+    },
+    {
+      "upstream": "protomotions/simulator/newton/config.py",
+      "upstream_sha256": "6b31836976566983afb7ae2cb25a3bf4f8c78d06c5d28fee9b4d4d18a6e9d8fe",
+      "native": "motius/configuration/protomotions/compatibility_newton.py",
+      "native_sha256": "d2680294cb30e24beac4b025dae11466872748243a69e3d6b36b490f0be031d5"
+    },
+    {
+      "upstream": "protomotions/simulator/genesis/config.py",
+      "upstream_sha256": "a3ca6b37abe17fb62c8b14b7714fda31d0d31a61b4e5b21b7b32ebe7dc2d1b9f",
+      "native": "motius/configuration/protomotions/compatibility_genesis.py",
+      "native_sha256": "6d03cd4e36fd4248c43d5278b03e4aaa6d8e98b1cd4b923403369ba6688d1a7d"
+    },
+    {
+      "upstream": "protomotions/simulator/isaaclab/config.py",
+      "upstream_sha256": "33e04c7dece6093042bac4c7d591d97e1b45460c2e3b7b5ad4de24b2bf9619e4",
+      "native": "motius/simulators/isaaclab/protomotions/backend/config.py",
+      "native_sha256": "b685f61aacc9152301424af94ddd196ceaa5b1d75b401737ee0c578de38a303a"
+    },
+    {
+      "upstream": "protomotions/simulator/isaacgym/config.py",
+      "upstream_sha256": "576a7b0540bcec23d81f8de6cd10f86dbe9b406dce2c66e5f8db0577bfbbe1d5",
+      "native": "motius/configuration/protomotions/compatibility_isaacgym.py",
+      "native_sha256": "14174bac212e49a4029cf7cddd2d4642a125c74b24bb4fdf887e573592fc6bb7"
+    },
+    {
+      "upstream": "protomotions/envs/base_env/utils.py",
+      "upstream_sha256": "c4d858645737988f04de27fba553e3b84244e38a2fb8f66f21f37c1955163143",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/base_env/utils.py",
+      "native_sha256": "b3b32b87aaea690412547f9a91892ebf099ecb411ee43c75df75133ddbf9e133"
+    },
+    {
+      "upstream": "protomotions/envs/mdp_component.py",
+      "upstream_sha256": "c98239f43fa3f257dfad6c67a6a49ab70b61bc1e43258f01948e240e62bf1d2a",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/mdp_component.py",
+      "native_sha256": "6c51b3244ac0e4027395a88298fa6a4f3ed0b0fef454a9cb30090b1161cd8178"
+    },
+    {
+      "upstream": "protomotions/envs/context_views.py",
+      "upstream_sha256": "453ddf874e5cb8fb03a83ec64fb021f70ed6c34a2c230768a089e3da18630dcd",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/context_views.py",
+      "native_sha256": "dd99f12d4ec470fc9b0226e42dd3538b6aab5c64b0bff68976e561caa33ea005"
+    },
+    {
+      "upstream": "protomotions/envs/obs/state_history_buffer.py",
+      "upstream_sha256": "d9500f321cf869bd9332fdb37ad28d0f4eaba4471cd555eb57f52f7d5c5b4ac3",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/obs/state_history_buffer.py",
+      "native_sha256": "03a617c52d19eb8e5f9cc6af3507507e6f58ae6ffa9d27eadec85872573e0ac9"
+    },
+    {
+      "upstream": "protomotions/envs/context_paths.py",
+      "upstream_sha256": "5846363c894a383822b16db7d555081fc50064b3134f736836c8dbb65fe42cc6",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/context_paths.py",
+      "native_sha256": "3899c70651762610a66dc2b876da7f0e383e1877906cd6f0b0149249ad674db9"
+    },
+    {
+      "upstream": "protomotions/envs/component_manager.py",
+      "upstream_sha256": "294b3a11d484718c6e8afcd11a3b770d6f65ebe13a14833c3e30ea9f1ef3d0fb",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/component_manager.py",
+      "native_sha256": "3d6b9a57c2dd52eecf474fa1762ea279b260fadb753f1ea2065531bac779be43"
+    },
+    {
+      "upstream": "protomotions/envs/control/manager.py",
+      "upstream_sha256": "466a7806db96520543e0431aa549cebacf5cdc5d1e357838f2ffaebe05fcc93f",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/control/manager.py",
+      "native_sha256": "03ac2d7c0f2bfc29e62bee8b4abe064db487101d40465204b42206a6bfad2021"
+    },
+    {
+      "upstream": "protomotions/envs/control/base.py",
+      "upstream_sha256": "1543194e157942f9b6e664f2e7091662375733952110da1c73c5d26623ad8c43",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/control/base.py",
+      "native_sha256": "bc5b72c75cc4349a53f7f92c1fe2d50dc5466c5b9127152c59368cee86af478a"
+    },
+    {
+      "upstream": "protomotions/utils/hydra_replacement.py",
+      "upstream_sha256": "1c9a6cb7fea866705a7eee98c555b36de5a81339c70a6709b897eaf88a876ea5",
+      "native": "motius/simulators/isaaclab/protomotions/support/construction.py",
+      "native_sha256": "c33e7c98fbca086fc412c6cb590f9d78aac8b7f87ec694c97c797ff2ba016662"
+    },
+    {
+      "upstream": "protomotions/envs/base_env/config.py",
+      "upstream_sha256": "b117ebecb541aee0d7d5ac9927fcce7c7fbe8c5a9f527e5cdf1d400b29542e9f",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/base_env/config.py",
+      "native_sha256": "d09018219b6569463a7e017c0f79638fbbc7842de5caf7ce66b6e4f8eba07e4b"
+    },
+    {
+      "upstream": "protomotions/envs/motion_manager/config.py",
+      "upstream_sha256": "aa36fe5d796b27a65161676fa929310344fb7d9a0c8366ec8c6f4b759e3c16ab",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/motion_manager/config.py",
+      "native_sha256": "7c525203dcf7a8b0d785501a9233f8ca8073d1c60cabbc7104fc477da35cd219"
+    },
+    {
+      "upstream": "protomotions/envs/obs/scene_obs.py",
+      "upstream_sha256": "5306165056ad7863cd28c765176a3087ad11d3ca98736ad6ffbcb13c6281b58f",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/obs/scene_obs.py",
+      "native_sha256": "c5f046d094f2a0967a187b8097945ef8be317ef1b770140f149708b3de376bf6"
+    },
+    {
+      "upstream": "protomotions/envs/utils/scene.py",
+      "upstream_sha256": "99aa2d3d1cc753c75c1db934c1cc7a44fa913b67c65f81fa8f6d50af337bb143",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/utils/scene.py",
+      "native_sha256": "f8489a8e704a30837c0deb88f862aa32cedcf93595a148cce586e9906b8e5b05"
+    },
+    {
+      "upstream": "protomotions/envs/obs/terrain_obs.py",
+      "upstream_sha256": "41a2138075d0b0555a40233d4f22cf97faabc09c4237ca398af4a03e6873d60c",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/obs/terrain_obs.py",
+      "native_sha256": "0e5e9b8cc38e08eef0fa6ff97a2ed447364b167722d3e282f71a9d697300f48d"
+    },
+    {
+      "upstream": "protomotions/envs/obs/observation_noise.py",
+      "upstream_sha256": "84fca782a6e9a2198462bcf642574cef641352303cb0a006594de017ee409b30",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/obs/observation_noise.py",
+      "native_sha256": "aba39cba6ab7c5c77eba911a3d0cf1ff62ce20d4528e45d827b2c94f875b8dc5"
+    },
+    {
+      "upstream": "protomotions/envs/terminations/__init__.py",
+      "upstream_sha256": "48ee4bee3efbf05b8c776c4138525993de6e125f81943e1e62b42895318dfa84",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/terminations/__init__.py",
+      "native_sha256": "5b4d3e80c4242ae42c1a9939fb9004ce894655c8d0e5914b6c9dfd175ef0f1fb"
+    },
+    {
+      "upstream": "protomotions/envs/terminations/task.py",
+      "upstream_sha256": "5df7f60de26ea0f5d29cc3261f42867db6af98a51ede20badd13df857d02e227",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/terminations/task.py",
+      "native_sha256": "85fe5a4176be36e042ab3008442716499800d7cab2e3282f20c97c727bf550bf"
+    },
+    {
+      "upstream": "protomotions/envs/terminations/base.py",
+      "upstream_sha256": "9d39b1fd6efcacb8146747ccaf89814232e87f2d2a4ef12f4b2157f7fcfb6c2e",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/terminations/base.py",
+      "native_sha256": "00f31d79e31c2d12fbdef14be3125ab1c0a7425397fa1fc4f779a53c629b3536"
+    },
+    {
+      "upstream": "protomotions/simulator/base_simulator/simulator.py",
+      "upstream_sha256": "73db480bd88a6aba52d8b20f3f3c5e45001c483cf65af187add8792c015f0180",
+      "native": "motius/simulators/isaaclab/protomotions/physics/simulator.py",
+      "native_sha256": "1a019645e588ea86c950b182362e5ae7918c1436ee6be0d0cc0822cbc3b34956"
+    },
+    {
+      "upstream": "protomotions/simulator/base_simulator/user_interface.py",
+      "upstream_sha256": "d2173e38d5a1bc52bb62f44ce9dab5f0a8c914b58f6ffef615d21f3bdb2ef31f",
+      "native": "motius/simulators/isaaclab/protomotions/physics/user_interface.py",
+      "native_sha256": "c64d2e03d2afe236c334142d30284b28a96fcb15ea5c8f2053e4cb05e1500956"
+    },
+    {
+      "upstream": "protomotions/simulator/base_simulator/record.py",
+      "upstream_sha256": "a9516bc2e30975ec7b4ceefc5c659e78137440014e201cbe4461a3c022712162",
+      "native": "motius/simulators/isaaclab/protomotions/physics/record.py",
+      "native_sha256": "f52e64ddce51a5ee873ffb66dfb033140134f3a6088ef55301cfd78a488a0661"
+    },
+    {
+      "upstream": "protomotions/simulator/base_simulator/utils.py",
+      "upstream_sha256": "0756aaa711b828ee3b5e1e91e220c324fbbd15e50670a7ecca90c6b5f9acf439",
+      "native": "motius/simulators/isaaclab/protomotions/physics/utils.py",
+      "native_sha256": "9607c71f55ebf1b349b6a80cbd79d5ded54cdbc109331c25ea9e6aae557933c3"
+    },
+    {
+      "upstream": "protomotions/envs/rewards/regularization.py",
+      "upstream_sha256": "77999b90b7907f345681536681e95bce0b913a425272a8dd7ab3b218e02e6c8e",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/rewards/regularization.py",
+      "native_sha256": "daea8ec131b85d5b876fbaf243777ad022ddd137079053d24c49b4c0dd1266b0"
+    },
+    {
+      "upstream": "protomotions/envs/rewards/base.py",
+      "upstream_sha256": "c53a40eba54bdc1fefe3812efe3641a454dbed06b3816b09c35c70795c52fd6a",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/rewards/base.py",
+      "native_sha256": "24fc5ccc617467f47caccbce84883b7a1edf6ff82d83f41215dd3eab00091d8e"
+    },
+    {
+      "upstream": "protomotions/envs/rewards/tracking.py",
+      "upstream_sha256": "125c4084c6d5de15b5e70e779834feed07979b60038a56e1575cde848275a69d",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/rewards/tracking.py",
+      "native_sha256": "491d327002906c4e3a25247542696472920d9f95d5316429da1d5ff0d8d9daad"
+    },
+    {
+      "upstream": "protomotions/robot_configs/g1.py",
+      "upstream_sha256": "fb77360c1859d509177c8872bde32ab7cd2f5256ce058a515e36389142fdd5db",
+      "native": "motius/configuration/protomotions/g1.py",
+      "native_sha256": "152ec61d95a7291da3c486b034a391df7a93069fa42a797343dbf8efd500d62b"
+    },
+    {
+      "upstream": "protomotions/utils/component_builder.py",
+      "upstream_sha256": "7a7a5d4b00deff5fc283d54bc6b96a67d715f99ecea17f348b310c4cf080be35",
+      "native": "motius/simulators/isaaclab/protomotions/factory.py",
+      "native_sha256": "5746785ce16b93ee4d0dc9d13dc5f76f3cdd7905d1b60005332d574eeedc85c9"
+    },
+    {
+      "upstream": "protomotions/envs/motion_manager/mimic_motion_manager.py",
+      "upstream_sha256": "38c70559be1dceb5949d485ffa378afaffca83e2e9976e6104db6479b18a69b0",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/motion_manager/mimic_motion_manager.py",
+      "native_sha256": "f88929da19a800342bbca13192d696f3b7abc351873336183ae85bd1dcae12ca"
+    },
+    {
+      "upstream": "protomotions/envs/motion_manager/motion_manager.py",
+      "upstream_sha256": "8393b4ba3fa938bb05c3462b32f53f3309ec231fff8152e081f7c00402849d01",
+      "native": "motius/simulators/isaaclab/protomotions/mdp/motion_manager/motion_manager.py",
+      "native_sha256": "dfbb012e4fa701c7c74cf0eb7f9afc7720be607420517215457cd69eba013af4"
+    },
+    {
+      "upstream": "protomotions/simulator/isaaclab/simulator.py",
+      "upstream_sha256": "dfbad102d5a1c3a380e62885ad21a41b080fe06ff1b03d1ade3e414c0b1bc569",
+      "native": "motius/simulators/isaaclab/protomotions/backend/simulator.py",
+      "native_sha256": "64320786b6436e7b209048288aed88eda0749f216bee320386fb464456cb2c90"
+    },
+    {
+      "upstream": "protomotions/simulator/isaaclab/utils/perspective_viewer.py",
+      "upstream_sha256": "14add115418b2b919072a5b23803f42fa210056a8b08446a8e432b9c9dbc7381",
+      "native": "motius/simulators/isaaclab/protomotions/backend/utils/perspective_viewer.py",
+      "native_sha256": "68bde96ac707d07cb516870cef5494007ec7fe6464f828d6ab2432003ab69e94"
+    },
+    {
+      "upstream": "protomotions/simulator/isaaclab/utils/collision_baking.py",
+      "upstream_sha256": "c009e98ba6b82c0e892f7530514d39364b0776d7b469dc85cfc1884927b08f19",
+      "native": "motius/simulators/isaaclab/protomotions/backend/utils/collision_baking.py",
+      "native_sha256": "e2495081f7ab1d947cda29055d689142aef75414dd013e799a27e8923346d086"
+    },
+    {
+      "upstream": "protomotions/simulator/isaaclab/utils/scene.py",
+      "upstream_sha256": "62e8d0aaffc932ba4d816a0ea5bc2eb7f0b015b95b6c0347378d0841047ccd26",
+      "native": "motius/simulators/isaaclab/protomotions/backend/utils/scene.py",
+      "native_sha256": "225e6930f16031f4399dd459075968309354e590e3ecff5e8da778e56c3c3dc3"
+    },
+    {
+      "upstream": "protomotions/simulator/isaaclab/utils/usd_utils.py",
+      "upstream_sha256": "eb746ba51cf6d0868f0561e68488b53d3c70a6de5d4028324f9697e8d0ea0a14",
+      "native": "motius/simulators/isaaclab/protomotions/backend/utils/usd_utils.py",
+      "native_sha256": "dbbd527de59e09bfafff4c3aab0a29ab30d80985383140442c0a437d40466844"
+    },
+    {
+      "upstream": "deployment/state_utils.py",
+      "upstream_sha256": "5745cb6118b66f8cd0cfa2a9d5367d3a8a885d6574587db4e37248ba0939cdac",
+      "native": "motius/motion/representation/protomotions/deployment_state.py",
+      "native_sha256": "46a82f5029b4188ddbbd75df1ba7f2a7a735bcecf9243cba72b2acfba62eb75b"
+    },
+    {
+      "upstream": "deployment/motion_utils.py",
+      "upstream_sha256": "84b06a64118ac66bb5fafbd29f6af71541dfae1dd9f6cb0a56abc80a650b6b4b",
+      "native": "motius/motion/representation/protomotions/playback.py",
+      "native_sha256": "df8b2bac2586beb27eb1d5bb57aeca3772147632fe898e06d8241324994a714a"
+    },
+    {
+      "upstream": "data/scripts/contact_detection.py",
+      "upstream_sha256": "2466b59ce2fac941042fe8188ebc2e5a616a3976b7658ade207a9c02eb321a90",
+      "native": "motius/motion/representation/protomotions/contacts.py",
+      "native_sha256": "4b0830402e1bdc7b54f6e86432776b81bbf7000a822793928485a98016be4582"
+    },
+    {
+      "upstream": "data/scripts/motion_filter.py",
+      "upstream_sha256": "70adaf34a227e6e4fa1e1463da875d6e45f2601dfdde0c43b5ede94b7e68f6f4",
+      "native": "motius/motion/representation/protomotions/filtering.py",
+      "native_sha256": "fded05f8224db77f2c9427955e1baea3461cc84607ae41d1e2f99d20f4efd394"
+    },
+    {
+      "upstream": "protomotions/utils/retargeting_fps.py",
+      "upstream_sha256": "1bf795d68d447175e7aa208e5ab378dcc66ff9a9b323bbb3292e741ef80342b8",
+      "native": "motius/motion/representation/protomotions/fps.py",
+      "native_sha256": "1bf795d68d447175e7aa208e5ab378dcc66ff9a9b323bbb3292e741ef80342b8"
+    },
+    {
+      "upstream": "data/scripts/convert_pyroki_retargeted_robot_motions_to_proto.py",
+      "upstream_sha256": "e0d5fd48e556a3c0bf2942c035fbf76c1dae783506869775a40c9eeb18441eb8",
+      "native": "motius/motion/representation/protomotions/retargeted_conversion.py",
+      "native_sha256": "bcfc8c7f79100122281e0a1109affa71b0a6f609d4e13246bfbc042e3d219c38"
+    },
+    {
+      "upstream": "pyroki/batch_retarget_to_g1_from_keypoints.py",
+      "upstream_sha256": "13bc26a93922e063b5cbe1569617347fabb54196dacba772ca5b1a3c3bee0997",
+      "native": "motius/pipelines/gentrack/pyroki_retarget.py",
+      "native_sha256": "d8cf01fe52f75b034c3a0aefa889be41e646e6c50c531687740151849056310d"
+    }
+  ],
+  "local_conversion_sources": [
+    {
+      "reference": "Repository implementation before native migration; numerical FK/contact functions originate upstream",
+      "path": "motius/trainers/protomotions/vendor/data/scripts/convert_g1_qpos_npz_to_proto.py",
+      "sha256": "8b3fbff7995b620221b01ce64754ff2df349127bc352e2af5fdbff2973f199de",
+      "native": "motius/motion/representation/protomotions/qpos_conversion.py",
+      "native_sha256": "07640704a7272f4771d59fbc6665aa3d56887b430cd89771cb726ad886970743"
+    },
+    {
+      "reference": "Repository implementation before native migration; numerical FK/contact functions originate upstream",
+      "path": "motius/trainers/protomotions/vendor/data/scripts/convert_g1_csv_to_proto.py",
+      "sha256": "6294c674e0b952d0e37af571927285031c62469e29074abed6860557fb827bb2",
+      "native": "motius/motion/representation/protomotions/csv_conversion.py",
+      "native_sha256": "f3b06ef4708b53cc5a7e1775f461ab0d71794bf7242f5cf4578e43b872479a16"
+    }
+  ]
+}

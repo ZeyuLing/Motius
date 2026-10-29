@@ -356,6 +356,12 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.licenses.beyondmimic" = ["*"]
+"motius.configuration.beyondmimic" = ["*.json"]
+"motius.licenses.protomotions" = ["*"]
+"motius.configuration.protomotions" = ["*.json"]
+"motius.licenses.sonic" = ["*"]
+"motius.configuration.sonic" = ["*.json"]
 "motius.licenses.ardy" = ["*"]
 "motius.motion.representation.ardy" = ["assets/skeletons/cskel27/*.p", "assets/skeletons/cskel27/*.npz", "assets/skeletons/g1skel34/*.p", "assets/skeletons/g1skel34/xml/*.xml"]
 "motius.configuration.gem_smpl" = ["body/*.pt", "body/*.pth"]
@@ -398,49 +404,8 @@ namespaces = false
 "motius.models.tmr" = ["LICENSE"]
 "motius.models.tm2t" = ["LICENSE"]
 "motius.models.omnicontrol" = ["LICENSE"]
-"motius.trainers.sonic.vendor" = [
-    "UPSTREAM_LICENSE",
-    "THIRD_PARTY_NOTICES.txt",
-    "README.md",
-]
-"motius.trainers.sonic.vendor.gear_sonic" = [
-    "**/*.json",
-    "**/*.pkl",
-    "**/*.pt",
-    "**/*.stl",
-    "**/*.STL",
-    "**/*.urdf",
-    "**/*.xml",
-    "**/*.yaml",
-]
-"motius.trainers.protomotions.vendor" = [
-    "UPSTREAM_LICENSE.md",
-    "THIRD_PARTY_NOTICES.txt",
-    "README.md",
-    "data/scripts/*.py",
-    "examples/**/*.py",
-    "pyroki/*.py",
-]
-"motius.trainers.protomotions.vendor.protomotions" = [
-    "data/assets/checkerboard/*",
-    "data/assets/mesh/G1/*",
-    "data/assets/mesh/smpl/*",
-    "data/assets/mjcf/*",
-    "data/assets/urdf/**/*",
-    "data/assets/usd/**/*",
-]
-"motius.trainers.beyondmimic.vendor" = [
-    "README.md",
-    "UPSTREAM_COMMIT",
-    "UPSTREAM_LICENSE",
-    "UPSTREAM_README.md",
-    "scripts/**/*.py",
-]
 "motius.models.projflow" = ["ATTRIBUTIONS.md"]
 "motius.models.humanoid_gpt" = ["ATTRIBUTIONS.md"]
-"motius.models.beyondmimic" = ["ATTRIBUTIONS.md"]
-"motius.models.sonic" = ["ATTRIBUTIONS.md"]
-"motius.models.protomotions" = ["ATTRIBUTIONS.md"]
 "motius.models.motionclr" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.models.bailando" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.models.maskcontrol" = ["ATTRIBUTIONS.md"]

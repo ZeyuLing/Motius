@@ -1,0 +1,214 @@
+{
+  "complete": true,
+  "scope": "Actual original neural composition using the source-pinned public ONNX observation schema versus native Pipeline, all three modality modes and mixed batching. Original public CPU ONNX encoder tokens must be bitwise identical; CPU ONNX versus CUDA Torch decoder uses explicit 2e-5 tolerance. Modified current-weight export and cold AutoPipeline reload must be bitwise identical. No physical environment or training protocol certification.",
+  "upstream_commit": "4141c34280abb67c82e115342a8720f4a83d750d",
+  "artifact": {
+    "repo": "nvidia/GEAR-SONIC",
+    "revision": "6733128a3d8a523b1418b06bca3cdf61c8b0987f",
+    "files": [
+      {
+        "file": "sonic_release/last.pt",
+        "size": 469418283,
+        "sha256": "e6bdab3f64a39336b3d41877d4f497d05f58af275f288ec0e6746c283ded8909",
+        "lfs_sha256": "e6bdab3f64a39336b3d41877d4f497d05f58af275f288ec0e6746c283ded8909"
+      },
+      {
+        "file": "sonic_release/config.yaml",
+        "size": 28331,
+        "sha256": "f08187795fa16a839a28bc1c18e0555d38d9420e03733744341cdcb56ab629c7",
+        "lfs_sha256": null
+      },
+      {
+        "file": "config.json",
+        "size": 2428,
+        "sha256": "326dcc509ad93509cf262871256a74f508f43a8430f61ec6abe8034e985ce948",
+        "lfs_sha256": null
+      },
+      {
+        "file": "observation_config.yaml",
+        "size": 2336,
+        "sha256": "466d05947c78af6c76388adfb86e3a2a77b2a1d921a64883ed3d085ebf58de1b",
+        "lfs_sha256": null
+      },
+      {
+        "file": "model_encoder.onnx",
+        "size": 50100513,
+        "sha256": "013ab0287236aa2721e13f1e936d699db982302d0de0bfcdae76d5c3245362d3",
+        "lfs_sha256": "013ab0287236aa2721e13f1e936d699db982302d0de0bfcdae76d5c3245362d3"
+      },
+      {
+        "file": "model_decoder.onnx",
+        "size": 40900688,
+        "sha256": "c7241a123eaa36b5d64bad19540efde93cac1ad443bd4572fd12ca99898118ed",
+        "lfs_sha256": "c7241a123eaa36b5d64bad19540efde93cac1ad443bd4572fd12ca99898118ed"
+      }
+    ]
+  },
+  "tests": [
+    {
+      "tensor": "inference/0/action",
+      "shape": [
+        1,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "inference/0/encoded_tokens",
+      "shape": [
+        1,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "inference/0/decoder_input",
+      "shape": [
+        1,
+        994
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "inference/1/action",
+      "shape": [
+        1,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "inference/1/encoded_tokens",
+      "shape": [
+        1,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "inference/1/decoder_input",
+      "shape": [
+        1,
+        994
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "inference/2/action",
+      "shape": [
+        1,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "inference/2/encoded_tokens",
+      "shape": [
+        1,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "inference/2/decoder_input",
+      "shape": [
+        1,
+        994
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "inference/3/action",
+      "shape": [
+        3,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "inference/3/encoded_tokens",
+      "shape": [
+        3,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "inference/3/decoder_input",
+      "shape": [
+        3,
+        994
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "cold_export/action",
+      "shape": [
+        3,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "cold_export/encoded_tokens",
+      "shape": [
+        3,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "cold_export/decoder_input",
+      "shape": [
+        3,
+        994
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "cold_export/control_hz",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "original_onnx_checks": {
+    "onnx/0": {
+      "tokens_bitwise_equal": true,
+      "decoder_max_abs_error": 7.152557373046875e-07
+    },
+    "onnx/1": {
+      "tokens_bitwise_equal": true,
+      "decoder_max_abs_error": 1.1920928955078125e-06
+    },
+    "onnx/2": {
+      "tokens_bitwise_equal": true,
+      "decoder_max_abs_error": 8.940696716308594e-07
+    }
+  },
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "implementation_sha256": {
+    "motius/models/sonic/policy_bundle.py": "10a65a8e8a47e7d41c0bcaf10663f7819cd23180a9e06c198975e6051a979196",
+    "motius/models/sonic/network.py": "2a525b1f6e36b5007f8781655a1f1303c26e1ef440fbc5981438a7b6eaf3485e",
+    "motius/models/sonic/bundle.py": "9df11bdf77fbb3ca44a8e4e626700a49b1845acda089e1a024685efc620603c0",
+    "motius/models/sonic/__init__.py": "65428ea438dff0b1ec9afd0fde68ca0874a7ac5219db7d18d58dea7c64f9c160",
+    "motius/pipelines/sonic/pipeline.py": "95a63299ff3a95211f2595506695e4f09549fb37ab119e75e425f3dfbefb7fac",
+    "motius/pipelines/sonic/__init__.py": "98fa1de9819a4b17e3df2497fbd45a65cdd04d325afe7475e0b1a9a609358648",
+    "motius/configuration/sonic/__init__.py": "bda795af317240cf3300d6635bf8b51a05af64e4001f258c8d1a68ee12b71b0d"
+  }
+}

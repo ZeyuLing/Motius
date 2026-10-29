@@ -1,7 +1,0 @@
-# @package _global_
-
-algo: ???
-
-env: ???
-
-terrain: ???  # This is defined in the terrain configs

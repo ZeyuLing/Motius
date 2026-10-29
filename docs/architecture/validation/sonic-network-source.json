@@ -1,0 +1,3495 @@
+{
+  "complete": true,
+  "scope": "All 72 released policy/value neural tensors loaded independently using actual original TRL checkpoint classes; original modality encoders/FSQ/dynamic and kinematic decoders/value normalization versus native neural roots, including sequence, mixed-mode and multi-hot inputs. Synthetic prepared observations; no deployment packing, PPO objective, gradients or physical environment certification.",
+  "upstream_commit": "4141c34280abb67c82e115342a8720f4a83d750d",
+  "artifact": {
+    "repo": "nvidia/GEAR-SONIC",
+    "revision": "6733128a3d8a523b1418b06bca3cdf61c8b0987f",
+    "files": [
+      {
+        "file": "sonic_release/last.pt",
+        "size": 469418283,
+        "sha256": "e6bdab3f64a39336b3d41877d4f497d05f58af275f288ec0e6746c283ded8909",
+        "lfs_sha256": "e6bdab3f64a39336b3d41877d4f497d05f58af275f288ec0e6746c283ded8909"
+      },
+      {
+        "file": "sonic_release/config.yaml",
+        "size": 28331,
+        "sha256": "f08187795fa16a839a28bc1c18e0555d38d9420e03733744341cdcb56ab629c7",
+        "lfs_sha256": null
+      },
+      {
+        "file": "config.json",
+        "size": 2428,
+        "sha256": "326dcc509ad93509cf262871256a74f508f43a8430f61ec6abe8034e985ce948",
+        "lfs_sha256": null
+      },
+      {
+        "file": "observation_config.yaml",
+        "size": 2336,
+        "sha256": "466d05947c78af6c76388adfb86e3a2a77b2a1d921a64883ed3d085ebf58de1b",
+        "lfs_sha256": null
+      },
+      {
+        "file": "model_encoder.onnx",
+        "size": 50100513,
+        "sha256": "013ab0287236aa2721e13f1e936d699db982302d0de0bfcdae76d5c3245362d3",
+        "lfs_sha256": "013ab0287236aa2721e13f1e936d699db982302d0de0bfcdae76d5c3245362d3"
+      },
+      {
+        "file": "model_decoder.onnx",
+        "size": 40900688,
+        "sha256": "c7241a123eaa36b5d64bad19540efde93cac1ad443bd4572fd12ca99898118ed",
+        "lfs_sha256": "c7241a123eaa36b5d64bad19540efde93cac1ad443bd4572fd12ca99898118ed"
+      }
+    ]
+  },
+  "tests": [
+    {
+      "tensor": "/loaded_neural_tensors/policy.std",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.g1.module.0.weight",
+      "shape": [
+        2048,
+        640
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.g1.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.g1.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.g1.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.g1.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.g1.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.g1.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.g1.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.g1.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.g1.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.teleop.module.0.weight",
+      "shape": [
+        2048,
+        267
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.teleop.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.teleop.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.teleop.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.teleop.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.teleop.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.teleop.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.teleop.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.teleop.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.teleop.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.smpl.module.0.weight",
+      "shape": [
+        2048,
+        840
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.smpl.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.smpl.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.smpl.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.smpl.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.smpl.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.smpl.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.smpl.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.smpl.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.encoders.smpl.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.0.weight",
+      "shape": [
+        2048,
+        994
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.2.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.2.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.4.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.4.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.6.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.6.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.8.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.8.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.10.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.10.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.12.weight",
+      "shape": [
+        29,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_dyn.module.12.bias",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_kin.module.0.weight",
+      "shape": [
+        2048,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_kin.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_kin.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_kin.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_kin.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_kin.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_kin.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_kin.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_kin.module.8.weight",
+      "shape": [
+        640,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/policy.decoders.g1_kin.module.8.bias",
+      "shape": [
+        640
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.0.weight",
+      "shape": [
+        2048,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.2.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.2.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.4.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.4.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.6.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.6.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.8.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.8.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.10.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.10.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.12.weight",
+      "shape": [
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.network.module.12.bias",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.normalizer.running_mean",
+      "shape": [
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.normalizer.running_var",
+      "shape": [
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/loaded_neural_tensors/critic.normalizer.count",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/outputs/mean",
+      "shape": [
+        1,
+        1,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/outputs/reconstruction",
+      "shape": [
+        1,
+        1,
+        10,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/outputs/encoded_tokens/g1",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/outputs/encoded_tokens/teleop",
+      "shape": [
+        0,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/outputs/encoded_tokens/smpl",
+      "shape": [
+        0,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/outputs/encoded_latents/g1",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/outputs/encoded_latents/teleop",
+      "shape": [
+        0,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/outputs/encoded_latents/smpl",
+      "shape": [
+        0,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/outputs/value",
+      "shape": [
+        1,
+        1,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.std",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.g1.module.0.weight",
+      "shape": [
+        2048,
+        640
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.g1.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.g1.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.g1.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.g1.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.g1.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.g1.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.g1.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.g1.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.g1.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.teleop.module.0.weight",
+      "shape": [
+        2048,
+        267
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.teleop.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.teleop.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.teleop.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.teleop.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.teleop.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.teleop.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.teleop.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.teleop.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.teleop.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.smpl.module.0.weight",
+      "shape": [
+        2048,
+        840
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.smpl.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.smpl.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.smpl.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.smpl.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.smpl.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.smpl.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.smpl.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.smpl.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.encoders.smpl.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.0.weight",
+      "shape": [
+        2048,
+        994
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.2.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.2.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.4.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.4.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.6.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.6.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.8.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.8.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.10.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.10.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.12.weight",
+      "shape": [
+        29,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_dyn.module.12.bias",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_kin.module.0.weight",
+      "shape": [
+        2048,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_kin.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_kin.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_kin.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_kin.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_kin.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_kin.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_kin.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_kin.module.8.weight",
+      "shape": [
+        640,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/policy.decoders.g1_kin.module.8.bias",
+      "shape": [
+        640
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.0.weight",
+      "shape": [
+        2048,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.2.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.2.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.4.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.4.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.6.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.6.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.8.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.8.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.10.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.10.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.12.weight",
+      "shape": [
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.network.module.12.bias",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.normalizer.running_mean",
+      "shape": [
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.normalizer.running_var",
+      "shape": [
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/state/critic.normalizer.count",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/outputs/mean",
+      "shape": [
+        3,
+        1,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/outputs/reconstruction",
+      "shape": [
+        3,
+        1,
+        10,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/outputs/encoded_tokens/g1",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/outputs/encoded_tokens/teleop",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/outputs/encoded_tokens/smpl",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/outputs/encoded_latents/g1",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/outputs/encoded_latents/teleop",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/outputs/encoded_latents/smpl",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/outputs/value",
+      "shape": [
+        3,
+        1,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.std",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.g1.module.0.weight",
+      "shape": [
+        2048,
+        640
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.g1.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.g1.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.g1.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.g1.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.g1.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.g1.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.g1.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.g1.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.g1.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.teleop.module.0.weight",
+      "shape": [
+        2048,
+        267
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.teleop.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.teleop.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.teleop.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.teleop.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.teleop.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.teleop.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.teleop.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.teleop.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.teleop.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.smpl.module.0.weight",
+      "shape": [
+        2048,
+        840
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.smpl.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.smpl.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.smpl.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.smpl.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.smpl.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.smpl.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.smpl.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.smpl.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.encoders.smpl.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.0.weight",
+      "shape": [
+        2048,
+        994
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.2.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.2.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.4.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.4.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.6.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.6.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.8.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.8.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.10.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.10.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.12.weight",
+      "shape": [
+        29,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_dyn.module.12.bias",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_kin.module.0.weight",
+      "shape": [
+        2048,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_kin.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_kin.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_kin.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_kin.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_kin.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_kin.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_kin.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_kin.module.8.weight",
+      "shape": [
+        640,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/policy.decoders.g1_kin.module.8.bias",
+      "shape": [
+        640
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.0.weight",
+      "shape": [
+        2048,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.2.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.2.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.4.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.4.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.6.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.6.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.8.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.8.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.10.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.10.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.12.weight",
+      "shape": [
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.network.module.12.bias",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.normalizer.running_mean",
+      "shape": [
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.normalizer.running_var",
+      "shape": [
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/state/critic.normalizer.count",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/outputs/mean",
+      "shape": [
+        2,
+        2,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/outputs/reconstruction",
+      "shape": [
+        2,
+        2,
+        10,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/outputs/encoded_tokens/g1",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/outputs/encoded_tokens/teleop",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/outputs/encoded_tokens/smpl",
+      "shape": [
+        2,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/outputs/encoded_latents/g1",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/outputs/encoded_latents/teleop",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/outputs/encoded_latents/smpl",
+      "shape": [
+        2,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/outputs/value",
+      "shape": [
+        2,
+        2,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.std",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.g1.module.0.weight",
+      "shape": [
+        2048,
+        640
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.g1.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.g1.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.g1.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.g1.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.g1.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.g1.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.g1.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.g1.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.g1.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.teleop.module.0.weight",
+      "shape": [
+        2048,
+        267
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.teleop.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.teleop.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.teleop.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.teleop.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.teleop.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.teleop.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.teleop.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.teleop.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.teleop.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.smpl.module.0.weight",
+      "shape": [
+        2048,
+        840
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.smpl.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.smpl.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.smpl.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.smpl.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.smpl.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.smpl.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.smpl.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.smpl.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.encoders.smpl.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.0.weight",
+      "shape": [
+        2048,
+        994
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.2.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.2.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.4.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.4.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.6.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.6.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.8.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.8.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.10.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.10.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.12.weight",
+      "shape": [
+        29,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_dyn.module.12.bias",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_kin.module.0.weight",
+      "shape": [
+        2048,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_kin.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_kin.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_kin.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_kin.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_kin.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_kin.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_kin.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_kin.module.8.weight",
+      "shape": [
+        640,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/policy.decoders.g1_kin.module.8.bias",
+      "shape": [
+        640
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.0.weight",
+      "shape": [
+        2048,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.2.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.2.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.4.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.4.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.6.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.6.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.8.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.8.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.10.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.10.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.12.weight",
+      "shape": [
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.network.module.12.bias",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.normalizer.running_mean",
+      "shape": [
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.normalizer.running_var",
+      "shape": [
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/state/critic.normalizer.count",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/outputs/mean",
+      "shape": [
+        2,
+        2,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/outputs/reconstruction",
+      "shape": [
+        2,
+        2,
+        10,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/outputs/encoded_tokens/g1",
+      "shape": [
+        2,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/outputs/encoded_tokens/teleop",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/outputs/encoded_tokens/smpl",
+      "shape": [
+        2,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/outputs/encoded_latents/g1",
+      "shape": [
+        2,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/outputs/encoded_latents/teleop",
+      "shape": [
+        1,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/outputs/encoded_latents/smpl",
+      "shape": [
+        2,
+        2,
+        32
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/outputs/value",
+      "shape": [
+        2,
+        2,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.std",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.g1.module.0.weight",
+      "shape": [
+        2048,
+        640
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.g1.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.g1.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.g1.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.g1.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.g1.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.g1.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.g1.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.g1.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.g1.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.teleop.module.0.weight",
+      "shape": [
+        2048,
+        267
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.teleop.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.teleop.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.teleop.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.teleop.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.teleop.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.teleop.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.teleop.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.teleop.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.teleop.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.smpl.module.0.weight",
+      "shape": [
+        2048,
+        840
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.smpl.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.smpl.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.smpl.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.smpl.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.smpl.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.smpl.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.smpl.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.smpl.module.8.weight",
+      "shape": [
+        64,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.encoders.smpl.module.8.bias",
+      "shape": [
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.0.weight",
+      "shape": [
+        2048,
+        994
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.2.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.2.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.4.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.4.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.6.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.6.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.8.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.8.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.10.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.10.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.12.weight",
+      "shape": [
+        29,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_dyn.module.12.bias",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_kin.module.0.weight",
+      "shape": [
+        2048,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_kin.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_kin.module.2.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_kin.module.2.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_kin.module.4.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_kin.module.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_kin.module.6.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_kin.module.6.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_kin.module.8.weight",
+      "shape": [
+        640,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/policy.decoders.g1_kin.module.8.bias",
+      "shape": [
+        640
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.0.weight",
+      "shape": [
+        2048,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.0.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.2.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.2.bias",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.4.weight",
+      "shape": [
+        1024,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.4.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.6.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.6.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.8.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.8.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.10.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.10.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.12.weight",
+      "shape": [
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.network.module.12.bias",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.normalizer.running_mean",
+      "shape": [
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.normalizer.running_var",
+      "shape": [
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/state/critic.normalizer.count",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "implementation_sha256": {
+    "motius/models/sonic/policy_bundle.py": "10a65a8e8a47e7d41c0bcaf10663f7819cd23180a9e06c198975e6051a979196",
+    "motius/models/sonic/network.py": "2a525b1f6e36b5007f8781655a1f1303c26e1ef440fbc5981438a7b6eaf3485e",
+    "motius/models/sonic/bundle.py": "9df11bdf77fbb3ca44a8e4e626700a49b1845acda089e1a024685efc620603c0",
+    "motius/models/sonic/__init__.py": "65428ea438dff0b1ec9afd0fde68ca0874a7ac5219db7d18d58dea7c64f9c160",
+    "motius/pipelines/sonic/pipeline.py": "95a63299ff3a95211f2595506695e4f09549fb37ab119e75e425f3dfbefb7fac",
+    "motius/pipelines/sonic/__init__.py": "98fa1de9819a4b17e3df2497fbd45a65cdd04d325afe7475e0b1a9a609358648",
+    "motius/configuration/sonic/__init__.py": "bda795af317240cf3300d6635bf8b51a05af64e4001f258c8d1a68ee12b71b0d"
+  }
+}

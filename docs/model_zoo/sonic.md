@@ -107,50 +107,52 @@ with the matching G1 controller and safety limits.
 
 ### Training
 
-SONIC's released PPO/TRL trainer is packaged under
-[`motius/trainers/sonic`](../../motius/trainers/sonic). It uses the official
-Isaac Lab environment, rewards, optimizer, universal-token auxiliary losses,
-checkpoint cadence, and Hydra config without importing another repository.
-Use Python 3.10 or newer, install Isaac Lab first, then the Python training
-dependencies:
-
-| Item | Training contract |
-| --- | --- |
-| Objective | Clipped PPO policy/value objectives, entropy regularization, physical tracking rewards, G1 reconstruction, and cross-representation latent MSE losses |
-| Precision | FP32 by default; AMP is enabled only when `algo.config.use_amp=true` is explicitly supplied |
-| Checkpoints | Full `last.pt` state every 50 global steps and numbered `model_step_*.pt` snapshots every 2,000 global steps |
+SONIC uses a native neural policy/value Bundle, `SONICOnlinePPOTrainer`,
+selected G1 physics/data components and the shared `AccelerateRunner`.
+Isaac Lab is installed separately. The packaged original application and its
+TRL/Hydra runtime have been removed.
 
 ```bash
 pip install -e ".[motion-tracking-train-sonic]"
+python tools/download_sonic_assets.py
 ```
 
-Set the two processed BONES-SEED motion roots and launch the checked-in
-configuration:
+Use the published `sonic_release/last.pt` and its matching `config.yaml` as the
+weight warm start. Set their path and the two processed BONES-SEED motion roots:
 
 ```bash
+export SONIC_CHECKPOINT=/path/to/sonic_release/last.pt
 export G1_MOTION_DIR=/path/to/bones_seed/g1_motion_lib
 export SMPL_MOTION_DIR=/path/to/bones_seed/smpl_motion_lib
-python tools/train_motion_tracking.py \
-  configs/motion_tracking/sonic_g1_bones_seed.yaml
+python tools/train_motion_tracking.py configs/motion_tracking/sonic_g1_bones_seed.yaml
 ```
 
-Use `--num-processes 64` to override the configured process count. Hydra
-overrides can follow the config path. To continue an interrupted run, add
-`resume=true experiment_dir=outputs/training/sonic/TRL_G1_Track/<run>`.
-Checkpoints and logs remain under `outputs/training/sonic/`.
+The recipe reads the released FP32 PPO/auxiliary objectives and numeric
+hyperparameters. Override the process count with `--num-processes N`; native
+CLI options such as `--num-envs 16 --max-iterations 2` follow the config path.
+Add `--auto-resume` to restore the shared Runner's network, optimizer, adaptive
+sampling and progress checkpoint. A published original checkpoint initializes
+network weights; this does not claim restoration of the original TRL progress.
 
-Export a native checkpoint into a complete Pipeline artifact:
+Export current trained weights directly from a shared checkpoint:
 
 ```bash
 python -m motius.trainers.sonic.export_policy \
-  --checkpoint outputs/training/sonic/TRL_G1_Track/<run>/last.pt \
+  --checkpoint outputs/training/sonic/checkpoint-iter_500 \
   --output outputs/checkpoints/sonic
 ```
 
-This command runs the method-native encoder/decoder export, records the
-resolved observation config, and writes `sonic_config.json` plus
-`model_index.json`. Encoder and decoder dimensions are read from the exported
-graphs rather than assumed from the public pretrained checkpoint.
+The exported native neural artifact loads through `Pipeline.from_pretrained`
+and includes the current actor, critic and normalizers. Existing published ONNX
+artifacts remain supported by the deployment Pipeline.
+
+[Acceptance records](../architecture/native-methods.md) distinguish original
+neural/online/physical equivalence from distributed integration and native CLI
+resume/current export. The bounded physical comparison covers four G1 robots,
+three modality branches and 20 control steps on a plane with a synthetic paired
+reference. Full BONES-SEED convergence and rough-terrain numerical validation
+remain pending. The historical benchmark table below has not been rerun after
+this architecture migration.
 
 ## Evaluation Results
 
@@ -185,7 +187,7 @@ defines the authoritative concatenation order.
 
 See the [SONIC paper](https://arxiv.org/abs/2511.07820),
 [official source](https://github.com/NVlabs/GR00T-WholeBodyControl), and
-[attribution note](../../motius/models/sonic/ATTRIBUTIONS.md). The model remains
+[attribution note](../../motius/licenses/sonic/ATTRIBUTIONS.md). The model remains
 subject to the NVIDIA Open Model License included with the checkpoint.
 
 <!-- MOTIUS_MODEL_CARD_FOOTER:START -->

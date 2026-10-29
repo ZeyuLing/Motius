@@ -1,7 +1,7 @@
 <h1 align="center">BeyondMimic Model Card</h1>
 
 <p align="center">
-  <strong>Official BeyondMimic training and deployment in one Motius package.</strong>
+  <strong>Native BeyondMimic neural policy, PPO trainer and inference pipeline.</strong>
 </p>
 
 <p align="center">
@@ -10,10 +10,13 @@
   <a href="https://github.com/HybridRobotics/motion_tracking_controller">Deployment GitHub</a>
 </p>
 
-Motius packages the official BeyondMimic Isaac Lab/RSL-RL trainer together
-with its ONNX input, output, and metadata contract. It does not import an
-external checkout. The upstream release does not provide a named pretrained
-policy, so artifacts are exported from the user's own training run.
+Motius implements the original actor/critic and empirical normalization as a
+neural ModelBundle, clipped PPO as a native Trainer, online rollouts through
+AccelerateRunner, and deployment through an inference Pipeline. Simulator
+terms and motion conversion live outside the neural bundle. No original
+training application is packaged or launched. Upstream does not provide a
+named general-purpose pretrained policy; source validation currently uses
+identical seeded networks and synthetic reference data.
 
 <!-- MOTIUS_MODEL_CARD_NAV:START -->
 <p align="center">
@@ -74,7 +77,7 @@ Training FPS is the checkpoint's native temporal clock. Preview FPS only control
 | --- | --- |
 | Method | BeyondMimic whole-body tracking |
 | Tasks | Motion Tracking |
-| Task status | Trainable user-checkpoint integration |
+| Task status | Native PPO and deployment; physical migration validation in progress |
 | Robot | Unitree G1 |
 | Native control rate | 50 Hz |
 | Public pretrained checkpoint | Not released upstream |
@@ -110,17 +113,24 @@ checking the motion/checkpoint licenses.
 
 ### Training
 
-The official BeyondMimic environment, PPO loop, observation terms, rewards,
-terminations, checkpointing, and ONNX exporter are source-pinned under
-[`motius/trainers/beyondmimic`](../../motius/trainers/beyondmimic) at upstream
-commit `cd65172032893724b445448818c34165846d847d`. Training uses one
-official-format G1 reference motion per policy.
+The implementation follows BeyondMimic commit
+`cd65172032893724b445448818c34165846d847d`, RSL-RL 2.3.1 and Isaac Lab 2.1.0.
+`motius/models/beyondmimic` contains only network/checkpoint code;
+`motius/trainers/beyondmimic/trainer.py` owns PPO and
+`motius/runner/online_tracking.py` connects it to the existing runner.
 
 | Item | Training contract |
 | --- | --- |
-| Objective | Clipped PPO with value loss and entropy regularization; global anchor pose, relative body pose, body velocity, action-rate, joint-limit, and undesired-contact terms |
-| Precision | FP32 optimization with the official TF32 CUDA matmul/cuDNN settings; AMP is not enabled |
-| Checkpoints | Complete RSL-RL `model_*.pt` state every 500 iterations; the released config runs 30,000 iterations |
+| Objective | Clipped PPO, clipped value loss and entropy regularization, with the source G1 tracking rewards and terminations |
+| Precision | FP32; CLI preserves the original TF32 CUDA settings; AMP disabled |
+| Checkpoints | Native `checkpoint-iter_*` saves current policy, both empirical normalizers, Adam, adaptive learning rate, RNG and completed-iteration state; default interval 500, target 30,000 iterations |
+
+Independent source checks cover the real actor/critic, all PPO epochs and
+optimizer states, the original `OnPolicyRunner.learn` versus two complete
+native online updates, CSV interpolation/velocities, original PyTorch/ONNX
+exports and current-weight artifact reload. These are component/online-loop
+certificates, **not physical training or pretrained tracking-quality certificates**.
+The simulator runtime and complete physical protocol remain under validation.
 
 Install Isaac Sim 4.5 and Isaac Lab 2.1 first, then install the Motius
 training dependencies and verified Unitree G1 description:
@@ -132,7 +142,7 @@ python tools/download_beyondmimic_assets.py
 
 The trainer consumes the official maximum-coordinate NPZ with `fps`,
 `joint_pos`, `joint_vel`, `body_pos_w`, `body_quat_w`, `body_lin_vel_w`, and
-`body_ang_vel_w`. Convert a retargeted G1 CSV using the packaged official
+`body_ang_vel_w`. Convert a retargeted G1 CSV using the native
 Isaac Lab preprocessing path:
 
 ```bash
@@ -152,34 +162,28 @@ python tools/train_motion_tracking.py \
   configs/motion_tracking/beyondmimic_g1_lafan1.yaml
 ```
 
-The config includes `--auto-resume`; the wrapper finds the newest
-`model_*.pt` under the same experiment directory and restores policy,
-optimizer, normalizer, and iteration state. All run files remain below
-`outputs/training/beyondmimic/`.
+The config includes `--auto-resume`; the existing runner restores its native
+checkpoint under the same run directory. Use `--checkpoint` for original
+RSL-RL neural/optimizer imports or a native exported neural artifact. All run
+files remain below `outputs/training/beyondmimic/`.
 
-Export the official metadata-bearing ONNX from a saved run:
+The final run exports `exported/`, containing current neural weights, an
+independent reference NPZ and simulator metadata. Load that directory directly
+with `Pipeline.from_pretrained`. Reference data is outside the neural model.
+For an optional ONNX deployment export from that native artifact:
 
 ```bash
 python -m motius.trainers.beyondmimic.export_policy \
-  --motion_file "$BEYONDMIMIC_MOTION_FILE" \
-  --load_run RUN_DIRECTORY \
-  --checkpoint model_30000.pt \
-  --headless
-```
-
-Then package it for `Pipeline.from_pretrained`:
-
-```bash
-python tools/export_motion_tracking_hf.py beyondmimic \
-  --source outputs/training/beyondmimic/logs/rsl_rl/g1_flat/RUN_DIRECTORY/exported/policy.onnx \
-  --output outputs/checkpoints/beyondmimic
+  --checkpoint outputs/training/beyondmimic/lafan1_g1/exported \
+  --output-dir outputs/checkpoints/beyondmimic \
+  --onnx
 ```
 
 ## Evaluation Results
 
 <!-- MOTIUS_CANONICAL_METRICS:START -->
 
-> **Measured physical rollout.** Scores use the registered Isaac Lab protocol `gentrack-fall-only-30fps-v020` at 50 Hz.
+> **Historical measured physical rollout; not rerun after the native migration.** Scores use the registered Isaac Lab protocol `gentrack-fall-only-30fps-v020` at 50 Hz.
 
 | Setting | Coverage | Success ↑ | Completion ↑ | Local MPJPE ↓ | Joint MAE ↓ |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -211,7 +215,7 @@ the current robot position and heading before constructing observations.
 See the [BeyondMimic paper](https://arxiv.org/abs/2508.08241),
 [official training source](https://github.com/HybridRobotics/whole_body_tracking),
 [deployment source](https://github.com/HybridRobotics/motion_tracking_controller),
-and [attribution note](../../motius/models/beyondmimic/ATTRIBUTIONS.md).
+and [attribution note](../../motius/licenses/beyondmimic/ATTRIBUTIONS.md).
 
 <!-- MOTIUS_MODEL_CARD_FOOTER:START -->
 ---

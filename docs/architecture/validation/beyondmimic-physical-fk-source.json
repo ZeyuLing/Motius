@@ -1,0 +1,84 @@
+{
+  "complete": true,
+  "scope": "Real G1 CSV-to-NPZ conversion with Isaac Sim 4.5 / Isaac Lab 2.1 on H200; original FK/velocity computation stops after the authoritative NPZ save and before W&B upload. Synthetic nonzero joint/reference motion; not trained-policy tracking.",
+  "upstream_commit": "cd65172032893724b445448818c34165846d847d",
+  "tests": [
+    {
+      "tensor": "/fps",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/joint_pos",
+      "shape": [
+        99,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/joint_vel",
+      "shape": [
+        99,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/body_pos_w",
+      "shape": [
+        99,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/body_quat_w",
+      "shape": [
+        99,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/body_lin_vel_w",
+      "shape": [
+        99,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/body_ang_vel_w",
+      "shape": [
+        99,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.5.1+cu124",
+  "native_modules": {
+    "motius/simulators/isaaclab/beyondmimic/g1_config.py": "6afd6d957603fceba171b2887680dd396c262f0639548de707aa30dc9c834704",
+    "motius/simulators/isaaclab/beyondmimic/prepare.py": "2270763cbde6286f9e431bc37e435907f38ed9477f943bcbc26790ce16ef76db",
+    "motius/simulators/isaaclab/beyondmimic/environment_config.py": "f0bd1556f703a649fb9212f282c3ff6a0d3a9451512cb38d22616aed853116c9",
+    "motius/simulators/isaaclab/beyondmimic/robot.py": "cd7e56d1ad05df6231f767e9c87395d5ae1b840fbbad6fd7d46705c38f90aae1",
+    "motius/simulators/isaaclab/beyondmimic/__init__.py": "2e65fb2dbd44c5c92059817a68e57109a5f29584349aa91ab15115aca2a53007",
+    "motius/simulators/isaaclab/beyondmimic/factory.py": "e29495444a819f04646ee962870274e7de4dbc5d9c16d645e5fd61e15b68bd9d",
+    "motius/motion/representation/beyondmimic.py": "5a0364917bd268552c2b826f574b25d5d46a21247bb18cb3b5dc7f1fd78b3e06",
+    "motius/motion/representation/beyondmimic_quaternion.py": "0bd565c03adb56879d9079598f5cbe1fbe419c7f7fb16fd1e3530e45b83b7790"
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "complete": true,
+  "scope": "Actual original typed G1 configuration, FK/velocities, reference-motion serialization and interpolation versus native configuration/kinematics/data modules under Isaac Sim5.1 / Lab2.3.2. Synthetic nonzero 128-frame reference; no physical tracking or full training certification.",
+  "upstream_commit": "49fe5ad69de67ebbc07ea2b25d41b0f622c15c3c",
+  "tests": [
+    {
+      "tensor": "/motion/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/dof_pos",
+      "shape": [
+        128,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/dof_vel",
+      "shape": [
+        128,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/rigid_body_pos",
+      "shape": [
+        128,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/rigid_body_rot",
+      "shape": [
+        128,
+        33,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/rigid_body_vel",
+      "shape": [
+        128,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/rigid_body_ang_vel",
+      "shape": [
+        128,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/interpolated/dof_pos",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/interpolated/dof_vel",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/interpolated/rigid_body_pos",
+      "shape": [
+        4,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/interpolated/rigid_body_rot",
+      "shape": [
+        4,
+        33,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/interpolated/rigid_body_vel",
+      "shape": [
+        4,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/interpolated/rigid_body_ang_vel",
+      "shape": [
+        4,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/qpos",
+      "shape": [
+        128,
+        36
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.7.0+cu128"
+}

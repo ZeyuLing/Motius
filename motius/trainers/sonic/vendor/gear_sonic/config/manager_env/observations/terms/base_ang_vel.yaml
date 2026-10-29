@@ -1,3 +1,0 @@
-base_ang_vel:
-  _target_: isaaclab.managers.ObservationTermCfg
-  func: gear_sonic.envs.manager_env.mdp:base_ang_vel

@@ -1,0 +1,336 @@
+{
+  "upstream": "https://github.com/NVlabs/GR00T-WholeBodyControl",
+  "commit": "4141c34280abb67c82e115342a8720f4a83d750d",
+  "selection": "Released G1 manager configuration dependency closure. Robot ordering metadata separated from SDK configuration. Original action-scale initialization loop retained. Unused FK mesh loading/rendering and applications removed; selected neural/MDP arithmetic preserved. Physical public Pipeline Source241, controlled online PPO890, real shared-Runner DDP and CLI verified separately.",
+  "files": [
+    {
+      "source": "gear_sonic/envs/env_utils/joint_utils.py",
+      "source_sha256": "b69a07f6bd1850370f8b7d6161e9e099222eebc6eec967b3dc5a936bc8b87f4a",
+      "native": "motius/motion/representation/sonic/order.py",
+      "native_sha256": "188c294f066bbeaf6edba0ae06361737fc455da5b625508a58c9e2cca85f24dd",
+      "symbols": [
+        "G1_HAND_JOINTS",
+        "G1_ISAACLab_ORDER",
+        "_body_joint_indices_cache",
+        "_get_joint_indices_by_names",
+        "_hand_joint_indices_cache",
+        "get_body_joint_indices",
+        "get_hand_joint_indices"
+      ]
+    },
+    {
+      "source": "gear_sonic/envs/manager_env/robots/g1.py",
+      "source_sha256": "42f9b4394eb21512735da4b1ca78c2d0546c4221c7bdaf8b3a186d8dc5588ba9",
+      "native": "motius/simulators/sonic/robot.py",
+      "native_sha256": "d2ad5cdad11e201a6a657682fd909254c38c4c577215872bdee1d27c0aebbb22",
+      "symbols": [
+        "ARMATURE_4010",
+        "ARMATURE_5020",
+        "ARMATURE_7520_14",
+        "ARMATURE_7520_22",
+        "ASSET_DIR",
+        "DAMPING_4010",
+        "DAMPING_5020",
+        "DAMPING_7520_14",
+        "DAMPING_7520_22",
+        "DAMPING_RATIO",
+        "G1_CYLINDER_MODEL_12_DEX_CFG",
+        "G1_ISAACLAB_JOINTS",
+        "G1_ISAACLAB_TO_MUJOCO_BODY",
+        "G1_ISAACLAB_TO_MUJOCO_DOF",
+        "G1_ISAACLAB_TO_MUJOCO_MAPPING",
+        "G1_MODEL_12_ACTION_SCALE",
+        "G1_MUJOCO_TO_ISAACLAB_BODY",
+        "G1_MUJOCO_TO_ISAACLAB_DOF",
+        "NATURAL_FREQ",
+        "STIFFNESS_4010",
+        "STIFFNESS_5020",
+        "STIFFNESS_7520_14",
+        "STIFFNESS_7520_22"
+      ]
+    },
+    {
+      "source": "gear_sonic/utils/motion_lib/motion_lib_base.py",
+      "source_sha256": "c4a5c0bb70339439a4cfa46db08d7d44d0b75ed70d39a422bf2ea14cd7419c94",
+      "native": "motius/datasets/sonic_motion.py",
+      "native_sha256": "ad1f897b264659cce977ffb796bd939cb0c33698e503f2979386d54a48146b75",
+      "symbols": [
+        "FixHeightMode",
+        "MotionLibBase",
+        "MotionlibMode",
+        "interpolate_contact_center",
+        "interpolate_quaternion_data",
+        "interpolate_translation_data",
+        "to_torch"
+      ]
+    },
+    {
+      "source": "gear_sonic/utils/motion_lib/motion_lib_robot.py",
+      "source_sha256": "db1d9ad5011e98f5e0c7de8710714753213fd8322beafe2d019035455f76bf75",
+      "native": "motius/datasets/sonic_motion_robot.py",
+      "native_sha256": "68a72f43e99e2c889a535566cadb8ef3765e8df63a8555ba92f33ce482e4eca4",
+      "symbols": [
+        "MotionLibRobot"
+      ]
+    },
+    {
+      "source": "gear_sonic/utils/motion_lib/torch_humanoid_batch.py",
+      "source_sha256": "41e5d4a44497547784a1f22fb968d112039f0a7b0eb85e166022e6ac3c4988d1",
+      "native": "motius/motion/kinematics/sonic.py",
+      "native_sha256": "491cb821cbba1dc0ed4b7b7d344bb71ddbb8eaffe411aaace4afba1faddc4b37",
+      "symbols": [
+        "Humanoid_Batch",
+        "_compute_idx_levels",
+        "dof_to_rotation_matrices",
+        "qpos_to_root_and_dof",
+        "root_and_dof_to_qpos",
+        "rotation_matrices_to_dof"
+      ]
+    },
+    {
+      "source": "gear_sonic/utils/motion_lib/skeleton.py",
+      "source_sha256": "9e593ed72145add9e7b5711602913494128b0853a3ee3a682dfc4609deed0b8e",
+      "native": "motius/motion/representation/sonic/skeleton.py",
+      "native_sha256": "dc6f2ca8dba5b266cc103c40b3f5b0af9d8a7377981c9ace26a920d4586df6a1",
+      "symbols": [
+        "NumpyEncoder",
+        "Serializable",
+        "SkeletonTree",
+        "TensorUtils",
+        "json_numpy_obj_hook",
+        "tensor_to_dict"
+      ]
+    },
+    {
+      "source": "gear_sonic/isaac_utils/rotations.py",
+      "source_sha256": "b800cc97757ea452e04c12b16b70a2847b5cb08c041b521e32e7347b05479d99",
+      "native": "motius/motion/geometry/sonic/rotations.py",
+      "native_sha256": "0243c2076a6f96600607150a411840c89820ae4f2baf9a79070bb82e21de8b34",
+      "symbols": [
+        "_sqrt_positive_part",
+        "angle_axis_to_exp_map",
+        "axis_angle_to_quaternion",
+        "calc_heading",
+        "calc_heading_quat_inv",
+        "matrix_to_quaternion",
+        "my_quat_rotate",
+        "normalize_angle",
+        "quat_angle_axis",
+        "quat_conjugate",
+        "quat_from_angle_axis",
+        "quat_identity",
+        "quat_identity_like",
+        "quat_inverse",
+        "quat_mul",
+        "quat_mul_norm",
+        "quat_normalize",
+        "quat_pos",
+        "quat_rotate",
+        "quat_to_angle_axis",
+        "quat_to_exp_map",
+        "quat_unit",
+        "quaternion_to_matrix",
+        "remove_bvh_base_rot",
+        "remove_smpl_base_rot",
+        "slerp",
+        "wxyz_to_xyzw",
+        "xyzw_to_wxyz"
+      ]
+    },
+    {
+      "source": "gear_sonic/isaac_utils/maths.py",
+      "source_sha256": "6664aca11cf24e78d749a6c415422566a8c1c29ddd7b8221732874a423ce5bce",
+      "native": "motius/motion/geometry/sonic/maths.py",
+      "native_sha256": "a4612d2c088742992b6509dfae323fc16c02f449ab94836da655e08caf82e1b4",
+      "symbols": [
+        "normalize"
+      ]
+    },
+    {
+      "source": "gear_sonic/trl/utils/torch_transform.py",
+      "source_sha256": "4d40e3ac765cb2541aacd8af60f1162914e4ce97b4cc8fadc871a7c6a2fe7b41",
+      "native": "motius/motion/geometry/sonic/transform.py",
+      "native_sha256": "d8acdfaf7ca0c0bf2e7616b6023ec809d0a27f193bd5f178df15a0727d09ec81",
+      "symbols": [
+        "angle_axis_to_quaternion",
+        "get_heading_q",
+        "normalize",
+        "quaternion_to_angle_axis"
+      ]
+    },
+    {
+      "source": "gear_sonic/trl/utils/kornia_transform.py",
+      "source_sha256": "576c2209f8f85f38c59c182d6f504cde34899adca68fea2ad50e626c5e03a0f1",
+      "native": "motius/motion/geometry/sonic/conversions.py",
+      "native_sha256": "d4e3c13fc9bce9fc35257b877c392ab14b0a867389190f1db04697d51a06d9a1",
+      "symbols": [
+        "QuaternionCoeffOrder",
+        "USE_JIT_TORCH_TRANSFORM",
+        "angle_axis_to_quaternion",
+        "conditional_jit_script",
+        "quaternion_to_angle_axis",
+        "safe_zero_division",
+        "torch_safe_atan2"
+      ]
+    },
+    {
+      "source": "gear_sonic/trl/utils/math.py",
+      "source_sha256": "280dbe8eaeb7413a703e441e2feae02b7d4388f73878f0d2ffe93f4f29324638",
+      "native": "motius/motion/representation/sonic/interpolation.py",
+      "native_sha256": "faaf8b73acdaf51b9bd915f3f58f703518942d21c9c0594c2313f4fc84861cd7",
+      "symbols": [
+        "_slerp_batch",
+        "interpolate_pose",
+        "interpolate_quaternions",
+        "slerp"
+      ]
+    },
+    {
+      "source": "gear_sonic/trl/utils/order_converter.py",
+      "source_sha256": "236e2705d306ab1c938af5baf973fbcd291b04fbdd372bc87e3fa56c907d069f",
+      "native": "motius/motion/representation/sonic/order.py",
+      "native_sha256": "188c294f066bbeaf6edba0ae06361737fc455da5b625508a58c9e2cca85f24dd",
+      "symbols": [
+        "G1Converter",
+        "IsaacLabMuJoCoConverter"
+      ]
+    },
+    {
+      "source": "gear_sonic/trl/utils/common.py",
+      "source_sha256": "26263d3a3dabcf2bfb9ad0766ba90b910c45246728719497481ec72b28f3e0ad",
+      "native": "motius/configuration/sonic/components.py",
+      "native_sha256": "5c417885d472afed88ff2133c650ba9ae4a17fd78f06694875c55eba662ca32d",
+      "symbols": [
+        "Timer",
+        "timer_indent_level"
+      ]
+    },
+    {
+      "source": "gear_sonic/envs/manager_env/mdp/actions.py",
+      "source_sha256": "d678c1f4fbaa8e314ac3fd068e905d455cf2ebfcd88bb9c5f70a56827694e8b2",
+      "native": "motius/simulators/sonic/mdp/actions.py",
+      "native_sha256": "2ea3aa744e15a4784b21284309580001d8b9343e170b1339536c74fee86dee8c",
+      "symbols": [
+        "ActionsCfg"
+      ]
+    },
+    {
+      "source": "gear_sonic/envs/manager_env/mdp/commands.py",
+      "source_sha256": "a28a4f39e19d2ff6c1cb6248cf4e776ecbb263b0647441af589ecc00f8a95390",
+      "native": "motius/simulators/sonic/mdp/commands.py",
+      "native_sha256": "64771f73ab7adecd7c32fc63473e91ef364c6f9ae7ab4d907bba44468283926a",
+      "symbols": [
+        "CommandsCfg",
+        "INACTIVE_OBJECT_BASE_OFFSET",
+        "INACTIVE_OBJECT_Z_SPACING",
+        "TrackingCommand",
+        "TrackingCommandCfg",
+        "_get_body_indexes",
+        "_init_variable_frames"
+      ]
+    },
+    {
+      "source": "gear_sonic/envs/manager_env/mdp/observations.py",
+      "source_sha256": "08ebb1a7b919547fef657ea3f6644e7168ca7c5e2db6c18c9786ed6ecb8d45aa",
+      "native": "motius/simulators/sonic/mdp/observations.py",
+      "native_sha256": "3f7f59831b04281269789082670c9e4229020ffff7a8b3b443d9a9e118c40052",
+      "symbols": [
+        "CameraRGBCfg",
+        "DiscriminatorCfg",
+        "HeightMapCfg",
+        "ObservationsCfg",
+        "PolicyAtmCfg",
+        "PolicyCfg",
+        "PrivilegedCfg",
+        "ResidualAction",
+        "TeacherCfg",
+        "TokenizerCfg",
+        "command_multi_future",
+        "command_multi_future_lower_body",
+        "command_z",
+        "command_z_multi_future",
+        "get_command_obs",
+        "gravity_dir",
+        "joint_pos_multi_future_select_joints_for_smpl",
+        "motion_anchor_ori_b",
+        "motion_anchor_ori_b_mf",
+        "motion_anchor_pos_b",
+        "robot_body_ori_b",
+        "robot_body_pos_b",
+        "smpl_joints_multi_future_local",
+        "smpl_root_ori_b_mf",
+        "vr_3point_local_orn_target",
+        "vr_3point_local_target"
+      ]
+    },
+    {
+      "source": "gear_sonic/envs/manager_env/mdp/rewards.py",
+      "source_sha256": "3de4ba4e83a579c13df8985769377a993518266ba79944e93cf5de134c5a57c4",
+      "native": "motius/simulators/sonic/mdp/rewards.py",
+      "native_sha256": "c7c26b21388a5d2e01ce468a39e0f3566dd57be5c57f1babccb4743a36403bcf",
+      "symbols": [
+        "RewardsCfg",
+        "anti_shake_ang_vel_l2",
+        "tracking_anchor_ori_error",
+        "tracking_anchor_pos_error",
+        "tracking_body_angvel_error",
+        "tracking_body_linvel_error",
+        "tracking_local_vr_5point_error",
+        "tracking_relative_body_ori_error",
+        "tracking_relative_body_pos_error"
+      ]
+    },
+    {
+      "source": "gear_sonic/envs/manager_env/mdp/terminations.py",
+      "source_sha256": "0f1a01398bead2dea441b854f0fbd8fc627b5fbe7a4702a4cff257908a25db7f",
+      "native": "motius/simulators/sonic/mdp/terminations.py",
+      "native_sha256": "14791ba740e6d27fd9cd69bcc4369c3ff3d37b19fd3b4af0dcf38b393cda4cdf",
+      "symbols": [
+        "TerminationsCfg",
+        "exceeded_anchor_height",
+        "exceeded_anchor_ori",
+        "exceeded_body_height",
+        "exceeded_body_pos",
+        "tracking_time_out"
+      ]
+    },
+    {
+      "source": "gear_sonic/envs/manager_env/mdp/events.py",
+      "source_sha256": "0bb79771f02a891750aaae1bd7242f3316dd5acf0c95c170d03ac5f1c803879a",
+      "native": "motius/simulators/sonic/mdp/events.py",
+      "native_sha256": "957adedc4315c6b0dbebec87abe6514eb1f52f842a2095e0777f2875a61897e3",
+      "symbols": [
+        "EventCfg",
+        "randomize_joint_default_pos",
+        "randomize_rigid_body_com"
+      ]
+    },
+    {
+      "source": "gear_sonic/envs/manager_env/mdp/curriculum.py",
+      "source_sha256": "5405accd219561c9a31d3c757dc83c215f19a813063a91d51ce2ea8e2c2eb625",
+      "native": "motius/simulators/sonic/mdp/curriculum.py",
+      "native_sha256": "94df16747803867ebbf12fb96471d07f3016d91b029c4f5d775bb79cf07a7599",
+      "symbols": [
+        "CurriculumCfg"
+      ]
+    },
+    {
+      "source": "gear_sonic/envs/manager_env/mdp/recorders.py",
+      "source_sha256": "eb1a53aed597281c72d0f14f95a87dd073acab435df3745533ac1b389ab643c4",
+      "native": "motius/simulators/sonic/mdp/recorders.py",
+      "native_sha256": "cea6b39c6f65a2e9770c1eda703d657f474bf0f9143be7d6a96d1dff5bf26e16",
+      "symbols": [
+        "RecordersCfg"
+      ]
+    },
+    {
+      "source": "gear_sonic/envs/manager_env/mdp/terrain.py",
+      "source_sha256": "cd18054abdfdad9c967e3abdf2f51ae7198d4ecb396256d60e4024297423b2e6",
+      "native": "motius/simulators/sonic/mdp/terrain.py",
+      "native_sha256": "46590186c38b11bd8ccdee5da0ed2a728fd7f479927855320969371a13163630",
+      "symbols": [
+        "ROUGH_TERRAINS_CFG"
+      ]
+    }
+  ]
+}

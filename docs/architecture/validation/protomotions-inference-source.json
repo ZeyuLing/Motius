@@ -1,0 +1,110 @@
+{
+  "complete": true,
+  "scope": "Released G1 checkpoint, pristine original export_tracker and its actual UnifiedPipelineModule versus native raw-observation Pipeline; real observation/quaternion encoding, actor, normalization and PD conversion. Synthetic robot-state inputs, not physical simulation or PPO/AMP training. Independently exported source/native ONNX graphs checked on nonzero B=1/B=3 inputs (rtol=atol=2e-5); deployment YAML metadata exactly equal.",
+  "upstream_commit": "49fe5ad69de67ebbc07ea2b25d41b0f622c15c3c",
+  "artifact": {
+    "source_commit": "49fe5ad69de67ebbc07ea2b25d41b0f622c15c3c",
+    "files": [
+      {
+        "file": "last.ckpt",
+        "sha256": "63ee6f40a63c75cff961d6f64d21478c44a5c5927b24573c522873306d5db480",
+        "size": 238154731
+      },
+      {
+        "file": "resolved_configs.yaml",
+        "sha256": "0461bb48c01a0fa750a8fba4044ba0ae5527a0286de868998ed2240634b4dfa1",
+        "size": 48607
+      },
+      {
+        "file": "resolved_configs_inference.yaml",
+        "sha256": "a0c87753ccd27ef6057d89189049f3a8b608639e38f88c3c4c6124f61b14403f",
+        "size": 45264
+      },
+      {
+        "file": "resolved_configs.pt",
+        "sha256": "1fa2fa40ad7847e09774e6740f529aafd73b81ef741c5fa912e70e001b5cbbac",
+        "size": 44745
+      },
+      {
+        "file": "resolved_configs_inference.pt",
+        "sha256": "c4092a3f828cd7cc22c9580649d45fce06c17bb6abe797ddaa73148580ef2be3",
+        "size": 43477
+      }
+    ]
+  },
+  "tests": [
+    {
+      "tensor": "/0/actions",
+      "shape": [
+        1,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/joint_pos_targets",
+      "shape": [
+        1,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/stiffness_targets",
+      "shape": [
+        1,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/damping_targets",
+      "shape": [
+        1,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/actions",
+      "shape": [
+        3,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/joint_pos_targets",
+      "shape": [
+        3,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/stiffness_targets",
+      "shape": [
+        3,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/damping_targets",
+      "shape": [
+        3,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01"
+}

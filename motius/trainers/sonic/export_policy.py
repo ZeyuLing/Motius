@@ -6,27 +6,23 @@ import argparse
 from pathlib import Path
 from typing import Optional, Sequence
 
-from .train import SonicTrainer
+from .train import export_policy
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checkpoint", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument(
-        "overrides",
-        nargs="*",
-        help="Additional Hydra overrides passed to the native exporter.",
-    )
+    parser.add_argument("--configuration", type=Path)
     return parser
 
 
 def main(arguments: Optional[Sequence[str]] = None) -> Path:
     args = build_parser().parse_args(arguments)
-    return SonicTrainer.export_policy(
+    return export_policy(
         args.checkpoint,
         args.output,
-        arguments=args.overrides,
+        configuration=args.configuration,
     )
 
 

@@ -1,2 +1,0 @@
-wandb:
-  _target_: gear_sonic.trl.callbacks.wandb_callback.WandbCallback

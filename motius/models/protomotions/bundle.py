@@ -32,6 +32,22 @@ class ProtoMotionsBundle(OnnxTrackingBundle):
         "mimic_future_dof_vel",
     )
 
+    @classmethod
+    def from_pretrained(cls, pretrained_model_name_or_path, **kwargs):
+        from motius.models.onnx_policy import resolve_pretrained_directory
+
+        hub = {
+            name: kwargs.pop(name)
+            for name in ['revision', 'cache_dir', 'token', 'local_files_only']
+            if name in kwargs
+        }
+        root = resolve_pretrained_directory(pretrained_model_name_or_path, **hub)
+        if (root / 'protomotions_neural.json').is_file():
+            from .policy_bundle import ProtoMotionsPolicyBundle
+
+            return ProtoMotionsPolicyBundle.from_pretrained(root, **kwargs)
+        return super().from_pretrained(pretrained_model_name_or_path, **hub, **kwargs)
+
     def _deployment_config(self) -> dict[str, Any]:
         config_path = self.file_paths.get("deployment_config", Path())
         try:
@@ -68,8 +84,7 @@ class ProtoMotionsBundle(OnnxTrackingBundle):
             "control_hz": round(1.0 / float(control_dt)),
             "future_steps": list(future_steps),
             "future_seconds": [
-                round(float(step) * float(control_dt), 6)
-                for step in future_steps
+                round(float(step) * float(control_dt), 6) for step in future_steps
             ],
             "inputs": list(inputs or self.INPUT_NAMES),
             "outputs": list(

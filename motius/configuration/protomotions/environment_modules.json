@@ -1,0 +1,130 @@
+{
+  "modules": {
+    "protomotions.envs.obs.humanoid_historical": "motius.simulators.isaaclab.protomotions.mdp.obs.humanoid_historical",
+    "protomotions.envs.obs.utils": "motius.simulators.isaaclab.protomotions.mdp.obs.utils",
+    "protomotions.utils.rotations": "motius.motion.representation.protomotions.rotations",
+    "protomotions.utils": "motius.simulators.isaaclab.protomotions.support",
+    "protomotions.envs.obs.humanoid": "motius.simulators.isaaclab.protomotions.mdp.obs.humanoid",
+    "protomotions.components.pose_lib": "motius.motion.kinematics.protomotions",
+    "protomotions.simulator.base_simulator.simulator_state": "motius.simulators.isaaclab.protomotions.physics.simulator_state",
+    "protomotions.envs.terminations.tracking": "motius.simulators.isaaclab.protomotions.mdp.terminations.tracking",
+    "protomotions.envs.action.action_functions": "motius.simulators.isaaclab.protomotions.mdp.action.action_functions",
+    "protomotions.envs.obs.target_poses": "motius.simulators.isaaclab.protomotions.mdp.obs.target_poses",
+    "protomotions.utils.odom_corruption": "motius.simulators.isaaclab.protomotions.support.odom_corruption",
+    "protomotions.envs.control.mimic_control": "motius.simulators.isaaclab.protomotions.mdp.control.mimic_control",
+    "protomotions.envs.base_env.env": "motius.simulators.isaaclab.protomotions.mdp.base_env.env",
+    "protomotions.components.motion_lib": "motius.datasets.protomotions_motion",
+    "protomotions.utils.motion_interpolation_utils": "motius.motion.representation.protomotions.interpolation",
+    "protomotions.components.scene_lib": "motius.simulators.scenes.protomotions",
+    "protomotions.utils.mesh_utils": "motius.simulators.geometry.protomotions_mesh",
+    "protomotions.components.terrains.terrain": "motius.simulators.terrains.protomotions.terrain",
+    "protomotions.components.terrains.config": "motius.simulators.terrains.protomotions.config",
+    "protomotions.components.terrains.terrain_utils": "motius.simulators.terrains.protomotions.terrain_utils",
+    "protomotions.components.terrains.subterrain_generator": "motius.simulators.terrains.protomotions.subterrain_generator",
+    "protomotions.components.terrains.shape_utils": "motius.simulators.terrains.protomotions.shape_utils",
+    "protomotions.components.terrains.subterrain": "motius.simulators.terrains.protomotions.subterrain",
+    "protomotions.robot_configs.base": "motius.configuration.protomotions.base",
+    "protomotions.simulator.mujoco.config": "motius.configuration.protomotions.compatibility_mujoco",
+    "protomotions.simulator.base_simulator.config": "motius.simulators.isaaclab.protomotions.physics.config",
+    "protomotions.simulator.newton.config": "motius.configuration.protomotions.compatibility_newton",
+    "protomotions.simulator.genesis.config": "motius.configuration.protomotions.compatibility_genesis",
+    "protomotions.simulator.isaaclab.config": "motius.simulators.isaaclab.protomotions.backend.config",
+    "protomotions.simulator.isaacgym.config": "motius.configuration.protomotions.compatibility_isaacgym",
+    "protomotions.envs.base_env.utils": "motius.simulators.isaaclab.protomotions.mdp.base_env.utils",
+    "protomotions.envs.mdp_component": "motius.simulators.isaaclab.protomotions.mdp.mdp_component",
+    "protomotions.envs.context_views": "motius.simulators.isaaclab.protomotions.mdp.context_views",
+    "protomotions.envs.obs.state_history_buffer": "motius.simulators.isaaclab.protomotions.mdp.obs.state_history_buffer",
+    "protomotions.envs.context_paths": "motius.simulators.isaaclab.protomotions.mdp.context_paths",
+    "protomotions.envs.component_manager": "motius.simulators.isaaclab.protomotions.mdp.component_manager",
+    "protomotions.envs.control.manager": "motius.simulators.isaaclab.protomotions.mdp.control.manager",
+    "protomotions.envs.control.base": "motius.simulators.isaaclab.protomotions.mdp.control.base",
+    "protomotions.utils.hydra_replacement": "motius.simulators.isaaclab.protomotions.support.construction",
+    "protomotions.envs.base_env.config": "motius.simulators.isaaclab.protomotions.mdp.base_env.config",
+    "protomotions.envs.motion_manager.config": "motius.simulators.isaaclab.protomotions.mdp.motion_manager.config",
+    "protomotions.envs.obs.scene_obs": "motius.simulators.isaaclab.protomotions.mdp.obs.scene_obs",
+    "protomotions.envs.utils.scene": "motius.simulators.isaaclab.protomotions.mdp.utils.scene",
+    "protomotions.envs.obs.terrain_obs": "motius.simulators.isaaclab.protomotions.mdp.obs.terrain_obs",
+    "protomotions.envs.obs.observation_noise": "motius.simulators.isaaclab.protomotions.mdp.obs.observation_noise",
+    "protomotions.envs.terminations": "motius.simulators.isaaclab.protomotions.mdp.terminations",
+    "protomotions.envs.terminations.task": "motius.simulators.isaaclab.protomotions.mdp.terminations.task",
+    "protomotions.envs.terminations.base": "motius.simulators.isaaclab.protomotions.mdp.terminations.base",
+    "protomotions.simulator.base_simulator.simulator": "motius.simulators.isaaclab.protomotions.physics.simulator",
+    "protomotions.simulator.base_simulator.user_interface": "motius.simulators.isaaclab.protomotions.physics.user_interface",
+    "protomotions.simulator.base_simulator.record": "motius.simulators.isaaclab.protomotions.physics.record",
+    "protomotions.simulator.base_simulator.utils": "motius.simulators.isaaclab.protomotions.physics.utils",
+    "protomotions.envs.rewards.regularization": "motius.simulators.isaaclab.protomotions.mdp.rewards.regularization",
+    "protomotions.envs.rewards.base": "motius.simulators.isaaclab.protomotions.mdp.rewards.base",
+    "protomotions.envs.rewards.tracking": "motius.simulators.isaaclab.protomotions.mdp.rewards.tracking",
+    "protomotions.robot_configs.g1": "motius.configuration.protomotions.g1",
+    "protomotions.utils.component_builder": "motius.simulators.isaaclab.protomotions.factory",
+    "protomotions.envs.motion_manager.mimic_motion_manager": "motius.simulators.isaaclab.protomotions.mdp.motion_manager.mimic_motion_manager",
+    "protomotions.envs.motion_manager.motion_manager": "motius.simulators.isaaclab.protomotions.mdp.motion_manager.motion_manager",
+    "protomotions.simulator.isaaclab.simulator": "motius.simulators.isaaclab.protomotions.backend.simulator",
+    "protomotions.simulator.isaaclab.utils.perspective_viewer": "motius.simulators.isaaclab.protomotions.backend.utils.perspective_viewer",
+    "protomotions.simulator.isaaclab.utils.collision_baking": "motius.simulators.isaaclab.protomotions.backend.utils.collision_baking",
+    "protomotions.simulator.isaaclab.utils.scene": "motius.simulators.isaaclab.protomotions.backend.utils.scene",
+    "protomotions.simulator.isaaclab.utils.usd_utils": "motius.simulators.isaaclab.protomotions.backend.utils.usd_utils"
+  },
+  "training_metadata": [
+    [
+      "protomotions.agents.amp.config",
+      "AMPAgentConfig"
+    ],
+    [
+      "protomotions.agents.amp.config",
+      "AMPModelConfig"
+    ],
+    [
+      "protomotions.agents.ppo.config",
+      "PPOActorConfig"
+    ],
+    [
+      "protomotions.agents.common.config",
+      "MLPWithConcatConfig"
+    ],
+    [
+      "protomotions.agents.common.config",
+      "MLPLayerConfig"
+    ],
+    [
+      "protomotions.agents.common.config",
+      "ModuleOperationForwardConfig"
+    ],
+    [
+      "protomotions.agents.base_agent.config",
+      "OptimizerConfig"
+    ],
+    [
+      "protomotions.agents.amp.config",
+      "DiscriminatorConfig"
+    ],
+    [
+      "protomotions.agents.common.config",
+      "ModuleContainerConfig"
+    ],
+    [
+      "protomotions.agents.evaluators.config",
+      "MimicEvaluatorConfig"
+    ],
+    [
+      "protomotions.agents.evaluators.config",
+      "MotionWeightsRulesConfig"
+    ],
+    [
+      "protomotions.agents.ppo.config",
+      "L2C2Config"
+    ],
+    [
+      "protomotions.agents.ppo.config",
+      "AdaptiveLRConfig"
+    ],
+    [
+      "protomotions.agents.ppo.config",
+      "AdvantageNormalizationConfig"
+    ],
+    [
+      "protomotions.agents.amp.config",
+      "AMPParametersConfig"
+    ]
+  ]
+}

@@ -4,15 +4,14 @@ module: motius.trainers.protomotions.train
 num_processes: 1
 output_root: outputs/training/protomotions
 arguments:
-  - --robot-name
-  - g1
-  - --simulator
-  - isaaclab
-  - --experiment-name
-  - g1_bones_seed
+  - --checkpoint
+  - ${PROTOMOTIONS_CHECKPOINT}
   - --motion-file
   - ${G1_MOTION_FILE}
+  - --asset-root
+  - checkpoints/robots/protomotions
+  - --run-name
+  - g1_bones_seed
   - --num-envs
   - "4096"
-  - --batch-size
-  - "16384"
+  - --headless
