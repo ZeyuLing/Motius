@@ -22,6 +22,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+mogendit = ["tqdm>=4.65"]
+mogendit-physics = ["tqdm>=4.65", "qpsolvers[quadprog]>=4.0"]
 motionstreamer = ["numpy>=1.26,<2", "sentencepiece>=0.2", "torch>=2.6", "tqdm>=4.65", "transformers>=4.46,<5"]
 flowhmr = [
     "clip @ git+https://github.com/openai/CLIP.git",
@@ -354,6 +356,7 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.licenses.mogendit" = ["*.md", "*.json", "*LICENSE"]
 "motius.licenses.motiongpt3" = ["ATTRIBUTIONS.md", "UPSTREAM_LICENSE_NOTICE"]
 "motius.configuration" = ["motiongpt3_text_parameters.json"]
 "motius.licenses.motiongpt" = ["LICENSE", "ATTRIBUTIONS.md"]

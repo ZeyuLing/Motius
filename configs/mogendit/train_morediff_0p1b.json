@@ -1,0 +1,17 @@
+{
+  "model": {"version": "0.1B", "global_pose": true, "fps": 30},
+  "data": {"data_roots": [], "fix_len": 224, "min_len": 30},
+  "trainer": {
+    "motion_degradation": true, "degrade_rate": 0.5,
+    "consis_loss": true, "consis_start_step": 10000,
+    "l1_weight_x0": 1.0, "l2_weight_x0": 0.0,
+    "l1_weight_consis": 1.0, "l2_weight_consis": 0.0,
+    "schedule_sampler_type": "uniform"
+  },
+  "training": {
+    "batch_size": 128, "max_steps": 4000000,
+    "lr": 0.0001, "weight_decay": 0.0001, "grad_clip": 1.0,
+    "ema_decay": 0.999, "ema_start_step": 1000,
+    "seed": 10, "save_interval": 40000, "log_interval": 50
+  }
+}

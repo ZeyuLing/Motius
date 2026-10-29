@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "comparison": "pre-migration pipeline, using nonzero synthetic weights; not a pretrained quality evaluation",
+  "cases": [
+    "denoise",
+    "ada_denoise",
+    "trans_regen"
+  ],
+  "atol": 0,
+  "rtol": 0,
+  "original_core_sha256": {
+    "model/more_diff.py": "d267c0f113bfb5a9b8d9d85bc20b5d45532b40f6f7f694a9036779c326d312dd",
+    "model/my_model.py": "97d9a8f352001331abe308000eae69d525c6503ef699ef68a514e34480e803a3",
+    "Aplus/models/base_models.py": "b6347a9d1793c9e00384a62580b63bb0dd8aa5f0f5bfbdb78dc24b6215ae62fb",
+    "EasyDiffusion/base_diffusion.py": "ab3616def937ae2a32ee02f0efa7c0990a2405d0756d20455fece681c4003139",
+    "EasyDiffusion/resample.py": "ad032aa743dee0f6cf3c8c249fa802a9c0e11cf170ab34e044b83adedc499add",
+    "EasyDiffusion/__init__.py": "7dc67cdc3c36da0fbae0bdbe63302b28deadd11156a43b40cbeac3f8f5b5f749",
+    "motion_process/motion_representation.py": "2b6dd0178f10d8b6ca1addd159a389f0eebac10e6e2f14da95b7f2d27226fba6",
+    "motion_process/motion_degradation.py": "ef4019fae86acf083814d5176445f6ee01fec5556b5dbaa37d0df5482e943549",
+    "motion_process/rotation_conversions.py": "d54a79a11d6835bcb163f2604b21937d58ca15f591a390b188c5358318d274ce",
+    "motion_process/utils.py": "9e6f920aacb7c147e71d6eef3dd429ec3864edf4cb1ce66d04449287a526e6e1",
+    "animo/simulator.py": "dc33eb84dc440d65f2e8db9aa5a038867fa5880cf4d42917d7271f9f51b46a93",
+    "animo/tools.py": "fed2c445bbc7ccb9d3a0de470ebbffb4f90be0fbd88cd202e4f0119a5052939a",
+    "utils/PYTORCH3D_LICENSE": "5808331377da7d6c55da2d5e8b99185ac2f3dd05a7b1d48c1589a81b36c141b0",
+    "animo/skeleton/__init__.py": "f8b0e00315a210d8b4cd9bb2d51bbb8b07410220420bd0ccea3a89e9f5cbbc77",
+    "animo/skeleton/base_skeleton.py": "b4bd34677734b8c03f856a003159ebb25520bc8eac1a82882951f7b28e5b2574",
+    "animo/skeleton/smpl.py": "1e6d45dfbb4360191440a4c512888003e67b33e2d260e9b770cae1331697ce46",
+    "animo/skeleton/smpl_body.py": "96131a893414bbe19044e749a71302542050a6731a49f741f83807b7ff0db8ad",
+    "animo/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "animo/utils/angular.py": "a5230ea8c94a1b3b2357c0bde15b809e935443159b8ae32b88c8be66a01f3dd2",
+    "animo/utils/general.py": "45b341af803db6f73fd5d97fbe2481d788cb9098b66da0d23c055399ebb66710",
+    "animo/utils/rotation_conversions.py": "d54a79a11d6835bcb163f2604b21937d58ca15f591a390b188c5358318d274ce",
+    "articulate/math/__init__.py": "88c7f6f186f4d6440a8727d1e6331ce1c2644230320881d97bcf5194a8bb6b17",
+    "articulate/math/angular.py": "04471b23a103de05dce870747de8d58ce817b63389f603d3d12367a88cb7b042",
+    "articulate/math/general.py": "dcb9f23ad0d4a242f85a3f3fbd33ff63b62bef82c893ab64109626ab1811c0e7",
+    "articulate/math/spatial.py": "92984796f74a04fb46e01f6e28bccf205c042cfb4b4948e720245b1cd5563208"
+  },
+  "original_core_comparison_log": "original_core_comparison.log",
+  "original_refiner_verified": false
+}
