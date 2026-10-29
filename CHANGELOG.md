@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Move migrated methods into native neural bundles, trainers, pipelines and shared motion components; remove the copied model and robot-training application trees.
+- Integrate native AnimateCanvas, video capture, motion generation, physical tracking and retrieval paths, with compatibility aliases for older MotionCanvas artifacts.
+- Retain the optimized FlowHMR frontend and Blender workflow, including standard and lightweight inference, full-frame batching and memory controls; document measured hardware and validation limits.
+- Add source-comparison records, architectural audits, public robot-asset downloaders, training recipes and resume checks. Numerical comparisons are scoped to the tested models and cases; Windows and consumer-GPU end-to-end testing remains pending.
+
 - Rename MotionCanvas to AnimateCanvas across model, pipeline, trainer, configs,
   model cards and local demo assets. Continue loading previously released
   checkpoint metadata through compatibility aliases.
