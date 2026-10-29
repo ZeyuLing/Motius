@@ -1,6 +1,9 @@
 from typing import List
-from ...modality import Caption, Duration, Motion, NumPerson
-from ..base_task import BaseTask
+from motius.motion.conditioning.vermo.modality import Caption
+from motius.motion.conditioning.vermo.modality import Duration
+from motius.motion.conditioning.vermo.modality import Motion
+from motius.motion.conditioning.vermo.modality import NumPerson
+from motius.motion.conditioning.vermo.task_lib.base_task import BaseTask
 
 
 class Random2CaptionMotion(BaseTask):

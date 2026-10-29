@@ -1,8 +1,6 @@
 from motius.models.vermo.bundle import VermoBundle
 from motius.models.vermo.fs_quantizer import FSQuantizer
 from motius.models.vermo.llama import VermoLlamaForCausalLM
-from motius.models.vermo.processor import VermoProcessor
-from motius.models.vermo.pose_processor import VermoSMPL22Processor
 from motius.models.vermo.vqvae_2d import VQVAEVermo2DTK
 from motius.models.vermo.vqvae_1d import VQVAEVermo1D
 from motius.registry import HF_MODELS
@@ -24,8 +22,6 @@ if not HF_MODELS.get('VQVAEWanMotion2DTK'):
 __all__ = [
     'VermoBundle',
     'VermoLlamaForCausalLM',
-    'VermoProcessor',
-    'VermoSMPL22Processor',
     'FSQuantizer',
     'VQVAEVermo1D',
     'VQVAEVermo2DTK',

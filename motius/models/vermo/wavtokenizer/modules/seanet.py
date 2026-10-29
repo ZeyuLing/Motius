@@ -399,7 +399,3 @@ def test():
     assert list(z.shape) == [1, 128, 75], z.shape
     y = decoder(z)
     assert y.shape == x.shape, (x.shape, y.shape)
-
-
-if __name__ == '__main__':
-    test()

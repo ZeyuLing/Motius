@@ -17,40 +17,34 @@ from tqdm import tqdm
 from motius.models.vermo.wavtokenizer import WavTokenizer
 from motius.models.vermo.vqvae_2d import VQVAEVermo2DTK as VQVAEWanMotion2DTK
 from motius.models.vermo.vqvae_1d import VQVAEVermo1D as VQVAEWanMotion1D
-from motius.models.vermo.pose_processor import VermoSMPL22Processor as SMPLPoseProcessor
+from motius.motion.representation.vermo import VermoSMPL22Processor as SMPLPoseProcessor
 
 
-from motius.models.vermo.task_utils import (
-    ALL_MODALS,
-    LOCATABLE_MODALS,
-)
-from motius.models.vermo.task_utils.task_lib.base_task import (
-    BaseTask,
-)
+from motius.motion.conditioning.vermo import ALL_MODALS
+from motius.motion.conditioning.vermo import LOCATABLE_MODALS
+from motius.motion.conditioning.vermo.task_lib.base_task import BaseTask
 
 from transformers import PreTrainedTokenizer, PreTrainedTokenizerFast
 from transformers.tokenization_utils_fast import BatchEncoding
 from mmengine.config import Config
 from motius.registry import HF_MODELS, MODELS
 from motius.models.utils import print_colored_log
-from motius.models.vermo.task_utils.modality import (
-    Audio,
-    Caption,
-    Duration,
-    FutureMotion,
-    FutureMusic,
-    Genre,
-    MiddleMotion,
-    Modality,
-    Motion,
-    Music,
-    NumPerson,
-    PastMotion,
-    PastMusic,
-    SpeechScript,
-    Text,
-    is_modal,
-)
+from motius.motion.conditioning.vermo.modality import Audio
+from motius.motion.conditioning.vermo.modality import Caption
+from motius.motion.conditioning.vermo.modality import Duration
+from motius.motion.conditioning.vermo.modality import FutureMotion
+from motius.motion.conditioning.vermo.modality import FutureMusic
+from motius.motion.conditioning.vermo.modality import Genre
+from motius.motion.conditioning.vermo.modality import MiddleMotion
+from motius.motion.conditioning.vermo.modality import Modality
+from motius.motion.conditioning.vermo.modality import Motion
+from motius.motion.conditioning.vermo.modality import Music
+from motius.motion.conditioning.vermo.modality import NumPerson
+from motius.motion.conditioning.vermo.modality import PastMotion
+from motius.motion.conditioning.vermo.modality import PastMusic
+from motius.motion.conditioning.vermo.modality import SpeechScript
+from motius.motion.conditioning.vermo.modality import Text
+from motius.motion.conditioning.vermo.modality import is_modal
 
 
 def obtain_data(
@@ -170,10 +164,10 @@ class VermoProcessor(nn.Module):
             pretrained_text_tokenizer
         )
         self.text_tokenizer.padding_side = "left"
-        self.motion_tokenizer: VQVAEWanMotion2DTK = HF_MODELS.build(motion_tokenizer)
+        self.motion_tokenizer: VQVAEWanMotion2DTK = motion_tokenizer if isinstance(motion_tokenizer, nn.Module) else HF_MODELS.build(motion_tokenizer)
 
         if audio_tokenizer is not None:
-            self.audio_tokenizer: Optional[WavTokenizer] = MODELS.build(audio_tokenizer)
+            self.audio_tokenizer: Optional[WavTokenizer] = audio_tokenizer if isinstance(audio_tokenizer, nn.Module) else MODELS.build(audio_tokenizer)
             if pretrained_audio_tokenizer is not None:
                 load_checkpoint(
                     self.audio_tokenizer, pretrained_audio_tokenizer, map_location="cpu"
@@ -1711,3 +1705,16 @@ class VermoProcessor(nn.Module):
 
     def idx2text(self, ids: Tensor) -> List[str]:
         return self.text_tokenizer.batch_decode(ids, skip_special_tokens=False)
+
+
+def build_vermo_processor(bundle):
+    import copy
+    options=copy.deepcopy(bundle.processor_config)
+    for key in ['type','trainable','save_ckpt','module_dtype','gradient_checkpointing']:
+        options.pop(key,None)
+    options['motion_tokenizer']=bundle.motion_tokenizer
+    options['audio_tokenizer']=bundle.audio_tokenizer
+    options['pretrained_audio_tokenizer']=None
+    processor=VermoProcessor(**options).to(bundle.device)
+    bundle.resize_language_embeddings(processor.vocab_size)
+    return processor

@@ -16,15 +16,6 @@ EncodedFrame = Tuple[torch.Tensor, Optional[torch.Tensor]]
 ROOT_URL = "https://dl.fbaipublicfiles.com/encodec/v0/"
 
 
-def _load_audio_with_librosa(*args, **kwargs):
-    try:
-        from librosa import load
-    except Exception as exc:
-        raise RuntimeError(
-            "EncodecFeatures audio loading requires librosa and its runtime "
-            "dependencies."
-        ) from exc
-    return load(*args, **kwargs)
 
 
 class EncodecFeatures(nn.Module):
@@ -460,27 +451,3 @@ class EncodecModel(nn.Module):
             model.load_state_dict(state_dict)
         model.eval()
         return model
-
-
-def test():
-    from itertools import product
-
-    bandwidths = [3, 6, 12, 24]
-    models = {
-        "encodec_24khz": EncodecModel.encodec_model_24khz,
-        "encodec_48khz": EncodecModel.encodec_model_48khz,
-    }
-    for model_name, bw in product(models.keys(), bandwidths):
-        model = models[model_name]()
-        model.set_target_bandwidth(bw)
-        audio_suffix = model_name.split("_")[1][:3]
-        wav, sr = _load_audio_with_librosa(f"test_{audio_suffix}.wav")
-        wav = torch.from_numpy(wav)
-        wav = wav[:, : model.sample_rate * 2]
-        wav_in = wav.unsqueeze(0)
-        wav_dec = model(wav_in)[0]
-        assert wav.shape == wav_dec.shape, (wav.shape, wav_dec.shape)
-
-
-if __name__ == "__main__":
-    test()

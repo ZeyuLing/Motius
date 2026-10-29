@@ -1,6 +1,6 @@
 from typing import List
-from ..modality import Motion
-from .base_task import BaseTask
+from motius.motion.conditioning.vermo.modality import Motion
+from motius.motion.conditioning.vermo.task_lib.base_task import BaseTask
 
 
 class MotionPretrainTask(BaseTask):

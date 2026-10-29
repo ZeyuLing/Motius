@@ -12,6 +12,7 @@ _EXPORTS = {
     "MaskControlTrainer": "maskcontrol",
     "MotionCLIPTrainer": "motion_clip",
     "ViMoGenTrainer": "vimogen",
+    "VermoTrainer": "vermo",
     "UniMuMoTrainer": "unimumo",
     "MotionLCMTrainer": "motionlcm",
     "MLDTrainer": "mld",

@@ -1,6 +1,10 @@
 from typing import List
-from ...modality import Caption, Genre, Motion, Music, NumPerson
-from ..base_task import BaseTask
+from motius.motion.conditioning.vermo.modality import Caption
+from motius.motion.conditioning.vermo.modality import Genre
+from motius.motion.conditioning.vermo.modality import Motion
+from motius.motion.conditioning.vermo.modality import Music
+from motius.motion.conditioning.vermo.modality import NumPerson
+from motius.motion.conditioning.vermo.task_lib.base_task import BaseTask
 
 
 class Music2Dance(BaseTask):

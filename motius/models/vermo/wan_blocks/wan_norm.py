@@ -92,13 +92,3 @@ class WanRMSNorm(nn.Module):
             out = out * self._legacy_scale
 
         return out
-
-
-if __name__ == "__main__":
-    motion = torch.randn(2, 32, 17, 22)
-    motion_2 = torch.randn(2, 32, 17)
-    norm = WanRMSNorm(32, channel_dim=1)
-    out = norm(motion)
-    out_2 = norm(motion_2)
-    print(out.shape)
-    print(out_2.shape)

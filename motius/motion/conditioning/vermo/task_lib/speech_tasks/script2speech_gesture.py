@@ -1,6 +1,10 @@
 from typing import List
-from ..base_task import BaseTask
-from ...modality import Audio, NumPerson, Caption, Motion, SpeechScript
+from motius.motion.conditioning.vermo.task_lib.base_task import BaseTask
+from motius.motion.conditioning.vermo.modality import Audio
+from motius.motion.conditioning.vermo.modality import NumPerson
+from motius.motion.conditioning.vermo.modality import Caption
+from motius.motion.conditioning.vermo.modality import Motion
+from motius.motion.conditioning.vermo.modality import SpeechScript
 
 
 class SpeechScript2SpeechGesture(BaseTask):

@@ -1,6 +1,9 @@
 from typing import List
-from ...modality import FutureMusic, Genre, Motion, PastMusic
-from ..base_task import BaseTask
+from motius.motion.conditioning.vermo.modality import FutureMusic
+from motius.motion.conditioning.vermo.modality import Genre
+from motius.motion.conditioning.vermo.modality import Motion
+from motius.motion.conditioning.vermo.modality import PastMusic
+from motius.motion.conditioning.vermo.task_lib.base_task import BaseTask
 
 
 class Dance2MusicWithInit(BaseTask):

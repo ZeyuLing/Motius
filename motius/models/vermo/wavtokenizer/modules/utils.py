@@ -14,14 +14,6 @@ import typing as tp
 import torch
 
 
-def _import_torchaudio():
-    try:
-        import torchaudio
-    except Exception as exc:
-        raise RuntimeError(
-            "Audio saving requires torchaudio and matching torch/torchaudio binaries."
-        ) from exc
-    return torchaudio
 
 
 def apply_parametrization_norm(module: nn.Module, norm: str = 'none') -> nn.Module:
@@ -183,15 +175,3 @@ def _check_checksum(path: Path, checksum: str):
     if actual_checksum != checksum:
         raise RuntimeError(f'Invalid checksum for file {path}, '
                            f'expected {checksum} but got {actual_checksum}')
-
-
-def save_audio(wav: torch.Tensor, path: tp.Union[Path, str],
-               sample_rate: int, rescale: bool = False):
-    limit = 0.99
-    mx = wav.abs().max()
-    if rescale:
-        wav = wav * min(limit / mx, 1)
-    else:
-        wav = wav.clamp(-limit, limit)
-    torchaudio = _import_torchaudio()
-    torchaudio.save(str(path), wav, sample_rate=sample_rate, encoding='PCM_S', bits_per_sample=16)

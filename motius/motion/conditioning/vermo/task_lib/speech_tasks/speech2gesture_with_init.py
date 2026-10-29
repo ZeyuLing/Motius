@@ -1,6 +1,9 @@
 from typing import List
-from ...modality import Audio, Caption, FutureMotion, PastMotion
-from ..base_task import BaseTask
+from motius.motion.conditioning.vermo.modality import Audio
+from motius.motion.conditioning.vermo.modality import Caption
+from motius.motion.conditioning.vermo.modality import FutureMotion
+from motius.motion.conditioning.vermo.modality import PastMotion
+from motius.motion.conditioning.vermo.task_lib.base_task import BaseTask
 
 
 class Speech2GestureWithInit(BaseTask):
