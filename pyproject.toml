@@ -277,7 +277,7 @@ motionbricks = [
     "pynput>=1.7",
     "pytorch-lightning>=2.0",
     "trimesh>=4.0",
-    "vector-quantize-pytorch>=1.25",
+    "vector-quantize-pytorch==1.27.15",
 ]
 motion-tracking = [
     "onnxruntime>=1.18",
@@ -321,7 +321,7 @@ motion-tracking-train-sonic = [
     "tensorboard",
     "transformers>=4.56.2",
     "trl==0.28.0",
-    "vector-quantize-pytorch>=1.25",
+    "vector-quantize-pytorch==1.27.15",
     "wandb",
 ]
 motion-tracking-train-protomotions = [
@@ -451,11 +451,8 @@ namespaces = false
     "assets/unitree_g1/*.xml",
     "assets/unitree_g1/LICENSE",
 ]
-"motius.models.motionbricks" = [
-    "ATTRIBUTIONS.md",
-    "network/assets/skeletons/g1/*.xml",
-    "network/assets/skeletons/g1/meshes/*.STL",
-]
+"motius.licenses.motionbricks" = ["LICENSE", "ATTRIBUTIONS.md"]
+"motius.configuration.motionbricks_assets" = ["skeletons/g1/*.xml", "skeletons/g1/meshes/*.STL"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

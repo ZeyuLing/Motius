@@ -1,0 +1,103 @@
+{
+  "complete": true,
+  "comparison": "Original MotionBricks real G1 primitives/controller, root and pose sampling, motion codec, canonicalization and MuJoCo qpos assembly versus native composition",
+  "seeds": [
+    1234,
+    1241
+  ],
+  "frames_per_case": 160,
+  "controller": "random",
+  "reference_boundary": "Original headless controller classes extracted unchanged to omit unused desktop keyboard imports; seed applied after NN construction in both workers",
+  "upstream_commit": "45c03facbf848e0c743091b7d9c17952096ff908",
+  "tests": [
+    {
+      "tensor": "/0/qpos",
+      "shape": [
+        160,
+        36
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/qpos",
+      "shape": [
+        160,
+        36
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "network_calls": {
+    "upstream": {
+      "pose": 20,
+      "root": 20
+    },
+    "native": {
+      "pose": 20,
+      "root": 40
+    }
+  },
+  "native_sha256": {
+    "motius/configuration/motionbricks.py": "2788f94b2abac4f45220b6d26360d635b46df18e5149af9fb6a889656c42601e",
+    "motius/datasets/motionbricks.py": "81df68d3950f8f5d55a25b751841be9c726e43e8a78194b8495980cb087c8423",
+    "motius/models/motionbricks/__init__.py": "9f04887038251f2644fc804c6fb9391ba8bac376e8698750e592faf8df8d4b61",
+    "motius/models/motionbricks/bundle.py": "588c0fb42f7cfb2d4cd9f5054529628ef728f6697985c6b9d42177269bd0565b",
+    "motius/models/motionbricks/encdec.py": "bce57a63cd7e07c67505c9ab96d661eaa345162c7948b69f5fd7cdd0dc594cff",
+    "motius/models/motionbricks/encdec_double_cond.py": "48063426032d9286ea576552647267072f34749824c2024413790fb0531d4147",
+    "motius/models/motionbricks/mlp.py": "93c05e8bece32fb56b6c2af4c7c514a2e45346f7197a8e9e36af03ebfa5c8549",
+    "motius/models/motionbricks/pose.py": "d51b80a53efcce9be4adf74dde877f6889a63040ef668e795af7fce993804b91",
+    "motius/models/motionbricks/position_embedding.py": "249fad2888c861e5333b9e88459f9a37ecfb8138cb884702875da7c4f6852d45",
+    "motius/models/motionbricks/quantizer.py": "e35620c4aa3521fd4ebb269d43f83016662fec99074f3637923765bc2e107740",
+    "motius/models/motionbricks/resnet.py": "7f5756d3bf6cb62f7f5d26aa91406723a3e84b39d4cdd99a64c379a9d688f81b",
+    "motius/models/motionbricks/root.py": "48f75b5eaccce21e8e181c52a9d4566df5766a64a0ca7b30f10ec3a6d443ae46",
+    "motius/motion/body_models/motionbricks.py": "42fa76474ed51bd7a9bec4099ebb707113282b6467220b9317b0c819a0551c3e",
+    "motius/motion/conditioning/motionbricks.py": "ad39c6e52daee1ad424106b725d3de32c6fdde3a9fd0d89cfb6c0dce5658fd1d",
+    "motius/motion/conditioning/motionbricks_codec.py": "aa3396c28553865b4a77de81ce00ddd56d294caa28a13763773b9ec67828dfca",
+    "motius/motion/representation/motionbricks/__init__.py": "5384bfdb2df380b6557cc7a71d16891415bccaa87699406e236f752c6415389f",
+    "motius/motion/representation/motionbricks/geometry/__init__.py": "5384bfdb2df380b6557cc7a71d16891415bccaa87699406e236f752c6415389f",
+    "motius/motion/representation/motionbricks/geometry/quaternions.py": "498d58d126a680332ecc221ad25c48a11695695acc5185e4d3f70a795bbfa353",
+    "motius/motion/representation/motionbricks/motion_reps/__init__.py": "0527a23e2a4cddec7ffb90b6ae309078d4218c83082cb6f9c81588976ad9214c",
+    "motius/motion/representation/motionbricks/motion_reps/dual_root_global_joints.py": "e06e881891dedaca4b3cfc9587da2a076cf586c9fee74677c419b59b473d7885",
+    "motius/motion/representation/motionbricks/motion_reps/motion_reps_base/__init__.py": "5384bfdb2df380b6557cc7a71d16891415bccaa87699406e236f752c6415389f",
+    "motius/motion/representation/motionbricks/motion_reps/motion_reps_base/dual_root_local_body.py": "4ed47014642b097bf0e5a6087b811925477c9d345954dff2429f753b32a77e07",
+    "motius/motion/representation/motionbricks/motion_reps/motion_reps_base/global_root_local_body.py": "3d948c18575aef7913579a63ca1ce30de8d6bc417d8c5660eb330af3bbbeac9e",
+    "motius/motion/representation/motionbricks/motion_reps/motion_reps_base/local_root_local_body.py": "5c5101aecf05213176931580ef887dc8163c0c83b0acdaf87abf9333f234c71f",
+    "motius/motion/representation/motionbricks/motion_reps/motion_reps_base/motion_rep_base.py": "eed5475cc487d249f0a9e89cd554c9ae33cac61140f698ccc433f667e76f58ad",
+    "motius/motion/representation/motionbricks/motion_reps/motion_reps_base/seperate_root_local_body.py": "2271e98fa87616cb209e81f5f6cedc94a6a3b5c9679c64114095577c90fffc62",
+    "motius/motion/representation/motionbricks/motion_reps/tools/__init__.py": "5384bfdb2df380b6557cc7a71d16891415bccaa87699406e236f752c6415389f",
+    "motius/motion/representation/motionbricks/motion_reps/tools/changing_t_pose.py": "f6dd27ecefe42b7e9d5ae977f64b749a2a5d8dd01cb08a60045beb04ccb418c4",
+    "motius/motion/representation/motionbricks/motion_reps/tools/feature_info.py": "7162a2ec25ed1a17b0ce2ed7e34bc51349623adab31d07aef4655db7a971537f",
+    "motius/motion/representation/motionbricks/motion_reps/tools/feet.py": "0f4074cc26adf7c6f0a214842f22b1712b6fa68c57a50adf37e6681ddd99914b",
+    "motius/motion/representation/motionbricks/motion_reps/tools/heading.py": "ce3ea41dd2142ac1052ac2ff3d8b08a9abcdde6cebaefcd8efc201ffa4c86917",
+    "motius/motion/representation/motionbricks/motion_reps/tools/motion_features.py": "231f2ac5871862191b2199506111a63807739d50b707a3e708e1e1c62db1470b",
+    "motius/motion/representation/motionbricks/motion_reps/tools/utils.py": "52d9c7ca4bad5dba7a5bead0607ed50bff43982f30fea29b9cb7280c356634a6",
+    "motius/motion/representation/motionbricks/motion_reps/utils.py": "43233e399fa05e8fa68fac376d9f424d76a2c69c7b0f25a62cb05458cefcb238",
+    "motius/motion/representation/motionbricks/skeletons/__init__.py": "8f128c69c16fdb9abad2d8acf88906369e57af82e8ad5d6076f3fe96bbac0739",
+    "motius/motion/representation/motionbricks/skeletons/base.py": "44168047dbe602156d489fa6aec8ea66bdb71ffe86b5df76a80bb4a50e412bcc",
+    "motius/motion/representation/motionbricks/skeletons/g1.py": "ba82ef41014eee1da67123866d2d4d08cead994e3890e9d9005f91e7573aaaf2",
+    "motius/motion/representation/motionbricks/utils/__init__.py": "5384bfdb2df380b6557cc7a71d16891415bccaa87699406e236f752c6415389f",
+    "motius/motion/representation/motionbricks/utils/rotations.py": "e3b8ec5ff95635149d1fb0e82043d8b16634ca161c9c5513281a3a4a2e23f77c",
+    "motius/motion/representation/motionbricks/utils/stats.py": "bc1d14702bedbedaf2c0960896bb24ed364a238db94a69e59977e34764560c16",
+    "motius/motion/representation/motionbricks/utils/torch_utils.py": "2c902e905997ef388da1c119f88ea01596204e146bb25c42dcccef7baee64149",
+    "motius/pipelines/motionbricks/__init__.py": "c636a2a5fa919311600789e611a0d1b00f8ad39a6acbd1dd2dbddd73ae708ec4",
+    "motius/pipelines/motionbricks/clips.py": "3b60947a92df0168dee9d6c7706cd55a21d2159de6b8ea649e5038f66ff4b7e7",
+    "motius/pipelines/motionbricks/controllers.py": "dff2acc6af9695eb64c4a2fb694d810245a6cef795a5af30b902b60b8aaa50bc",
+    "motius/pipelines/motionbricks/full_agent.py": "0a9ed5a73932893be1105224bbb8bf900188aacd65a88daf5f985ba39fc39665",
+    "motius/pipelines/motionbricks/inference.py": "b4a319cd4275ed9aeef0aaaeb7db790505b17ff104b6dedd38e0695b654676ea",
+    "motius/pipelines/motionbricks/navigation.py": "c1e6d092916b2493f88f00a4d369bcafb59e7236df786e7efc1f43c5bbf674f4",
+    "motius/pipelines/motionbricks/pipeline.py": "e5384e5ee0ebc570807be3f6d6759ac422f93eb4efe373552648868573a3babf",
+    "motius/pipelines/motionbricks/sampling.py": "12875e381001f355d28f8fb7a30d0572d0d2294c729fecbb17bc68083cc23e23",
+    "motius/trainers/motionbricks/__init__.py": "4c16731faa0e33875ebd692ddcd34de6c92e2573b41c0b682453dc4717bd77ee",
+    "motius/trainers/motionbricks/base.py": "ea2662f23dd01481ab6aefbb37a2a9c17ad75346e652b596d4baf91e10c7c7c8",
+    "motius/trainers/motionbricks/pose.py": "d4cd0b0c200dfdaf8f2abe8e931e345b73e8f69311f5c318579a6aaaa0127637",
+    "motius/trainers/motionbricks/root.py": "2496d51dd6ba05de77bccd1422acb122563717759f06a9f3e5b993cdddc0bdbe",
+    "motius/trainers/motionbricks/vqvae.py": "3501d5457027e1013bfb7f8f76ab5b5629ec267e4e84d86d7b33dc45e0b5654f"
+  },
+  "artifact": {
+    "repository": "ZeyuLing/motius-motionbricks-g1",
+    "revision": "7eac24d3357b595232b01f1416d2c94b78da6e64"
+  }
+}

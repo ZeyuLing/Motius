@@ -12,3 +12,4 @@ motius/configuration/gvhmr/body/*.pt -filter -diff -merge -text
 motius/configuration/gem_smpl/body/*.pt -filter -diff -merge -text
 
 motius/configuration/kimodo/assets/**/*.STL -filter -diff -merge -text
+motius/configuration/motionbricks_assets/**/*.STL -filter -diff -merge -text

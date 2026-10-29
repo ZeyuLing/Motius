@@ -2,6 +2,7 @@
 from importlib import import_module
 
 _EXPORTS = {
+    "MotionBricksSyntheticDataset": ("motius.datasets.motionbricks", "SyntheticMotionDataset"),
     "AISTPPMusicDanceDataset": ("motius.datasets.aistpp_music_to_dance", "AISTPPMusicDanceDataset"),
     "MotionStreamerTextTokenDataset": ("motius.datasets.motionstreamer", "MotionStreamerTextTokenDataset"),
     "MotionStreamerStreamingTokenDataset": ("motius.datasets.motionstreamer", "MotionStreamerStreamingTokenDataset"),
