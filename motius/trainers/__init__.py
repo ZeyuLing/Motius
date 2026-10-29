@@ -7,6 +7,7 @@ _EXPORTS = {
     "MotionCLRTrainer": "motionclr",
     "MDMTrainer": "mdm",
     "CondMDITrainer": "condmdi",
+    "OmniControlTrainer": "omnicontrol",
     "GenTrackFlowGRPOTrainer": "gentrack",
     "HyMotionT2MTrainer": "hymotion_t2m",
     "PrismTrainer": "prism",

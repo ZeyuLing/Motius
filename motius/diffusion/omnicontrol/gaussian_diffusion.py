@@ -13,7 +13,8 @@ import numpy as np
 import torch
 import torch as th
 from copy import deepcopy
-from .nn import mean_flat, sum_flat
+from motius.diffusion.omnicontrol.nn import mean_flat
+from motius.diffusion.omnicontrol.nn import sum_flat
 from motius.motion.representation.humanml import recover_from_ric
 
 

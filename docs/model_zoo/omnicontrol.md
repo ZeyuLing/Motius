@@ -231,7 +231,8 @@ materialized after HumanML3D recovery for evaluation and visualization.
 
 - Paper: [OmniControl: Control Any Joint at Any Time for Human Motion Generation](https://arxiv.org/abs/2310.08580)
 - Official code: [neu-vi/OmniControl](https://github.com/neu-vi/OmniControl)
-- Vendored license: `motius/models/omnicontrol/LICENSE`
+- Upstream license and attribution: `motius/licenses/omnicontrol`
+- Source comparisons: [training](../architecture/omnicontrol-training-source.json) and [inference](../architecture/omnicontrol-inference-source.json)
 
 <!-- MOTIUS_MODEL_CARD_FOOTER:START -->
 ---

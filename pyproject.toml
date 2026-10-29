@@ -350,12 +350,14 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.licenses.omnicontrol" = ["*"]
 "motius.licenses.condmdi" = ["*"]
 "motius.licenses.mdm" = ["*"]
 "motius.configuration.flowhmr" = ["*.json", "*.yml"]
 "motius.licenses.flowhmr" = ["ATTRIBUTIONS.md", "UPSTREAM_LICENSE", "UPSTREAM_COMMIT", "VGGT_OMEGA_LICENSE", "SAM3D_LICENSE", "DINOV3_LICENSE.md", "YOLOX_LICENSE", "HY_MOTION_LICENSE", "HY_MOTION_NOTICE", "MHR_LICENSE", "FAST_SAM_LICENSE"]
 "motius.motion" = [
     "assets/*.npy",
+    "assets/omnicontrol/*.npy",
     "retarget/_gmr/LICENSE",
     "retarget/_gmr/assets/unitree_g1/*.xml",
     "retarget/_gmr/ik_configs/*.json",
@@ -365,7 +367,7 @@ namespaces = false
 ]
 "motius.models.tmr" = ["LICENSE"]
 "motius.models.tm2t" = ["LICENSE"]
-"motius.models.omnicontrol" = ["LICENSE", "assets/*.npy"]
+"motius.models.omnicontrol" = ["LICENSE"]
 "motius.trainers.sonic.vendor" = [
     "UPSTREAM_LICENSE",
     "THIRD_PARTY_NOTICES.txt",

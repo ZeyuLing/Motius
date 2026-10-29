@@ -114,11 +114,46 @@ def test_release_task_methods_and_packaged_statistics():
     assets = (
         Path(__file__).resolve().parents[1]
         / "motius"
-        / "models"
-        / "omnicontrol"
+        / "motion"
         / "assets"
+        / "omnicontrol"
     )
     assert np.load(assets / "Mean.npy").shape == (263,)
     assert np.load(assets / "Std.npy").shape == (263,)
     assert np.load(assets / "Mean_raw.npy").shape == (66,)
     assert np.load(assets / "Std_raw.npy").shape == (66,)
+
+
+def test_native_omnicontrol_trainer_backpropagates_with_hints():
+    from motius.trainers.omnicontrol import OmniControlTrainer
+
+    class Net(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.weight = torch.nn.Parameter(torch.tensor(0.5))
+        def forward(self, motion, timesteps, y):
+            return motion * self.weight
+
+    class Bundle(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.net = Net()
+            self.config = {'diffusion_steps': 1000}
+            self.register_buffer('mean', torch.zeros(263))
+            self.register_buffer('std', torch.ones(263))
+            self.register_buffer('raw_mean', torch.zeros(66))
+            self.register_buffer('raw_std', torch.ones(66))
+        @property
+        def device(self):
+            return self.net.weight.device
+
+    bundle = Bundle()
+    trainer = OmniControlTrainer(bundle)
+    hint = torch.zeros(2, 8, 66)
+    hint[:, 0, :3] = 0.1
+    out = trainer.train_step(dict(motion=torch.randn(2, 8, 263), motion_lens=[8, 6],
+        conditions={'text_tokens': torch.zeros(2, 77, dtype=torch.long)},
+        hint=hint, timesteps=[20, 40]))
+    out['loss'].backward()
+    assert torch.isfinite(out['loss'])
+    assert bundle.net.weight.grad is not None
