@@ -13,3 +13,6 @@ motius/configuration/gem_smpl/body/*.pt -filter -diff -merge -text
 
 motius/configuration/kimodo/assets/**/*.STL -filter -diff -merge -text
 motius/configuration/motionbricks_assets/**/*.STL -filter -diff -merge -text
+
+# Small generated validation chart stored as a regular Git blob.
+docs/architecture/validation/flowhmr-fast-sam-20261026.png -filter -diff -merge -text

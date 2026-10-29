@@ -1,0 +1,208 @@
+{
+  "date": "2026-10-23",
+  "platform": "Linux x86_64",
+  "blender": "4.5.3 LTS",
+  "complete": true,
+  "scope": "Continuous real Blender UI operation, fresh cached-frontend CPU FlowHMR sampling, actual SMPL-H surfaces, real skinned Mixamo retargeting, contact grounding, full timeline playback, FBX export and editable scene save.",
+  "input": {
+    "file": "user supplied db2f40b8c3d96f2a00fe4d033a2d78c9_raw.mp4",
+    "sha256": "8f9e9c1193163940eafb512e9a0621a31fe316406e7a69aa3a357f6deceb17f1",
+    "frames": 750,
+    "fps": 30
+  },
+  "recording": {
+    "file": "assets/model_zoo/flowhmr/blender_demo/motius-flowhmr-blender-workflow-1080p.mp4",
+    "sha256": "6eb2455c1025b976f53146b3efc82e9064a5964b471042c94b9d5fe22e8fb98e",
+    "seconds": 211.533333,
+    "resolution": [
+      1920,
+      1080
+    ],
+    "fps": 30,
+    "screen_frames": 6346,
+    "capture": "ffmpeg x11grab, pointer included",
+    "continuous": true,
+    "video_compositing": false,
+    "removed_waits": false,
+    "viewport_sync": "FRAME_DROP",
+    "events": [
+      {
+        "seconds": 0.81,
+        "step": "Select the supplied video"
+      },
+      {
+        "seconds": 7.49,
+        "step": "Preview input and select Accelerated mode"
+      },
+      {
+        "seconds": 11.08,
+        "step": "Enable verified frontend reuse; neural sampling runs again"
+      },
+      {
+        "seconds": 12.55,
+        "step": "Generate Motion: actual CPU inference"
+      },
+      {
+        "seconds": 95.98,
+        "step": "Inspect the actual FlowHMR reconstruction"
+      },
+      {
+        "seconds": 102.58,
+        "step": "Choose Mixamo destination and import the character FBX"
+      },
+      {
+        "seconds": 113.9,
+        "step": "Retarget Loaded Motion: bake body and hands"
+      },
+      {
+        "seconds": 127.27,
+        "step": "Ground & Plant Feet: support detection, IK and mesh validation"
+      },
+      {
+        "seconds": 153.71,
+        "step": "Compare Raw and Grounded actions"
+      },
+      {
+        "seconds": 167.35,
+        "step": "Play the complete 750-frame grounded motion with synchronized video"
+      },
+      {
+        "seconds": 195.93,
+        "step": "Export the grounded animated FBX"
+      },
+      {
+        "seconds": 203.46,
+        "step": "Save the editable Blender scene"
+      },
+      {
+        "seconds": 211.47,
+        "step": "Workflow complete"
+      }
+    ]
+  },
+  "inference": {
+    "kind": "inference",
+    "project_root": "<local path>",
+    "output_dir": "<local path>",
+    "body_model": "<local path>",
+    "cache_dir": "<local path>",
+    "video": "<local path>",
+    "checkpoint": "ZeyuLing/Motius-FlowHMR-Latest",
+    "mode": "LIGHTWEIGHT",
+    "device": "cpu",
+    "seed": 0,
+    "max_frames": 0,
+    "camera_interval": 100,
+    "query_chunk_size": 256,
+    "postprocess": false,
+    "surface": true,
+    "preprocessing_cache": "<local path>",
+    "offline": true,
+    "status": {
+      "state": "completed",
+      "message": "Ready: 750 frames at 30 fps",
+      "motion_file": "<local path>",
+      "frames": 750,
+      "fps": 30,
+      "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+      "inference_settings": {
+        "lightweight": true,
+        "attention_query_chunk_size": 256,
+        "full_hand_features": true,
+        "camera_frame_interval": 100,
+        "camera_subsampled": true
+      }
+    },
+    "note": "Preprocessing is explicitly reused after video, frontend file, mode and weight SHA verification. Actual 20-step neural motion sampling and all 750 surfaces are freshly computed; this is not an uncached performance benchmark."
+  },
+  "grounding": {
+    "estimated_original_floor": -0.005839858571127154,
+    "ik_max_residual_m": 1.8343894894033213e-15,
+    "frames": 750,
+    "floor_height": 0.0,
+    "raw_action": "FlowHMR_20261023-155316-04f73239.001",
+    "grounded_action": "FlowHMR_20261023-155316-04f73239.001 \u00b7 Grounded",
+    "support_sole_before_abs_mean_m": 0.03356592940897544,
+    "support_sole_after_abs_mean_m": 1.1256191406731854e-07,
+    "support_sole_after_abs_max_m": 4.3106350752635206e-07,
+    "fully_planted_foot_frames": 868,
+    "support_xy_anchor_after_mean_m": 4.121635391513023e-07,
+    "support_xy_anchor_before_mean_m": 0.1025828321866803,
+    "whole_mesh_min_z_m": -4.3106350752635206e-07,
+    "verified_flight_frames": 14,
+    "flight_peak_before_m": 0.5731632290496257,
+    "flight_peak_after_m": 0.52725264688685,
+    "frames_without_detected_support": 129
+  },
+  "delivery": {
+    "scene_reopened": true,
+    "raw_action_preserved": true,
+    "grounded_action_restored": true,
+    "raw_surface_max_error_m": 0.0,
+    "fbx_import_frame_range": [
+      1.0,
+      750.0
+    ],
+    "fbx_world_joint_error_m": 1.430511474609375e-06,
+    "fbx_mesh_minimum_error_m": 4.595486715382874e-07,
+    "checked_frames": [
+      1,
+      151,
+      260,
+      300,
+      363,
+      450,
+      675,
+      750
+    ],
+    "relative_video": "//input.mp4",
+    "input_sha256": "8f9e9c1193163940eafb512e9a0621a31fe316406e7a69aa3a357f6deceb17f1"
+  },
+  "packages": [
+    {
+      "file": "motius-flowhmr-0.1.0-standard.zip",
+      "default_mode": "STANDARD",
+      "bytes": 43986,
+      "sha256": "bc9dedc8219062c60688999939e784274f75716075a6a235b6a7e1d343dbf956"
+    },
+    {
+      "file": "motius-flowhmr-0.1.0-accelerated.zip",
+      "default_mode": "LIGHTWEIGHT",
+      "bytes": 43986,
+      "sha256": "02ba42d9f2c5740af5e65ea9da9753ff22ac7a8f9c68eb7581a652820e9a41cf"
+    }
+  ],
+  "checks": {
+    "unit_tests": "17 passed",
+    "real_blender_bulk_smoke": "750 frames: native FK/rotation, Mixamo rest basis, original bone lengths, rotated/scaled objects and FBX round trip passed",
+    "final_packages": "Both actual ZIPs validated and installed in independent Blender profiles, both defaults and extension namespace verified, grounding operators/load restoration registered, no Torch in Blender",
+    "grounding_scope": "All 750 skinned character frames checked; detected supports are heuristic. FBX round-trip geometry checked at the eight frames listed in delivery.",
+    "gpu": "No new GPU allocation or GPU execution for this task"
+  },
+  "character": {
+    "source": "https://github.com/mrdoob/three.js/blob/dev/examples/models/fbx/Samba%20Dancing.fbx",
+    "credit": "Mixamo / three.js example",
+    "import_original_animation": false,
+    "body_vertices": 17336,
+    "joint_shell_vertices": 10514,
+    "mapped_joints": 52
+  },
+  "limitations": [
+    "Grounding assumes an editable standard Mixamo rig with skinned foot/toe groups; contact detection may need review on unusual characters or deliberate slides.",
+    "The original raw FlowHMR capture and retarget Action are preserved. Grounding changes the Mixamo animation.",
+    "Screen capture has no added soundtrack or rendered presentation plates.",
+    "Body-model source assets and inference weights are excluded from extension ZIPs."
+  ],
+  "source_sha256": {
+    "blender_extension/motius_flowhmr/__init__.py": "aaa024ea5c96907bcca8d9d318c4848bb684d327959c82fe7f68a95328845a24",
+    "blender_extension/motius_flowhmr/animation.py": "ac3bec358738fa1ef1f89c64634ee7f3f39e96815874e1ab7152da3fc2fb5173",
+    "blender_extension/motius_flowhmr/defaults.py": "faa579ed6fceba1ce6d6f5b5102bc28edc9e1bc5ae9eb8f26f95be1c65122159",
+    "blender_extension/motius_flowhmr/grounding.py": "6b699b35146632351c052ed61ef9a88e3ec37328d53dc24817c85ed7701397d6",
+    "blender_extension/motius_flowhmr/grounding_math.py": "21c5315685463351356160b507834b88ab172846ba6d659beedbae618ca366dc",
+    "blender_extension/motius_flowhmr/jobs.py": "f468826a5310602c8e668445b0b534971499c5dad9e4347b87d483e7325abb63",
+    "blender_extension/motius_flowhmr/motion_data.py": "aac097653a2b6d1a371a0e4328d3bdf1d04239da78194f813f1d9266a77afb0d",
+    "blender_extension/motius_flowhmr/preprocessing_cache.py": "fc61f4be607c3d73edfad320a4a06d95967f0e286ebb63437c31daffe01af99a",
+    "blender_extension/motius_flowhmr/ui.py": "95151632043b3b48120230b08de19e3a3ad84554a475f3a1cd1a7f6ae64c2eda",
+    "blender_extension/motius_flowhmr/worker.py": "a183484fed1f59609e7f1cfee430b3731564fb9d7997fb68635b13136a6b5c40"
+  }
+}

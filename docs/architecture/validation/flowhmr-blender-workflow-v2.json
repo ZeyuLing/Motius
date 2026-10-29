@@ -1,0 +1,133 @@
+{
+  "date": "2026-10-23",
+  "blender": "4.5.3 LTS",
+  "extension_version": "0.2.0",
+  "input_sha256": "8f9e9c1193163940eafb512e9a0621a31fe316406e7a69aa3a357f6deceb17f1",
+  "recording": {
+    "file": "assets/model_zoo/flowhmr/blender_demo/motius-flowhmr-blender-workflow-v2-1080p.mp4",
+    "sha256": "e896f7ad2a8086c14aff50dcfe1d50c52b9365bc7d3f0227064de631c3c6c338",
+    "width": 1920,
+    "height": 1080,
+    "screen_capture_fps": 30,
+    "duration_seconds": 241.3,
+    "continuous_actual_ui": true,
+    "edits_or_speed_changes": false,
+    "audio": false,
+    "detector_precomputed": true,
+    "frontend_cache_reused": true,
+    "fresh_neural_sampling": true,
+    "device": "CPU; Mesa software graphics",
+    "events": [
+      {
+        "seconds": 1.08,
+        "step": "Review actual detector results; click the intended person"
+      },
+      {
+        "seconds": 9.69,
+        "step": "Generate motion; verified frontends reused, sampling executes again"
+      },
+      {
+        "seconds": 12.78,
+        "step": "Import three different characters while motion is computed"
+      },
+      {
+        "seconds": 48.2,
+        "step": "Characters prepared; live sampling progress remains visible"
+      },
+      {
+        "seconds": 82.92,
+        "step": "Fresh native FlowHMR reconstruction imported"
+      },
+      {
+        "seconds": 129.73,
+        "step": "Three individually grounded characters ready"
+      },
+      {
+        "seconds": 238.2,
+        "step": "Every frame presented in both viewports: 750 / 750"
+      }
+    ]
+  },
+  "playback": {
+    "frames": 750,
+    "evaluated_exactly_1_through_750": true,
+    "character_draws_exactly_1_through_750": true,
+    "source_draws_exactly_1_through_750": true,
+    "seconds": 108.05422977730632,
+    "real_time": false,
+    "animation_fps": 30
+  },
+  "fresh_sampling_max_abs_difference": {
+    "joints_world": 0.0,
+    "global_rotations": 0.0,
+    "rest_joints": 0.0
+  },
+  "characters": {
+    "Michelle": {
+      "frames": 750,
+      "support_sole_after_abs_mean_m": 7.408749802281241e-05,
+      "support_xy_anchor_after_mean_m": 0.0007406065962080539,
+      "verified_flight_frames": 17,
+      "flight_peak_after_m": 0.5544172930641539,
+      "minimum_skinned_vertex_z_after_arrangement_m": -0.0006150560985268738
+    },
+    "Xbot": {
+      "frames": 750,
+      "support_sole_after_abs_mean_m": 2.0129215303084044e-07,
+      "support_xy_anchor_after_mean_m": 1.0778251880186015e-06,
+      "verified_flight_frames": 23,
+      "flight_peak_after_m": 0.5824729026301299,
+      "minimum_skinned_vertex_z_after_arrangement_m": -1.8101930213676454e-06
+    },
+    "Y-Bot": {
+      "frames": 750,
+      "support_sole_after_abs_mean_m": 1.1136651596142759e-07,
+      "support_xy_anchor_after_mean_m": 2.78355412857445e-07,
+      "verified_flight_frames": 14,
+      "flight_peak_after_m": 0.5272524942989686,
+      "minimum_skinned_vertex_z_after_arrangement_m": -4.5894697348857876e-07
+    }
+  },
+  "selected_cache_association": {
+    "minimum_iou": 0.9437375068664551,
+    "mean_iou": 0.9942773580551147,
+    "exact_feature_boxes_preserved": true
+  },
+  "multiperson": {
+    "fixture": "Two temporal offsets of supplied video, composited only as an explicit detector test; not demo footage",
+    "frames": 30,
+    "detected_ids": [
+      1,
+      2
+    ],
+    "selected_left": 1,
+    "selected_right": 2,
+    "selection_bound_to_expected_half": true
+  },
+  "tests": {
+    "passed": 56,
+    "skipped": 1,
+    "portable_scene_opened_with_installed_extension": true,
+    "raw_view_isolates_cast_and_restores_visibility": true,
+    "both_packages_installed": true
+  },
+  "packages": [
+    {
+      "file": "motius-flowhmr-0.2.0-standard.zip",
+      "default_mode": "STANDARD",
+      "bytes": 54741,
+      "sha256": "81805e2f75180239ed7ee4bc09932c7938cc1f295757305efd63044c3d034fb3"
+    },
+    {
+      "file": "motius-flowhmr-0.2.0-accelerated.zip",
+      "default_mode": "LIGHTWEIGHT",
+      "bytes": 54741,
+      "sha256": "b67815f7e985297c6aae96e317eda22683f702382d455a147d07382093a69e11"
+    }
+  ],
+  "limitations": [
+    "Software graphics slows playback; this is not a real-time promotional-speed or cold-start GPU benchmark.",
+    "Two-person detector fixture is synthetic; arbitrary real crossings/occlusions are not validated.",
+    "Grounding is a contact heuristic; floor error measured on these three actual characters and this supplied video."
+  ]
+}

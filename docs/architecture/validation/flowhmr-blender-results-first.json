@@ -1,0 +1,117 @@
+{
+  "video": "<local path>",
+  "playback_visible_range": [
+    2.0,
+    27.0
+  ],
+  "timeline": [
+    {
+      "shot": "hook",
+      "source": "<local path>",
+      "source_start": 6.0,
+      "source_end": 13.0,
+      "crop": null,
+      "final_start": 0,
+      "final_end": 7.0
+    },
+    {
+      "shot": "video",
+      "source": "<local path>",
+      "source_start": 1.2,
+      "source_end": 4.12,
+      "crop": "960:540:960:80",
+      "final_start": 7.0,
+      "final_end": 9.920000000000002
+    },
+    {
+      "shot": "person",
+      "source": "<local path>",
+      "source_start": 4.12,
+      "source_end": 7.1,
+      "crop": null,
+      "final_start": 9.92,
+      "final_end": 12.899999999999999
+    },
+    {
+      "shot": "confirm",
+      "source": "<local path>",
+      "source_start": 11.3,
+      "source_end": 12.76,
+      "crop": null,
+      "final_start": 12.899999999999999,
+      "final_end": 14.359999999999996
+    },
+    {
+      "shot": "generate",
+      "source": "<local path>",
+      "source_start": 12.5,
+      "source_end": 15.7,
+      "crop": "960:540:960:80",
+      "final_start": 14.359999999999998,
+      "final_end": 17.559999999999995
+    },
+    {
+      "shot": "characters",
+      "source": "<local path>",
+      "source_start": 16.1,
+      "source_end": 25.4,
+      "crop": null,
+      "final_start": 17.559999999999995,
+      "final_end": 26.859999999999992
+    },
+    {
+      "shot": "raw",
+      "source": "<local path>",
+      "source_start": 100.8,
+      "source_end": 104.5,
+      "crop": null,
+      "final_start": 26.859999999999992,
+      "final_end": 30.559999999999988
+    },
+    {
+      "shot": "ground",
+      "source": "<local path>",
+      "source_start": 104.0,
+      "source_end": 107.8,
+      "crop": "960:540:960:250",
+      "final_start": 30.559999999999995,
+      "final_end": 34.359999999999985
+    },
+    {
+      "shot": "ready",
+      "source": "<local path>",
+      "source_start": 141.0,
+      "source_end": 145.7,
+      "crop": "960:540:960:250",
+      "final_start": 34.35999999999999,
+      "final_end": 39.059999999999974
+    },
+    {
+      "shot": "performance",
+      "source": "<local path>",
+      "source_start": 2.0,
+      "source_end": 27.0,
+      "crop": null,
+      "final_start": 39.05999999999998,
+      "final_end": 64.05999999999997
+    }
+  ],
+  "changes": [
+    "Result-first hook with no sidebar",
+    "One operation per shot; real UI close-ups",
+    "Full unobscured original-speed finale",
+    "Waiting explicitly omitted; no retiming"
+  ],
+  "duration_seconds": 64.066667,
+  "finale_optical_check": {
+    "method": "Read the actual visible source frame counter from every encoded screen frame using connected glyphs and digit templates learned from counters 1\u201310.",
+    "encoded_frames": 1500,
+    "source_frames_seen": 750,
+    "exact_sequence_1_through_750": true,
+    "minimum_screen_frames_per_source_frame": 1,
+    "maximum_glyph_pixel_mismatch": 8
+  },
+  "result_shots_have_no_plugin_sidebar": true,
+  "procedure_shots_are_real_ui_closeups": true,
+  "sha256": "77148197cea30765e0b51210bd273b000729791d305793f0139a319fe29c80a0"
+}

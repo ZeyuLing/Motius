@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-23",
+  "extension_version": "0.2.1",
+  "blender": "4.5.3 LTS",
+  "playback_mode": "Cached Blender viewport and source preview; editable scene restored afterward",
+  "target_fps": 30,
+  "frames": 750,
+  "expected_seconds": 25,
+  "measured_seconds": 25.00006024353206,
+  "stage_frames_exactly_1_to_750": true,
+  "source_frames_exactly_1_to_750": true,
+  "screen_recording_optical_check": {
+    "method": "Read the actual visible source frame counter from every encoded screen frame using connected glyphs and digit templates learned from counters 1\u201310.",
+    "encoded_frames": 1749,
+    "source_frames_seen": 750,
+    "exact_sequence_1_through_750": true,
+    "minimum_screen_frames_per_source_frame": 1,
+    "maximum_glyph_pixel_mismatch": 3
+  },
+  "recording": {
+    "file": "assets/model_zoo/flowhmr/blender_demo/motius-flowhmr-blender-original-speed-1080p.mp4",
+    "sha256": "be6e965b370fd10fd1de2a4acc0c2869b6c62c793ed1d7339c3fa393405040f2",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration_seconds": 29.15,
+    "original_time_unedited": true,
+    "cache_prepared_before_recording": true,
+    "audio": false
+  },
+  "environment": {
+    "renderer": "Mesa software graphics",
+    "vblank_mode": 0,
+    "LP_NUM_THREADS": 12,
+    "cpu_affinity": "0-15"
+  },
+  "tests": {
+    "addon_unit_tests_passed": 21,
+    "both_variants_installed": true,
+    "repeated_subject_marker_review": true,
+    "cache_key_changes_on_visibility_and_raw_view": true
+  },
+  "packages": [
+    {
+      "file": "motius-flowhmr-0.2.1-standard.zip",
+      "default_mode": "STANDARD",
+      "bytes": 58967,
+      "sha256": "4459728aea00e3418d8521821059e3a2987fd0a0aff01f12ec58379a89722a12"
+    },
+    {
+      "file": "motius-flowhmr-0.2.1-accelerated.zip",
+      "default_mode": "LIGHTWEIGHT",
+      "bytes": 58967,
+      "sha256": "3e30c408825112ba50627f8398de3ee6c5a56ce0a0ea701eea6c1c0104266e6e"
+    }
+  ],
+  "limits": [
+    "GPU viewport cache is session-local, estimated at no more than 3 GiB; stage/source display widths capped at 960/640 pixels.",
+    "If original rate cannot be sustained, playback stops explicitly rather than slowing or dropping frames.",
+    "Recorded source frame counter is checked in all 1749 encoded screen frames, in addition to draw acknowledgments."
+  ]
+}

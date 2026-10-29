@@ -1,0 +1,680 @@
+{
+  "date": "2026-10-26",
+  "gpu": "NVIDIA H200",
+  "torch": "2.6.0a0+ecf3bae40a.nv25.01",
+  "cpu_threads": 4,
+  "input_video_sha256": "8f9e9c1193163940eafb512e9a0621a31fe316406e7a69aa3a357f6deceb17f1",
+  "input_video": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "frames": 750
+  },
+  "checkpoint_revision": "656891b58d0ce607c23db63efaec2cf73e15185c",
+  "frontend_revision": "e77d64daaf23a030d6908c843b2f4e36888097b3",
+  "gpu_task": {
+    "name": "zeyuling-zeyuling-m2m-repair-web-1g-1023",
+    "uuid": "2b6d0fea-dec3-41e1-b102-7584be312993",
+    "cluster": "tenc-gkegpu01",
+    "namespace": "motion"
+  },
+  "conditions": {
+    "process_cold": true,
+    "filesystem_cache": "warmed",
+    "model_reuse": false,
+    "feature_cache": false,
+    "motion_tf32": false,
+    "motion_dtype": "float32",
+    "frontend_precision": "released BF16/FP32 policy",
+    "sampling": "20 Euler steps, seed 0, CFG 1",
+    "camera_interval": 1,
+    "postprocess": false,
+    "resident_service": "Idle service retained approximately 1546 MiB; never stopped. Own benchmark yielded on new CUDA PIDs or resident CPU activity above 25%.",
+    "timing_excludes": "Blender import, mesh surface, retargeting, grounding, playback preparation; process_seconds additionally includes Python/Torch/module imports."
+  },
+  "cases": {
+    "30": {
+      "complete": true,
+      "profiles": [
+        {
+          "variant": "lightweight-prior",
+          "frames": 30,
+          "model_loading_seconds": 4.370060217566788,
+          "total_seconds": 43.59828215185553,
+          "process_seconds": 46.06579381600022,
+          "stages": [
+            {
+              "stage": "transcode",
+              "seconds": 0.6165982205420732,
+              "completed": true,
+              "allocated_bytes": 0,
+              "reserved_bytes": 0,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "tracking",
+              "seconds": 1.4390715956687927,
+              "completed": true,
+              "allocated_bytes": 219416064,
+              "reserved_bytes": 346030080,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "camera",
+              "seconds": 13.512237845920026,
+              "completed": true,
+              "allocated_bytes": 33554432,
+              "reserved_bytes": 56623104,
+              "cumulative_peak_allocated_bytes": 7766730240
+            },
+            {
+              "stage": "features",
+              "seconds": 21.05607294011861,
+              "completed": true,
+              "allocated_bytes": 3569515008,
+              "reserved_bytes": 3896508416,
+              "cumulative_peak_allocated_bytes": 7766730240
+            },
+            {
+              "stage": "sampling_and_decode",
+              "seconds": 0.8542752284556627,
+              "completed": true,
+              "allocated_bytes": 1968187392,
+              "reserved_bytes": 2019557376,
+              "cumulative_peak_allocated_bytes": 7766730240
+            }
+          ],
+          "gpu": "NVIDIA H200",
+          "peak_allocated_bytes": 7766730240,
+          "peak_reserved_bytes": 7868514304,
+          "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+          "seed": 0,
+          "camera_interval": 1,
+          "frontends_reused": false,
+          "postprocess": false
+        },
+        {
+          "variant": "lightweight-optimized",
+          "frames": 30,
+          "model_loading_seconds": 2.1530866911634803,
+          "total_seconds": 25.716220535337925,
+          "process_seconds": 28.104055795818567,
+          "stages": [
+            {
+              "stage": "transcode",
+              "seconds": 0.5539746396243572,
+              "completed": true,
+              "allocated_bytes": 0,
+              "reserved_bytes": 0,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "tracking",
+              "seconds": 1.3040899131447077,
+              "completed": true,
+              "allocated_bytes": 219416064,
+              "reserved_bytes": 346030080,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "camera",
+              "seconds": 4.664780453778803,
+              "completed": true,
+              "allocated_bytes": 33554432,
+              "reserved_bytes": 56623104,
+              "cumulative_peak_allocated_bytes": 7330760192
+            },
+            {
+              "stage": "features",
+              "seconds": 14.556332224048674,
+              "completed": true,
+              "allocated_bytes": 3569515008,
+              "reserved_bytes": 3896508416,
+              "cumulative_peak_allocated_bytes": 7330760192
+            },
+            {
+              "stage": "sampling_and_decode",
+              "seconds": 0.7813544645905495,
+              "completed": true,
+              "allocated_bytes": 1968187392,
+              "reserved_bytes": 2019557376,
+              "cumulative_peak_allocated_bytes": 7330760192
+            }
+          ],
+          "gpu": "NVIDIA H200",
+          "peak_allocated_bytes": 7330760192,
+          "peak_reserved_bytes": 7497318400,
+          "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+          "seed": 0,
+          "camera_interval": 1,
+          "frontends_reused": false,
+          "postprocess": false
+        },
+        {
+          "variant": "lightweight-optimized",
+          "frames": 30,
+          "model_loading_seconds": 2.2409474877640605,
+          "total_seconds": 25.739924878813326,
+          "process_seconds": 28.284360251389444,
+          "stages": [
+            {
+              "stage": "transcode",
+              "seconds": 0.5743683874607086,
+              "completed": true,
+              "allocated_bytes": 0,
+              "reserved_bytes": 0,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "tracking",
+              "seconds": 1.2825547819957137,
+              "completed": true,
+              "allocated_bytes": 219416064,
+              "reserved_bytes": 346030080,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "camera",
+              "seconds": 4.50717331469059,
+              "completed": true,
+              "allocated_bytes": 33554432,
+              "reserved_bytes": 56623104,
+              "cumulative_peak_allocated_bytes": 7330760192
+            },
+            {
+              "stage": "features",
+              "seconds": 14.651849741116166,
+              "completed": true,
+              "allocated_bytes": 3569515008,
+              "reserved_bytes": 3896508416,
+              "cumulative_peak_allocated_bytes": 7330760192
+            },
+            {
+              "stage": "sampling_and_decode",
+              "seconds": 0.7696079649031162,
+              "completed": true,
+              "allocated_bytes": 1968187392,
+              "reserved_bytes": 2019557376,
+              "cumulative_peak_allocated_bytes": 7330760192
+            }
+          ],
+          "gpu": "NVIDIA H200",
+          "peak_allocated_bytes": 7330760192,
+          "peak_reserved_bytes": 7497318400,
+          "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+          "seed": 0,
+          "camera_interval": 1,
+          "frontends_reused": false,
+          "postprocess": false
+        },
+        {
+          "variant": "lightweight-prior",
+          "frames": 30,
+          "model_loading_seconds": 4.333624971099198,
+          "total_seconds": 43.93689353391528,
+          "process_seconds": 46.21954367496073,
+          "stages": [
+            {
+              "stage": "transcode",
+              "seconds": 0.5977364527061582,
+              "completed": true,
+              "allocated_bytes": 0,
+              "reserved_bytes": 0,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "tracking",
+              "seconds": 1.3826352851465344,
+              "completed": true,
+              "allocated_bytes": 219416064,
+              "reserved_bytes": 346030080,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "camera",
+              "seconds": 13.74192432872951,
+              "completed": true,
+              "allocated_bytes": 33554432,
+              "reserved_bytes": 56623104,
+              "cumulative_peak_allocated_bytes": 7766730240
+            },
+            {
+              "stage": "features",
+              "seconds": 21.19867929816246,
+              "completed": true,
+              "allocated_bytes": 3569515008,
+              "reserved_bytes": 3896508416,
+              "cumulative_peak_allocated_bytes": 7766730240
+            },
+            {
+              "stage": "sampling_and_decode",
+              "seconds": 0.8679682752117515,
+              "completed": true,
+              "allocated_bytes": 1968187392,
+              "reserved_bytes": 2019557376,
+              "cumulative_peak_allocated_bytes": 7766730240
+            }
+          ],
+          "gpu": "NVIDIA H200",
+          "peak_allocated_bytes": 7766730240,
+          "peak_reserved_bytes": 7868514304,
+          "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+          "seed": 0,
+          "camera_interval": 1,
+          "frontends_reused": false,
+          "postprocess": false
+        }
+      ],
+      "parity": {
+        "0-lightweight-prior": {
+          "max_rotation_degrees": 2.4148365394514667e-06,
+          "max_joint_displacement_mm": 0.0,
+          "arrays": {
+            "rot6d": 0.0,
+            "joints": 0.0
+          },
+          "conditioning_max_abs": {
+            "feature": 0.0,
+            "camera_RT": 0.0
+          }
+        },
+        "1-lightweight-optimized": {
+          "max_rotation_degrees": 0.24550390665245864,
+          "max_joint_displacement_mm": 0.22056778834667057,
+          "arrays": {
+            "rot6d": 0.003990530967712402,
+            "joints": 0.00019158422946929932
+          },
+          "conditioning_max_abs": {
+            "feature": 0.048908621072769165,
+            "camera_RT": 0.0
+          }
+        },
+        "2-lightweight-optimized": {
+          "max_rotation_degrees": 0.14914871466483542,
+          "max_joint_displacement_mm": 0.15125161735340953,
+          "arrays": {
+            "rot6d": 0.00234907865524292,
+            "joints": 0.00012952089309692383
+          },
+          "conditioning_max_abs": {
+            "feature": 0.048908621072769165,
+            "camera_RT": 0.0
+          }
+        },
+        "3-lightweight-prior": {
+          "max_rotation_degrees": 0.1617856691120102,
+          "max_joint_displacement_mm": 0.20463357213884592,
+          "arrays": {
+            "rot6d": 0.002384096384048462,
+            "joints": 0.00016103684902191162
+          },
+          "conditioning_max_abs": {
+            "feature": 0.048908621072769165,
+            "camera_RT": 0.0
+          }
+        }
+      }
+    },
+    "120": {
+      "complete": true,
+      "profiles": [
+        {
+          "variant": "lightweight-prior",
+          "frames": 120,
+          "model_loading_seconds": 4.496339298784733,
+          "total_seconds": 80.55710522923619,
+          "process_seconds": 83.04031483829021,
+          "stages": [
+            {
+              "stage": "transcode",
+              "seconds": 0.7763564176857471,
+              "completed": true,
+              "allocated_bytes": 0,
+              "reserved_bytes": 0,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "tracking",
+              "seconds": 2.367287131026387,
+              "completed": true,
+              "allocated_bytes": 219416064,
+              "reserved_bytes": 346030080,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "camera",
+              "seconds": 16.51039666775614,
+              "completed": true,
+              "allocated_bytes": 33554432,
+              "reserved_bytes": 144703488,
+              "cumulative_peak_allocated_bytes": 11885532672
+            },
+            {
+              "stage": "features",
+              "seconds": 53.6592354150489,
+              "completed": true,
+              "allocated_bytes": 3568810496,
+              "reserved_bytes": 3911188480,
+              "cumulative_peak_allocated_bytes": 11885532672
+            },
+            {
+              "stage": "sampling_and_decode",
+              "seconds": 0.8659927733242512,
+              "completed": true,
+              "allocated_bytes": 1968187392,
+              "reserved_bytes": 2063597568,
+              "cumulative_peak_allocated_bytes": 11885532672
+            }
+          ],
+          "gpu": "NVIDIA H200",
+          "peak_allocated_bytes": 11885532672,
+          "peak_reserved_bytes": 13765705728,
+          "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+          "seed": 0,
+          "camera_interval": 1,
+          "frontends_reused": false,
+          "postprocess": false
+        },
+        {
+          "variant": "lightweight-optimized",
+          "frames": 120,
+          "model_loading_seconds": 2.317914878949523,
+          "total_seconds": 60.16630101855844,
+          "process_seconds": 62.67657110095024,
+          "stages": [
+            {
+              "stage": "transcode",
+              "seconds": 0.8005050485953689,
+              "completed": true,
+              "allocated_bytes": 0,
+              "reserved_bytes": 0,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "tracking",
+              "seconds": 2.3284438643604517,
+              "completed": true,
+              "allocated_bytes": 219416064,
+              "reserved_bytes": 346030080,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "camera",
+              "seconds": 7.485427071340382,
+              "completed": true,
+              "allocated_bytes": 33554432,
+              "reserved_bytes": 144703488,
+              "cumulative_peak_allocated_bytes": 10136507904
+            },
+            {
+              "stage": "features",
+              "seconds": 44.56391030922532,
+              "completed": true,
+              "allocated_bytes": 3568810496,
+              "reserved_bytes": 3911188480,
+              "cumulative_peak_allocated_bytes": 10136507904
+            },
+            {
+              "stage": "sampling_and_decode",
+              "seconds": 0.7772315144538879,
+              "completed": true,
+              "allocated_bytes": 1968187392,
+              "reserved_bytes": 2063597568,
+              "cumulative_peak_allocated_bytes": 10136507904
+            }
+          ],
+          "gpu": "NVIDIA H200",
+          "peak_allocated_bytes": 10136507904,
+          "peak_reserved_bytes": 12014583808,
+          "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+          "seed": 0,
+          "camera_interval": 1,
+          "frontends_reused": false,
+          "postprocess": false
+        }
+      ],
+      "parity": {
+        "0-lightweight-prior": {
+          "max_rotation_degrees": 2.4148365394514667e-06,
+          "max_joint_displacement_mm": 0.0,
+          "arrays": {
+            "rot6d": 0.0,
+            "joints": 0.0
+          },
+          "conditioning_max_abs": {
+            "feature": 0.0,
+            "camera_RT": 0.0
+          }
+        },
+        "1-lightweight-optimized": {
+          "max_rotation_degrees": 0.16760807253728846,
+          "max_joint_displacement_mm": 0.34318698453716934,
+          "arrays": {
+            "rot6d": 0.0023003369569778442,
+            "joints": 0.00032699108123779297
+          },
+          "conditioning_max_abs": {
+            "feature": 0.09591901302337646,
+            "camera_RT": 0.0
+          }
+        }
+      }
+    },
+    "750": {
+      "complete": true,
+      "profiles": [
+        {
+          "variant": "lightweight-optimized",
+          "frames": 750,
+          "model_loading_seconds": 2.2755104321986437,
+          "total_seconds": 365.88586331438273,
+          "process_seconds": 368.41678853612393,
+          "stages": [
+            {
+              "stage": "transcode",
+              "seconds": 1.9879090087488294,
+              "completed": true,
+              "allocated_bytes": 0,
+              "reserved_bytes": 0,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "tracking",
+              "seconds": 9.426028619520366,
+              "completed": true,
+              "allocated_bytes": 219416064,
+              "reserved_bytes": 346030080,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "camera",
+              "seconds": 69.77674445975572,
+              "completed": true,
+              "allocated_bytes": 33554432,
+              "reserved_bytes": 1329594368,
+              "cumulative_peak_allocated_bytes": 29850351104
+            },
+            {
+              "stage": "features",
+              "seconds": 278.9140161704272,
+              "completed": true,
+              "allocated_bytes": 3569175040,
+              "reserved_bytes": 3770679296,
+              "cumulative_peak_allocated_bytes": 29850351104
+            },
+            {
+              "stage": "sampling_and_decode",
+              "seconds": 1.6266343463212252,
+              "completed": true,
+              "allocated_bytes": 1965389824,
+              "reserved_bytes": 2256535552,
+              "cumulative_peak_allocated_bytes": 29850351104
+            }
+          ],
+          "gpu": "NVIDIA H200",
+          "peak_allocated_bytes": 29850351104,
+          "peak_reserved_bytes": 50778341376,
+          "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+          "seed": 0,
+          "camera_interval": 1,
+          "frontends_reused": false,
+          "postprocess": false
+        }
+      ],
+      "arrays": {
+        "rot6d": {
+          "shape": [
+            750,
+            52,
+            6
+          ],
+          "finite": true
+        },
+        "joints": {
+          "shape": [
+            750,
+            22,
+            3
+          ],
+          "finite": true
+        }
+      },
+      "conditioning": {
+        "feature": {
+          "shape": [
+            750,
+            3072
+          ],
+          "finite": true
+        },
+        "camera_RT": {
+          "shape": [
+            750,
+            4,
+            4
+          ],
+          "finite": true
+        }
+      }
+    },
+    "standard_optimized_30": {
+      "profiles": [
+        {
+          "variant": "standard-optimized",
+          "frames": 30,
+          "model_loading_seconds": 2.2327274847775698,
+          "total_seconds": 26.502431695349514,
+          "process_seconds": 28.992788358591497,
+          "stages": [
+            {
+              "stage": "transcode",
+              "seconds": 0.6399712953716516,
+              "completed": true,
+              "allocated_bytes": 1934632960,
+              "reserved_bytes": 1946157056,
+              "cumulative_peak_allocated_bytes": 1934632960
+            },
+            {
+              "stage": "tracking",
+              "seconds": 1.3487074924632907,
+              "completed": true,
+              "allocated_bytes": 2153074176,
+              "reserved_bytes": 2292187136,
+              "cumulative_peak_allocated_bytes": 2250788352
+            },
+            {
+              "stage": "camera",
+              "seconds": 4.620024276897311,
+              "completed": true,
+              "allocated_bytes": 6762920960,
+              "reserved_bytes": 9598664704,
+              "cumulative_peak_allocated_bytes": 9484129280
+            },
+            {
+              "stage": "features",
+              "seconds": 17.120985039509833,
+              "completed": true,
+              "allocated_bytes": 10294715392,
+              "reserved_bytes": 10955522048,
+              "cumulative_peak_allocated_bytes": 10417019392
+            },
+            {
+              "stage": "sampling_and_decode",
+              "seconds": 0.505714557133615,
+              "completed": true,
+              "allocated_bytes": 10294715392,
+              "reserved_bytes": 10955522048,
+              "cumulative_peak_allocated_bytes": 10417019392
+            }
+          ],
+          "gpu": "NVIDIA H200",
+          "peak_allocated_bytes": 10417019392,
+          "peak_reserved_bytes": 10955522048,
+          "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+          "seed": 0,
+          "camera_interval": 1,
+          "frontends_reused": false,
+          "postprocess": false
+        }
+      ],
+      "repeats": 1
+    }
+  },
+  "source_sha256": {
+    "motius/models/flowhmr/bundle.py": "60f4985ce17a6790bfca33e8a25836ae6733c048a360d0d52749524499b3bf85",
+    "motius/models/vision/vggt_omega/bundle.py": "4b33943bea0159d5bac955778f0906a26d7a028b0b7ccc00126283021e88fea1",
+    "motius/models/vision/vggt_omega/models/aggregator.py": "520bac99038fc6a867f3ecd20880630b3744025640cfd9b944d455dfa6c7a761",
+    "motius/models/vision/vggt_omega/models/vggt_omega.py": "9d0df65881a829bccb47d68df3ed794fbc43397afc4e8a06749914419240dea8",
+    "motius/models/vision/sam3d_body/bundle.py": "da78b1712c8be625789c3a15588abd18b8ef2a642dcaf0cbf5b79c89f3ab8527",
+    "motius/models/vision/sam3d_body/meta_arch/sam3d_body.py": "7e8962e259b4c1441f79351d5aa1facf2b175628ba4568551fff13f2ea8dcbd7",
+    "motius/pipelines/flowhmr/features.py": "5e0f9c2cd2b9307447aab3cafaa31fdc6dfe6c689b4d6f61490da4dd20569bba",
+    "motius/pipelines/flowhmr/sam/inference.py": "eb26d49bb3d4439eaa21f926cc873b37dd725c3e6ae542dd2025b920f16352d9",
+    "motius/pipelines/flowhmr/sam/sam_3d_body_estimator.py": "71d7a535ac03e5248c8a543c41795e82aac4b17cc62c104167eefa0e961267d9",
+    "motius/pipelines/flowhmr/pipeline.py": "8d72d48f0e207fe225e2bc3f4a097b341439d5e49595c15630d35229ab88e7bf",
+    "motius/pipelines/flowhmr/camera_estimation.py": "11686022027698f7b260845c0a363d0eff775c289a6ab7da62c891a670a262e8",
+    "motius/pipelines/flowhmr/profiling.py": "c140a328a92473b00dc3bcb2fb400d3fb2c533c6ea46bb88a2841157c79b5566",
+    "tools/profile_flowhmr_latency.py": "612deddd82ebe0e32df8fe4c27d2f170f3cbbae01ca0edf70d7c9fe0d5a6518f",
+    "tools/run_flowhmr_latency_suite.py": "a0e0ee8020ff70f19e348da1b1d8db07a4f101e7ba3f60fcd93d125d16dee1e9",
+    "blender_extension/motius_flowhmr/worker.py": "b4bbc0a85fb59c8e3e15eeefc6ba624e0942c40788357e9dcc964ed4a5bd581e"
+  },
+  "extension_packages": [
+    {
+      "file": "motius-flowhmr-0.2.2-standard.zip",
+      "default_mode": "STANDARD",
+      "bytes": 59530,
+      "sha256": "f163a9f4c5ebf010a45cce5cc57405a18792227237fbc55d874b1c208cdb7783"
+    },
+    {
+      "file": "motius-flowhmr-0.2.2-accelerated.zip",
+      "default_mode": "LIGHTWEIGHT",
+      "bytes": 59530,
+      "sha256": "7f0eef8fdbeb88129ff9dd51a1144bb8d64139a75fb0cdb5e5d7920bd81689d8"
+    }
+  ],
+  "benchmark_source_sha256": {
+    "motius/models/flowhmr/bundle.py": "60f4985ce17a6790bfca33e8a25836ae6733c048a360d0d52749524499b3bf85",
+    "motius/models/vision/vggt_omega/bundle.py": "4b33943bea0159d5bac955778f0906a26d7a028b0b7ccc00126283021e88fea1",
+    "motius/models/vision/vggt_omega/models/aggregator.py": "520bac99038fc6a867f3ecd20880630b3744025640cfd9b944d455dfa6c7a761",
+    "motius/models/vision/vggt_omega/models/vggt_omega.py": "9d0df65881a829bccb47d68df3ed794fbc43397afc4e8a06749914419240dea8",
+    "motius/models/vision/sam3d_body/bundle.py": "da78b1712c8be625789c3a15588abd18b8ef2a642dcaf0cbf5b79c89f3ab8527",
+    "motius/models/vision/sam3d_body/meta_arch/sam3d_body.py": "7e8962e259b4c1441f79351d5aa1facf2b175628ba4568551fff13f2ea8dcbd7",
+    "motius/pipelines/flowhmr/features.py": "5e0f9c2cd2b9307447aab3cafaa31fdc6dfe6c689b4d6f61490da4dd20569bba",
+    "motius/pipelines/flowhmr/sam/inference.py": "53f971af109a2a2992e2609c7897b7e0a6815c1e07ead84922d7c5afab87bd3b",
+    "motius/pipelines/flowhmr/sam/sam_3d_body_estimator.py": "71d7a535ac03e5248c8a543c41795e82aac4b17cc62c104167eefa0e961267d9",
+    "motius/pipelines/flowhmr/pipeline.py": "8d72d48f0e207fe225e2bc3f4a097b341439d5e49595c15630d35229ab88e7bf",
+    "motius/pipelines/flowhmr/camera_estimation.py": "11686022027698f7b260845c0a363d0eff775c289a6ab7da62c891a670a262e8",
+    "motius/pipelines/flowhmr/profiling.py": "c140a328a92473b00dc3bcb2fb400d3fb2c533c6ea46bb88a2841157c79b5566"
+  },
+  "cleanup": {
+    "remaining_benchmark_pids": [],
+    "gpu": "NVIDIA H200, 0 %, 1555 MiB\n",
+    "compute_apps": "3777361, /usr/bin/python3, 1546 MiB\n"
+  },
+  "validation": {
+    "regression": "61 passed, 1 skipped",
+    "worker_profile": "21 passed",
+    "updated_backend_guard": "2 passed",
+    "blender_extension_validate": "both 0.2.2 packages passed Blender 4.5.3 extension validate"
+  }
+}

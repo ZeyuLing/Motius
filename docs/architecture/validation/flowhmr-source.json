@@ -1,0 +1,240 @@
+{
+  "source_revision": "f12e6a2d46a63d771a66dbb6b5598a1be65b9eea",
+  "source_sha256": {
+    "flowhmr/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/core/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/core/bodymodels/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/core/bodymodels/fk_utils.py": "71a063a02ae2b889a7434cffd3da7db0a939d4d7743aa2a3f9bf7af1904bcf8f",
+    "flowhmr/core/bodymodels/lbs_function.py": "d53cde96f074cc3cd239eb1771e02bc3d552b87859eb893206fbc8d6a2366b5e",
+    "flowhmr/core/bodymodels/smpl_skeleton.py": "b5d70a2e1a56b12752dcb8bf7ac59facd55eb189c48a485cdcb7b1f8227dea3c",
+    "flowhmr/core/export/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/core/export/fbx_utils.py": "aedb611308518ca86a800fb573b78b35ea133a1ed5e09a17ff07d8174c938b36",
+    "flowhmr/core/export/smplh2fbx.py": "d897f6f6c8138d2b252599e8b601a3e72687e2a6e6af288ae3ffbb9e43415f26",
+    "flowhmr/core/framework/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/core/framework/base_trainer.py": "761ce0982730e9de38be4d91c35b08c0c2edd398cad1e11c4f0182e717c5a331",
+    "flowhmr/core/framework/fixed_length_sampler.py": "fe95dd17f318ee1963a31060d19f262a7a981f423bc64b320cc2ead716634e01",
+    "flowhmr/core/framework/loaders.py": "5ec01e61c59b5214c7a5b447c5e6f8d00b462d37fe4427308889ed6e71d1fc50",
+    "flowhmr/core/framework/misc.py": "40601447b9a298df384d6d23a4e338f39d791b27f57dd85b528c8fc418ce8c52",
+    "flowhmr/core/framework/net_utils.py": "80f49bdf7875724b9fe2e04fc1dfa38d780bde28a4378cd580ef72c6c02ce3e4",
+    "flowhmr/core/framework/type_converter.py": "034eb223d4fd67c358fe5f781f405d115c29e122735d1fd81d570d95bba7f704",
+    "flowhmr/core/math/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/core/math/geometry.py": "97089a49a06a775ea7f36fe175c9f9ef82794a9f28dc60dfdb8b8e01d56bace7",
+    "flowhmr/core/math/matrix.py": "252f2901b82cb14c756eb0f79d802e9cbe2601108c3b150a28d13b0f6a3f5ffe",
+    "flowhmr/core/math/quaternion.py": "98ad1e8261ab904a15538682c5e54cef6a15e9c6ba620ad4b2234303470522fc",
+    "flowhmr/core/math/rotation_converter.py": "8acc20a89603510c192b957f543192d5034f0eeb9173e876a8ccab93783ac81d",
+    "flowhmr/core/motion/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/core/motion/ccd_ik.py": "a62b4b7935cf3338c28bb93407c73b198548b574dd245cfd8cbd86d20ab2cd97",
+    "flowhmr/core/motion/ccd_ik_full.py": "ed026d2d8a667385a42f52448a6a5ee99d1f05d2a4d495645e53c22b78b96b7e",
+    "flowhmr/core/motion/matrix.py": "d937bb9bbe7d569430028e5d918e2f3819a0baafae68d2ab6ea5a1aa91aaea1d",
+    "flowhmr/core/motion/motion_process.py": "75c6d935f6acbb15e7684944f19338261cf3bcb5bffa60a1d292435b491f0b74",
+    "flowhmr/core/motion/motion_rep.py": "6cae3ce860aa35c0c6eafc80353ae79ca27b56985b480b90b8717e37e10dbf49",
+    "flowhmr/core/motion/postprocess.py": "34d4bf0bbc0e09e381e448c1692c6fb0607b6f93e66156d20e88ddb498b388cb",
+    "flowhmr/core/motion/quaternion.py": "0401379855f5ce0d483761b661c76d750e217f6f6ef20cf41628c952a2170416",
+    "flowhmr/core/motion/smooth_root.py": "8d4b68339e15691f196ca81d17aeb24c1ee4a88b8b040f78eb6e0ab3c8636fd2",
+    "flowhmr/core/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/core/utils/net_utils.py": "33437efbb3111b161284b5e88b8520119826fd2d5db0cdb67fdc517d61ecc845",
+    "flowhmr/core/visualization/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/core/visualization/visualize2d.py": "0975d7b61320c7a5bc3660f7204fc61336a3cf9beb55f97111c96ca09c647838",
+    "flowhmr/datasets/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/datasets/v2m_generation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/datasets/v2m_generation/base_dataset.py": "7643aee085e1967294f64b5eda20f3df9fe8afb9475db5eb10b2f4a595615461",
+    "flowhmr/datasets/v2m_generation/grpo_gt_dataset.py": "8ab8ad15daa04362708f91eaef452b767123de7c14196ef27f9b1b4197c3558e",
+    "flowhmr/datasets/v2m_generation/train_dataset.py": "e6e33601fd2c4827be6c9ffd67b7bffcbae58700184f54b0ff3562ffb5640c27",
+    "flowhmr/datasets/v2m_generation/train_dataset_raw.py": "b8ce1d6419e15d2fb736599539add1a5efc2cb11ca612c92895d51c404d13bac",
+    "flowhmr/evaluation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/evaluation/metrics.py": "45c11a062a3e16987a7d8b08c94fb0c71c00d793167c791e2665d17b36f02cf6",
+    "flowhmr/evaluation/vertex_ids.py": "69b59586b8a0690f8daed7e619143c2924435862dfa51b2ff6740875940ae71b",
+    "flowhmr/network/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/network/hymotion_mmdit_for_v2m.py": "129d109e858c394199b189266c243b7441d59f7c9ff8bde91aec93d940bb8b39",
+    "flowhmr/network/mmdit/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/network/mmdit/attention.py": "e50df424003ae0ada30c7fd1f53b2bbd8285f5c2e49e5f12d26ed3c6a6710fab",
+    "flowhmr/network/mmdit/bricks.py": "59653d35fd1aba546fda76dc25953deb93b082343528e12cf31ba9058cd94afe",
+    "flowhmr/network/mmdit/encoders.py": "363177b3ee4f78d9325165798d7b27023ba81f13539a4c3a86165230923cd424",
+    "flowhmr/network/mmdit/modulate_layers.py": "c5ccc6c8723ff7f75778dba2ffb49d5a3cfe23fce5829613ee8f6757cd468dbc",
+    "flowhmr/network/mmdit/positional_encoding.py": "639cbb2e9923af33e839be469704e151a0b85a7c57cd49b02fca612b589c9dc0",
+    "flowhmr/network/token_refiner.py": "40ca770aa626577c2a6846c95b6f3ba181df78089fec14626501266a0d19bff0",
+    "flowhmr/pipeline/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/pipeline/lbfgs.py": "b86357ea6a17271780aa9b7bb1e23480910bd8815854b03717f17eebce6548e4",
+    "flowhmr/pipeline/losses.py": "e066513de13a038d3c4367fa531acba061e7bdddd0fcddf12ed76e0e6134a5b9",
+    "flowhmr/pipeline/ode_solvers.py": "75f3f774c799d1f8e4024d164865be8b08eb38a6d4bcbadf38ef83d6c2b193a3",
+    "flowhmr/pipeline/pipeline_v2m.py": "1bd8fcc42e25e92a0e662c06e5833c3533949068b2b55d9c5512b148517b8a7e",
+    "flowhmr/pipeline/pipeline_v2m_simple.py": "53b0dda1c7207b97186960b8b5d86cf7ddf0e3a909b86e70077d7899394cf404",
+    "flowhmr/pipeline/utils.py": "035342f719adc9487f992fe4de629ffd840eb1b180815ac1563fad641d1c6aaa",
+    "flowhmr/pipeline/v2m_inference.py": "4cc037194802b27c383721416f4112fa7c4916d6c9e21f852e3ba9ede05a9e6e",
+    "flowhmr/reward_model/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/reward_model/mpjpe/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/reward_model/mpjpe/mpjpe_reward.py": "1962bd2bb0f408d913b193061989200bb61f549cef2206870bb707987124fa02",
+    "flowhmr/reward_model/simulation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/reward_model/simulation/phc_tracking_reward.py": "402b84d126f3c960d771bbd49fb8b6683f66cbda2c41470620580bb6017882ca",
+    "flowhmr/trainer/__init__.py": "c664e9191b317dccd43e4b832fb70936fb1856b76dedae63a0ab521fd68f0b5f",
+    "flowhmr/trainer/v2m_trainer.py": "321d6fd1d3cf12037ab8ce265a5f346a3bf563ad5bfa71b037b2453239dc0151",
+    "flowhmr/trainer/v2m_trainer_grpo.py": "ed5e13a7f6367fd6229ac32162cee938ed5f4b86ff9f1bc61e8284bcca9b7ccc",
+    "flowhmr/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "flowhmr/utils/grpo_states.py": "808d73076c281e23a86e83792b145c442e887157339333a2cca3f066d7c5b9fc",
+    "flowhmr/utils/motion_sde.py": "cee7707d6de96bd39c378fb40172cb6f6432f930fb3a87c3e0fd49daca128c2d",
+    "flowhmr/utils/postprocess_utils.py": "1c752ce0119f9489e5cd00a1244a9a3536a0729f6bd4dee3af83860d7565b79e",
+    "flowhmr/utils/runtime_sam_features.py": "0ed422f19f615fb923beee584ef7e3d70ae70e0e4f76dee9c767024fa27159fe",
+    "flowhmr/utils/runtime_sam_vis.py": "4e27d5f076482006bb4b7d798b72b65e698dead6713bee074c6dd2135986dd5d",
+    "flowhmr/utils/runtime_sam_worker.py": "fa5fd472841fd7ed5f05e0bcfdc727e7e8a2dee8aca024dd02b47fe6b5a6bfe5",
+    "flowhmr/utils/runtime_v2m_postprocess_simple.py": "98a8bc370aadbafbdb6280ef3c21ae849750e272d8c43f67756f9afb31a1ce7a",
+    "flowhmr/utils/runtime_vggt_camera.py": "35549c947d7d5949e90c7b5ba9c01aa32ed331a1836cd10f7901a3f365b565a5",
+    "flowhmr/utils/runtime_video_processing.py": "25cd231e8b196ca1804d350fcf8d63fcf45359d4ba7bdfc3a4d5b57f57f65797"
+  },
+  "device": "cuda",
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "tolerance": {
+    "atol": 0,
+    "rtol": 0
+  },
+  "variants": {
+    "base": {
+      "body_sha256": "a60a7e29d33f09ef1a6352907e2f485e161f471330ca40592764374063e751df",
+      "checkpoint_sha256": "77b903ba545669bafd6f7709c0f1748f5fa030a4f25f67392c8c082a21f5e672",
+      "training": [
+        {
+          "step": 1,
+          "loss": 69.84564208984375,
+          "exact_gradient_tensors": 304
+        },
+        {
+          "step": 10001,
+          "loss": 69.84564208984375,
+          "exact_gradient_tensors": 304
+        }
+      ],
+      "sampling": [
+        {
+          "frames": 4,
+          "seeds": [
+            13
+          ],
+          "cfg_scale": 1.0,
+          "exact_keys": [
+            "rot6d",
+            "shapes",
+            "trans",
+            "root_rot6d",
+            "body_rot6d",
+            "local_joints_positions",
+            "foot_contacts",
+            "smooth_root_pos",
+            "pelvis_world"
+          ]
+        },
+        {
+          "frames": 4,
+          "seeds": [
+            0,
+            19
+          ],
+          "cfg_scale": 2.0,
+          "exact_keys": [
+            "rot6d",
+            "shapes",
+            "trans",
+            "root_rot6d",
+            "body_rot6d",
+            "local_joints_positions",
+            "foot_contacts",
+            "smooth_root_pos",
+            "pelvis_world"
+          ]
+        }
+      ],
+      "real_video": {
+        "frames": 30,
+        "seed": 0,
+        "conditioning": "exact",
+        "sampling": "exact",
+        "floor_alignment": "exact",
+        "fk_joints": "exact"
+      }
+    },
+    "latest": {
+      "body_sha256": "a60a7e29d33f09ef1a6352907e2f485e161f471330ca40592764374063e751df",
+      "checkpoint_sha256": "b7eb06b119feaf5ad7287bafdb2fff38d42dfc22ea9d256f8cdd2ada26dfc53a",
+      "training": [],
+      "sampling": [
+        {
+          "frames": 4,
+          "seeds": [
+            13
+          ],
+          "cfg_scale": 1.0,
+          "exact_keys": [
+            "rot6d",
+            "shapes",
+            "trans",
+            "root_rot6d",
+            "body_rot6d",
+            "local_joints_positions",
+            "foot_contacts",
+            "smooth_root_pos",
+            "pelvis_world"
+          ]
+        },
+        {
+          "frames": 4,
+          "seeds": [
+            0,
+            19
+          ],
+          "cfg_scale": 2.0,
+          "exact_keys": [
+            "rot6d",
+            "shapes",
+            "trans",
+            "root_rot6d",
+            "body_rot6d",
+            "local_joints_positions",
+            "foot_contacts",
+            "smooth_root_pos",
+            "pelvis_world"
+          ]
+        }
+      ],
+      "real_video": {
+        "frames": 30,
+        "seed": 0,
+        "conditioning": "exact",
+        "sampling": "exact",
+        "floor_alignment": "exact",
+        "fk_joints": "exact"
+      }
+    }
+  },
+  "complete": true,
+  "native_sha256": {
+    "motius/diffusion/flowhmr.py": "75f3f774c799d1f8e4024d164865be8b08eb38a6d4bcbadf38ef83d6c2b193a3",
+    "motius/diffusion/flowhmr_utils.py": "035342f719adc9487f992fe4de629ffd840eb1b180815ac1563fad641d1c6aaa",
+    "motius/models/flowhmr/__init__.py": "fdd590ef62045d6fda5f2235020f342598e70a71fbd6ce31465df8ff54b66d90",
+    "motius/models/flowhmr/bundle.py": "5f84f393824a4c19e4029db25157a8e09d1956da3febc8c440393b953fb58867",
+    "motius/models/flowhmr/network/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/models/flowhmr/network/hymotion_mmdit_for_v2m.py": "4db2edb54c67a62603b81e75c9cb6de1d9746e92ebabf8bdd231d4d5fda734fa",
+    "motius/models/flowhmr/network/mmdit/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/models/flowhmr/network/mmdit/attention.py": "8d80e3129e58708da3eee92cfbee09719f220c813b4133d73898b5495d0ea395",
+    "motius/models/flowhmr/network/mmdit/bricks.py": "59653d35fd1aba546fda76dc25953deb93b082343528e12cf31ba9058cd94afe",
+    "motius/models/flowhmr/network/mmdit/encoders.py": "e0bebb702bac517b7c312ce252dff497ed98720766403e81dc598c4994fd8aa6",
+    "motius/models/flowhmr/network/mmdit/modulate_layers.py": "c5ccc6c8723ff7f75778dba2ffb49d5a3cfe23fce5829613ee8f6757cd468dbc",
+    "motius/models/flowhmr/network/mmdit/positional_encoding.py": "55947bae2d8d3c0b8169c3ef7f1414f9d3ff3f4e3ed16271b30d866f44c5aaa7",
+    "motius/models/flowhmr/network/mmdit/query_attention.py": "3ea75a7c5aa2e75f95b0437ae82bfb50f4b9564cfc4aa768d08f3dee8c02d4be",
+    "motius/models/flowhmr/network/token_refiner.py": "086f1d11c65e5dd60940b0453c048a15fc5930739fd85ae3ba2dddc59bbb75ef",
+    "motius/motion/body_models/flowhmr/__init__.py": "38e4011160d465fd6248b37bf6841da1d34e61fb6611feb7aed2190586b9543e",
+    "motius/motion/body_models/flowhmr/fk_utils.py": "744c9af938b8f5202b81ca523a034db248614a589b845fc07e07f1d5b9a2a779",
+    "motius/motion/body_models/flowhmr/lbs_function.py": "d53cde96f074cc3cd239eb1771e02bc3d552b87859eb893206fbc8d6a2366b5e",
+    "motius/motion/body_models/flowhmr/smpl_skeleton.py": "8c998b3a9db8e82a07e706c9802ca455bbec602da78452b96a61a98f825211ac",
+    "motius/motion/representation/flowhmr/__init__.py": "7325c61ccc7469a40e996b983d51c583029781ace1574cc1d51b470f17c188c1",
+    "motius/motion/representation/flowhmr/codec.py": "34f2d15f869912712cbf8505268109da1918d989e24fcd3a9c6a65067968da6a",
+    "motius/motion/representation/flowhmr/contacts.py": "1dc53ba9d6692816839e4e877fb854cb1ac87caf258548acb3b30d868f2e1ffe",
+    "motius/motion/representation/flowhmr/geometry.py": "97089a49a06a775ea7f36fe175c9f9ef82794a9f28dc60dfdb8b8e01d56bace7",
+    "motius/motion/representation/flowhmr/motion.py": "60b75211e710e1e0bf1948b7dca8007f4db64b3b41d450a7f0ad2d3d80c81217",
+    "motius/motion/representation/flowhmr/smooth_root.py": "8d4b68339e15691f196ca81d17aeb24c1ee4a88b8b040f78eb6e0ab3c8636fd2",
+    "motius/pipelines/flowhmr/pipeline.py": "452e579b3b909d27f38195930a5e19af6be5e2e694fca1b16b9c8df45930ff6e",
+    "motius/pipelines/flowhmr/sampling.py": "d7d2566be360977eed985f7dbe298b4c85a8e9ec9410116ba094ada410705e2e",
+    "motius/trainers/flowhmr/__init__.py": "31aa424489ef9f6cea4f8f3233ff164d2f67a359831890ce5b524bf93de26199",
+    "motius/trainers/flowhmr/losses.py": "30490ef3daaa46f10502d2b6a51e6684f2e5e432546370bc99a134020beb2a64",
+    "motius/trainers/flowhmr/trainer.py": "4fa735849e1b9fd55b80463f94ae377c4043c6a8adc163094ab6805ac6a6f5d6",
+    "motius/utils/flowhmr_checkpoint.py": "0498f4abd4ca2a034d40c085821b9d4b03ec78b56ede5613cb30bd9e207bb61e",
+    "motius/utils/module_loading.py": "73c40e93aa19269fac2a960cbf04643618595b628691236e0c3e4977326b3013"
+  }
+}

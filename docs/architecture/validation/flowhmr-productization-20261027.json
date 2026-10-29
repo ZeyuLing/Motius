@@ -1,0 +1,410 @@
+{
+  "date": "2026-10-27",
+  "motius": "0.3.14",
+  "blender_extension": "0.2.8",
+  "hardware": "H200; Linux; 4 CPU inference threads",
+  "input_sha256": "8f9e9c1193163940eafb512e9a0621a31fe316406e7a69aa3a357f6deceb17f1",
+  "frames": 750,
+  "timing_scope": "After person selection, includes model loading; excludes detection, Blender import, retargeting, grounding, viewport preparation and human operations. Single runs, not throughput averages.",
+  "standard": {
+    "profile": {
+      "cpu_threads": 4,
+      "motion_tf32": false,
+      "total_seconds_including_model_loading": 366.8088581804186,
+      "model_loading_seconds": 2.2054553916677833,
+      "stages": [
+        {
+          "stage": "transcode",
+          "seconds": 7.93207436800003e-06,
+          "completed": true,
+          "allocated_bytes": 1934632960,
+          "reserved_bytes": 1946157056,
+          "cumulative_peak_allocated_bytes": 1934632960
+        },
+        {
+          "stage": "tracking",
+          "seconds": 0.3141059884801507,
+          "completed": true,
+          "allocated_bytes": 1934632960,
+          "reserved_bytes": 1946157056,
+          "cumulative_peak_allocated_bytes": 1934632960
+        },
+        {
+          "stage": "camera",
+          "seconds": 68.25576961319894,
+          "completed": true,
+          "allocated_bytes": 6544868864,
+          "reserved_bytes": 52695138304,
+          "cumulative_peak_allocated_bytes": 31783149056
+        },
+        {
+          "stage": "features",
+          "seconds": 295.0801232717931,
+          "completed": true,
+          "allocated_bytes": 10068774912,
+          "reserved_bytes": 52726595584,
+          "cumulative_peak_allocated_bytes": 31783149056
+        },
+        {
+          "stage": "sampling_and_decode",
+          "seconds": 0.8487415844574571,
+          "completed": true,
+          "allocated_bytes": 10068774912,
+          "reserved_bytes": 52726595584,
+          "cumulative_peak_allocated_bytes": 31783149056
+        }
+      ],
+      "preprocessing_cache_used": false,
+      "inference_settings": {
+        "lightweight": false,
+        "attention_query_chunk_size": 0,
+        "full_hand_features": true,
+        "sam_backend": "official",
+        "sam_conditioning_optimized": false,
+        "camera_frame_interval": 1,
+        "vggt_memory_mode": "reference",
+        "vggt_attention_backend": "torch",
+        "vggt_attention_selection": null,
+        "sam_frame_batch_size": 1,
+        "camera_subsampled": false
+      },
+      "gpu": "NVIDIA H200",
+      "peak_allocated_bytes": 31783149056,
+      "peak_reserved_bytes": 52726595584
+    },
+    "driver_peak_mib": 50974,
+    "allocator_cap_gib": 100,
+    "loaded_code_identity": {
+      "loaded_reference_files": {
+        "blender_extension/motius_flowhmr/worker.py": "34058373643666de5c005df986e94c9cd7b81518156825629a247179ceffb803",
+        "motius/pipelines/flowhmr/pipeline.py": "7f89a9bf225976af10a2153621fb4fc51d8e2d4543e8e692cfb30f579560ffb6",
+        "motius/pipelines/flowhmr/camera_estimation.py": "af932861693580d4d9ced1df7c130ae9418ef2b9a2bf14462402e6e4eba25ac1",
+        "motius/models/vision/vggt_omega/models/vggt_omega.py": "aa81f6e6341389c6a15c4c3a4855a94b64a8946e95798d12776172a0d0637ed2"
+      }
+    }
+  },
+  "previous_low_memory_recording": {
+    "profile": {
+      "cpu_threads": 4,
+      "motion_tf32": false,
+      "total_seconds_including_model_loading": 96.42849378380924,
+      "model_loading_seconds": 2.21349757257849,
+      "stages": [
+        {
+          "stage": "transcode",
+          "seconds": 1.108553260564804e-05,
+          "completed": true,
+          "allocated_bytes": 0,
+          "reserved_bytes": 0,
+          "cumulative_peak_allocated_bytes": 1934632960
+        },
+        {
+          "stage": "tracking",
+          "seconds": 0.23419561609625816,
+          "completed": true,
+          "allocated_bytes": 0,
+          "reserved_bytes": 0,
+          "cumulative_peak_allocated_bytes": 1934632960
+        },
+        {
+          "stage": "camera",
+          "seconds": 52.74663389287889,
+          "completed": true,
+          "allocated_bytes": 33554432,
+          "reserved_bytes": 35651584,
+          "cumulative_peak_allocated_bytes": 3992435712
+        },
+        {
+          "stage": "features",
+          "seconds": 38.14554288331419,
+          "completed": true,
+          "allocated_bytes": 3595590144,
+          "reserved_bytes": 6020923392,
+          "cumulative_peak_allocated_bytes": 4813654016
+        },
+        {
+          "stage": "sampling_and_decode",
+          "seconds": 1.3447282165288925,
+          "completed": true,
+          "allocated_bytes": 1968187392,
+          "reserved_bytes": 2254438400,
+          "cumulative_peak_allocated_bytes": 4813654016
+        }
+      ],
+      "preprocessing_cache_used": false,
+      "inference_settings": {
+        "lightweight": true,
+        "attention_query_chunk_size": 256,
+        "full_hand_features": true,
+        "sam_backend": "fast",
+        "sam_conditioning_optimized": true,
+        "camera_frame_interval": 1,
+        "vggt_memory_mode": "streamed",
+        "vggt_attention_backend": "cudnn",
+        "vggt_attention_selection": {
+          "seconds": {
+            "torch": 0.023434451781213284,
+            "cudnn": 0.015551057954629263
+          },
+          "fallback_reasons": []
+        },
+        "sam_frame_batch_size": 8,
+        "camera_subsampled": false
+      },
+      "gpu": "NVIDIA H200",
+      "peak_allocated_bytes": 4813654016,
+      "peak_reserved_bytes": 6020923392
+    },
+    "driver_peak_mib": 6432,
+    "allocator_cap_gib": 6
+  },
+  "real_cuda_oom_test": {
+    "allocator_cap_gib": 4.3,
+    "purpose": "Controlled allocator pressure on H200, not a consumer GPU benchmark",
+    "queue": {
+      "queue_state": "completed",
+      "attempt": 2,
+      "created_to_finished_seconds": 178.71997928619385,
+      "attempts": [
+        {
+          "task_id": "8d6a0d3519c94db399926f0e5e2c99a2",
+          "number": 1,
+          "directory": "<validation-runtime>/film-20261027/productization-20261027/queued-full-video/attempt-001",
+          "state": "failed",
+          "settings": "{\"kind\": \"inference\", \"subjects_file\": \"<validation-runtime>/film-20261027/productization-20261027/queued-full-video/selected-subjects.json\", \"subject_id\": 1, \"project_root\": \"<validation-runtime>\", \"output_dir\": \"<validation-runtime>/film-20261027/productization-20261027/queued-full-video/attempt-001\", \"body_model\": \"<reference-checkout>/assets/body_models/smplh/neutral/model.npz\", \"cache_dir\": \"<validation-runtime>/hf-cache\", \"video\": \"<validation-runtime>/film-20261027/take-2/Performance.mp4\", \"checkpoint\": \"<validation-runtime>/film-20261027/take-2/checkpoint\", \"mode\": \"LIGHTWEIGHT\", \"device\": \"cuda\", \"seed\": 0, \"max_frames\": 0, \"camera_interval\": 1, \"query_chunk_size\": 256, \"sam_frame_batch_size\": 8, \"postprocess\": false, \"surface\": false, \"preprocessing_cache\": \"\", \"offline\": true}",
+          "message": "CUDA out of memory. Tried to allocate 12.00 MiB. GPU 0 has a total capacity of 139.80 GiB of which 131.23 GiB is free. Process 1631938 has 1.79 GiB memory in use. Process 1710853 has 1.79 GiB memory in use. Including non-PyTorch memory, this process has 4.97 GiB memory in use. 4.30 GiB allowed; Of the allocated memory 4.10 GiB is allocated by PyTorch, and 195.01 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+        },
+        {
+          "task_id": "8d6a0d3519c94db399926f0e5e2c99a2",
+          "number": 2,
+          "directory": "<validation-runtime>/film-20261027/productization-20261027/queued-full-video/attempt-002",
+          "state": "completed",
+          "settings": "{\"kind\": \"inference\", \"subjects_file\": \"<validation-runtime>/film-20261027/productization-20261027/queued-full-video/selected-subjects.json\", \"subject_id\": 1, \"project_root\": \"<validation-runtime>\", \"output_dir\": \"<validation-runtime>/film-20261027/productization-20261027/queued-full-video/attempt-002\", \"body_model\": \"<reference-checkout>/assets/body_models/smplh/neutral/model.npz\", \"cache_dir\": \"<validation-runtime>/hf-cache\", \"video\": \"<validation-runtime>/film-20261027/take-2/Performance.mp4\", \"checkpoint\": \"<validation-runtime>/film-20261027/take-2/checkpoint\", \"mode\": \"LIGHTWEIGHT\", \"device\": \"cuda\", \"seed\": 0, \"max_frames\": 0, \"camera_interval\": 1, \"query_chunk_size\": 128, \"sam_frame_batch_size\": 4, \"postprocess\": false, \"surface\": false, \"preprocessing_cache\": \"\", \"offline\": true, \"vggt_frame_batch_size\": 4, \"vggt_query_chunk_size\": 2048, \"vggt_token_chunk_size\": 2048}",
+          "message": "Result ready \u00b7 import when convenient"
+        }
+      ],
+      "source_video_sha256": "8f9e9c1193163940eafb512e9a0621a31fe316406e7a69aa3a357f6deceb17f1",
+      "remaining_gpu_processes": "1631938, 1830 MiB\n1710853, 1838 MiB\n"
+    },
+    "first_failure": {
+      "state": "failed",
+      "message": "CUDA out of memory. Tried to allocate 12.00 MiB. GPU 0 has a total capacity of 139.80 GiB of which 131.23 GiB is free. Process 1631938 has 1.79 GiB memory in use. Process 1710853 has 1.79 GiB memory in use. Including non-PyTorch memory, this process has 4.97 GiB memory in use. 4.30 GiB allowed; Of the allocated memory 4.10 GiB is allocated by PyTorch, and 195.01 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+      "error_code": "cuda_oom",
+      "schedule": {
+        "sam_frame_batch_size": 8,
+        "vggt_frame_batch_size": 8,
+        "vggt_query_chunk_size": 4096,
+        "vggt_token_chunk_size": 4096,
+        "query_chunk_size": 256
+      },
+      "recovery": "Retry with smaller workspace batches; all frames and original precision are retained."
+    },
+    "retry_profile": {
+      "cpu_threads": 4,
+      "motion_tf32": false,
+      "total_seconds_including_model_loading": 110.28332243021578,
+      "model_loading_seconds": 2.196848134510219,
+      "stages": [
+        {
+          "stage": "transcode",
+          "seconds": 1.0828487575054169e-05,
+          "completed": true,
+          "allocated_bytes": 33554432,
+          "reserved_bytes": 33554432,
+          "cumulative_peak_allocated_bytes": 1968187392
+        },
+        {
+          "stage": "tracking",
+          "seconds": 0.2709073917940259,
+          "completed": true,
+          "allocated_bytes": 33554432,
+          "reserved_bytes": 33554432,
+          "cumulative_peak_allocated_bytes": 1968187392
+        },
+        {
+          "stage": "camera",
+          "seconds": 53.86867064423859,
+          "completed": true,
+          "allocated_bytes": 33554432,
+          "reserved_bytes": 35651584,
+          "cumulative_peak_allocated_bytes": 3933715456
+        },
+        {
+          "stage": "features",
+          "seconds": 50.06943499483168,
+          "completed": true,
+          "allocated_bytes": 3585968128,
+          "reserved_bytes": 4578082816,
+          "cumulative_peak_allocated_bytes": 4195516416
+        },
+        {
+          "stage": "sampling_and_decode",
+          "seconds": 2.1650717817246914,
+          "completed": true,
+          "allocated_bytes": 1968187392,
+          "reserved_bytes": 2254438400,
+          "cumulative_peak_allocated_bytes": 4195516416
+        }
+      ],
+      "preprocessing_cache_used": false,
+      "inference_settings": {
+        "lightweight": true,
+        "attention_query_chunk_size": 128,
+        "full_hand_features": true,
+        "sam_backend": "fast",
+        "sam_conditioning_optimized": true,
+        "camera_frame_interval": 1,
+        "vggt_memory_mode": "streamed",
+        "vggt_schedule": {
+          "frame_batch_size": 4,
+          "query_chunk_size": 2048,
+          "token_chunk_size": 2048
+        },
+        "vggt_attention_backend": "cudnn",
+        "vggt_attention_selection": {
+          "seconds": {
+            "torch": 0.011824202413360277,
+            "cudnn": 0.007789675146341324
+          },
+          "fallback_reasons": []
+        },
+        "sam_frame_batch_size": 4,
+        "camera_subsampled": false
+      },
+      "gpu": "NVIDIA H200",
+      "peak_allocated_bytes": 4195516416,
+      "peak_reserved_bytes": 4578082816
+    },
+    "retry_preflight": {
+      "device": "cuda",
+      "gpu": "NVIDIA H200",
+      "compute_capability": [
+        9,
+        0
+      ],
+      "free_gib": 135.50592041015625,
+      "total_gib": 139.80084228515625,
+      "torch": "2.6.0a0+ecf3bae40a.nv25.01",
+      "cuda": "12.8",
+      "host_available_gib": 176.12365341186523,
+      "video": {
+        "frames": 750,
+        "width": 1280,
+        "height": 720
+      },
+      "disk_free_gib": 1023.970703125,
+      "estimated_backend_gib": 5.6,
+      "headroom_gib": 2.0,
+      "schedule": {
+        "sam_frame_batch_size": 4,
+        "vggt_frame_batch_size": 4,
+        "vggt_query_chunk_size": 2048,
+        "vggt_token_chunk_size": 2048,
+        "query_chunk_size": 128
+      },
+      "warnings": [
+        "Memory estimates are calibrated on H200; other GPUs and concurrent allocations can differ. All frames and original model dtypes are retained."
+      ],
+      "schedule_applied": {
+        "sam_frame_batch_size": 4,
+        "vggt_frame_batch_size": 4,
+        "vggt_query_chunk_size": 2048,
+        "vggt_token_chunk_size": 2048,
+        "query_chunk_size": 128
+      }
+    },
+    "retry_driver_peak_mib": 5056
+  },
+  "output_checks": {
+    "standard": {
+      "frames": 750,
+      "native_rotation_shape": [
+        750,
+        52,
+        6
+      ],
+      "all_valid": true,
+      "all_finite": true,
+      "sha256": "f3b4c88ec29664a48aa09f96d2a327ef14322f4343f95a8b031eec3258341dcd"
+    },
+    "retry": {
+      "frames": 750,
+      "native_rotation_shape": [
+        750,
+        52,
+        6
+      ],
+      "all_valid": true,
+      "all_finite": true,
+      "sha256": "3ee5ca81d395f06ef9bafc67d4e85ca0f9f7160a30a7508592c08e5b4526acf3"
+    },
+    "retry_vs_previous_batch8_world22_mm": {
+      "mean": 0.5163061022758484,
+      "maximum": 1.0653231143951416,
+      "ground_truth_accuracy": false
+    }
+  },
+  "validation": {
+    "final-tests": 0,
+    "blender-progress": 0,
+    "blender-queue-release": 0,
+    "blender-exit-release": 0,
+    "blender_exit_lifetime": {
+      "at_blender_exit": [
+        "running",
+        "queued"
+      ],
+      "after_blender_exit": [
+        "completed",
+        "completed"
+      ]
+    },
+    "package-standard": 0,
+    "package-accelerated": 0,
+    "passed": true
+  },
+  "blender_manual_import": {
+    "blender": "4.5.3 LTS",
+    "queue_survives_scene_cleanup": true,
+    "manual_import_only": true,
+    "imported_joints": 52,
+    "torch_outside_blender": true,
+    "doctor_state": "completed"
+  },
+  "source_files_sha256": {
+    "blender_extension/motius_flowhmr/ui.py": "f6b262d888a3acc526f2898e771992d8769e036cb74274e20b21700edf31bba3",
+    "blender_extension/motius_flowhmr/jobs.py": "02a42c1c7a3adf4c65ebd59bc08ac0fe7515795e7e8bb0f0995361c439af9522",
+    "blender_extension/motius_flowhmr/task_queue.py": "60123d1f05cdbe1faaa1aabf59ef599db2c659aced739570856930a0dfded42b",
+    "blender_extension/motius_flowhmr/queue_runner.py": "8a215d533cafd7a011785636b4061986162aa4d0df45131a2079fadd8fa368b0",
+    "blender_extension/motius_flowhmr/runtime_preflight.py": "d6495b0f58f84eaed177f934b685a2324ffc25e12bcaa7c4fbc3b1b59aebce55",
+    "blender_extension/motius_flowhmr/worker.py": "0255695ea0e543760a0d85393756d5ab2b990569ccd6ed49f52a9b2cf08675c9",
+    "motius/pipelines/flowhmr/pipeline.py": "adc08ce4a0df82ad48dd87ed0572c654ac3f92087f44879ca7b3d5de8130f559",
+    "motius/pipelines/flowhmr/camera_estimation.py": "23b1612d38570d6f33758e5e5325b69c1e0ee4e9df1aaa616c8b281487f3066b",
+    "motius/models/vision/vggt_omega/models/vggt_omega.py": "dc8d2a5a621bf552a7f66fa1485a486c8cf94d2932d4c03e07790b813c959ca3",
+    "tests/test_flowhmr_task_queue.py": "b63d665547e789cf9f27dd572448037712f01dcc3cffae0a9d7d161c4e8d74cd",
+    "tests/test_flowhmr_vggt_memory.py": "aba3075cf3d0db23f1dd6286fc0f9507d623c888b9e0b7400c12febd688f53c6",
+    "tests/blender_flowhmr_queue_smoke.py": "162c94ec4face88735992687ea6c07a9b4c64ca8f6f4d4ed6bffd89346fd9005",
+    "tests/blender_flowhmr_queue_exit_smoke.py": "bee4fadee91b598ee4159a91972b5d18dce891a23b9e40be9ab23690888581c9"
+  },
+  "packages": [
+    {
+      "file": "motius-flowhmr-0.2.8-standard.zip",
+      "default_mode": "STANDARD",
+      "bytes": 75208,
+      "sha256": "78ac034d43f99bf393d041a7a0f4141542d6ba45f9dc94ae1695c64d68c5dc32"
+    },
+    {
+      "file": "motius-flowhmr-0.2.8-accelerated.zip",
+      "default_mode": "LIGHTWEIGHT",
+      "bytes": 75208,
+      "sha256": "939f0d0e5b2b4fec6978c25dc032958934e2316fa98fa890e02406ea984e28a9"
+    }
+  ],
+  "limitations": [
+    "No consumer GPU or Windows hardware test",
+    "Free-memory estimates calibrated on H200, not an arbitrary-input guarantee",
+    "Different queue databases do not coordinate GPU resources",
+    "No validated full-pipeline ONNX or TensorRT engine",
+    "Changing batching can change floating-point rounding; no bitwise-equality claim"
+  ]
+}

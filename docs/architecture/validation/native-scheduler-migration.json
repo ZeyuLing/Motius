@@ -1,0 +1,16 @@
+{
+  "complete": true,
+  "scope": "Scheduler relocation versus pre-migration Motius snapshot; identical configs, coefficients, timesteps and four actual CPU denoising steps. Not independent original-repository model inference certification.",
+  "tests": [
+    {
+      "method": "mld",
+      "steps": 4,
+      "bitwise_equal": true
+    },
+    {
+      "method": "motionlcm",
+      "steps": 4,
+      "bitwise_equal": true
+    }
+  ]
+}

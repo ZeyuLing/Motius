@@ -1,0 +1,33 @@
+{
+  "evidence": "docs/architecture/validation/flowhmr-lightweight.json",
+  "hardware": "NVIDIA H200",
+  "frames": 30,
+  "runs_per_mode": 1,
+  "full_body_and_hand_features": true,
+  "camera_interval": 1,
+  "video_path": {
+    "reference": {
+      "seconds_including_model_loading": 45.55790636688471,
+      "torch_peak_allocated_gib": 9.704812049865723,
+      "torch_peak_reserved_gib": 10.603515625
+    },
+    "lightweight": {
+      "seconds_including_model_loading": 44.78946569748223,
+      "torch_peak_allocated_gib": 7.233331203460693,
+      "torch_peak_reserved_gib": 7.328125
+    }
+  },
+  "allocated_reduction_percent": 25.466550343334315,
+  "demo_25_second_video": {
+    "device": "CPU",
+    "frontend_cache_reused": true,
+    "generate_click_to_visible_reconstruction_seconds": 88.46,
+    "source": "blender-promo-final-20261026/events.json"
+  },
+  "limits": [
+    "H200 results do not establish performance on consumer GPUs.",
+    "No measured full 25-second cold-start consumer-GPU time or whole-application VRAM requirement.",
+    "Torch allocation excludes Blender and driver/context memory. Preview-cache texture budget is a different stage, not an additive inference peak.",
+    "Long attention-only repeated-feature benchmarks exclude live SAM/VGGT; not quoted as end-to-end performance."
+  ]
+}

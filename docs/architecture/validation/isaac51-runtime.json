@@ -1,0 +1,21 @@
+{
+  "complete": true,
+  "scope": "Isaac Sim 5.1 / Isaac Lab 2.3.2 startup and real GPU rigid-body physics in the existing H200 container",
+  "initial_position": [
+    [
+      0.0,
+      0.0,
+      1.991824984550476
+    ]
+  ],
+  "final_position": [
+    [
+      0.0,
+      0.0,
+      0.5611997842788696
+    ]
+  ],
+  "physics_steps": 30,
+  "torch_version": "2.7.0+cu128",
+  "gpu": "NVIDIA H200"
+}

@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-26",
+  "final": "<local path>",
+  "operation_take": "<local path>",
+  "playback_take": "assets/model_zoo/flowhmr/blender_demo/motius-flowhmr-blender-original-speed-1080p.mp4",
+  "motion_parity_max_abs": {
+    "joints_world": 0,
+    "global_rotations": 0,
+    "rest_joints": 0
+  },
+  "edits": [
+    {
+      "start": 0,
+      "end": 55,
+      "caption": "01  VIDEO / SUBJECT / CHARACTER SETUP"
+    },
+    {
+      "start": 99.22,
+      "end": 108.22,
+      "caption": "02  FLOWHMR RECONSTRUCTION | WAIT SHORTENED"
+    },
+    {
+      "start": 139.04,
+      "end": 148.04,
+      "caption": "03  RETARGET AND GROUND THREE CHARACTERS | WAIT SHORTENED"
+    },
+    {
+      "start": 0,
+      "end": 29.15,
+      "caption": "04  ORIGINAL SPEED | 750 FRAMES / 30 FPS / 25 SECONDS"
+    }
+  ],
+  "playback_seconds": 25.00006024353206,
+  "frames": 750,
+  "fps": 30,
+  "playback_retimed": false,
+  "full_playback_kept": true,
+  "source": "User supplied video; detections/frontends reused; fresh neural sampling and reconstruction performed on camera",
+  "events": [
+    {
+      "seconds": 0.0,
+      "step": "Select the supplied video"
+    },
+    {
+      "seconds": 4.12,
+      "step": "Review actual detector results; click the intended person"
+    },
+    {
+      "seconds": 12.76,
+      "step": "Generate motion; verified frontends reused, sampling executes again"
+    },
+    {
+      "seconds": 15.86,
+      "step": "Import three different characters while motion is computed"
+    },
+    {
+      "seconds": 51.88,
+      "step": "Characters prepared; live sampling progress remains visible"
+    },
+    {
+      "seconds": 101.22,
+      "step": "Fresh native FlowHMR reconstruction imported"
+    },
+    {
+      "seconds": 143.04,
+      "step": "Three individually grounded characters ready"
+    },
+    {
+      "seconds": 143.05,
+      "step": "Prepare viewport and source cache for original-speed playback"
+    }
+  ],
+  "optical_frame_check": {
+    "method": "Read the actual visible source frame counter from every encoded screen frame using connected glyphs and digit templates learned from counters 1\u201310.",
+    "encoded_frames": 1747,
+    "source_frames_seen": 750,
+    "exact_sequence_1_through_750": true,
+    "minimum_screen_frames_per_source_frame": 1,
+    "maximum_glyph_pixel_mismatch": 7
+  },
+  "duration_seconds": 102.116667,
+  "sha256": "31c9fbf1c69a7f32bdf33dca735c4b0c586804d8a779c8e604e02e4b321a128c"
+}

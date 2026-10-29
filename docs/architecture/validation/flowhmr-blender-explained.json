@@ -1,0 +1,112 @@
+{
+  "video": "<local path>",
+  "playback_visible_range": [
+    2.0,
+    27.0
+  ],
+  "timeline": [
+    {
+      "shot": "hook",
+      "source": "<local path>",
+      "source_start": 6.0,
+      "source_end": 13.0,
+      "crop": null,
+      "final_start": 0,
+      "final_end": 7.0
+    },
+    {
+      "shot": "video",
+      "source": "<local path>",
+      "source_start": 1.2,
+      "source_end": 4.12,
+      "crop": "960:540:960:80",
+      "final_start": 7.0,
+      "final_end": 9.920000000000002
+    },
+    {
+      "shot": "person",
+      "source": "<local path>",
+      "source_start": 4.12,
+      "source_end": 12.76,
+      "crop": null,
+      "final_start": 9.92,
+      "final_end": 18.56
+    },
+    {
+      "shot": "generate",
+      "source": "<local path>",
+      "source_start": 12.5,
+      "source_end": 15.7,
+      "crop": "960:540:960:80",
+      "final_start": 18.560000000000002,
+      "final_end": 21.760000000000005
+    },
+    {
+      "shot": "characters",
+      "source": "<local path>",
+      "source_start": 16.1,
+      "source_end": 25.4,
+      "crop": null,
+      "final_start": 21.76,
+      "final_end": 31.059999999999995
+    },
+    {
+      "shot": "raw",
+      "source": "<local path>",
+      "source_start": 0,
+      "source_end": 13.5,
+      "crop": null,
+      "final_start": 31.06,
+      "final_end": 44.56
+    },
+    {
+      "shot": "ground",
+      "source": "<local path>",
+      "source_start": 104.0,
+      "source_end": 107.8,
+      "crop": "960:540:960:250",
+      "final_start": 44.56,
+      "final_end": 48.360000000000014
+    },
+    {
+      "shot": "ready",
+      "source": "<local path>",
+      "source_start": 141.0,
+      "source_end": 145.7,
+      "crop": "960:540:960:250",
+      "final_start": 48.36,
+      "final_end": 53.06
+    },
+    {
+      "shot": "performance",
+      "source": "<local path>",
+      "source_start": 2.0,
+      "source_end": 27.0,
+      "crop": null,
+      "final_start": 53.05999999999999,
+      "final_end": 78.05999999999999
+    },
+    {
+      "shot": "measured-performance",
+      "final_start": 78.05999999999999,
+      "final_end": 87.05999999999999
+    }
+  ],
+  "changes": [
+    "Result-first hook with no sidebar",
+    "One operation per shot; real UI close-ups",
+    "Full unobscured original-speed finale",
+    "Waiting explicitly omitted; no retiming"
+  ],
+  "finale_optical_check": {
+    "method": "Read the actual visible source frame counter from every encoded screen frame using connected glyphs and digit templates learned from counters 1\u201310.",
+    "encoded_frames": 1500,
+    "source_frames_seen": 750,
+    "exact_sequence_1_through_750": true,
+    "minimum_screen_frames_per_source_frame": 1,
+    "maximum_glyph_pixel_mismatch": 8
+  },
+  "performance_evidence": "docs/architecture/validation/flowhmr-user-performance.json",
+  "raw_review": "New actual Blender viewport recording; view orbit and explicit pose inspection, not a realtime-inference claim",
+  "sha256": "abafc89c567957a472811029d5f7c5b72da134369aea60c62fecd6941fade39c"
+}
