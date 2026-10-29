@@ -20,6 +20,8 @@ no auxiliary gradient.
 
 from __future__ import annotations
 
+from motius.motion.conditioning.hymotion_conditions import predict_conditioned_flow
+
 from typing import Any, Dict, Optional, Tuple
 
 import torch
@@ -519,7 +521,7 @@ class AnimateCanvasSparseRolloutJoinTrainer(AnimateCanvasTrainer):
 
         with torch.no_grad():
             for _ in range(detached_steps):
-                pred = self.bundle.predict_flow(
+                pred = predict_conditioned_flow(self.bundle,
                     x_input=torch.cat(
                         [state, ctx["condition_context"][index]],
                         dim=-1,
@@ -533,7 +535,7 @@ class AnimateCanvasSparseRolloutJoinTrainer(AnimateCanvasTrainer):
 
         if exact_endpoint:
             for _ in range(self.sparse_rollout_backprop_tail_steps):
-                pred = self.bundle.predict_flow(
+                pred = predict_conditioned_flow(self.bundle,
                     x_input=torch.cat(
                         [state, ctx["condition_context"][index]],
                         dim=-1,
@@ -553,7 +555,7 @@ class AnimateCanvasSparseRolloutJoinTrainer(AnimateCanvasTrainer):
                 self.sparse_rollout_backprop_tail_steps * step,
             )
         else:
-            student_pred = self.bundle.predict_flow(
+            student_pred = predict_conditioned_flow(self.bundle,
                 x_input=torch.cat(
                     [state, ctx["condition_context"][index]],
                     dim=-1,

@@ -19,6 +19,8 @@ _EXPORTS = {
     "ProtoMotionsPPOTrainer": "protomotions",
     "GenTrackFlowGRPOTrainer": "gentrack",
     "YOLOXTrainer": "vision",
+    "AnimateCanvasTrainer": "animatecanvas",
+    "AnimateCanvasSparseRolloutJoinTrainer": "animatecanvas",
     "ViMoGenTrainer": "vimogen",
     "MotionBricksPoseTrainer": "motionbricks",
     "MotionBricksRootTrainer": "motionbricks",

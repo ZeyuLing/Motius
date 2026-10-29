@@ -1,0 +1,44 @@
+{
+  "complete": true,
+  "scope": "All six MotionCanvas artifact text-weight files independently hashed against its pinned Hub LFS metadata before reusing existing primary Qwen3/CLIP files. The MotionCanvas artifact retains its own config/tokenizer/prompt metadata.",
+  "repo": "ZeyuLing/Motius-MotionCanvas-0.46B",
+  "revision": "d0b5920fc0895a4cd8a05a1ace48015c37dab625",
+  "files": [
+    {
+      "artifact_file": "text_encoder/llm/model-00001-of-00005.safetensors",
+      "source": "<local path>",
+      "sha256": "31d6a825ae35f11fb85b195b4c42c146c051e446433125a215336abdf95cbf5f",
+      "bytes": 3996250744
+    },
+    {
+      "artifact_file": "text_encoder/llm/model-00002-of-00005.safetensors",
+      "source": "<local path>",
+      "sha256": "5991236cea6fe21f3d43cab0f0e84448734fbbe0789816202989f2ddc9d18282",
+      "bytes": 3993160032
+    },
+    {
+      "artifact_file": "text_encoder/llm/model-00003-of-00005.safetensors",
+      "source": "<local path>",
+      "sha256": "c5185c4794be2d8a9784d5753c9922db38df478ce11f9ed0b415b7304d896836",
+      "bytes": 3959604768
+    },
+    {
+      "artifact_file": "text_encoder/llm/model-00004-of-00005.safetensors",
+      "source": "<local path>",
+      "sha256": "b5ee7de71fbf17db3d5704e0c8f2bc7d005ca9e1d7ca2aeb19827b0cfcaa917a",
+      "bytes": 3187841392
+    },
+    {
+      "artifact_file": "text_encoder/llm/model-00005-of-00005.safetensors",
+      "source": "<local path>",
+      "sha256": "20c2d6366ab85c90786ccdd829cd2b9e7d30ef3b2ebbb998280e7e4014b542ff",
+      "bytes": 1244659840
+    },
+    {
+      "artifact_file": "text_encoder/sentence/model.safetensors",
+      "source": "<local path>",
+      "sha256": "a2bf730a0c7debf160f7a6b50b3aaf3703e7e88ac73de7a314903141db026dcb",
+      "bytes": 1710540580
+    }
+  ]
+}

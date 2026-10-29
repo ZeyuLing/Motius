@@ -142,31 +142,3 @@ class PositionalEncoding(nn.Module):
     def forward(self, x: Tensor) -> Tensor:
         x = x + self.pe[:, : x.shape[1], :]  # shape of [B, L, D]
         return self.dropout(x)
-
-
-if __name__ == "__main__":
-    # python -m hymotion.network.positional_encoding
-    num_feats = 32
-    rope = RotaryEmbedding(num_feats=num_feats, max_seq_len=5000, use_real=True)
-    x = torch.ones(1, 360, 1, num_feats)
-    text = torch.ones(1, 256, 1, num_feats)
-    q1, k1 = x.clone(), x.clone()
-    q2, k2 = text.clone(), text.clone()
-    print(x.shape)
-    # q1, k1 = rope.apply_rotary_emb(q1, k1)
-    # q2, k2 = rope.apply_rotary_emb(q2, k2)
-    q = torch.cat([q1, q2], dim=1)
-    k = torch.cat([k1, k2], dim=1)
-    q, k = rope.apply_rotary_emb(q, k)
-    q, k = q[0, :, 0, :], k[0, :, 0, :]
-    attn = (q[:, None] * k[None, :]).sum(dim=-1)
-    # softmax
-    # attn = torch.softmax(attn, dim=-1)
-    attn = attn.cpu().numpy()
-
-    import matplotlib.pyplot as plt
-
-    plt.imshow(attn, cmap="hot")
-    plt.colorbar()
-    plt.savefig("attn.png")
-    breakpoint()

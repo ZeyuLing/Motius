@@ -3,11 +3,7 @@
 This bundle holds a HunyuanMotionMMDiT transformer and provides atomic
 forward functions shared between Trainer and Pipeline:
 
-  - prepare_padding()       -- align src/tgt motions + build masks
-  - prepare_condition_context() -- build edit context and target mask
   - predict_flow()          -- single forward through the transformer
-  - decode_motion_from_latent() -- denormalize + FK to 3D keypoints
-  - mask_text_cond()        -- classifier-free guidance null masking
 """
 
 from __future__ import annotations
@@ -26,7 +22,6 @@ logger = logging.getLogger(__name__)
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from torch import Tensor
 
 from motius.models.base_model_bundle import ModelBundle
@@ -64,12 +59,6 @@ _DTYPE_ALIASES = {
 # ---------------------------------------------------------------------------
 # Helper
 # ---------------------------------------------------------------------------
-
-def _length_to_mask(lengths: Tensor, max_len: int) -> Tensor:
-    """Convert length list to boolean mask. (B,) -> (B, max_len)."""
-    if lengths.ndim == 1:
-        lengths = lengths.unsqueeze(1)
-    return torch.arange(max_len, device=lengths.device).expand(len(lengths), max_len) < lengths
 
 
 def _get_module_device(module: nn.Module) -> torch.device:
@@ -145,7 +134,7 @@ class AnimateCanvasBundle(ModelBundle):
 
     The only sub-module managed via ``_build_modules`` is
     ``motion_transformer``  (the HunyuanMotionMMDiT).  Auxiliary objects
-    (M2MLoss, SmplxLiteJ24, null embeddings, mean/std buffers) are created
+    (null embeddings and mean/std buffers) are created
     directly in ``__init__`` as regular attributes.
     """
 
@@ -214,6 +203,10 @@ class AnimateCanvasBundle(ModelBundle):
 
         # ---- text encoder config (lazy-loaded) ----
         self._text_encoder_cfg = deepcopy(text_encoder) if text_encoder else None
+        if self._text_encoder_cfg is not None:
+            from motius.configuration.hymotion_text import MOTIONCANVAS_PROMPT_TEMPLATE
+            self._text_encoder_cfg.setdefault("prompt_template", MOTIONCANVAS_PROMPT_TEMPLATE)
+            self._text_encoder_cfg.setdefault("sentence_padding", "max_length")
         self._text_dtype = _resolve_dtype(text_dtype)
 
         # ---- null embeddings for classifier-free guidance ----
@@ -236,13 +229,9 @@ class AnimateCanvasBundle(ModelBundle):
         # ---- mean / std buffers ----
         self._load_mean_std(mean_std_dir, mean_path=mean_path, std_path=std_path)
 
-        # ---- M2M loss ----
-        from motius.models.animatecanvas.network.m2m_loss import M2MLoss
-        self.m2m_loss = M2MLoss(**self._losses_cfg)
 
         # ---- SMPL body model (optional for FK losses / decode) ----
         self._body_model_path = body_model_path
-        self._body_model: Optional[nn.Module] = None  # lazy
         # Inference adapters may need the exact rest-skeleton asset used to
         # construct the model's 198-D training representation.  Keep this
         # override non-persistent so it is an explicit runtime contract rather
@@ -254,7 +243,8 @@ class AnimateCanvasBundle(ModelBundle):
                 map_location='cpu',
                 weights_only=True,
             )
-            self.set_bone_offsets_override(offsets)
+            from motius.motion.representation.hymotion_runtime.codecs import MotionCanvasCodec
+            MotionCanvasCodec(self).set_bone_offsets_override(offsets)
 
         # ---- store vtxt/ctxt dims for later ----
         self._vtxt_input_dim = vtxt_input_dim
@@ -371,28 +361,13 @@ class AnimateCanvasBundle(ModelBundle):
             target = getattr(self, name)
             target.data.copy_(state[name].to(device=target.device, dtype=target.dtype))
 
-    @property
-    def body_model(self):
-        """Lazy-load SmplxLiteJ24 body model."""
-        if self._body_model is None:
-            from motius.models.animatecanvas.network.smpl_lite import SmplxLiteJ24
-            kwargs = {}
-            if self._body_model_path is not None:
-                kwargs['model_path'] = self._body_model_path
-            try:
-                self._body_model = SmplxLiteJ24(**kwargs)
-                self._body_model.to(_get_module_device(self))
-                self._body_model.eval()
-            except Exception:
-                return None
-        return self._body_model
 
     # ------------------------------------------------------------------
     # Atomic forward functions (shared by Trainer and Pipeline)
     # ------------------------------------------------------------------
 
     @torch.no_grad()
-    def encode_text(self, text: List[str]) -> Dict[str, Tensor]:
+    def encode_text(self, text: dict) -> Dict[str, Tensor]:
         """Lazy-load text encoder and encode text to vtxt/ctxt.
 
         Returns dict with keys: text_vec_raw, text_ctxt_raw, text_ctxt_raw_length.
@@ -403,21 +378,20 @@ class AnimateCanvasBundle(ModelBundle):
                 raise RuntimeError(
                     'No text_encoder config provided; cannot encode text.'
                 )
-            from motius.models.animatecanvas.network.text_encoder import (
+            from motius.models.hymotion_t2m.network.text_encoder import (
                 HYTextModel,
             )
             cfg = deepcopy(self._text_encoder_cfg)
             cfg.pop('type', None)
+            cfg.pop('prompt_template', None)
+            cfg.pop('sentence_padding', None)
             if self._text_dtype is not None:
                 cfg['torch_dtype'] = self._text_dtype
             elif 'torch_dtype' in cfg:
                 cfg['torch_dtype'] = _resolve_dtype(cfg['torch_dtype'])
-            self._text_encoder = HYTextModel(**cfg)
-            # Keep text encoder on CPU — it is inference-only and not part of
-            # the trainable graph.  Moving an 8B LLM to each rank's GPU would
-            # exhaust memory.  encode() uses get_module_device(self) internally
-            # so inputs/outputs stay on CPU; we move the returned tensors to
-            # the training device below.
+            else:
+                cfg['torch_dtype'] = torch.float32
+            self._text_encoder = HYTextModel(**cfg).eval()
         vtxt, ctxt, ctxt_len = self._text_encoder.encode(text)
         return {
             'text_vec_raw': vtxt.to(device),
@@ -426,7 +400,7 @@ class AnimateCanvasBundle(ModelBundle):
         }
 
     @torch.no_grad()
-    def encode_task_instruction(self, task_instructions: List[str]) -> Dict[str, Tensor]:
+    def encode_task_instruction(self, task_instructions: dict) -> Dict[str, Tensor]:
         """Encode task instructions to vtxt-like embeddings using CLIP.
 
         Task instructions (e.g., 'complete motion from sparse random cells') are
@@ -434,29 +408,19 @@ class AnimateCanvasBundle(ModelBundle):
         then projected to 1024-dim via vtxt_encoder to match the adapter signal.
 
         Args:
-            task_instructions: List of task instruction strings (e.g., from mask_strategy)
+            task_instructions: Tensor features prepared by the external text processor.
 
         Returns:
             Dict with key 'task_emb' containing (B, 1, 1024) embeddings ready to add to adapter.
         """
         device = _get_module_device(self)
-        if not hasattr(self, '_text_encoder') or self._text_encoder is None:
-            if self._text_encoder_cfg is None:
-                raise RuntimeError(
-                    'No text_encoder config provided; cannot encode task instructions.'
-                )
-            from motius.models.animatecanvas.network.text_encoder import (
-                HYTextModel,
-            )
-            cfg = deepcopy(self._text_encoder_cfg)
-            cfg.pop('type', None)
-            self._text_encoder = HYTextModel(**cfg)
-
-        # Encode task instructions using CLIP (sentence_emb branch)
-        task_vtxt, _, _ = self._text_encoder.encode(task_instructions)
+        task_vtxt = self.encode_text(task_instructions)['text_vec_raw']
 
         # Project to 1024-dim to match vtxt_encoder output
-        task_emb = self.vtxt_encoder(task_vtxt.float().to(device))  # (B, 1, 1024)
+        network = self.motion_transformer
+        while hasattr(network, 'module'):
+            network = network.module
+        task_emb = network.vtxt_encoder(task_vtxt.float().to(device))
 
         return {'task_emb': task_emb}
 
@@ -516,46 +480,8 @@ class AnimateCanvasBundle(ModelBundle):
         return cfg
 
     def _package_text_encoder(self, save_dir: Path, cfg: dict) -> dict:
-        from motius.models.animatecanvas.network.text_encoder import (
-            LLM_ENCODER_LAYOUT,
-            SENTENCE_EMB_LAYOUT,
-        )
-
-        cfg = deepcopy(cfg)
-        llm_type = cfg.get('llm_type', 'qwen3')
-        sentence_type = cfg.get('sentence_emb_type', 'clipl')
-        llm_source = _resolve_source_path(
-            cfg.get('llm_model_path')
-            or LLM_ENCODER_LAYOUT[llm_type]['module_path']
-        )
-        sentence_source = _resolve_source_path(
-            cfg.get('sentence_emb_model_path')
-            or SENTENCE_EMB_LAYOUT[sentence_type]['module_path']
-        )
-        _copy_pretrained_tree(
-            llm_source,
-            save_dir / 'text_encoder' / 'llm',
-            ignore_patterns=('.cache',),
-        )
-        sentence_ignores = ('.cache',)
-        if (sentence_source / 'model.safetensors').exists():
-            sentence_ignores += (
-                'pytorch_model.bin',
-                'tf_model.h5',
-                'flax_model.msgpack',
-            )
-        _copy_pretrained_tree(
-            sentence_source,
-            save_dir / 'text_encoder' / 'sentence',
-            ignore_patterns=sentence_ignores,
-        )
-        cfg.update(
-            llm_model_path='text_encoder/llm',
-            llm_tokenizer_path='text_encoder/llm',
-            sentence_emb_model_path='text_encoder/sentence',
-            sentence_emb_tokenizer_path='text_encoder/sentence',
-        )
-        return cfg
+        from motius.configuration.hymotion_text import export_text_networks
+        return export_text_networks(self, save_dir, cfg, fallback_dtype=torch.float32)
 
     def save_pretrained(
         self,
@@ -568,6 +494,8 @@ class AnimateCanvasBundle(ModelBundle):
         """Write a complete AnimateCanvas artifact loadable by ``Pipeline``."""
         save_dir = Path(save_directory)
         save_dir.mkdir(parents=True, exist_ok=True)
+        from motius.configuration.hymotion_text import copy_hymotion_notices
+        copy_hymotion_notices(save_dir)
         config = self.config_dict()
         if include_text_encoder:
             config['text_encoder'] = self._package_text_encoder(
@@ -580,9 +508,12 @@ class AnimateCanvasBundle(ModelBundle):
             if safe_serialization
             else 'motion_transformer.pt'
         )
+        network = self.motion_transformer
+        while hasattr(network, 'module'):
+            network = network.module
         state = {
             f'motion_transformer.{key}': value.detach().cpu().contiguous()
-            for key, value in self.motion_transformer.state_dict().items()
+            for key, value in network.state_dict().items()
         }
         for name in (
             'null_vtxt_feat',
@@ -599,7 +530,8 @@ class AnimateCanvasBundle(ModelBundle):
             torch.save(state, save_dir / weights_name)
         np.save(save_dir / 'Mean.npy', self.mean.detach().cpu().numpy().astype(np.float32))
         np.save(save_dir / 'Std.npy', self.std.detach().cpu().numpy().astype(np.float32))
-        torch.save(self.get_bone_offsets().detach().cpu(), save_dir / 'bone_offsets_22.pt')
+        from motius.motion.representation.hymotion_runtime.codecs import MotionCanvasCodec
+        torch.save(MotionCanvasCodec(self).get_bone_offsets().detach().cpu(), save_dir / 'bone_offsets_22.pt')
 
         meta = {
             'model_type': 'animatecanvas',
@@ -721,155 +653,6 @@ class AnimateCanvasBundle(ModelBundle):
             **config,
         )
 
-    def mask_text_cond(
-        self,
-        vtxt: Tensor,
-        ctxt: Tensor,
-        force_mask: bool = False,
-        cond_mask_prob: float = 0.0,
-        return_text_available: bool = False,
-    ) -> Union[Tuple[Tensor, Tensor], Tuple[Tensor, Tensor, Tensor]]:
-        """Apply classifier-free guidance masking to text conditions.
-
-        Args:
-            vtxt: Sentence-level text embeddings, shape (B, 1, D_v).
-            ctxt: Token-level text embeddings, shape (B, L_c, D_c).
-            force_mask: If True, return null embeddings for all samples.
-            cond_mask_prob: Probability of masking text (CFG dropout rate).
-            return_text_available: If True, also return boolean mask indicating
-                which samples have real text (not masked). Shape (B,).
-
-        Returns:
-            - If return_text_available=False: (vtxt_masked, ctxt_masked)
-            - If return_text_available=True: (vtxt_masked, ctxt_masked, text_available)
-              where text_available[b]=True means sample b has real text,
-              text_available[b]=False means sample b was masked to null.
-        """
-        bs = vtxt.shape[0]
-        # Track which samples have real (non-masked) text
-        text_available = torch.ones(bs, dtype=torch.bool, device=vtxt.device)
-
-        if force_mask:
-            text_available.fill_(False)
-            result = (
-                self.null_vtxt_feat.expand(*vtxt.shape),
-                self.null_ctxt_input.expand(*ctxt.shape),
-            )
-            if return_text_available:
-                return result + (text_available,)
-            return result
-
-        if self.training and cond_mask_prob > 0.0:
-            mask = torch.bernoulli(
-                torch.ones(bs, device=vtxt.device) * cond_mask_prob
-            ).view(bs, 1).bool()
-            # Invert: mask=1 (drop text) -> text_available=0 (no real text)
-            text_available = ~mask.squeeze(-1)
-
-            mask_vtxt = mask
-            while mask_vtxt.ndim < vtxt.ndim:
-                mask_vtxt = mask_vtxt.unsqueeze(-1)
-            vtxt = torch.where(
-                mask_vtxt, self.null_vtxt_feat.expand_as(vtxt), vtxt
-            )
-            mask_ctxt = mask
-            while mask_ctxt.ndim < ctxt.ndim:
-                mask_ctxt = mask_ctxt.unsqueeze(-1)
-            ctxt = torch.where(
-                mask_ctxt, self.null_ctxt_input.expand_as(ctxt), ctxt
-            )
-
-        result = (vtxt, ctxt)
-        if return_text_available:
-            return result + (text_available,)
-        return result
-
-    def prepare_padding(
-        self,
-        src_motion: Tensor,
-        tgt_motion: Optional[Tensor],
-        tgt_length: List[int],
-        src_mask: Optional[Tensor] = None,
-        src_length: Optional[List[int]] = None,
-        ref_pose: Optional[Tensor] = None,
-    ) -> Tuple[Tensor, Tensor, Tensor, List[int], List[int], Tensor]:
-        """Pad src/tgt motions to the same length and build tgt_padding_mask.
-
-        Returns:
-            (src_motion, src_mask, tgt_motion, src_length, tgt_length,
-             tgt_padding_mask)
-        """
-        device = src_motion.device
-        B, L_s, D = src_motion.shape
-        L_t = tgt_motion.shape[1] if tgt_motion is not None else L_s
-        L_r = ref_pose.shape[1] if ref_pose is not None else 0
-
-        if src_length is None:
-            src_length = tgt_length
-
-        max_len = max(L_s, L_t)
-        if src_mask is None:
-            src_mask = torch.ones_like(src_motion)
-
-        # Pad src
-        if L_s < max_len:
-            pad = max_len - L_s
-            src_motion = F.pad(src_motion, (0, 0, 0, pad))
-            src_mask = F.pad(src_mask, (0, 0, 0, pad))
-
-        # Pad tgt
-        if tgt_motion is not None and L_t < max_len:
-            pad = max_len - L_t
-            tgt_motion = F.pad(tgt_motion, (0, 0, 0, pad))
-        elif tgt_motion is None:
-            tgt_motion = torch.zeros(B, max_len, D, dtype=src_motion.dtype, device=device)
-
-        # Build tgt_padding_mask
-        if L_r > 0:
-            ref_mask = torch.ones(B, L_r, dtype=torch.bool, device=device)
-        else:
-            ref_mask = torch.empty(B, 0, dtype=torch.bool, device=device)
-
-        tgt_mask = _length_to_mask(
-            torch.tensor(tgt_length, dtype=torch.long, device=device), max_len
-        )
-        tgt_padding_mask = torch.cat([ref_mask, tgt_mask], dim=1)
-
-        return src_motion, src_mask, tgt_motion, src_length, tgt_length, tgt_padding_mask
-
-    def prepare_condition_context(
-        self,
-        src_motion: Tensor,
-        ref_pose: Optional[Tensor] = None,
-        src_mask: Optional[Tensor] = None,
-    ) -> Tensor:
-        """Build the fixed motion-conditioning context.
-
-        The transformer always receives ``[x_t, edit_context, target_mask]``.
-        Hard motion observations are already imputed into ``x_t`` and are
-        re-imputed after every inference step, so they are not duplicated in
-        this context. ``edit_context`` contains the source motion only where
-        the model must generate (``target_mask == 1``); it is therefore zero
-        for completion tasks and populated for motion editing.
-
-        Returns a tensor of shape ``(B, L, 2 * D)``. Concatenating it with
-        ``x_t`` gives the transformer's fixed ``3 * D`` motion input.
-        """
-        B, L_src, D = src_motion.shape
-        if src_mask is None:
-            src_mask = torch.ones_like(src_motion)
-
-        edit_context = src_motion * src_mask
-
-        if ref_pose is not None:
-            _, L_ref, _ = ref_pose.shape
-            src_mask = torch.cat(
-                [torch.zeros(B, L_ref, D, dtype=src_mask.dtype, device=src_mask.device), src_mask],
-                dim=1,
-            )
-            edit_context = torch.cat([ref_pose, edit_context], dim=1)
-
-        return torch.cat([edit_context, src_mask], dim=-1)
 
     def predict_flow(
         self,
@@ -881,9 +664,6 @@ class AnimateCanvasBundle(ModelBundle):
         ctxt_mask_temporal: Optional[Tensor] = None,
         mask_density: Optional[Tensor] = None,
         task_emb: Optional[Tensor] = None,
-        sources: Optional[List[str]] = None,
-        trigger_sources: Optional[Set[str]] = None,
-        special_game_prob: float = 0.5,
     ) -> Tensor:
         """Single forward pass through the MMDiT transformer.
 
@@ -897,21 +677,10 @@ class AnimateCanvasBundle(ModelBundle):
             ctxt_mask_temporal: (B, Lc) boolean mask for text tokens.
             mask_density: (B,) optional mask density for CDE (CRFM v3).
             task_emb: (B, 1, 1024) optional task instruction embeddings to add to adapter.
-            sources: Optional data source names for official special-source token injection.
-            trigger_sources: Source names that should receive the learned special token.
 
         Returns:
             Model prediction, shape (B, L, D_motion).
         """
-        if ctxt_mask_temporal is not None:
-            vtxt_input, ctxt_input, ctxt_mask_temporal = self.maybe_inject_source_token(
-                vtxt_input=vtxt_input,
-                ctxt_input=ctxt_input,
-                ctxt_mask_temporal=ctxt_mask_temporal,
-                sources=sources,
-                trigger_sources=trigger_sources,
-                prob=special_game_prob,
-            )
         return self.motion_transformer(
             x=x_input,
             ctxt_input=ctxt_input,
@@ -922,153 +691,6 @@ class AnimateCanvasBundle(ModelBundle):
             mask_density=mask_density,
             task_emb=task_emb,
         )
-
-    def maybe_inject_source_token(
-        self,
-        vtxt_input: Tensor,
-        ctxt_input: Tensor,
-        ctxt_mask_temporal: Tensor,
-        sources: Optional[List[str]],
-        trigger_sources: Optional[Set[str]] = None,
-        prob: float = 0.5,
-    ) -> Tuple[Tensor, Tensor, Tensor]:
-        """Inject the official HYMotion special source token for selected sources."""
-        if (sources is None or trigger_sources is None) or not self.enable_special_game_feat:
-            return vtxt_input, ctxt_input, ctxt_mask_temporal
-
-        B, Lc, Dc = ctxt_input.shape
-        if not isinstance(sources, (list, tuple)) or len(sources) != B:
-            raise ValueError(f'sources length must equal batch size: {len(sources)} vs {B}')
-
-        trig = {str(s).lower() for s in trigger_sources}
-        src_mask = torch.tensor(
-            [str(s).lower() in trig for s in sources],
-            dtype=torch.bool,
-            device=ctxt_input.device,
-        )
-        if not src_mask.any():
-            return vtxt_input, ctxt_input, ctxt_mask_temporal
-
-        if self.training:
-            rand_mask = torch.rand(B, device=ctxt_input.device) < prob
-        else:
-            rand_mask = torch.ones(B, dtype=torch.bool, device=ctxt_input.device)
-        apply_mask = src_mask & rand_mask
-        if not apply_mask.any():
-            return vtxt_input, ctxt_input, ctxt_mask_temporal
-
-        vtxt_token = self.special_game_vtxt_feat.to(vtxt_input).expand(B, 1, -1)
-        vtxt_input = vtxt_input + vtxt_token * apply_mask.view(B, 1, 1).to(vtxt_input.dtype)
-
-        if ctxt_mask_temporal.dtype == torch.bool:
-            cur_len = ctxt_mask_temporal.sum(dim=1).long()
-        else:
-            cur_len = (ctxt_mask_temporal > 0).sum(dim=1).long()
-
-        can_inplace = apply_mask & (cur_len < Lc)
-        b_inplace = torch.nonzero(can_inplace, as_tuple=False).squeeze(1)
-        if b_inplace.numel() > 0:
-            pos = cur_len[b_inplace]
-            token = self.special_game_ctxt_feat.squeeze(0).squeeze(0).to(ctxt_input)
-            ctxt_input = ctxt_input.clone()
-            ctxt_mask_temporal = ctxt_mask_temporal.clone()
-            ctxt_input[b_inplace, pos, :] = token.unsqueeze(0).expand(b_inplace.numel(), Dc)
-            if ctxt_mask_temporal.dtype == torch.bool:
-                ctxt_mask_temporal[b_inplace, pos] = True
-            else:
-                ctxt_mask_temporal[b_inplace, pos] = 1
-
-        need_expand = (apply_mask & (cur_len >= Lc)).any()
-        if need_expand:
-            suffix = torch.zeros((B, 1, Dc), dtype=ctxt_input.dtype, device=ctxt_input.device)
-            full_hit = apply_mask & (cur_len >= Lc)
-            b_full = torch.nonzero(full_hit, as_tuple=False).squeeze(1)
-            if b_full.numel() > 0:
-                suffix[b_full, 0, :] = (
-                    self.special_game_ctxt_feat.expand(b_full.numel(), 1, -1)
-                    .to(ctxt_input)
-                    .squeeze(1)
-                )
-            ctxt_input = torch.cat([ctxt_input, suffix], dim=1)
-
-            if ctxt_mask_temporal.dtype == torch.bool:
-                suffix_mask = torch.zeros((B, 1), dtype=torch.bool, device=ctxt_input.device)
-                suffix_mask[b_full, 0] = True
-            else:
-                suffix_mask = torch.zeros(
-                    (B, 1), dtype=ctxt_mask_temporal.dtype, device=ctxt_input.device)
-                suffix_mask[b_full, 0] = 1
-            ctxt_mask_temporal = torch.cat([ctxt_mask_temporal, suffix_mask], dim=1)
-
-        return vtxt_input, ctxt_input, ctxt_mask_temporal
-
-    def decode_motion_from_latent(
-        self,
-        latent: Tensor,
-    ) -> Dict[str, Tensor]:
-        """Denormalize latent and run FK to get 3D keypoints.
-
-        Returns dict with keys: keypoints3d, rot6d, transl, latent_denorm.
-
-        When ``rotation_space == 'global'``, the denormalized rot6d is in
-        world-frame global rotation.  We convert it back to local (SMPL)
-        rotation before FK so that the output NPZ is always SMPL-compatible.
-        """
-        from motius.models.animatecanvas.network.geometry import rot6d_to_rotation_matrix
-
-        std = torch.where(self.std < 1e-3, torch.zeros_like(self.std), self.std)
-        latent_denorm = latent * std + self.mean
-
-        B, L = latent_denorm.shape[:2]
-        transl = latent_denorm[..., 0:3].clone()
-
-        # Extract rot6d: (B, L, 22, 6)
-        rot6d_all = latent_denorm[..., 3:135].reshape(B, L, 22, 6).clone()
-
-        # If trained in global rotation space, convert back to local for SMPL output
-        if self.rotation_space == 'global':
-            from motius.motion.skeleton.fk import global_to_local_rot6d
-            rot6d_all = global_to_local_rot6d(rot6d_all)
-
-        root_rot6d = rot6d_all[:, :, 0:1, :]   # (B, L, 1, 6)
-        body6d = rot6d_all[:, :, 1:, :]         # (B, L, 21, 6)
-        rot6d = rot6d_all
-        root_rotmat = rot6d_to_rotation_matrix(rot6d[:, :, 0, :])
-
-        k3d = None
-        if self.body_model is not None:
-            try:
-                device = latent.device
-                betas = torch.zeros(1, 16, device=device)
-                k3d_list = []
-                for b in range(B):
-                    out = self.body_model(
-                        body6d[b].to(device),
-                        betas,
-                        root_rot6d[b].to(device),
-                        transl[b].to(device),
-                    )
-                    k3d_list.append(out)
-                k3d = torch.stack(k3d_list, dim=0)
-            except Exception:
-                k3d = None
-
-        return {
-            'latent_denorm': latent_denorm,
-            'keypoints3d': k3d,
-            'rot6d': rot6d,
-            'transl': transl,
-            'root_rotations_mat': root_rotmat,
-        }
-
-    def normalize_motion(self, motion: Tensor) -> Tensor:
-        """Normalize motion using mean/std buffers."""
-        return (motion - self.mean) / self.std
-
-    def denormalize_motion(self, motion: Tensor) -> Tensor:
-        """Denormalize motion."""
-        std = torch.where(self.std < 1e-3, torch.ones_like(self.std), self.std)
-        return motion * std + self.mean
 
 
     def load_t2m_backbone(
@@ -1088,7 +710,7 @@ class AnimateCanvasBundle(ModelBundle):
         Returns:
             Dict with loading statistics (modules_loaded, modules_skipped, etc.)
         """
-        from motius.models.animatecanvas.checkpoint_loading import (
+        from motius.configuration.animatecanvas_checkpoint import (
             load_t2m_pretrained_selective,
         )
         return load_t2m_pretrained_selective(
@@ -1115,7 +737,7 @@ class AnimateCanvasBundle(ModelBundle):
           'blocks'       — above + double_blocks + single_blocks
           'full'         — all reusable T2M modules
         """
-        from .checkpoint_loading import _apply_freeze_strategy
+        from motius.configuration.animatecanvas_checkpoint import _apply_freeze_strategy
 
         frozen = _apply_freeze_strategy(self, strategy)
 
@@ -1139,75 +761,6 @@ class AnimateCanvasBundle(ModelBundle):
         super().train(mode)
         strategy = getattr(self, '_caption_freeze_strategy', 'none')
         if strategy != 'none':
-            from .checkpoint_loading import _apply_freeze_strategy
+            from motius.configuration.animatecanvas_checkpoint import _apply_freeze_strategy
             _apply_freeze_strategy(self, strategy)
         return self
-
-    def set_bone_offsets_override(self, bone_offsets: Tensor) -> None:
-        """Install an explicit, non-checkpointed FK-offset authority.
-
-        ``SmplxLiteJ24.J_template`` and the precomputed SMPL-H training asset
-        can differ by floating-point reconstruction even when they originate
-        from the same rest pose.  Formal inference must not let optional body
-        model availability choose which representation is fed to the network.
-        """
-        offsets = torch.as_tensor(bone_offsets).detach().clone().float()
-        if tuple(offsets.shape) != (22, 3):
-            raise ValueError(
-                'bone-offset override must have shape (22,3), got '
-                f'{tuple(offsets.shape)}'
-            )
-        if not torch.isfinite(offsets).all():
-            raise ValueError('bone-offset override contains non-finite values')
-        first_parameter = next(self.parameters(), None)
-        target_device = (
-            first_parameter.device
-            if first_parameter is not None
-            else offsets.device
-        )
-        self._bone_offsets_override = offsets.to(target_device)
-
-    def get_bone_offsets(self) -> Tensor:
-        """Get bone offsets for FK/IK.
-
-        Attempts to compute from body model first; falls back to pre-computed
-        file at ``data/hymotion_m2m_data/bone_offsets_22.pt``.
-
-        Returns:
-            bone_offsets: (22, 3) tensor of bone offsets.
-        """
-        from motius.motion.skeleton.names import SMPL22_PARENTS
-
-        # Formal inference can pin the training-representation authority.  The
-        # override must win regardless of whether the optional body model is
-        # present on a particular runtime host.
-        if self._bone_offsets_override is not None:
-            return self._bone_offsets_override
-
-        # Try computing from body model
-        if self.body_model is not None:
-            try:
-                J_template = self.body_model.J_template[:22].clone()
-                offsets = torch.zeros(22, 3, device=J_template.device, dtype=J_template.dtype)
-                offsets[0] = J_template[0]
-                for j in range(1, 22):
-                    parent = SMPL22_PARENTS[j]
-                    offsets[j] = J_template[j] - J_template[parent]
-                return offsets
-            except Exception:
-                pass
-
-        # Fallback: load pre-computed file
-        fallback_path = osp.join(
-            osp.dirname(osp.dirname(osp.dirname(osp.dirname(__file__)))),
-            'data', 'hymotion_m2m_data', 'bone_offsets_22.pt',
-        )
-        if osp.isfile(fallback_path):
-            offsets = torch.load(fallback_path, map_location='cpu')
-            return offsets.to(_get_module_device(self))
-
-        raise RuntimeError(
-            'Cannot compute bone offsets: body model unavailable and '
-            f'fallback file not found at {fallback_path}. '
-            'Run `python tools/precompute_bone_offsets.py` first.'
-        )

@@ -152,7 +152,7 @@ def global_to_local_rot6d_torch(global_rot6d: Tensor) -> Tensor:
     Returns:
         (*, 22, 6) row-major local rotations.
     """
-    from motius.models.animatecanvas.network.geometry import (
+    from motius.motion.representation.hymotion_runtime.geometry import (
         rot6d_to_rotation_matrix,
         rotation_matrix_to_rot6d,
     )
@@ -187,7 +187,7 @@ def local_to_global_rot6d_torch(local_rot6d: Tensor) -> Tensor:
     Returns:
         (*, 22, 6) row-major global rotations.
     """
-    from motius.models.animatecanvas.network.geometry import (
+    from motius.motion.representation.hymotion_runtime.geometry import (
         rot6d_to_rotation_matrix,
         rotation_matrix_to_rot6d,
     )

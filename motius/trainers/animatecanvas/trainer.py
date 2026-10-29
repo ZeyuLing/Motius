@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from motius.motion.conditioning.hymotion_conditions import prepare_padding, prepare_condition_context, mask_text_cond, predict_conditioned_flow
+from motius.motion.conditioning.hymotion_text import encode_hymotion_text, encode_hymotion_instruction
+
 import logging
 import os
 from typing import Any, Dict, List, Optional
@@ -49,7 +52,7 @@ class AnimateCanvasTrainer(BaseTrainer):
       3. Sample timesteps, create x_t via flow matching interpolation
       4. Build edit context and target mask
       5. Forward through bundle.predict_flow()
-      6. Compute loss via bundle.m2m_loss
+      6. Compute loss via self.m2m_loss
     """
 
     def __init__(
@@ -59,6 +62,10 @@ class AnimateCanvasTrainer(BaseTrainer):
         max_text_len: int = 128,
     ):
         super().__init__(bundle)
+        from motius.motion.representation.hymotion_runtime.codecs import MotionCanvasCodec
+        self.motion_codec = MotionCanvasCodec(bundle)
+        from .loss import M2MLoss
+        self.m2m_loss = M2MLoss(**bundle._losses_cfg)
         self.val_num_steps = val_num_steps
         # Fixed text sequence length — matches HY-Motion T2M 1.0 (max_length_llm=128).
         # Pre-extracted embeddings are variable-length; we pad/truncate to this.
@@ -191,8 +198,8 @@ class AnimateCanvasTrainer(BaseTrainer):
             # Stack 0-d tensors into a 1-d tensor, then convert to list
             src_length_list = torch.stack(src_length_list).tolist()
 
-        src_motion = self.bundle.normalize_motion(src_motion)
-        tgt_motion = self.bundle.normalize_motion(tgt_motion)
+        src_motion = self.motion_codec.normalize_motion(src_motion)
+        tgt_motion = self.motion_codec.normalize_motion(tgt_motion)
         if debug_train_step:
             self._debug_train_step_log("after normalize", device)
 
@@ -263,7 +270,7 @@ class AnimateCanvasTrainer(BaseTrainer):
 
         # 1. Prepare padding
         src_motion, src_mask, tgt_motion, src_length_list, tgt_length_list, tgt_padding_mask = (
-            self.bundle.prepare_padding(
+            prepare_padding(
                 src_motion, tgt_motion, tgt_length_list, src_mask, src_length_list, ref_pose
             )
         )
@@ -325,7 +332,7 @@ class AnimateCanvasTrainer(BaseTrainer):
                     null_mask.view(B, 1, 1).expand_as(ctxt_input), null_c, ctxt_input
                 )
 
-            vtxt_input, ctxt_input, text_available = self.bundle.mask_text_cond(
+            vtxt_input, ctxt_input, text_available = mask_text_cond(self.bundle,
                 vtxt_input, ctxt_input,
                 force_mask=False,
                 cond_mask_prob=self.bundle.cond_mask_prob,
@@ -356,12 +363,12 @@ class AnimateCanvasTrainer(BaseTrainer):
             # Replace None entries with empty string for encoder
             captions = [c if c is not None else '' for c in captions]
             with torch.no_grad():
-                text_feats = self.bundle.encode_text(captions)
+                text_feats = encode_hymotion_text(self.bundle, captions)
             vtxt_input = text_feats['text_vec_raw'].to(device)
             ctxt_input = text_feats['text_ctxt_raw'].to(device)
             ctxt_length = text_feats['text_ctxt_raw_length'].to(device)
             ctxt_mask_temporal = _length_to_mask(ctxt_length, ctxt_input.shape[1])
-            vtxt_input, ctxt_input, text_available = self.bundle.mask_text_cond(
+            vtxt_input, ctxt_input, text_available = mask_text_cond(self.bundle,
                 vtxt_input, ctxt_input,
                 force_mask=False,
                 cond_mask_prob=self.bundle.cond_mask_prob,
@@ -381,7 +388,7 @@ class AnimateCanvasTrainer(BaseTrainer):
         # P0: Task Instruction Modulation - provide explicit task awareness
         task_emb = None
         if batch.get("mask_strategy") is not None:
-            from motius.models.animatecanvas.task_instruction import get_task_instruction
+            from motius.motion.conditioning.animatecanvas_task import get_task_instruction
 
             strategies = batch["mask_strategy"]
             if isinstance(strategies, torch.Tensor):
@@ -391,7 +398,7 @@ class AnimateCanvasTrainer(BaseTrainer):
             task_instructions = [get_task_instruction(str(s)) for s in strategies]
 
             with torch.no_grad():
-                task_feats = self.bundle.encode_task_instruction(task_instructions)
+                task_feats = encode_hymotion_instruction(self.bundle, task_instructions)
             task_emb = task_feats["task_emb"].to(device)  # (B, 1, 1024)
 
         # 3. Flow matching: sample t, build x_t
@@ -424,7 +431,7 @@ class AnimateCanvasTrainer(BaseTrainer):
             x_t = x_t * src_mask + x1 * keep_mask
 
         # 4. Build edit context and target mask.
-        condition_context = self.bundle.prepare_condition_context(
+        condition_context = prepare_condition_context(
             src_motion=src_motion,
             ref_pose=ref_pose,
             src_mask=src_mask,
@@ -443,7 +450,7 @@ class AnimateCanvasTrainer(BaseTrainer):
                 f"ctxt_mask={tuple(ctxt_mask_temporal.shape)}",
                 device,
             )
-        pred = self.bundle.predict_flow(
+        pred = predict_conditioned_flow(self.bundle,
             task_emb=task_emb,
             x_input=x_input,
             ctxt_input=ctxt_input,
@@ -510,14 +517,14 @@ class AnimateCanvasTrainer(BaseTrainer):
             # path. Project them back to x1 before any geometry/temporal loss.
             pred_x1_for_geometry = None
             gt_x1_for_geometry = None
-            if self.bundle.m2m_loss.geometry_enabled:
+            if self.m2m_loss.geometry_enabled:
                 pred_x1_raw = x_t + (1 - t) * pred_velocity
                 pred_x1_for_geometry = self._project_known_x1_for_geometry(
                     pred_x1_raw, x1, generation_mask
                 )
                 gt_x1_for_geometry = x1
 
-            losses = self.bundle.m2m_loss(
+            losses = self.m2m_loss(
                 pred_vel=pred_velocity,
                 gt_vel=gt_velocity,
                 pred_x1=pred_x1_for_geometry,
@@ -525,8 +532,8 @@ class AnimateCanvasTrainer(BaseTrainer):
                 mean=self.bundle.mean,
                 std=self.bundle.std,
                 bone_offsets=(
-                    self.bundle.get_bone_offsets()
-                    if self.bundle.m2m_loss.geometry_enabled
+                    self.motion_codec.get_bone_offsets()
+                    if self.m2m_loss.geometry_enabled
                     else None
                 ),
                 rotation_space=getattr(self.bundle, 'rotation_space', 'local'),
@@ -540,12 +547,12 @@ class AnimateCanvasTrainer(BaseTrainer):
             gt_velocity = (x1 - x_t) / (1 - t).clamp_min(t_eps)
             pred_velocity = (pred - x_t) / (1 - t).clamp_min(t_eps)
             pred_x1_for_geometry = None
-            if self.bundle.m2m_loss.geometry_enabled:
+            if self.m2m_loss.geometry_enabled:
                 pred_x1_for_geometry = self._project_known_x1_for_geometry(
                     pred, x1, generation_mask
                 )
 
-            losses = self.bundle.m2m_loss(
+            losses = self.m2m_loss(
                 pred_vel=pred_velocity,
                 gt_vel=gt_velocity,
                 pred_x1=pred_x1_for_geometry,
@@ -553,8 +560,8 @@ class AnimateCanvasTrainer(BaseTrainer):
                 mean=self.bundle.mean,
                 std=self.bundle.std,
                 bone_offsets=(
-                    self.bundle.get_bone_offsets()
-                    if self.bundle.m2m_loss.geometry_enabled
+                    self.motion_codec.get_bone_offsets()
+                    if self.m2m_loss.geometry_enabled
                     else None
                 ),
                 rotation_space=getattr(self.bundle, 'rotation_space', 'local'),

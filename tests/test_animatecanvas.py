@@ -1,11 +1,15 @@
+
+from motius.motion.conditioning.hymotion_conditions import prepare_condition_context
 import json
 from pathlib import Path
 
 import torch
+import pytest
 from mmengine import Config
 
 from motius import Pipeline
 from motius.models.animatecanvas import AnimateCanvasBundle
+from motius.motion.representation.hymotion_runtime.codecs import MotionCanvasCodec
 from motius.pipelines.animatecanvas import AnimateCanvasPipeline
 
 
@@ -32,7 +36,7 @@ def tiny_bundle():
     )
     bundle.mean = torch.zeros(198)
     bundle.std = torch.ones(198)
-    bundle.set_bone_offsets_override(torch.zeros(22, 3))
+    MotionCanvasCodec(bundle).set_bone_offsets_override(torch.zeros(22, 3))
     return bundle
 
 
@@ -106,17 +110,40 @@ def test_animatecanvas_edit_context_matches_training_contract():
 
     completion_source = source * (1.0 - mask)
     editing_source = source * (1.0 - mask) + edit * mask
-    completion_context = pipeline.bundle.prepare_condition_context(
+    completion_context = prepare_condition_context(
         completion_source,
         src_mask=mask,
     )
-    editing_context = pipeline.bundle.prepare_condition_context(
+    editing_context = prepare_condition_context(
         editing_source,
         src_mask=mask,
     )
 
     assert torch.count_nonzero(completion_context[..., :198]) == 0
     assert torch.equal(editing_context[..., :198], edit * mask)
+
+
+@pytest.mark.parametrize("wrapped", [False, True])
+def test_task_instruction_projects_through_the_actual_transformer(monkeypatch, wrapped):
+    bundle = tiny_bundle().eval()
+    if wrapped:
+        class WrappedTransformer(torch.nn.Module):
+            def __init__(self, module):
+                super().__init__()
+                self.module = module
+
+            def forward(self, *args, **kwargs):
+                return self.module(*args, **kwargs)
+
+        bundle.motion_transformer = WrappedTransformer(bundle.motion_transformer)
+    # The text processor/tower boundary supplies cached pooled CLIP features.
+    # Exercise the real projector rather than loading an unrelated 8B tower.
+    monkeypatch.setattr(bundle, "encode_text", lambda features: features)
+    projected = bundle.encode_task_instruction(
+        {"text_vec_raw": torch.randn(2, 1, 768)}
+    )["task_emb"]
+    assert projected.shape == (2, 1, 64)
+    assert torch.isfinite(projected).all() and not projected.requires_grad
 
 
 def test_animatecanvas_training_config_uses_tracked_authority_assets():
