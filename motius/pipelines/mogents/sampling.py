@@ -13,12 +13,14 @@ with the checkpoint ``Mean`` / ``Std``.
 """
 
 from __future__ import annotations
+from motius.motion.conditioning.clip_text import encode_clip_text
 
 from typing import Sequence
 
 import torch
 import torch.nn.functional as F
 from torch.distributions.categorical import Categorical
+from .decoding import aux_base_generate,ts_base_generate,aux_residual_generate,ts_residual_generate
 
 
 @torch.no_grad()
@@ -28,7 +30,7 @@ def estimate_token_lengths(
     captions: Sequence[str],
 ) -> torch.Tensor:
     """Sample per-caption token lengths from the frozen CLIP text feature."""
-    text_embedding = text_transformer.encode_text(list(captions))
+    text_embedding = encode_clip_text(text_transformer, list(captions))
     pred_dis = length_estimator(text_embedding)
     probs = F.softmax(pred_dis, dim=-1)
     return Categorical(probs).sample().long()
@@ -52,6 +54,7 @@ def generate_motion(
     res_cond_scale: float = 5.0,
     res_temperature: float = 1.0,
     n_joint_groups: int = 6,
+    fusion=None,
 ) -> torch.Tensor:
     """Run the full MoGenTS T2M decoding stack.
 
@@ -69,7 +72,7 @@ def generate_motion(
         ``T = max(token_lens) * 4``.
     """
     captions = list(captions)
-    mids_aux = mask_transformer_aux.generate(
+    mids_aux = aux_base_generate(mask_transformer_aux,
         captions,
         token_lens,
         timesteps=time_steps,
@@ -78,7 +81,7 @@ def generate_motion(
         topk_filter_thres=topk_filter_thres,
         gsample=gsample,
     )
-    mids_ts = mask_transformer_ts.generate(
+    mids_ts = ts_base_generate(mask_transformer_ts,
         captions,
         token_lens,
         timesteps=time_steps,
@@ -88,19 +91,22 @@ def generate_motion(
         gsample=gsample,
         n_j=n_joint_groups,
     )
-    mids_aux = res_transformer_aux.generate(
+    mids_aux = aux_residual_generate(res_transformer_aux,
         mids_aux,
         captions,
         token_lens,
         temperature=res_temperature,
         cond_scale=res_cond_scale,
     )
-    mids_ts = res_transformer_ts.generate(
+    mids_ts = ts_residual_generate(res_transformer_ts,
         mids_ts,
         captions,
         token_lens,
         temperature=res_temperature,
         cond_scale=res_cond_scale,
     )
-    _, pred_motions = vq_model.forward_decoder(mids_aux, mids_ts)
+    from motius.motion.representation.mogents import unpack_motion
+    auxiliary,spatial=vq_model.forward_decoder(mids_aux,mids_ts)
+    if fusion is None:raise ValueError("The MoGenTS neural fusion module is required")
+    pred_motions=fusion(auxiliary,unpack_motion(spatial,vq_model.J0))
     return pred_motions
