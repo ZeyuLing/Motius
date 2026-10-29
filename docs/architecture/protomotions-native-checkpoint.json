@@ -1,0 +1,10 @@
+{
+  "complete": true,
+  "scope": "Actual two-iteration native CLI training, automatic restore at iteration 2, continuation to iteration 3, current-weight export from full native checkpoint, cold Auto Pipeline reconstruction; all current neural tensors and prepared actor outputs exact. This verifies framework checkpoint/export state, not independent original optimizer resume or full-dataset metrics.",
+  "neural_tensors_exact": 51,
+  "prepared_actions_shape": [
+    4,
+    29
+  ],
+  "prepared_actions_exact": true
+}

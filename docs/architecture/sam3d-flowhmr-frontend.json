@@ -1,0 +1,20 @@
+{
+  "complete": true,
+  "atol": 0,
+  "rtol": 0,
+  "frames": 30,
+  "exact_keys": [
+    "bboxes",
+    "camera_RT",
+    "camera_K",
+    "features"
+  ],
+  "input_sha256": "88a01c4d075b20664b7fcfe6e2bceb8e6068328faf82e7ebcd02d93d44ea13bd",
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "weights_sha256": {
+    "yolox_l.pth": "1e6b7fa6240375370b2a8a8eab9066b3cdd43fd1d0bfa8d2027fd3a51def2917",
+    "vggt_omega_1b_512.pt": "c02da418b18bb01d0392598d3f6147366bcde1bb70fd08a5e3bf7925b0667934",
+    "sam/model.ckpt": "b5a2f9d305dd02626b967aa2e86021fba07065df66ce7a7e00ffb9664f150abf",
+    "sam/assets/mhr_model.pt": "352e271a6c42729c68554ceaea0c955e866970160c31e35506d782dc0f7377bc"
+  }
+}

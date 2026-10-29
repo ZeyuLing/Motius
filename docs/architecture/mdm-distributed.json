@@ -1,0 +1,9 @@
+{
+  "complete": true,
+  "scope": "mdm released networks, native prepared-motion Trainer and actual shared AccelerateRunner: three two-GPU updates, distinct rank-local inputs, all neural replica hashes synchronized, frozen CLIP unchanged and full network checkpoint saved. Synthetic normalized-motion/observation fixture; not original distributed optimizer/AMP/corpus protocol.",
+  "world_size": 2,
+  "updates": 3,
+  "neural_tensors": 410,
+  "all_replica_neural_hashes_equal": true,
+  "frozen_clip_unchanged": true
+}

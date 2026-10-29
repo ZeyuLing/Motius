@@ -1,0 +1,9 @@
+{
+  "complete": true,
+  "scope": "EDGE released EMA neural weights and supplied scaler through actual public prepared-dance configuration/NPZ reader/native Trainer and shared two-GPU Runner. Three original-Adan updates with source-order EMA, online/EMA replica hashes synchronized and complete checkpoints. Synthetic prepared music/motion fixture; original full corpus/FP16/epoch protocol excluded.",
+  "world_size": 2,
+  "updates": 3,
+  "online_tensors": 249,
+  "ema_tensors": 249,
+  "all_replica_hashes_equal": true
+}

@@ -1,0 +1,8 @@
+{
+  "complete": true,
+  "scope": "Actual released PRISM-KT transformer, frozen VAE/UMT5, native Trainer with raw captions and shared two-GPU Runner on explicit prepared physical-motion fixtures. Three AdamW updates; all transformer hashes synchronized, frozen roots unchanged and complete trainable/optimizer checkpoint. Full original corpus/AMP/progress protocol excluded.",
+  "world_size": 2,
+  "updates": 3,
+  "neural_tensors": 825,
+  "all_replica_hashes_equal": true
+}

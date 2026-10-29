@@ -1,0 +1,1410 @@
+{
+  "complete": true,
+  "scope": "Compare relocated data transforms with an explicit pre-migration snapshot.\n\nThis is a migration regression certificate, not an independent upstream result.\n",
+  "snapshot": "<local path>",
+  "comparisons": [
+    {
+      "method": "condmdi",
+      "function": "normalize_absolute",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "condmdi",
+      "function": "denormalize_absolute",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "condmdi",
+      "function": "normalize_absolute",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "condmdi",
+      "function": "denormalize_absolute",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "condmdi",
+      "function": "normalize_absolute",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "condmdi",
+      "function": "denormalize_absolute",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "condmdi",
+      "function": "normalize_absolute",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "condmdi",
+      "function": "denormalize_absolute",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "condmdi",
+      "function": "normalize_absolute",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "condmdi",
+      "function": "denormalize_absolute",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "condmdi",
+      "function": "normalize_absolute",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "condmdi",
+      "function": "denormalize_absolute",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "edge",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "edge",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "edge",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "edge",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "edge",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "edge",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "flowmdm",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "flowmdm",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "flowmdm",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "flowmdm",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "flowmdm",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "flowmdm",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "maskcontrol",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "maskcontrol",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "maskcontrol",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "maskcontrol",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "maskcontrol",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "maskcontrol",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mdm",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mdm",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mdm",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mdm",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mdm",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mdm",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mld",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mld",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mld",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mld",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mld",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mld",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mogents",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mogents",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mogents",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mogents",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mogents",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "mogents",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "momask",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "momask",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "momask",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "momask",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "momask",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "momask",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "normalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "normalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "ndarray",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "ndarray",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "normalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "normalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "ndarray",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "ndarray",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "normalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "normalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "ndarray",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "ndarray",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "normalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "normalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "ndarray",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "ndarray",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "normalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "normalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionclr",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionlcm",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionlcm",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionlcm",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionlcm",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionlcm",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionlcm",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionmillion",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionmillion",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionmillion",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionmillion",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionmillion",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionmillion",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionstreamer",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionstreamer",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionstreamer",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionstreamer",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionstreamer",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "motionstreamer",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "omnicontrol",
+      "function": "normalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "omnicontrol",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "omnicontrol",
+      "function": "normalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "omnicontrol",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "omnicontrol",
+      "function": "normalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "omnicontrol",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "omnicontrol",
+      "function": "normalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "omnicontrol",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "omnicontrol",
+      "function": "normalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "omnicontrol",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "omnicontrol",
+      "function": "normalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "omnicontrol",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "projflow",
+      "function": "normalize_joints",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "projflow",
+      "function": "denormalize_joints",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "projflow",
+      "function": "normalize_joints",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "projflow",
+      "function": "denormalize_joints",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "projflow",
+      "function": "normalize_joints",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "projflow",
+      "function": "denormalize_joints",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "projflow",
+      "function": "normalize_joints",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "projflow",
+      "function": "denormalize_joints",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "projflow",
+      "function": "normalize_joints",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "projflow",
+      "function": "denormalize_joints",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "projflow",
+      "function": "normalize_joints",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "projflow",
+      "function": "denormalize_joints",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "t2mgpt",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "t2mgpt",
+      "function": "denormalize",
+      "dtype": "torch.float32",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "t2mgpt",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "t2mgpt",
+      "function": "denormalize",
+      "dtype": "torch.float64",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "t2mgpt",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        9,
+        38
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    },
+    {
+      "method": "t2mgpt",
+      "function": "denormalize",
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2,
+        7,
+        263
+      ],
+      "input_type": "Tensor",
+      "exact": true
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "complete": true,
+  "scope": "Actual released matching encoders with modified motion/text/BERT neural weights, sub-Float32 Float64 mean/std changes and nondefault max192/unit8 preprocessing. All neural hashes, statistics, raw-caption and ragged physical-motion embeddings match after offline fresh-process export/loading.",
+  "tests": [
+    {
+      "tensor": "/tokens/input_ids",
+      "shape": [
+        3,
+        7
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tokens/attention_mask",
+      "shape": [
+        3,
+        7
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/backbone",
+      "shape": [
+        3,
+        7,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mean",
+      "shape": [
+        272
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/std",
+      "shape": [
+        272
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text",
+      "shape": [
+        3,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion",
+      "shape": [
+        3,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

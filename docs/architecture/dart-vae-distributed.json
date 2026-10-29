@@ -1,0 +1,10 @@
+{
+  "complete": true,
+  "scope": "Original released DART weights, native primitive Trainer/full configured body losses, original AdamW/clip/LR/EMA and shared two-GPU Runner on explicit prepared NPZ fixtures. Three updates, every online/EMA/frozen replica hash synchronized, frozen root unchanged, complete checkpoint. No original full corpus/multi-primitive curriculum/AMP or implicit save-time VAE calibration claim.",
+  "stage": "vae",
+  "world_size": 2,
+  "updates": 3,
+  "online_tensors": 197,
+  "ema_tensors": 197,
+  "all_replica_hashes_equal": true
+}

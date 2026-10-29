@@ -1,0 +1,8 @@
+{
+  "complete": true,
+  "wheel": "<local path>",
+  "wheel_sha256": "cfaf560d9e842785b0553e25d362acc0f57c00c72b861c32d1a4d4345371fb4c",
+  "python_files": 1662,
+  "findings": [],
+  "scope": "Archive files versus current source, regular-package completeness, vendor applications and selected relocated runtime statistics/legal notices. Does not establish runtime optional-dependency closure or numerical source parity."
+}

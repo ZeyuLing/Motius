@@ -1,0 +1,7 @@
+{
+  "complete": true,
+  "scope": "Actual public tools/train.py, native prepared EDGE NPZ/config/Trainer, original Adan and source-order EMA: two updates then full automatic resume to update three. Both online/EMA states change on resume and full optimizer/checkpoints exist. Synthetic prepared-data integration; original corpus/FP16/full epoch validation protocol excluded.",
+  "initial_updates": 2,
+  "resumed_update": 3,
+  "online_and_ema_resumed": true
+}

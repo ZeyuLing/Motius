@@ -1,0 +1,16 @@
+{
+  "complete": false,
+  "method": "mogendit",
+  "status": "original_source_unavailable",
+  "expected_archive": "MoGenDiT-before-deletion-9db68e7e.zip",
+  "recorded_archive_sha256": "6dee3c94f2fb74dcb2643fa7cdd555e2593765642a89b4c9b4695948b8843f49",
+  "required_original_files": [
+    "model/more_diff.py",
+    "model/my_model.py",
+    "motion_process/motion_refiner.py",
+    "trainer/my_trainer.py"
+  ],
+  "evidence": "Existing source manifest and hash-verified recoverable diffusion/representation dependencies; original Motius before/after refiner checks on three nonzero synthetic-weight cases. Those checks do not replace an independent full original-source and released-weight comparison.",
+  "availability_checks": "Checked local project/history locations and connected repository source search. No complete matching original archive or original trainer/refiner was found. The recorded archive filename is not treated as an independently established Git commit identity.",
+  "needed": "A readable local path or accessible source location for the complete original archive, plus the released checkpoint when available. Its recorded source hashes must be verified before issuing a complete original-source certificate."
+}

@@ -1,0 +1,10 @@
+{
+  "complete": true,
+  "scope": "motionlcm released networks, native prepared-motion Trainer and actual shared AccelerateRunner: three two-GPU updates, distinct rank-local inputs, all neural replica hashes synchronized, frozen SentenceT5 unchanged and full network checkpoint saved. Synthetic normalized-motion/observation fixture; not original distributed optimizer/AMP/corpus protocol. Frozen teacher/VAE/text and changing EMA target are included in the integration assertions.",
+  "world_size": 2,
+  "updates": 3,
+  "stage": null,
+  "neural_tensors": 126,
+  "all_replica_neural_hashes_equal": true,
+  "frozen_clip_unchanged": true
+}

@@ -1,0 +1,9 @@
+{
+  "complete": true,
+  "method": "motionlcm",
+  "stage": "distillation",
+  "scope": "Actual public tools/train.py, shared prepared-motion configuration, NPZ data reader and native Trainer: two updates then automatic full resume to update three; complete network/optimizer checkpoints, frozen SentenceT5 unchanged and resumed neural update verified. Synthetic prepared-data integration; not original raw-data/EMA/optimizer training protocol. Frozen teacher/VAE/text and changing EMA target are included in the integration assertions.",
+  "frozen_clip_tensors": 197,
+  "initial_updates": 2,
+  "resumed_update": 3
+}

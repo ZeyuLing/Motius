@@ -1,0 +1,182 @@
+{
+  "complete": true,
+  "comparison": "original source with released checkpoint",
+  "upstream_commit": "5100c555de9839b325d0f3d6904669698c5c87f5",
+  "source_files": {
+    "models/losses.py": "c1aa688052e237d803c45731e698c3fa97925439d7fea0cbfb0d6384f948ac27",
+    "models/mask_transformer/tools.py": "fd6bb95b594147d92223114f9a6e01a92abd003d6509389793669c798b959f36",
+    "models/mask_transformer/transformer_modules.py": "0723cab1809d45c9461ed8359da6c0a3b10e0abf7f05bebf826f586ab68e18cf",
+    "models/mask_transformer/transformer.py": "652f5639e22414816ac86008a22e8211b04f1275afa01032fadedc34a2389379",
+    "models/mask_transformer/transformer_trainer.py": "d9509cdf9e715a15f5267d2ba66065c01916ab855ff4704a5475f7ffaa4390c1",
+    "models/mask_transformer/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "models/evaluator/evaluator.py": "9dc440af9f0e47e94046f3e4c373a619cf1e35942d6c4dffda6a194341c0cae3",
+    "models/evaluator/evaluator_models.py": "5bd9b1f6964d9ec5fe4d31f64f924dbe17b315008d996bc92080991ff7a10b34",
+    "models/evaluator/evaluator_interx.py": "7fddc86825dc2331a8cbf54498380af38b39f2e66112c8b127445b5893e10346",
+    "models/vq/resnet.py": "bf34d42c136b99de3eb877fc6b5e36116ef3835347311dbe75723db230977324",
+    "models/vq/model.py": "db3f33b367d0f18cbf46816ab426fe75ba25ac92aafbe1baa04e9e7b17de55c5",
+    "models/vq/vq_trainer.py": "58550f822e6cb3854bdc36fb2d733596d8b7b04defd5e74d31a078ab9011dd8d",
+    "models/vq/quantizer.py": "230dd5919cf1aaaf8911d1d848cb65d46c7de2197159a04131f2b22d0c8b8426",
+    "models/vq/residual_vq.py": "164b8a2ce129b382d285448f51341f19068db61a1efae431b74db83371bd4be8",
+    "models/vq/encdec.py": "555a67b9ee78dd67a69100b733b5dbf9e323627719cee44b751110b7d18442b5",
+    "models/vq/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "utils/utils.py": "e5f21f817e9afec05001f8401cdcf6742b496a6ab28ab58398be8ec9385a8336",
+    "utils/plot_script.py": "66ff14b63c8ddb8150b2abbbac9c7ebebdef65b6b4420ab9694cc6339922b795",
+    "utils/paramUtil.py": "31138ce9c3ac2fc89dbdb6116cdd54498098f0388884d8e4768d68b501d1595c",
+    "utils/metrics.py": "9b6461032246313cbbf99c50d358812bd88b8b4333c858105039028a4a7b20d2",
+    "utils/get_opt.py": "ab2c22d74ac3aa98d3d94f2d4627f275a01e3e98199daa7cd5206ebdfb69d28f",
+    "utils/word_vectorizer.py": "8810c11fb12f130e10fcfcd8a4b5ced7e8cec3103977111d7ab6edfb7574ce1a",
+    "data/utils.py": "16cce02600004466a6b0aed45f383b248f2b8fa61577faee3caba3281864abf0",
+    "data/interhuman.py": "abf921b687e62f73f101eda789f2c13ca8cd615a3866700e562fe2d4104d9fa1",
+    "data/interx_preprocess.py": "cd1c2ac8cf4eb9f526bb40e4ca96029d1b0bc25f22b2eabc7e7dcda0f426cf3e",
+    "data/interx_utils.py": "32ef6b8b72a161c7330f63d1d767c083daffc5702c8d7fa9b75d9a57cb3d8fcb",
+    "data/interx.py": "9a6aebe5f309eef751e7e5ac61db9633c00914c3dcec8c2c33783d96836d0f18",
+    "data/quaternion.py": "7cefe9caa94daf15da55a746ef1f74f96eeac636ebbccbed6da95de9c7747722",
+    "data/rotation_conversions.py": "ba21bc55ad8f4ae7c547f432e9d91296bef86cef80ad21ee59971dedd0babeb2",
+    "data/body_model/lbs.py": "7c7a41c8cead8e7f2f203f280a07a6b3297da4b3ed72a0d74cd2499979aaad94",
+    "data/body_model/rigid_object_model.py": "86f791ae7261f4ad75f1fbbc2a3ae36bc86aed854dc5154f6f746c0ed8a1b31a",
+    "data/body_model/body_model.py": "b7d2db403feb55dc808dfb3091a8f984202cc1907070d6a1371ca1970d30c913",
+    "data/body_model/__init__.py": "08dc70c7f3b8647b19b3de5c6047d92b9f9a7daa1827b9cfcc79db4e021ff3d6"
+  },
+  "artifact_files": {
+    "vq_model.safetensors": "a9ec2532db6e56a533b587a2a0b5f12d7b8e576700acfc7a38072871e3822f59",
+    "transformer.safetensors": "3566b03bdf200be3eecd2f20bf2ca2a3877d9b8d5fe6b1d2554127bdb013fcde",
+    "transformer_opt.txt": "eea88116566997576f28c31dc0bf5e1407645f9d9a56c45d638a4da22b739535",
+    "vq_opt.txt": "4cf108b19ea48e43f0e002618dd79b03a9444d17fc0849f54e4e01230f17406d",
+    "stats/global_std.npy": "dd5988b979e9803786ab497f5945316c2d52b97c90b593d0427220fd49b03e4b",
+    "stats/global_mean.npy": "2f97b88889c773551cd597c32e88bfa070c2fb1721a992a80bfb7cf4c22e03b6"
+  },
+  "tests": [
+    {
+      "case": "seed13_frames32_batch1_gumbelFalse",
+      "tensor": "ids",
+      "shape": [
+        1,
+        80
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0
+    },
+    {
+      "case": "seed13_frames32_batch1_gumbelFalse",
+      "tensor": "motion",
+      "shape": [
+        1,
+        32,
+        2,
+        262
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "case": "seed13_frames32_batch1_gumbelFalse",
+      "tensor": "logits",
+      "shape": [
+        40,
+        1,
+        1024,
+        80
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "case": "seed19_frames60_batch2_gumbelFalse",
+      "tensor": "ids",
+      "shape": [
+        2,
+        150
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0
+    },
+    {
+      "case": "seed19_frames60_batch2_gumbelFalse",
+      "tensor": "motion",
+      "shape": [
+        2,
+        60,
+        2,
+        262
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "case": "seed19_frames60_batch2_gumbelFalse",
+      "tensor": "logits",
+      "shape": [
+        40,
+        2,
+        1024,
+        150
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "case": "seed27_frames32_batch1_gumbelTrue",
+      "tensor": "ids",
+      "shape": [
+        1,
+        80
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0
+    },
+    {
+      "case": "seed27_frames32_batch1_gumbelTrue",
+      "tensor": "motion",
+      "shape": [
+        1,
+        32,
+        2,
+        262
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "case": "seed27_frames32_batch1_gumbelTrue",
+      "tensor": "logits",
+      "shape": [
+        40,
+        1,
+        1024,
+        80
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "case": "reaction",
+      "tensor": "ids",
+      "shape": [
+        1,
+        80
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "native_files": {
+    "motius/models/intermask/bundle.py": "fae66bb6fdfa65b361e6987ba28ca05cad8001fafa258e6b734a18a1e6c9d122",
+    "motius/models/intermask/__init__.py": "8b14c43b35ae254a33d587055bb0d580cd780dfacce42a60bb6a651b1e6169e5",
+    "motius/models/intermask/network/__init__.py": "8fc5d2ef362994031eb7aec14be41f4110e545b3aef7ab2a25d93a8cccb7f6d4",
+    "motius/models/intermask/network/models/__init__.py": "553a4c9c9e3c5665d0640c9c2c7f395182e85dedf314a1af45e844f460adc6e4",
+    "motius/models/intermask/network/models/mask_transformer/transformer_modules.py": "5f8c22c0547d2d099d6d173d367bb867f62ba27389bdce6385a778e33db9dc8d",
+    "motius/models/intermask/network/models/mask_transformer/transformer.py": "4e35af9ea808b8d37309619e1caea06c5e92820aee541016f27c51a91b4f71d0",
+    "motius/models/intermask/network/models/mask_transformer/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "motius/models/intermask/network/models/vq/resnet.py": "ba4b96ab4dd873493cdc9b51b33a7a2deb3442a76e2cfa18da13723ee3f39f9a",
+    "motius/models/intermask/network/models/vq/model.py": "5c2c1217f25d6bf65ef304114ae55f56faad2989c50437248771a4b31826a5ef",
+    "motius/models/intermask/network/models/vq/quantizer.py": "c025f2e3f32013a630a8c460a3457df68c9ea78be653437c86d48d50bc3ac7e4",
+    "motius/models/intermask/network/models/vq/residual_vq.py": "e18bf6a35846a81a374550c0372aa880a17cf1e38598bb2a436c4d45039b6c69",
+    "motius/models/intermask/network/models/vq/encdec.py": "f085b010f67d85252a55325e117f10d6f8bfd2fbb6ca168c354237a2980fc05e",
+    "motius/models/intermask/network/models/vq/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "motius/pipelines/intermask/sampling.py": "cdf8cebfd15cc9c449fe42d141e98608ba4931babe798e0efc43a117dd9d3518",
+    "motius/pipelines/intermask/pipeline.py": "7c920cc819a91d5bec95071f90fd7c5683fc1bc3d1b9053202f763b73babc2ec",
+    "motius/pipelines/intermask/__init__.py": "40b3ff3aa1c288214460ef5c39ec5b58bee3a53fd9f9ac813e97f62d27c6998a",
+    "motius/motion/representation/intermask.py": "d77f94bbb8f498249540f3931406959b99e428ce85d9cccdd6629e89b5d88b02"
+  }
+}

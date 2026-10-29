@@ -1,0 +1,9 @@
+{
+  "complete": true,
+  "scope": "Every native EDGE EMA state and both range-scaler tensors versus the original author Google Drive checkpoint, including dtype. Does not certify raw audio extraction or the original training run.",
+  "download_url": "https://drive.google.com/uc?id=1BAR712cVEqB8GR37fcEihRV_xOC-fZrZ",
+  "checkpoint_sha256": "28ca4ce167bb17c36869b4d021af8762a34c6df034002f61b3bc1c1d0b1b02c7",
+  "checkpoint_bytes": 1187620478,
+  "exact_neural_tensors": 249,
+  "exact_scaler_tensors": 2
+}

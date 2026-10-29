@@ -1,0 +1,158 @@
+{
+  "complete": true,
+  "deterministic_geometry": true,
+  "comparison": "Original unchanged GEM-X video detection/ByteTrack, DINOv3 SOMA-77 heatmaps, SAM3D primary body-token features and camera preparation versus native components",
+  "upstream_commit": "32992550dba114c62243fb55e361311972dce8f9",
+  "dinov3_commit": "6876159a11b4df116f30f667f8c9888617df0751",
+  "video_sha256": "88a01c4d075b20664b7fcfe6e2bceb8e6068328faf82e7ebcd02d93d44ea13bd",
+  "tests": [
+    {
+      "tensor": "/length",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/bbx_xys",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/kp2d",
+      "shape": [
+        30,
+        77,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/K_fullimg",
+      "shape": [
+        30,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cam_angvel",
+      "shape": [
+        30,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cam_tvel",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/R_w2c",
+      "shape": [
+        30,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/T_w2c",
+      "shape": [
+        30,
+        4,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/f_imgseq",
+      "shape": [
+        30,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/noisy_pred_cam",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/has_text",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mask/valid",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mask/has_img_mask",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mask/has_2d_mask",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mask/has_cam_mask",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mask/has_audio_mask",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mask/has_music_mask",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01"
+}

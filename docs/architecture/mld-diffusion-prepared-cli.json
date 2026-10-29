@@ -1,0 +1,9 @@
+{
+  "complete": true,
+  "method": "mld",
+  "stage": "diffusion",
+  "scope": "Actual public tools/train.py, shared prepared-motion configuration, NPZ data reader and native Trainer: two updates then automatic full resume to update three; complete network/optimizer checkpoints, frozen CLIP unchanged and resumed neural update verified. Synthetic prepared-data integration; not original raw-data/EMA/optimizer training protocol.",
+  "frozen_clip_tensors": 197,
+  "initial_updates": 2,
+  "resumed_update": 3
+}
