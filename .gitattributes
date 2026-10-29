@@ -10,3 +10,5 @@
 # These small public GVHMR regressors were already stored as Git blobs.
 motius/configuration/gvhmr/body/*.pt -filter -diff -merge -text
 motius/configuration/gem_smpl/body/*.pt -filter -diff -merge -text
+
+motius/configuration/kimodo/assets/**/*.STL -filter -diff -merge -text

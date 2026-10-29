@@ -125,6 +125,7 @@ def test_kimodo_scalar_text_adapter_matches_legacy_call_bit_exact():
             return sentinel
 
     pipeline = KIMODOPipeline(Bundle())
+    pipeline.generate = pipeline.bundle.generate
     legacy = pipeline.text_to_motion("walk forward", 120, seed=11)
     legacy_call = calls.pop()
     canonical = pipeline.infer_text_to_motion("walk forward", 120, seed=11)
@@ -144,6 +145,7 @@ def test_kimodo_batch_text_adapter_forwards_without_data_transforms():
             return sentinel
 
     pipeline = KIMODOPipeline(Bundle())
+    pipeline.generate = pipeline.bundle.generate
     actual = pipeline.infer_text_to_motion(
         ["walk", "turn"],
         [120, 180],
@@ -169,6 +171,7 @@ def test_kimodo_sequential_adapter_matches_multi_prompt_bit_exact():
             return sentinel
 
     pipeline = KIMODOPipeline(Bundle())
+    pipeline.generate = pipeline.bundle.generate
     legacy = pipeline.multi_prompt(["walk", "sit"], [90, 120], seed=17)
     legacy_call = calls.pop()
     canonical = pipeline.infer_sequential_text_to_motion(
@@ -208,6 +211,7 @@ def test_kimodo_temporal_adapter_accepts_native_reference(monkeypatch):
         ),
     )
     pipeline = KIMODOPipeline(Bundle())
+    pipeline.generate = pipeline.bundle.generate
     output = pipeline.infer_temporal_motion_completion(
         ["walk and turn"],
         [reference],
@@ -235,7 +239,7 @@ def test_kimodo_constraints_default_to_model_device():
 
 def test_kimodo_multi_prompt_defaults_to_one_sample(monkeypatch):
     import torch
-    from motius.models.kimodo.network.model.kimodo_model import Kimodo
+    from motius.pipelines.kimodo.sampling import Kimodo
 
     class StopGeneration(Exception):
         pass
@@ -281,7 +285,7 @@ def test_kimodo_multi_prompt_defaults_to_one_sample(monkeypatch):
 
 def test_kimodo_moves_plain_text_encoder_to_runtime_device(monkeypatch):
     import torch
-    from motius.models.kimodo.network.model import kimodo_model
+    from motius.pipelines.kimodo import sampling as kimodo_model
 
     class Denoiser(torch.nn.Module):
         def __init__(self):

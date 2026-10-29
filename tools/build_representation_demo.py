@@ -174,12 +174,12 @@ def _soma_skin_vertices(
     *,
     device: str,
 ) -> tuple[np.ndarray, np.ndarray]:
-    from motius.models.kimodo.network.skeleton import SOMASkeleton30
-    from motius.models.kimodo.network.skeleton.transforms import global_rots_to_local_rots
+    from motius.motion.body_models.kimodo.definitions import SOMASkeleton30
+    from motius.motion.body_models.kimodo.transforms import global_rots_to_local_rots
 
     skin_path = (
         ROOT
-        / "motius/models/kimodo/network/assets/skeletons/somaskel77/skin_standard.npz"
+        / "motius/configuration/kimodo/assets/skeletons/somaskel77/skin_standard.npz"
     )
     if not skin_path.exists():
         raise FileNotFoundError(f"SOMA skin asset not found: {skin_path}")
@@ -225,7 +225,7 @@ def _core_skin_vertices(
 
     skin_path = (
         ROOT
-        / "motius/motion/representation/ardy/assets/skeletons/cskel27/skin_standard.npz"
+        / "motius/models/ardy/network/assets/skeletons/cskel27/skin_standard.npz"
     )
     if not skin_path.exists():
         raise FileNotFoundError(f"ARDY skin asset not found: {skin_path}")
@@ -561,7 +561,7 @@ def build(args: argparse.Namespace) -> Path:
 
     soma_result = smpl_motion135_to_soma30(
         motion135,
-        assets_root=ROOT / "motius/models/kimodo/network/assets/skeletons",
+        assets_root=ROOT / "motius/configuration/kimodo/assets/skeletons",
     )
     soma_vertices, soma_faces = _soma_skin_vertices(
         soma_result["soma30_global_rots"],

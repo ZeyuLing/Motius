@@ -110,7 +110,7 @@ def _motion135_to_local_root(motion_135: np.ndarray, device: torch.device):
 
 
 def _make_prefix_constraint(model, gt_motion_135: np.ndarray, cond_frames: int):
-    from motius.models.kimodo.network.constraints import FullBodyConstraintSet
+    from motius.motion.conditioning.kimodo import FullBodyConstraintSet
 
     device = torch.device(model.device)
     skeleton = model.skeleton.to(device)
@@ -136,8 +136,8 @@ def _make_native_prefix_constraint(
     native_motion: Mapping[str, Any],
     cond_frames: int,
 ):
-    from motius.models.kimodo.network.constraints import FullBodyConstraintSet
-    from motius.models.kimodo.network.skeleton import SOMASkeleton30
+    from motius.motion.conditioning.kimodo import FullBodyConstraintSet
+    from motius.motion.body_models.kimodo.definitions import SOMASkeleton30
 
     device = torch.device(model.device)
     skeleton = model.skeleton.to(device)
@@ -209,6 +209,67 @@ class KIMODOPipeline:
     def __init__(self, bundle):
         self.bundle = bundle
 
+    @property
+    def runtime(self):
+        if not hasattr(self, "_runtime"):
+            from .sampling import Kimodo
+            network = self.bundle.network
+            from motius.utils.kimodo_checkpoint import instantiate_from_dict
+            from motius.models.kimodo.bundle import _patched_env
+            if self.bundle.packed_text_path is not None or hasattr(self.bundle, "text_model"):
+                from .text_encoding.llm2vec_wrapper import LLM2VecEncoder
+                frontend = LLM2VecEncoder.from_network(
+                    self.bundle.load_text_model(), self.bundle.packed_text_path,
+                    metadata=getattr(self.bundle, "text_frontend_metadata", None))
+            else:
+                with _patched_env(self.bundle._kimodo_env()):
+                    from motius.utils.kimodo_loading import _select_text_encoder_conf
+                    from motius.utils.kimodo_checkpoint import DEFAULT_TEXT_ENCODER_URL
+                    config = _select_text_encoder_conf(self.bundle.text_encoder_url or DEFAULT_TEXT_ENCODER_URL)
+                    frontend = instantiate_from_dict(config)
+                    if hasattr(frontend, "to"):
+                        frontend.to(network.device)
+                neural = getattr(getattr(frontend, "model", None), "model", None)
+                if isinstance(neural, torch.nn.Module):
+                    self.bundle.text_model = neural
+                    self.bundle.text_frontend_metadata = {
+                        "frontend_options": {key: getattr(frontend.model, key) for key in
+                            ["pooling_mode", "max_length", "doc_max_length", "skip_instruction"]},
+                        "tokenizer_source": frontend.model.tokenizer.name_or_path}
+                    if "text_model" not in self.bundle._save_ckpt_modules:
+                        self.bundle._save_ckpt_modules.append("text_model")
+                        self.bundle._frozen_modules.append("text_model")
+            self._runtime = Kimodo(
+                denoiser=network, text_encoder=frontend,
+                num_base_steps=network.num_base_steps, device=network.device,
+                cfg_type=network.cfg_type)
+        return self._runtime
+
+    def generation_kwargs(self, **overrides) -> dict:
+        kwargs = {
+            "num_denoising_steps": self.bundle.diffusion_steps,
+            "post_processing": self.bundle.post_processing,
+        }
+        if self.bundle.cfg_type is not None:
+            kwargs["cfg_type"] = self.bundle.cfg_type
+        if self.bundle.cfg_weight is not None:
+            kwargs["cfg_weight"] = deepcopy(self.bundle.cfg_weight)
+        kwargs.update({k: v for k, v in overrides.items() if v is not None})
+        return kwargs
+
+    def generate(self, prompts, num_frames, constraints=None, multi_prompt=False, return_numpy=True, seed=None, **kwargs):
+        if seed is not None:
+            import random
+            random.seed(int(seed))
+            np.random.seed(int(seed))
+            torch.manual_seed(int(seed))
+            if torch.cuda.is_available():
+                torch.cuda.manual_seed_all(int(seed))
+        call_kwargs = self.generation_kwargs(**kwargs)
+        return self.runtime(prompts=prompts, num_frames=num_frames,
+            multi_prompt=multi_prompt, constraint_lst=constraints or [],
+            return_numpy=return_numpy, **call_kwargs)
+
     @classmethod
     def from_config(cls, cfg: Optional[dict] = None, **kwargs):
         """Build a KIMODO pipeline from a bundle config."""
@@ -263,7 +324,7 @@ class KIMODOPipeline:
             fps = float(getattr(self.bundle.model, "fps", 30))
             num_frames = int(float(duration) * fps)
         constraints = batch.get("constraints")
-        return self.bundle.generate(
+        return self.generate(
             prompts=prompts,
             num_frames=num_frames,
             constraints=constraints,
@@ -273,7 +334,7 @@ class KIMODOPipeline:
         )
 
     def text_to_motion(self, prompt: str, num_frames: int, **kwargs) -> Dict[str, Any]:
-        return self.bundle.generate(prompt, num_frames, constraints=None, **kwargs)
+        return self.generate(prompt, num_frames, constraints=None, **kwargs)
 
     def infer_text_to_motion(
         self,
@@ -291,7 +352,7 @@ class KIMODOPipeline:
             frame_list = [int(value) for value in num_frames]
         if len(frame_list) != len(prompt_list):
             raise ValueError("num_frames must contain one value per prompt")
-        return self.bundle.generate(
+        return self.generate(
             prompt_list,
             frame_list,
             constraints=None,
@@ -307,7 +368,7 @@ class KIMODOPipeline:
         num_frames: Sequence[int],
         **kwargs,
     ) -> Dict[str, Any]:
-        return self.bundle.generate(
+        return self.generate(
             list(prompts),
             list(num_frames),
             constraints=None,
@@ -322,7 +383,7 @@ class KIMODOPipeline:
         constraints: Sequence[Any],
         **kwargs,
     ) -> Dict[str, Any]:
-        return self.bundle.generate(
+        return self.generate(
             prompt,
             num_frames,
             constraints=list(constraints),
@@ -377,7 +438,7 @@ class KIMODOPipeline:
             )
             is_multi = len(seg_lens) > 1
             constraint_arg = constraints if is_multi else [constraints]
-            raw = model(
+            raw = self.runtime(
                 [str(prompt)] * len(seg_lens),
                 seg_lens,
                 num_denoising_steps=self.bundle.diffusion_steps,
@@ -472,7 +533,7 @@ class KIMODOPipeline:
                 condition_frames,
             )
             outputs.append(
-                self.bundle.generate(
+                self.generate(
                     str(prompt),
                     num_frames,
                     constraints=[constraint],
@@ -483,7 +544,7 @@ class KIMODOPipeline:
 
     def constraints_from_json(self, path_or_data, *, device=None, dtype=torch.float32):
         self.bundle.load_model()
-        from motius.models.kimodo.network.constraints import load_constraints_lst
+        from motius.motion.conditioning.kimodo import load_constraints_lst
 
         return load_constraints_lst(
             str(path_or_data) if isinstance(path_or_data, Path) else path_or_data,
@@ -501,7 +562,7 @@ class KIMODOPipeline:
         device=None,
     ):
         self.bundle.load_model()
-        from motius.models.kimodo.network.constraints import Root2DConstraintSet
+        from motius.motion.conditioning.kimodo import Root2DConstraintSet
 
         device = self._constraint_device(device)
         return Root2DConstraintSet(
@@ -525,7 +586,7 @@ class KIMODOPipeline:
         device=None,
     ):
         self.bundle.load_model()
-        from motius.models.kimodo.network.constraints import FullBodyConstraintSet
+        from motius.motion.conditioning.kimodo import FullBodyConstraintSet
 
         device = self._constraint_device(device)
         return FullBodyConstraintSet(
@@ -551,7 +612,7 @@ class KIMODOPipeline:
         device=None,
     ):
         self.bundle.load_model()
-        from motius.models.kimodo.network.constraints import EndEffectorConstraintSet
+        from motius.motion.conditioning.kimodo import EndEffectorConstraintSet
 
         device = self._constraint_device(device)
         return EndEffectorConstraintSet(
@@ -586,7 +647,7 @@ class KIMODOPipeline:
         device=None,
     ):
         self.bundle.load_model()
-        from motius.models.kimodo.network import constraints
+        from motius.motion.conditioning import kimodo as constraints
 
         device = self._constraint_device(device)
         cls = getattr(constraints, class_name)

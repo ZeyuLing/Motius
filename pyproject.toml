@@ -393,9 +393,8 @@ namespaces = false
     "retarget/_gmr/assets/unitree_g1/*.xml",
     "retarget/_gmr/ik_configs/*.json",
 ]
-"motius.models.kimodo" = [
-    "network/assets/skeletons/g1skel34/meshes/g1/*.STL",
-]
+"motius.configuration.kimodo" = ["assets/**/*"]
+"motius.licenses.kimodo" = ["LICENSE", "*.md"]
 "motius.models.tmr" = ["LICENSE"]
 "motius.models.tm2t" = ["LICENSE"]
 "motius.models.omnicontrol" = ["LICENSE"]
