@@ -1,0 +1,2852 @@
+{
+  "complete": true,
+  "comparison": "Original DART released neural weights, complete primitive DDPM/DDIM and active denoiser/VAE objectives",
+  "upstream_commit": "bb67ae1ed6ce051080468bf15bc6e54a6c3f8417",
+  "reference_extraction": "Original neural modules, diffusion, complete unchanged loss bodies, actual original SMPL-H geometry/PyTorch3D, both genders. Both body objectives active at weight10 (published VAE defaults; additional denoiser diagnostic coverage).",
+  "artifact_files": {
+    "data/stand_20fps.pkl": "e4601960acc9abba527b62326b14cfd4b8c20b31b47a8ea01454d4354d20e215",
+    "data/stand.pkl": "7d784ff362f7e2a2ae6ea5954d673953ca7c4980bcc3aca3a4b47204aa1031db",
+    "config_files/config_hydra/default.yaml": "b661443f8c9158f35dced0255501dc66dd29bc83c4c3d2f18ef3c7971c7e6b1c",
+    "config_files/config_hydra/motion_primitive/mp_h2_f16_r4.yaml": "e5936432dab95384a03787625ef67712674f89416d7ad71394f4ac85a7e052fd",
+    "config_files/config_hydra/motion_primitive/mp_h8_f8_r1.yaml": "ca0bc30914b67115c3e9b61f77bca288eea997351b4475c6b4ac83c9d8c0b4ff",
+    "config_files/config_hydra/motion_primitive/mp_h2_f16_r8.yaml": "5494e86053ba80c14b10bdd5905037a40e820ddc66b203614354edad2ec30108",
+    "config_files/config_hydra/motion_primitive/mp_h2_f8_r16.yaml": "f2892c15ebf18627b9b9cb73c3aa39b0b2e0ab09e2f11851c82091a7cb01f179",
+    "config_files/config_hydra/motion_primitive/hml_mp_h20_f40_r1.yaml": "28cdf560992b09ed911c961506608c2cc942724f0afc120ee7f2785517937bae",
+    "config_files/config_hydra/motion_primitive/mp_h1_f1_r32.yaml": "78b0b144b6bee1434ecf42791260a7dcce3df385f9dc28fb07830cc09148b726",
+    "config_files/config_hydra/motion_primitive/mp_2_8.yaml": "2404f264a7403d4574e3cce42171fde34cec1b2b75d53ff2ab81c668991eb182",
+    "config_files/config_hydra/motion_primitive/mp_h2_f16_r2.yaml": "ff32426577f8ded0517d6855cad6e38395a9de68c3fa3ac6e8898690dc194836",
+    "config_files/config_hydra/motion_primitive/mp_h2_f8_r1.yaml": "db2f88a98128132fc17b871bb2a32c116db5546c2750dce51f58c3b087035479",
+    "config_files/config_hydra/motion_primitive/mp_h4_f16_r8.yaml": "056d011c1b04cd47f5cbd32ebc6bd0b0fe405f9f208510535eeb6642911f3a6a",
+    "config_files/config_hydra/motion_primitive/mp_h1_f1_r4.yaml": "db5e7db6aa63c3a63d3b7a1d7ccef2b981df93232291fb58b2bcb9c1e98a9290",
+    "config_files/config_hydra/motion_primitive/mp_h2_f4_r8.yaml": "452213e5a11aebc71d0de55f28e8ab9bdb77f3c05e634c80af5615e9be35051d",
+    "config_files/config_hydra/motion_primitive/mp_h4_f8_r2.yaml": "351485eef3444e9a148dded077308d7b6b0b14cb0b20acbed368d6f5f468913e",
+    "config_files/config_hydra/motion_primitive/hml_mp_h2_f8_r4.yaml": "6af9c4fac1dd0ddf729e9d66f8707c6914e22b96edc285aa4ddd9b985e67ab8e",
+    "config_files/config_hydra/motion_primitive/mp_h2_f8_r4.yaml": "bc6973ba3b0e229f8e96086b903f8a8165317a6b1372ff2f73dcbf37064f9bbd",
+    "config_files/config_hydra/motion_primitive/mp_h2_f4_r4.yaml": "286c2fe1b8531826dc2aa00c7779b44072d1fec5e19925fbbcbde9613cb589b3",
+    "config_files/config_hydra/motion_primitive/hml_mp_h20_f40_r4.yaml": "a797edb418e04624ad276efcad54567a0f04f57ca5a97733d86e2568c4235aff",
+    "config_files/config_hydra/motion_primitive/mp_h1_f1_r8.yaml": "c9523abcc1d5d1d8bf95b894af1c50312ff003ccc96e9a0b402cd57823dc9835",
+    "config_files/config_hydra/motion_primitive/mp_h2_f8_r8.yaml": "2404f264a7403d4574e3cce42171fde34cec1b2b75d53ff2ab81c668991eb182",
+    "config_files/config_hydra/motion_primitive/hml_mp_h2_f8_r8.yaml": "593e029c8b10fc6553d9dbdb00dacffe0b37e670c5a3f5a95f14077d1c645d31",
+    "config_files/config_hydra/motion_primitive/mp_h8_f8_r2.yaml": "38097f22cebd1fd122eefec8b3def33a6afc0ce2ba31e08c591110c4c9ceda5e",
+    "config_files/config_hydra/motion_primitive/mp_h2_f4_r2.yaml": "7766c64ed3bb9301442fe84e961f078a1c866cc291d878b9e5c4f037ef19d3d1",
+    "config_files/config_hydra/motion_primitive/mp_h8_f8_r8.yaml": "6d49a123cfeaa53007589c2df7ee02a483c09e06dbed1e40ee8e59fde0af45d3",
+    "config_files/config_hydra/motion_primitive/hml_mp_h20_f40_r2.yaml": "4ec670b4faf0cbe38a6d39947d7ef19a903048a067e4066b5f9c20a63efe1fb6",
+    "config_files/config_hydra/motion_primitive/mp_h4_f8_r4.yaml": "8ee2a8d64f07aba9b0d30b225305e275b7e8bef7c5a48d01cc77878b6b538ed3",
+    "config_files/config_hydra/motion_primitive/mp_h2_f8_r2.yaml": "b8333c6ef2d45554f1cc18878d6422977bcc91d2f01336a9ca9c09a3dbbb38f6",
+    "config_files/config_hydra/motion_primitive/mp_h8_f8_r4.yaml": "1fed1fdc69013edb95afaf6d912eaa896d55f466a105ee2fffc18024b8cd02cf",
+    "config_files/config_hydra/motion_primitive/mp_h4_f8_r8.yaml": "cd9eca20410748c7b142a75c4724f66e2c43c7a8bd94d1c44340d4726b985719",
+    "config_files/config_hydra/motion_primitive/hml_mp_h20_f1_r1.yaml": "6b168659e9896fedc49cdc1339526d8b873857d82662b5eabf9de94b8eb73bd9",
+    "data/hml3d_smplh/seq_data_zero_male/mean_std_h2_f8.pkl": "82ed14bba473f112d12ce92ed162119081f51ccd487fa7301522f7d73f0eca00",
+    "mvae/mvae_smplh_hml3d_2_8_4/args.yaml": "6cb9d73480671eb7c9546ddd10360857ec99c71c169d2defd18046567e6ae665",
+    "mvae/mvae_smplh_hml3d_2_8_4/args_read.yaml": "4745eca9850380860f8439ce2a21809c54e33ecc8a144d19059453c7b0a46016",
+    "mvae/mvae_smplh_hml3d_2_8_4/checkpoint_200000.pt": "3db8211c2f83007a242c8d75c63c8618a88354439bd55816bb5b376d5a0e7261",
+    "mld_denoiser/smplh_hml3d_2_8_4/checkpoint_300000.pt": "9a3acd0a0fdadff64ff9fad41a94cc2911316169a7bb80c69a97e6934ae73528",
+    "mld_denoiser/smplh_hml3d_2_8_4/args.yaml": "766ed2abde3aaef030857c720658c3265ecb27804f63a1d3551aa4ada36c9e12",
+    "mld_denoiser/smplh_hml3d_2_8_4/args_read.yaml": "98881a34b031ffdd96f79202316e19817c6602d357e5f39cf2a934f302c3ade0"
+  },
+  "tests": [
+    {
+      "tensor": "/sampling0/latent",
+      "shape": [
+        1,
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling0/prediction",
+      "shape": [
+        1,
+        8,
+        276
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling0/encoded",
+      "shape": [
+        1,
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling0/mu",
+      "shape": [
+        1,
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling0/sigma",
+      "shape": [
+        1,
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling1/latent",
+      "shape": [
+        2,
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling1/prediction",
+      "shape": [
+        2,
+        8,
+        276
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling1/encoded",
+      "shape": [
+        1,
+        2,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling1/mu",
+      "shape": [
+        1,
+        2,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling1/sigma",
+      "shape": [
+        1,
+        2,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling2/latent",
+      "shape": [
+        2,
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling2/prediction",
+      "shape": [
+        2,
+        8,
+        276
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling2/encoded",
+      "shape": [
+        1,
+        2,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling2/mu",
+      "shape": [
+        1,
+        2,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampling2/sigma",
+      "shape": [
+        1,
+        2,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/losses/feature_rec",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/losses/latent_rec",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/losses/smpl_joints_rec",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/losses/joints_consistency",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/losses/joints_delta",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/losses/transl_delta",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/losses/orient_delta",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/losses/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/embed_timestep.time_embed.0.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/embed_timestep.time_embed.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/embed_timestep.time_embed.2.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/embed_timestep.time_embed.2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/embed_text.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/embed_text.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/embed_history.weight",
+      "shape": [
+        512,
+        276
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/embed_history.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/embed_noise.weight",
+      "shape": [
+        512,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/embed_noise.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.0.self_attn.in_proj_weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.0.self_attn.in_proj_bias",
+      "shape": [
+        1536
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.0.self_attn.out_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.0.self_attn.out_proj.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.0.linear1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.0.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.0.linear2.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.0.linear2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.0.norm1.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.0.norm1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.0.norm2.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.0.norm2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.1.self_attn.in_proj_weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.1.self_attn.in_proj_bias",
+      "shape": [
+        1536
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.1.self_attn.out_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.1.self_attn.out_proj.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.1.linear1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.1.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.1.linear2.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.1.linear2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.1.norm1.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.1.norm1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.1.norm2.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.1.norm2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.2.self_attn.in_proj_weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.2.self_attn.in_proj_bias",
+      "shape": [
+        1536
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.2.self_attn.out_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.2.self_attn.out_proj.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.2.linear1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.2.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.2.linear2.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.2.linear2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.2.norm1.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.2.norm1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.2.norm2.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.2.norm2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.3.self_attn.in_proj_weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.3.self_attn.in_proj_bias",
+      "shape": [
+        1536
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.3.self_attn.out_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.3.self_attn.out_proj.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.3.linear1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.3.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.3.linear2.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.3.linear2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.3.norm1.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.3.norm1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.3.norm2.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.3.norm2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.4.self_attn.in_proj_weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.4.self_attn.in_proj_bias",
+      "shape": [
+        1536
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.4.self_attn.out_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.4.self_attn.out_proj.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.4.linear1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.4.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.4.linear2.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.4.linear2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.4.norm1.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.4.norm1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.4.norm2.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.4.norm2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.5.self_attn.in_proj_weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.5.self_attn.in_proj_bias",
+      "shape": [
+        1536
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.5.self_attn.out_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.5.self_attn.out_proj.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.5.linear1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.5.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.5.linear2.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.5.linear2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.5.norm1.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.5.norm1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.5.norm2.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.5.norm2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.6.self_attn.in_proj_weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.6.self_attn.in_proj_bias",
+      "shape": [
+        1536
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.6.self_attn.out_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.6.self_attn.out_proj.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.6.linear1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.6.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.6.linear2.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.6.linear2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.6.norm1.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.6.norm1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.6.norm2.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.6.norm2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.7.self_attn.in_proj_weight",
+      "shape": [
+        1536,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.7.self_attn.in_proj_bias",
+      "shape": [
+        1536
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.7.self_attn.out_proj.weight",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.7.self_attn.out_proj.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.7.linear1.weight",
+      "shape": [
+        1024,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.7.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.7.linear2.weight",
+      "shape": [
+        512,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.7.linear2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.7.norm1.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.7.norm1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.7.norm2.weight",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/seqTransEncoder.layers.7.norm2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/output_process.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/denoiser/gradients/output_process.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/losses/kl_loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/losses/rec_loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/losses/smpl_joints_rec",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/losses/joints_consistency",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/losses/joints_delta",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/losses/transl_delta",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/losses/orient_delta",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/losses/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/global_motion_token",
+      "shape": [
+        2,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/query_pos_encoder.pe",
+      "shape": [
+        500,
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/query_pos_decoder.pe",
+      "shape": [
+        500,
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.norm.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.norm.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.0.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.0.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.0.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.0.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.0.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.0.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.0.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.0.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.0.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.0.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.0.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.0.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.1.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.1.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.1.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.1.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.1.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.1.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.1.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.1.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.1.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.1.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.1.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.1.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.2.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.2.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.2.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.2.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.2.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.2.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.2.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.2.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.2.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.2.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.2.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.input_blocks.2.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.middle_block.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.middle_block.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.middle_block.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.middle_block.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.middle_block.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.middle_block.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.middle_block.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.middle_block.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.middle_block.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.middle_block.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.middle_block.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.middle_block.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.0.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.0.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.0.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.0.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.0.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.0.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.0.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.0.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.0.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.0.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.0.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.0.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.1.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.1.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.1.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.1.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.1.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.1.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.1.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.1.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.1.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.1.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.1.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.1.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.2.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.2.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.2.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.2.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.2.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.2.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.2.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.2.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.2.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.2.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.2.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.output_blocks.2.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.linear_blocks.0.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.linear_blocks.0.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.linear_blocks.1.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.linear_blocks.1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.linear_blocks.2.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder.linear_blocks.2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder_latent_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/encoder_latent_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.norm.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.norm.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.0.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.0.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.0.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.0.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.0.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.0.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.0.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.0.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.0.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.0.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.0.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.0.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.1.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.1.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.1.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.1.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.1.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.1.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.1.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.1.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.1.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.1.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.1.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.1.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.2.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.2.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.2.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.2.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.2.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.2.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.2.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.2.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.2.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.2.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.2.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.input_blocks.2.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.middle_block.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.middle_block.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.middle_block.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.middle_block.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.middle_block.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.middle_block.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.middle_block.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.middle_block.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.middle_block.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.middle_block.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.middle_block.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.middle_block.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.0.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.0.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.0.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.0.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.0.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.0.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.0.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.0.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.0.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.0.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.0.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.0.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.1.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.1.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.1.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.1.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.1.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.1.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.1.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.1.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.1.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.1.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.1.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.1.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.2.self_attn.in_proj_weight",
+      "shape": [
+        768,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.2.self_attn.in_proj_bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.2.self_attn.out_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.2.self_attn.out_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.2.linear1.weight",
+      "shape": [
+        1024,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.2.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.2.linear2.weight",
+      "shape": [
+        256,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.2.linear2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.2.norm1.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.2.norm1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.2.norm2.weight",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.output_blocks.2.norm2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.linear_blocks.0.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.linear_blocks.0.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.linear_blocks.1.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.linear_blocks.1.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.linear_blocks.2.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder.linear_blocks.2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder_latent_proj.weight",
+      "shape": [
+        256,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/decoder_latent_proj.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/skel_embedding.weight",
+      "shape": [
+        256,
+        276
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/skel_embedding.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/final_layer.weight",
+      "shape": [
+        276,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vae/gradients/final_layer.bias",
+      "shape": [
+        276
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "native_files": {
+    "motius/models/dart/denoiser.py": "826317e267c522e8ab9f7277f9f9ef588c2c7e756f75c4b0b3dced2e0dd82a55",
+    "motius/models/dart/bundle.py": "5af3e800a1ce0e9a2f1f2361b196c460eeb2f98bdaadd629113f98db05ca563a",
+    "motius/models/dart/attention.py": "179b2f043871f54ad66965154c71f9aa3384366b4a90fe58326875ed21fdfb3e",
+    "motius/models/dart/vae.py": "5daf05084b43053e1f3114b81a109f6ccb96ff120828076e74bd42363afa1b9d",
+    "motius/models/dart/__init__.py": "4f8ac2440370006f0dbde5fd7e14fe7a137c05cdf9d99121f35e9e94710bb0f4",
+    "motius/models/dart/positions.py": "914306fefb39cb05d3c0f7bb397e2a5a8dcd55daf681b47a37201ed1a748726b",
+    "motius/pipelines/dart/inference.py": "b7199d2c8a2b6c062929bec540cc9b7979535551b9088ae836a50f962bd7b6e8",
+    "motius/pipelines/dart/pipeline.py": "3d1093fa3a1ed1cbf8d2b838db79e7837b5faabfae8dc8f143dcb1355fbb6368",
+    "motius/pipelines/dart/__init__.py": "6a56500e1ddfcfd4dd307db4035c4355e77c6cf48c55317405f3a58680f34f19",
+    "motius/trainers/dart/trainer.py": "0fd8ac17e09f6fdb6ac60a718105fe573ccd527bcab3c71d0ed78cc8aad569b7",
+    "motius/trainers/dart/objective.py": "43b7d9ea545e38964570788b02f4c025727ebd44c43ada6480a8b6aa7af66a18",
+    "motius/trainers/dart/__init__.py": "9e9f6731d424e63d99ebbe0e4abccc198aa0318f1636c9856ff89c18159dceef",
+    "motius/diffusion/dart/gaussian.py": "6da7f2ae8d0b9494fad8aeb4fd5328035ffab9697e184bab588b12680a32dc60",
+    "motius/diffusion/dart/respace.py": "a74aaaf2926b6e3d0fe6c2e1038384a66b9f371e5ecdb7c0b7f8ff769d9d5e3a",
+    "motius/diffusion/dart/math.py": "93a955e146e2fe2e37e49473cf44073ca0e6ea12fb790344eec4365fbe6a7b17",
+    "motius/diffusion/dart/__init__.py": "d7d7c447314444e1d2c632e853bef3913258dd7fd15888c064fcb3fe90c63d5b",
+    "motius/configuration/dart.py": "390deba16af4ad2d682c71e3a63ba311e978e58f947e82e7493399b20fc2c0a8",
+    "motius/motion/conditioning/dart.py": "8751ec757fb26597631b4b998dd2aa7ba4a6083726456ed1d5b905851764d537",
+    "motius/motion/conditioning/dart_seed.py": "0b3076a718e41e25c105b03f5313a5d1161c96c1576b65a8fac8c1f11cf0e291",
+    "motius/motion/representation/dart.py": "2a299c04a27147f40b11c11889894afd485899052cdef96e7f049c76cce705d3",
+    "motius/motion/representation/dart_rotation.py": "6e813c2ac4ec5eb74bd84b52875570295f50f23de2568a3a3cedc631cda43002"
+  }
+}

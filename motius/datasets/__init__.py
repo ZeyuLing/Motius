@@ -8,6 +8,7 @@ _EXPORTS = {
     "MotionStreamerTAEDataset": ("motius.datasets.motionstreamer", "MotionStreamerTAEDataset"),
     "PromptHMRVideoDataset": ("motius.datasets.prompthmr", "PromptHMRVideoDataset"),
     "CalibrationImageDataset": ("motius.datasets.prompthmr", "CalibrationImageDataset"),
+    "PreparedDARTDataset": ("motius.datasets.prepared_dart", "PreparedDARTDataset"),
     "PreparedEDGEDataset": ("motius.datasets.prepared_dance", "PreparedEDGEDataset"),
     "PipelineDataset": ("motius.datasets.base_dataset", "PipelineDataset"),
     "TMRTextMotionDataset": ("motius.datasets.motion", "TMRTextMotionDataset"),

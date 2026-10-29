@@ -1,0 +1,419 @@
+{
+  "complete": true,
+  "scope": "Original DART released HumanML3D denoiser/VAE/CLIP weights, original complete FlowMDM rollout and actual SinglePrimitiveDataset seed/text/FK. Actual licensed official merged SMPL-H seed and original default SMPL-X rollout reconstruction. Four DDPM/DDIM/ragged/predicted-joint/floor cases, raw world SMPL parameters/joints, all neural hashes and CUDA RNG. Original rollout function extracted without statement changes to omit app dataclass/framework imports; only asset paths configured. Ordinary rollout_mld's seed-inclusive output, training and corpus benchmarks excluded.",
+  "upstream_commit": "bb67ae1ed6ce051080468bf15bc6e54a6c3f8417",
+  "tests": [
+    {
+      "tensor": "/cases/0/output/betas",
+      "shape": [
+        17,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/output/transl",
+      "shape": [
+        17,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/output/global_orient",
+      "shape": [
+        17,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/output/body_pose",
+      "shape": [
+        17,
+        21,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/output/joints",
+      "shape": [
+        17,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/motion135",
+      "shape": [
+        17,
+        135
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/first_network_input/noise",
+      "shape": [
+        1,
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/first_network_input/timestep",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/first_network_input/text",
+      "shape": [
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/first_network_input/history",
+      "shape": [
+        1,
+        2,
+        276
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/output/betas",
+      "shape": [
+        21,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/output/transl",
+      "shape": [
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/output/global_orient",
+      "shape": [
+        21,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/output/body_pose",
+      "shape": [
+        21,
+        21,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/output/joints",
+      "shape": [
+        21,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/motion135",
+      "shape": [
+        21,
+        135
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/first_network_input/noise",
+      "shape": [
+        1,
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/first_network_input/timestep",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/first_network_input/text",
+      "shape": [
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/first_network_input/history",
+      "shape": [
+        1,
+        2,
+        276
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/output/betas",
+      "shape": [
+        16,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/output/transl",
+      "shape": [
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/output/global_orient",
+      "shape": [
+        16,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/output/body_pose",
+      "shape": [
+        16,
+        21,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/output/joints",
+      "shape": [
+        16,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/motion135",
+      "shape": [
+        16,
+        135
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/first_network_input/noise",
+      "shape": [
+        1,
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/first_network_input/timestep",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/first_network_input/text",
+      "shape": [
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/first_network_input/history",
+      "shape": [
+        1,
+        2,
+        276
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/output/betas",
+      "shape": [
+        9,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/output/transl",
+      "shape": [
+        9,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/output/global_orient",
+      "shape": [
+        9,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/output/body_pose",
+      "shape": [
+        9,
+        21,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/output/joints",
+      "shape": [
+        9,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/motion135",
+      "shape": [
+        9,
+        135
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/first_network_input/noise",
+      "shape": [
+        1,
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/first_network_input/timestep",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/first_network_input/text",
+      "shape": [
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/first_network_input/history",
+      "shape": [
+        1,
+        2,
+        276
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

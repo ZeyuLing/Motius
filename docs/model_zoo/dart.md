@@ -93,8 +93,32 @@ The checkpoint artifact contains the DART denoiser, MVAE, runtime configuration,
 | --------- | ---- |
 | Pipeline | `motius.pipelines.dart.DARTPipeline` |
 | Bundle | `motius.models.dart.DARTBundle` |
-| Runtime | `motius.models.dart.network` |
-| PyTorch3D shim | `motius.models.dart.network.pytorch3d.transforms` |
+| Sampling and primitive rollout | `motius.pipelines.dart` |
+| Rotation/primitive processing | `motius.motion.representation.dart` |
+| Primitive training | `motius.trainers.dart.DARTTrainer` |
+| Prepared data recipe | `configs/dart/prepared_motion.py` |
+
+The default rollout follows the original FlowMDM evaluation path: SMPL-H seed
+features and SMPL-X reconstruction. `MOTIUS_BODY_MODEL_DIR` must contain the
+licensed `smplh/SMPLH_MALE.pkl`, `smplh/SMPLH_FEMALE.pkl` and corresponding
+`smplx/SMPLX_MALE.npz`, `smplx/SMPLX_FEMALE.npz` files. These assets are installed
+separately and are never bundled into Motius or its checkpoints.
+
+Default public translation preserves the original SMPL translation; it does not
+add a per-frame floor correction. Export metadata preserves explicit alternative
+translation policies. Rotation/geometry parity uses PyTorch3D 0.7.9 arithmetic.
+
+Independent original-source checks cover four complete DDPM/DDIM rollouts and
+both genders' full body losses/gradients. AdamW, clipping, learning-rate decay,
+EMA and explicit VAE latent calibration match the original code. Each native
+training stage also passes two-GPU updates and public CLI resume versus an
+uninterrupted run, with exact neural, EMA and optimizer states. A trained,
+calibrated EMA pair survives offline automatic export and inference exactly.
+See the [rollout](../architecture/dart-rollout-source.json),
+[body objectives](../architecture/dart-body-training-source.json) and
+[optimizer](../architecture/dart-optimizer-source.json) reports. These checks
+use explicit prepared primitives; they do not certify the original full-corpus
+multi-primitive curriculum, AMP or benchmark convergence.
 
 ## Quick Start
 
@@ -153,7 +177,7 @@ Protocol: HumanML3D Official uses the selected-caption HumanML3D test protocol. 
 ## Motion Representation
 
 DART uses a 276-dimensional motion-primitive representation (`DART276`) in the
-vendored runtime. Helper adapters may export SMPL-style tensors for rendering
+native primitive pipeline. Helper adapters may export SMPL-style tensors for rendering
 or evaluator conversion, but those adapters are not the model's native motion
 representation and are not a published checkpoint variant.
 

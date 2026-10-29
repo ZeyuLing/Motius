@@ -28,6 +28,7 @@ _EXPORTS = {
     "FlowMDMTrainer": "flowmdm",
     "GVHMRTrainer": "gvhmr",
     "PromptHMRVideoTrainer": "prompthmr",
+    "DARTTrainer": "dart",
     "GenTrackFlowGRPOTrainer": "gentrack",
     "HyMotionT2MTrainer": "hymotion_t2m",
     "PrismTrainer": "prism",
