@@ -1,0 +1,1114 @@
+{
+  "complete": true,
+  "comparison": "original Bailando repository and released checkpoint; precomputed music-feature inputs",
+  "upstream_commit": "cc90b98bff81c9709570db413c9610c2562e27ca",
+  "source_files": {
+    "models/cross_cond_gpt2.py": "53a760e69b4701df01134c4e09ba7f5c24ff02bfdc3768cd455db77516c66bfc",
+    "models/resnet.py": "42a3e133031a1d4fc1ad491fc56ef0724a54e465f85bfada423bd5e23b96834c",
+    "models/sep_vqvae_root.py": "df50e149ecae3d80edfb94f8479dfc2b6e39286a288394ef31a3f6ccc897d67c",
+    "models/bottleneck.py": "ed55c0bb110c45e81e230dc30169df8338c72d4dfd17c3ef860c3c5576ce11d5",
+    "models/vqvae.py": "9ed573a6654e30f1c1d51e06eb8210ec340190998005f1b2083f80d826582078",
+    "models/sep_vqvae.py": "09786eaad5baa665c770da067e5e6218a3e94f94e0961e073a83d0651bfad2d9",
+    "models/up_down_half_reward.py": "b39e7928259c87eb4c28edb5abe8dbe38f9c9eb423fe8003813048e918408e0a",
+    "models/encdec.py": "afbc4e00f93d00fb27725f2e19cf66b4c2cf888d175749f6c3eb854b124310c2",
+    "models/vqvae_root.py": "53366e9698a3c187ed2ce336ed937993247b4e4e9f483b6bcab9d479e5a86cae",
+    "models/cross_cond_gpt2_ac.py": "ff433bcde6cfe96d778ba31cf7a1a1827ac876fa56402796a8c3486287948dd2",
+    "models/__init__.py": "d056e19d82025688a20ea2a025cf5f614d0f21129edf527aac17ce31ea183225",
+    "models/critic_transformer.py": "e78b1a20a9aa09f6b5d90fab43086acfb6c85aa381c65800b3c9004956b74997",
+    "models/utils/fp16.py": "b2204aa1e9c34843c72e1c1a028b15ac476a81c1bc11beab2999233020a9b171",
+    "models/utils/ema.py": "2b42bb12dda3c84db0b60f829622dc56691c8a946e5b1cf2c540cdeebb8d72e1",
+    "models/utils/audio_utils.py": "cef6a61e7ea8eab0594b264b0ed83516a58671c0947bfa1924072b636f0c2d4a",
+    "models/utils/sample_utils.py": "5976fd3bb937bbd6864bb0357d66b858ee9191e2774bf3d2263dbce9d1a259e9",
+    "models/utils/remote_utils.py": "53c013c24a4b5e6e37f11aa29c6f465e2b1418560250ae30ad9a44a52b2056bf",
+    "models/utils/dist_adapter.py": "c40848508da2e1203f11fddcee397c95bea72414d98873d885a5ddc2103d2db4",
+    "models/utils/dist_utils.py": "f51fba4ddda8457b43f722d831f31c34e45215d81d76de53b87c5eb959bfce59",
+    "models/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "models/utils/logger.py": "172318b25dc342b80b73a132b3a76216d07fc827bcb2888a1d382f250c495ee6",
+    "models/utils/torch_utils.py": "7608a2437c924088d9f3d1ef451b5e909c8b7ad6f8cf7067e1b1061bc334d981",
+    "models/utils/checkpoint.py": "4f3fa5b24c07e056d720b136e120203a0b264439f6065286757028bf05af353e"
+  },
+  "artifact_files": {
+    "model_index.json": "ac197c476def44bb56c1849ef16696aa67346968be0ba5d8f9ee94e168a8b45e",
+    "gpt.safetensors": "a9a5efd15b79d4576ff3a0546614a19b9077248fb49fb5c9117302a1b1c40439",
+    "vqvae.safetensors": "ed0af826ef709824b59e3977ce54f9e61056929b8ed069aa33ce9d7b80675c58",
+    "conversion_report.json": "80c84521beea392794dd85e49c94c2f11e05bcbc5e5c0058dc671d0e1993f1e6",
+    "bailando_config.json": "5b41f3b663bd97f4df77e66db016c646051c3012a38b1cdf4073c6f21d222987"
+  },
+  "tests": [
+    {
+      "tensor": "/batch1_music_frames6/logits/0_up",
+      "shape": [
+        1,
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames6/logits/0_down",
+      "shape": [
+        1,
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames6/logits/1_up",
+      "shape": [
+        1,
+        2,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames6/logits/1_down",
+      "shape": [
+        1,
+        2,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames6/logits/2_up",
+      "shape": [
+        1,
+        3,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames6/logits/2_down",
+      "shape": [
+        1,
+        3,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames6/logits/3_up",
+      "shape": [
+        1,
+        4,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames6/logits/3_down",
+      "shape": [
+        1,
+        4,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames6/logits/4_up",
+      "shape": [
+        1,
+        5,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames6/logits/4_down",
+      "shape": [
+        1,
+        5,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames6/motion",
+      "shape": [
+        1,
+        48,
+        72
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames6/joints",
+      "shape": [
+        1,
+        48,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames6/codes_up",
+      "shape": [
+        1,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames6/codes_down",
+      "shape": [
+        1,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/0_up",
+      "shape": [
+        1,
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/0_down",
+      "shape": [
+        1,
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/1_up",
+      "shape": [
+        1,
+        2,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/1_down",
+      "shape": [
+        1,
+        2,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/2_up",
+      "shape": [
+        1,
+        3,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/2_down",
+      "shape": [
+        1,
+        3,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/3_up",
+      "shape": [
+        1,
+        4,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/3_down",
+      "shape": [
+        1,
+        4,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/4_up",
+      "shape": [
+        1,
+        5,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/4_down",
+      "shape": [
+        1,
+        5,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/5_up",
+      "shape": [
+        1,
+        6,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/5_down",
+      "shape": [
+        1,
+        6,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/6_up",
+      "shape": [
+        1,
+        7,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/6_down",
+      "shape": [
+        1,
+        7,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/7_up",
+      "shape": [
+        1,
+        8,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/7_down",
+      "shape": [
+        1,
+        8,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/8_up",
+      "shape": [
+        1,
+        9,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/8_down",
+      "shape": [
+        1,
+        9,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/9_up",
+      "shape": [
+        1,
+        10,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/9_down",
+      "shape": [
+        1,
+        10,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/10_up",
+      "shape": [
+        1,
+        11,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/10_down",
+      "shape": [
+        1,
+        11,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/11_up",
+      "shape": [
+        1,
+        12,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/11_down",
+      "shape": [
+        1,
+        12,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/12_up",
+      "shape": [
+        1,
+        13,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/12_down",
+      "shape": [
+        1,
+        13,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/13_up",
+      "shape": [
+        1,
+        14,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/13_down",
+      "shape": [
+        1,
+        14,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/14_up",
+      "shape": [
+        1,
+        15,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/14_down",
+      "shape": [
+        1,
+        15,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/15_up",
+      "shape": [
+        1,
+        16,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/15_down",
+      "shape": [
+        1,
+        16,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/16_up",
+      "shape": [
+        1,
+        17,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/16_down",
+      "shape": [
+        1,
+        17,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/17_up",
+      "shape": [
+        1,
+        18,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/17_down",
+      "shape": [
+        1,
+        18,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/18_up",
+      "shape": [
+        1,
+        19,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/18_down",
+      "shape": [
+        1,
+        19,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/19_up",
+      "shape": [
+        1,
+        20,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/19_down",
+      "shape": [
+        1,
+        20,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/20_up",
+      "shape": [
+        1,
+        21,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/20_down",
+      "shape": [
+        1,
+        21,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/21_up",
+      "shape": [
+        1,
+        22,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/21_down",
+      "shape": [
+        1,
+        22,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/22_up",
+      "shape": [
+        1,
+        23,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/22_down",
+      "shape": [
+        1,
+        23,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/23_up",
+      "shape": [
+        1,
+        24,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/23_down",
+      "shape": [
+        1,
+        24,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/24_up",
+      "shape": [
+        1,
+        25,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/24_down",
+      "shape": [
+        1,
+        25,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/25_up",
+      "shape": [
+        1,
+        26,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/25_down",
+      "shape": [
+        1,
+        26,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/26_up",
+      "shape": [
+        1,
+        27,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/26_down",
+      "shape": [
+        1,
+        27,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/27_up",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/27_down",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/28_up",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/28_down",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/29_up",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/29_down",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/30_up",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/30_down",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/31_up",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/31_down",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/32_up",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/32_down",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/33_up",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/logits/33_down",
+      "shape": [
+        1,
+        28,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/motion",
+      "shape": [
+        1,
+        280,
+        72
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/joints",
+      "shape": [
+        1,
+        280,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/codes_up",
+      "shape": [
+        1,
+        35
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_music_frames35/codes_down",
+      "shape": [
+        1,
+        35
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/0_up",
+      "shape": [
+        2,
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/0_down",
+      "shape": [
+        2,
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/1_up",
+      "shape": [
+        2,
+        2,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/1_down",
+      "shape": [
+        2,
+        2,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/2_up",
+      "shape": [
+        2,
+        3,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/2_down",
+      "shape": [
+        2,
+        3,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/3_up",
+      "shape": [
+        2,
+        4,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/3_down",
+      "shape": [
+        2,
+        4,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/4_up",
+      "shape": [
+        2,
+        5,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/4_down",
+      "shape": [
+        2,
+        5,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/5_up",
+      "shape": [
+        2,
+        6,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/5_down",
+      "shape": [
+        2,
+        6,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/6_up",
+      "shape": [
+        2,
+        7,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/logits/6_down",
+      "shape": [
+        2,
+        7,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/motion",
+      "shape": [
+        2,
+        64,
+        72
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/joints",
+      "shape": [
+        2,
+        64,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/codes_up",
+      "shape": [
+        2,
+        8
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_music_frames8/codes_down",
+      "shape": [
+        2,
+        8
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/encoding/up",
+      "shape": [
+        2,
+        8
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/encoding/down",
+      "shape": [
+        2,
+        8
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "native_files": {
+    "motius/models/bailando/bundle.py": "a85e72c145283e9ad6eac2e5a8f0093fda5322aba60fe5abd9f8c00aa1540592",
+    "motius/models/bailando/__init__.py": "6ffaef53893479b6c1c76908c9923c96bf368611b036af17996d549310737aab",
+    "motius/models/bailando/network/resnet.py": "1d31468dfbf51a2c387631ecbcebbf20eab9087a443c884ab3f5ea556530191a",
+    "motius/models/bailando/network/sep_vqvae_root.py": "f0c083b640acd3fafd9f08b940226b2e90f636787ea2a97b69e8f9a442b820ab",
+    "motius/models/bailando/network/bottleneck.py": "bc86d6019da2d379620fb666c5631b5dd388d8c41c0a9f010c72cd7e536195e9",
+    "motius/models/bailando/network/vqvae.py": "3dde405df0e1f78e24ede9cf4d3b2fdafe8d70f5ea9d6846a09e8d3cdfc55456",
+    "motius/models/bailando/network/encdec.py": "afbc4e00f93d00fb27725f2e19cf66b4c2cf888d175749f6c3eb854b124310c2",
+    "motius/models/bailando/network/vqvae_root.py": "d591472586fec5f1f67df86ad1b480998b0dee19ad020732995f340613016f25",
+    "motius/models/bailando/network/cross_cond_gpt2_ac.py": "2f1f3ccc469d3e6bfa87ee8261d0342c77793448a58952aab938e6866435110e",
+    "motius/models/bailando/network/__init__.py": "ce140d8b71b31f4d13f1b73b0dac218242d75e0d7b072f20fc9443c1a2a34c26",
+    "motius/models/bailando/network/utils/__init__.py": "468cb83bdbdc80271afd7609f39a6a54822a8d4182a48fd3711a4833e8a9be5e",
+    "motius/models/bailando/network/utils/torch_utils.py": "e782126abfa4566ea8361c9ff897014875d837d5894765f2a4d963b4d61d4973",
+    "motius/models/bailando/network/utils/checkpoint.py": "4f3fa5b24c07e056d720b136e120203a0b264439f6065286757028bf05af353e",
+    "motius/pipelines/bailando/sampling.py": "e5094a20e052a9a0259069217c655042040436ed93f2173d9334a757bdd363bf",
+    "motius/pipelines/bailando/audio.py": "fac6fa808f9894c3be986711a096035eb287291e3a82d0a78661044c3c9838d2",
+    "motius/pipelines/bailando/pipeline.py": "f3049d6121b2145e412af252188938acbedd8ff29519c94ef11dd1875eb6a1f6",
+    "motius/pipelines/bailando/__init__.py": "b5eeaaf7840e403f62965aa17298806b25e36462ed6dba8b2dcc4eef0c95f26e"
+  }
+}

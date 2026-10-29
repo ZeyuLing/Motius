@@ -9,10 +9,8 @@ from pathlib import Path
 import numpy as np
 from torch.utils.data import Dataset
 
-from motius.models.bailando.audio import (
-    BAILANDO_AUDIO_FEATURE_DIM,
-    BAILANDO_BEAT_CHANNEL,
-)
+from motius.pipelines.bailando.audio import BAILANDO_AUDIO_FEATURE_DIM
+from motius.pipelines.bailando.audio import BAILANDO_BEAT_CHANNEL
 from motius.registry import DATASETS
 
 

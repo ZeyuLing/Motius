@@ -6,7 +6,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from motius.models.tm2d import TM2DBundle, TM2DTokenizer
+from motius.models.tm2d import TM2DBundle
+from motius.pipelines.tm2d.tokenizer import TM2DTokenizer
 from motius.models.tm2d.bundle import DEFAULT_TM2D_CONFIG
 from motius.pipelines.tm2d import TM2DPipeline
 from motius.registry import MODEL_BUNDLES, PIPELINES
@@ -91,7 +92,7 @@ def test_tm2d_text_and_music_pipeline_run_on_cpu():
         num_frames=24,
         output_fps=30.0,
         pretokenized=["walk", "forward"],
-        sample=False,
+        sample=True,
     )
     assert text.joints.shape == (24, 24, 3)
     assert text.native_joints.shape == (48, 24, 3)
@@ -101,7 +102,7 @@ def test_tm2d_text_and_music_pipeline_run_on_cpu():
     features = np.random.default_rng(4).normal(size=(8, 438)).astype(np.float32)
     dance = pipeline.infer_music_to_dance(
         music_features=features,
-        sample=False,
+        sample=True,
     )
     assert dance.joints.shape == (64, 24, 3)
     assert dance.model_motion.shape == (64, 287)
@@ -112,9 +113,9 @@ def test_tm2d_text_and_music_pipeline_run_on_cpu():
 def test_tm2d_vq_encoder_uses_283_channels():
     bundle = TM2DBundle(_tiny_config(), vocabulary=_vocabulary())
     motion = torch.randn(2, 24, 287)
-    tokens = bundle.encode_motion(motion)
+    tokens = TM2DPipeline(bundle).encode_motion(motion)
     assert tokens.shape == (2, 3)
-    decoded = bundle.decode_tokens(tokens)
+    decoded = TM2DPipeline(bundle).decode_tokens(tokens)
     assert decoded.shape == (2, 24, 287)
 
 
@@ -125,7 +126,7 @@ def test_tm2d_artifact_round_trip(tmp_path: Path):
     bundle.save_pretrained(artifact)
     restored = TM2DBundle.from_pretrained(artifact, local_files_only=True)
     assert restored.config == bundle.config
-    assert restored.tokenizer.vocabulary == bundle.tokenizer.vocabulary
+    assert restored.vocabulary == bundle.vocabulary
     for key, value in bundle.state_dict().items():
         torch.testing.assert_close(restored.state_dict()[key], value)
 

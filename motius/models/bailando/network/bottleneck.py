@@ -239,9 +239,3 @@ class NoBottleneck(nn.Module):
         commit_losses = [zero for _ in range(self.levels)]
         metrics = [dict(entropy=zero, usage=zero, used_curr=zero, pn=zero, dk=zero) for _ in range(self.levels)]
         return xs, xs, commit_losses, metrics
-
-if __name__ == '__main__':
-    from jukebox.utils.dist_utils import setup_dist_from_mpi
-    rank, local_rank, device = setup_dist_from_mpi(port=29600)
-    bottleneck = Bottleneck(256, 64, 0.99, 2).to(device)
-    bottleneck.check()

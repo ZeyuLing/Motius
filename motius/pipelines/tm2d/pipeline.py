@@ -9,13 +9,14 @@ from typing import Sequence
 import numpy as np
 import torch
 
-from motius.models.bailando.audio import (
-    BAILANDO_BEAT_CHANNEL,
-    extract_bailando_audio_features,
-)
+from motius.pipelines.bailando.audio import BAILANDO_BEAT_CHANNEL
+from motius.pipelines.bailando.audio import extract_bailando_audio_features
 from motius.motion.representation.humanml import recover_from_ric
 from motius.pipelines.base_pipeline import BasePipeline
 from motius.registry import PIPELINES
+from motius.motion.representation.normalization import affine_normalize, affine_denormalize
+from .tokenizer import TM2DTokenizer
+from .sampling import generate_from_encoded
 
 
 @dataclass(frozen=True)
@@ -56,6 +57,9 @@ class TM2DPipeline(BasePipeline):
 
     def __init__(self, bundle, device: str | None = None, **kwargs):
         super().__init__(bundle, **kwargs)
+        self.tokenizer = TM2DTokenizer(bundle.vocabulary,
+            max_text_tokens=bundle.config["max_text_tokens"],
+            length_id=bundle.config["text_length_id"], pad_id=bundle.config["text_pad_id"])
         if device is not None:
             self.to(device)
 
@@ -73,8 +77,24 @@ class TM2DPipeline(BasePipeline):
         generator.manual_seed(int(seed))
         return generator
 
+    def encode_motion(self, motion):
+        motion = torch.as_tensor(motion, dtype=torch.float32, device=self.device)
+        if motion.ndim == 2:
+            motion = motion.unsqueeze(0)
+        if motion.ndim != 3 or motion.shape[-1] != self.bundle.config["normalized_motion_dim"]:
+            raise ValueError("motion must have shape (T,287) or (B,T,287)")
+        normalized = affine_normalize(motion, self.bundle.motion_mean, self.bundle.motion_std)
+        return self.bundle.encode_motion(normalized[..., :self.bundle.config["vq_encoder_dim"]])
+
+    def decode_tokens(self, tokens):
+        tokens = torch.as_tensor(tokens, dtype=torch.long, device=self.device)
+        if tokens.ndim == 1:
+            tokens = tokens.unsqueeze(0)
+        normalized = self.bundle.decode_tokens(tokens)
+        return affine_denormalize(normalized, self.bundle.motion_mean, self.bundle.motion_std)
+
     def _decode(self, tokens: torch.Tensor):
-        motion = self.bundle.decode_tokens(tokens)
+        motion = self.decode_tokens(tokens)
         joints = recover_from_ric(motion, joints_num=24)
         return motion, joints
 
@@ -115,7 +135,7 @@ class TM2DPipeline(BasePipeline):
                 f"{self.bundle.config['max_target_length']}"
             )
 
-        source_ids = self.bundle.tokenizer.encode(
+        source_ids = self.tokenizer.encode(
             caption,
             token_count,
             pretokenized=pretokenized,
@@ -128,7 +148,7 @@ class TM2DPipeline(BasePipeline):
             dtype=torch.long,
             device=self.device,
         )
-        generated = self.bundle.text_transformer.generate_from_encoded(
+        generated = generate_from_encoded(self.bundle.text_transformer,
             encoded,
             source_mask,
             initial,
@@ -208,7 +228,7 @@ class TM2DPipeline(BasePipeline):
         if initial_token is not None and initial_motion is not None:
             raise ValueError("Provide initial_token or initial_motion, not both")
         if initial_motion is not None:
-            reference_tokens = self.bundle.encode_motion(initial_motion).reshape(-1)
+            reference_tokens = self.encode_motion(initial_motion).reshape(-1)
             index = torch.randint(
                 len(reference_tokens), (1,), device=self.device, generator=generator
             )
@@ -262,7 +282,7 @@ class TM2DPipeline(BasePipeline):
         while start < features.shape[1]:
             end = min(start + chunk, features.shape[1])
             steps = end - start - 1
-            generated = self.bundle.audio_transformer.generate_from_encoded(
+            generated = generate_from_encoded(self.bundle.audio_transformer,
                 encoded[:, start:end],
                 source_mask[:, :, start:end],
                 previous,

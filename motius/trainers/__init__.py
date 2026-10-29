@@ -18,6 +18,8 @@ _EXPORTS = {
     "ProjFlowTrainer": "projflow",
     "T2MGPTTrainer": "t2mgpt",
     "TM2TTrainer": "tm2t",
+    "TM2DTrainer": "tm2d",
+    "BailandoTrainer": "bailando",
     "GenTrackFlowGRPOTrainer": "gentrack",
     "HyMotionT2MTrainer": "hymotion_t2m",
     "PrismTrainer": "prism",

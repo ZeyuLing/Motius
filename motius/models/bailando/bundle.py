@@ -192,6 +192,16 @@ class BailandoBundle(ModelBundle):
         self.vqvae.eval()
         self.gpt.eval()
 
+    def predict_codes(self, tokens, condition):
+        return self.gpt(tokens, condition)
+
+    def predict_values(self, tokens, condition):
+        up, down = self.gpt(tokens, condition, head="critic")
+        return up + down
+
+    def reconstruct(self, motion):
+        return self.vqvae(motion)
+
     @staticmethod
     def _load_component(module, path, *, strict: bool):
         incompatible = module.load_state_dict(_load_torch_state(path), strict=strict)

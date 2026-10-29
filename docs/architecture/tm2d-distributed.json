@@ -1,0 +1,8 @@
+{
+  "complete": true,
+  "scope": "Released full TM2D networks, native shared-audio-decoder joint Trainer, prepared padded tokens/music fixture and shared two-GPU Runner. Three Adam updates; every joint neural hash synchronized, all frozen VQ roots unchanged and checkpointed. Full original corpus/epoch protocol excluded.",
+  "world_size": 2,
+  "updates": 3,
+  "neural_tensors": 346,
+  "all_replica_hashes_equal": true
+}

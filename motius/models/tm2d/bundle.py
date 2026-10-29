@@ -22,7 +22,6 @@ from .network import (
     VQEncoder,
     VectorQuantizer,
 )
-from .tokenizer import TM2DTokenizer
 
 
 TM2D_REPO_ID = "ZeyuLing/Motius-TM2D-HumanML3D-AISTPP"
@@ -121,6 +120,7 @@ class TM2DBundle(ModelBundle):
         config: Mapping[str, Any] | None = None,
         *,
         vocabulary: Mapping[str, int] | None = None,
+        vocabulary_path: str | Path | None = None,
         mean: np.ndarray | torch.Tensor | None = None,
         std: np.ndarray | torch.Tensor | None = None,
         component_weights: Mapping[str, str | Path] | None = None,
@@ -163,13 +163,10 @@ class TM2DBundle(ModelBundle):
         self.register_buffer("motion_mean", mean_tensor, persistent=False)
         self.register_buffer("motion_std", std_tensor, persistent=False)
 
+        if vocabulary_path is not None:
+            vocabulary = json.loads(Path(vocabulary_path).read_text())
         vocabulary = vocabulary or {"sos": 0, "eos": 1, "unk": 2}
-        self.tokenizer = TM2DTokenizer(
-            vocabulary,
-            max_text_tokens=self.config["max_text_tokens"],
-            length_id=self.config["text_length_id"],
-            pad_id=self.config["text_pad_id"],
-        )
+        self.vocabulary = dict(vocabulary)
         self.load_reports: dict[str, dict[str, list[str]]] = {}
         for name, path in (component_weights or {}).items():
             module = getattr(self, name)
@@ -192,36 +189,26 @@ class TM2DBundle(ModelBundle):
     def code_stride(self) -> int:
         return int(self.config["code_stride"])
 
-    def normalize_motion(self, motion):
-        return (motion - self.motion_mean) / self.motion_std
-
-    def denormalize_motion(self, motion):
-        return motion * self.motion_std + self.motion_mean
-
-    def encode_motion(self, motion):
-        """Encode normalized 287-D motion through the official 283-D VQ input."""
-
-        motion = torch.as_tensor(motion, dtype=torch.float32, device=self.device)
-        if motion.ndim == 2:
-            motion = motion.unsqueeze(0)
-        if motion.ndim != 3 or motion.shape[-1] != self.config["normalized_motion_dim"]:
-            raise ValueError("motion must have shape (T,287) or (B,T,287)")
-        normalized = self.normalize_motion(motion)
-        latent = self.vq_encoder(normalized[..., : self.config["vq_encoder_dim"]])
+    def encode_motion(self, normalized_motion):
+        """Encode the prepared VQ input tensor without data normalization."""
+        latent = self.vq_encoder(normalized_motion)
         return self.quantizer.indices(latent)
 
     def decode_tokens(self, tokens):
-        tokens = torch.as_tensor(tokens, dtype=torch.long, device=self.device)
-        if tokens.ndim == 1:
-            tokens = tokens.unsqueeze(0)
-        normalized = self.vq_decoder(self.quantizer.lookup(tokens))
-        return self.denormalize_motion(normalized)
+        """Decode batched token indices to normalized motion features."""
+        return self.vq_decoder(self.quantizer.lookup(tokens))
 
     def save_pretrained(self, save_directory: str, **_kwargs):
         from safetensors.torch import save_file
 
         output = Path(save_directory)
         output.mkdir(parents=True, exist_ok=True)
+        if hasattr(self, "joint_network"):
+            # The author copies the shared trained decoder into the text branch
+            # when saving; its projection is tied to the decoder embedding.
+            self.text_transformer.decoder.load_state_dict(
+                self.audio_transformer.decoder.state_dict(), strict=True
+            )
         metadata = {
             "artifact_format": TM2D_ARTIFACT_FORMAT,
             "model_type": "tm2d",
@@ -261,7 +248,7 @@ class TM2DBundle(ModelBundle):
         np.save(output / "mean.npy", self.motion_mean.cpu().numpy())
         np.save(output / "std.npy", self.motion_std.cpu().numpy())
         (output / "vocab.json").write_text(
-            json.dumps(self.tokenizer.vocabulary, indent=2, sort_keys=True) + "\n"
+            json.dumps(self.vocabulary, indent=2, sort_keys=True) + "\n"
         )
         attribution = Path(__file__).resolve().parent / "ATTRIBUTIONS.md"
         if attribution.is_file():
@@ -276,6 +263,7 @@ class TM2DBundle(ModelBundle):
         revision: str | None = None,
         cache_dir: str | Path | None = None,
         local_files_only: bool = False,
+        device: str | None = None,
         **kwargs,
     ):
         artifact = _resolve_artifact(
@@ -299,7 +287,7 @@ class TM2DBundle(ModelBundle):
                 "text_transformer",
             )
         }
-        return cls(
+        bundle = cls(
             metadata["config"],
             vocabulary=json.loads((artifact / "vocab.json").read_text()),
             mean=np.load(artifact / "mean.npy"),
@@ -308,6 +296,7 @@ class TM2DBundle(ModelBundle):
             provenance=metadata.get("provenance"),
             **kwargs,
         )
+        return bundle.to(device) if device is not None else bundle
 
 
 __all__ = [
