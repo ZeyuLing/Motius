@@ -354,6 +354,8 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.configuration.gvhmr" = ["*.json", "*.yaml", "body/*.pt"]
+"motius.licenses.gvhmr" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.licenses.hymotion_t2m" = ["*"]
 "motius.configuration.intergen" = ["*.yaml"]
 "motius.licenses.intergen" = ["NOTICE"]
@@ -448,21 +450,6 @@ namespaces = false
     "third_party/**/*.py",
     "third_party/**/*.md",
     "third_party/**/*LICENSE*",
-]
-"motius.models.gvhmr" = ["ATTRIBUTIONS.md"]
-"motius.models.gvhmr.vendor" = ["GVHMR_LICENSE"]
-"motius.models.gvhmr.vendor.hmr4d" = [
-    "configs/*.yaml",
-    "configs/*/*.yaml",
-    "dataset/*/*.json",
-    "dataset/*/*.pt",
-    "dataset/*/*.txt",
-    "network/hmr2/configs/*.yaml",
-    "network/hmr2/configs/*.npz",
-    "utils/body_model/*.json",
-    "utils/body_model/*.npy",
-    "utils/body_model/*.pth",
-    "utils/body_model/*.pt",
 ]
 "motius.simulators.mujoco" = [
     "ATTRIBUTIONS.md",

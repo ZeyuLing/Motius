@@ -15,15 +15,15 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from motius.models.gvhmr.parity import capture_gvhmr_trace
-from motius.models.gvhmr.vendor.hmr4d.utils.geo.hmr_cam import (
+from motius.pipelines.gvhmr.parity import capture_gvhmr_trace
+from motius.motion.representation.gvhmr.camera import (
     create_camera_sensor,
     estimate_K,
 )
-from motius.models.gvhmr.vendor.hmr4d.utils.geo_transform import (
+from motius.motion.representation.gvhmr.geometry import (
     compute_cam_angvel,
 )
-from motius.models.gvhmr.vendor.hmr4d.utils.video_io_utils import get_video_lwh
+from motius.pipelines.gvhmr.video import get_video_lwh
 
 
 def _load(path: Path):

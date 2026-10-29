@@ -13,8 +13,8 @@ from motius.models.gvhmr import (
     OFFICIAL_RUNTIME_REVISION,
     sha256_file,
 )
-from motius.models.gvhmr.bundle import _bbox_xys_from_xyxy
-from motius.models.gvhmr.parity import capture_gvhmr_trace
+from motius.pipelines.gvhmr.preprocessing import _bbox_xys_from_xyxy
+from motius.pipelines.gvhmr.parity import capture_gvhmr_trace
 from motius.motion.representation.monocular_capture import (
     CAMERA_OPENCV,
     GRAVITY_WORLD_Y_UP,
@@ -32,24 +32,6 @@ ASSETS = (
 )
 
 
-def make_artifact(root: Path) -> Path:
-    digests = {}
-    for index, relative in enumerate(ASSETS):
-        path = root / relative
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(f"asset-{index}".encode())
-        digests[relative] = sha256_file(path)
-    (root / "inputs/checkpoints/body_models/smplx").mkdir(parents=True)
-    (root / "gvhmr_config.json").write_text(
-        json.dumps(
-            {
-                "artifact_format": GVHMR_ARTIFACT_FORMAT,
-                "source_revision": OFFICIAL_RUNTIME_REVISION,
-                "sha256": digests,
-            }
-        )
-    )
-    return root
 
 
 def official_payload(frames: int = 3) -> dict:
@@ -100,40 +82,8 @@ def converted_payload(frames: int = 3) -> dict:
     return flat
 
 
-def test_repo_native_artifact_registers_and_loads(tmp_path: Path):
-    artifact = make_artifact(tmp_path / "artifact")
-    assert MODEL_BUNDLES.get("GVHMRBundle") is GVHMRBundle
-    assert PIPELINES.get("GVHMRPipeline") is GVHMRPipeline
-
-    pipeline = GVHMRPipeline.from_pretrained(
-        str(artifact),
-        bundle_kwargs={"python_executable": sys.executable},
-    )
-
-    assert pipeline.bundle.artifact_root == artifact
-    pipeline.bundle.validate_runtime(require_checkpoint=True)
-    assert pipeline.bundle.checkpoint_sha256 == sha256_file(
-        artifact / ASSETS[0]
-    )
 
 
-def test_artifact_rejects_revision_and_checkpoint_drift(tmp_path: Path):
-    artifact = make_artifact(tmp_path / "artifact")
-    config_path = artifact / "gvhmr_config.json"
-    config = json.loads(config_path.read_text())
-    config["source_revision"] = "wrong"
-    config_path.write_text(json.dumps(config))
-    with pytest.raises(ValueError, match="source revision"):
-        GVHMRBundle(artifact_root=artifact)
-
-    artifact = make_artifact(tmp_path / "second")
-    bundle = GVHMRBundle(
-        artifact_root=artifact,
-        python_executable=sys.executable,
-    )
-    (artifact / ASSETS[0]).write_bytes(b"changed")
-    with pytest.raises(RuntimeError, match="SHA256 mismatch"):
-        _ = bundle.checkpoint_sha256
 
 
 def test_parser_maps_documented_official_demo_fields():
@@ -213,132 +163,16 @@ def test_parser_rejects_missing_hash_and_revision_mismatch():
         parse_gvhmr_output(converted, original_fps=30.0)
 
 
-def test_repo_native_command_and_preseed_cache(tmp_path: Path, monkeypatch):
-    repository = tmp_path / "repo"
-    output_root = repository / "outputs" / "gvhmr"
-    artifact = make_artifact(tmp_path / "artifact")
-    video = tmp_path / "sample.mp4"
-    video.write_bytes(b"video")
-    boxes = np.asarray(
-        [[10.0, 20.0, 70.0, 180.0], [20.0, 40.0, 220.0, 140.0]],
-        dtype=np.float32,
-    )
-    np.testing.assert_allclose(
-        _bbox_xys_from_xyxy(boxes),
-        [[40.0, 100.0, 192.0], [120.0, 90.0, 320.0]],
-    )
-    monkeypatch.setattr(bundle_module, "_REPO_ROOT", repository)
-    bundle = GVHMRBundle(
-        artifact_root=artifact,
-        python_executable=sys.executable,
-    )
-
-    def fake_run(command, **kwargs):
-        assert command[:3] == [
-            sys.executable,
-            "-m",
-            "motius.models.gvhmr.vendor.official_demo",
-        ]
-        assert kwargs["cwd"] == artifact
-        assert kwargs["env"]["MOTIUS_GVHMR_ARTIFACT_ROOT"] == str(artifact)
-        assert ".git" not in " ".join(command)
-        run_root = Path(
-            next(
-                item.split("=", 1)[1]
-                for item in command
-                if item.startswith("--output_root=")
-            )
-        )
-        cache = torch.load(
-            run_root / video.stem / "preprocess/bbx.pt",
-            map_location="cpu",
-            weights_only=True,
-        )
-        np.testing.assert_array_equal(cache["bbx_xyxy"].numpy(), boxes)
-        np.testing.assert_allclose(
-            cache["bbx_xys"].numpy(),
-            _bbox_xys_from_xyxy(boxes),
-        )
-        result = run_root / video.stem / "hmr4d_results.pt"
-        result.parent.mkdir(parents=True, exist_ok=True)
-        result.write_bytes(b"result")
-
-    monkeypatch.setattr(bundle_module.subprocess, "run", fake_run)
-    result = bundle.run_official_demo(video, output_root, bbox_xyxy=boxes)
-
-    assert result.name == "hmr4d_results.pt"
 
 
-def test_save_pretrained_emits_complete_hf_contract(
-    tmp_path: Path,
-    monkeypatch,
-):
-    repository = tmp_path / "repo"
-    artifact = make_artifact(tmp_path / "artifact")
-    output = repository / "outputs" / "gvhmr"
-    monkeypatch.setattr(bundle_module, "_REPO_ROOT", repository)
-    bundle = GVHMRBundle(
-        artifact_root=artifact,
-        python_executable=sys.executable,
-    )
-
-    bundle.save_pretrained(str(output))
-
-    model_index = json.loads((output / "model_index.json").read_text())
-    assert model_index["pipeline_class"].endswith("GVHMRPipeline")
-    assert model_index["tasks"] == ["monocular_motion_capture"]
-    assert "GVHMRPipeline.from_pretrained" in (output / "README.md").read_text()
-    for relative in ASSETS:
-        assert sha256_file(output / relative) == sha256_file(artifact / relative)
 
 
-def test_outputs_and_setup_are_productized(tmp_path: Path, monkeypatch):
-    repository = tmp_path / "repo"
-    monkeypatch.setattr(bundle_module, "_REPO_ROOT", repository)
-    with pytest.raises(ValueError, match="outputs"):
-        bundle_module._ensure_output_root(tmp_path / "elsewhere")
-
-    root = Path(__file__).resolve().parents[1]
-    setup = (root / "tools/setup_gvhmr_env.sh").read_text()
-    assert "git clone" not in setup
-    assert "No external GVHMR source checkout" in setup
-    assert "motius.models.gvhmr.vendor.official_demo" in (
-        root / "motius/models/gvhmr/bundle.py"
-    ).read_text()
-    assert '"utils/body_model/*.pth"' in (root / "pyproject.toml").read_text()
 
 
-def test_every_vendored_python_directory_is_wheel_discoverable():
-    root = Path(__file__).resolve().parents[1]
-    source_root = root / "motius/models/gvhmr/vendor/hmr4d"
-    missing = sorted(
-        {
-            source.parent
-            for source in source_root.rglob("*.py")
-            if not (source.parent / "__init__.py").is_file()
-        }
-    )
-    assert not missing
 
 
-def test_vendored_two_view_fallback_is_deterministic():
-    root = Path(__file__).resolve().parents[1]
-    solver = (
-        root
-        / "motius/models/gvhmr/vendor/hmr4d/utils/preproc/relpose/"
-        "solver_two_view.py"
-    ).read_text()
-    assert "if relative_pose is None" in solver
-    assert "np.eye(4, dtype=np.float32)" in solver
 
 
-def test_optional_render_does_not_require_ffmpeg_executable():
-    root = Path(__file__).resolve().parents[1]
-    demo = (
-        root / "motius/models/gvhmr/vendor/official_demo.py"
-    ).read_text()
-    assert 'shutil.which("ffmpeg") is not None' in demo
-    assert "Skipped because the ffmpeg executable is absent" in demo
 
 
 def test_gvhmr_parity_contract_covers_every_inference_boundary(tmp_path: Path):
@@ -374,3 +208,30 @@ def test_gvhmr_parity_contract_covers_every_inference_boundary(tmp_path: Path):
         "04_model_input",
         "05_model_output",
     )
+
+
+def test_native_network_registration_forward_and_checkpoint(tmp_path):
+    assert MODEL_BUNDLES.get("GVHMRBundle") is GVHMRBundle
+    assert PIPELINES.get("GVHMRPipeline") is GVHMRPipeline
+    torch.manual_seed(7)
+    bundle=GVHMRBundle(config=dict(latent_dim=32,num_layers=1,num_heads=4))
+    inputs=dict(length=torch.tensor([10,8]),obs=torch.randn(2,10,17,3),
+        f_cliffcam=torch.randn(2,10,3),f_cam_angvel=torch.randn(2,10,6),f_imgseq=torch.randn(2,10,1024))
+    with torch.no_grad():expected=bundle.predict_motion(**inputs)
+    bundle.save_pretrained(tmp_path)
+    loaded=GVHMRBundle.from_pretrained(str(tmp_path))
+    with torch.no_grad():actual=loaded.predict_motion(**inputs)
+    assert set(actual)=={"pred_context","pred_x","pred_cam","static_conf_logits"}
+    for key in expected:torch.testing.assert_close(actual[key],expected[key],rtol=0,atol=0)
+    assert actual["pred_x"].shape==(2,10,151)
+    assert loaded.checkpoint_sha256==sha256_file(tmp_path/"gvhmr.safetensors")
+    assert not hasattr(bundle,"run_official_demo")
+
+
+def test_native_checkpoint_revision_and_shape_validation(tmp_path):
+    bundle=GVHMRBundle(config=dict(latent_dim=32,num_layers=1,num_heads=4))
+    bundle.save_pretrained(tmp_path)
+    config=tmp_path/"gvhmr_config.json";meta=json.loads(config.read_text())
+    meta["source_revision"]="unsupported";config.write_text(json.dumps(meta))
+    with pytest.raises(ValueError,match="revision"):
+        GVHMRBundle.from_pretrained(str(tmp_path))

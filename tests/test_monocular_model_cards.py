@@ -55,12 +55,11 @@ def test_monocular_leaderboard_publication_has_verified_results_and_demos():
 def test_monocular_runtime_legal_files_are_packaged():
     pyproject = (ROOT / "pyproject.toml").read_text()
     expected = (
-        '"motius.models.gvhmr" = ["ATTRIBUTIONS.md"]',
+        '"motius.licenses.gvhmr" = ["LICENSE", "ATTRIBUTIONS.md"]',
         '"motius.models.prompthmr" = ["ATTRIBUTIONS.md"]',
         '"motius.models.gem_smpl" = ["ATTRIBUTIONS.md"]',
         '"motius.models.gem_smpl.vendor" = [',
         '"GENMO_LICENSE",',
-        '"GVHMR_LICENSE",',
         '"motius.models.gem_x" = ["ATTRIBUTIONS.md"]',
         '"motius.models.gem_x.vendor" = [',
         '"GEM_X_LICENSE",',

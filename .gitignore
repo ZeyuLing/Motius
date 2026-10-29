@@ -98,10 +98,6 @@ docs/leaderboards/hf_space_*/cases/**/audio/
 CLAUDE.md
 
 # Licensed, source-pinned inference resources vendored by Motius.
-!motius/models/gvhmr/vendor/
-!motius/models/gvhmr/vendor/**
-motius/models/gvhmr/vendor/**/__pycache__/
-motius/models/gvhmr/vendor/**/*.py[cod]
 
 # Small AnimateCanvas authority assets required by the public training recipe.
 !checkpoints/models/animatecanvas/
@@ -135,7 +131,6 @@ motius/trainers/beyondmimic/vendor/**/*.py[cod]
 !motius/models/gem_smpl/vendor/gem/utils/body_model/*.pt
 !motius/models/gem_smpl/vendor/gem/utils/body_model/*.pth
 !motius/models/gem_smpl/vendor/gem/network/hmr2/configs/smpl_mean_params.npz
-!motius/models/gvhmr/vendor/hmr4d/network/hmr2/configs/smpl_mean_params.npz
 !motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/
 !motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/**/
 !motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/**/*.py

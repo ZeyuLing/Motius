@@ -1,4 +1,4 @@
-"""Motius monocular-capture adapter for official GVHMR demo outputs."""
+"""Native GVHMR inference and shared monocular motion result contract."""
 
 from __future__ import annotations
 
@@ -395,6 +395,48 @@ class GVHMRPipeline(BasePipeline):
 
     BUNDLE_CLS = "motius.models.gvhmr.GVHMRBundle"
 
+    def __init__(self,bundle,*,device=None,body_model_path=None,**kwargs):
+        super().__init__(bundle,**kwargs)
+        if device is not None:self.bundle.to(device)
+        self.body_model_path=Path(body_model_path) if body_model_path else bundle.body_models_root/"smplx/SMPLX_NEUTRAL.npz"
+        self._prediction=None
+
+    @property
+    def prediction(self):
+        if self._prediction is None:
+            from .prediction import GVHMRPrediction
+            self._prediction=GVHMRPrediction(self.bundle,self.body_model_path)
+        return self._prediction
+
+    def save_pretrained(self,save_directory,*,include_frontends=True):
+        import json
+        import shutil
+        from .frontend import GVHMRFrontend
+        self.bundle.save_pretrained(save_directory)
+        destination=Path(save_directory)
+        if include_frontends:
+            frontend=GVHMRFrontend(self.bundle.artifact_root,self.bundle.device)
+            for name in ["hmr2/epoch=10-step=25000.ckpt","vitpose/vitpose-h-multi-coco.pth","yolo/yolov8x.pt"]:
+                source=frontend.checkpoint(name)
+                target=destination/"inputs/checkpoints"/name
+                target.parent.mkdir(parents=True,exist_ok=True)
+                if source.resolve()!=target.resolve():shutil.copy2(source,target)
+        return save_directory
+
+    def predict_precomputed(self,data,*,static_camera=False,postproc=True):
+        import torch
+        from motius.motion.representation.gvhmr.camera import normalize_kp2d
+        batch={key:value[None].to(self.bundle.device) for key,value in data.items() if key!="kp2d"}
+        batch["obs"]=normalize_kp2d(data["kp2d"],data["bbx_xys"])[None].to(self.bundle.device)
+        with torch.no_grad():
+            outputs=self.prediction.forward(batch,postproc=postproc,static_cam=static_camera)
+        def cpu(value):
+            return {key:cpu(v) for key,v in value.items()} if isinstance(value,dict) else value.detach().cpu()
+        return dict(smpl_params_global={key:cpu(value[0]) for key,value in outputs["pred_smpl_params_global"].items()},
+                    smpl_params_incam={key:cpu(value[0]) for key,value in outputs["pred_smpl_params_incam"].items()},
+                    K_fullimg=data["K_fullimg"].cpu(),net_outputs=cpu(outputs))
+
+
     def infer_video(
         self,
         video: str | Path,
@@ -411,22 +453,24 @@ class GVHMRPipeline(BasePipeline):
         render: bool = False,
     ) -> MonocularCaptureResult:
         fps = _video_fps(video) if original_fps is None else float(original_fps)
-        raw_result = self.bundle.run_official_demo(
-            video,
-            output_root,
-            static_camera=static_camera,
-            use_dpvo=use_dpvo,
-            focal_length_mm=focal_length_mm,
-            verbose=verbose,
-            bbox_xyxy=bbox_xyxy,
-            parity_trace=parity_trace,
-            render=render,
-        )
-        source = (
-            self.bundle.convert_official_result(raw_result)
-            if materialize_geometry
-            else raw_result
-        )
+        import torch
+        from .frontend import GVHMRFrontend
+        from .materialization import materialize_prediction
+        frontend=GVHMRFrontend(self.bundle.artifact_root,self.bundle.device)
+        data,tracking,output,copied=frontend.prepare(video,output_root,
+            static_camera=static_camera,use_dpvo=use_dpvo,focal_length_mm=focal_length_mm,
+            bbox_xyxy=bbox_xyxy,verbose=verbose)
+        prediction=self.predict_precomputed(data,static_camera=static_camera)
+        torch.save(prediction,output/"hmr4d_results.pt")
+        source=(materialize_prediction(prediction,self.body_model_path,self.bundle.device)
+                if materialize_geometry else prediction)
+        if parity_trace is not None:
+            from .parity import capture_gvhmr_trace
+            capture_gvhmr_trace(parity_trace,name="gvhmr-native",bbox=tracking,data=data,prediction=prediction,
+                metadata={"source_revision":OFFICIAL_RUNTIME_REVISION,"static_camera":bool(static_camera)})
+        if render:
+            from .rendering import render_prediction
+            render_prediction(source,copied,output,self.body_model_path,self.bundle.device)
         result = parse_gvhmr_output(
             source,
             checkpoint_sha256=self.bundle.checkpoint_sha256,

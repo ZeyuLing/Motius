@@ -82,21 +82,13 @@ def main() -> None:
         if missing:
             raise KeyError(f"{group_name} is missing {missing}.")
 
-    from motius.models.gvhmr.vendor import hmr4d as _vendored_hmr4d
-    from hmr4d import SOURCE_ROOT
-    from hmr4d.utils.smplx_utils import make_smplx
-
-    model = make_smplx("supermotion").to(device).eval()
-    smplx_to_smpl = torch.load(
-        SOURCE_ROOT / "hmr4d/utils/body_model/smplx2smpl_sparse.pt",
-        map_location=device,
-        weights_only=True,
-    )
-    joint_regressor = torch.load(
-        SOURCE_ROOT / "hmr4d/utils/body_model/smpl_neutral_J_regressor.pt",
-        map_location=device,
-        weights_only=True,
-    )
+    from motius.motion.body_models.gvhmr.body import BodyModelSMPLX
+    body_file=args.artifact_root/"inputs/checkpoints/body_models/smplx/SMPLX_NEUTRAL.npz"
+    model=BodyModelSMPLX(model_path=str(body_file),model_type="smplx",gender="neutral",
+        num_pca_comps=12,flat_hand_mean=False).to(device).eval()
+    asset_root=Path(__file__).resolve().parents[1]/"motius/configuration/gvhmr/body"
+    smplx_to_smpl=torch.load(asset_root/"smplx2smpl_sparse.pt",map_location=device,weights_only=True)
+    joint_regressor=torch.load(asset_root/"smpl_neutral_J_regressor.pt",map_location=device,weights_only=True)
     vertices_camera, joints_camera = materialize(
         model,
         smplx_to_smpl,

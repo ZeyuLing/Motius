@@ -1,0 +1,411 @@
+{
+  "complete": true,
+  "comparison": "Public native GVHMR infer_video including independent video preprocessing, static/dynamic camera and full SMPL-X-to-SMPL materialization",
+  "upstream_commit": "6ec3ca39336c50492c0fae65fba2fb831fc7d866",
+  "video_sha256": "88a01c4d075b20664b7fcfe6e2bceb8e6068328faf82e7ebcd02d93d44ea13bd",
+  "body_model_sha256": "376021446ddc86e99acacd795182bbef903e61d33b76b9d8b359c2b0865bd992",
+  "tests": [
+    {
+      "tensor": "/static_camera_True/camera/parameters/body_pose",
+      "shape": [
+        30,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/camera/parameters/betas",
+      "shape": [
+        30,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/camera/parameters/global_orient",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/camera/parameters/transl",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/camera/vertices",
+      "shape": [
+        30,
+        6890,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/camera/joints",
+      "shape": [
+        30,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/world/parameters/body_pose",
+      "shape": [
+        30,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/world/parameters/betas",
+      "shape": [
+        30,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/world/parameters/global_orient",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/world/parameters/transl",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/world/vertices",
+      "shape": [
+        30,
+        6890,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/world/joints",
+      "shape": [
+        30,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/intrinsics",
+      "shape": [
+        30,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/cam_angvel",
+      "shape": [
+        30,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/preprocess/bbx_xys",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/preprocess/kp2d",
+      "shape": [
+        30,
+        17,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/preprocess/f_imgseq",
+      "shape": [
+        30,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_True/pixels",
+      "shape": [
+        30,
+        640,
+        360,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/camera/parameters/body_pose",
+      "shape": [
+        30,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/camera/parameters/betas",
+      "shape": [
+        30,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/camera/parameters/global_orient",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/camera/parameters/transl",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/camera/vertices",
+      "shape": [
+        30,
+        6890,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/camera/joints",
+      "shape": [
+        30,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/world/parameters/body_pose",
+      "shape": [
+        30,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/world/parameters/betas",
+      "shape": [
+        30,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/world/parameters/global_orient",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/world/parameters/transl",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/world/vertices",
+      "shape": [
+        30,
+        6890,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/world/joints",
+      "shape": [
+        30,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/intrinsics",
+      "shape": [
+        30,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/cam_angvel",
+      "shape": [
+        30,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/preprocess/bbx_xys",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/preprocess/kp2d",
+      "shape": [
+        30,
+        17,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/preprocess/f_imgseq",
+      "shape": [
+        30,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/static_camera_False/pixels",
+      "shape": [
+        30,
+        640,
+        360,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "native_files": {
+    "motius/models/gvhmr/rotary.py": "590f00248bc5b289b4230463a7c735db46c1c6293b2a9c050d47a711c6cce137",
+    "motius/models/gvhmr/network.py": "b6e0395134c280c038061be2cd82fc4a97b0a0ae039f3dadfed5d221874ae0e5",
+    "motius/models/gvhmr/bundle.py": "3f24a516ce22c28a020aca5bdad800c027c0b64e94bef06c00dd12c81d79195f",
+    "motius/models/gvhmr/attention.py": "8cb6af7d1d275242c1d8fdf7dd82e279c07255ab36af211e61ebceaacdcfc750",
+    "motius/models/gvhmr/__init__.py": "a51e2fc94335469be9e91cb62e9109691f5bad5a3461d7f1640919aac12c7e28",
+    "motius/models/vision/gvhmr/networks.py": "5b8b44a4d9508debe5a6931215438eed97a7315c47b7f42374774c2e205f1034",
+    "motius/models/vision/gvhmr/vit.py": "76fc63be210f4b317fbf3047251d74368c79fa9ccfdc9907f6f5154268f274a6",
+    "motius/models/vision/gvhmr/token_transformer.py": "12020565abe2319f496431e62b7dfccef240cddf5c233a4374138fff47b49cb5",
+    "motius/models/vision/gvhmr/normalization.py": "f75fbc3cc1a40e6a34189d931f043c76195e0cbe616fec9695c2e424c1ea5367",
+    "motius/models/vision/gvhmr/bundle.py": "d7774b709bdc92022bf81bbd0b4fa07f07a9b60c7e938f06c0c08a76157b1af0",
+    "motius/models/vision/gvhmr/__init__.py": "491839fdcbea69b1ef30f49a1317d6b2b5e0cfcaae3e3041d2110770c3e02617",
+    "motius/models/vision/gvhmr/heatmap.py": "5c11cff2e000602eaba9718325e285775462e5e468c25f2353c43d94adaeca7b",
+    "motius/pipelines/gvhmr/parity.py": "b6a9cdf8a131bcad58130c9b309d193583c10d3160c81041499814b3a2784a77",
+    "motius/pipelines/gvhmr/dpvo.py": "4641e0694db0ef77d40273e2f3dbcc4cbb3afcd1ab8c6a49622cf1593062c9d8",
+    "motius/pipelines/gvhmr/flipping.py": "3edf0d998ace294adf3d2547181632d87311434011611cdadb8675f23982cb18",
+    "motius/pipelines/gvhmr/prediction.py": "78c9ab340ab28fc3555d5e8de8222d1974d96a8908ccc1d02582b95f9fa7f2af",
+    "motius/pipelines/gvhmr/materialization.py": "6f1417a763c407bd6b80bdaf7e90622af73be0885bc60b9c5b17019a5556ffe7",
+    "motius/pipelines/gvhmr/postprocessing.py": "3767c00e7dbca8232597137643964f93a1e73c7b509af6a74429bfa777cb2046",
+    "motius/pipelines/gvhmr/image.py": "9a616e86be70e10e15788a530147860d462ba68ec7d0a6e4b4d92ba4bcd29c28",
+    "motius/pipelines/gvhmr/tracking.py": "4fea69012c79098ac676cd5c16e49e1c3922a7291a5617b5e543418099b7a498",
+    "motius/pipelines/gvhmr/heatmaps.py": "781114ac9cc56e22ebc9f585ee5f183a295353fe5a94ca9a9022212b3cc2abff",
+    "motius/pipelines/gvhmr/features.py": "658aa8c9437ab6dc0ce5ede0d3929225f76eb4bebd7dd0278b345ff30d6af8a7",
+    "motius/pipelines/gvhmr/pose.py": "53d03fa2054d0e0acd2db83e0c74369873a32b3762e80b3da4b566b1e4a86d9b",
+    "motius/pipelines/gvhmr/video.py": "c96f9bd8406eced476a85d2fa97ee7b529680c01a4d2cae079f301b38822158a",
+    "motius/pipelines/gvhmr/rendering.py": "73345af1402e0f48f83be23b5f126c93d052ccb78adacac1a13b29021b1d3b31",
+    "motius/pipelines/gvhmr/pipeline.py": "5ee96723246c2afde8e41e9c6d3e9167d7ab070b803eeec0f44b322dad72e968",
+    "motius/pipelines/gvhmr/preprocessing.py": "461125b756ed081650b10a548e17ff369c60f5251c7e8914ed493b1972ec5e20",
+    "motius/pipelines/gvhmr/frontend.py": "0a5145beae08d6113ccc70b168833c8cdcc1f283631ddbb5aca4b2d8d3296a74",
+    "motius/pipelines/gvhmr/__init__.py": "8a06ecf4d0235a11bbcc644f7405106dff985bc6022f7209ce90ffd3c95353be",
+    "motius/pipelines/gvhmr/tracks.py": "b36e307f9a701eba51e9a433b0f69fbd876e062a065860ca02d72da77da413cf",
+    "motius/pipelines/gvhmr/odometry/utils.py": "b30a64c6eeef81f2f3c49041d54472037f54812ba9092a6267f09e0b2d6665e8",
+    "motius/pipelines/gvhmr/odometry/matchers.py": "033795130b1d0fabdf766d6fb258a0d012f5d79b8e60bb3027df96a44ad4ea1f",
+    "motius/pipelines/gvhmr/odometry/simple_vo.py": "cb6f7469706609017515700740891028233c878173e2d1a2e32d60fff41b7184",
+    "motius/pipelines/gvhmr/odometry/solver_two_view.py": "2e9673010b3c6a6b33cecf2ee483645a8384afadd940bef602bfad92e040d9be",
+    "motius/pipelines/gvhmr/odometry/matcher_wrapper.py": "9ab7799119e4f13a24a77bbe9d26ada1f802b51042f9dbdfc3fbaa464902b5bb",
+    "motius/pipelines/gvhmr/odometry/transformation_np.py": "77119cf8754087df939323eca8438b38680b9ab863aaa94b1adfad1ca5a317c9",
+    "motius/pipelines/gvhmr/odometry/__init__.py": "db81465833cc647ee13a19af3d65deb94eabb274580678f05fdba4c2e1e59009",
+    "motius/motion/body_models/gvhmr/body.py": "89205d282f267adf035b4670484b55cb80052015b0b61ab6e6d65dcc2ec66ed7",
+    "motius/motion/body_models/gvhmr/smplx.py": "b9ad0a7c7c1eb3ecead7b627b0e74a6873121ae2a443b3b9ded2fb752cfdf597",
+    "motius/motion/body_models/gvhmr/__init__.py": "a720c4ba4558be3bb56521f47092b87e08c4cd6978fe5857dd340753528ee68c",
+    "motius/motion/representation/gvhmr/camera.py": "1da6eaab1c2a71afafcc3754b87372c4cc1d304d335657b5fde1f61f11db4657",
+    "motius/motion/representation/gvhmr/matrix.py": "1e91652e125fc7915b06645ea7cc4c352dd1e516ff2b4c43cab03365e9838977",
+    "motius/motion/representation/gvhmr/codec.py": "b430d7a1bf75c981634894c3d1b695a0a16d17b14e6fcd275f2eab4ae8f5f6f7",
+    "motius/motion/representation/gvhmr/global_motion.py": "5b5d0406eee731d031441991624fa73354d2598b08503b182ced2603f42c2612",
+    "motius/motion/representation/gvhmr/quaternion.py": "e83f4aa74c308dfb5bfbde2fdb6dbe7d98ced35766c55674a955b973ea2df87c",
+    "motius/motion/representation/gvhmr/tensor_ops.py": "3e0df90c957fd2114291cdfcb6b5b16bfc75455f9caa7162637cb39c48806351",
+    "motius/motion/representation/gvhmr/geometry.py": "1d9a072168a7c5f80b5f6b804cffb8e57e7c426edc011f5ae13f3faa31e25b97",
+    "motius/motion/representation/gvhmr/ik.py": "67ac4656422d3ace3c277839f5793b068ea591cbd6df96859edd412332cdcbe9",
+    "motius/motion/representation/gvhmr/__init__.py": "d578c061198c909dfe328baa5ac7d638d764960aaf58d9d62538334d4212842e"
+  },
+  "environment_constraints": {
+    "torch": "2.6.0a0+ecf3bae40a.nv25.01",
+    "imageio": "2.34.1",
+    "av": "13.0.0",
+    "ultralytics": "8.2.42",
+    "pycolmap": "4.0.3",
+    "cuda_device": "H200",
+    "fresh_process_per_case": true
+  },
+  "reference": "Unmodified original demo parse_args_to_cfg/run_preprocess/load_data_dict, original Pipeline and body model. Independent workers per camera mode; ASCII symlink for original Hydra filename grammar; optional preview rendering excluded."
+}

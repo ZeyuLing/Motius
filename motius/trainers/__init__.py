@@ -26,6 +26,7 @@ _EXPORTS = {
     "MotionStreamerTrainer": "motionstreamer",
     "MoGenTSTrainer": "mogents",
     "FlowMDMTrainer": "flowmdm",
+    "GVHMRTrainer": "gvhmr",
     "GenTrackFlowGRPOTrainer": "gentrack",
     "HyMotionT2MTrainer": "hymotion_t2m",
     "PrismTrainer": "prism",

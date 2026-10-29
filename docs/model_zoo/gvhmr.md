@@ -208,11 +208,11 @@ unverifiable transform.
 
 ## Citation and License
 
-The vendored GVHMR inference source and checkpoints retain the upstream
+The GVHMR source and checkpoints retain the upstream
 educational, research, and non-profit terms. SMPL and SMPL-X body models are
 not redistributed and must be supplied by the user. See
-[`ATTRIBUTIONS.md`](../../motius/models/gvhmr/ATTRIBUTIONS.md) and the packaged
-`GVHMR_LICENSE` before use.
+[`ATTRIBUTIONS.md`](../../motius/licenses/gvhmr/ATTRIBUTIONS.md) and the packaged
+`LICENSE` before use.
 
 <!-- MOTIUS_MODEL_CARD_FOOTER:START -->
 ---
