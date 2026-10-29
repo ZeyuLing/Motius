@@ -1,6 +1,11 @@
 """Native ProjFlow inference pipeline."""
 
 from __future__ import annotations
+from functools import partial
+from .guidance import guided_velocity
+from motius.motion.conditioning.clip_text import encode_clip_text
+from motius.motion.representation.normalization import affine_denormalize, affine_normalize
+
 
 from typing import Iterable, Optional, Sequence
 
@@ -27,6 +32,8 @@ class ProjFlowPipeline(BasePipeline):
 
     def __init__(self, bundle, device: Optional[str] = None, **kwargs):
         super().__init__(bundle, **kwargs)
+        from .sampler import ProjFlowSampler
+        self.sampler = ProjFlowSampler()
         if device is not None:
             self.to(device)
 
@@ -130,7 +137,7 @@ class ProjFlowPipeline(BasePipeline):
             world[index, :length] = torch.as_tensor(
                 motion[:length], dtype=torch.float32, device=self.device
             )
-        normalized = self.bundle.normalize_joints(world)
+        normalized = affine_normalize(world, self.bundle.joints_mean, self.bundle.joints_std)
 
         if position_mask is not None:
             mask = torch.as_tensor(position_mask, dtype=torch.bool, device=self.device)
@@ -234,7 +241,7 @@ class ProjFlowPipeline(BasePipeline):
         scale = self.bundle.guidance_scale if guidance_scale is None else float(guidance_scale)
         steps = self.bundle.num_steps if num_steps is None else int(num_steps)
         model = self.bundle.net
-        conditions = model.encode_text(list(captions)).float()
+        conditions = encode_clip_text(model, list(captions)).float()
         attention = (
             (torch.arange(frames, device=self.device)[None] < torch.tensor(lengths, device=self.device)[:, None])
             .unsqueeze(-1)
@@ -254,12 +261,12 @@ class ProjFlowPipeline(BasePipeline):
                 noise = torch.cat([noise, noise], dim=0)
                 control = control.repeat(2, 1, 1, 1)
                 mask = mask.repeat(2, 1, 1, 1)
-            sample = model.gen_diffusion.sample_projflow(
+            sample = self.sampler.sample_projflow(
                 num_steps=steps,
                 use_projflow=use_projflow,
             )(
                 noise,
-                model.forward_with_CFG,
+                partial(guided_velocity, model),
                 conds=conditions,
                 attention_mask=attention,
                 cfg=scale,
@@ -268,7 +275,7 @@ class ProjFlowPipeline(BasePipeline):
             )[-1]
         if scale != 1.0:
             sample, _ = sample.chunk(2, dim=0)
-        world = self.bundle.denormalize_joints(sample.permute(0, 2, 3, 1))
+        world = affine_denormalize(sample.permute(0, 2, 3, 1), self.bundle.joints_mean, self.bundle.joints_std)
         return self._format_outputs(world, lengths, return_format)
 
     def infer_temporal_motion_completion(self, source_motion, generation_mask=None, **kwargs):

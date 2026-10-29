@@ -13,7 +13,6 @@ import time
 from functools import partial, wraps
 from timm.models.vision_transformer import Attention
 from .rope import RopeND
-from .sampler import ProjFlowSampler
 
 
 def lengths_to_mask(lengths, max_len=None):
@@ -22,17 +21,6 @@ def lengths_to_mask(lengths, max_len=None):
     return torch.arange(maximum, device=lengths.device)[None] < lengths[:, None]
 
 
-def eval_decorator(function):
-    @wraps(function)
-    def wrapped(model, *args, **kwargs):
-        training = model.training
-        model.eval()
-        try:
-            return function(model, *args, **kwargs)
-        finally:
-            model.train(training)
-
-    return wrapped
 
 
 #################################################################################
@@ -64,8 +52,6 @@ class ACMDM(nn.Module):
         self.diff_model = diff_model
         if self.diff_model != 'Flow':
             raise ValueError("The released ProjFlow artifact requires an ACMDM Flow prior")
-        self.train_diffusion = None
-        self.gen_diffusion = ProjFlowSampler()
         # --------------------------------------------------------------------------
         # ACMDM
         self.t_embedder = TimestepEmbedder(self.latent_dim)
@@ -134,14 +120,15 @@ class ACMDM(nn.Module):
 
     def load_and_freeze_clip(self, clip_version):
         clip_model, _ = clip.load(clip_version, device='cpu', jit=False)
+        clip.model.convert_weights(clip_model)
         clip_model.eval()
         for p in clip_model.parameters():
             p.requires_grad = False
         return clip_model
 
-    def encode_text(self, raw_text):
+    def encode_text(self, tokens):
         device = next(self.parameters()).device
-        text = clip.tokenize(raw_text, truncate=True).to(device)
+        text = tokens.to(device)
         feat_clip_text = self.clip_model.encode_text(text).float()
         return feat_clip_text
 
@@ -167,268 +154,6 @@ class ACMDM(nn.Module):
             x = block(x, y, attention_mask, position_ids=position_ids)
         x = self.final_layer(x, y)
         return x
-
-    def forward_with_CFG(self, x, t, conds, attention_mask, cfg=1.0, **kwargs):
-        if not cfg == 1.0:
-            half = x[: len(x) // 2]
-            x = torch.cat([half, half], dim=0)
-        x = self.forward(x, t, conds, attention_mask)
-
-        if not cfg == 1.0:
-            cond_eps, uncond_eps = torch.split(x, len(x) // 2, dim=0)
-            half_eps = uncond_eps + cfg * (cond_eps - uncond_eps)
-            x = torch.cat([half_eps, half_eps], dim=0)
-        return x
-
-    def forward_loss(self, latents, y, m_lens):
-        latents = latents.permute(0, 2, 3, 1)
-        b, l, j, d = latents.shape
-        device = latents.device
-
-        non_pad_mask = lengths_to_mask(m_lens, l)
-        latents = torch.where(non_pad_mask.unsqueeze(-1).unsqueeze(-1), latents, torch.zeros_like(latents))
-
-        target = latents.clone().permute(0, 3, 1, 2).detach()
-
-        force_mask = False
-        if self.cond_mode == 'text':
-            with torch.no_grad():
-                cond_vector = self.encode_text(y)
-        elif self.cond_mode == 'action':
-            cond_vector = self.enc_action(y).to(device).float()
-        elif self.cond_mode == 'uncond':
-            cond_vector = torch.zeros(b, self.latent_dim).float().to(device)
-            force_mask = True
-        else:
-            raise NotImplementedError("Unsupported condition mode!!!")
-
-        attention_mask = non_pad_mask.unsqueeze(-1).repeat(1, 1, self.patches_per_frame).flatten(1).unsqueeze(1).unsqueeze(1)
-
-        model_kwargs = dict(conds=cond_vector, force_mask=force_mask, attention_mask=attention_mask)
-        if self.diff_model == "Flow":
-            loss_dict = self.train_diffusion.training_losses(self.forward, target, model_kwargs)
-        else:
-            t = torch.randint(0, self.train_diffusion.num_timesteps, (target.shape[0],), device=target.device)
-            loss_dict = self.train_diffusion.training_losses(self.forward, target, t, model_kwargs)
-        loss = loss_dict["loss"]
-        loss = (loss * non_pad_mask).sum() / non_pad_mask.sum()
-
-        return loss
-
-    @torch.no_grad()
-    @eval_decorator
-    def generate(self,
-                 conds,
-                 m_lens,
-                 cond_scale: int,
-                 temperature=1,
-                 j=None,
-                 ):
-        device = next(self.parameters()).device
-        if j is None:
-            j = self.num_joint
-        elif j != self.num_joint:
-            raise ValueError(f"generate() expects j={self.num_joint} to match the model configuration, got j={j}.")
-        l = max(m_lens)
-        b = len(m_lens)
-
-        if self.cond_mode == 'text':
-            with torch.no_grad():
-                cond_vector = self.encode_text(conds)
-        elif self.cond_mode == 'action':
-            cond_vector = self.enc_action(conds).to(device)
-        elif self.cond_mode == 'uncond':
-            cond_vector = torch.zeros(b, self.latent_dim).float().to(device)
-        else:
-            raise NotImplementedError("Unsupported condition mode!!!")
-
-        padding_mask = ~lengths_to_mask(m_lens, l)
-
-        noise = torch.randn(b, self.input_dim, l, j).to(device)
-        if not cond_scale == 1.0:
-            cond_vector = torch.cat([cond_vector, torch.zeros_like(cond_vector)], dim=0)
-            noise = torch.cat([noise, noise], dim=0)
-
-        attention_mask = (~padding_mask).unsqueeze(-1).repeat(1,1,self.patches_per_frame).flatten(1).unsqueeze(1).unsqueeze(1)
-        model_kwargs = dict(conds=cond_vector, attention_mask=attention_mask, cfg=cond_scale)
-        sample_fn = self.forward_with_CFG
-
-        if not cond_scale == 1:
-            model_kwargs["attention_mask"] = attention_mask.repeat(2, 1, 1, 1)
-
-        if self.diff_model == "Flow":
-            model_fn = self.gen_diffusion.sample_ode()  # default to ode sampling
-            sampled_token_latent = model_fn(noise, sample_fn, **model_kwargs)[-1]
-        else:
-            sampled_token_latent = self.gen_diffusion.p_sample_loop(
-                sample_fn, noise.shape, noise, clip_denoised=False, model_kwargs=model_kwargs,
-                progress=False,
-                temperature=temperature
-            )
-        if not cond_scale == 1:
-            sampled_token_latent, _ = sampled_token_latent.chunk(2, dim=0)
-        sampled_token_latent = sampled_token_latent.permute(0,2,3,1)
-
-        latents = torch.where(padding_mask.unsqueeze(-1).unsqueeze(-1), torch.zeros_like(sampled_token_latent), sampled_token_latent)
-        return latents.permute(0,3,1,2)
-
-    @torch.no_grad()
-    @eval_decorator
-    def generate_control(
-        self,
-        conds,
-        m_lens,
-        control,
-        index,
-        density,
-        cond_scale,
-        use_projflow: bool = True,
-        ):
-        """
-        Inputs
-        ------
-        conds      : raw text/action inputs (batch-aligned with m_lens)
-        m_lens     : (B,) valid lengths on the raw time grid
-        control    : (B, Cc, T, J) control signal on the raw grid
-        index      : multi-joint spec, one of:
-                    - int                         : same single joint for all samples
-                    - List[int]/Tuple[int]        : same joint set for all samples
-                    - torch.Tensor(K,)            : same K joints for all samples
-                    - torch.Tensor(B, K)          : per-sample K joints
-                    - List[List[int]]             : per-sample joint sets; len(index) == B
-        density    : if in {1, 2, 5} -> absolute #frames to constrain;
-                    else -> percentage [0..100] of valid frames to constrain
-        cond_scale : classifier-free guidance scale (float)
-        use_projflow : if False, disable metric coupling, halo augmentation, and noise mixing.
-
-        Returns
-        -------
-        samples_raw : (B, D, T, J) sampled outputs on the raw grid
-        control_mask: (B, D, T, J) binary mask of constrained positions
-        """
-        device = next(self.parameters()).device
-        assert control.dim() == 4, f"'control' must be (B,Cc,T,J), got {control.shape}"
-        B, Cc, T, J = control.shape
-        D, L = self.input_dim, T
-        assert D % Cc == 0, f"input_dim ({D}) must be divisible by Cc ({Cc})"
-
-        if self.cond_mode == 'text':
-            cond_vector = self.encode_text(conds)
-        elif self.cond_mode == 'action':
-            fn = getattr(self, "encode_action", None) or getattr(self, "enc_action", None)
-            if fn is None:
-                raise AttributeError("Action mode requires self.encode_action (or self.enc_action).")
-            cond_vector = fn(conds).to(device)
-        elif self.cond_mode == 'uncond':
-            cond_vector = torch.zeros(B, self.latent_dim, device=device)
-        else:
-            raise NotImplementedError("Unsupported condition mode.")
-
-        cond_vector = cond_vector.float()
-
-        padding_mask = ~lengths_to_mask(m_lens, L)
-        attention_mask = (
-            (~padding_mask)
-            .unsqueeze(-1).repeat(1, 1, self.patches_per_frame)
-            .flatten(1).unsqueeze(1).unsqueeze(1)    # (B,1,1,L*patches)
-        )
-
-        noise = torch.randn(B, D, L, J, device=device)
-
-        def _standardize_indices(idx_spec, B_, J_, dev):
-            """
-            Normalize 'index' into a list of length B_, where each item is a 1D LongTensor
-            of unique joint indices on device 'dev', clamped into [0, J_-1].
-            """
-            def _to_tensor(vec):
-                t = torch.as_tensor(vec, device=dev, dtype=torch.long).view(-1)
-                if t.numel() == 0:
-                    return torch.zeros(0, device=dev, dtype=torch.long)
-                t = torch.unique(t.clamp_(0, J_ - 1))
-                return t
-
-            if isinstance(idx_spec, int):
-                return [_to_tensor([idx_spec]) for _ in range(B_)]
-
-            if torch.is_tensor(idx_spec):
-                if idx_spec.dim() == 0:
-                    return [_to_tensor([int(idx_spec.item())]) for _ in range(B_)]
-                if idx_spec.dim() == 1:
-                    return [_to_tensor(idx_spec) for _ in range(B_)]
-                if idx_spec.dim() == 2:
-                    assert idx_spec.size(0) == B_, "index.shape[0] must equal batch size"
-                    return [_to_tensor(idx_spec[b]) for b in range(B_)]
-                raise ValueError("Unsupported tensor shape for 'index'.")
-
-            if isinstance(idx_spec, (list, tuple)):
-                if len(idx_spec) == 0:
-                    raise ValueError("index must not be empty")
-                # Flat list of ints -> same for all samples
-                if all(isinstance(x, int) for x in idx_spec):
-                    return [_to_tensor(idx_spec) for _ in range(B_)]
-                # List of lists/tuples/tensors -> per-sample sets
-                if len(idx_spec) == B_ and all(isinstance(x, (list, tuple, torch.Tensor)) for x in idx_spec):
-                    return [_to_tensor(x) for x in idx_spec]
-                raise ValueError("Ambiguous 'index' specification. Provide int, List[int], List[List[int]], Tensor(K,) or Tensor(B,K).")
-
-            raise ValueError("Unsupported type for 'index'.")
-
-        per_sample_joints = _standardize_indices(index, B, J, device)  # List[Tensor], len B
-
-        mask_seq = torch.zeros((B, D, T, J), device=device)
-        for b in range(B):
-            pool = int(torch.as_tensor(m_lens[b]).item())
-            if density in (1, 2, 5):
-                k = int(density)
-            else:
-                k = max(1, int(pool * float(density) / 100.0))
-
-            frames = torch.sort(torch.randperm(pool, device=device)[:k]).values
-            joints_b = per_sample_joints[b]
-            if joints_b.numel() == 0:
-                # If no joints provided for this sample, skip (mask remains zero)
-                continue
-            # Activate all requested joints for the selected frames (broadcast over D)
-            mask_seq[b, :, frames.unsqueeze(-1), joints_b] = 1.0
-
-        # Repeat control along channel dimension to match the model's D channels.
-        control_D = control.repeat(1, D // Cc, 1, 1)  # (B, D, T, J)
-        y = control_D * mask_seq                      # (B, D, T, J)
-
-        cfg = float(cond_scale) if isinstance(cond_scale, (int, float)) else float(cond_scale[0])
-        if cfg == 1.0:
-            model_kwargs = dict(
-                conds=cond_vector, attention_mask=attention_mask, cfg=cfg,
-                A=mask_seq, y=y
-            )
-        else:
-            zeros_like_cond = torch.zeros_like(cond_vector)
-            model_kwargs = dict(
-                conds=torch.cat([cond_vector, zeros_like_cond], dim=0),
-                attention_mask=attention_mask.repeat(2, 1, 1, 1),
-                cfg=cfg,
-                A=mask_seq.repeat(2, 1, 1, 1),
-                y=y.repeat(2, 1, 1, 1),
-            )
-            noise = torch.cat([noise, noise], dim=0)
-
-        sample_fn = self.forward_with_CFG
-        if self.diff_model != "Flow":
-            raise NotImplementedError("This sampler is implemented for Flow (velocity) models only.")
-
-        model_fn = self.gen_diffusion.sample_projflow(num_steps=100, use_projflow=use_projflow)
-        x_raw = model_fn(noise, sample_fn, **model_kwargs)[-1]
-        if cfg != 1.0:
-            x_raw, _ = x_raw.chunk(2, dim=0)
-
-        x_raw = x_raw.permute(0, 2, 3, 1)
-        samples_raw = torch.where(
-            padding_mask.unsqueeze(-1).unsqueeze(-1),
-            torch.zeros_like(x_raw),
-            x_raw
-        )
-
-        return samples_raw.permute(0, 3, 1, 2), mask_seq
 
 #################################################################################
 #                                     ACMDM Zoos                                #
@@ -616,9 +341,9 @@ class TimestepEmbedder(nn.Module):
 
 
 class LlamaRMSNorm(nn.Module):
-    def __init__(self, hidden_size, eps=1e-6):
+    def __init__(self, hidden_size, eps=1e-6, *, device=None, dtype=None):
         super().__init__()
-        self.weight = nn.Parameter(torch.ones(hidden_size))
+        self.weight = nn.Parameter(torch.ones(hidden_size, device=device, dtype=dtype))
         self.variance_epsilon = eps
 
     def forward(self, hidden_states):

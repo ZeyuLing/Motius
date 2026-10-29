@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 import torch
 
-from motius.models.projflow.network.sampler import ProjFlowSampler
+from motius.pipelines.projflow.sampler import ProjFlowSampler
 from motius.pipelines.auto import PIPELINE_CLASS_PATHS
 from motius.pipelines.projflow import ProjFlowPipeline
 
@@ -81,7 +81,7 @@ def test_projflow_hml263_output_preserves_requested_frame_count():
 
 
 def test_projflow_stats_match_the_official_humanml3d_joint_space():
-    assets = ROOT / "motius" / "models" / "projflow" / "assets"
+    assets = ROOT / "motius" / "motion" / "assets" / "projflow"
 
     np.testing.assert_allclose(
         np.load(assets / "joints_mean.npy"),
@@ -143,3 +143,32 @@ def test_projflow_release_contract_matches_checkpoint_and_temporal_results():
         assert projflow[0]["samples"] == 4012
         assert np.isfinite(projflow[0]["metrics"]["fid"])
         assert setting["methods"][0]["method_id"] == "gt"
+
+
+def test_native_projflow_trainer_backpropagates():
+    from motius.trainers.projflow import ProjFlowTrainer
+    class Net(torch.nn.Module):
+        patches_per_frame = 1
+        def __init__(self):
+            super().__init__()
+            self.weight = torch.nn.Parameter(torch.tensor(0.5))
+            self.clip_model = torch.nn.Linear(2, 2)
+        def encode_text(self, tokens):
+            return torch.zeros(len(tokens), 2)
+        def forward(self, noisy, times, **kwargs):
+            return noisy * self.weight
+    class Bundle(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.net = Net()
+        @property
+        def device(self):
+            return self.net.weight.device
+    bundle = Bundle()
+    trainer = ProjFlowTrainer(bundle)
+    out = trainer.train_step({'motion': torch.randn(2, 8, 22, 3), 'motion_lens': [8, 6],
+                              'text': torch.zeros(2, 77, dtype=torch.long)})
+    out['loss'].backward()
+    assert torch.isfinite(out['loss'])
+    assert bundle.net.weight.grad is not None
+    assert not bundle.net.clip_model.weight.requires_grad

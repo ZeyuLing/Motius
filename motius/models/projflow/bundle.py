@@ -17,7 +17,7 @@ from motius.registry import MODEL_BUNDLES
 from .network.acmdm import ACMDM_models
 
 
-_ASSETS = Path(__file__).resolve().parent / "assets"
+_ASSETS = Path(__file__).resolve().parents[2] / "motion" / "assets" / "projflow"
 
 
 def _resolve_artifact(name_or_path: str) -> Path:
@@ -92,7 +92,9 @@ class ProjFlowBundle(ModelBundle):
                 _load_weights(Path(weights_path)),
                 strict=False,
             )
-            invalid_missing = [key for key in missing if not key.startswith("clip_model.")]
+            invalid_missing = [
+                key for key in missing if not key.startswith("clip_model.")
+            ]
             if invalid_missing or unexpected:
                 raise RuntimeError(
                     "ProjFlow checkpoint does not match ACMDM: "
@@ -128,12 +130,16 @@ class ProjFlowBundle(ModelBundle):
                 "ProjFlow artifact is incomplete: clip.safetensors is required"
             )
         return cls(
-            model_id=kwargs.pop("model_id", config.get("model_id", "ACMDM-Raw-Flow-S-PatchSize22")),
+            model_id=kwargs.pop(
+                "model_id", config.get("model_id", "ACMDM-Raw-Flow-S-PatchSize22")
+            ),
             weights_path=weights,
             clip_weights_path=clip_weights,
             mean_path=optional(config.get("mean", "joints_mean.npy")),
             std_path=optional(config.get("std", "joints_std.npy")),
-            guidance_scale=kwargs.pop("guidance_scale", config.get("guidance_scale", 2.5)),
+            guidance_scale=kwargs.pop(
+                "guidance_scale", config.get("guidance_scale", 2.5)
+            ),
             num_steps=kwargs.pop("num_steps", config.get("num_steps", 100)),
             **kwargs,
         )
@@ -158,14 +164,17 @@ class ProjFlowBundle(ModelBundle):
             json.dumps(config, indent=2) + "\n",
             encoding="utf-8",
         )
+        from motius.utils.gaussian_motion_checkpoint import unwrap_network
+
+        network = unwrap_network(self.net)
         model_state = {
             key: value.detach().cpu().contiguous()
-            for key, value in self.net.state_dict().items()
+            for key, value in network.state_dict().items()
             if not key.startswith("clip_model.")
         }
         clip_state = {
             key: value.detach().cpu().contiguous()
-            for key, value in self.net.clip_model.state_dict().items()
+            for key, value in network.clip_model.state_dict().items()
         }
         if safe_serialization:
             from safetensors.torch import save_file
@@ -200,12 +209,6 @@ class ProjFlowBundle(ModelBundle):
     @property
     def device(self) -> torch.device:
         return self.joints_mean.device
-
-    def normalize_joints(self, joints: torch.Tensor) -> torch.Tensor:
-        return (joints - self.joints_mean) / self.joints_std
-
-    def denormalize_joints(self, joints: torch.Tensor) -> torch.Tensor:
-        return joints * self.joints_std + self.joints_mean
 
     def forward(self, *args, **kwargs):
         return self.net(*args, **kwargs)

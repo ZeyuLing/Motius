@@ -11,22 +11,20 @@ from typing import List, Optional
 
 import torch
 
-from .projection import (
-    KinematicMetric,
-    build_kinematic_metric,
-    build_pseudo_observations,
-    build_skeleton_laplacian,
-    curvature_per_frame,
-    distribute_trust_over_halo_joints,
-    expand_t_like_x,
-    flowdps_eta,
-    frame_trust_schedule,
-    halo_radius_linear,
-    metric_project_clean_endpoint,
-    noise_mix,
-    trust_to_variance,
-    tweedie_endpoints_from_velocity,
-)
+from motius.pipelines.projflow.projection import KinematicMetric
+from motius.pipelines.projflow.projection import build_kinematic_metric
+from motius.pipelines.projflow.projection import build_pseudo_observations
+from motius.pipelines.projflow.projection import build_skeleton_laplacian
+from motius.pipelines.projflow.projection import curvature_per_frame
+from motius.pipelines.projflow.projection import distribute_trust_over_halo_joints
+from motius.pipelines.projflow.projection import expand_t_like_x
+from motius.pipelines.projflow.projection import flowdps_eta
+from motius.pipelines.projflow.projection import frame_trust_schedule
+from motius.pipelines.projflow.projection import halo_radius_linear
+from motius.pipelines.projflow.projection import metric_project_clean_endpoint
+from motius.pipelines.projflow.projection import noise_mix
+from motius.pipelines.projflow.projection import trust_to_variance
+from motius.pipelines.projflow.projection import tweedie_endpoints_from_velocity
 
 
 class LinearFlowPath:

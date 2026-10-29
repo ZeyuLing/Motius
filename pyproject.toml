@@ -365,6 +365,7 @@ namespaces = false
 "motius.motion" = [
     "assets/*.npy",
     "assets/omnicontrol/*.npy",
+    "assets/projflow/*.npy",
     "retarget/_gmr/LICENSE",
     "retarget/_gmr/assets/unitree_g1/*.xml",
     "retarget/_gmr/ik_configs/*.json",
@@ -413,7 +414,7 @@ namespaces = false
     "UPSTREAM_README.md",
     "scripts/**/*.py",
 ]
-"motius.models.projflow" = ["ATTRIBUTIONS.md", "assets/*.npy"]
+"motius.models.projflow" = ["ATTRIBUTIONS.md"]
 "motius.models.intergen" = ["NOTICE", "network/configs/*.yaml"]
 "motius.models.intermask" = ["LICENSE"]
 "motius.models.humanoid_gpt" = ["ATTRIBUTIONS.md"]
