@@ -4,8 +4,6 @@ This bundle holds a HunyuanMotionMMDiT transformer and provides atomic
 forward functions shared between Trainer and Pipeline:
 
   - predict_flow()          -- single forward through the transformer
-  - decode_motion_from_latent() -- denormalize + FK to 3D keypoints
-  - mask_text_cond()        -- classifier-free guidance null masking
   - encode_text()           -- lazy-load text encoder and encode text
 
 Unlike HyMotion-M2M, this bundle does NOT use VACE conditioning.
@@ -224,7 +222,8 @@ class HyMotionT2MBundle(ModelBundle):
         )
 
         # ---- text encoder config (lazy-loaded) ----
-        self._text_encoder_cfg = deepcopy(text_encoder) if text_encoder else None
+        from motius.configuration.hymotion_text import hymotion_text_precision
+        self._text_encoder_cfg = hymotion_text_precision(text_encoder, motion_type)
         self._text_dtype = _resolve_dtype(text_dtype)
 
         # ---- null embeddings for classifier-free guidance ----
@@ -247,12 +246,9 @@ class HyMotionT2MBundle(ModelBundle):
         self._load_mean_std(mean_std_dir, mean_path=mean_path, std_path=std_path)
 
         # ---- Motion flow loss (same velocity / x1 objective as HYMotion T2M) ----
-        from motius.models.hymotion_t2m.network.m2m_loss import M2MLoss
-        self.m2m_loss = M2MLoss(**self._losses_cfg)
 
         # ---- SMPL body model (optional for FK losses / decode) ----
         self._body_model_path = body_model_path
-        self._body_model: Optional[nn.Module] = None  # lazy
 
         # ---- store vtxt/ctxt dims for later ----
         self._vtxt_input_dim = vtxt_input_dim
@@ -349,29 +345,16 @@ class HyMotionT2MBundle(ModelBundle):
             if name in bundle_state:
                 target = getattr(self, name)
                 target.data.copy_(bundle_state[name].to(target.device))
+            elif self.enable_special_game_feat:
+                raise ValueError(f'{bundle_weights_path or weights_path} is missing {name}')
 
-    @property
-    def body_model(self):
-        """Lazy-load SmplxLiteJ24 body model."""
-        if self._body_model is None:
-            from motius.models.hymotion_t2m.network.smpl_lite import SmplxLiteJ24
-            kwargs = {}
-            if self._body_model_path is not None:
-                kwargs['model_path'] = self._body_model_path
-            try:
-                self._body_model = SmplxLiteJ24(**kwargs)
-                self._body_model.to(_get_module_device(self))
-                self._body_model.eval()
-            except Exception:
-                return None
-        return self._body_model
 
     # ------------------------------------------------------------------
     # Atomic forward functions (shared by Trainer and Pipeline)
     # ------------------------------------------------------------------
 
     @torch.no_grad()
-    def encode_text(self, text: List[str]) -> Dict[str, Tensor]:
+    def encode_text(self, text: dict) -> Dict[str, Tensor]:
         """Lazy-load text encoder and encode text to vtxt/ctxt.
 
         Returns dict with keys: text_vec_raw, text_ctxt_raw, text_ctxt_raw_length.
@@ -387,8 +370,12 @@ class HyMotionT2MBundle(ModelBundle):
             )
             cfg = deepcopy(self._text_encoder_cfg)
             cfg.pop('type', None)
+            cfg.pop('prompt_template', None)
+            cfg.pop('sentence_padding', None)
             if self._text_dtype is not None:
                 cfg['torch_dtype'] = self._text_dtype
+                cfg['llm_torch_dtype'] = self._text_dtype
+                cfg['sentence_torch_dtype'] = self._text_dtype
             elif 'torch_dtype' in cfg:
                 cfg['torch_dtype'] = _resolve_dtype(cfg['torch_dtype'])
             self._text_encoder = HYTextModel(**cfg).to(device).eval()
@@ -469,55 +456,9 @@ class HyMotionT2MBundle(ModelBundle):
             'body_model_path': self._body_model_path,
         }
 
-    def _copy_text_encoder_artifacts(
-        self,
-        save_dir: Path,
-        text_encoder_cfg: dict,
-        text_encoder_subdir: str,
-    ) -> dict:
-        from motius.models.hymotion_t2m.network.text_encoder import (
-            LLM_ENCODER_LAYOUT,
-            SENTENCE_EMB_LAYOUT,
-        )
-
-        cfg = deepcopy(text_encoder_cfg)
-        llm_type = cfg.get('llm_type', _DEFAULT_TEXT_ENCODER_CFG['llm_type'])
-        sentence_type = cfg.get(
-            'sentence_emb_type',
-            _DEFAULT_TEXT_ENCODER_CFG['sentence_emb_type'],
-        )
-        if llm_type not in LLM_ENCODER_LAYOUT:
-            raise ValueError(f'Unsupported HYMotion LLM type: {llm_type}')
-        if sentence_type not in SENTENCE_EMB_LAYOUT:
-            raise ValueError(f'Unsupported HYMotion sentence encoder type: {sentence_type}')
-
-        llm_src = _resolve_repo_path(
-            cfg.get('llm_model_path') or LLM_ENCODER_LAYOUT[llm_type]['module_path']
-        )
-        sentence_src = _resolve_repo_path(
-            cfg.get('sentence_emb_model_path')
-            or SENTENCE_EMB_LAYOUT[sentence_type]['module_path']
-        )
-        llm_rel = f'{text_encoder_subdir}/llm'
-        sentence_rel = f'{text_encoder_subdir}/sentence'
-        _copy_pretrained_tree(llm_src, save_dir / llm_rel, ignore_patterns=('.cache',))
-        sentence_ignore = ('.cache',)
-        if (sentence_src / 'model.safetensors').exists():
-            # CLIP-L snapshots often keep equivalent PyTorch/TF/Flax exports
-            # next to the safetensors file. Transformers loads model.safetensors
-            # directly, so omit duplicate framework weights from artifacts.
-            sentence_ignore = (
-                '.cache',
-                'pytorch_model.bin',
-                'tf_model.h5',
-                'flax_model.msgpack',
-            )
-        _copy_pretrained_tree(sentence_src, save_dir / sentence_rel, sentence_ignore)
-        cfg['llm_model_path'] = llm_rel
-        cfg['llm_tokenizer_path'] = llm_rel
-        cfg['sentence_emb_model_path'] = sentence_rel
-        cfg['sentence_emb_tokenizer_path'] = sentence_rel
-        return cfg
+    def _copy_text_encoder_artifacts(self, save_dir: Path, text_encoder_cfg: dict, text_encoder_subdir: str) -> dict:
+        from motius.configuration.hymotion_text import export_text_networks
+        return export_text_networks(self, save_dir, text_encoder_cfg, text_encoder_subdir)
 
     @staticmethod
     def _resolve_text_encoder_cfg_paths(cfg: Optional[dict], artifact_dir: Path) -> Optional[dict]:
@@ -562,6 +503,8 @@ class HyMotionT2MBundle(ModelBundle):
         """
         save_dir = Path(save_directory)
         save_dir.mkdir(parents=True, exist_ok=True)
+        from motius.configuration.hymotion_text import copy_hymotion_notices
+        copy_hymotion_notices(save_dir, wooden=True)
         config = self.config_dict()
         text_encoder_cfg = deepcopy(config['text_encoder'])
         if include_text_encoder:
@@ -634,9 +577,12 @@ class HyMotionT2MBundle(ModelBundle):
                 '`HyMotionT2MPipeline`.\n'
             )
 
+        network = self.motion_transformer
+        while hasattr(network, 'module'):
+            network = network.module
         state = {
             f'motion_transformer.{k}': v.detach().cpu().contiguous()
-            for k, v in self.motion_transformer.state_dict().items()
+            for k, v in network.state_dict().items()
         }
         state['null_vtxt_feat'] = self.null_vtxt_feat.detach().cpu().contiguous()
         state['null_ctxt_input'] = self.null_ctxt_input.detach().cpu().contiguous()
@@ -675,7 +621,7 @@ class HyMotionT2MBundle(ModelBundle):
         cls,
         pretrained_model_name_or_path: str,
         device: Optional[str] = None,
-        text_dtype: Optional[Any] = 'bf16',
+        text_dtype: Optional[Any] = None,
         **kwargs,
     ):
         """Load a HYMotion-T2M artifact from a local dir or HuggingFace Hub id."""
@@ -719,116 +665,6 @@ class HyMotionT2MBundle(ModelBundle):
             **cfg,
         )
 
-    def mask_text_cond(
-        self,
-        vtxt: Tensor,
-        ctxt: Tensor,
-        force_mask: bool = False,
-        cond_mask_prob: float = 0.0,
-    ) -> Tuple[Tensor, Tensor]:
-        """Apply classifier-free guidance masking to text conditions."""
-        bs = vtxt.shape[0]
-        if force_mask:
-            return (
-                self.null_vtxt_feat.expand(*vtxt.shape),
-                self.null_ctxt_input.expand(*ctxt.shape),
-            )
-        if self.training and cond_mask_prob > 0.0:
-            mask = torch.bernoulli(
-                torch.ones(bs, device=vtxt.device) * cond_mask_prob
-            ).view(bs, 1).bool()
-            mask_vtxt = mask
-            while mask_vtxt.ndim < vtxt.ndim:
-                mask_vtxt = mask_vtxt.unsqueeze(-1)
-            vtxt = torch.where(
-                mask_vtxt, self.null_vtxt_feat.expand_as(vtxt), vtxt
-            )
-            mask_ctxt = mask
-            while mask_ctxt.ndim < ctxt.ndim:
-                mask_ctxt = mask_ctxt.unsqueeze(-1)
-            ctxt = torch.where(
-                mask_ctxt, self.null_ctxt_input.expand_as(ctxt), ctxt
-            )
-        return vtxt, ctxt
-
-    def maybe_inject_source_token(
-        self,
-        vtxt_input: Tensor,
-        ctxt_input: Tensor,
-        ctxt_mask_temporal: Tensor,
-        sources: Optional[List[str]],
-        trigger_sources: Optional[Set[str]] = None,
-        prob: float = 0.5,
-    ) -> Tuple[Tensor, Tensor, Tensor]:
-        """Inject the official special source token for selected data sources."""
-        if (sources is None or trigger_sources is None) or not self.enable_special_game_feat:
-            return vtxt_input, ctxt_input, ctxt_mask_temporal
-
-        B, Lc, Dc = ctxt_input.shape
-        if not isinstance(sources, (list, tuple)) or len(sources) != B:
-            raise ValueError(f'sources length must equal batch size: {len(sources)} vs {B}')
-
-        trig = {str(s).lower() for s in trigger_sources}
-        src_mask = torch.tensor(
-            [str(s).lower() in trig for s in sources],
-            dtype=torch.bool,
-            device=ctxt_input.device,
-        )
-        if not src_mask.any():
-            return vtxt_input, ctxt_input, ctxt_mask_temporal
-
-        if self.training:
-            rand_mask = torch.rand(B, device=ctxt_input.device) < prob
-        else:
-            rand_mask = torch.ones(B, dtype=torch.bool, device=ctxt_input.device)
-        apply_mask = src_mask & rand_mask
-        if not apply_mask.any():
-            return vtxt_input, ctxt_input, ctxt_mask_temporal
-
-        vtxt_token = self.special_game_vtxt_feat.to(vtxt_input).expand(B, 1, -1)
-        vtxt_input = vtxt_input + vtxt_token * apply_mask.view(B, 1, 1).to(vtxt_input.dtype)
-
-        if ctxt_mask_temporal.dtype == torch.bool:
-            cur_len = ctxt_mask_temporal.sum(dim=1).long()
-        else:
-            cur_len = (ctxt_mask_temporal > 0).sum(dim=1).long()
-
-        can_inplace = apply_mask & (cur_len < Lc)
-        b_inplace = torch.nonzero(can_inplace, as_tuple=False).squeeze(1)
-        if b_inplace.numel() > 0:
-            pos = cur_len[b_inplace]
-            token = self.special_game_ctxt_feat.squeeze(0).squeeze(0).to(ctxt_input)
-            ctxt_input = ctxt_input.clone()
-            ctxt_mask_temporal = ctxt_mask_temporal.clone()
-            ctxt_input[b_inplace, pos, :] = token.unsqueeze(0).expand(b_inplace.numel(), Dc)
-            if ctxt_mask_temporal.dtype == torch.bool:
-                ctxt_mask_temporal[b_inplace, pos] = True
-            else:
-                ctxt_mask_temporal[b_inplace, pos] = 1
-
-        need_expand = (apply_mask & (cur_len >= Lc)).any()
-        if need_expand:
-            suffix = torch.zeros((B, 1, Dc), dtype=ctxt_input.dtype, device=ctxt_input.device)
-            full_hit = apply_mask & (cur_len >= Lc)
-            b_full = torch.nonzero(full_hit, as_tuple=False).squeeze(1)
-            if b_full.numel() > 0:
-                suffix[b_full, 0, :] = (
-                    self.special_game_ctxt_feat.expand(b_full.numel(), 1, -1)
-                    .to(ctxt_input)
-                    .squeeze(1)
-                )
-            ctxt_input = torch.cat([ctxt_input, suffix], dim=1)
-
-            if ctxt_mask_temporal.dtype == torch.bool:
-                suffix_mask = torch.zeros((B, 1), dtype=torch.bool, device=ctxt_input.device)
-                suffix_mask[b_full, 0] = True
-            else:
-                suffix_mask = torch.zeros(
-                    (B, 1), dtype=ctxt_mask_temporal.dtype, device=ctxt_input.device)
-                suffix_mask[b_full, 0] = 1
-            ctxt_mask_temporal = torch.cat([ctxt_mask_temporal, suffix_mask], dim=1)
-
-        return vtxt_input, ctxt_input, ctxt_mask_temporal
 
     def predict_flow(
         self,
@@ -838,9 +674,6 @@ class HyMotionT2MBundle(ModelBundle):
         timesteps: Tensor,
         x_mask_temporal: Optional[Tensor] = None,
         ctxt_mask_temporal: Optional[Tensor] = None,
-        sources: Optional[List[str]] = None,
-        trigger_sources: Optional[Set[str]] = None,
-        special_game_prob: float = 0.5,
     ) -> Tensor:
         """Single forward pass through the MMDiT transformer.
 
@@ -856,16 +689,6 @@ class HyMotionT2MBundle(ModelBundle):
         Returns:
             Model prediction, shape (B, L, motion_dim).
         """
-        if ctxt_mask_temporal is not None:
-            vtxt_input, ctxt_input, ctxt_mask_temporal = self.maybe_inject_source_token(
-                vtxt_input=vtxt_input,
-                ctxt_input=ctxt_input,
-                ctxt_mask_temporal=ctxt_mask_temporal,
-                sources=sources,
-                trigger_sources=trigger_sources,
-                prob=special_game_prob,
-            )
-
         return self.motion_transformer(
             x=x_input,
             ctxt_input=ctxt_input,
@@ -874,127 +697,3 @@ class HyMotionT2MBundle(ModelBundle):
             x_mask_temporal=x_mask_temporal,
             ctxt_mask_temporal=ctxt_mask_temporal,
         )
-
-    def decode_motion_from_latent(
-        self,
-        latent: Tensor,
-        should_apply_smoothing: bool = True,
-    ) -> Dict[str, Any]:
-        """Denormalize and decode the artifact's native representation.
-
-        When ``should_apply_smoothing`` (the official HY-Motion-1.0 inference
-        default) the raw flow-matching output is temporally filtered before FK:
-        rot6d gets quaternion-Gaussian SLERP smoothing (sigma=1.0) and the root
-        translation gets Savitzky-Golay smoothing (window=11, polyorder=5),
-        matching ``MotionFlowMatching.decode_motion_from_latent`` /
-        ``_decode_o6dp``. Skipping this (the previous behaviour) leaves severe
-        high-frequency jitter in the generated motion.
-
-        SMPL artifacts return body rotations, translation, and optional joints.
-        G1 artifacts return exact ``g1_38`` and MuJoCo ``g1_qpos`` tensors.
-        """
-        std = torch.where(self.std < 1e-3, torch.zeros_like(self.std), self.std)
-        latent_denorm = latent * std + self.mean
-
-        if self.motion_type in {'g1_29dof', 'g1_38', 'unitree_g1'}:
-            from motius.motion.representation.g1 import decode_g1_to_qpos
-            from motius.motion.representation.rotation import rotation_6d_to_matrix
-
-            if latent_denorm.shape[-1] != 38:
-                raise ValueError(
-                    'G1 decoding requires a 38-dimensional latent, got '
-                    f'{latent_denorm.shape[-1]}.'
-                )
-            qpos = decode_g1_to_qpos(latent_denorm, root_velocity=True)
-            root_rot6d = latent_denorm[..., 3:9]
-            root_rotmat = rotation_6d_to_matrix(root_rot6d, convention='row')
-            return {
-                'motion': latent_denorm,
-                'latent_denorm': latent_denorm,
-                'g1_38': latent_denorm,
-                'g1_qpos': qpos,
-                'qpos': qpos,
-                'keypoints3d': None,
-                'rot6d': root_rot6d.unsqueeze(-2),
-                'transl': qpos[..., :3],
-                'root_rotations_mat': root_rotmat,
-                'representation': 'g1_38',
-                'fps': 30.0,
-            }
-
-        from motius.models.hymotion_t2m.network.geometry import rot6d_to_rotation_matrix
-
-        B, L = latent_denorm.shape[:2]
-        transl = latent_denorm[..., 0:3].clone()
-        root_rot6d = latent_denorm[..., 3:9].reshape(B, L, 1, 6).clone()
-        body6d = latent_denorm[..., 9:135].reshape(B, L, 21, 6).clone()
-        rot6d = torch.cat([root_rot6d, body6d], dim=2)
-
-        if should_apply_smoothing:
-            from motius.models.hymotion_t2m._smoothing import (
-                smooth_with_savgol,
-                smooth_with_slerp,
-            )
-            # SLERP smoothing on the 22 body joints' rot6d (sigma=1.0); transl
-            # Savitzky-Golay (window=11, polyorder=5) — official inference path.
-            rot6d = smooth_with_slerp(rot6d, sigma=1.0)
-            transl = smooth_with_savgol(transl, window_length=11, polyorder=5)
-            root_rot6d = rot6d[:, :, 0:1, :]
-            body6d = rot6d[:, :, 1:, :]
-
-        root_rotmat = rot6d_to_rotation_matrix(rot6d[:, :, 0, :])
-
-        k3d = None
-        if self.body_model is not None:
-            try:
-                device = latent.device
-                betas = torch.zeros(1, 16, device=device)
-                k3d_list = []
-                for b in range(B):
-                    out = self.body_model(
-                        body6d[b].to(device),
-                        betas,
-                        root_rot6d[b].to(device),
-                        transl[b].to(device),
-                    )
-                    k3d_list.append(out)
-                k3d = torch.stack(k3d_list, dim=0)
-            except Exception:
-                k3d = None
-
-        # Ground alignment: offset translation so lowest joint touches Y=0.
-        # Matches official HY-Motion-1.0 post-FK processing.
-        if k3d is not None:
-            # min Y across all joints and frames per batch sample
-            min_y = k3d[:, :, :, 1].min(dim=2)[0].min(dim=1)[0]  # (B,)
-            transl[:, :, 1] = transl[:, :, 1] - min_y.unsqueeze(1)
-            k3d[:, :, :, 1] = k3d[:, :, :, 1] - min_y.unsqueeze(1).unsqueeze(1)
-
-        return {
-            'motion': latent_denorm,
-            'latent_denorm': latent_denorm,
-            'keypoints3d': k3d,
-            'rot6d': rot6d,
-            'transl': transl,
-            'root_rotations_mat': root_rotmat,
-            'representation': 'hy_motion_201',
-            'fps': 30.0,
-        }
-
-    def normalize_motion(self, motion: Tensor) -> Tensor:
-        """Normalize motion using mean/std buffers.
-
-        Dims with near-zero std (constant in training data) produce 0 after normalization.
-        This matches official HY-Motion-1.0 behavior.
-        """
-        # Safe division: where std==0, output 0 (those dims are constant)
-        safe_std = torch.where(self.std < 1e-3, torch.ones_like(self.std), self.std)
-        result = (motion - self.mean) / safe_std
-        # Zero out dims where std was near-zero
-        result = torch.where(self.std.unsqueeze(0) < 1e-3, torch.zeros_like(result), result)
-        return result
-
-    def denormalize_motion(self, motion: Tensor) -> Tensor:
-        """Denormalize motion (matching official HY-Motion-1.0: zeros for near-zero std)."""
-        std = torch.where(self.std < 1e-3, torch.zeros_like(self.std), self.std)
-        return motion * std + self.mean

@@ -11,7 +11,7 @@ from __future__ import annotations
 import torch
 import torch.nn.functional as F
 
-from motius.models.hymotion_t2m.network.geometry import (
+from motius.motion.representation.hymotion_runtime.geometry import (
     axis_angle_to_matrix,
     matrix_to_axis_angle,
 )

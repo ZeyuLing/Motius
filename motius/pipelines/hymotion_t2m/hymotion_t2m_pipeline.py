@@ -7,6 +7,12 @@ Supports classifier-free guidance via text_guidance_scale.
 
 from __future__ import annotations
 
+from motius.motion.conditioning.hymotion_conditions import maybe_inject_source_token
+from motius.motion.conditioning.hymotion_text import (
+    encode_hymotion_text,
+    encode_hymotion_instruction,
+)
+
 from typing import Any, Dict, List, Optional
 
 import torch
@@ -18,13 +24,16 @@ from motius.registry import PIPELINES
 def _length_to_mask(lengths: Tensor, max_len: int) -> Tensor:
     if lengths.ndim == 1:
         lengths = lengths.unsqueeze(1)
-    return torch.arange(max_len, device=lengths.device).expand(len(lengths), max_len) < lengths
+    return (
+        torch.arange(max_len, device=lengths.device).expand(len(lengths), max_len)
+        < lengths
+    )
 
 
 def _batch_sources(batch: Dict[str, Any], batch_size: int):
-    sources = batch.get('data_src', None)
+    sources = batch.get("data_src", None)
     if sources is None:
-        sources = batch.get('source', None)
+        sources = batch.get("source", None)
     if sources is None:
         return None
     if isinstance(sources, str):
@@ -52,6 +61,9 @@ class HyMotionT2MPipeline:
         should_apply_smoothing: bool = True,
     ):
         self.bundle = bundle
+        from motius.motion.representation.hymotion_runtime.codecs import HyMotionCodec
+
+        self.motion_codec = HyMotionCodec(bundle, body_backend="wooden")
         self.num_steps = num_steps
         self.text_guidance_scale = text_guidance_scale
         self.should_apply_smoothing = should_apply_smoothing
@@ -79,7 +91,9 @@ class HyMotionT2MPipeline:
             for key in ("num_steps", "text_guidance_scale", "should_apply_smoothing")
             if key in kwargs
         }
-        bundle = HyMotionT2MBundle.from_pretrained(pretrained_model_name_or_path, **kwargs)
+        bundle = HyMotionT2MBundle.from_pretrained(
+            pretrained_model_name_or_path, **kwargs
+        )
         return cls(bundle, **pipeline_kwargs)
 
     def infer_text_to_motion(
@@ -123,11 +137,16 @@ class HyMotionT2MPipeline:
         device = next(self.bundle.motion_transformer.parameters()).device
 
         # Determine sequence lengths
-        tgt_length = batch.get('tgt_length', batch.get('num_frames'))
+        tgt_length = batch.get("tgt_length", batch.get("num_frames"))
         if isinstance(tgt_length, Tensor):
             tgt_length = tgt_length.tolist()
         if isinstance(tgt_length, int):
             tgt_length = [tgt_length]
+        if self.bundle.motion_type not in {"g1_29dof", "g1_38", "unitree_g1"}:
+            # The released human model clamps requested output to 20..360.
+            if any(length <= 0 or length >= 5000 for length in tgt_length):
+                raise ValueError("Human HY-Motion lengths must be between 1 and 4999")
+            tgt_length = [min(360, max(20, length)) for length in tgt_length]
 
         B = len(tgt_length)
         L = max(tgt_length)
@@ -140,26 +159,31 @@ class HyMotionT2MPipeline:
         L_padded = max(L, TRAIN_FRAMES)
 
         # Infer motion dim from the transformer output_dim
-        motion_dim = batch.get('motion_dim', self.bundle.motion_transformer.output_dim)
+        motion_dim = batch.get("motion_dim", self.bundle.motion_transformer.output_dim)
 
         tgt_padding_mask = _length_to_mask(
             torch.tensor(tgt_length, dtype=torch.long, device=device), L_padded
         )
 
         # Prepare text
-        if batch.get('text_vec_raw') is not None:
-            vtxt_input = batch['text_vec_raw'].to(device)
-            ctxt_input = batch['text_ctxt_raw'].to(device)
-            ctxt_length = batch['text_ctxt_raw_length'].to(device)
+        if self.bundle.uncondition_mode:
+            vtxt_input = self.bundle.null_vtxt_feat.expand(B, 1, -1)
+            ctxt_input = self.bundle.null_ctxt_input.expand(B, 1, -1)
+            ctxt_length = torch.ones(B, dtype=torch.long, device=device)
+            ctxt_mask_temporal = _length_to_mask(ctxt_length, 1)
+        elif batch.get("text_vec_raw") is not None:
+            vtxt_input = batch["text_vec_raw"].to(device)
+            ctxt_input = batch["text_ctxt_raw"].to(device)
+            ctxt_length = batch["text_ctxt_raw_length"].to(device)
             ctxt_mask_temporal = _length_to_mask(ctxt_length, ctxt_input.shape[1])
-        elif batch.get('caption') is not None:
-            captions = batch['caption']
+        elif batch.get("caption") is not None:
+            captions = batch["caption"]
             if isinstance(captions, str):
                 captions = [captions]
-            text_feats = self.bundle.encode_text(captions)
-            vtxt_input = text_feats['text_vec_raw'].to(device)
-            ctxt_input = text_feats['text_ctxt_raw'].to(device)
-            ctxt_length = text_feats['text_ctxt_raw_length'].to(device)
+            text_feats = encode_hymotion_text(self.bundle, captions)
+            vtxt_input = text_feats["text_vec_raw"].to(device)
+            ctxt_input = text_feats["text_ctxt_raw"].to(device)
+            ctxt_length = text_feats["text_ctxt_raw_length"].to(device)
             ctxt_mask_temporal = _length_to_mask(ctxt_length, ctxt_input.shape[1])
         else:
             vtxt_input = self.bundle.null_vtxt_feat.expand(B, 1, -1)
@@ -167,12 +191,31 @@ class HyMotionT2MPipeline:
             ctxt_length = torch.tensor([1], device=device).expand(B)
             ctxt_mask_temporal = _length_to_mask(ctxt_length, 1).expand(B, -1)
 
-        do_cfg = self.text_guidance_scale > 1.0
+        # The original sampler injects the source condition once, then rebuilds
+        # the context mask from the original lengths before CFG.
+        sources = _batch_sources(batch, B)
+        if batch.get("use_special_game_feat", False):
+            if not self.bundle.enable_special_game_feat:
+                raise ValueError(
+                    "This artifact has no enabled special source condition; convert the complete official checkpoint first"
+                )
+            sources = ["Game"] * B
+        vtxt_input, ctxt_input, _ = maybe_inject_source_token(
+            self.bundle,
+            vtxt_input,
+            ctxt_input,
+            ctxt_mask_temporal,
+            sources,
+            {"Taobao", "Game"},
+            prob=1.0,
+        )
+        ctxt_mask_temporal = _length_to_mask(ctxt_length, ctxt_input.shape[1])
+        do_cfg = self.text_guidance_scale > 1.0 and not self.bundle.uncondition_mode
 
         # For CFG: prepare null text embeddings.
         # Official HY-Motion uses enable_ctxt_null_feat=True: the unconditional
         # branch nulls BOTH the sentence-level (vtxt) AND the token-level context
-        # (ctxt), matching bundle.mask_text_cond(force_mask=True) which replaces
+        # (ctxt), matching the external force-mask condition processor which replaces
         # ctxt with null_ctxt_input.expand(*ctxt.shape). Keeping the real ctxt for
         # the unconditional branch (the old behaviour) gives a wrong CFG direction
         # that, at guidance=5.0, amplifies high-frequency root-translation noise.
@@ -185,9 +228,6 @@ class HyMotionT2MPipeline:
             # ctxt mask is shared (same length); null ctxt fills every token slot.
             ctxt_mask_cfg = torch.cat([ctxt_mask_temporal, ctxt_mask_temporal], dim=0)
 
-        sources = _batch_sources(batch, B)
-        sources_cfg = ([''] * B + sources) if (do_cfg and sources is not None) else None
-
         # ODE function
         def fn(t_val: Tensor, x: Tensor) -> Tensor:
             if do_cfg:
@@ -199,9 +239,6 @@ class HyMotionT2MPipeline:
                     timesteps=t_val.expand(2 * B),
                     x_mask_temporal=tgt_padding_mask.repeat(2, 1),
                     ctxt_mask_temporal=ctxt_mask_cfg,
-                    sources=sources_cfg,
-                    trigger_sources={'Taobao', 'Game'},
-                    special_game_prob=1.0,
                 )
             else:
                 x_pred = self.bundle.predict_flow(
@@ -211,39 +248,66 @@ class HyMotionT2MPipeline:
                     timesteps=t_val.expand(B),
                     x_mask_temporal=tgt_padding_mask,
                     ctxt_mask_temporal=ctxt_mask_temporal,
-                    sources=sources,
-                    trigger_sources={'Taobao', 'Game'},
-                    special_game_prob=1.0,
                 )
 
-            if self.bundle.pred_type == 'x1':
+            if self.bundle.pred_type == "x1":
                 t_eps = 0.05
                 if do_cfg:
-                    x_pred = (x_pred - torch.cat([x, x], dim=0)) / (1.0 - t_val).clamp_min(t_eps)
+                    x_pred = (x_pred - torch.cat([x, x], dim=0)) / (
+                        1.0 - t_val
+                    ).clamp_min(t_eps)
                 else:
                     x_pred = (x_pred - x) / (1.0 - t_val).clamp_min(t_eps)
 
             if do_cfg:
                 pred_uncond, pred_text = x_pred.chunk(2, dim=0)
-                x_pred = pred_uncond + self.text_guidance_scale * (pred_text - pred_uncond)
+                x_pred = pred_uncond + self.text_guidance_scale * (
+                    pred_text - pred_uncond
+                )
             return x_pred
 
         # Initial noise
         dtype = next(self.bundle.motion_transformer.parameters()).dtype
-        y0 = torch.randn(B, L_padded, motion_dim, device=device, dtype=dtype)
+        seeds = batch.get("seed_input")
+        if seeds is None:
+            y0 = torch.randn(B, L_padded, motion_dim, device=device, dtype=dtype)
+        else:
+            if isinstance(seeds, int):
+                seeds = list(range(seeds))
+            if len(seeds) != B:
+                raise ValueError("seed_input must contain one seed per sample")
+            generator_device = (
+                device if batch.get("random_generator_on_gpu", True) else "cpu"
+            )
+            y0 = torch.cat(
+                [
+                    torch.randn(
+                        1,
+                        L_padded,
+                        motion_dim,
+                        generator=torch.Generator(device=generator_device).manual_seed(
+                            int(seed)
+                        ),
+                        device=generator_device,
+                        dtype=dtype,
+                    ).to(device)
+                    for seed in seeds
+                ]
+            )
         t = torch.linspace(0, 1, self.num_steps + 1, device=device, dtype=dtype)
 
         try:
             from torchdiffeq import odeint
-            method = self.bundle._noise_scheduler_cfg.get('method', 'euler')
+
+            method = self.bundle._noise_scheduler_cfg.get("method", "euler")
             trajectory = odeint(fn, y0, t, method=method)
         except ImportError:
             # Fallback: simple Euler integration
             trajectory = [y0]
-            dt = 1.0 / self.num_steps
             x = y0
             for i in range(self.num_steps):
-                t_val = torch.tensor(i * dt, device=device, dtype=dtype)
+                t_val = t[i]
+                dt = t[i + 1] - t[i]
                 v = fn(t_val, x)
                 x = x + v * dt
                 trajectory.append(x)
@@ -260,11 +324,11 @@ class HyMotionT2MPipeline:
         # smoothing, but keeping this switch makes raw-vs-smooth diagnostics
         # possible without forking the sampler.
         should_apply_smoothing = batch.get(
-            'should_apply_smoothing', self.should_apply_smoothing
+            "should_apply_smoothing", self.should_apply_smoothing
         )
-        result = self.bundle.decode_motion_from_latent(
+        result = self.motion_codec.decode_motion_from_latent(
             sampled,
             should_apply_smoothing=bool(should_apply_smoothing),
         )
-        result['latent'] = sampled
+        result["latent"] = sampled
         return result

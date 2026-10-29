@@ -1,0 +1,268 @@
+{
+  "complete": true,
+  "scope": "Original Tencent HY-Motion Lite network, full MotionFlowMatching constructor/generate/decode and original WoodenMesh assets, original max128 Qwen3/CLIP raw-caption features and primary checkpoint. Four full50Euler cases: seeded single/batch, unguided, source-token guidance and CPU/GPU per-sample noise; every used motion neural/condition hash and decoded output. Controlled FP32/math attention, source text mixed BF16/FP32. Original full training/corpus metrics excluded.",
+  "upstream_commit": "4e426f5a1021cbcf7f375458c37b840ee7225229",
+  "tests": [
+    {
+      "tensor": "/cases/0/latent",
+      "shape": [
+        1,
+        24,
+        201
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/latent_denorm",
+      "shape": [
+        1,
+        24,
+        201
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/rot6d",
+      "shape": [
+        1,
+        24,
+        22,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/transl",
+      "shape": [
+        1,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/root_rotations_mat",
+      "shape": [
+        1,
+        24,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/keypoints3d",
+      "shape": [
+        1,
+        24,
+        52,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/latent",
+      "shape": [
+        2,
+        40,
+        201
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/latent_denorm",
+      "shape": [
+        2,
+        40,
+        201
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/rot6d",
+      "shape": [
+        2,
+        40,
+        22,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/transl",
+      "shape": [
+        2,
+        40,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/root_rotations_mat",
+      "shape": [
+        2,
+        40,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/keypoints3d",
+      "shape": [
+        2,
+        40,
+        52,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/latent",
+      "shape": [
+        2,
+        40,
+        201
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/latent_denorm",
+      "shape": [
+        2,
+        40,
+        201
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/rot6d",
+      "shape": [
+        2,
+        40,
+        22,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/transl",
+      "shape": [
+        2,
+        40,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/root_rotations_mat",
+      "shape": [
+        2,
+        40,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/keypoints3d",
+      "shape": [
+        2,
+        40,
+        52,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/latent",
+      "shape": [
+        2,
+        40,
+        201
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/latent_denorm",
+      "shape": [
+        2,
+        40,
+        201
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/rot6d",
+      "shape": [
+        2,
+        40,
+        22,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/transl",
+      "shape": [
+        2,
+        40,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/root_rotations_mat",
+      "shape": [
+        2,
+        40,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/keypoints3d",
+      "shape": [
+        2,
+        40,
+        52,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "source_checkpoint": {
+    "checkpoint_sha256": "d83f118f8d74db76249db86dcf9982a8229f43ef4e9fa11f683019d6230dd486",
+    "source_tensor_count": 308,
+    "strict_load": true,
+    "special_conditions_preserved": true,
+    "original_repository": "tencent/HY-Motion-1.0",
+    "original_hf_revision": "620dd559f8d964aac2f82f1204fe6a35ad8ad14d"
+  },
+  "frontend_scope": "Both original and native complete pipelines encode the actual raw captions per case. Paired original text features are additionally compared exactly."
+}

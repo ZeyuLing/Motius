@@ -1,0 +1,12 @@
+{
+  "upstream": "https://github.com/Tencent-Hunyuan/HY-Motion-1.0",
+  "commit": "4e426f5a1021cbcf7f375458c37b840ee7225229",
+  "path": "scripts/gradio/static/assets/dump_wooden",
+  "files": {
+    "v_template.bin": "b9fbe1f34bfe8a07442d11166e169318022a18da8bc62ce0a9930dfdb3171050",
+    "j_template.bin": "4f488cc9d0b650a816f5a8eda49eda7bc796f490e9130a6e0dec5be137d7b929",
+    "skinWeights.bin": "343eac2902627ee6b45b547eb7d9f1526562eca7ba178d1dc71f9e466f307a77",
+    "skinIndice.bin": "846794fb90ea01e069435ad242caefb3d5c2f913fef3255c247f48836ddc1bda",
+    "kintree.bin": "98a20fa3b53193790b63d9ac3a9c917f2f70fbe6e053dca495c75317ff4b756a"
+  }
+}
