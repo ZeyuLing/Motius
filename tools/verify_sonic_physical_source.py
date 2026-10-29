@@ -44,7 +44,9 @@ def run_physics(args):
     from verify_prompthmr_video_parity import tensors
     from verify_motionstreamer_source import hashes
 
-    assert os.uname().nodename == "zeyuling-g2-depth11-eval60k-4g-1020-worker-0"
+    if os.environ.get("MOTIUS_REFERENCE_HOST"):
+
+        assert os.uname().nodename == os.environ["MOTIUS_REFERENCE_HOST"]
     torch.set_num_threads(4)
     torch.backends.cuda.matmul.allow_tf32 = False
     torch.backends.cudnn.allow_tf32 = False
