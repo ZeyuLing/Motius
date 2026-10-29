@@ -11,7 +11,7 @@ import numpy as np
 import torch
 from einops import repeat
 
-from ...tools import ensure_batched
+from motius.utils.ardy import ensure_batched
 from ..conditioning import build_condition_dicts
 from ..stats import Stats
 from ..tools import compute_vel_angle, compute_vel_xyz

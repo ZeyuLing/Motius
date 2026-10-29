@@ -10,7 +10,7 @@ import einops
 import torch
 import torch.nn.functional as F
 
-from ..tools import ensure_batched
+from motius.utils.ardy import ensure_batched
 
 
 @ensure_batched(local_joint_rots=4, root_positions=2)

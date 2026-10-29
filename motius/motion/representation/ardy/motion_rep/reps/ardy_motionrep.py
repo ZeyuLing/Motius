@@ -13,7 +13,7 @@ from torch import Tensor
 from ...geometry import cont6d_to_matrix, matrix_to_cont6d
 from ...skeleton.kinematics import fk
 from ...skeleton.transforms import global_rots_to_local_rots
-from ...tools import ensure_batched, to_numpy
+from motius.utils.ardy import ensure_batched, to_numpy
 from ..conditioning import get_unique_index_and_data
 from ..feet import foot_detect_from_pos_and_vel
 from ..tools import (
@@ -74,18 +74,18 @@ class ArdyMotionRep(MotionRepBase):
 
     @staticmethod
     def _ensure_ardy_skeleton(skeleton):
-        """Return an motius.models.ardy.network.motion_rep skeleton.
+        """Return an motius.motion.representation.ardy.motion_rep skeleton.
 
-        ArdyMotionRep relies on motius.models.ardy.network.motion_rep FK/geometry, which require an motius.models.ardy.network.motion_rep
+        ArdyMotionRep relies on motius.motion.representation.ardy.motion_rep FK/geometry, which require an motius.motion.representation.ardy.motion_rep
         skeleton. When built from the (core) training config the loader passes a core skeleton, so
         rebuild the matching ardy skeleton from the same folder.
         """
-        from motius.models.ardy.network.skeleton import SkeletonBase as ArdySkeletonBase
+        from motius.motion.representation.ardy.skeleton import SkeletonBase as ArdySkeletonBase
 
         if isinstance(skeleton, ArdySkeletonBase):
             return skeleton
 
-        from motius.models.ardy.network.skeleton import (
+        from motius.motion.representation.ardy.skeleton import (
             CoreSkeleton27,
             G1Skeleton34,
             SOMASkeleton30,
@@ -100,7 +100,7 @@ class ArdyMotionRep(MotionRepBase):
         }
         nbjoints = skeleton.nbjoints
         if nbjoints not in skel_by_njoints:
-            raise ValueError(f"No motius.models.ardy.network.motion_rep skeleton for nbjoints={nbjoints} (known: {sorted(skel_by_njoints)}).")
+            raise ValueError(f"No motius.motion.representation.ardy.motion_rep skeleton for nbjoints={nbjoints} (known: {sorted(skel_by_njoints)}).")
         try:
             device = next(skeleton.buffers()).device
         except (StopIteration, AttributeError):

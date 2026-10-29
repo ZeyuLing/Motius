@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 # SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # Modified by the Motius project for native package integration.
@@ -29,8 +30,12 @@ class LLM2VecEncoder:
         cache_dir = os.environ.get("HUGGINGFACE_CACHE_DIR")
 
         if "TEXT_ENCODERS_DIR" in os.environ:
-            base_model_name_or_path = os.path.join(os.environ["TEXT_ENCODERS_DIR"], base_model_name_or_path)
-            peft_model_name_or_path = os.path.join(os.environ["TEXT_ENCODERS_DIR"], peft_model_name_or_path)
+            base_model_name_or_path = os.path.join(
+                os.environ["TEXT_ENCODERS_DIR"], base_model_name_or_path
+            )
+            peft_model_name_or_path = os.path.join(
+                os.environ["TEXT_ENCODERS_DIR"], peft_model_name_or_path
+            )
 
         self.model = LLM2Vec.from_pretrained(
             base_model_name_or_path=base_model_name_or_path,
@@ -52,7 +57,30 @@ class LLM2VecEncoder:
         for p in self.model.parameters():
             p.requires_grad = False
 
-    def to(self, device: torch.device | str | None = None, dtype: torch.dtype | None = None):
+    @classmethod
+    def from_network(cls, network, directory, device):
+        import json
+        from pathlib import Path
+        from transformers import AutoTokenizer
+
+        directory = Path(directory)
+        metadata = json.loads((directory / "architecture.json").read_text())
+        tokenizer = AutoTokenizer.from_pretrained(
+            directory / "tokenizer", local_files_only=True
+        )
+        tokenizer.pad_token = tokenizer.eos_token
+        tokenizer.padding_side = "left"
+        encoder = cls.__new__(cls)
+        encoder.llm_dim = network.config.hidden_size
+        encoder._device = str(device)
+        encoder.model = LLM2Vec(
+            model=network, tokenizer=tokenizer, **metadata["frontend_options"]
+        )
+        return encoder.eval()
+
+    def to(
+        self, device: torch.device | str | None = None, dtype: torch.dtype | None = None
+    ):
         if device is not None and dtype is not None:
             self.model = self.model.to(device=device, dtype=dtype)
         elif device is not None:

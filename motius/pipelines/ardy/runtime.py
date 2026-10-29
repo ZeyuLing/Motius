@@ -11,9 +11,9 @@ import torch
 from torch import nn
 from tqdm.auto import tqdm
 
-from motius.models.ardy.network.model.cfg import AutoLatentClassifierFreeGuidedModel
-from motius.models.ardy.network.model.diffusion import DDIMSampler, Diffusion
-from motius.models.ardy.network.model.latent_utils import HybridMotionConverter
+from motius.pipelines.ardy.guidance import AutoLatentClassifierFreeGuidedModel
+from motius.diffusion.ardy import DDIMSampler, Diffusion
+from motius.pipelines.ardy.latent_codec import HybridMotionConverter
 
 log = logging.getLogger(__name__)
 

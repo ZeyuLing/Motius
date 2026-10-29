@@ -13,7 +13,7 @@ from omegaconf import ListConfig
 from pydantic.dataclasses import dataclass
 from torch import Tensor, nn
 
-from motius.models.ardy.network.tools import validate
+from motius.utils.ardy import validate
 
 log = logging.getLogger(__name__)
 
@@ -200,7 +200,7 @@ class TransformerEncoderBlockConfig:
     output_dim: int
 
     # skeleton object
-    skeleton: object
+    nbjoints: int
 
     # dimension of the text embeddings
     llm_shape: Union[list[int], ListConfig]
@@ -236,7 +236,6 @@ class TransformerEncoderBlockConfig:
 class TransformerEncoderBlock(nn.Module):
     @validate(TransformerEncoderBlockConfig, save_args=True, super_init=True)
     def __init__(self, conf):
-        self.nbjoints = self.skeleton.nbjoints
         llm_dim = self.llm_shape[-1]
         self.embed_text = nn.Linear(llm_dim, self.latent_dim)
 

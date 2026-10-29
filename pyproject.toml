@@ -356,6 +356,8 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.licenses.ardy" = ["*"]
+"motius.motion.representation.ardy" = ["assets/skeletons/cskel27/*.p", "assets/skeletons/cskel27/*.npz", "assets/skeletons/g1skel34/*.p", "assets/skeletons/g1skel34/xml/*.xml"]
 "motius.configuration.gem_smpl" = ["body/*.pt", "body/*.pth"]
 "motius.licenses.gem_smpl" = ["*"]
 "motius.licenses.gem_x" = ["*"]
@@ -449,14 +451,6 @@ namespaces = false
     "ATTRIBUTIONS.md",
     "assets/unitree_g1/*.xml",
     "assets/unitree_g1/LICENSE",
-]
-"motius.models.ardy" = [
-    "LICENSE",
-    "ATTRIBUTIONS.md",
-    "network/assets/skeletons/cskel27/*.p",
-    "network/assets/skeletons/cskel27/*.npz",
-    "network/assets/skeletons/g1skel34/*.p",
-    "network/assets/skeletons/g1skel34/xml/*.xml",
 ]
 "motius.models.motionbricks" = [
     "ATTRIBUTIONS.md",

@@ -48,7 +48,7 @@ MODELS.update({skeleton: MODELS_BY_SKELETON[skeleton][DEFAULT_HORIZON[skeleton]]
 DEFAULT_MODEL = "core"
 DEFAULT_TEXT_ENCODER_URL = "http://127.0.0.1:9550/"
 
-# --- Aliases kept for imports elsewhere (motius.models.ardy.network.model.loading re-exports these) --
+# --- Aliases kept for imports elsewhere (motius.configuration.ardy.loading re-exports these) --
 # nickname -> HF repo id ("org/name")
 MODEL_NAMES = {key: f"{HF_ORG}/{name}" for key, name in MODELS.items()}
 # a modelname is valid if it is a nickname or a full folder name

@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 # SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # Modified by the Motius project for native package integration.
@@ -11,19 +12,19 @@ import torch
 from huggingface_hub import snapshot_download
 from omegaconf import OmegaConf
 
-from .loading import (
+from motius.configuration.ardy.loading import (
     DEFAULT_MODEL,
     DEFAULT_TEXT_ENCODER_URL,
     get_env_var,
     instantiate_from_dict,
 )
-from .registry import hf_repo_id, resolve_model_name
+from motius.configuration.ardy.registry import hf_repo_id, resolve_model_name
 
 DEFAULT_TEXT_ENCODER = "llm2vec"
 _NATIVE_PACKAGE = "motius.models.ardy.network"
 TEXT_ENCODER_PRESETS = {
     "llm2vec": {
-        "target": "motius.models.ardy.network.model.LLM2VecEncoder",
+        "target": "motius.pipelines.ardy.text.LLM2VecEncoder",
         "kwargs": {
             "base_model_name_or_path": "McGill-NLP/LLM2Vec-Meta-Llama-3-8B-Instruct-mntp",
             "peft_model_name_or_path": "McGill-NLP/LLM2Vec-Meta-Llama-3-8B-Instruct-mntp-supervised",
@@ -57,13 +58,32 @@ def _rewrite_native_targets(value):
     if isinstance(value, list):
         return [_rewrite_native_targets(item) for item in value]
     if isinstance(value, str) and value.startswith("ardy."):
-        return f"{_NATIVE_PACKAGE}.{value[len('ardy.'):]}"
+        suffix = value[len("ardy.") :]
+        composition = {
+            "model.Ardy": "motius.pipelines.ardy.runtime.Ardy",
+            "model.ardy_model.Ardy": "motius.pipelines.ardy.runtime.Ardy",
+            "model.autoencoder.fsq.FSQVAETransformer": "motius.motion.representation.ardy.token_codec.FSQVAETransformer",
+            "model.auto_latent_twostage_denoiser.AutoLatentTwostageDenoiser": "motius.pipelines.ardy.two_stage.AutoLatentTwostageDenoiser",
+        }
+        if suffix in composition:
+            return composition[suffix]
+        if suffix.split(".")[0] in {
+            "motion_rep",
+            "skeleton",
+            "assets",
+            "geometry",
+            "constraints",
+            "postprocess",
+            "exports",
+        }:
+            return "motius.motion.representation.ardy." + suffix
+        return f"{_NATIVE_PACKAGE}.{suffix}"
     return value
 
 
 def _build_api_text_encoder_conf(text_encoder_url: str) -> dict:
     return {
-        "_target_": "motius.models.ardy.network.model.text_encoder_api.TextEncoderAPI",
+        "_target_": "motius.pipelines.ardy.text_encoder_api.TextEncoderAPI",
         "url": text_encoder_url,
     }
 
@@ -72,7 +92,9 @@ def _build_local_text_encoder_conf(text_encoder_fp32: bool = False) -> dict:
     text_encoder_name = get_env_var("TEXT_ENCODER", DEFAULT_TEXT_ENCODER)
     if text_encoder_name not in TEXT_ENCODER_PRESETS:
         available = ", ".join(sorted(TEXT_ENCODER_PRESETS))
-        raise ValueError(f"Unknown TEXT_ENCODER='{text_encoder_name}'. Available: {available}")
+        raise ValueError(
+            f"Unknown TEXT_ENCODER='{text_encoder_name}'. Available: {available}"
+        )
 
     preset = TEXT_ENCODER_PRESETS[text_encoder_name]
     # Copy before overriding so the shared preset dict is never mutated.
@@ -245,7 +267,9 @@ def load_model(
 
     model_config_path = model_path / "config.yaml"
     if not model_config_path.exists():
-        raise FileNotFoundError(f"The model folder exists but config.yaml is missing: {model_config_path}")
+        raise FileNotFoundError(
+            f"The model folder exists but config.yaml is missing: {model_config_path}"
+        )
 
     model_conf = OmegaConf.load(model_config_path)
 
@@ -265,7 +289,9 @@ def load_model(
         )
 
     runtime_conf = OmegaConf.create({"checkpoint_dir": str(model_path)})
-    model_cfg = OmegaConf.to_container(OmegaConf.merge(model_conf, runtime_conf), resolve=True)
+    model_cfg = OmegaConf.to_container(
+        OmegaConf.merge(model_conf, runtime_conf), resolve=True
+    )
     model_cfg = _rewrite_native_targets(model_cfg)
     model_cfg.pop("checkpoint_dir", None)
     # The text encoder is attached after construction (or left as None for

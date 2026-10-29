@@ -9,7 +9,7 @@ import einops
 import torch
 
 from ..geometry import cont6d_to_matrix, matrix_to_cont6d
-from ..tools import ensure_batched
+from motius.utils.ardy import ensure_batched
 
 
 def diff_angles(angles, fps: float):

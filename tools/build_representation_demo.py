@@ -220,12 +220,12 @@ def _core_skin_vertices(
     *,
     device: str,
 ) -> tuple[np.ndarray, np.ndarray]:
-    from motius.models.ardy.network.skeleton import CoreSkeleton27
-    from motius.models.ardy.network.skeleton.kinematics import fk
+    from motius.motion.representation.ardy.skeleton import CoreSkeleton27
+    from motius.motion.representation.ardy.skeleton.kinematics import fk
 
     skin_path = (
         ROOT
-        / "motius/models/ardy/network/assets/skeletons/cskel27/skin_standard.npz"
+        / "motius/motion/representation/ardy/assets/skeletons/cskel27/skin_standard.npz"
     )
     if not skin_path.exists():
         raise FileNotFoundError(f"ARDY skin asset not found: {skin_path}")

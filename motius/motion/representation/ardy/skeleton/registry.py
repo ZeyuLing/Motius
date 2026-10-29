@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from motius.models.ardy.network.assets import SKELETONS_ROOT
+from motius.motion.representation.ardy.assets import SKELETONS_ROOT
 
 from .definitions import (
     CoreSkeleton27,

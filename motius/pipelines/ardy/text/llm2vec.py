@@ -91,24 +91,15 @@ class LLM2Vec(nn.Module):
     def _get_model_class(cls, config_class_name, enable_bidirectional):
         if not enable_bidirectional:
             return AutoModel
-        if config_class_name == "MistralConfig":
-            from .models.bidirectional_mistral import MistralBiModel
-
-            return MistralBiModel
-        elif config_class_name == "LlamaConfig":
-            from .models.bidirectional_llama import LlamaBiModel
+        if config_class_name == "LlamaConfig":
+            from motius.models.ardy.network.model.llm2vec.models.bidirectional_llama import LlamaBiModel
 
             return LlamaBiModel
-        elif config_class_name == "GemmaConfig":
-            from .models.bidirectional_gemma import GemmaBiModel
-
-            return GemmaBiModel
-        elif config_class_name == "Qwen2Config":
-            from .models.bidirectional_qwen2 import Qwen2BiModel
-
-            return Qwen2BiModel
         else:
-            raise ValueError(f"{config_class_name} is not supported yet with bidirectional models.")
+            raise ValueError(
+                f"{config_class_name} has no packaged bidirectional architecture; "
+                "the released ARDY text encoder uses LlamaConfig."
+            )
 
     @classmethod
     def from_pretrained(
@@ -174,7 +165,7 @@ class LLM2Vec(nn.Module):
                 local_files_only=True,
             )
             model = model.merge_and_unload()
-        elif os.path.isdir(base_model_name_or_path) and os.path.exists(f"{base_model_name_or_path}/config.json"):
+        if os.path.isdir(base_model_name_or_path) and os.path.exists(f"{base_model_name_or_path}/config.json"):
             with open(f"{base_model_name_or_path}/config.json", "r") as fIn:
                 config_dict = json.load(fIn)
             config = PretrainedConfig.from_dict(config_dict)

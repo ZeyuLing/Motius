@@ -71,8 +71,8 @@ def test_ardy_export_demo_defaults_are_release_safe():
     [("CoreSkeleton27", 20, 330), ("G1Skeleton34", 25, 414)],
 )
 def test_ardy_explicit_representation_roundtrip(skeleton_name, fps, expected_dim):
-    from motius.models.ardy.network import skeleton as skeleton_module
-    from motius.models.ardy.network.motion_rep import ArdyMotionRep
+    from motius.motion.representation.ardy import skeleton as skeleton_module
+    from motius.motion.representation.ardy.motion_rep import ArdyMotionRep
 
     skeleton = getattr(skeleton_module, skeleton_name)()
     rep = ArdyMotionRep(skeleton, fps)
@@ -89,8 +89,8 @@ def test_ardy_explicit_representation_roundtrip(skeleton_name, fps, expected_dim
 
 
 def test_g1_qpos_export_accepts_repository_scipy_version():
-    from motius.models.ardy.network.exports.mujoco import MujocoQposConverter
-    from motius.models.ardy.network.skeleton import G1Skeleton34
+    from motius.motion.representation.ardy.exports.mujoco import MujocoQposConverter
+    from motius.motion.representation.ardy.skeleton import G1Skeleton34
 
     skeleton = G1Skeleton34()
     rotations = torch.eye(3).reshape(1, 1, 1, 3, 3).repeat(1, 3, skeleton.nbjoints, 1, 1)
@@ -101,8 +101,8 @@ def test_g1_qpos_export_accepts_repository_scipy_version():
 
 
 def test_ardy_constraint_loader_honors_dtype():
-    from motius.models.ardy.network.constraints import load_constraints_lst
-    from motius.models.ardy.network.skeleton import CoreSkeleton27
+    from motius.motion.representation.ardy.constraints import load_constraints_lst
+    from motius.motion.representation.ardy.skeleton import CoreSkeleton27
 
     constraints = load_constraints_lst(
         [

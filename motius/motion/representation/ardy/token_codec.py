@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 # SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # Modified by the Motius project for native package integration.
@@ -12,14 +13,11 @@ import torch as t
 from torch import nn
 from vector_quantize_pytorch import FSQ
 
-from motius.models.ardy.network.model.loading import load_checkpoint_state_dict
-from motius.models.ardy.network.motion_rep import MotionRepBase
-from motius.models.ardy.network.motion_rep.stats import Stats
+from motius.configuration.ardy.loading import load_checkpoint_state_dict
+from motius.motion.representation.ardy.motion_rep import MotionRepBase
+from motius.motion.representation.ardy.motion_rep.stats import Stats
 
-from .transformer import (
-    DoubleCondDecoderTransformer,
-    EncoderTransformer,
-)
+from motius.models.ardy.network.model.autoencoder.networks import FSQNetworks
 
 
 def round_ste(z):
@@ -55,6 +53,8 @@ class FSQVAETransformer(nn.Module):
         causal_encoder: bool = False,
         causal_decoder: bool = False,
         ckpt_path: Optional[str] = None,
+        network=None,
+        statistics_root=None,
         **kwargs,
     ):
         super().__init__()
@@ -65,7 +65,9 @@ class FSQVAETransformer(nn.Module):
         self.encode_with_normalization = encode_with_normalization
         self.encode_with_quantization = encode_with_quantization
 
-        assert len(feature_mode) == 4 and np.all([f in self.ALLOWED_FEATURE_MODE for f in feature_mode])
+        assert len(feature_mode) == 4 and np.all(
+            [f in self.ALLOWED_FEATURE_MODE for f in feature_mode]
+        )
         (
             self.encoder_input_feature_mode,  # body
             self.decoder_output_feature_mode,  # pose
@@ -84,51 +86,49 @@ class FSQVAETransformer(nn.Module):
         decoder_target_cond_dim = dim_dict[self.decoder_target_cond_feature_mode]
         decoder_external_cond_dim = dim_dict[self.decoder_external_cond_feature_mode]
 
-        latent_embedding_dim = num_fsq_levels
-        self.encoder = EncoderTransformer(
-            encoder_state_dim,
-            latent_embedding_dim,
-            num_frames_per_token,
-            latent_dim,
-            num_heads,
-            ff_size,
-            dropout,
-            activation,
-            norm_first,
-            num_layers,
-            pe_dropout,
-            causal_encoder,
+        self.core = (
+            network
+            if network is not None
+            else FSQNetworks(
+                encoder_state_dim,
+                decoder_state_dim,
+                decoder_target_cond_dim,
+                decoder_external_cond_dim,
+                num_fsq_levels,
+                fsq_level_list,
+                num_frames_per_token,
+                latent_dim,
+                num_heads,
+                ff_size,
+                dropout,
+                activation,
+                norm_first,
+                num_layers,
+                pe_dropout,
+                causal_encoder,
+                causal_decoder,
+            )
         )
-        self.decoder = DoubleCondDecoderTransformer(
-            latent_embedding_dim,
-            decoder_state_dim,
-            num_frames_per_token,
-            latent_dim,
-            num_heads,
-            ff_size,
-            dropout,
-            activation,
-            norm_first,
-            num_layers,
-            pe_dropout,
-            causal_decoder,
-            target_cond_dim=decoder_target_cond_dim,
-            external_cond_dim=decoder_external_cond_dim,
-        )
-
-        if isinstance(fsq_level_list, int):
-            fsq_level_list = [fsq_level_list] * num_fsq_levels
-        assert len(fsq_level_list) == num_fsq_levels, (
-            f"fsq_level_list must have num_fsq_levels={num_fsq_levels} entries, got {len(fsq_level_list)}"
-        )
-        self.quantizer = FSQ(levels=fsq_level_list, return_indices=False)
-
         if ckpt_path:
             self.load_ckpt(ckpt_path)
+        if ckpt_path is None and statistics_root is not None:
+            self.load_statistics(statistics_root)
         self.eval_and_freeze()
 
         # make forward by default used for detokenization
         self.forward = self.detokenize
+
+    @property
+    def encoder(self):
+        return self.core.encoder
+
+    @property
+    def decoder(self):
+        return self.core.decoder
+
+    @property
+    def quantizer(self):
+        return self.core.quantizer
 
     def eval_and_freeze(self):
         self.eval()
@@ -144,14 +144,22 @@ class FSQVAETransformer(nn.Module):
         # Load ckpt
         state_dict = load_checkpoint_state_dict(ckpt_path)
         state_dict = {
-            key.removeprefix("pose_net."): val for key, val in state_dict.items() if key.startswith("pose_net")
+            key.removeprefix("pose_net."): val
+            for key, val in state_dict.items()
+            if key.startswith("pose_net")
         }
-        self.load_state_dict(state_dict)
+        self.core.load_state_dict(state_dict, strict=True)
 
-        ckpt_path = str(ckpt_path)
-        autoencoder_stats_dir = Path(ckpt_path).parent / "stats"
-        self.post_quantization_stats = Stats(folder=autoencoder_stats_dir / "post_quantization", load=True)
-        self.pre_quantization_stats = Stats(folder=autoencoder_stats_dir / "pre_quantization", load=True)
+        self.load_statistics(Path(ckpt_path).parent / "stats")
+
+    def load_statistics(self, directory):
+        directory = Path(directory)
+        self.post_quantization_stats = Stats(
+            folder=directory / "post_quantization", load=True
+        )
+        self.pre_quantization_stats = Stats(
+            folder=directory / "pre_quantization", load=True
+        )
 
     @property
     def motion_rep(self):
@@ -174,7 +182,9 @@ class FSQVAETransformer(nn.Module):
             return self.motion_rep.extract_body(x)
 
         global_root = self.motion_rep.extract_root(x)
-        local_root = self.motion_rep.global_root_to_local_root(global_root, normalized=True, lengths=lengths)
+        local_root = self.motion_rep.global_root_to_local_root(
+            global_root, normalized=True, lengths=lengths
+        )
 
         if feature == "root":
             return local_root
@@ -196,7 +206,9 @@ class FSQVAETransformer(nn.Module):
         @return embeddings: [batch_size, num_tokens, feat_dim]
         """
         # create lengths
-        x_in = self.extract_feature(x, self.encoder_input_feature_mode, lengths=motion_pad_mask.sum(1))
+        x_in = self.extract_feature(
+            x, self.encoder_input_feature_mode, lengths=motion_pad_mask.sum(1)
+        )
         x_encoder = self.encoder(x_in, motion_pad_mask)
 
         if self.encode_with_quantization:
@@ -209,7 +221,11 @@ class FSQVAETransformer(nn.Module):
             # mean = self.stats['mean_after_quantization'] if encode_with_quantization else self.stats['mean_before_quantization']
             # std = self.stats['std_after_quantization'] if encode_with_quantization else self.stats['std_before_quantization']
             # token_embeddings = (token_embeddings - mean) / std
-            stats = self.post_quantization_stats if self.encode_with_quantization else self.pre_quantization_stats
+            stats = (
+                self.post_quantization_stats
+                if self.encode_with_quantization
+                else self.pre_quantization_stats
+            )
             token_embeddings = stats.normalize(token_embeddings)
 
         return token_embeddings
@@ -229,14 +245,20 @@ class FSQVAETransformer(nn.Module):
             # mean = self.stats['mean_after_quantization'] if encode_with_quantization else self.stats['mean_before_quantization']
             # std = self.stats['std_after_quantization'] if encode_with_quantization else self.stats['std_before_quantization']
             # token_embeddings = token_embeddings * std + mean
-            stats = self.post_quantization_stats if self.encode_with_quantization else self.pre_quantization_stats
+            stats = (
+                self.post_quantization_stats
+                if self.encode_with_quantization
+                else self.pre_quantization_stats
+            )
             token_embeddings = stats.unnormalize(token_embeddings)
 
         if not self.encode_with_quantization:  # quantization not applied at encoding
             token_embeddings, indices = self.quantizer(token_embeddings)
         else:  # redo the rounding operation do ensure quantization, but we can not directly call quantizer since it include additional operation apart from rounding
             half_width = self.quantizer._levels // 2
-            token_embeddings = round_ste(token_embeddings.clamp(-1, 1) * half_width) / half_width
+            token_embeddings = (
+                round_ste(token_embeddings.clamp(-1, 1) * half_width) / half_width
+            )
 
         x_decoder = self.decoder(
             token_embeddings,
@@ -264,14 +286,18 @@ class FSQVAETransformer(nn.Module):
         @param token_embeddings: [batch_size, num_tokens, feat_dim]
         @return requantized_token_embeddings: [batch_size, num_tokens, feat_dim]
         """
-        assert self.encode_with_quantization, "Only support encode_with_quantization=True"
+        assert (
+            self.encode_with_quantization
+        ), "Only support encode_with_quantization=True"
 
         if self.encode_with_normalization:  # unnormalize the token embeddings
             stats = self.post_quantization_stats
             token_embeddings = stats.unnormalize(token_embeddings)
 
         half_width = self.quantizer._levels // 2
-        token_embeddings = round_ste(token_embeddings.clamp(-1, 1) * half_width) / half_width
+        token_embeddings = (
+            round_ste(token_embeddings.clamp(-1, 1) * half_width) / half_width
+        )
 
         if self.encode_with_normalization:  # normalize the token embeddings
             stats = self.post_quantization_stats

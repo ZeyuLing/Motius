@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 # SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 # Modified by the Motius project for native package integration.
@@ -10,10 +11,10 @@ import torch
 from einops import rearrange
 from torch import nn
 
-from motius.models.ardy.network.model.latent_utils import HybridMotionConverter
+from motius.pipelines.ardy.latent_codec import HybridMotionConverter
 
-from .backbone import TransformerEncoderBlock
-from .loading import load_checkpoint_state_dict
+from motius.models.ardy.network.model.two_stage_networks import TwoStageNetworks
+from motius.configuration.ardy.loading import load_checkpoint_state_dict
 
 
 def sparsify_token_seq(token_seq, token_mask, token_index):
@@ -31,7 +32,9 @@ def sparsify_token_seq(token_seq, token_mask, token_index):
         token_index (torch.Tensor): [B, num_valid_tokens] integer token index
         index_mask (torch.Tensor): [num_tokens,] boolean mask, if any token at this index is valid in the batch
     """
-    index_mask = token_mask.any(dim=0)  # [num_tokens,], if any token at this index is valid in the batch
+    index_mask = token_mask.any(
+        dim=0
+    )  # [num_tokens,], if any token at this index is valid in the batch
     # slice the token sequence, token_mask and token index to only include the valid tokens
     token_seq = token_seq[:, index_mask]
     token_mask = token_mask[:, index_mask]
@@ -52,12 +55,15 @@ class AutoLatentTwostageDenoiser(nn.Module):
         latent_embedding_dim,
         # other params
         ckpt_path: Optional[str] = None,
+        network=None,
         sparsify_token_seq: bool = False,
         trt_compatible: bool = True,
         **kwargs,
     ):
         """Build root and body transformer blocks; optionally load checkpoint from ckpt_path."""
-        assert not (sparsify_token_seq and trt_compatible), "Should choose between sparsification or trt compatibility."
+        assert not (
+            sparsify_token_seq and trt_compatible
+        ), "Should choose between sparsification or trt compatibility."
 
         super().__init__()
         self.motion_rep = motion_rep
@@ -75,59 +81,23 @@ class AutoLatentTwostageDenoiser(nn.Module):
 
         print(f"sparsify_token_seq: {self.sparsify_token_seq}")
 
-        local_root_dim = motion_rep.local_root_dim
-        self.nframe_local_root_dim = local_root_dim * self.num_frames_per_token
-        global_root_hybrid_token_dim = self.nframe_root_dim + self.latent_embedding_dim
-
-        local_root_hybrid_token_dim = (
-            self.nframe_local_root_dim + self.latent_embedding_dim
-        )  # body stage always takes in local root info for motion (but still the global mask)
-
-        if motion_mask_mode == "concat":
-            # stage 1: root pred only
-            self.global_root_hybrid_proj = nn.Linear(global_root_hybrid_token_dim, self.latent_dim)
-            global_root_hybrid_constraints_dim = (
-                global_root_hybrid_token_dim
-                + (motion_rep.motion_rep_dim + motion_rep.body_dim) * self.num_frames_per_token
-            )
-            self.global_root_hybrid_constraints_proj = nn.Linear(
-                global_root_hybrid_constraints_dim, self.latent_dim
-            )  # generation tokens with constraints infilling and concat
-            # stage 2: body pred only
-            self.local_root_hybrid_proj = nn.Linear(local_root_hybrid_token_dim, self.latent_dim)
-            local_root_hybrid_constraints_dim = (
-                local_root_hybrid_token_dim
-                + (motion_rep.motion_rep_dim + motion_rep.body_dim) * self.num_frames_per_token
-            )  # body stage always takes in local root info for motion (but still the global mask)
-            self.local_root_hybrid_constraints_proj = nn.Linear(
-                local_root_hybrid_constraints_dim, self.latent_dim
-            )  # generation tokens with constraints infilling and concat
-            # explicit future constraints projection for both stages
-            self.future_constraints_proj = nn.Linear(
-                motion_rep.motion_rep_dim * 2 * self.num_frames_per_token,
-                self.latent_dim,
-            )
-        else:
-            assert motion_mask_mode is None
-            self.global_root_hybrid_proj = nn.Linear(global_root_hybrid_token_dim, self.latent_dim)
-            self.local_root_hybrid_proj = nn.Linear(local_root_hybrid_token_dim, self.latent_dim)
-
-        root_output_dim = self.nframe_root_dim
-        self.root_model = TransformerEncoderBlock(
-            add_input_proj=False,
-            input_dim=-1,  # for compatibility
-            output_dim=root_output_dim,
-            skeleton=self.motion_rep.skeleton,
-            **kwargs,
+        self.nframe_local_root_dim = (
+            motion_rep.local_root_dim * self.num_frames_per_token
         )
-
-        body_output_dim = self.latent_embedding_dim
-        self.body_model = TransformerEncoderBlock(
-            add_input_proj=False,
-            input_dim=-1,  # for compatibility
-            output_dim=body_output_dim,
-            skeleton=self.motion_rep.skeleton,
-            **kwargs,
+        self.core = (
+            network
+            if network is not None
+            else TwoStageNetworks(
+                motion_rep.local_root_dim,
+                motion_rep.motion_rep_dim,
+                motion_rep.body_dim,
+                motion_rep.skeleton.nbjoints,
+                motion_mask_mode,
+                num_frames_per_token,
+                nframe_root_dim,
+                latent_embedding_dim,
+                **kwargs,
+            )
         )
 
         self.trt_compatible = trt_compatible
@@ -136,15 +106,47 @@ class AutoLatentTwostageDenoiser(nn.Module):
         if ckpt_path:
             self.load_ckpt(ckpt_path)
 
+    @property
+    def global_root_hybrid_proj(self):
+        return self.core.global_root_hybrid_proj
+
+    @property
+    def global_root_hybrid_constraints_proj(self):
+        return self.core.global_root_hybrid_constraints_proj
+
+    @property
+    def local_root_hybrid_proj(self):
+        return self.core.local_root_hybrid_proj
+
+    @property
+    def local_root_hybrid_constraints_proj(self):
+        return self.core.local_root_hybrid_constraints_proj
+
+    @property
+    def future_constraints_proj(self):
+        return self.core.future_constraints_proj
+
+    @property
+    def root_model(self):
+        return self.core.root_model
+
+    @property
+    def body_model(self):
+        return self.core.body_model
+
     def load_ckpt(self, ckpt_path: str) -> None:
         """Load checkpoint from path; state dict keys are stripped of 'denoiser.backbone.'
         prefix."""
         state_dict = load_checkpoint_state_dict(ckpt_path)
         state_dict = {
-            key.replace("denoiser.", ""): val for key, val in state_dict.items() if key.startswith("denoiser")
+            key.replace("denoiser.", ""): val
+            for key, val in state_dict.items()
+            if key.startswith("denoiser")
         }
-        state_dict = {key.replace("backbone.", ""): val for key, val in state_dict.items()}
-        self.load_state_dict(state_dict)
+        state_dict = {
+            key.replace("backbone.", ""): val for key, val in state_dict.items()
+        }
+        self.core.load_state_dict(state_dict, strict=True)
 
     def forward(
         self,
@@ -188,8 +190,12 @@ class AutoLatentTwostageDenoiser(nn.Module):
         """
         bs, num_tokens, dim_token = x.shape
         num_frames = num_tokens * self.num_frames_per_token
-        global_root_motion, latent_body_motion = self.hybrid.get_root_and_latent_body_motion_from_hybrid(x)
-        token_index = torch.arange(num_tokens, device=x.device)[None, :].repeat(bs, 1)  # [B, num_tokens]
+        global_root_motion, latent_body_motion = (
+            self.hybrid.get_root_and_latent_body_motion_from_hybrid(x)
+        )
+        token_index = torch.arange(num_tokens, device=x.device)[None, :].repeat(
+            bs, 1
+        )  # [B, num_tokens]
         if self.positional_encoding_mode == "learned_prefix_zero_at_first_generation":
             origin_index = history_len // self.num_frames_per_token
             token_index = token_index - origin_index[:, None]
@@ -206,13 +212,16 @@ class AutoLatentTwostageDenoiser(nn.Module):
                 root_motion_mask = self.motion_rep.extract_root(motion_mask)
                 # infill root constraints from observed motion and motion mask. the root motion mask will always be false for the history tokens, so the history root motion will not be changed.
                 global_root_motion = (
-                    global_root_motion * (1 - root_motion_mask) + observed_root_motion * root_motion_mask
+                    global_root_motion * (1 - root_motion_mask)
+                    + observed_root_motion * root_motion_mask
                 )
 
                 x_infilled_extended = torch.cat(
                     [
                         latent_body_motion,
-                        global_root_motion.reshape((bs, num_tokens, self.nframe_root_dim)),
+                        global_root_motion.reshape(
+                            (bs, num_tokens, self.nframe_root_dim)
+                        ),
                         observed_body_motion.reshape(bs, num_tokens, -1),
                         motion_mask.reshape(bs, num_tokens, -1),
                     ],
@@ -225,13 +234,21 @@ class AutoLatentTwostageDenoiser(nn.Module):
                         self.global_root_hybrid_constraints_proj(x_infilled_extended)
                         * generation_token_mask[:, :, None]
                     )
-                    history_token_proj = self.global_root_hybrid_proj(x) * history_token_mask[:, :, None]
+                    history_token_proj = (
+                        self.global_root_hybrid_proj(x) * history_token_mask[:, :, None]
+                    )
                     future_token_proj = (
-                        self.future_constraints_proj(x_infilled_extended[:, :, self.latent_embedding_dim :])
+                        self.future_constraints_proj(
+                            x_infilled_extended[:, :, self.latent_embedding_dim :]
+                        )
                         * future_token_mask[:, :, None]
                     )
-                    root_stage_input = generation_token_proj + history_token_proj + future_token_proj
-                    root_stage_pad_mask = history_token_mask | generation_token_mask | future_token_mask
+                    root_stage_input = (
+                        generation_token_proj + history_token_proj + future_token_proj
+                    )
+                    root_stage_pad_mask = (
+                        history_token_mask | generation_token_mask | future_token_mask
+                    )
                 else:
                     generation_token_extended = x_infilled_extended[
                         generation_token_mask
@@ -245,7 +262,9 @@ class AutoLatentTwostageDenoiser(nn.Module):
                     future_constraints_input = future_constraints_input[
                         :, self.latent_embedding_dim :
                     ]  # [num_future_tokens, D], extract the part after the latent body embedding
-                    future_token_proj = self.future_constraints_proj(future_constraints_input)
+                    future_token_proj = self.future_constraints_proj(
+                        future_constraints_input
+                    )
                     dtype = generation_token_proj.dtype
                     device = generation_token_proj.device
                     root_stage_input = torch.zeros(
@@ -254,9 +273,13 @@ class AutoLatentTwostageDenoiser(nn.Module):
                     root_stage_input[generation_token_mask] = generation_token_proj
                     root_stage_input[history_token_mask] = history_token_proj
                     root_stage_input[future_token_mask] = future_token_proj
-                    root_stage_pad_mask = history_token_mask | generation_token_mask | future_token_mask
+                    root_stage_pad_mask = (
+                        history_token_mask | generation_token_mask | future_token_mask
+                    )
             else:
-                raise NotImplementedError(f"This motion mask mode ({self.motion_mask_mode}) is not supported.")
+                raise NotImplementedError(
+                    f"This motion mask mode ({self.motion_mask_mode}) is not supported."
+                )
         else:
             root_stage_input = self.global_root_hybrid_proj(x)
             root_stage_pad_mask = history_token_mask | generation_token_mask
@@ -267,7 +290,9 @@ class AutoLatentTwostageDenoiser(nn.Module):
                 root_stage_pad_mask,
                 root_stage_token_index,
                 root_stage_index_mask,
-            ) = sparsify_token_seq(root_stage_input, root_stage_pad_mask, root_stage_token_index)
+            ) = sparsify_token_seq(
+                root_stage_input, root_stage_pad_mask, root_stage_token_index
+            )
 
         # Stage 1: predict root motion in global
         global_root_motion_pred = self.root_model(
@@ -295,7 +320,8 @@ class AutoLatentTwostageDenoiser(nn.Module):
             f=self.num_frames_per_token,
         )
         global_root_motion_pred = (
-            global_root_motion_pred * generation_mask[:, :, None] + global_root_motion * history_mask[:, :, None]
+            global_root_motion_pred * generation_mask[:, :, None]
+            + global_root_motion * history_mask[:, :, None]
         )
         lengths = history_len + generation_len
 
@@ -330,13 +356,22 @@ class AutoLatentTwostageDenoiser(nn.Module):
             )
             if self.trt_compatible:
                 generation_token_proj = (
-                    self.local_root_hybrid_constraints_proj(x_new_extended) * generation_token_mask[:, :, None]
+                    self.local_root_hybrid_constraints_proj(x_new_extended)
+                    * generation_token_mask[:, :, None]
                 )
-                history_token_proj = self.local_root_hybrid_proj(x_new) * history_token_mask[:, :, None]
-                body_stage_input = generation_token_proj + history_token_proj + future_token_proj
-                body_stage_pad_mask = history_token_mask | generation_token_mask | future_token_mask
+                history_token_proj = (
+                    self.local_root_hybrid_proj(x_new) * history_token_mask[:, :, None]
+                )
+                body_stage_input = (
+                    generation_token_proj + history_token_proj + future_token_proj
+                )
+                body_stage_pad_mask = (
+                    history_token_mask | generation_token_mask | future_token_mask
+                )
             else:
-                generation_token_extended = x_new_extended[generation_token_mask]  # [num_generation_tokens, D]
+                generation_token_extended = x_new_extended[
+                    generation_token_mask
+                ]  # [num_generation_tokens, D]
                 generation_token_proj = self.local_root_hybrid_constraints_proj(  # noqa
                     generation_token_extended
                 )
@@ -351,7 +386,9 @@ class AutoLatentTwostageDenoiser(nn.Module):
                 body_stage_input[generation_token_mask] = generation_token_proj
                 body_stage_input[history_token_mask] = history_token_proj
                 body_stage_input[future_token_mask] = future_token_proj
-                body_stage_pad_mask = history_token_mask | generation_token_mask | future_token_mask
+                body_stage_pad_mask = (
+                    history_token_mask | generation_token_mask | future_token_mask
+                )
         else:
             assert self.motion_mask_mode is None
             body_stage_input = self.local_root_hybrid_proj(x_new)
@@ -363,7 +400,9 @@ class AutoLatentTwostageDenoiser(nn.Module):
                 body_stage_pad_mask,
                 body_stage_token_index,
                 body_stage_index_mask,
-            ) = sparsify_token_seq(body_stage_input, body_stage_pad_mask, body_stage_token_index)
+            ) = sparsify_token_seq(
+                body_stage_input, body_stage_pad_mask, body_stage_token_index
+            )
 
         # Stage 2: predict local body motion based on local root
         latent_body_motion_pred = self.body_model(

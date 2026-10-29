@@ -22,7 +22,7 @@ ARDY_CHECKPOINTS = {
     "g152": "nvidia/ARDY-G1-RP-25FPS-Horizon52",
     "g18": "nvidia/ARDY-G1-RP-25FPS-Horizon8",
 }
-_ARTIFACT_FORMAT = "motius-ardy-wrapper-v1"
+_ARTIFACT_FORMAT = "motius-ardy-neural-v2"
 
 
 def _normalize_model_name(value: str) -> str:
@@ -51,11 +51,13 @@ def _copy_tree(src: Path, dst: Path, copy_mode: str = "copy") -> None:
     dst.parent.mkdir(parents=True, exist_ok=True)
     copy_function = shutil.copy2
     if copy_mode == "hardlink":
+
         def copy_function(src, dst):
             try:
                 os.link(Path(src).resolve(), dst)
             except OSError:
                 shutil.copy2(src, dst)
+
     elif copy_mode != "copy":
         raise ValueError(f"Unsupported ARDY artifact copy mode: {copy_mode}")
     shutil.copytree(src, dst, symlinks=False, copy_function=copy_function)
@@ -101,6 +103,8 @@ class ARDYBundle(ModelBundle):
         text_encoder_url: Optional[str] = None,
         text_encoder_fp32: bool = False,
         text_encoders_dir: Optional[str] = None,
+        text_weights_path: Optional[str] = None,
+        packed_text_path: Optional[str] = None,
         load_model: bool = True,
         **kwargs,
     ):
@@ -108,103 +112,112 @@ class ARDYBundle(ModelBundle):
         self.model_name = _normalize_model_name(str(model_name))
         self.device_name = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.checkpoint_path = checkpoint_path
+        if checkpoint_path is not None and Path(checkpoint_path).name.startswith(
+            "ARDY-"
+        ):
+            self.model_name = _normalize_model_name(Path(checkpoint_path).name)
         self.checkpoints_dir = checkpoints_dir
-        self.text_encoder = text_encoder
+        if text_encoder is not None and text_encoder is not False:
+            raise TypeError(
+                "Pass an external text encoder to ARDYPipeline, not its neural Bundle"
+            )
+        self.text_encoder_enabled = text_encoder is not False
         self.text_encoder_mode = text_encoder_mode
         self.text_encoder_url = text_encoder_url
         self.text_encoder_fp32 = bool(text_encoder_fp32)
         self.text_encoders_dir = text_encoders_dir
-        self._model = None
+        self.text_weights_path = text_weights_path
+        self.packed_text_path = packed_text_path
+        self._networks_loaded = False
         self._model_config = None
         if load_model:
             self.load_model()
 
     @property
-    def model(self):
-        return self.load_model()
-
-    @property
-    def skeleton(self):
-        return self.model.skeleton
-
-    @property
-    def motion_rep(self):
-        return self.model.motion_rep
-
-    @property
     def fps(self) -> float:
-        return float(self.motion_rep.fps)
+        self.load_model()
+        return float(self._model_config["denoiser"]["motion_rep"]["fps"])
 
     @property
     def horizon(self) -> int:
-        return int(self.model.gen_horizon_len)
+        self.load_model()
+        return int(self._model_config["gen_horizon_len"])
 
     @property
     def device(self) -> torch.device:
-        model = self.model
-        try:
-            return next(model.parameters()).device
-        except StopIteration:
-            return torch.device(model.device)
+        if not self._networks_loaded:
+            return torch.device(self.device_name)
+        return next(self.denoiser.parameters()).device
 
     def load_model(self):
-        if self._model is not None:
-            return self._model
+        """Read the released networks and retain only actual neural roots."""
+        if self._networks_loaded:
+            return self
+        from motius.configuration.ardy.loader import load_model
 
-        try:
-            from .network import load_model
-        except ImportError as exc:
-            if exc.name == "vector_quantize_pytorch":
-                raise ImportError(
-                    "ARDY requires the optional dependencies. Install with "
-                    "`pip install -e '.[ardy]'`."
-                ) from exc
-            raise
-
-        model_name = self.model_name
-        if self.checkpoint_path:
-            model_name = Path(self.checkpoint_path).name
-        old_text_encoders_dir = os.environ.get("TEXT_ENCODERS_DIR")
-        if self.text_encoders_dir:
-            os.environ["TEXT_ENCODERS_DIR"] = str(Path(self.text_encoders_dir).resolve())
-        try:
-            self._model, self._model_config = load_model(
-                model_name,
-                device=self.device_name,
-                text_encoder=self.text_encoder,
-                text_encoder_mode=self.text_encoder_mode,
-                text_encoder_url=self.text_encoder_url,
-                text_encoder_fp32=self.text_encoder_fp32,
-                return_config=True,
-                checkpoints_dir=self.checkpoints_dir,
-                model_path=self.checkpoint_path,
-            )
-        finally:
-            if self.text_encoders_dir:
-                if old_text_encoders_dir is None:
-                    os.environ.pop("TEXT_ENCODERS_DIR", None)
-                else:
-                    os.environ["TEXT_ENCODERS_DIR"] = old_text_encoders_dir
-        return self._model
+        runtime, self._model_config = load_model(
+            self.model_name,
+            device=self.device_name,
+            text_encoder=False,
+            return_config=True,
+            checkpoints_dir=self.checkpoints_dir,
+            model_path=self.checkpoint_path,
+        )
+        self.denoiser = runtime.denoiser.model.core
+        self.autoencoder = runtime.autoencoder.core
+        self._save_ckpt_modules = ["denoiser", "autoencoder"]
+        self._trainable_modules = ["denoiser"]
+        self._networks_loaded = True
+        self.eval()
+        return self
 
     def to(self, *args, **kwargs):
-        if self._model is not None:
-            self._model.to(*args, **kwargs)
-            if args:
-                self._model.device = torch.device(args[0])
-            elif kwargs.get("device") is not None:
-                self._model.device = torch.device(kwargs["device"])
-        return super().to(*args, **kwargs)
+        result = super().to(*args, **kwargs)
+        if self._networks_loaded:
+            self.device_name = str(next(self.denoiser.parameters()).device)
+        return result
+
+    def load_text_model(self):
+        if not hasattr(self, "text_model"):
+            from motius.configuration.ardy.text import load_text_network
+
+            self.text_model = load_text_network(self.packed_text_path, self.device)
+            self._save_ckpt_modules.append("text_model")
+        return self.text_model
+
+    def predict_root(self, *args, **kwargs):
+        return self.denoiser.predict_root(*args, **kwargs)
+
+    def train(self, mode=True):
+        super().train(mode)
+        if self._networks_loaded:
+            self.autoencoder.eval()
+        if hasattr(self, "text_model"):
+            self.text_model.eval()
+        return self
+
+    def predict_body(self, *args, **kwargs):
+        return self.denoiser.predict_body(*args, **kwargs)
+
+    def encode_motion(self, *args, **kwargs):
+        return self.autoencoder.encode(*args, **kwargs)
+
+    def decode_motion(self, *args, **kwargs):
+        return self.autoencoder.decode(*args, **kwargs)
 
     @classmethod
-    def _bundle_config_from_pretrained(cls, pretrained_model_name_or_path: str, **kwargs):
+    def _bundle_config_from_pretrained(
+        cls, pretrained_model_name_or_path: str, **kwargs
+    ):
         path = Path(str(pretrained_model_name_or_path))
         config = dict(kwargs)
         if path.is_dir():
             config.setdefault("checkpoint_path", str(path))
             config.setdefault("model_name", path.name)
         else:
-            config.setdefault("model_name", _normalize_model_name(str(pretrained_model_name_or_path)))
+            config.setdefault(
+                "model_name", _normalize_model_name(str(pretrained_model_name_or_path))
+            )
         return config
 
     def save_pretrained(
@@ -236,10 +249,12 @@ class ARDYBundle(ModelBundle):
             "device": self.device_name,
             "checkpoint_path": self.checkpoint_path,
             "checkpoints_dir": self.checkpoints_dir,
+            "text_encoder": None if self.text_encoder_enabled else False,
             "text_encoder_mode": self.text_encoder_mode,
             "text_encoder_url": self.text_encoder_url,
             "text_encoder_fp32": self.text_encoder_fp32,
             "text_encoders_dir": self.text_encoders_dir,
+            "text_weights_path": None,
         }
         artifacts = {}
         if include_checkpoint:
@@ -250,9 +265,29 @@ class ARDYBundle(ModelBundle):
             else:
                 from huggingface_hub import snapshot_download
 
-                ckpt_src = Path(snapshot_download(repo_id=self.model_name, repo_type="model"))
+                ckpt_src = Path(
+                    snapshot_download(repo_id=self.model_name, repo_type="model")
+                )
             ckpt_dst = save_dir / checkpoint_subdir
             _copy_tree(ckpt_src, ckpt_dst, copy_mode=copy_mode)
+            if self._networks_loaded:
+                from safetensors.torch import save_file
+
+                # Always replace copied checkpoint files with current tensors.
+                # Cloning also breaks hardlinks before writing a new file.
+                for name, module, prefix in [
+                    ("denoiser", self.denoiser, "denoiser.backbone."),
+                    ("tokenizer", self.autoencoder, "pose_net."),
+                ]:
+                    target = ckpt_dst / (name + ".safetensors")
+                    target.unlink(missing_ok=True)
+                    save_file(
+                        {
+                            prefix + key: value.detach().cpu().contiguous()
+                            for key, value in module.state_dict().items()
+                        },
+                        str(target),
+                    )
             config["checkpoint_path"] = checkpoint_subdir
             config["checkpoints_dir"] = None
             artifacts["ardy_checkpoint"] = checkpoint_subdir
@@ -265,16 +300,53 @@ class ARDYBundle(ModelBundle):
             "requires_hf_auth": True,
         }
         if include_text_encoder:
-            text_src = Path(text_encoders_source or self.text_encoders_dir or "")
-            if not text_src.exists():
-                raise FileNotFoundError(
-                    "include_text_encoder=True requires a local text_encoders_source"
+            if not hasattr(self, "text_model"):
+                raise ValueError(
+                    "Load the actual text encoder through ARDYPipeline before exporting it"
                 )
-            text_dst = save_dir / text_encoder_subdir
-            _copy_tree(text_src, text_dst, copy_mode=copy_mode)
-            config["text_encoders_dir"] = text_encoder_subdir
-            text_encoder_components["stored_in_artifact"] = True
-            text_encoder_components["path"] = text_encoder_subdir
+            from motius.configuration.ardy.text import save_text_network
+
+            packed_source = (
+                Path(self.packed_text_path)
+                if self.packed_text_path and not text_encoders_source
+                else None
+            )
+            text_src = Path(text_encoders_source or self.text_encoders_dir or "")
+            tokenizer_source = (
+                packed_source / "tokenizer"
+                if packed_source is not None
+                else text_src / "McGill-NLP/LLM2Vec-Meta-Llama-3-8B-Instruct-mntp"
+            )
+            save_text_network(
+                self.text_model,
+                save_dir / text_encoder_subdir,
+                tokenizer_source=tokenizer_source,
+                frontend_options=kwargs.get("text_frontend_options"),
+            )
+            # Preserve licenses and model notices, without copying source code
+            # or duplicate base checkpoints into the inference artifact.
+            if packed_source is not None and (packed_source / "licenses").is_dir():
+                shutil.copytree(
+                    packed_source / "licenses",
+                    save_dir / text_encoder_subdir / "licenses",
+                    dirs_exist_ok=True,
+                )
+            for source in [] if packed_source is not None else text_src.glob("*/*"):
+                if not source.is_dir():
+                    continue
+                notices = save_dir / text_encoder_subdir / "licenses" / source.name
+                for name in ["LICENSE", "README.md", "USE_POLICY.md"]:
+                    if (source / name).is_file():
+                        notices.mkdir(parents=True, exist_ok=True)
+                        shutil.copy2(source / name, notices / name)
+            config["packed_text_path"] = text_encoder_subdir
+            config["text_encoder"] = None
+            config["text_encoders_dir"] = None
+            text_encoder_components.update(
+                stored_in_artifact=True,
+                path=text_encoder_subdir,
+                format="motius-ardy-text-neural-v1",
+            )
             artifacts["text_encoders"] = text_encoder_subdir
         else:
             text_encoder_components["stored_in_artifact"] = False
@@ -329,8 +401,8 @@ class ARDYBundle(ModelBundle):
                 "`meta-llama/Meta-Llama-3-8B-Instruct`.\n\n"
                 "```python\n"
                 "from motius.pipelines.ardy import ARDYPipeline\n\n"
-                "pipe = ARDYPipeline.from_pretrained(\"<artifact-path-or-repo>\", bundle_kwargs={\"device\": \"cuda\"})\n"
-                "out = pipe.text_to_motion(\"a person walks forward and waves.\", 120, num_denoising_steps=4)\n"
+                'pipe = ARDYPipeline.from_pretrained("<artifact-path-or-repo>", bundle_kwargs={"device": "cuda"})\n'
+                'out = pipe.text_to_motion("a person walks forward and waves.", 120, num_denoising_steps=4)\n'
                 "```\n"
             )
         return save_directory
@@ -362,6 +434,12 @@ class ARDYBundle(ModelBundle):
             cfg_dict["text_encoders_dir"] = _resolve_relative_path(
                 cfg_dict.get("text_encoders_dir"),
                 base_dir,
+            )
+            cfg_dict["text_weights_path"] = _resolve_relative_path(
+                cfg_dict.get("text_weights_path"), base_dir
+            )
+            cfg_dict["packed_text_path"] = _resolve_relative_path(
+                cfg_dict.get("packed_text_path"), base_dir
             )
         return super().from_config(cfg_dict, **kwargs)
 

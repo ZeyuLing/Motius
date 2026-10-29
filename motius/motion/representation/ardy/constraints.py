@@ -9,8 +9,8 @@ from typing import Optional, Union
 import torch
 from torch import Tensor
 
-from motius.models.ardy.network.motion_rep.tools import compute_heading_angle
-from motius.models.ardy.network.skeleton import SkeletonBase
+from motius.motion.representation.ardy.motion_rep.tools import compute_heading_angle
+from motius.motion.representation.ardy.skeleton import SkeletonBase
 
 from .geometry import axis_angle_to_matrix, matrix_to_axis_angle
 
@@ -441,7 +441,7 @@ def load_constraints_lst(
     dtype=None,
 ):
     """Load constraint objects and optionally place floating tensors."""
-    from motius.models.ardy.network.tools import load_json
+    from motius.utils.ardy import load_json
 
     if isinstance(path_or_data, (str, PathLike)):
         saved = load_json(str(path_or_data))
@@ -457,7 +457,7 @@ def load_constraints_lst(
 
 
 def save_constraints_lst(path: str, constraints_lst):
-    from motius.models.ardy.network.tools import save_json
+    from motius.utils.ardy import save_json
 
     if not constraints_lst:
         print("The constraints lst is empty. Skip saving")

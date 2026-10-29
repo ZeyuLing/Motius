@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from ..tools import ensure_batched
+from motius.utils.ardy import ensure_batched
 from .base import SkeletonBase
 
 

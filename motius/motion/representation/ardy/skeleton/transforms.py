@@ -7,7 +7,7 @@ from __future__ import annotations
 import einops
 import torch
 
-from ..tools import ensure_batched
+from motius.utils.ardy import ensure_batched
 from .kinematics import batch_rigid_transform
 
 

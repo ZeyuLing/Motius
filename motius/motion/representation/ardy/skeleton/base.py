@@ -9,7 +9,7 @@ from typing import Optional
 
 import torch
 
-from motius.models.ardy.network.assets import skeleton_asset_path
+from motius.motion.representation.ardy.assets import skeleton_asset_path
 
 from .kinematics import fk
 from .transforms import (

@@ -11,10 +11,10 @@ import numpy as np
 import torch
 from scipy.spatial.transform import Rotation
 
-from motius.models.ardy.network.assets import skeleton_asset_path
-from motius.models.ardy.network.geometry import matrix_to_quaternion
-from motius.models.ardy.network.skeleton import SkeletonBase
-from motius.models.ardy.network.tools import ensure_batched, to_numpy, to_torch
+from motius.motion.representation.ardy.assets import skeleton_asset_path
+from motius.motion.representation.ardy.geometry import matrix_to_quaternion
+from motius.motion.representation.ardy.skeleton import SkeletonBase
+from motius.utils.ardy import ensure_batched, to_numpy, to_torch
 
 # Default G1 mujoco XML ships in the ardy package skeleton assets.
 _DEFAULT_G1_XML = str(skeleton_asset_path("g1skel34", "xml", "g1.xml"))

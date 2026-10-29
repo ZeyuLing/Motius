@@ -55,8 +55,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from motius.models.ardy.network.skeleton import CoreSkeleton27  # noqa: E402
-from motius.models.ardy.network.skeleton.kinematics import fk  # noqa: E402
+from motius.motion.representation.ardy.skeleton import CoreSkeleton27  # noqa: E402
+from motius.motion.representation.ardy.skeleton.kinematics import fk  # noqa: E402
 from motius.motion import ardy_core27_to_smpl22_joints  # noqa: E402
 from motius.motion.retarget.hml263_smpl import retarget_hml263_clip  # noqa: E402
 from motius.pipelines.ardy import ARDYPipeline  # noqa: E402
