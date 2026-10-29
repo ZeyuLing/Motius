@@ -3,21 +3,6 @@ from torch import nn
 import numpy as np
 
 
-class CosineWarmupScheduler(torch.optim.lr_scheduler._LRScheduler):
-    def __init__(self, optimizer, warmup, max_iters, verbose=False):
-        self.warmup = warmup
-        self.max_num_iters = max_iters
-        super().__init__(optimizer, verbose=verbose)
-
-    def get_lr(self):
-        lr_factor = self.get_lr_factor(epoch=self.last_epoch)
-        return [base_lr * lr_factor for base_lr in self.base_lrs]
-
-    def get_lr_factor(self, epoch):
-        lr_factor = 0.5 * (1 + np.cos(np.pi * epoch / self.max_num_iters))
-        if epoch <= self.warmup:
-            lr_factor *= (epoch+1) * 1.0 / self.warmup
-        return lr_factor
 
 
 
@@ -58,21 +43,6 @@ class TimestepEmbedder(nn.Module):
         return self.time_embed(self.sequence_pos_encoder.pe[timesteps])
 
 
-class IdentityEmbedder(nn.Module):
-    def __init__(self, latent_dim, sequence_pos_encoder):
-        super().__init__()
-        self.latent_dim = latent_dim
-        self.sequence_pos_encoder = sequence_pos_encoder
-
-        time_embed_dim = self.latent_dim
-        self.time_embed = nn.Sequential(
-            nn.Linear(self.latent_dim, time_embed_dim),
-            nn.SiLU(),
-            nn.Linear(time_embed_dim, time_embed_dim),
-        )
-
-    def forward(self, timesteps):
-        return self.time_embed(self.sequence_pos_encoder.pe[timesteps]).unsqueeze(1)
 
 
 def set_requires_grad(nets, requires_grad=False):

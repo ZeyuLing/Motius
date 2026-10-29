@@ -1,7 +1,8 @@
 import torch
 import torch.nn as nn
 
-from ..utils.utils import *
+from motius.motion.representation.intergen import face_joint_indx
+from motius.motion.representation.intergen_quaternion import qbetween, qrot
 
 kinematic_chain = [[0, 2, 5, 8, 11],
                  [0, 1, 4, 7, 10],
@@ -10,7 +11,7 @@ kinematic_chain = [[0, 2, 5, 8, 11],
                  [9, 13, 16, 18, 20]]
 
 class InterLoss(nn.Module):
-    def __init__(self, recons_loss, nb_joints):
+    def __init__(self, recons_loss, nb_joints, normalizer):
         super(InterLoss, self).__init__()
         self.nb_joints = nb_joints
         if recons_loss == 'l1':
@@ -20,7 +21,7 @@ class InterLoss(nn.Module):
         elif recons_loss == 'l1_smooth':
             self.Loss = torch.nn.SmoothL1Loss(reduction='none')
 
-        self.normalizer = MotionNormalizerTorch()
+        self.normalizer = normalizer
 
         self.weights = {}
         self.weights["RO"] = 0.01
@@ -137,7 +138,7 @@ class InterLoss(nn.Module):
 
 
 class GeometricLoss(nn.Module):
-    def __init__(self, recons_loss, nb_joints, name):
+    def __init__(self, recons_loss, nb_joints, name, normalizer):
         super(GeometricLoss, self).__init__()
         self.name = name
         self.nb_joints = nb_joints
@@ -148,7 +149,7 @@ class GeometricLoss(nn.Module):
         elif recons_loss == 'l1_smooth':
             self.Loss = torch.nn.SmoothL1Loss(reduction='none')
 
-        self.normalizer = MotionNormalizerTorch()
+        self.normalizer = normalizer
         self.fids = [7, 10, 8, 11]
 
         self.weights = {}

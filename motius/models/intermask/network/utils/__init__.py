@@ -1,1 +1,0 @@
-"""Vendored InterMask utilities."""

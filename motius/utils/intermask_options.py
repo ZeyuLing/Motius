@@ -2,7 +2,7 @@ import os
 from argparse import Namespace
 import re
 from os.path import join as pjoin
-from .word_vectorizer import POS_enumerator
+from motius.datasets.motion.intermask_word_vectorizer import POS_enumerator
 
 
 def is_float(numStr):

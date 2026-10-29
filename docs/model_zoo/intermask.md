@@ -143,7 +143,7 @@ loads with zero missing or unexpected keys. A deterministic 60-frame sample is
 exactly equal before and after conversion (`max_abs=0`, `mean_abs=0`).
 
 The vendored method runtime retains the upstream MIT license in
-`motius/models/intermask/LICENSE`.
+`motius/licenses/intermask/LICENSE`.
 
 ## Motion Representation
 
@@ -165,7 +165,7 @@ joints = convert_motion(motion[0], "interhuman262", "joints")
 - Original source:
   [gohar-malik/InterMask](https://github.com/gohar-malik/InterMask)
 - License: MIT, preserved in
-  [`motius/models/intermask/LICENSE`](../../motius/models/intermask/LICENSE).
+  [`motius/licenses/intermask/LICENSE`](../../motius/licenses/intermask/LICENSE).
 
 <!-- MOTIUS_MODEL_CARD_FOOTER:START -->
 ---

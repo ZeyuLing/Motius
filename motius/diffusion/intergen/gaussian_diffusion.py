@@ -15,9 +15,9 @@ import torch.distributed as dist
 import numpy as np
 import torch as th
 
-from ..utils.utils import *
 
-from .losses import InterLoss, GeometricLoss
+
+
 
 
 def create_named_schedule_sampler(name, diffusion):
@@ -1118,88 +1118,6 @@ class GaussianDiffusion:
         output = th.where((t == 0), decoder_nll, kl)
         return {"output": output, "pred_xstart": out["pred_xstart"]}
 
-    def training_losses(self, model, x_start, t, model_kwargs=None, noise=None, control=False):
-        """
-        Compute training losses for a single timestep.
-
-        :param model: the model to evaluate loss on.
-        :param x_start: the [N x C x ...] tensor of inputs.
-        :param t: a batch of timestep indices.
-        :param model_kwargs: if not None, a dict of extra keyword arguments to
-            pass to the model. This can be used for conditioning.
-        :param noise: if specified, the specific Gaussian noise to try to remove.
-        :return: a dict with the key "loss" containing a tensor of shape [N].
-                 Some mean or variance settings may also have other keys.
-        """
-        if model_kwargs is None:
-            model_kwargs = {}
-        if noise is None:
-            noise = th.randn_like(x_start)
-        x_t = self.q_sample(x_start, t, noise=noise)
-
-        ######################### fine-tuning for control #################################
-        if control:
-            B, T, D = x_t.shape
-            x_t[:, :, [0, 2]] = x_start[:, :T, [0, 2]]
-            x_t[:, :, [262, 264]] = x_start[:, :T, [262, 264]]
-        ###################################################################################
-
-        terms = {}
-
-        if self.loss_type == LossType.KL or self.loss_type == LossType.RESCALED_KL:
-            terms["loss"] = self._vb_terms_bpd(
-                model=model,
-                x_start=x_start,
-                x_t=x_t,
-                t=t,
-                clip_denoised=False,
-                model_kwargs=model_kwargs,
-            )["output"]
-            if self.loss_type == LossType.RESCALED_KL:
-                terms["loss"] *= self.num_timesteps
-        elif self.loss_type == LossType.MSE or self.loss_type == LossType.RESCALED_MSE:
-            model_output = model(x_t, self._scale_timesteps(t), **model_kwargs)
-            if self.model_var_type in [
-                ModelVarType.LEARNED,
-                ModelVarType.LEARNED_RANGE,
-            ]:
-                B, C = x_t.shape[:2]
-                assert model_output.shape == (B, C * 2, *x_t.shape[2:])
-                model_output, model_var_values = th.split(model_output, C, dim=1)
-                # Learn the variance using the variational bound, but don't let
-                # it affect our mean prediction.
-                frozen_out = th.cat([model_output.detach(), model_var_values], dim=1)
-                terms["vb"] = self._vb_terms_bpd(
-                    model=lambda *args, r=frozen_out: r,
-                    x_start=x_start,
-                    x_t=x_t,
-                    t=t,
-                    clip_denoised=False,
-                )["output"]
-                if self.loss_type == LossType.RESCALED_MSE:
-                    # Divide by 1000 for equivalence with initial implementation.
-                    # Without a factor of 1/1000, the VB term hurts the MSE term.
-                    terms["vb"] *= self.num_timesteps / 1000.0
-
-            target = {
-                ModelMeanType.PREVIOUS_X: self.q_posterior_mean_variance(
-                    x_start=x_start, x_t=x_t, t=t
-                )[0],
-                ModelMeanType.START_X: x_start,
-                ModelMeanType.EPSILON: noise,
-            }[self.model_mean_type]
-            assert model_output.shape == target.shape == x_start.shape
-            terms["mse"] = mean_flat((target - model_output) ** 2).view(-1, 1).mean(-1)
-            # if "vb" in terms:
-            #     terms["loss"] = terms["mse"] + terms["vb"]
-            # else:
-            #     terms["loss"] = terms["mse"]
-            terms["target"] = target
-            terms["pred"] = model_output
-        else:
-            raise NotImplementedError(self.loss_type)
-
-        return terms
 
     def _prior_bpd(self, x_start):
         """
@@ -1370,7 +1288,6 @@ class MotionDiffusion(GaussianDiffusion):
         # print(self.timestep_map)
         kwargs["betas"] = np.array(new_betas)
 
-        self.normalizer = MotionNormalizerTorch(mean_path=mean_path, std_path=std_path)
 
         super().__init__(**kwargs)
 
@@ -1379,38 +1296,6 @@ class MotionDiffusion(GaussianDiffusion):
     ):  # pylint: disable=signature-differs
         return super().p_mean_variance(self._wrap_model(model), *args, **kwargs)
 
-    def training_losses(self, model, mask, t_bar, cond_mask, *args, **kwargs):
-        target = kwargs["x_start"]
-        B, T = target.shape[:-1]
-
-        target = target.reshape(B, T, 2, -1)
-        mask = mask.reshape(B, T, -1, 1)
-
-        target = self.normalizer.forward(target)
-
-        kwargs["x_start"] = target.reshape(B, T, -1)
-        items = super().training_losses(self._wrap_model(model), *args, **kwargs)
-        prediction = items["pred"].reshape(B, T, 2, -1)
-        target = items["target"].reshape(B, T, 2, -1)
-
-        timestep_mask = (kwargs["t"] <= t_bar).float()  # * cond_mask[0, 0]
-
-        interloss_manager = InterLoss("l2", 22)
-        interloss_manager.forward(prediction, target, mask, timestep_mask)
-
-        loss_a_manager = GeometricLoss("l2", 22, "A")
-        loss_a_manager.forward(prediction[...,0,:], target[...,0,:], mask[...,0,:], timestep_mask)
-
-        loss_b_manager = GeometricLoss("l2", 22, "B")
-        loss_b_manager.forward(prediction[...,1,:], target[...,1,:], mask[...,0,:], timestep_mask)
-
-        losses = {}
-        losses.update(loss_a_manager.losses)
-        losses.update(loss_b_manager.losses)
-        losses.update(interloss_manager.losses)
-        losses["total"] = loss_a_manager.losses["A"] + loss_b_manager.losses["B"] + interloss_manager.losses["total"]
-
-        return losses
 
     def condition_mean(self, cond_fn, *args, **kwargs):
         return super().condition_mean(self._wrap_model(cond_fn), *args, **kwargs)
@@ -1430,59 +1315,6 @@ class MotionDiffusion(GaussianDiffusion):
         return t
 
 
-class SpacedDiffusion(GaussianDiffusion):
-    """
-    A diffusion process which can skip steps in a base diffusion process.
-
-    :param use_timesteps: a collection (sequence or set) of timesteps from the
-                          original diffusion process to retain.
-    :param kwargs: the kwargs to create the base diffusion process.
-    """
-
-    def __init__(self, use_timesteps, **kwargs):
-        self.use_timesteps = set(use_timesteps)
-        self.timestep_map = []
-        self.original_num_steps = len(kwargs["betas"])
-
-        base_diffusion = GaussianDiffusion(**kwargs)  # pylint: disable=missing-kwoa
-        last_alpha_cumprod = 1.0
-        new_betas = []
-        for i, alpha_cumprod in enumerate(base_diffusion.alphas_cumprod):
-            if i in self.use_timesteps:
-                new_betas.append(1 - alpha_cumprod / last_alpha_cumprod)
-                last_alpha_cumprod = alpha_cumprod
-                self.timestep_map.append(i)
-        kwargs["betas"] = np.array(new_betas)
-        self.mse_criterion = th.nn.MSELoss(reduction='none')
-        super().__init__(**kwargs)
-
-    def p_mean_variance(
-            self, model, *args, **kwargs
-    ):  # pylint: disable=signature-differs
-        return super().p_mean_variance(self._wrap_model(model), *args, **kwargs)
-
-    def training_losses(
-            self, model, *args, **kwargs
-    ):  # pylint: disable=signature-differs
-        items = super().training_losses(self._wrap_model(model), *args, **kwargs)
-        return items
-
-    def condition_mean(self, cond_fn, *args, **kwargs):
-        return super().condition_mean(self._wrap_model(cond_fn), *args, **kwargs)
-
-    def condition_score(self, cond_fn, *args, **kwargs):
-        return super().condition_score(self._wrap_model(cond_fn), *args, **kwargs)
-
-    def _wrap_model(self, model):
-        if isinstance(model, _WrappedModel):
-            return model
-        return _WrappedModel(
-            model, self.timestep_map, self.rescale_timesteps, self.original_num_steps
-        )
-
-    def _scale_timesteps(self, t):
-        # Scaling is done by the wrapped model.
-        return t
 
 
 class _WrappedModel:

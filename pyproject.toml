@@ -353,6 +353,9 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.configuration.intergen" = ["*.yaml"]
+"motius.licenses.intergen" = ["NOTICE"]
+"motius.licenses.intermask" = ["LICENSE"]
 "motius.licenses.edge" = ["*"]
 "motius.licenses.mld" = ["*"]
 "motius.licenses.motionlcm" = ["*"]
@@ -415,8 +418,6 @@ namespaces = false
     "scripts/**/*.py",
 ]
 "motius.models.projflow" = ["ATTRIBUTIONS.md"]
-"motius.models.intergen" = ["NOTICE", "network/configs/*.yaml"]
-"motius.models.intermask" = ["LICENSE"]
 "motius.models.humanoid_gpt" = ["ATTRIBUTIONS.md"]
 "motius.models.beyondmimic" = ["ATTRIBUTIONS.md"]
 "motius.models.sonic" = ["ATTRIBUTIONS.md"]

@@ -3,7 +3,8 @@ import clip
 
 from torch import nn
 from clip.model import LayerNorm, Transformer
-from . import *
+from .nets import InterDiffusion
+from .utils import set_requires_grad
 
 
 class InterGen(nn.Module):
@@ -11,7 +12,7 @@ class InterGen(nn.Module):
         super().__init__()
         self.cfg = cfg
         self.latent_dim = cfg.LATENT_DIM
-        self.decoder = InterDiffusion(cfg, sampling_strategy=cfg.STRATEGY)
+        self.decoder = InterDiffusion(cfg)
 
         # The released InterGen checkpoint includes the complete frozen CLIP
         # text tower. Construct its architecture locally so loading InterGen
@@ -24,7 +25,7 @@ class InterGen(nn.Module):
             heads=12,
             attn_mask=attention_mask,
         )
-        self.positional_embedding = nn.Parameter(torch.empty(77, 768))
+        self.positional_embedding = nn.Parameter(torch.empty(77, 768), requires_grad=False)
         self.ln_final = LayerNorm(768)
         self.dtype = torch.float32
 
@@ -44,30 +45,16 @@ class InterGen(nn.Module):
             num_layers=2)
         self.clip_ln = nn.LayerNorm(768)
 
-    def compute_loss(self, batch):
-        batch = self.text_process(batch)
-        losses = self.decoder.compute_loss(batch)
-        return losses["total"], losses
 
-    def decode_motion(self, batch):
-        batch.update(self.decoder(batch))
-        return batch
 
-    def forward(self, batch):
-        return self.compute_loss(batch)
 
-    def forward_test(self, batch):
-        batch = self.text_process(batch)
-        batch.update(self.decode_motion(batch))
-        return batch
 
-    def text_process(self, batch):
+    def encode_text(self, tokens):
         device = next(self.clip_transformer.parameters()).device
-        raw_text = batch["text"]
 
         with torch.no_grad():
 
-            text = clip.tokenize(raw_text, truncate=True).to(device)
+            text = tokens.to(device)
             x = self.token_embedding(text).type(self.dtype)  # [batch_size, n_ctx, d_model]
             pe_tokens = x + self.positional_embedding.type(self.dtype)
             x = pe_tokens.permute(1, 0, 2)  # NLD -> LND
@@ -79,6 +66,7 @@ class InterGen(nn.Module):
         out = self.clip_ln(out)
 
         cond = out[torch.arange(x.shape[0]), text.argmax(dim=-1)]
-        batch["cond"] = cond
+        return cond
 
-        return batch
+    def forward(self, x, timesteps, mask=None, cond=None):
+        return self.decoder(x, timesteps, mask=mask, cond=cond)
