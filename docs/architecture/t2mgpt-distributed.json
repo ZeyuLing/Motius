@@ -1,0 +1,12 @@
+{
+  "complete": true,
+  "scope": "t2mgpt released neural networks, native Trainer and actual shared AccelerateRunner, three two-GPU updates with distinct rank-local prepared data. All trained neural hashes synchronized, frozen networks unchanged, complete trainable/frozen checkpoint roots present. Synthetic prepared-token fixture; not independent original distributed training or full dataset protocol.",
+  "world_size": 2,
+  "updates": 3,
+  "neural_tensors": 314,
+  "frozen_roots": [
+    "vqvae",
+    "clip_model"
+  ],
+  "all_replica_neural_hashes_equal": true
+}

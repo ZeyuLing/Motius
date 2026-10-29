@@ -187,6 +187,9 @@ class T2MGPTBundle(ModelBundle):
         self.vqvae = vqvae
         self.gpt = gpt
         self.nfeats = 263
+        self._save_ckpt_modules = ["vqvae", "gpt", "clip_model"]
+        self._trainable_modules = ["gpt"]
+        self._frozen_modules = ["vqvae", "clip_model"]
 
         # --- CLIP text encoder (frozen, stored in new artifacts) ---------- #
         self.clip_model = None
@@ -356,6 +359,8 @@ class T2MGPTBundle(ModelBundle):
         )
 
         def _cpu_state(m):
+            while hasattr(m, "module") or hasattr(m, "_orig_mod"):
+                m = m.module if hasattr(m, "module") else m._orig_mod
             return {k: v.detach().cpu().contiguous() for k, v in m.state_dict().items()}
 
         if safe_serialization:
@@ -426,23 +431,14 @@ class T2MGPTBundle(ModelBundle):
         return self.mean.device
 
     @torch.no_grad()
-    def encode_text(self, captions: List[str]) -> torch.Tensor:
-        """CLIP ViT-B/32 sentence features ``(B, 512)`` (float32).
-
-        Mirrors the parity script: ``clip.tokenize(..., truncate=True)`` ->
-        ``clip_model.encode_text`` -> ``.float()``.
-        """
-        import clip
-
+    def encode_text(self, tokens: torch.Tensor) -> torch.Tensor:
+        """Neural CLIP sentence projection from prepared token IDs."""
         if self.clip_model is None:
             raise RuntimeError("CLIP text encoder not loaded (load_clip=False).")
         device = next(self.clip_model.parameters()).device
-        text = clip.tokenize(list(captions), truncate=True).to(device)
+        text = tokens.to(device)
         return self.clip_model.encode_text(text).float()
 
-    def denormalize(self, motion_263: torch.Tensor) -> torch.Tensor:
-        """Un-standardize HumanML3D-263 features back to physical scale."""
-        return motion_263 * self.std + self.mean
 
     def forward(self, *args, **kwargs):  # pragma: no cover - use pipeline
         raise NotImplementedError("Use T2MGPTPipeline.infer_t2m for inference.")
