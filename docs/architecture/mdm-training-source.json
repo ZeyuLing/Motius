@@ -1,0 +1,93 @@
+{
+  "complete": true,
+  "tests": [
+    {
+      "tensor": "/training/0/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/0/terms/rot_mse",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/0/terms/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/0/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/0/numpy_rng/0",
+      "shape": [
+        624
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/0/numpy_rng/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/terms/rot_mse",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/terms/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/numpy_rng/0",
+      "shape": [
+        624
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/numpy_rng/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "method": "mdm",
+  "upstream_commit": "ef8edce6a53c6ab19e53b4d4dcf15bc0bc60a778",
+  "scope": "Published HumanML3D neural weights and original repository network, diffusion factories, uniform NumPy timestep sampling, denoising objectives, all gradient hashes and RNG versus native prepared-motion Trainer. Two ragged-length minibatches, raw short/long/empty captions, actual keyframe observations or spatial guidance where applicable. Controlled FP32/math-attention/deterministic-convolution runtime. Unused SMPL visualizer constructor excluded and guarded against entry. Geometry losses, raw dataset/mask-selection, optimizer/AMP/distributed/full inference protocols excluded.",
+  "neural_state_hashes_compared": 410,
+  "gradient_hashes_compared": [
+    106,
+    106
+  ]
+}

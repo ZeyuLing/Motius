@@ -18,6 +18,7 @@ import torch
 
 from motius.models.base_model_bundle import ModelBundle
 from motius.registry import MODEL_BUNDLES
+from .network import MDM
 
 # Repo root: motius/models/mdm/bundle.py -> parents[3]
 _REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -37,6 +38,7 @@ def _maybe_download_hub(name_or_path: str, local: Path) -> Path:
         return Path(snapshot_download(repo_id=name_or_path))
     except Exception:
         return local
+
 
 # HumanML3D-263 normalization stats used to denormalize the MDM diffusion output.
 #
@@ -76,8 +78,12 @@ def _resolve_stats(model_path: Path, mean_path, std_path):
         return Path(mean_path), Path(std_path), "explicit"
 
     ckpt_dir = Path(model_path).resolve().parent
-    side_mean = next((ckpt_dir / n for n in _SIDECAR_MEAN_NAMES if (ckpt_dir / n).exists()), None)
-    side_std = next((ckpt_dir / n for n in _SIDECAR_STD_NAMES if (ckpt_dir / n).exists()), None)
+    side_mean = next(
+        (ckpt_dir / n for n in _SIDECAR_MEAN_NAMES if (ckpt_dir / n).exists()), None
+    )
+    side_std = next(
+        (ckpt_dir / n for n in _SIDECAR_STD_NAMES if (ckpt_dir / n).exists()), None
+    )
     if side_mean is not None and side_std is not None:
         return side_mean, side_std, f"sidecar:{ckpt_dir}"
 
@@ -103,13 +109,31 @@ _MDM_ARG_DEFAULTS = {
 }
 
 # The MDM config fields we persist into the self-contained Motius artifact.
-# (Everything ``create_model_and_diffusion`` / the network reads.)
+# (Everything ``create_model`` / the network reads.)
 _MDM_CONFIG_KEYS = (
-    "dataset", "arch", "latent_dim", "layers", "cond_mode", "cond_mask_prob",
-    "emb_trans_dec", "noise_schedule", "diffusion_steps", "sigma_small",
-    "text_encoder_type", "pos_embed_max_len", "mask_frames", "emb_policy",
-    "pred_len", "context_len", "multi_target_cond", "multi_encoder_type",
-    "target_enc_layers", "lambda_vel", "lambda_rcxyz", "lambda_fc", "unconstrained",
+    "dataset",
+    "arch",
+    "latent_dim",
+    "layers",
+    "cond_mode",
+    "cond_mask_prob",
+    "emb_trans_dec",
+    "noise_schedule",
+    "diffusion_steps",
+    "sigma_small",
+    "text_encoder_type",
+    "pos_embed_max_len",
+    "mask_frames",
+    "emb_policy",
+    "pred_len",
+    "context_len",
+    "multi_target_cond",
+    "multi_encoder_type",
+    "target_enc_layers",
+    "lambda_vel",
+    "lambda_rcxyz",
+    "lambda_fc",
+    "unconstrained",
 )
 
 
@@ -132,12 +156,112 @@ def _load_mdm_args(model_path: Path) -> Namespace:
     return _args_from_dict(json.loads(args_file.read_text()))
 
 
-class _DummyDataset:
-    num_actions = 1
+HML_EE_JOINT_NAMES = ["left_foot", "right_foot", "left_wrist", "right_wrist", "head"]
 
 
-class _DummyData:
-    dataset = _DummyDataset()
+def get_cond_mode(args):
+    """Inlined from MDM ``utils/parser_util.get_cond_mode``."""
+    if getattr(args, "unconstrained", False):
+        return "no_cond"
+    if args.dataset in ["kit", "humanml"]:
+        return "text"
+    return "action"
+
+
+def load_model_wo_clip(model, state_dict):
+    # The positional-encoding buffers are fixed (not learned) and may differ in
+    # length across checkpoints, so drop them before loading.
+    state_dict.pop("sequence_pos_encoder.pe", None)
+    state_dict.pop("embed_timestep.sequence_pos_encoder.pe", None)
+    missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
+    assert len(unexpected_keys) == 0, f"unexpected keys: {unexpected_keys}"
+    assert all(
+        k.startswith("clip_model.") or "sequence_pos_encoder" in k for k in missing_keys
+    ), f"unexpected missing keys: {missing_keys}"
+
+
+def create_model(args, data, **model_overrides):
+    model_args = get_model_args(args, data)
+    model_args.update(model_overrides)
+    model = MDM(**model_args)
+    return model
+
+
+def get_model_args(args, data):
+    clip_version = "ViT-B/32"
+    action_emb = "tensor"
+    cond_mode = get_cond_mode(args)
+    num_actions = getattr(getattr(data, "dataset", None), "num_actions", 1)
+
+    data_rep = "rot6d"
+    njoints = 25
+    nfeats = 6
+    all_goal_joint_names = []
+
+    if args.dataset == "humanml":
+        data_rep = "hml_vec"
+        njoints = 263
+        nfeats = 1
+        all_goal_joint_names = ["pelvis"] + HML_EE_JOINT_NAMES
+    elif args.dataset == "kit":
+        data_rep = "hml_vec"
+        njoints = 251
+        nfeats = 1
+
+    if not hasattr(args, "pred_len"):
+        args.pred_len = 0
+        args.context_len = 0
+
+    emb_policy = args.__dict__.get("emb_policy", "add")
+    multi_target_cond = args.__dict__.get("multi_target_cond", False)
+    multi_encoder_type = args.__dict__.get("multi_encoder_type", "multi")
+    target_enc_layers = args.__dict__.get("target_enc_layers", 1)
+
+    return {
+        "modeltype": "",
+        "njoints": njoints,
+        "nfeats": nfeats,
+        "num_actions": num_actions,
+        "translation": True,
+        "pose_rep": "rot6d",
+        "glob": True,
+        "glob_rot": True,
+        "latent_dim": args.latent_dim,
+        "ff_size": 1024,
+        "num_layers": args.layers,
+        "num_heads": 4,
+        "dropout": 0.1,
+        "activation": "gelu",
+        "data_rep": data_rep,
+        "cond_mode": cond_mode,
+        "cond_mask_prob": args.cond_mask_prob,
+        "action_emb": action_emb,
+        "arch": args.arch,
+        "emb_trans_dec": args.emb_trans_dec,
+        "clip_version": clip_version,
+        "dataset": args.dataset,
+        "text_encoder_type": args.text_encoder_type,
+        "pos_embed_max_len": args.pos_embed_max_len,
+        "mask_frames": args.mask_frames,
+        "pred_len": args.pred_len,
+        "context_len": args.context_len,
+        "emb_policy": emb_policy,
+        "all_goal_joint_names": all_goal_joint_names,
+        "multi_target_cond": multi_target_cond,
+        "multi_encoder_type": multi_encoder_type,
+        "target_enc_layers": target_enc_layers,
+    }
+
+
+def _load_saved_model(model, model_path, use_avg: bool = False):
+    state_dict = torch.load(model_path, map_location="cpu")
+    if use_avg and "model_avg" in state_dict:
+        state_dict = state_dict["model_avg"]
+    elif "model" in state_dict:
+        state_dict = state_dict["model"]
+
+    load_model_wo_clip(model, state_dict)
+    return model
 
 
 @MODEL_BUNDLES.register_module()
@@ -154,6 +278,7 @@ class MDMBundle(ModelBundle):
         mean_path: Optional[str] = None,
         std_path: Optional[str] = None,
         use_ema: bool = False,
+        device: Optional[str | torch.device] = None,
         **kwargs,
     ):
         """Construct the MDM bundle.
@@ -168,11 +293,6 @@ class MDMBundle(ModelBundle):
           :meth:`from_pretrained` / :meth:`save_pretrained` use.
         """
         super().__init__()
-        from .network import (
-            ClassifierFreeSampleModel,
-            create_model_and_diffusion,
-            load_saved_model,
-        )
 
         self.model_path = str(model_path) if model_path else None
         self.guidance_param = float(guidance_param)
@@ -190,24 +310,21 @@ class MDMBundle(ModelBundle):
             )
         self._args = args
 
-        net, diffusion = create_model_and_diffusion(
+        net = create_model(
             args,
-            _DummyData(),
+            None,
             clip_weights_path=clip_weights_path,
         )
         if weights_path is not None:
             self._load_net_weights(net, weights_path)
         elif model_path is not None:
-            load_saved_model(net, self.model_path, use_avg=use_ema)
+            _load_saved_model(net, self.model_path, use_avg=use_ema)
         else:
             raise ValueError("MDMBundle needs either `weights_path` or `model_path`.")
-        if self.guidance_param != 1.0:
-            net = ClassifierFreeSampleModel(net)
         net.eval()
 
         # Register the network as a child module; diffusion is a plain helper.
         self.net = net
-        self.diffusion = diffusion
 
         self.njoints = 263
         self.nfeats = 1
@@ -228,6 +345,8 @@ class MDMBundle(ModelBundle):
         # have repeatedly caused root-velocity collapse + forward drift.)
         self.register_buffer("mean", torch.from_numpy(mean), persistent=True)
         self.register_buffer("std", torch.from_numpy(std), persistent=True)
+        if device is not None:
+            self.to(device)
 
     # ------------------------------------------------------------------
     # diffusers-style artifact I/O (self-contained, raw-checkout-independent)
@@ -267,9 +386,15 @@ class MDMBundle(ModelBundle):
 
     def config_dict(self) -> dict:
         """The MDM arch/diffusion config persisted into the artifact."""
-        return {k: getattr(self._args, k) for k in _MDM_CONFIG_KEYS if hasattr(self._args, k)}
+        return {
+            k: getattr(self._args, k)
+            for k in _MDM_CONFIG_KEYS
+            if hasattr(self._args, k)
+        }
 
-    def save_pretrained(self, save_directory: str, safe_serialization: bool = True, **kwargs):
+    def save_pretrained(
+        self, save_directory: str, safe_serialization: bool = True, **kwargs
+    ):
         """Export a self-contained Motius MDM artifact.
 
         Layout::
@@ -295,7 +420,9 @@ class MDMBundle(ModelBundle):
             "guidance_param": self.guidance_param,
             "components": {
                 "clip": {
-                    "name": getattr(mdm := self._inner_mdm(self.net), "clip_version", "ViT-B/32"),
+                    "name": getattr(
+                        mdm := self._inner_mdm(self.net), "clip_version", "ViT-B/32"
+                    ),
                     "stored_in_artifact": True,
                     "path": clip_artifact,
                 }
@@ -340,7 +467,10 @@ class MDMBundle(ModelBundle):
         if safe_serialization:
             from safetensors.torch import save_file
 
-            save_file({k: v.contiguous() for k, v in state.items()}, str(save_dir / "model.safetensors"))
+            save_file(
+                {k: v.contiguous() for k, v in state.items()},
+                str(save_dir / "model.safetensors"),
+            )
             save_file(
                 {
                     k: v.detach().cpu().contiguous()
@@ -358,8 +488,21 @@ class MDMBundle(ModelBundle):
                 str(save_dir / "clip.pt"),
             )
 
-        np.save(str(save_dir / "Mean.npy"), self.mean.detach().cpu().numpy().astype(np.float32))
-        np.save(str(save_dir / "Std.npy"), self.std.detach().cpu().numpy().astype(np.float32))
+        np.save(
+            str(save_dir / "Mean.npy"),
+            self.mean.detach().cpu().numpy().astype(np.float32),
+        )
+        np.save(
+            str(save_dir / "Std.npy"),
+            self.std.detach().cpu().numpy().astype(np.float32),
+        )
+        import shutil
+
+        for origin in (
+            Path(__file__).resolve().parents[2] / "licenses" / "mdm"
+        ).iterdir():
+            if origin.is_file() and origin.suffix != ".py":
+                shutil.copy2(origin, save_dir / origin.name)
         return save_directory
 
     @classmethod
@@ -407,18 +550,15 @@ class MDMBundle(ModelBundle):
     # Atomic forward helpers (shared between pipeline and any future trainer)
     # ------------------------------------------------------------------
     @torch.no_grad()
-    def encode_text(self, texts: List[str]):
-        return self.net.encode_text(texts)
-
-    def denormalize(self, motion_263: torch.Tensor) -> torch.Tensor:
-        """Un-standardize HumanML3D-263 features back to physical scale."""
-        return motion_263 * self.std + self.mean
+    def encode_text(self, tokens: torch.Tensor):
+        """Evaluate the frozen CLIP tower on externally prepared token IDs."""
+        return self.net.encode_text(tokens)
 
     @property
     def device(self) -> torch.device:
         return self.mean.device
 
-    def forward(self, *args, **kwargs):  # pragma: no cover - use pipeline
-        raise NotImplementedError(
-            "Use MDMPipeline.infer_t2m for inference."
-        )
+    def denoise(self, motion, timesteps, **model_kwargs):
+        return self.net(motion, timesteps, **model_kwargs)
+
+    forward = denoise

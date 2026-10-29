@@ -5,6 +5,7 @@ from motius.trainers.base_trainer import BaseTrainer
 _EXPORTS = {
     "FlowHMRTrainer": "flowhmr",
     "MotionCLRTrainer": "motionclr",
+    "MDMTrainer": "mdm",
     "GenTrackFlowGRPOTrainer": "gentrack",
     "HyMotionT2MTrainer": "hymotion_t2m",
     "PrismTrainer": "prism",

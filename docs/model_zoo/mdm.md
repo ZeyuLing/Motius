@@ -100,12 +100,13 @@ contract.
 | Pipeline | `motius.pipelines.mdm.MDMPipeline` |
 | Bundle | `motius.models.mdm.MDMBundle` |
 | Network | `motius.models.mdm.network.MDM` |
-| Diffusion sampler | `motius.models.mdm.network.diffusion` |
-| Collation helper | `motius.models.mdm.network.collate` |
+| Diffusion sampler | `motius.diffusion.mdm` |
+| Collation helper | `motius.datasets.motion.mdm_collate` |
 
-The network and Gaussian diffusion sampler are vendored for inference parity
-with the released MDM checkpoint. Training-only geometry losses are represented
-by explicit stubs, so unsupported training paths fail clearly.
+The network, Gaussian diffusion sampler, collation and training objective live
+in separate framework modules. Source comparisons for the tested training and
+inference paths are recorded in [training](../architecture/mdm-training-source.json)
+and [inference](../architecture/mdm-inference-source.json) validation records.
 
 ## Quick Start
 

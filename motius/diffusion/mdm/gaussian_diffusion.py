@@ -13,37 +13,14 @@ import numpy as np
 import torch
 import torch as th
 from copy import deepcopy
-from .nn import mean_flat, sum_flat
-from .losses import normal_kl, discretized_gaussian_log_likelihood
+from motius.diffusion.mdm.nn import mean_flat
+from motius.diffusion.mdm.nn import sum_flat
+from motius.diffusion.mdm.losses import normal_kl
+from motius.diffusion.mdm.losses import discretized_gaussian_log_likelihood
 
-# --- Training-only dependencies -------------------------------------------- #
-# The motius diffusion runtime is used for *inference* (p_sample_loop). The geometric
-# reconstruction / foot-contact / target-location losses below are only reached
-# from ``training_losses`` and depend on MDM's HumanML3D motion-process code,
-# which we deliberately do not include in motius. They are replaced with
-# clear stubs so importing this module never touches the raw checkout; calling the
-# training path raises an explicit error.
-class _TrainingOnlyStub:
-    def __init__(self, name):
-        self._name = name
-
-    def __call__(self, *_a, **_k):
-        raise RuntimeError(
-            f"'{self._name}' is a training-only dependency not included in "
-            f"motius; MDMBundle/MDMPipeline only support inference."
-        )
-
-    def __getattr__(self, item):
-        raise RuntimeError(
-            f"'motion_process.{item}' is a training-only dependency not included "
-            f"in motius; MDMBundle/MDMPipeline only support inference."
-        )
-
-
-motion_process = _TrainingOnlyStub("motion_process")
-masked_l2 = _TrainingOnlyStub("masked_l2")
-masked_goal_l2 = _TrainingOnlyStub("masked_goal_l2")
-get_target_location = _TrainingOnlyStub("get_target_location")
+from motius.motion.representation import mdm as motion_process
+from motius.motion.representation.mdm import get_target_location
+from motius.diffusion.mdm.masked_losses import masked_l2, masked_goal_l2
 
 def get_named_beta_schedule(schedule_name, num_diffusion_timesteps, scale_betas=1.):
     """
@@ -656,10 +633,8 @@ class GaussianDiffusion:
         if dump_steps is not None:
             dump = []
 
-        if 'text' in model_kwargs['y'].keys():
-            # encoding once instead of each iteration saves lots of time
-            model_kwargs['y']['text_embed'] = model.encode_text(model_kwargs['y']['text'])
-        
+        # Text features are prepared once by MDMPipeline before sampling.
+
         for i, sample in enumerate(self.p_sample_loop_progressive(
             model,
             shape,

@@ -350,6 +350,7 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.licenses.mdm" = ["*"]
 "motius.configuration.flowhmr" = ["*.json", "*.yml"]
 "motius.licenses.flowhmr" = ["ATTRIBUTIONS.md", "UPSTREAM_LICENSE", "UPSTREAM_COMMIT", "VGGT_OMEGA_LICENSE", "SAM3D_LICENSE", "DINOV3_LICENSE.md", "YOLOX_LICENSE", "HY_MOTION_LICENSE", "HY_MOTION_NOTICE", "MHR_LICENSE", "FAST_SAM_LICENSE"]
 "motius.motion" = [

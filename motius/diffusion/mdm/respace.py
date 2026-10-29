@@ -2,9 +2,22 @@
 import numpy as np
 import torch as th
 
-from .gaussian_diffusion import GaussianDiffusion
-from .._misc import wrapped_getattr
+from motius.diffusion.mdm.gaussian_diffusion import GaussianDiffusion
 
+
+def wrapped_getattr(self, name, default=None, wrapped_member_name="model"):
+    """Attribute delegation for model wrappers (e.g. the CFG sampler / spaced
+    diffusion ``_WrappedModel``)."""
+    if isinstance(self, th.nn.Module):
+        try:
+            attr = th.nn.Module.__getattr__(self, name)
+        except AttributeError:
+            wrapped_member = th.nn.Module.__getattr__(self, wrapped_member_name)
+            attr = getattr(wrapped_member, name, default)
+    else:
+        wrapped_member = getattr(self, wrapped_member_name)
+        attr = getattr(wrapped_member, name, default)
+    return attr
 
 def space_timesteps(num_timesteps, section_counts):
     """
