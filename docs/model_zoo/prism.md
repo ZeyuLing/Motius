@@ -123,7 +123,7 @@ iter-15,000 sequential-RoPE baseline.
 | --------- | ---- |
 | Pipeline | `motius.pipelines.prism.PRISMPipeline` |
 | Bundle | `motius.models.prism.PRISMBundle` |
-| Motion processor | `motius.models.prism.PRISMMotionProcessor` |
+| Motion processor | `motius.motion.representation.prism.PRISMMotionProcessor` |
 | KU-FlowT | `motius.models.prism.network.PrismTransformerMotionModel` |
 | Motion VAE | `motius.models.prism.AutoencoderKLPrism2DTK` |
 

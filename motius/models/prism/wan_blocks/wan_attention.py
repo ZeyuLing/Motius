@@ -284,9 +284,3 @@ class WanKWiseAttention(nn.Module):
         x = x.permute(0, 2, 1, 3)
 
         return x + identity
-
-
-if __name__ == "__main__":
-    attention = WanKWiseAttention(dim=32)
-    x = torch.randn(2, 32, 17, 22)
-    print(attention(x).shape)

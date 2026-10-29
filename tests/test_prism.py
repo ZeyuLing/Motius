@@ -8,7 +8,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from motius.models.prism import PRISMBundle, PRISMMotionProcessor
+from motius.models.prism import PRISMBundle
+from motius.motion.representation.prism import PRISMMotionProcessor
 from motius.pipelines.prism.backend import PrismARPipeline
 from motius.pipelines.prism.pipeline import PRISMPipeline
 from tools.generate_babel_sequential_prism import parse_args
@@ -183,6 +184,7 @@ def test_prism_public_default_guidance_is_conservative(monkeypatch):
 
     pipeline = object.__new__(PRISMPipeline)
     pipeline.bundle = Bundle()
+    pipeline._backend = Backend()
     monkeypatch.setattr(pipeline, "_format_output", lambda result: result)
     pipeline.generate("walk", num_frames=81)
 

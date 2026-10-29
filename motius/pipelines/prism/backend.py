@@ -7,7 +7,7 @@ from motius.models.prism.autoencoder_kl_2d import AutoencoderKLPrism2DTK
 from motius.models.prism.gaussian_distribution import (
     DiagonalGaussianDistributionNd,
 )
-from motius.models.prism.processor import PRISMMotionProcessor
+from motius.motion.representation.prism import PRISMMotionProcessor
 from motius.models.prism.network import PrismTransformerMotionModel
 from diffusers.schedulers import (
     FlowMatchEulerDiscreteScheduler,

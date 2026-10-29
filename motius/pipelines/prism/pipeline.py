@@ -18,15 +18,43 @@ class PRISMPipeline(BasePipeline):
 
     BUNDLE_CLS = "motius.models.prism.PRISMBundle"
 
+    def save_pretrained(self, save_directory, **kwargs):
+        return self.bundle.save_pretrained(save_directory, **kwargs)
+
+    def __init__(self, bundle, **kwargs):
+        super().__init__(bundle, **kwargs)
+        self._backend = self._build_backend()
+
+    def _build_backend(self):
+        from transformers import AutoTokenizer
+        from diffusers import FlowMatchEulerDiscreteScheduler
+        from motius.motion.representation.prism import PRISMMotionProcessor
+        from .backend import PrismARPipeline
+        self.bundle.load_model()
+        config = self.bundle.artifact_config
+        root = self.bundle.artifact_dir
+        components = config.get("components", {})
+        processor = PRISMMotionProcessor(root / config.get("stats_file", "motion_stats.json"))
+        backend = PrismARPipeline(
+            tokenizer=AutoTokenizer.from_pretrained(root / components.get("tokenizer", "tokenizer")),
+            text_encoder=self.bundle.text_encoder, vae=self.bundle.vae,
+            scheduler=FlowMatchEulerDiscreteScheduler.from_pretrained(root / components.get("scheduler", "scheduler")),
+            smpl_processor=processor, transformer=self.bundle.transformer,
+            expand_timesteps=bool(config.get("expand_timesteps", True)),
+            is_causal=bool(config.get("is_causal", False)))
+        mode = self.bundle.default_kafs_mode
+        backend.set_kafs_alpha(str(config.get("default_kafs_mode", "none")) if mode is None else mode)
+        return backend
+
     @property
     def backend(self):
-        return self.bundle.load_model()
+        return self._backend
 
     def _format_output(self, result: dict) -> dict:
         smpl = result["smplx_dict"]
         normalized = result["motion_vec"]
         native = normalized.reshape(normalized.shape[0], normalized.shape[1], -1)
-        native = self.bundle.processor.denormalize(native.float())[0].cpu().numpy()
+        native = self.backend.smpl_processor.denormalize(native.float())[0].cpu().numpy()
         motion135 = smpl_to_motion135(
             smpl["global_orient"], smpl["body_pose"], smpl["transl"]
         )
