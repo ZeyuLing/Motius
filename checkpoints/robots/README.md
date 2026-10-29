@@ -25,3 +25,9 @@ checkpoints/robots/unitree_description/
 To keep the assets elsewhere, pass `--output PATH` to the downloader and
 `--asset-root PATH` to the BeyondMimic trainer, or set
 `MOTIUS_BEYONDMIMIC_ASSET_ROOT`.
+
+SONIC's selected G1 URDF, MJCF and 51 meshes are materialized separately from
+Python using `python tools/download_sonic_assets.py`. The 53-file manifest pins
+the original Git/LFS hashes in `motius/configuration/sonic/assets_manifest.json`.
+The SDK resolves ROS mesh URIs into an ignored `sonic/resolved/` cache while the
+original pinned URDF remains intact.

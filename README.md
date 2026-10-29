@@ -195,7 +195,7 @@ keyframes, and TP2M remain inside their parent task.
 | [Kinematic Motion Control](docs/leaderboards/kinematic_motion_control.md) | Numeric geometry → motion | Native-skeleton protocol |
 | [Part-Level Motion Control](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) | Body-region semantics → motion | [HumanML3D](docs/datasets/README.md#humanml3d) |
 | [Motion Editing](https://huggingface.co/spaces/ZeyuLing/motion-edit-leaderboard) | Motion + semantic edit → motion | [PerMo](docs/datasets/README.md#permo) style/content · [MotionFix](docs/datasets/README.md#motionfix) |
-| [Motion Repair](https://huggingface.co/spaces/ZeyuLing/motion-repair-brokenamass-leaderboard) | Corrupted motion ± support → motion | BrokenAMASS fixed-support · MoGenDiT, StableMotion, AnimateCanvas |
+| [Motion Repair](https://huggingface.co/spaces/ZeyuLing/motion-repair-brokenamass-leaderboard) | Corrupted motion ± support → motion | BrokenAMASS fixed-support · [MoGenDiT / MoreDiff](docs/tasks/mogendit.md), StableMotion, AnimateCanvas |
 | [Motion Reconstruction](docs/leaderboards/README.md#motion-reconstruction-humanml3d) | Motion → reconstructed motion | [HumanML3D](docs/datasets/README.md#humanml3d) |
 | [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) | Music ± text → dance | [AIST++](docs/datasets/README.md#aistpp) |
 | [Dance-to-Music](https://huggingface.co/spaces/ZeyuLing/dance-to-music-aistpp-leaderboard) | Dance → music | [AIST++](docs/datasets/README.md#aistpp) |
