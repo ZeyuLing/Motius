@@ -97,8 +97,8 @@ public `Wan-AI/Wan2.1-T2V-1.3B` Hub repo declared by `wan_repo_id`.
 | --------- | ---- |
 | Pipeline | `motius.pipelines.vimogen.ViMoGenPipeline` |
 | Bundle | `motius.models.vimogen.ViMoGenBundle` |
-| Runtime | `motius.models.vimogen.network` |
-| Scheduler | `motius.models.vimogen.network.vimogen.trainer.scheduler` |
+| Runtime | `motius.pipelines.vimogen` and `motius.models.vimogen` |
+| Scheduler | `motius.diffusion.vimogen` |
 
 The runtime vendors the required ViMoGen transformer modules and scheduler, so
 inference does not import the upstream checkout.

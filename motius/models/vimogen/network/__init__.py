@@ -1,1 +1,0 @@
-"""Vendored ViMoGen runtime assets."""
