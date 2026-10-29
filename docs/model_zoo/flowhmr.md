@@ -120,9 +120,9 @@ This release implements base training; PHC+ GRPO training is outside its scope.
 
 ## Quick Start
 
-Watch the [Blender product release film](../../assets/model_zoo/flowhmr/blender_demo/motius-flowhmr-product-release-1080p.mp4) and follow the [illustrated first-use guide](../tutorials/flowhmr-blender.md). The film records fresh full-video inference and a complete original-speed 750-frame result, with explicit processing cuts and timing boundaries.
+Watch the [Blender workflow](../flowhmr-blender/assets/demo.mp4) and follow the [installation and usage guide](../flowhmr-blender/README.md). The recording uses an earlier interface; the guide describes the current extension.
 
-Blender users can install the [FlowHMR add-on](../../blender_extension/README.md),
+Blender users can install the [FlowHMR add-on](../flowhmr-blender/README.md),
 which provides standard and accelerated inference, native 52-joint animation,
 Mixamo retargeting and animated FBX export.
 
