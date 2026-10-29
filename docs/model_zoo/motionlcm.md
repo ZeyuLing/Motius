@@ -98,7 +98,8 @@ not resolve or download a second model.
 | --------- | ---- |
 | Pipeline | `motius.pipelines.motionlcm.MotionLCMPipeline` |
 | Bundle | `motius.models.motionlcm.MotionLCMBundle` |
-| Shared MLD/LCM runtime | `motius.models.motionlcm.network` |
+| Network | `motius.models.motionlcm.network` |
+| Sampling and trainer | `motius.pipelines.motionlcm`, `motius.trainers.motionlcm` |
 
 The released public surface covers the text-to-motion inference path. Raw
 upstream checkpoint conversion and controllable MotionLCM variants remain

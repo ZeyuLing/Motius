@@ -16,8 +16,7 @@ Components (see ``motius.models.motionlcm.network``):
   (``time_cond_proj_dim=256``); guidance is folded into the timestep
   conditioning (distilled CFG) so inference needs **no** second unconditional
   pass.
-* ``self.scheduler`` — diffusers ``LCMScheduler`` driving the few-step
-  consistency sampling.
+* The inference Pipeline owns the few-step ``LCMScheduler``.
 * ``self.text_encoder`` — :class:`MldTextEncoder` (frozen ``sentence-t5-large``
   SentenceTransformer, stored in the Motius artifact).
 * ``mean`` / ``std`` — 263-dim HumanML3D denorm stats (``register_buffer``).
@@ -58,7 +57,9 @@ _REPO_ROOT = Path(__file__).resolve().parents[3]
 # stats give ~15 mm reconstruction MPJPE, whereas the (mislabelled, tiny-std)
 # ``CondMDI/.../Mean.npy`` gives ~480 mm. They are embedded into the artifact so
 # the checkpoint never depends on an external Mean/Std file.
-_DEFAULT_MEAN = _REPO_ROOT / "checkpoints" / "mdm" / "humanml_trans_enc_512" / "Mean.npy"
+_DEFAULT_MEAN = (
+    _REPO_ROOT / "checkpoints" / "mdm" / "humanml_trans_enc_512" / "Mean.npy"
+)
 _DEFAULT_STD = _REPO_ROOT / "checkpoints" / "mdm" / "humanml_trans_enc_512" / "Std.npy"
 
 # Text encoder (sentence-t5-large, 768-dim). Resolved by name via HF hub.
@@ -125,7 +126,7 @@ def _load_state_dict(path: str | Path) -> dict:
 def _strip_prefix(sd: dict, prefix: Optional[str]) -> dict:
     if prefix is None:
         return dict(sd)
-    return {k[len(prefix):]: v for k, v in sd.items() if k.startswith(prefix)}
+    return {k[len(prefix) :]: v for k, v in sd.items() if k.startswith(prefix)}
 
 
 def _infer_raw_config(vae_ckpt: str | Path, denoiser_ckpt: str | Path) -> dict:
@@ -155,7 +156,9 @@ def _infer_raw_config(vae_ckpt: str | Path, denoiser_ckpt: str | Path) -> dict:
         cfg["denoiser"]["latent_dim"] = list(cfg["vae"]["latent_dim"])
 
     cond = den_sd.get("time_embedding.cond_proj.weight")
-    cfg["denoiser"]["time_cond_proj_dim"] = int(cond.shape[1]) if cond is not None else None
+    cfg["denoiser"]["time_cond_proj_dim"] = (
+        int(cond.shape[1]) if cond is not None else None
+    )
     return cfg
 
 
@@ -222,7 +225,9 @@ class MotionLCMBundle(ModelBundle):
         super().__init__()
         use_artifact = vae_weights_path is not None
         if use_artifact and denoiser_weights_path is None:
-            raise ValueError("MotionLCM artifact load is missing denoiser_weights_path.")
+            raise ValueError(
+                "MotionLCM artifact load is missing denoiser_weights_path."
+            )
         if not use_artifact and (vae_ckpt is None or denoiser_ckpt is None):
             raise ValueError(
                 "MotionLCMBundle requires artifact weights or explicit "
@@ -287,8 +292,7 @@ class MotionLCMBundle(ModelBundle):
             self._load_module(denoiser, denoiser_weights_path, prefix=None)
         else:
             self._load_module(vae, raw_vae_ckpt, prefix="vae.")
-            self._load_module(
-                denoiser, raw_denoiser_ckpt, prefix="denoiser.")
+            self._load_module(denoiser, raw_denoiser_ckpt, prefix="denoiser.")
 
         vae.eval()
         denoiser.eval()
@@ -298,7 +302,6 @@ class MotionLCMBundle(ModelBundle):
         self.nfeats = _DIM_POSE
 
         # ----- LCM scheduler (diffusers, not an nn.Module) ---------------- #
-        self.scheduler = self._build_scheduler(sched_cfg)
 
         # ----- frozen text encoder --------------------------------------- #
         self.text_encoder = None
@@ -310,7 +313,8 @@ class MotionLCMBundle(ModelBundle):
         std = np.load(str(std_path or _DEFAULT_STD)).astype(np.float32)
         if mean.shape != (_DIM_POSE,) or std.shape != (_DIM_POSE,):
             raise ValueError(
-                f"expected 263-dim mean/std, got {mean.shape} and {std.shape}")
+                f"expected 263-dim mean/std, got {mean.shape} and {std.shape}"
+            )
         self.register_buffer("mean", torch.from_numpy(mean), persistent=True)
         self.register_buffer("std", torch.from_numpy(std), persistent=True)
 
@@ -320,18 +324,40 @@ class MotionLCMBundle(ModelBundle):
     # ------------------------------------------------------------------
     # weight loading
     # ------------------------------------------------------------------
-    @staticmethod
-    def _build_scheduler(sched_cfg: dict):
-        from diffusers import LCMScheduler
 
-        return LCMScheduler(
-            num_train_timesteps=sched_cfg["num_train_timesteps"],
-            beta_start=sched_cfg["beta_start"],
-            beta_end=sched_cfg["beta_end"],
-            beta_schedule=sched_cfg["beta_schedule"],
-            clip_sample=sched_cfg["clip_sample"],
-            set_alpha_to_one=sched_cfg["set_alpha_to_one"],
-        )
+    def initialize_distillation(self, teacher_weights_path: str):
+        """Build the teacher, fresh online student and target neural roots.
+
+        Invoke before distributed preparation. The student and target receive
+        teacher weights; their guidance projections use the original neural
+        constructor initialization. Resume restores all roots from the shared
+        training checkpoint after construction.
+        """
+        if hasattr(self, "teacher_denoiser"):
+            raise RuntimeError("MotionLCM distillation roots already initialized")
+        from .network import MldDenoiser
+
+        config = dict(self._den_cfg)
+        if config.get("time_cond_proj_dim") is None:
+            raise ValueError("MotionLCM distillation requires a guidance projection")
+        teacher_config = {**config, "time_cond_proj_dim": None}
+        teacher = MldDenoiser(**teacher_config)
+        state = _load_state_dict(teacher_weights_path)
+        if any(name.startswith("denoiser.") for name in state):
+            state = _strip_prefix(state, "denoiser.")
+        teacher.load_state_dict(state, strict=True)
+        self.teacher_denoiser = teacher.to(self.device)
+        for root in ["denoiser", "target_denoiser"]:
+            network = MldDenoiser(**config)
+            incompatible = network.load_state_dict(teacher.state_dict(), strict=False)
+            if (
+                set(incompatible.missing_keys) != {"time_embedding.cond_proj.weight"}
+                or incompatible.unexpected_keys
+            ):
+                raise ValueError(
+                    "Teacher architecture does not match the selected student"
+                )
+            setattr(self, root, network.to(self.device))
 
     @staticmethod
     def _build_text_encoder(name: str):
@@ -365,7 +391,9 @@ class MotionLCMBundle(ModelBundle):
             "scheduler": dict(self._sched_cfg),
         }
 
-    def save_pretrained(self, save_directory: str, safe_serialization: bool = True, **kwargs):
+    def save_pretrained(
+        self, save_directory: str, safe_serialization: bool = True, **kwargs
+    ):
         """Export a self-contained Motius MotionLCM artifact.
 
         Layout::
@@ -397,13 +425,15 @@ class MotionLCMBundle(ModelBundle):
                     "Cannot export a complete MotionLCM artifact without a "
                     "loaded text encoder."
                 )
-            self.text_encoder.text_model.save(
+            self.text_encoder.save_pretrained(
                 str(save_dir / _TEXT_ENCODER_SUBDIR),
                 safe_serialization=True,
             )
         (save_dir / "motionlcm_config.json").write_text(json.dumps(cfg, indent=2))
 
         def _cpu_state(m):
+            while hasattr(m, "module"):
+                m = m.module
             return {k: v.detach().cpu().contiguous() for k, v in m.state_dict().items()}
 
         if safe_serialization:
@@ -415,8 +445,43 @@ class MotionLCMBundle(ModelBundle):
             torch.save(_cpu_state(self.vae), str(save_dir / "vae.pt"))
             torch.save(_cpu_state(self.denoiser), str(save_dir / "denoiser.pt"))
 
-        np.save(str(save_dir / "Mean.npy"), self.mean.detach().cpu().numpy().astype(np.float32))
-        np.save(str(save_dir / "Std.npy"), self.std.detach().cpu().numpy().astype(np.float32))
+        np.save(
+            str(save_dir / "Mean.npy"),
+            self.mean.detach().cpu().numpy().astype(np.float32),
+        )
+        np.save(
+            str(save_dir / "Std.npy"),
+            self.std.detach().cpu().numpy().astype(np.float32),
+        )
+        required = [
+            "motionlcm_config.json",
+            "Mean.npy",
+            "Std.npy",
+            "vae.safetensors" if safe_serialization else "vae.pt",
+            "denoiser.safetensors" if safe_serialization else "denoiser.pt",
+        ]
+        if include_text_encoder:
+            required += sorted(
+                path.relative_to(save_dir).as_posix()
+                for path in (save_dir / _TEXT_ENCODER_SUBDIR).rglob("*")
+                if path.is_file()
+            )
+        from motius.configuration.motionlcm_text import copy_motion_licenses
+
+        required += copy_motion_licenses(save_dir)
+        (save_dir / "model_index.json").write_text(
+            json.dumps(
+                {
+                    "_class_name": "MotionLCMPipeline",
+                    "bundle_class": "motius.models.motionlcm.MotionLCMBundle",
+                    "pipeline_class": "motius.pipelines.motionlcm.MotionLCMPipeline",
+                    "tasks": ["text_to_motion"],
+                    "required_files": required,
+                },
+                indent=2,
+            )
+            + "\n"
+        )
         return save_directory
 
     @classmethod
@@ -453,7 +518,8 @@ class MotionLCMBundle(ModelBundle):
             text_encoder_name = _DEFAULT_TEXT_ENCODER
         guidance_scale = kwargs.pop("guidance_scale", meta.get("guidance_scale", 7.5))
         num_inference_steps = kwargs.pop(
-            "num_inference_steps", meta.get("num_inference_steps", 1))
+            "num_inference_steps", meta.get("num_inference_steps", 1)
+        )
         return cls(
             config=meta["config"],
             vae_weights_path=str(_w("vae")),
@@ -484,15 +550,11 @@ class MotionLCMBundle(ModelBundle):
         return self.mean.device
 
     @torch.no_grad()
-    def encode_text(self, captions: List[str]) -> torch.Tensor:
-        """sentence-t5-large features ``(B, 1, 768)``."""
+    def encode_text(self, features: dict[str, torch.Tensor]) -> torch.Tensor:
+        """Atomic text-tower forward on externally tokenized tensor features."""
         if self.text_encoder is None:
             raise RuntimeError("Text encoder not loaded (load_text_encoder=False).")
-        return self.text_encoder(list(captions))
-
-    def denormalize(self, motion_263: torch.Tensor) -> torch.Tensor:
-        """Un-standardize HumanML3D-263 features back to physical scale."""
-        return motion_263 * self.std + self.mean
+        return self.text_encoder(features)
 
     def forward(self, *args, **kwargs):  # pragma: no cover - use pipeline
         raise NotImplementedError("Use MotionLCMPipeline.infer_t2m for inference.")

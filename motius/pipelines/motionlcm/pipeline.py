@@ -13,6 +13,8 @@ Fully independent of the original repo.
 """
 
 from __future__ import annotations
+from motius.motion.representation.normalization import affine_denormalize
+
 
 from typing import List, Optional, Sequence
 
@@ -36,6 +38,8 @@ class MotionLCMPipeline(BasePipeline):
 
     def __init__(self, bundle, device: Optional[str] = None, **kwargs):
         super().__init__(bundle, **kwargs)
+        from .scheduler import build_scheduler
+        self.scheduler = build_scheduler(bundle._sched_cfg)
         if device is not None:
             self.to(device)
 
@@ -75,7 +79,7 @@ class MotionLCMPipeline(BasePipeline):
         Returns:
             List of B arrays, each ``(T_i, 263)`` un-standardized.
         """
-        from motius.models.motionlcm.network import generate_motion
+        from motius.pipelines.motionlcm.sampling import generate_motion
 
         if len(captions) != len(lengths):
             raise ValueError("captions and lengths must have equal length")
@@ -93,7 +97,7 @@ class MotionLCMPipeline(BasePipeline):
             bundle.text_encoder,
             bundle.vae,
             bundle.denoiser,
-            bundle.scheduler,
+            self.scheduler,
             captions,
             frame_lens,
             guidance_scale=gs,
@@ -102,7 +106,7 @@ class MotionLCMPipeline(BasePipeline):
 
         out = []
         for i in range(bs):
-            m = bundle.denormalize(motions[i].float())
+            m = affine_denormalize(motions[i].float(), bundle.mean, bundle.std)
             out.append(m.cpu().numpy().astype(np.float32))
         return out
 

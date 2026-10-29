@@ -16,12 +16,13 @@ ControlNet / data-module machinery:
 A standard (non-distilled) diffusion denoiser path with explicit CFG is also
 supported for completeness. Self-contained;.
 """
+from motius.motion.conditioning.motionlcm_text import encode_text
 
 from typing import List, Optional, Sequence
 
 import torch
 
-from .utils import get_guidance_scale_embedding
+from motius.models.motionlcm.network.utils import get_guidance_scale_embedding
 
 
 @torch.no_grad()
@@ -109,7 +110,7 @@ def generate_motion(
     do_cfg = (guidance_scale > 1) and not is_lcm
 
     texts = (["" ] * len(captions) + captions) if do_cfg else captions
-    text_emb = text_encoder(texts)
+    text_emb = encode_text(text_encoder, texts)
 
     latent_size = vae.latent_size
     latent_code_dim = vae.latent_code_dim

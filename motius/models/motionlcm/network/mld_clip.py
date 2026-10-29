@@ -1,102 +1,66 @@
-"""MLD text encoder (adapted from MotionLCM ``mld/.../mld_clip.py``).
-
-Wraps a frozen text backbone. The released **MotionLCM HumanML3D** checkpoint
-was distilled with the ``sentence-t5-large`` SentenceTransformer
-(``text_encoded_dim=768``, one sentence token), so the default inference path
-exercises the ``t5`` branch. CLIP / BERT branches are kept verbatim for
-fidelity. Released Motius artifacts store the complete SentenceTransformer
-directory and pass its local path here.
-"""
+"""Frozen tensor-only text towers shared by MotionLCM and MLD."""
 
 from pathlib import Path
-
 import torch
-import torch.nn as nn
-
-from transformers import AutoModel, AutoTokenizer
+from torch import nn
 
 
 class MldTextEncoder(nn.Module):
-
-    def __init__(self, modelpath: str, last_hidden_state: bool = False) -> None:
+    def __init__(self, modelpath: str, last_hidden_state: bool = False):
         super().__init__()
+        from transformers import (
+            AutoConfig,
+            AutoModel,
+            CLIPTextModel,
+            CLIPTextModelWithProjection,
+        )
 
-        modelpath = str(modelpath)
-        is_sentence_transformer = (
-            "t5" in modelpath.lower()
+        self.modelpath = str(modelpath)
+        config = AutoConfig.from_pretrained(modelpath)
+        clip_text = config.model_type in {"clip", "clip_text_model"}
+        sentence_t5 = not clip_text and (
+            "t5" in self.modelpath.lower()
             or (Path(modelpath) / "modules.json").is_file()
         )
-        if is_sentence_transformer:
-            from sentence_transformers import SentenceTransformer
-
-            # ``sentence-t5-large`` ships as [Transformer, Pooling, Dense,
-            # Normalize] and ``encode`` returns **unit-norm** sentence vectors.
-            # MotionLCM/MLD were distilled on exactly this output (the upstream
-            # code calls ``SentenceTransformer.encode`` as-is), so we keep the
-            # full pipeline including the trailing ``Normalize``.
-            self.text_model = SentenceTransformer(
-                modelpath,
-                local_files_only=Path(modelpath).is_dir(),
-                model_kwargs={
-                    "low_cpu_mem_usage": True,
-                    "dtype": "auto",
-                },
-            )
-            self.tokenizer = self.text_model.tokenizer
-        else:
-            self.tokenizer = AutoTokenizer.from_pretrained(modelpath)
-            self.text_model = AutoModel.from_pretrained(modelpath)
-
-        self.max_length = self.tokenizer.model_max_length
-        if "clip" in modelpath:
-            self.text_encoded_dim = self.text_model.config.text_config.hidden_size
-            if last_hidden_state:
-                self.name = "clip_hidden"
-            else:
-                self.name = "clip"
-        elif "bert" in modelpath:
-            self.name = "bert"
+        if clip_text:
+            cls = CLIPTextModel if last_hidden_state else CLIPTextModelWithProjection
+            self.text_model = cls.from_pretrained(modelpath)
+            self.name = "clip_hidden" if last_hidden_state else "clip"
             self.text_encoded_dim = self.text_model.config.hidden_size
-        elif is_sentence_transformer:
-            self.name = 't5'
+        elif sentence_t5:
+            from motius.configuration.motionstreamer.text import load_text_network
+
+            self.text_model, source = load_text_network(modelpath, "cpu")
+            self.modelpath = str(source)
+            self.name = "t5"
+            self.text_encoded_dim = self.text_model.projection.out_features
         else:
-            raise ValueError(f"Model {modelpath} not supported")
+            self.text_model = AutoModel.from_pretrained(modelpath)
+            if "clip" in self.modelpath.lower():
+                self.name = "clip_hidden" if last_hidden_state else "clip"
+                self.text_encoded_dim = self.text_model.config.text_config.hidden_size
+            elif "bert" in self.modelpath.lower():
+                self.name = "bert"
+                self.text_encoded_dim = self.text_model.config.hidden_size
+            else:
+                raise ValueError(f"Model {modelpath} not supported")
 
-    def forward(self, texts: list) -> torch.Tensor:
-        # get prompt text embeddings
-        if self.name in ["clip", "clip_hidden"]:
-            text_inputs = self.tokenizer(
-                texts,
-                padding="max_length",
-                truncation=True,
-                max_length=self.max_length,
-                return_tensors="pt",
-            )
-            text_input_ids = text_inputs.input_ids
-            # split into max length Clip can handle
-            if text_input_ids.shape[-1] > self.tokenizer.model_max_length:
-                text_input_ids = text_input_ids[:, :self.tokenizer.model_max_length]
-        elif self.name == "bert":
-            text_inputs = self.tokenizer(texts, return_tensors="pt", padding=True)
-
+    def forward(self, features):
+        device = next(self.text_model.parameters()).device
+        features = {name: value.to(device) for name, value in features.items()}
         if self.name == "clip":
-            # (batch_Size, text_encoded_dim)
-            text_embeddings = self.text_model.get_text_features(
-                text_input_ids.to(self.text_model.device))
-            # (batch_Size, 1, text_encoded_dim)
-            text_embeddings = text_embeddings.unsqueeze(1)
-        elif self.name == "clip_hidden":
-            # (batch_Size, seq_length , text_encoded_dim)
-            text_embeddings = self.text_model.text_model(
-                text_input_ids.to(self.text_model.device)).last_hidden_state
-        elif self.name == "bert":
-            # (batch_Size, seq_length , text_encoded_dim)
-            text_embeddings = self.text_model(
-                **text_inputs.to(self.text_model.device)).last_hidden_state
-        elif self.name == 't5':
-            text_embeddings = self.text_model.encode(texts, show_progress_bar=False, convert_to_tensor=True, batch_size=len(texts))
-            text_embeddings = text_embeddings.unsqueeze(1)
-        else:
-            raise NotImplementedError(f"Model {self.name} not implemented")
+            return self.text_model(
+                input_ids=features["input_ids"]
+            ).text_embeds.unsqueeze(1)
+        if self.name == "clip_hidden":
+            return self.text_model(input_ids=features["input_ids"]).last_hidden_state
+        if self.name == "bert":
+            return self.text_model(**features).last_hidden_state
+        return self.text_model(
+            input_ids=features["input_ids"], attention_mask=features["attention_mask"]
+        ).unsqueeze(1)
 
-        return text_embeddings
+    def save_pretrained(self, directory, **kwargs):
+        from motius.configuration.motionlcm_text import save_text_encoder
+
+        return save_text_encoder(self, directory)

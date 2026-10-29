@@ -1,0 +1,97 @@
+{
+  "complete": true,
+  "scope": "Original released MotionLCM text-only graph: real SentenceT5, strict VAE/denoiser weights and original reverse method (executed unmodified AST), complete 1/2/4 step sampling, variable lengths, empty text and RNG. Excludes ControlNet and training.",
+  "upstream_commit": "54052526ac560a14b7c2fbcda269a65f5bc5e3ca",
+  "tests": [
+    {
+      "tensor": "/cases/0/features",
+      "shape": [
+        1,
+        1,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/physical/0",
+      "shape": [
+        40,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/features",
+      "shape": [
+        2,
+        1,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/physical/0",
+      "shape": [
+        48,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/physical/1",
+      "shape": [
+        40,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/features",
+      "shape": [
+        1,
+        1,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/physical/0",
+      "shape": [
+        40,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

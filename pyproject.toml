@@ -353,6 +353,8 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.licenses.mld" = ["*"]
+"motius.licenses.motionlcm" = ["*"]
 "motius.licenses.vimogen" = ["ATTRIBUTIONS.md", "UPSTREAM_COPYRIGHT_NOTICE"]
 "motius.licenses.omnicontrol" = ["*"]
 "motius.licenses.condmdi" = ["*"]
