@@ -22,6 +22,7 @@ _EXPORTS = {
     "BailandoTrainer": "bailando",
     "InterGenTrainer": "intergen",
     "InterMaskTrainer": "intermask",
+    "MotionMillionTrainer": "motionmillion",
     "GenTrackFlowGRPOTrainer": "gentrack",
     "HyMotionT2MTrainer": "hymotion_t2m",
     "PrismTrainer": "prism",
