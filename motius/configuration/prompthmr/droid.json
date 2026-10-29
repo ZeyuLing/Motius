@@ -1,0 +1,32 @@
+{
+  "imagedir": null,
+  "calib": null,
+  "opt_intr": false,
+  "camera_model": "focal",
+  "t0": 0,
+  "stride": 1,
+  "buffer": 512,
+  "image_size": [
+    240,
+    320
+  ],
+  "image_size_target": [
+    517,
+    384
+  ],
+  "disable_vis": true,
+  "beta": 0.3,
+  "filter_thresh": 2.4,
+  "warmup": 8,
+  "keyframe_thresh": 4.0,
+  "frontend_thresh": 16.0,
+  "frontend_window": 25,
+  "frontend_radius": 2,
+  "frontend_nms": 1,
+  "backend_thresh": 22.0,
+  "backend_radius": 2,
+  "backend_nms": 3,
+  "upsample": true,
+  "reconstruction_path": null,
+  "stereo": false
+}

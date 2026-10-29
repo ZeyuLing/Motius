@@ -6,6 +6,8 @@ _EXPORTS = {
     "MotionStreamerTextTokenDataset": ("motius.datasets.motionstreamer", "MotionStreamerTextTokenDataset"),
     "MotionStreamerStreamingTokenDataset": ("motius.datasets.motionstreamer", "MotionStreamerStreamingTokenDataset"),
     "MotionStreamerTAEDataset": ("motius.datasets.motionstreamer", "MotionStreamerTAEDataset"),
+    "PromptHMRVideoDataset": ("motius.datasets.prompthmr", "PromptHMRVideoDataset"),
+    "CalibrationImageDataset": ("motius.datasets.prompthmr", "CalibrationImageDataset"),
     "PreparedEDGEDataset": ("motius.datasets.prepared_dance", "PreparedEDGEDataset"),
     "PipelineDataset": ("motius.datasets.base_dataset", "PipelineDataset"),
     "TMRTextMotionDataset": ("motius.datasets.motion", "TMRTextMotionDataset"),

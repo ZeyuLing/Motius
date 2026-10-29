@@ -13,7 +13,7 @@ from typing import Any, Dict, Mapping, Optional, Sequence, Tuple
 
 import numpy as np
 
-from motius.models.prompthmr.bundle import PROMPTHMR_REVISION, sha256_file
+from motius.configuration.prompthmr import PROMPTHMR_REVISION, sha256_file
 from motius.motion.representation.monocular_capture import (
     MonocularCaptureResult,
     MonocularTrack,

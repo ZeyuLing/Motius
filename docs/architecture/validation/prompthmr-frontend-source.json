@@ -1,0 +1,292 @@
+{
+  "complete": true,
+  "comparison": "Original camera distributions/angles, person segmentation, Detectron2 predictions, COCO25 heatmaps and eight-frame actual SAM 2 state propagation versus native neural bundles and tracker",
+  "scope": "Network frontends and tracking on public video; complete crop/heatmap-coordinate processing, camera SLAM and end-to-end public video require separate certificates",
+  "reference_boundary": "Original standalone modules and exact original YAML architecture loaded directly to avoid importing unused application/export dependencies; no neural substitution",
+  "upstream_commit": "3b566b7dbb28ce506c7ea972c18693f4c705ce8c",
+  "tests": [
+    {
+      "tensor": "/camera/0",
+      "shape": [
+        2,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera/1",
+      "shape": [
+        2,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera/2",
+      "shape": [
+        2,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera/3",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera/4",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera/5",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/segmentation/logits",
+      "shape": [
+        8,
+        21,
+        640,
+        360
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/segmentation/labels",
+      "shape": [
+        8,
+        640,
+        360
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/detection/boxes",
+      "shape": [
+        1,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/detection/scores",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/detection/keypoints",
+      "shape": [
+        1,
+        17,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/pose",
+      "shape": [
+        2,
+        25,
+        64,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tracking/initial",
+      "shape": [
+        1,
+        1,
+        640,
+        360
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tracking/0",
+      "shape": [
+        1,
+        1,
+        640,
+        360
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tracking/1",
+      "shape": [
+        1,
+        1,
+        640,
+        360
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tracking/2",
+      "shape": [
+        1,
+        1,
+        640,
+        360
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tracking/3",
+      "shape": [
+        1,
+        1,
+        640,
+        360
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tracking/4",
+      "shape": [
+        1,
+        1,
+        640,
+        360
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tracking/5",
+      "shape": [
+        1,
+        1,
+        640,
+        360
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tracking/6",
+      "shape": [
+        1,
+        1,
+        640,
+        360
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tracking/7",
+      "shape": [
+        1,
+        1,
+        640,
+        360
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0+cu126",
+  "native_sha256": {
+    "motius/configuration/prompthmr/detectron2/Base-Keypoint-RCNN-FPN.yaml": "dd55dd01154323a887c4b4d4af2256d178571ecf2d1d9e5985bbaf75e9db9372",
+    "motius/configuration/prompthmr/detectron2/Base-RCNN-FPN.yaml": "95306a7335903880e35b8c919a7daad1d8ce4b2c926a69506be1c7116a0799d7",
+    "motius/configuration/prompthmr/detectron2/keypoint_rcnn_X_101_32x8d_FPN_3x.yaml": "371f731e493321406fee9595c9c11919c142fd8afb5cfe653ca9f59aae91bbbd",
+    "motius/configuration/prompthmr/sam2_hiera_t.yaml": "4902dbe10270628d58cd7dc238074ec5b6bd3c9c4cddd8b85b037383fcf94dda",
+    "motius/models/vision/gvhmr/__init__.py": "491839fdcbea69b1ef30f49a1317d6b2b5e0cfcaae3e3041d2110770c3e02617",
+    "motius/models/vision/gvhmr/bundle.py": "d7774b709bdc92022bf81bbd0b4fa07f07a9b60c7e938f06c0c08a76157b1af0",
+    "motius/models/vision/gvhmr/heatmap.py": "5c11cff2e000602eaba9718325e285775462e5e468c25f2353c43d94adaeca7b",
+    "motius/models/vision/gvhmr/networks.py": "5b8b44a4d9508debe5a6931215438eed97a7315c47b7f42374774c2e205f1034",
+    "motius/models/vision/gvhmr/normalization.py": "f75fbc3cc1a40e6a34189d931f043c76195e0cbe616fec9695c2e424c1ea5367",
+    "motius/models/vision/gvhmr/token_transformer.py": "12020565abe2319f496431e62b7dfccef240cddf5c233a4374138fff47b49cb5",
+    "motius/models/vision/gvhmr/vit.py": "76fc63be210f4b317fbf3047251d74368c79fa9ccfdc9907f6f5154268f274a6",
+    "motius/models/vision/prompthmr/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/models/vision/prompthmr/bundle.py": "e86f9868accc7a38cc0131145845f92b338fc817fb0e83bae8d4e4b463e246d4",
+    "motius/models/vision/prompthmr/camera.py": "c3c3573ecbbaad7c4b91f7695739e27a5cdc66bdf21e7d0e11ae3ee541b8b2da",
+    "motius/models/vision/prompthmr/camera_resnet.py": "a87853b07a20fba02f1fb6c91bf6a4d3ca4087b72722338e615d730b14ef4cd3",
+    "motius/models/vision/prompthmr/sam2.py": "de801772c2bdae5adaa7170461fda74aee3b04cf715b81292b74e59e94da0385",
+    "motius/pipelines/prompthmr/calibration.py": "7d8f7f782cb3ca65177cc977c7bc0fb9ead97d041c06ee0393c5c73153e39e5e",
+    "motius/pipelines/prompthmr/detection.py": "5dad246674a0d019f53d98f34483c2df10f3465abd111b36171828d87f38590b",
+    "motius/pipelines/prompthmr/tracking.py": "c4479a2b497ff2a882804810dee890ca0f11c36a6c8908544805c2ba89481e3a"
+  },
+  "artifacts": {
+    "repository": "Tinghong-Ye22/code-PromptHMR",
+    "revision": "df0688138f29e916f6aecc1b42b698a11cee9d93",
+    "archive": "FULL_SNAPSHOT.tar.zst.part-0000",
+    "files": [
+      {
+        "path": "data/pretrain/sam2_ckpts/sam2_hiera_tiny.pt",
+        "sha256": "65b50056e05bcb13694174f51bb6da89c894b57b75ccdf0ba6352c597c5d1125",
+        "size": 155906050
+      },
+      {
+        "path": "data/pretrain/sam2_ckpts/keypoint_rcnn_5ad38f.pkl",
+        "sha256": "e6118384ba2858dfabae1239f8036d13a46a37bc72d4647f598bd7241ba0840d",
+        "size": 490574901
+      },
+      {
+        "path": "data/pretrain/deeplabv3_resnet50.pth",
+        "sha256": "cd0a25694c4a0f7106b38f4938bf90a874f2f241cc410b8f63c7024399538f06",
+        "size": 168312152
+      },
+      {
+        "path": "data/pretrain/droidcalib.pth",
+        "sha256": "67c5b78f727fb5ea7a6bf31fafe2f20c8982a56ca0b4f880ab46769a244b0a6f",
+        "size": 16049525
+      },
+      {
+        "path": "data/pretrain/vitpose-h-coco_25.pth",
+        "sha256": "72dbd9d9a7b708dfc3acb004ae3c44145cc94378a0693d64e6c86ba57c3afb2f",
+        "size": 2549009242
+      },
+      {
+        "path": "data/pretrain/phmr_vid/prhmr_release_002.ckpt",
+        "sha256": "e40f6318073becc10238f2fdaed7b2523d0b90e45d4f1ffe078e8fcc8d765785",
+        "size": 165618162
+      },
+      {
+        "path": "data/pretrain/camcalib_sa_biased_l2.ckpt",
+        "sha256": "e4480cdd546ff8322978ef76e93c7a70a7d5e82c1390cbdd7a95473ac4595b48",
+        "size": 301310109
+      }
+    ]
+  },
+  "dependency_runtime": {
+    "torch": "2.6.0+cu126",
+    "xformers": "0.0.29.post2",
+    "sam2": "1.6",
+    "detectron2": "0.9",
+    "torchvision": "0.21.0+cu126",
+    "numpy": "1.26.4",
+    "opencv": "4.10.0",
+    "wheels": "Official PromptHMR PyTorch 2.6 wheel bundle"
+  }
+}

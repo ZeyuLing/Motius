@@ -1,0 +1,662 @@
+{
+  "complete": true,
+  "comparison": "Original Metric3D ViT-Large released checkpoint, all recurrent depth/confidence/normal outputs versus native neural graph",
+  "scope": "FP16 neural inference, full 616x1064 input, batches 1/2; metric scale fitting and odometry require separate validation",
+  "checkpoint_missing_constant": "Original checkpoint omits only the unused pretraining mask token, whose source initialization is exact zeros",
+  "tests": [
+    {
+      "tensor": "/1/0",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/1",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/prediction",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/predictions_list/0",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/predictions_list/1",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/predictions_list/2",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/predictions_list/3",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/predictions_list/4",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/predictions_list/5",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/predictions_list/6",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/predictions_list/7",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/confidence",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/confidence_list/0",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/confidence_list/1",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/confidence_list/2",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/confidence_list/3",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/confidence_list/4",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/confidence_list/5",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/confidence_list/6",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/confidence_list/7",
+      "shape": [
+        1,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/prediction_normal",
+      "shape": [
+        1,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/normal_out_list/0",
+      "shape": [
+        1,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/normal_out_list/1",
+      "shape": [
+        1,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/normal_out_list/2",
+      "shape": [
+        1,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/normal_out_list/3",
+      "shape": [
+        1,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/normal_out_list/4",
+      "shape": [
+        1,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/normal_out_list/5",
+      "shape": [
+        1,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/normal_out_list/6",
+      "shape": [
+        1,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/2/normal_out_list/7",
+      "shape": [
+        1,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/0",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/1",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/prediction",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/predictions_list/0",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/predictions_list/1",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/predictions_list/2",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/predictions_list/3",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/predictions_list/4",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/predictions_list/5",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/predictions_list/6",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/predictions_list/7",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/confidence",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/confidence_list/0",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/confidence_list/1",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/confidence_list/2",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/confidence_list/3",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/confidence_list/4",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/confidence_list/5",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/confidence_list/6",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/confidence_list/7",
+      "shape": [
+        2,
+        1,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/prediction_normal",
+      "shape": [
+        2,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/normal_out_list/0",
+      "shape": [
+        2,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/normal_out_list/1",
+      "shape": [
+        2,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/normal_out_list/2",
+      "shape": [
+        2,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/normal_out_list/3",
+      "shape": [
+        2,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/normal_out_list/4",
+      "shape": [
+        2,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/normal_out_list/5",
+      "shape": [
+        2,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/normal_out_list/6",
+      "shape": [
+        2,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/2/normal_out_list/7",
+      "shape": [
+        2,
+        4,
+        616,
+        1064
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0+cu126",
+  "native_modules": {
+    "motius/models/vision/prompthmr/metric3d/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/models/vision/prompthmr/metric3d/backbone.py": "eb6986a1844e106551c29cf4c897dccb2c89d55db8e03a18e17e803d31ac3627",
+    "motius/models/vision/prompthmr/metric3d/bundle.py": "1c3a21fff8cc7b0050378198da36d6ae4d076928d9404f6ea41db6c8f30dc9dc",
+    "motius/models/vision/prompthmr/metric3d/decoder.py": "72e43cd0fa4bc75fc36d6a113adbc90f2397f37e2cf9e4726ad3ce0a60c0383f",
+    "motius/models/vision/prompthmr/metric3d/network.py": "1183efe683ef1a15fa856423eb085254886486552f266a5a40624c8d09f3decd"
+  },
+  "upstream_commit": "3b566b7dbb28ce506c7ea972c18693f4c705ce8c",
+  "checkpoint_provenance": {
+    "repository": "JUGGHM/Metric3D",
+    "revision": "80d2d1410afb4b23cd9d18c6be9144483d4b70b6",
+    "path": "metric_depth_vit_large_800k.pth",
+    "size": 1647972663,
+    "lfs_sha256": "15328ffc42b528b95f188687418f6f03b3f123eb34ccdbd686c112abbea6d972"
+  }
+}

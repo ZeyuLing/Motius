@@ -197,7 +197,7 @@ PromptHMR is described in the
 checkpoints, and derivative runtimes are restricted to the uses allowed by the
 upstream license. Motius does not vendor or redistribute them. SMPL-X and the
 detector, tracker, depth, and SLAM dependencies retain separate terms; see
-[`motius/models/prompthmr/ATTRIBUTIONS.md`](../../motius/models/prompthmr/ATTRIBUTIONS.md)
+[`motius/licenses/prompthmr/ATTRIBUTIONS.md`](../../motius/licenses/prompthmr/ATTRIBUTIONS.md)
 before setup or publication.
 
 <!-- MOTIUS_MODEL_CARD_FOOTER:START -->

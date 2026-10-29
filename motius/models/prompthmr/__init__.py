@@ -1,19 +1,4 @@
-"""PromptHMR-Video isolated model bundle."""
+"""PromptHMR image and temporal neural networks."""
+from .bundle import PromptHMRBundle
 
-from .bundle import (
-    PROMPTHMR_REPOSITORY,
-    PROMPTHMR_REVISION,
-    PROMPTHMR_VIDEO_CHECKPOINTS,
-    PromptHMRBundle,
-    PromptHMRCheckpoint,
-    sha256_file,
-)
-
-__all__ = [
-    "PROMPTHMR_REPOSITORY",
-    "PROMPTHMR_REVISION",
-    "PROMPTHMR_VIDEO_CHECKPOINTS",
-    "PromptHMRBundle",
-    "PromptHMRCheckpoint",
-    "sha256_file",
-]
+__all__=['PromptHMRBundle']

@@ -354,6 +354,8 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
+"motius.configuration.prompthmr" = ["stats.json", "joint_names.json", "droid.json", "metric3d.json", "pipeline.yaml", "sam2_hiera_t.yaml", "detectron2/*.yaml"]
+"motius.licenses.prompthmr" = ["LICENSE", "ATTRIBUTIONS.md", "DROID_CALIB_LICENSE", "DROID_CALIB_THIRD_PARTY_LICENSES.txt", "METRIC3D_LICENSE"]
 "motius.configuration.gvhmr" = ["*.json", "*.yaml", "body/*.pt"]
 "motius.licenses.gvhmr" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.licenses.hymotion_t2m" = ["*"]
@@ -432,7 +434,6 @@ namespaces = false
 "motius.models.maskcontrol" = ["ATTRIBUTIONS.md"]
 "motius.models.tm2d" = ["ATTRIBUTIONS.md"]
 "motius.models.unimumo" = ["ATTRIBUTIONS.md"]
-"motius.models.prompthmr" = ["ATTRIBUTIONS.md"]
 "motius.models.gem_smpl" = ["ATTRIBUTIONS.md"]
 "motius.models.gem_smpl.vendor" = [
     "GENMO_LICENSE",

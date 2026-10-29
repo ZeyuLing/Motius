@@ -1,0 +1,1265 @@
+{
+  "complete": true,
+  "comparison": "Complete original static-camera numeric video reconstruction versus native capture, including real frontends, ROI mutation/UDP keypoints, image/temporal fusion, gravity/floor fitting and original post-optimization",
+  "reference_boundary": "Pristine original Pipeline method ordering and numeric stages; only import/model-factory locations and SPEC checkpoint path are supplied explicitly; optional exporters omitted after authoritative results.pkl",
+  "scope": "Static camera, published SAM 2 path and default fitting/optimization on one public video; dynamic camera/SLAM and public Auto Pipeline export require separate validation",
+  "upstream_commit": "3b566b7dbb28ce506c7ea972c18693f4c705ce8c",
+  "tests": [
+    {
+      "tensor": "/camera/pred_cam_R",
+      "shape": [
+        30,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera/pred_cam_T",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera/img_focal",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera/img_center/0",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera/img_center/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/track_id",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/frames",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/bboxes",
+      "shape": [
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/masks",
+      "shape": [
+        30,
+        640,
+        360
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/detected",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/keypoints_2d",
+      "shape": [
+        30,
+        25,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/vitpose",
+      "shape": [
+        30,
+        17,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/smplx_pose",
+      "shape": [
+        30,
+        22,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/smplx_transl",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/smplx_betas",
+      "shape": [
+        30,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/prhmr_img_feats",
+      "shape": [
+        30,
+        2,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/smplx_cam/rotmat",
+      "shape": [
+        30,
+        55,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/smplx_cam/pose",
+      "shape": [
+        30,
+        75
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/smplx_cam/shape",
+      "shape": [
+        30,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/smplx_cam/trans",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/smplx_cam/contact",
+      "shape": [
+        30,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/smplx_cam/static_conf_logits",
+      "shape": [
+        30,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/smplx_world/pose",
+      "shape": [
+        30,
+        165
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/smplx_world/shape",
+      "shape": [
+        30,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/people/1/smplx_world/trans",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/masks",
+      "shape": [
+        30,
+        640,
+        360
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/has_tracks",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/has_hps_cam",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/has_hps_world",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/has_slam",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/has_hands",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/has_2d_kpts",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/has_post_opt",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/0/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/0/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/0/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/0/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/first_frame/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/first_frame/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/first_frame/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/first_frame/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/1/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/1/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/1/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/1/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/2/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/2/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/2/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/2/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/3/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/3/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/3/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/3/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/4/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/4/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/4/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/4/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/5/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/5/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/5/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/5/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/6/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/6/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/6/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/6/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/7/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/7/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/7/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/7/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/8/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/8/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/8/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/8/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/9/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/9/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/9/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/9/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/10/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/10/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/10/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/10/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/11/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/11/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/11/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/11/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/12/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/12/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/12/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/12/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/13/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/13/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/13/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/13/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/14/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/14/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/14/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/14/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/15/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/15/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/15/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/15/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/16/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/16/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/16/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/16/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/17/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/17/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/17/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/17/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/18/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/18/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/18/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/18/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/19/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/19/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/19/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/19/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/20/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/20/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/20/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/20/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/21/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/21/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/21/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/21/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/22/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/22/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/22/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/22/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/23/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/23/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/23/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/23/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/24/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/24/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/24/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/24/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/25/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/25/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/25/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/25/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/26/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/26/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/26/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/26/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/27/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/27/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/27/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/27/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/28/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/28/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/28/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/28/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/29/vfov",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/29/f_pix",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/29/pitch",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/29/roll",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/avg_focal_length",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/min_focal_length",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/max_focal_length",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/std_focal_length",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/spec_calib/median_focal_length",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/contact_joint_ids/0",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/contact_joint_ids/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/contact_joint_ids/2",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/contact_joint_ids/3",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/contact_joint_ids/4",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/contact_joint_ids/5",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera_world/pred_cam_R",
+      "shape": [
+        30,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera_world/pred_cam_T",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera_world/Rwc",
+      "shape": [
+        30,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera_world/Twc",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera_world/Rcw",
+      "shape": [
+        30,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera_world/Tcw",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera_world/img_focal",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera_world/img_center/0",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera_world/img_center/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera_world/viz_scale",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera_world/viz_center/0",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera_world/viz_center/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/camera_world/viz_center/2",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0+cu126",
+  "native_sha256": {
+    "motius/configuration/prompthmr/detectron2/Base-Keypoint-RCNN-FPN.yaml": "dd55dd01154323a887c4b4d4af2256d178571ecf2d1d9e5985bbaf75e9db9372",
+    "motius/configuration/prompthmr/detectron2/Base-RCNN-FPN.yaml": "95306a7335903880e35b8c919a7daad1d8ce4b2c926a69506be1c7116a0799d7",
+    "motius/configuration/prompthmr/detectron2/keypoint_rcnn_X_101_32x8d_FPN_3x.yaml": "371f731e493321406fee9595c9c11919c142fd8afb5cfe653ca9f59aae91bbbd",
+    "motius/configuration/prompthmr/joint_names.json": "64b4c362ba7041217f31267a2e9435159c6000d8603c950db118609cd71cb758",
+    "motius/configuration/prompthmr/metric3d.json": "3805e4f2ede0bddd12d8e58bc12464f4f6ca050cedd0d758e70003d17a91cb41",
+    "motius/configuration/prompthmr/pipeline.yaml": "799366048e29eec7561d3b94bec45c33e265a812a92f4c1fc52ead00f46a45b0",
+    "motius/configuration/prompthmr/sam2_hiera_t.yaml": "4902dbe10270628d58cd7dc238074ec5b6bd3c9c4cddd8b85b037383fcf94dda",
+    "motius/configuration/prompthmr/stats.json": "0954924ec99c5613d09535da04aae361696faa8fdc149a45ff47d27be2ee1aac",
+    "motius/datasets/prompthmr.py": "c0cd893b98dc4ae44cc59448917e680a17954a564ce9bb242eb413fd89ba3b1c",
+    "motius/models/gvhmr/__init__.py": "a51e2fc94335469be9e91cb62e9109691f5bad5a3461d7f1640919aac12c7e28",
+    "motius/models/gvhmr/attention.py": "8cb6af7d1d275242c1d8fdf7dd82e279c07255ab36af211e61ebceaacdcfc750",
+    "motius/models/gvhmr/bundle.py": "3f24a516ce22c28a020aca5bdad800c027c0b64e94bef06c00dd12c81d79195f",
+    "motius/models/gvhmr/network.py": "b6e0395134c280c038061be2cd82fc4a97b0a0ae039f3dadfed5d221874ae0e5",
+    "motius/models/gvhmr/rotary.py": "590f00248bc5b289b4230463a7c735db46c1c6293b2a9c050d47a711c6cce137",
+    "motius/models/prompthmr/__init__.py": "7f26111a27e65ada7cc0b599934f7620a7d0c97d73de34527ef4ce6266e5d08b",
+    "motius/models/prompthmr/bundle.py": "5f80a31f98dea0ac341c1c3bb60e450a0460d4c52615072eb050f099b144a2e4",
+    "motius/models/prompthmr/components/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/models/prompthmr/components/camera_embed.py": "1da29af7cd479eeb8fe57e7e054c75fe0f90b7cbe868c63f71df3a86f9d3369f",
+    "motius/models/prompthmr/components/common.py": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+    "motius/models/prompthmr/components/image_encoder.py": "da825801af2f474b842c692cd4b476b72b4b857e5d4d95f58946a83c81af699c",
+    "motius/models/prompthmr/components/prompt_encoder.py": "bf99f04bb334813e6fe00e2e54bc95e788d19a134d3a2a8fb495f9fed0e52c1d",
+    "motius/models/prompthmr/components/smpl_decoder.py": "bad8a8169a57aef4a2832d91ff2cdbfa5686a5fd27a07bdce18e015e6cd057e0",
+    "motius/models/prompthmr/components/twoway_transformer.py": "eb0a064722ba7e938508fb6541d5da46650001f09877e61fb26d1a1c9edbce48",
+    "motius/models/prompthmr/dinov2/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/models/prompthmr/dinov2/layers/__init__.py": "3408204ff2883830709097985aacf6886dd4b9d4b65abd8e3709f3466c5f38ab",
+    "motius/models/prompthmr/dinov2/layers/attention.py": "b727a390d5d0a1248bb13b522805f7924466e9776bb20b6d6ca13e4acf1528ca",
+    "motius/models/prompthmr/dinov2/layers/block.py": "2ae3bb9036bd132486cd0f61f3368e2b06c1a81b8e2a2f53beb2e49a377e0425",
+    "motius/models/prompthmr/dinov2/layers/drop_path.py": "b9f8236e86054b9d9a71275efcad2a9ecaa1f86b529d4b8d6109ddb5e806f67a",
+    "motius/models/prompthmr/dinov2/layers/layer_scale.py": "abb7bbfae152a9de2e6d0961ab5e75c79428e849281bfe50dd07b66b54b485d1",
+    "motius/models/prompthmr/dinov2/layers/mlp.py": "255825c73b60a916dd00eb1e38aacbcdbf316e40d6a005efb46e245b7edb43aa",
+    "motius/models/prompthmr/dinov2/layers/patch_embed.py": "40da6add3d811198ea3e17cb99cdd4e5cda59e369efbbe3d18d89308618cf142",
+    "motius/models/prompthmr/dinov2/layers/swiglu_ffn.py": "71ba6a493575c2a477bde7f738c5d0958d448057d46fc175f7c3edf0a8bb33e2",
+    "motius/models/prompthmr/dinov2/vision_transformer.py": "800a2099f7e6702f60fa48b317e65ba9440f3c02f2b77b7cd53bd60891b29d32",
+    "motius/models/prompthmr/neural_bundle.py": "6dd61225c92c9e26220786f702ca71fe854b7cf85ccf154bcac8fa567029edab",
+    "motius/models/prompthmr/text.py": "d42b8843908cf83ff0f90b472c0b3ada4d389cc2dc899fd7d410b9e10afbffe8",
+    "motius/models/prompthmr/video.py": "942702ba1ede81417585b4b0709da83e5370d917159ae4c1061c6357fd68f48e",
+    "motius/models/vision/prompthmr/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/models/vision/prompthmr/bundle.py": "e86f9868accc7a38cc0131145845f92b338fc817fb0e83bae8d4e4b463e246d4",
+    "motius/models/vision/prompthmr/camera.py": "c3c3573ecbbaad7c4b91f7695739e27a5cdc66bdf21e7d0e11ae3ee541b8b2da",
+    "motius/models/vision/prompthmr/camera_resnet.py": "a87853b07a20fba02f1fb6c91bf6a4d3ca4087b72722338e615d730b14ef4cd3",
+    "motius/models/vision/prompthmr/sam2.py": "de801772c2bdae5adaa7170461fda74aee3b04cf715b81292b74e59e94da0385",
+    "motius/motion/body_models/prompthmr/__init__.py": "a70d113ffc23eb78f8cca5dcceaeb8154224a1ad58a523f80b2b890df018856f",
+    "motius/motion/body_models/prompthmr/image.py": "b69b5ac78d20ba274b137447da0b09317c61bc6a95947031f752b7e5c09032d2",
+    "motius/motion/body_models/prompthmr/smpl_wrapper.py": "25e2a8b2dc888182e4c837bda451b4964d98021fd5f6febce63b0268896a4013",
+    "motius/motion/body_models/prompthmr/vertex_ids.py": "cfced54793f7f181835512c93b2360b27027f12859d20b5bcc013e368f6ad2ea",
+    "motius/motion/representation/prompthmr/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/motion/representation/prompthmr/camera.py": "cacc9057b80d819df89bca56a08ebc74581be4d47098b210dcd636664305728f",
+    "motius/motion/representation/prompthmr/image_rotation.py": "d8222a9df12a41f3f631454485c710a971c4f73042d1230e5d6ed31bc7264b9c",
+    "motius/motion/representation/prompthmr/rotation.py": "351835f0d56f8e65eee43e08229d8440769c2c415d3cc66e84d4bbcbec72b148",
+    "motius/motion/representation/prompthmr/smoothing.py": "f4521e5ce5a4b6a29d329e218606969295b07d08affc607df013f7fe8b4bd7cb",
+    "motius/motion/representation/prompthmr/video_codec.py": "bb8e494d03f323278a46651dab362c78e8199e52e319d45d65ffafe366e85054",
+    "motius/motion/representation/prompthmr/video_motion.py": "a6c94d11d2c9475b83279741bdb7dc2f298ef99abb1373cb46df50f7742eb536",
+    "motius/motion/representation/prompthmr/video_rotation.py": "32429f31340c8f6ea7e226a555af98968e30b7757f37eab8a03669ad5ef91a29",
+    "motius/pipelines/prompthmr/__init__.py": "e8909b480a96d62be78935775a3bd1091b01e6fb9a6ff600e1a2a7e502bb011f",
+    "motius/pipelines/prompthmr/calibration.py": "7d8f7f782cb3ca65177cc977c7bc0fb9ead97d041c06ee0393c5c73153e39e5e",
+    "motius/pipelines/prompthmr/capture.py": "c9ed4e134902869bfabfe9ec171c3554b9d39f1eb912d4e826e44e1792a1f22a",
+    "motius/pipelines/prompthmr/detection.py": "5dad246674a0d019f53d98f34483c2df10f3465abd111b36171828d87f38590b",
+    "motius/pipelines/prompthmr/floor.py": "e4c3d8a99c2fd186f43c33e930c0935b27e77442bd48951615904ceb18ae53e5",
+    "motius/pipelines/prompthmr/frontend.py": "bb9450d26d99fb40e007c0f87fbd7dc6a051603d187943a61665abeef2c630b4",
+    "motius/pipelines/prompthmr/heatmaps.py": "1ee7ae231518efbe3580981cc328edfbace4087d9442e130022eb0c9d6931af1",
+    "motius/pipelines/prompthmr/image.py": "f34e230417709d4fb8fd0989ce94b84bd8490a93a4dac9239eaab7ecd2782a54",
+    "motius/pipelines/prompthmr/keypoints.py": "d7a5fef08e01ef698051c58a0ea3222517a6b68c99b56a2a5747239fa507db74",
+    "motius/pipelines/prompthmr/optimization.py": "f4c057804462e37084b4faf70480bd302332116a5e070a1ee0d5de8678bb3d11",
+    "motius/pipelines/prompthmr/pipeline.py": "aed9b515780c32416063bb3927f98fa02ac9cfcf3995333594675e23bd275165",
+    "motius/pipelines/prompthmr/prepared.py": "81b2e10be5dea7dd03af0e531d3a052da77fc4fb98597f16ce7e9177b43342ee",
+    "motius/pipelines/prompthmr/replay.py": "1645b424861554f597b31d127e88d779f65602b6baf61858bd5d1cfb396cd0a3",
+    "motius/pipelines/prompthmr/segmentation.py": "684682df97eac6799143e6a4dfc54cee62a0eef94321f0a2482878c7e0bc26d3",
+    "motius/pipelines/prompthmr/tracking.py": "c4479a2b497ff2a882804810dee890ca0f11c36a6c8908544805c2ba89481e3a",
+    "motius/pipelines/prompthmr/video.py": "65b4f53ce35c2d623db08a82d0676d7c730512580bf922ef3acac19c3b39c44f",
+    "motius/pipelines/prompthmr/video_io.py": "e75bac776124fe2d31d445318c880551785526eddaccfd6d6e99c0cf1c0f2fae",
+    "motius/pipelines/prompthmr/world.py": "15048ccb1c4f12908cbaac76a4bcbe43899ea6dffc86714586a3f5e9994ffa9a",
+    "motius/utils/torch_checkpoint.py": "7116442d77c05fc98cab511ed035b271c900d7c84890eca7b32c8d8652e0d179"
+  }
+}
