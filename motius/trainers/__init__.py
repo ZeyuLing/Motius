@@ -8,6 +8,8 @@ _EXPORTS = {
     "MDMTrainer": "mdm",
     "CondMDITrainer": "condmdi",
     "OmniControlTrainer": "omnicontrol",
+    "MoMaskTrainer": "momask",
+    "MaskControlTrainer": "maskcontrol",
     "GenTrackFlowGRPOTrainer": "gentrack",
     "HyMotionT2MTrainer": "hymotion_t2m",
     "PrismTrainer": "prism",

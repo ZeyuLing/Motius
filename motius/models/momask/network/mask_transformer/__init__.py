@@ -1,5 +1,4 @@
-"""Vendored MoMask masked / residual transformers (inference-only)."""
-
+"""MoMask neural transformer architectures."""
 from .transformer import MaskTransformer, ResidualTransformer
 
 __all__ = ["MaskTransformer", "ResidualTransformer"]

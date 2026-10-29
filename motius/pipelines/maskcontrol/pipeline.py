@@ -7,15 +7,16 @@ from typing import Iterable, Optional, Sequence
 import numpy as np
 import torch
 
-from motius.models.maskcontrol.network import (
+from motius.motion.conditioning.maskcontrol import (
     BODY_PART_JOINTS,
     CONTROL_JOINT_IDS,
     relative_hml263_positions,
 )
-from motius.models.momask.network import estimate_token_lengths
+from motius.pipelines.momask.sampling import estimate_token_lengths
 from motius.motion.representation.humanml import recover_from_ric
 from motius.pipelines.base_pipeline import BasePipeline
 from motius.registry import PIPELINES
+from .sampling import MaskControlSampler
 
 
 MASKCONTROL_UNIT_LENGTH = 4
@@ -43,6 +44,13 @@ class MaskControlPipeline(BasePipeline):
         super().__init__(bundle, **kwargs)
         if device is not None:
             self.to(device)
+
+    def generate(self, captions, frame_lengths, targets, target_mask, **kwargs):
+        use_residual = bool(kwargs.pop("use_residual", True))
+        return MaskControlSampler(self.bundle).sample_motion(
+            captions, frame_lengths, targets, target_mask,
+            residual_model=self.bundle.unwrap_network(self.bundle.residual_model) if use_residual else None,
+            **kwargs)
 
     def to(self, device):
         self.bundle.to_device(device)
@@ -111,7 +119,7 @@ class MaskControlPipeline(BasePipeline):
         )
         with torch.random.fork_rng(devices=fork_devices):
             torch.manual_seed(int(seed))
-            normalized, physical = self.bundle.generate(
+            normalized, physical = self.generate(
                 None if captions is None else list(captions),
                 frame_lengths,
                 targets,

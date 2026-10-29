@@ -373,7 +373,7 @@ class MoMaskBundle(ModelBundle):
     def _state_dict_no_clip(module) -> dict:
         return {
             k: v.detach().cpu().contiguous()
-            for k, v in module.state_dict().items()
+            for k, v in MoMaskBundle.unwrap_network(module).state_dict().items()
             if not k.startswith("clip_model.")
         }
 
@@ -577,13 +577,22 @@ class MoMaskBundle(ModelBundle):
         return self.mean.device
 
     @torch.no_grad()
-    def encode_text(self, captions: List[str]) -> torch.Tensor:
+    def encode_text(self, captions: torch.Tensor) -> torch.Tensor:
         """CLIP ViT-B/32 sentence features ``(B, 512)`` (via the t2m transformer)."""
-        return self.t2m_transformer.encode_text(list(captions))
+        return self.t2m_transformer.encode_text(captions)
 
-    def denormalize(self, motion_263: torch.Tensor) -> torch.Tensor:
-        """Un-standardize HumanML3D-263 features back to physical scale."""
-        return motion_263 * self.std + self.mean
+    @staticmethod
+    def unwrap_network(model):
+        while hasattr(model, "module"):
+            model = model.module
+        return model
+
+    def predict_base(self, *args, **kwargs):
+        return self.t2m_transformer(*args, **kwargs)
+
+    def predict_residual(self, *args, **kwargs):
+        return self.res_transformer(*args, **kwargs)
+
 
     def forward(self, *args, **kwargs):  # pragma: no cover - use pipeline
         raise NotImplementedError("Use MoMaskPipeline.infer_t2m for inference.")

@@ -15,7 +15,8 @@ from motius.models.base_model_bundle import ModelBundle
 from motius.models.momask.network import LengthEstimator, ResidualTransformer, RVQVAE
 from motius.registry import MODEL_BUNDLES
 
-from .network import CONTROL_JOINT_IDS, MaskControlTransformer
+from .network import MaskControlTransformer
+from motius.motion.conditioning.maskcontrol import CONTROL_JOINT_IDS
 
 
 _DIM_POSE = 263
@@ -194,9 +195,6 @@ class MaskControlBundle(ModelBundle):
         control_model = MaskControlTransformer(
             code_dim=vq_cfg["code_dim"],
             cond_mode="text",
-            vq_model=vq_model,
-            mean=torch.from_numpy(mean),
-            std=torch.from_numpy(std),
             control_joint_ids=control_cfg["control_joint_ids"],
             latent_dim=control_cfg["latent_dim"],
             ff_size=control_cfg["ff_size"],
@@ -212,12 +210,12 @@ class MaskControlBundle(ModelBundle):
             control_weights_path,
             ("ct2m_transformer",),
         )
-        if raw_control_checkpoint:
-            control_state = {
-                key: value
-                for key, value in control_state.items()
-                if not key.startswith("vq_model.")
-            }
+        self.register_buffer("control_mean", control_state.pop("mean", torch.from_numpy(mean)).float().clone())
+        self.register_buffer("control_std", control_state.pop("std", torch.from_numpy(std)).float().clone())
+        self.register_buffer("mask_emb_vq", control_state.pop(
+            "mask_emb_vq", vq_model.quantizer.layers[0].codebook.mean(0).detach()).clone())
+        control_state = {key: value for key, value in control_state.items()
+                         if not key.startswith("vq_model.")}
         missing, unexpected = control_model.load_state_dict(
             control_state, strict=False
         )
@@ -293,28 +291,26 @@ class MaskControlBundle(ModelBundle):
             self.length_estimator.to(device)
         self.mean = self.mean.to(device)
         self.std = self.std.to(device)
+        for name in ("control_mean", "control_std", "mask_emb_vq"):
+            setattr(self, name, getattr(self, name).to(device))
         return self
 
-    def denormalize(self, motion: torch.Tensor) -> torch.Tensor:
-        return motion * self.std + self.mean
 
-    def generate(
-        self,
-        captions: Optional[Sequence[str]],
-        frame_lengths: torch.Tensor,
-        targets: torch.Tensor,
-        target_mask: torch.Tensor,
-        **kwargs,
-    ) -> tuple[torch.Tensor, torch.Tensor]:
-        use_residual = bool(kwargs.pop("use_residual", True))
-        return self.control_model.sample_motion(
-            captions,
-            frame_lengths,
-            targets,
-            target_mask,
-            residual_model=self.residual_model if use_residual else None,
-            **kwargs,
-        )
+    @staticmethod
+    def unwrap_network(module):
+        while hasattr(module, "module"):
+            module = module.module
+        return module
+
+    def predict_logits(self, *args, **kwargs):
+        return self.control_model(*args, **kwargs)
+
+    def predict_residual(self, *args, **kwargs):
+        return self.residual_model(*args, **kwargs)
+
+    @torch.no_grad()
+    def encode_text(self, captions):
+        return self.unwrap_network(self.control_model).encode_text(captions)
 
     def config_dict(self) -> dict:
         return {
@@ -328,7 +324,7 @@ class MaskControlBundle(ModelBundle):
     def _state_without(module: nn.Module, prefixes: Sequence[str]) -> dict:
         return {
             key: value.detach().cpu().contiguous()
-            for key, value in module.state_dict().items()
+            for key, value in MaskControlBundle.unwrap_network(module).state_dict().items()
             if not any(key.startswith(prefix) for prefix in prefixes)
         }
 
@@ -391,6 +387,9 @@ class MaskControlBundle(ModelBundle):
         control_state = self._state_without(
             self.control_model, ("clip_model.", "vq_model.")
         )
+        control_state.update({"mean": self.control_mean.detach().cpu().contiguous(),
+                              "std": self.control_std.detach().cpu().contiguous(),
+                              "mask_emb_vq": self.mask_emb_vq.detach().cpu().contiguous()})
         residual_state = self._state_without(
             self.residual_model, ("clip_model.",)
         )
@@ -402,7 +401,7 @@ class MaskControlBundle(ModelBundle):
         if self.length_estimator is not None:
             states["length"] = self.length_estimator.state_dict()
         if include_clip:
-            states["clip"] = self.control_model.clip_model.state_dict()
+            states["clip"] = self.unwrap_network(self.control_model).clip_model.state_dict()
         if safe_serialization:
             from safetensors.torch import save_file
 

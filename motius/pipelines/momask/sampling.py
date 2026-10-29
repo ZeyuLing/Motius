@@ -17,12 +17,14 @@ training ``Mean`` / ``Std``.
 """
 
 from __future__ import annotations
+from motius.motion.conditioning.clip_text import encode_clip_text
 
 from typing import List, Sequence
 
 import torch
 import torch.nn.functional as F
 from torch.distributions.categorical import Categorical
+from .decoding import base_generate, residual_generate
 
 
 @torch.no_grad()
@@ -37,7 +39,7 @@ def estimate_token_lengths(
     predict a categorical distribution over length bins, sample one bin per
     caption. Returns a ``(B,)`` LongTensor of **token** counts (frames = 4x).
     """
-    text_embedding = t2m_transformer.encode_text(list(captions))
+    text_embedding = encode_clip_text(t2m_transformer, list(captions))
     pred_dis = length_estimator(text_embedding)
     probs = F.softmax(pred_dis, dim=-1)
     token_lens = Categorical(probs).sample()
@@ -78,7 +80,7 @@ def generate_motion(
         ``(B, T, 263)`` normalized motion (T = max(token_lens) * 4).
     """
     captions = list(captions)
-    mids = t2m_transformer.generate(
+    mids = base_generate(t2m_transformer,
         captions,
         token_lens,
         timesteps=time_steps,
@@ -87,7 +89,7 @@ def generate_motion(
         topk_filter_thres=topk_filter_thres,
         gsample=gsample,
     )
-    mids = res_transformer.generate(
+    mids = residual_generate(res_transformer,
         mids,
         captions,
         token_lens,

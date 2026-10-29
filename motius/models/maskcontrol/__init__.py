@@ -1,17 +1,5 @@
-"""MaskControl model bundle and network."""
-
+"""MaskControl neural architecture and checkpoint bundle."""
 from .bundle import MaskControlBundle
-from .network import (
-    BODY_PART_JOINTS,
-    CONTROL_JOINT_IDS,
-    CONTROL_JOINT_NAMES,
-    MaskControlTransformer,
-)
+from .network import MaskControlTransformer
 
-__all__ = [
-    "BODY_PART_JOINTS",
-    "CONTROL_JOINT_IDS",
-    "CONTROL_JOINT_NAMES",
-    "MaskControlBundle",
-    "MaskControlTransformer",
-]
+__all__ = ["MaskControlBundle", "MaskControlTransformer"]
