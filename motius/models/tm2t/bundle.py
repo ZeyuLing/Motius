@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import pickle
 from pathlib import Path
 from typing import Optional
 
@@ -10,57 +9,17 @@ import numpy as np
 import torch
 
 from motius.models.base_model_bundle import ModelBundle
-from motius.models.tm2t.network import Quantizer, TransformerV2, Translator, VQEncoderV3
+from motius.models.tm2t.network import Quantizer, TransformerV2, VQEncoderV3
 from motius.registry import MODEL_BUNDLES
+from motius.configuration.tm2t import (
+    _first_existing,
+    _download_artifact,
+    vocabulary_metadata,
+)
 
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 _DEFAULT_ARTIFACT = _REPO_ROOT / "checkpoints" / "tm2t"
-
-
-def _download_artifact(name_or_path: str) -> Path:
-    path = Path(name_or_path)
-    if path.is_dir():
-        return path
-    from huggingface_hub import snapshot_download
-
-    return Path(snapshot_download(repo_id=name_or_path, repo_type="model"))
-
-
-def _first_existing(root: Path, candidates) -> Path:
-    for candidate in candidates:
-        path = root / candidate
-        if path.exists():
-            return path
-    raise FileNotFoundError(
-        f"TM2T artifact is missing all expected paths: {', '.join(map(str, candidates))}"
-    )
-
-
-class TM2TVocabulary:
-    """Index mapping from TM2T's released ``our_vab`` GloVe assets."""
-
-    def __init__(self, root: Path) -> None:
-        words_path = _first_existing(root, ["vocab/our_vab_words.pkl", "glove/our_vab_words.pkl"])
-        index_path = _first_existing(root, ["vocab/our_vab_idx.pkl", "glove/our_vab_idx.pkl"])
-        with words_path.open("rb") as handle:
-            words = pickle.load(handle)
-        with index_path.open("rb") as handle:
-            self.word_to_index = pickle.load(handle)
-        self.index_to_word = {
-            int(self.word_to_index[word]): str(word) for word in words
-        }
-
-    def __len__(self) -> int:
-        return len(self.word_to_index)
-
-    def index(self, token: str) -> int:
-        return int(self.word_to_index[token])
-
-    def token(self, index: int) -> str:
-        if int(index) == len(self):
-            return "pad"
-        return self.index_to_word.get(int(index), "unk")
 
 
 @MODEL_BUNDLES.register_module()
@@ -72,29 +31,46 @@ class TM2TBundle(ModelBundle):
         artifact_dir: Optional[str] = None,
         *,
         device: str = "cuda",
-        beam_size: int = 2,
-        max_text_length: int = 30,
+        beam_size: Optional[int] = None,
+        max_text_length: Optional[int] = None,
         **kwargs,
     ) -> None:
         super().__init__()
         artifact = Path(artifact_dir or _DEFAULT_ARTIFACT).resolve()
-        tokenizer_checkpoint = _first_existing(
-            artifact,
-            [
-                "tokenizer.tar",
-                "VQVAEV3_CB1024_CMT_H1024_NRES3/model/finest.tar",
-                "t2m/VQVAEV3_CB1024_CMT_H1024_NRES3/model/finest.tar",
-                "checkpoints/t2m/VQVAEV3_CB1024_CMT_H1024_NRES3/model/finest.tar",
-            ],
+        portable = (artifact / "tm2t_config.json").is_file()
+        metadata = {}
+        if portable:
+            import json
+
+            metadata = json.loads((artifact / "tm2t_config.json").read_text())
+            tokenizer_checkpoint = artifact / "vq_encoder.safetensors"
+            caption_checkpoint = artifact / "transformer.safetensors"
+        else:
+            tokenizer_checkpoint = _first_existing(
+                artifact,
+                [
+                    "tokenizer.tar",
+                    "VQVAEV3_CB1024_CMT_H1024_NRES3/model/finest.tar",
+                    "t2m/VQVAEV3_CB1024_CMT_H1024_NRES3/model/finest.tar",
+                    "checkpoints/t2m/VQVAEV3_CB1024_CMT_H1024_NRES3/model/finest.tar",
+                ],
+            )
+            caption_checkpoint = _first_existing(
+                artifact,
+                [
+                    "m2t_transformer.tar",
+                    "M2T_EL4_DL4_NH8_PS/model/finest.tar",
+                    "t2m/M2T_EL4_DL4_NH8_PS/model/finest.tar",
+                    "checkpoints/t2m/M2T_EL4_DL4_NH8_PS/model/finest.tar",
+                ],
+            )
+        beam_size = int(
+            beam_size if beam_size is not None else metadata.get("beam_size", 2)
         )
-        caption_checkpoint = _first_existing(
-            artifact,
-            [
-                "m2t_transformer.tar",
-                "M2T_EL4_DL4_NH8_PS/model/finest.tar",
-                "t2m/M2T_EL4_DL4_NH8_PS/model/finest.tar",
-                "checkpoints/t2m/M2T_EL4_DL4_NH8_PS/model/finest.tar",
-            ],
+        max_text_length = int(
+            max_text_length
+            if max_text_length is not None
+            else metadata.get("max_text_length", 30)
         )
         mean_path = _first_existing(
             artifact,
@@ -115,23 +91,33 @@ class TM2TBundle(ModelBundle):
             ],
         )
 
-        self.vocabulary = TM2TVocabulary(artifact)
+        vocabulary_size, text_start, text_end = vocabulary_metadata(artifact)
         self.vq_encoder = VQEncoderV3(259, [1024, 1024], 2)
         self.quantizer = Quantizer(1024, 1024, 1.0)
-        tokenizer_state = torch.load(str(tokenizer_checkpoint), map_location="cpu")
+        if portable:
+            from safetensors.torch import load_file
+
+            tokenizer_state = {
+                "vq_encoder": load_file(str(tokenizer_checkpoint)),
+                "quantizer": load_file(str(artifact / "quantizer.safetensors")),
+            }
+        else:
+            tokenizer_state = torch.load(
+                str(tokenizer_checkpoint), map_location="cpu", weights_only=False
+            )
         self.vq_encoder.load_state_dict(tokenizer_state["vq_encoder"], strict=True)
         self.quantizer.load_state_dict(tokenizer_state["quantizer"], strict=True)
 
         self.motion_start_index = 1024
         self.motion_end_index = 1025
         self.motion_pad_index = 1026
-        self.text_start_index = self.vocabulary.index("sos")
-        self.text_end_index = self.vocabulary.index("eos")
-        self.text_pad_index = len(self.vocabulary)
+        self.text_start_index = text_start
+        self.text_end_index = text_end
+        self.text_pad_index = vocabulary_size
         self.transformer = TransformerV2(
             1027,
             self.motion_pad_index,
-            len(self.vocabulary) + 1,
+            vocabulary_size + 1,
             self.text_pad_index,
             d_src_word_vec=512,
             d_trg_word_vec=512,
@@ -147,19 +133,21 @@ class TM2TBundle(ModelBundle):
             n_trg_position=50,
             trg_emb_prj_weight_sharing=True,
         )
-        caption_state = torch.load(str(caption_checkpoint), map_location="cpu")
-        self.transformer.load_state_dict(caption_state["m2t_transformer"], strict=True)
-        self.translator = Translator(
-            self.transformer,
-            beam_size=int(beam_size),
-            max_seq_len=int(max_text_length),
-            src_pad_idx=self.motion_pad_index,
-            trg_pad_idx=self.text_pad_index,
-            trg_sos_idx=self.text_start_index,
-            trg_eos_idx=self.text_end_index,
+        caption_state = (
+            {"m2t_transformer": load_file(str(caption_checkpoint))}
+            if portable
+            else torch.load(
+                str(caption_checkpoint), map_location="cpu", weights_only=False
+            )
         )
-        self.register_buffer("mean", torch.from_numpy(np.load(mean_path)).float())
-        self.register_buffer("std", torch.from_numpy(np.load(std_path)).float())
+        self.transformer.load_state_dict(caption_state["m2t_transformer"], strict=True)
+        self.beam_size = int(beam_size)
+        self.max_text_length = int(max_text_length)
+        self._save_ckpt_modules = ["vq_encoder", "quantizer", "transformer"]
+        self._trainable_modules = ["transformer"]
+        self._frozen_modules = ["vq_encoder", "quantizer"]
+        self.register_buffer("mean", torch.from_numpy(np.load(mean_path)))
+        self.register_buffer("std", torch.from_numpy(np.load(std_path)))
         self.artifact_dir = artifact
         self.load_report = {
             "tokenizer_checkpoint": str(tokenizer_checkpoint),
@@ -176,10 +164,18 @@ class TM2TBundle(ModelBundle):
 
     @classmethod
     def from_pretrained(cls, pretrained_model_name_or_path: str, **kwargs):
-        return cls(artifact_dir=str(_download_artifact(pretrained_model_name_or_path)), **kwargs)
+        return cls(
+            artifact_dir=str(_download_artifact(pretrained_model_name_or_path)),
+            **kwargs,
+        )
+
+    def save_pretrained(self, save_directory: str, **kwargs):
+        from motius.configuration.tm2t import save_bundle
+
+        return save_bundle(self, save_directory)
 
     def forward(self, *args, **kwargs):  # pragma: no cover
         raise NotImplementedError("Use TM2TPipeline.infer_m2t for inference.")
 
 
-__all__ = ["TM2TBundle", "TM2TVocabulary"]
+__all__ = ["TM2TBundle"]

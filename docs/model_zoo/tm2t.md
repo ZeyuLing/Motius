@@ -89,7 +89,7 @@ Training FPS is the checkpoint's native temporal clock. Preview FPS only control
 | --------- | ---- |
 | Pipeline | `motius/pipelines/tm2t/pipeline.py` |
 | Bundle | `motius/models/tm2t/bundle.py` |
-| Runtime | `motius/models/tm2t/network.py` |
+| Runtime | `motius/models/tm2t/network/` and `motius/pipelines/tm2t/` |
 | License | `motius/models/tm2t/LICENSE` |
 
 ## Quick Start
