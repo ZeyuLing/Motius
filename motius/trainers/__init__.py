@@ -13,6 +13,7 @@ _EXPORTS = {
     "MotionCLIPTrainer": "motion_clip",
     "ViMoGenTrainer": "vimogen",
     "MotionLCMTrainer": "motionlcm",
+    "MLDTrainer": "mld",
     "GenTrackFlowGRPOTrainer": "gentrack",
     "HyMotionT2MTrainer": "hymotion_t2m",
     "PrismTrainer": "prism",

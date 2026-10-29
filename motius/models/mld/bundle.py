@@ -2,8 +2,9 @@
 
 Wraps a native Motius implementation of Motion Latent Diffusion (MLD;
 Chen et al., CVPR 2023) for HumanML3D text-to-motion. The runtime reuses the
-MLD VAE, latent denoiser, and SentenceT5 text wrapper already vendored for
-MotionLCM, but drives them with the original DDIM latent diffusion sampler.
+native MLD VAE, latent denoiser, and frozen text roots. Official checkpoints
+use CLIP; existing SentenceT5 artifacts retain their explicit text metadata. The inference
+Pipeline owns the original DDIM latent diffusion sampler.
 
 Representation: **HumanML3D-263** (263-dim, 20 fps, 22 joints). The VAE output
 is de-normalised with the embedded HumanML3D training Mean/Std before it is
@@ -24,9 +25,12 @@ from motius.registry import MODEL_BUNDLES
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 
-_DEFAULT_MEAN = _REPO_ROOT / "checkpoints" / "mdm" / "humanml_trans_enc_512" / "Mean.npy"
+_DEFAULT_MEAN = (
+    _REPO_ROOT / "checkpoints" / "mdm" / "humanml_trans_enc_512" / "Mean.npy"
+)
 _DEFAULT_STD = _REPO_ROOT / "checkpoints" / "mdm" / "humanml_trans_enc_512" / "Std.npy"
 _DEFAULT_TEXT_ENCODER = "sentence-transformers/sentence-t5-large"
+_OFFICIAL_TEXT_ENCODER = "openai/clip-vit-large-patch14"
 _TEXT_ENCODER_SUBDIR = "text_encoder/sentence-t5-large"
 _DIM_POSE = 263
 
@@ -87,7 +91,7 @@ def _load_state_dict(path: str | Path) -> dict:
 def _strip_prefix(sd: dict, prefix: Optional[str]) -> dict:
     if prefix is None:
         return dict(sd)
-    return {k[len(prefix):]: v for k, v in sd.items() if k.startswith(prefix)}
+    return {k[len(prefix) :]: v for k, v in sd.items() if k.startswith(prefix)}
 
 
 def _deep_update(base: dict, patch: dict) -> dict:
@@ -121,7 +125,9 @@ def _infer_raw_config(vae_ckpt: str | Path, denoiser_ckpt: str | Path) -> dict:
         cfg["denoiser"]["latent_dim"] = list(cfg["vae"]["latent_dim"])
 
     cond = den_sd.get("time_embedding.cond_proj.weight")
-    cfg["denoiser"]["time_cond_proj_dim"] = int(cond.shape[1]) if cond is not None else None
+    cfg["denoiser"]["time_cond_proj_dim"] = (
+        int(cond.shape[1]) if cond is not None else None
+    )
     return cfg
 
 
@@ -138,7 +144,7 @@ def _maybe_download_hub(name_or_path: str, local: Path) -> Path:
 
 @MODEL_BUNDLES.register_module()
 class MLDBundle(ModelBundle):
-    """MLD text-to-motion bundle (HumanML3D-263, SentenceT5 text encoder)."""
+    """MLD text-to-motion bundle with checkpoint-specific text conditioning."""
 
     def __init__(
         self,
@@ -150,7 +156,7 @@ class MLDBundle(ModelBundle):
         denoiser_weights_path: Optional[str] = None,
         mean_path: Optional[str] = None,
         std_path: Optional[str] = None,
-        text_encoder_name: str = _DEFAULT_TEXT_ENCODER,
+        text_encoder_name: Optional[str] = None,
         guidance_scale: float = 7.5,
         num_inference_steps: int = 50,
         load_text_encoder: bool = True,
@@ -176,13 +182,18 @@ class MLDBundle(ModelBundle):
             MldVae,
         )
 
+        text_encoder_name = text_encoder_name or (
+            _DEFAULT_TEXT_ENCODER if use_artifact else _OFFICIAL_TEXT_ENCODER
+        )
         self.text_encoder_name = text_encoder_name
         self.guidance_scale = float(guidance_scale)
         self.num_inference_steps = int(num_inference_steps)
 
         cfg = dict(config) if config is not None else {}
         if not use_artifact:
-            cfg = _deep_update(cfg, _infer_raw_config(str(vae_ckpt), str(denoiser_ckpt)))
+            cfg = _deep_update(
+                cfg, _infer_raw_config(str(vae_ckpt), str(denoiser_ckpt))
+            )
         vae_cfg = {**_VAE_DEFAULTS, **cfg.get("vae", {})}
         den_cfg = {**_DENOISER_DEFAULTS, **cfg.get("denoiser", {})}
         sched_cfg = {**_SCHEDULER_DEFAULTS, **cfg.get("scheduler", {})}
@@ -234,11 +245,12 @@ class MLDBundle(ModelBundle):
         self.denoiser = denoiser
         self.njoints = _DIM_POSE
         self.nfeats = _DIM_POSE
-        self.scheduler = self._build_scheduler(sched_cfg)
 
         self.text_encoder = None
         if load_text_encoder:
-            self.text_encoder = MldTextEncoder(modelpath=text_encoder_name, last_hidden_state=False)
+            self.text_encoder = MldTextEncoder(
+                modelpath=text_encoder_name, last_hidden_state=False
+            )
             self.text_encoder.eval()
             for p in self.text_encoder.parameters():
                 p.requires_grad = False
@@ -246,7 +258,9 @@ class MLDBundle(ModelBundle):
         mean = np.load(str(mean_path or _DEFAULT_MEAN)).astype(np.float32)
         std = np.load(str(std_path or _DEFAULT_STD)).astype(np.float32)
         if mean.shape != (_DIM_POSE,) or std.shape != (_DIM_POSE,):
-            raise ValueError(f"expected 263-dim mean/std, got {mean.shape} and {std.shape}")
+            raise ValueError(
+                f"expected 263-dim mean/std, got {mean.shape} and {std.shape}"
+            )
         self.register_buffer("mean", torch.from_numpy(mean), persistent=True)
         self.register_buffer("std", torch.from_numpy(std), persistent=True)
 
@@ -254,22 +268,12 @@ class MLDBundle(ModelBundle):
             self.to_device(device)
 
     @staticmethod
-    def _build_scheduler(sched_cfg: dict):
-        from diffusers import DDIMScheduler
-
-        return DDIMScheduler(
-            num_train_timesteps=sched_cfg["num_train_timesteps"],
-            beta_start=sched_cfg["beta_start"],
-            beta_end=sched_cfg["beta_end"],
-            beta_schedule=sched_cfg["beta_schedule"],
-            clip_sample=sched_cfg["clip_sample"],
-            set_alpha_to_one=sched_cfg["set_alpha_to_one"],
-            steps_offset=sched_cfg["steps_offset"],
-        )
-
-    @staticmethod
     def _load_module(module, path: str, prefix: Optional[str]) -> None:
         sd = _strip_prefix(_load_state_dict(path), prefix)
+        # Official MLD stores an unused decoder-memory encoding even for the
+        # encoder architecture. It does not participate in that neural graph.
+        if prefix == "denoiser." and "mem_pos.pe" not in module.state_dict():
+            sd.pop("mem_pos.pe", None)
         module.load_state_dict(sd, strict=True)
 
     def config_dict(self) -> dict:
@@ -279,15 +283,22 @@ class MLDBundle(ModelBundle):
             "scheduler": dict(self._sched_cfg),
         }
 
-    def save_pretrained(self, save_directory: str, safe_serialization: bool = True, **kwargs):
+    def save_pretrained(
+        self, save_directory: str, safe_serialization: bool = True, **kwargs
+    ):
         import os
 
         os.makedirs(save_directory, exist_ok=True)
         save_dir = Path(save_directory)
         include_text_encoder = bool(kwargs.pop("include_text_encoder", True))
+        text_subdir = (
+            "text_encoder/clip-vit-large-patch14"
+            if getattr(self.text_encoder, "name", "").startswith("clip")
+            else _TEXT_ENCODER_SUBDIR
+        )
         cfg = {
             "model_type": "mld",
-            "text_encoder_name": _TEXT_ENCODER_SUBDIR,
+            "text_encoder_name": text_subdir,
             "text_encoder_stored_in_artifact": include_text_encoder,
             "guidance_scale": self.guidance_scale,
             "num_inference_steps": self.num_inference_steps,
@@ -298,13 +309,15 @@ class MLDBundle(ModelBundle):
                 raise RuntimeError(
                     "Cannot export a complete MLD artifact without a loaded text encoder."
                 )
-            self.text_encoder.text_model.save(
-                str(save_dir / _TEXT_ENCODER_SUBDIR),
+            self.text_encoder.save_pretrained(
+                str(save_dir / text_subdir),
                 safe_serialization=True,
             )
         (save_dir / "mld_config.json").write_text(json.dumps(cfg, indent=2))
 
         def _cpu_state(m):
+            while hasattr(m, "module"):
+                m = m.module
             return {k: v.detach().cpu().contiguous() for k, v in m.state_dict().items()}
 
         if safe_serialization:
@@ -316,8 +329,43 @@ class MLDBundle(ModelBundle):
             torch.save(_cpu_state(self.vae), str(save_dir / "vae.pt"))
             torch.save(_cpu_state(self.denoiser), str(save_dir / "denoiser.pt"))
 
-        np.save(str(save_dir / "Mean.npy"), self.mean.detach().cpu().numpy().astype(np.float32))
-        np.save(str(save_dir / "Std.npy"), self.std.detach().cpu().numpy().astype(np.float32))
+        np.save(
+            str(save_dir / "Mean.npy"),
+            self.mean.detach().cpu().numpy().astype(np.float32),
+        )
+        np.save(
+            str(save_dir / "Std.npy"),
+            self.std.detach().cpu().numpy().astype(np.float32),
+        )
+        required = [
+            "mld_config.json",
+            "Mean.npy",
+            "Std.npy",
+            "vae.safetensors" if safe_serialization else "vae.pt",
+            "denoiser.safetensors" if safe_serialization else "denoiser.pt",
+        ]
+        if include_text_encoder:
+            required += sorted(
+                path.relative_to(save_dir).as_posix()
+                for path in (save_dir / text_subdir).rglob("*")
+                if path.is_file()
+            )
+        from motius.configuration.motionlcm_text import copy_motion_licenses
+
+        required += copy_motion_licenses(save_dir)
+        (save_dir / "model_index.json").write_text(
+            json.dumps(
+                {
+                    "_class_name": "MLDPipeline",
+                    "bundle_class": "motius.models.mld.MLDBundle",
+                    "pipeline_class": "motius.pipelines.mld.MLDPipeline",
+                    "tasks": ["text_to_motion"],
+                    "required_files": required,
+                },
+                indent=2,
+            )
+            + "\n"
+        )
         return save_directory
 
     @classmethod
@@ -346,14 +394,15 @@ class MLDBundle(ModelBundle):
             text_encoder_name = str(bundled_text_encoder)
         elif load_text_encoder:
             raise FileNotFoundError(
-                "The MLD artifact is incomplete: missing bundled SentenceT5 "
+                "The MLD artifact is incomplete: missing bundled "
                 f"text encoder at {bundled_text_encoder}."
             )
         else:
             text_encoder_name = _DEFAULT_TEXT_ENCODER
         guidance_scale = kwargs.pop("guidance_scale", meta.get("guidance_scale", 7.5))
         num_inference_steps = kwargs.pop(
-            "num_inference_steps", meta.get("num_inference_steps", 50))
+            "num_inference_steps", meta.get("num_inference_steps", 50)
+        )
         return cls(
             config=meta["config"],
             vae_weights_path=str(_w("vae")),
@@ -381,13 +430,10 @@ class MLDBundle(ModelBundle):
         return self.mean.device
 
     @torch.no_grad()
-    def encode_text(self, captions: List[str]) -> torch.Tensor:
+    def encode_text(self, features: dict[str, torch.Tensor]) -> torch.Tensor:
         if self.text_encoder is None:
             raise RuntimeError("Text encoder not loaded (load_text_encoder=False).")
-        return self.text_encoder(list(captions))
-
-    def denormalize(self, motion_263: torch.Tensor) -> torch.Tensor:
-        return motion_263 * self.std + self.mean
+        return self.text_encoder(features)
 
     def forward(self, *args, **kwargs):  # pragma: no cover - use pipeline
         raise NotImplementedError("Use MLDPipeline.infer_t2m for inference.")

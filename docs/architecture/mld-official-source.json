@@ -1,0 +1,63 @@
+{
+  "complete": true,
+  "tests": [
+    {
+      "tensor": "/cases/0/text",
+      "shape": [
+        4,
+        1,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/motion/0",
+      "shape": [
+        48,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/motion/1",
+      "shape": [
+        40,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/text",
+      "shape": [
+        2,
+        1,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/motion/0",
+      "shape": [
+        48,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/motion/1",
+      "shape": [
+        40,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "upstream_commit": "081ce3152e5a95b14a4495fb2d32939c257c6216",
+  "scope": "Official CLIP-conditioned MLD, author Google Drive checkpoint SHA757bea86d97f9e7ab434ebc1a074c4f9d457b0b24fb0d72d50ae3a6e08574914, original VAE/denoiser/text class and unchanged reverse-diffusion method. All used neural states and full 50-step guidance 7.5/1.0 text-to-motion versus native public Pipeline, ragged lengths and long raw captions. Native text-only CLIP excludes unused vision tower/projection/logit scale; unused encoder-path mem_pos buffer excluded. Controlled FP32/math attention. Shared supplied HumanML statistics; training and legacy SentenceT5 checkpoint are separate scopes."
+}
