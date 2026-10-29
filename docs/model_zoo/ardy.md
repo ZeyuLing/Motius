@@ -18,7 +18,7 @@ short autoregressive horizons, accepts text changes while a sequence is
 running, and combines text with root paths, waypoints, full-body keyframes, or
 sparse joint position and rotation constraints.
 
-This Motius integration vendors the inference runtime under its Apache-2.0
+This Motius integration implements the inference runtime under its Apache-2.0
 license, loads the original NVIDIA checkpoints directly, and exposes batch and
 stateful streaming APIs without a runtime dependency on a reference checkout.
 
@@ -339,7 +339,7 @@ fitting error. Unitree G1 output can be exported exactly to MuJoCo qpos-36.
 
 ## Citation and License
 
-The adapted runtime preserves NVIDIA's Apache-2.0 notices and the vendored
+The adapted runtime preserves NVIDIA's Apache-2.0 notices and the
 LLM2Vec MIT attribution. See `motius/licenses/ardy/LICENSE` and
 `motius/licenses/ardy/ATTRIBUTIONS.md`. Checkpoint and dataset licenses are
 separate from the source-code license.

@@ -63,3 +63,25 @@ generated motion embedding. Raw embedding-space FID is not a Motius
 leaderboard metric. For normalized FID and MM-Dist, lower is better. For
 R-Precision and Diversity, higher is usually better, but Diversity should be
 compared together with the ground-truth row and the target dataset protocol.
+
+## Native source validation
+
+The native Bundle contains the three matching networks; the Pipeline owns raw
+text processing, normalization, padding and sorting. The current author release
+matches all 42 packaged neural tensors, GloVe files and original Float64
+statistics. [Independent source validation](../architecture/humanml-evaluator-source.json)
+executes the original RawTextDataset, DatasetV2 and EvaluatorModelWrapper on
+single/ragged Float32/Float64 inputs. Final embeddings match exactly after
+undoing the original wrapper's documented output permutation.
+
+Source-compatible text processing preserves case and represents empty text with
+SOS/EOS alone. Statistics and physical inputs retain their precision until the
+original network's Float32 boundary. Historical benchmark rows have not been
+recomputed after these corrections. The source fixture controls crop/caption
+selection; it does not certify a full dataset evaluation protocol.
+
+[Current-weight export](../architecture/humanml-evaluator-checkpoint.json) also
+passes offline fresh-process loading in both safetensors and PyTorch formats,
+including changed neural weights, sub-Float32 statistic changes, vocabulary and
+non-default preprocessing limits. spaCy and its named language model remain
+external runtime dependencies.

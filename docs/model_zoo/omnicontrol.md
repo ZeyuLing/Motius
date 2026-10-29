@@ -12,7 +12,7 @@
 </p>
 
 OmniControl generates HumanML3D motion from text while controlling selected
-3D joint positions at selected frames. The Motius integration vendors the
+3D joint positions at selected frames. The Motius integration implements the
 official MIT inference runtime and uses the released HumanML3D checkpoint.
 
 **Tasks:** Text-to-Motion, Temporal Motion Completion, Kinematic Motion Control.
@@ -226,6 +226,12 @@ expressed as world-space positions over the shared 22-joint SMPL body skeleton.
 Its internal spatial normalizer is packaged with the checkpoint. The model does
 not accept local joint rotations as native control input; SMPL Mesh output is
 materialized after HumanML3D recovery for evaluation and visualization.
+
+## Native implementation and validation
+
+Neural modules, native Trainer and inference Pipeline follow the shared architecture.
+See [prepared-motion training](../tasks/prepared_motion_training.md) and the
+[original-source validation scopes](../architecture/native-methods.md).
 
 ## Citation and License
 

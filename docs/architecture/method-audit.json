@@ -1,0 +1,312 @@
+{
+  "schema": "motius-method-architecture-v1",
+  "methods": [
+    {
+      "method": "animatecanvas",
+      "python_files": 20,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "any2track",
+      "python_files": 2,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "ardy",
+      "python_files": 13,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "bailando",
+      "python_files": 13,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "beyondmimic",
+      "python_files": 5,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "condmdi",
+      "python_files": 4,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "dart",
+      "python_files": 6,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "edge",
+      "python_files": 6,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "flowhmr",
+      "python_files": 12,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "flowmdm",
+      "python_files": 8,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "gem_smpl",
+      "python_files": 8,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "gem_x",
+      "python_files": 8,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "gentrack",
+      "python_files": 2,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "gvhmr",
+      "python_files": 5,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "humanml3d_evaluator",
+      "python_files": 3,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "humanoid_gpt",
+      "python_files": 2,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "hymotion_t2m",
+      "python_files": 15,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "interclip",
+      "python_files": 2,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "intergen",
+      "python_files": 9,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "intermask",
+      "python_files": 13,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "kimodo",
+      "python_files": 12,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "maskcontrol",
+      "python_files": 3,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "mdm",
+      "python_files": 4,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "mld",
+      "python_files": 2,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "mogendit",
+      "python_files": 5,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "mogents",
+      "python_files": 12,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "momask",
+      "python_files": 11,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "motion_clip",
+      "python_files": 7,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "motionbricks",
+      "python_files": 10,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "motioncanvas",
+      "python_files": 2,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "motionclr",
+      "python_files": 3,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "motiongpt",
+      "python_files": 6,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "motiongpt3",
+      "python_files": 12,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "motionlcm",
+      "python_files": 12,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "motionmillion",
+      "python_files": 9,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "motionstreamer",
+      "python_files": 11,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "omnicontrol",
+      "python_files": 5,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "prism",
+      "python_files": 17,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "projflow",
+      "python_files": 5,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "prompthmr",
+      "python_files": 21,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "protomotions",
+      "python_files": 4,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "sonic",
+      "python_files": 4,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "t2mgpt",
+      "python_files": 9,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "tm2d",
+      "python_files": 3,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "tm2t",
+      "python_files": 7,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "tmr",
+      "python_files": 3,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "unimumo",
+      "python_files": 4,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "vermo",
+      "python_files": 25,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "vimogen",
+      "python_files": 4,
+      "findings": [],
+      "source_parity": "unverified"
+    },
+    {
+      "method": "vision",
+      "python_files": 98,
+      "findings": [],
+      "source_parity": "unverified"
+    }
+  ],
+  "trainer_applications": [],
+  "summary": {
+    "methods": 50,
+    "methods_with_findings": 0,
+    "python_files": 486,
+    "findings": {}
+  }
+}

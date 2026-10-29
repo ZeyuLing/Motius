@@ -114,6 +114,19 @@ The Hugging Face artifact contains the VQ encoder, codebook, decoder, text
 Transformer, audio Transformer, normalization statistics, and text vocabulary.
 `Pipeline.from_pretrained` therefore needs no second checkpoint download.
 
+The native implementation was checked against the pinned author repository:
+three text and three single/multiple-window music cases match exactly, including
+tokens, motion, joints and VQ encoding. Both joint training objectives and every
+active gradient also match, including label smoothing and the shared audio
+decoder. Sampling preserves the author's special-token rejection order.
+See the [source report](../architecture/tm2d-source.json).
+
+`TM2DTrainer` uses the existing Runner; the prepared NPZ recipe is
+`configs/tm2d/prepared_tokens.py`. Two-GPU updates, full CLI resume versus
+uninterrupted training, and trained/current cold text/music exports pass.
+These checks exclude raw music extraction, joint bimodal fusion, VQ training
+and the complete original corpus/epoch protocol.
+
 ## Quick Start
 
 Install TM2D's text and audio dependencies, then download the spaCy English

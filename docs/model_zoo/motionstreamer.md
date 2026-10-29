@@ -150,6 +150,12 @@ denormalized to MotionStreamer-272 physical scale.
 
 ## Evaluation Results
 
+The benchmark tables below record evaluations before the native architecture
+migration. The current text encoder uses the original FP32 constructor policy;
+these full-dataset metrics have not been rerun for that implementation. The
+[source comparisons](../training/motionstreamer.md#numerical-evidence) establish
+numerical equivalence only for their recorded controlled cases.
+
 <!-- MOTIUS_CANONICAL_METRICS:START -->
 
 > **Canonical metrics.** Public results are tied to the sources below. Motius/uTMR FID always means per-sample L2-normalized embedding-space FID; `—` means the normalized value has not been recomputed. Historical raw-space FID is never substituted.
@@ -219,6 +225,24 @@ MotionStreamer predicts a 272-dimensional global representation at 30 fps:
 
 The TAE temporal downsample factor is 4 frames per latent token. The pipeline
 therefore clamps requested lengths to token-aligned frame counts.
+
+## Training
+
+[The native recipe](../../configs/motionstreamer/train_motionstreamer.py) runs
+`MotionStreamerTrainer` through the shared Runner for TAE, AR and streaming
+stages. See the [training and export guide](../training/motionstreamer.md).
+
+- **Precision:** FP32 text and neural training; controlled source comparisons
+  additionally record the attention and TF32 settings used.
+- **Objective:** TAE Gaussian reconstruction/KL, or the original two-forward
+  autoregressive self-forcing diffusion objective.
+- **Checkpoints:** `outputs/training/motionstreamer_` plus stage; use
+  `--auto-resume --load-scope full` for complete native optimizer, scheduler,
+  trained and frozen network state. Export uses the actual trained tensors.
+
+Full-dataset convergence and benchmark revalidation remain pending. The native
+code derived from the upstream project retains its PRL v1.0 terms in
+[the license record](../../motius/licenses/motionstreamer/UPSTREAM_LICENSE.md).
 
 ## Citation and License
 

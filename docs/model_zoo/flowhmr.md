@@ -120,6 +120,12 @@ This release implements base training; PHC+ GRPO training is outside its scope.
 
 ## Quick Start
 
+Watch the [Blender product release film](../../assets/model_zoo/flowhmr/blender_demo/motius-flowhmr-product-release-1080p.mp4) and follow the [illustrated first-use guide](../tutorials/flowhmr-blender.md). The film records fresh full-video inference and a complete original-speed 750-frame result, with explicit processing cuts and timing boundaries.
+
+Blender users can install the [FlowHMR add-on](../../blender_extension/README.md),
+which provides standard and accelerated inference, native 52-joint animation,
+Mixamo retargeting and animated FBX export.
+
 ```bash
 pip install -e '.[flowhmr,video-to-motion]'
 ```
@@ -205,9 +211,8 @@ worker/rank partitioned; resume restores training state, not the exact stream
 cursor. `bundle.save_pretrained(directory)` exports safetensors, config,
 statistics, provenance and licenses for `Pipeline.from_pretrained`.
 
-This native recipe covers base pretraining. The official GRPO SDE primitives
-are retained in the vendor, but PHC+ simulator post-training is not advertised
-as a Motius-native training recipe in this release.
+This native recipe covers base pretraining. PHC+ simulator post-training is not
+available as a Motius-native training recipe in this release.
 
 ## Evaluation Results
 
@@ -304,3 +309,22 @@ SMPL-H assets require their separate license and are not redistributed.
   <a href="../motion/README.md">Motion Toolkit</a>
 </p>
 <!-- MOTIUS_MODEL_CARD_FOOTER:END -->
+
+
+### Durable Blender jobs and shared standard optimization (Motius 0.3.15 / extension 0.2.9)
+
+Inference now uses an independent persistent queue. Closing Blender or switching
+files leaves queued jobs running; results are imported only on explicit request.
+Preflight checks CUDA/BF16 execution, available memory, video dimensions, disk and
+runtime tools. Low-memory scheduling adjusts SAM/VGGT frame batches and attention
+workspaces; CUDA OOM retries use fresh processes without changing frames, model
+dtypes, seed or sampling steps. Standard mode retains its original compute path.
+
+The previous 0.3.14 standard mode measured 366.81 s / 49.78 GiB on the complete
+750-frame video. Current standard mode retains official SAM while sharing streamed
+VGGT and bounded batching; see the [current standard and precision validation](../architecture/validation/flowhmr-shared-standard-20261027.md). See the [productization validation](../architecture/validation/flowhmr-productization-20261027.md)
+for timing scope, real OOM recovery and platform limitations. PyTorch remains the shipping backend; the [transferable runtime context](../../deploy/flowhmr/README.md) isolates dependencies without requiring ONNX/TensorRT conversion.
+
+### Optional mixed FP16 frontend (0.3.16)
+
+Use `--frontend-precision float16` to run the SAM backbone and VGGT aggregator in mixed FP16; the upstream precision remains the default. The Blender Options panel exposes the same policy. This does not convert the entire network to FP16 or recover precision already lost in stored BF16 weights. Camera caches are precision-specific and out-of-range SAM backbone checkpoint values are rejected. See the [three-video validation](../architecture/validation/flowhmr-fp16-multivideo-20261027.md) for measured differences, speed, memory and activation-monitoring limits.

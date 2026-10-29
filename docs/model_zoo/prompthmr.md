@@ -11,14 +11,14 @@
 </p>
 
 PromptHMR is a promptable SMPL-X human mesh recovery model. Motius provides a
-pinned official-runtime adapter, output conversion, licensed SMPL-X geometry
-replay, and evaluation. It is not a redistributable Motius package.
+native image and temporal neural bundles, a native video Pipeline, temporal
+Trainer, licensed SMPL-X geometry replay, and evaluation for local research use.
 Official source: [yufu-wang/PromptHMR](https://github.com/yufu-wang/PromptHMR),
 pinned to `3b566b7dbb28ce506c7ea972c18693f4c705ce8c`. The default BEDLAM1+BEDLAM2
 checkpoint has SHA-256
 `2a36132715b5db0ea2acb6f1f92bbf963c9cf0fb1c3aea8d0f73dfede0b9e5e5`.
 
-| Task status | Restricted upstream runtime |
+| Task status | Native research implementation; validation scope below |
 | --- | --- |
 
 <!-- MOTIUS_MODEL_CARD_NAV:START -->
@@ -39,17 +39,15 @@ checkpoint has SHA-256
 
 | Task | Input / condition | Rendered output | More |
 | --- | --- | --- | --- |
-| No registered public task | See the capability boundary below | No redistributable repository preview | — |
+| Monocular capture | RGB video | Local research output | — |
 
 Every public `infer_*` API is represented by a GitHub-native H.264 video player. **All cases** opens the optional interactive comparison.
 
 <!-- MOTIUS_TASK_DEMOS:END -->
 
 
-No repository-hosted Motius preview is published because the upstream license
-does not permit redistributing the runtime or checkpoint. The measured 3DPW
-result below was produced from a user-accepted official installation and
-licensed SMPL-X replay; it is not presented as a downloadable demo artifact.
+The historical 3DPW result below used the official installation and licensed
+SMPL-X replay. It has not yet been recomputed with the native implementation.
 
 ## Model Overview
 
@@ -59,7 +57,7 @@ licensed SMPL-X replay; it is not presented as a downloadable demo artifact.
 
 | Task | Pipeline API | Evaluation and examples |
 | --- | --- | --- |
-| Not registered | No canonical task API | See the capability boundary below |
+| Monocular capture | `infer_monocular_motion_capture` | Source comparison scope below |
 
 <!-- MOTIUS_MODEL_CARD_TASKS:END -->
 
@@ -77,42 +75,43 @@ Training FPS is the checkpoint's native temporal clock. Preview FPS only control
 <!-- MOTIUS_FRAME_RATE_CONTRACT:END -->
 
 
-`PromptHMRBundle` verifies the official checkout and local checkpoints.
-`PromptHMRPipeline` runs `scripts/demo_video.py` in an isolated environment and
-converts the exact `results.pkl` schema to `MonocularCaptureResult`.
+`PromptHMRBundle` owns six neural roots: image encoder, camera encoder, text
+encoder, prompt encoder, SMPL decoder and temporal network. Detection, mask
+tracking, camera calibration, DROID and Metric3D use separate neural bundles.
+Video processing, prompt construction, metric SLAM, body geometry, floor fitting
+and post-optimization belong to `PromptHMRPipeline` and motion utilities.
+Inference runs in process without an original checkout or original demo command.
+`PromptHMRVideoTrainer` implements the released temporal objective through the
+same temporal network. Image training code/dataset was not published upstream.
 
 ## Quick Start
 
-The upstream license prohibits reproducing, modifying, or making the software
-available to a third party without prior written permission. Motius therefore
-does not vendor PromptHMR, redistribute a derivative runtime, or publish a
-complete Hugging Face artifact. Inference requires the user's own accepted,
-pinned official checkout. `Pipeline.from_pretrained` is intentionally
-unavailable for this restricted adapter.
+Install `motius[prompthmr]` in the validated PyTorch 2.6 / CUDA 12.6
+environment. The original compiled SAM 2, Detectron2, DROID-Calib, lietorch and
+PyG torch-scatter wheels must match that stack. FFmpeg/ffprobe handle video I/O.
+Only the needed native components are imported at inference; the original
+application repository is not a runtime dependency.
 
-```bash
-PROMPTHMR_ACCEPT_LICENSE=1 \
-DOWNLOAD_VIDEO_CHECKPOINT=true \
-bash tools/setup_prompthmr_env.sh
-```
-
-The image model, SMPL-X files, and third-party detection, tracking, depth, and
-SLAM weights remain user supplied under their respective licenses.
+Supply a local artifact directory with `checkpoint.ckpt`, image `config.yaml`,
+`video/phmr_b1b2.ckpt`, `video/prhmr_release_002.yaml`, the original frontend
+weights under `data/pretrain/`, and the public SMPL-X mapping files under
+`data/body_models/`. The body models are provided separately by the user.
+A native `save_pretrained` export stores current neural parameters and the
+required pipeline assets, without copying source repositories or licensed
+SMPL/SMPL-X model files.
 
 ```python
-from motius.models.prompthmr import PromptHMRBundle
 from motius.pipelines.prompthmr import PromptHMRPipeline
 
-bundle = PromptHMRBundle(
-    upstream_dir="outputs/tmp/prompthmr/upstream",
-    video_checkpoint="bedlam1+2",
-    python_command=("conda", "run", "-n", "phmr_pt2.4", "python"),
+pipeline = PromptHMRPipeline.from_pretrained(
+    "checkpoints/prompthmr",
+    body_models_root="checkpoints/body_models",
 )
-pipeline = PromptHMRPipeline(bundle)
 result = pipeline.infer_monocular_motion_capture(
-    "input.mp4",
-    original_fps=30.0,
+    "input.mp4", output_dir="outputs/prompthmr", static_camera=False,
+    deterministic=True, seed=1234,
 )
+pipeline.save_pretrained("outputs/prompthmr_native")
 ```
 
 Camera-space fields map from `smplx_cam`. World fields are populated only when
@@ -142,10 +141,25 @@ as `licensed_smplx_replay`, and missing world parameters are never synthesized.
 
 | Task | Canonical result source | Protocol |
 | --- | --- | --- |
-| No registered public task | Not applicable | See the capability boundary |
+| Monocular capture | Historical official 3DPW run below | Native full-dataset rerun pending |
 
 <!-- MOTIUS_CANONICAL_METRICS:END -->
 
+
+Native validation uses the independent pinned original checkout and identical
+checkpoints. Prepared image/body/temporal outputs (96), frontend outputs (21),
+DROID neural outputs (20), Metric3D recurrent outputs (58), full masked SLAM
+trajectory/BA outputs, static-video results (181), moving-video results (179),
+and temporal training losses/all active gradients (520) compare bitwise equal.
+The moving-camera comparison enables the same Torch deterministic algorithms
+and cuDNN settings in both workers; unconstrained CUDA SLAM aggregation varies
+between runs. Use `deterministic=True` and the same seed for a reproducible run.
+These are one-video/prepared-batch certificates, not new full-dataset metrics.
+Current-weight export restores all 986 neural tensors exactly; cold Auto Pipeline
+video inference and actual two-process temporal DDP also passed. Reports are in
+[the validation directory](../architecture/validation/).
+
+The following historical benchmark used the original application:
 
 Official full-frame, multi-person inference completed all 24 3DPW Test videos
 and matched all 37 official target tracks. Licensed neutral SMPL-X replay
@@ -195,7 +209,7 @@ PromptHMR is described in the
 [CVPR 2025 paper](https://arxiv.org/abs/2504.06397) and released through the
 [official repository](https://github.com/yufu-wang/PromptHMR). Its code,
 checkpoints, and derivative runtimes are restricted to the uses allowed by the
-upstream license. Motius does not vendor or redistribute them. SMPL-X and the
+upstream license. Local derivatives preserve those restrictions. SMPL-X and the
 detector, tracker, depth, and SLAM dependencies retain separate terms; see
 [`motius/licenses/prompthmr/ATTRIBUTIONS.md`](../../motius/licenses/prompthmr/ATTRIBUTIONS.md)
 before setup or publication.

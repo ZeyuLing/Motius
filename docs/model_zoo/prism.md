@@ -127,6 +127,21 @@ iter-15,000 sequential-RoPE baseline.
 | KU-FlowT | `motius.models.prism.network.PrismTransformerMotionModel` |
 | Motion VAE | `motius.models.prism.AutoencoderKLPrism2DTK` |
 
+The released PRISM-KT checkpoint and actual UMT5 frontend reproduce the original
+Motius implementation exactly for all three public tasks at 50 steps, including
+prefix conditioning and two-segment generation. Native training losses, every
+active gradient and RNG match the original graph with deterministic/stochastic
+VAE latents and conditioning off/on. Three real two-GPU updates synchronize all
+825 transformer states and preserve both frozen networks.
+
+Current transformer/VAE/UMT5 changes also survive offline export and all three
+public tasks exactly. Exports preserve dtype, KAFS and latent defaults. See the
+[inference](../architecture/prism-ownership.json),
+[training](../architecture/prism-training.json) and
+[current-checkpoint](../architecture/prism-current-checkpoint.json) reports.
+This is an original Motius method; the full corpus/optimizer/AMP protocol and
+the separate PRISM 1.0 checkpoint remain outside these checks.
+
 ## Quick Start
 
 ```python

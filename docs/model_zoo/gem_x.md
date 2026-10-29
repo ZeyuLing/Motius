@@ -99,7 +99,7 @@ download.
 
 ## Quick Start
 
-Create an isolated environment without cloning GEM-X:
+Install the native Motius implementation without cloning GEM-X:
 
 ```bash
 python3.10 -m venv outputs/envs/gem-x
@@ -119,7 +119,6 @@ from motius import Pipeline
 pipeline = Pipeline.from_pretrained(
     "ZeyuLing/Motius-GEM-X",
     bundle_kwargs={
-        "python_executable": "outputs/envs/gem-x/bin/python",
     },
 )
 result = pipeline.infer_monocular_motion_capture(

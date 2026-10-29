@@ -101,7 +101,7 @@ them into `checkpoints/body_models/` using
 
 ## Quick Start
 
-Create an isolated environment without cloning GENMO:
+Install the native Motius implementation without cloning GENMO:
 
 ```bash
 python3.10 -m venv outputs/envs/gem-smpl
@@ -121,7 +121,6 @@ from motius import Pipeline
 pipeline = Pipeline.from_pretrained(
     "ZeyuLing/Motius-GEM-SMPL",
     bundle_kwargs={
-        "python_executable": "outputs/envs/gem-smpl/bin/python",
         "body_models_root": "checkpoints/body_models",
     },
 )
@@ -206,7 +205,7 @@ SMPL-X-to-SMPL map used by the pinned implementation.
 
 ## Citation and License
 
-The vendored source retains the NVIDIA OneWay Noncommercial license. Public
+The native implementation retains the NVIDIA OneWay Noncommercial license. Public
 weights retain the NVIDIA Open Model License. SMPL and SMPL-X have separate
 terms. See the
 [GEM-SMPL attributions](https://github.com/ZeyuLing/Motius/blob/main/motius/licenses/gem_smpl/ATTRIBUTIONS.md)

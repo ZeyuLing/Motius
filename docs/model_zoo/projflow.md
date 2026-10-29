@@ -179,6 +179,12 @@ re-canonicalizes the generated joints and derives rotations, velocities, and
 contacts, so it is a lossy convenience representation rather than ProjFlow's
 native state.
 
+## Native implementation and validation
+
+Neural modules, native Trainer and inference Pipeline follow the shared architecture.
+See [prepared-motion training](../tasks/prepared_motion_training.md) and the
+[original-source validation scopes](../architecture/native-methods.md).
+
 ## Citation and License
 
 ```bibtex
@@ -192,7 +198,7 @@ native state.
 
 The original [ProjFlow repository](https://github.com/Akihisa-Watanabe/ProjFlow)
 did not contain a repository-level license file at the audited revision. Review
-the upstream terms before redistribution or commercial use. Vendored-source
+the upstream terms before redistribution or commercial use. Source
 provenance and file-level notices are recorded in
 [`motius/models/projflow/ATTRIBUTIONS.md`](../../motius/models/projflow/ATTRIBUTIONS.md).
 OpenAI CLIP retains its own license and attribution.

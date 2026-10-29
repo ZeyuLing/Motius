@@ -142,7 +142,7 @@ SafeTensors files with all optimizer/scheduler state removed. The artifact
 loads with zero missing or unexpected keys. A deterministic 60-frame sample is
 exactly equal before and after conversion (`max_abs=0`, `mean_abs=0`).
 
-The vendored method runtime retains the upstream MIT license in
+The native method runtime retains the upstream MIT license in
 `motius/licenses/intermask/LICENSE`.
 
 ## Motion Representation

@@ -16,6 +16,23 @@ Diffusion in Latent Space* (Chen et al., CVPR 2023). This Motius release
 provides a native inference pipeline with the MLD motion VAE, latent diffusion
 denoiser, DDIM scheduler, and frozen SentenceT5 text wrapper.
 
+The linked published Motius artifact contains the SentenceT5-conditioned teacher
+from MotionLCM V1. Its 125 denoiser tensors match the author's MotionLCM V1
+teacher, rather than the original CLIP-conditioned MLD checkpoint. Raw original
+MLD checkpoints now default to CLIP; artifact loading follows its recorded text
+metadata. The original CLIP checkpoint passes [full 50-step source inference](../architecture/mld-official-source.json),
+[both native training objectives and all gradients](../architecture/mld-official-training-source.json),
+and [modified-current-weight offline export](../architecture/mld-official-current-checkpoint.json).
+
+`MLDTrainer(stage="vae")` trains feature/joint reconstruction and KL;
+`stage="diffusion"` trains the frozen-VAE latent diffusion objective. Both stages
+run through the [prepared-motion training entry point](../tasks/prepared_motion_training.md).
+Their separate [VAE](../architecture/mld-vae-distributed.json) and
+[diffusion](../architecture/mld-diffusion-distributed.json) two-GPU checks and
+[VAE](../architecture/mld-vae-prepared-cli.json)/[diffusion](../architecture/mld-diffusion-prepared-cli.json)
+CLI resume checks establish native integration on prepared fixtures, with the
+original raw-corpus and complete training schedule outside that scope.
+
 <!-- MOTIUS_MODEL_CARD_NAV:START -->
 <p align="center">
   <a href="#visual-results">Visual Results</a> ·

@@ -2,6 +2,8 @@
 from importlib import import_module
 
 _EXPORTS = {
+    "PreparedMotionDataset": ("motius.datasets.prepared_motion", "PreparedMotionDataset"),
+    "PreparedTM2DDataset": ("motius.datasets.prepared_tm2d", "PreparedTM2DDataset"),
     "PhysFlowPromptDataset": ("motius.datasets.gentrack", "PhysFlowPromptDataset"),
     "GenTrackPromptDataset": ("motius.datasets.gentrack", "GenTrackPromptDataset"),
     "MotionBricksSyntheticDataset": ("motius.datasets.motionbricks", "SyntheticMotionDataset"),

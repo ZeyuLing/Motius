@@ -17,8 +17,8 @@ clocks:
 
 The implementation lives in:
 
-- `motius/models/gentrack`: G1 bundle, Flow-GRPO/DPO primitives, physical
-  reward adapters, and source-compatible legacy aliases.
+- `motius/models/gentrack`: G1 neural bundle. Data processing, physical rewards and optimization
+  objectives live in their framework components.
 - `motius/trainers/gentrack`: online GRPO, reward-weighted SFT, DPO,
   generator-only, and frozen-pool trainers.
 - `configs/gentrack`: the main recipe and matched ablations.
@@ -39,8 +39,11 @@ installed simulator:
 python -m pip install -e ".[dev,gentrack,motion-tracking-train-protomotions]"
 ```
 
-Git LFS must be materialized before ProtoMotions or SONIC training because
-their robot meshes and simulator assets are LFS-managed.
+Install the selected, hash-verified ProtoMotions robot assets with
+`python tools/download_protomotions_assets.py`. They are stored under
+`checkpoints/robots/protomotions`, outside the Python network package.
+Tracker training uses the native Motius Trainer and AccelerateRunner with an
+installed Isaac Lab / Isaac Sim runtime; the physical judge uses MuJoCo.
 The legacy 135D-to-G1 retarget helper additionally needs
 `pip install -e ".[gentrack-retarget]"`; native G1-38 training does not.
 
@@ -57,7 +60,9 @@ export MOTIUS_GENTRACK_G0_CHECKPOINT=/path/to/hymotion_g1_g0
 export MOTIUS_GENTRACK_PROTOMOTIONS_ARTIFACT=/path/to/g1-bones-deploy
 export MOTIUS_GENTRACK_TRAINEE_CHECKPOINT=/path/to/protomotions_t0/last.ckpt
 export MOTIUS_GENTRACK_PROTOMOTIONS_ONNX=/path/to/t0/unified_pipeline.onnx
-export MOTIUS_GENTRACK_PROTO_PYTHON=/path/to/protomotions/python
+export MOTIUS_GENTRACK_PROTO_PYTHON=/path/to/isaaclab/python
+export MOTIUS_GENTRACK_PROTO_CONFIGURATION=/path/to/t0/resolved_configs.yaml
+export MOTIUS_GENTRACK_PROTOMOTIONS_ASSETS=/path/to/robots/protomotions
 ```
 
 The HYMotion manifest follows `ManifestTextMotionDataset`: every motion is
@@ -132,7 +137,8 @@ python tools/gentrack/coevolve.py \
   --gen-init-ckpt "$MOTIUS_GENTRACK_G0_CHECKPOINT" \
   --trainee-init-ckpt "$MOTIUS_GENTRACK_TRAINEE_CHECKPOINT" \
   --initial-judge-onnx "$MOTIUS_GENTRACK_PROTOMOTIONS_ONNX" \
-  --py38 "$MOTIUS_GENTRACK_PROTO_PYTHON" \
+  --tracker-python "$MOTIUS_GENTRACK_PROTO_PYTHON" \
+  --trainee-configuration "$MOTIUS_GENTRACK_PROTO_CONFIGURATION" \
   --root outputs/training/gentrack_coevolve
 ```
 
@@ -188,3 +194,20 @@ The first two tests exercise the algorithm without simulator startup. The
 evaluator test validates trajectory protocol handling and aggregate metrics.
 Physical end-to-end replay additionally requires the user-provided tracker
 artifacts and simulator environment listed above.
+
+## Native tracker validation
+
+The native tracker uses `motius.trainers.protomotions.train`, the common
+AccelerateRunner, and Isaac Lab. Each round emits a full native checkpoint and
+a `last.ckpt` interchange file with current neural weights, all four Adam
+states, advantage EMA, epoch and transition count. The co-evolution launcher
+restores those states with `--resume-original`. ONNX export runs through
+`tools/export_protomotions_onnx.py`; its observation, policy and PD composition
+lives in the inference Pipeline.
+
+Recorded checks cover [original-state PPO/AMP resume](../architecture/validation/protomotions-resume-source.json),
+[real CLI checkpoint handoff](../architecture/protomotions-checkpoint-bridge.json),
+[NPZ/CSV/PyRoki-output conversion and packaging](../architecture/gentrack-motion-conversion.json),
+and a [128-frame original/native MuJoCo judge comparison](../architecture/gentrack-native-judge.json).
+These checks establish the stated component equivalence. A complete GenTrack
+co-evolution experiment and full-dataset metrics require separate runs.

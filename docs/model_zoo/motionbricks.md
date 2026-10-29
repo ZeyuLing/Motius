@@ -13,10 +13,11 @@ MotionBricks is NVIDIA's real-time whole-body control stack released inside
 GR00T-WholeBodyControl. It combines a VQVAE motion tokenizer, a pose model, and
 a root model to stream controllable Unitree G1 motion primitives.
 
-Motius vendors the Apache-2.0 source runtime under
-`motius.models.motionbricks.network`, exposes it through a standard
-`MotionBricksBundle` / `MotionBricksPipeline`, and keeps the multi-GB pretrained
-weights outside the repository.
+Motius implements the encoder, decoder, quantizer, pose network and root network
+in `MotionBricksBundle`. Native stage Trainers own augmentation and objectives;
+`MotionBricksPipeline` owns sampling, primitives, controllers and MuJoCo qpos
+assembly. Body geometry, representations and assets live outside the model package.
+Pretrained weights remain external artifacts.
 
 <!-- MOTIUS_MODEL_CARD_NAV:START -->
 <p align="center">
@@ -86,14 +87,16 @@ Training FPS is the checkpoint's native temporal clock. Preview FPS only control
 
 MotionBricks is a Model Zoo integration, but it is not registered under a
 canonical Motius task and therefore does not appear in the Task Index. The
-repository exposes the upstream runtime and representation utilities without
-claiming a stable robot-control task or benchmark contract.
+repository provides native navigation and representation components. The public
+qpos capability is not a benchmark contract.
 
 ### Checkpoints
 
-The Motius artifact contains all four official LFS checkpoints and the runtime
-configuration. `MotionBricksBundle.validate_checkpoints()` still rejects
-missing files or unresolved LFS pointer payloads when loading a local artifact.
+The released artifact contains the three neural checkpoints, G1 primitive clip,
+stage configuration and normalization statistics. Native exports save the current
+five neural roots and essential pipeline assets.
+`motius.configuration.motionbricks.validate_checkpoint_layout` checks legacy
+checkpoint completeness and unresolved LFS pointers before construction.
 
 ## Quick Start
 
@@ -110,10 +113,11 @@ from motius import Pipeline
 
 pipe = Pipeline.from_pretrained(
     "ZeyuLing/motius-motionbricks-g1",
-    bundle_kwargs={"device": "cuda", "controller": "random"},
+    bundle_kwargs={"device": "cuda"},
+    controller="random",
 )
 
-result = pipe.infer_g1_qpos_generation(steps=240)
+result = pipe.infer_g1_qpos_generation(steps=240, seed=1234)
 qpos = result["qpos"]          # (T, 36), Unitree G1 MuJoCo qpos
 fps = result["fps"]            # 30
 
@@ -137,9 +141,12 @@ for automated smoke tests or offline previews.
 
 
 No canonical Motius benchmark is registered for MotionBricks yet. The
-integration is therefore smoke-tested for checkpoint completeness,
-deterministic qpos shape and timing, and runtime independence, but it is not
-assigned a leaderboard score.
+released weights have been compared against independent original source at
+commit `45c03facbf848e0c743091b7d9c17952096ff908`: neural outputs, two complete
+160-frame random-controller rollouts, and all three original training-stage
+objectives, active gradients and VQ EMA updates. These checks use synthetic
+normalized training inputs; the full dataset and optimizer protocol remains
+unverified. It is not assigned a leaderboard score.
 
 ## Motion Representation
 
@@ -153,9 +160,9 @@ MotionBricks and ARDY both target Unitree G1, but their tensors are different:
 | `g1_38` | 38D | Motius compact G1 representation |
 | `g1_qpos` | 36D | MuJoCo root pose plus 29-DOF robot state |
 
-The official MotionBricks converter is kept inside the vendored runtime; Motius
-exposes the checkpoint/runtime wrapper first and will route broader
-representation conversion through the shared G1 qpos API.
+Motion representation transforms live in `motius.motion.representation.motionbricks`;
+G1 qpos conversion and body geometry live in `motius.motion.body_models.motionbricks`.
+The model package contains only neural modules.
 
 ## Citation and License
 
@@ -163,8 +170,9 @@ representation conversion through the shared G1 qpos API.
   Control](https://arxiv.org/abs/2604.24833)
 - Original source:
   [NVlabs/GR00T-WholeBodyControl](https://github.com/NVlabs/GR00T-WholeBodyControl/tree/main/motionbricks)
-- License and vendored provenance:
-  [`motius/models/motionbricks/ATTRIBUTIONS.md`](../../motius/models/motionbricks/ATTRIBUTIONS.md)
+- License and source provenance:
+  [`motius/licenses/motionbricks/ATTRIBUTIONS.md`](../../motius/licenses/motionbricks/ATTRIBUTIONS.md)
+  (source code Apache-2.0; original checkpoint and dataset terms preserved).
 
 <!-- MOTIUS_MODEL_CARD_FOOTER:START -->
 ---

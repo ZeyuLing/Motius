@@ -175,6 +175,12 @@ For qualitative inspection and cross-representation evaluation, generated
 HumanML3D-263 motions are retargeted to the repository SMPL motion format and
 rendered as SMPL mesh videos.
 
+## Native implementation and validation
+
+Neural modules, native Trainer and inference Pipeline follow the shared architecture.
+See [prepared-motion training](../tasks/prepared_motion_training.md) and the
+[original-source validation scopes](../architecture/native-methods.md).
+
 ## Citation and License
 
 ```bibtex

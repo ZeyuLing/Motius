@@ -275,6 +275,12 @@ SMPL renderer, and all three T2M evaluators. The conversion round-trip matches
 the official formulation to floating-point precision for every recoverable
 frame; as with standard HML263, the final forward root delta is not encoded.
 
+## Native implementation and validation
+
+Neural modules, native Trainer and inference Pipeline follow the shared architecture.
+See [prepared-motion training](../tasks/prepared_motion_training.md) and the
+[original-source validation scopes](../architecture/native-methods.md).
+
 ## Citation and License
 
 ```bibtex

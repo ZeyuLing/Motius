@@ -111,7 +111,8 @@ so every variant remains independently loadable after one snapshot download.
 | --------- | ---- |
 | Pipeline | `motius.pipelines.kimodo.KIMODOPipeline` |
 | Bundle | `motius.models.kimodo.KIMODOBundle` |
-| Runtime | `motius.models.kimodo.network` |
+| Networks | `motius.models.kimodo.network` |
+| Sampling and constraints | `motius.pipelines.kimodo` and `motius.motion.conditioning.kimodo` |
 
 ## Quick Start
 
@@ -275,3 +276,14 @@ row-major 6D convention for prefix constraints and generated bridge output.
   <a href="../motion/README.md">Motion Toolkit</a>
 </p>
 <!-- MOTIUS_MODEL_CARD_FOOTER:END -->
+
+## Native architecture migration
+
+Install `pip install -e '.[kimodo]'`; optional official motion correction uses
+`pip install -e '.[kimodo-postprocess]'`. The neural bundle shares the denoiser
+with the inference pipeline; sampling, multiprompt stitching, postprocessing,
+constraints and skeleton representations are implemented outside the model
+package. The source comparison pins NVIDIA revision
+`e1c219c99b4b94ba48be1fb6a1cbc64ecee4c954`. Full numerical acceptance is tracked in
+[the migration status](../architecture/native-methods.md); historical adapter
+checks alone do not establish original-source parity.

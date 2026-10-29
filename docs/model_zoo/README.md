@@ -179,9 +179,8 @@ pytest -q tests/test_pipeline_task_api_parity.py
 The current registry contains 47 artifacts, 81 artifact-task bindings, and 73
 unique task methods across 42 public method Pipeline classes: 25 native
 implementations, 43 identity aliases, five verified adapters, and zero
-unverified routes. This includes the restricted official-runtime
-`PromptHMRPipeline`, even though its licensed upstream checkpoint cannot be
-redistributed as a Motius Hugging Face artifact.
+unverified routes. This includes the native research `PromptHMRPipeline`; its original license
+restrictions and checkpoint provenance remain explicit in the model card.
 
 All 47 classes named `Pipeline` or `*Pipeline` under `motius/pipelines` are
 accounted for. The only exclusions are the abstract `BasePipeline`, the
@@ -257,7 +256,7 @@ engine-specific physics results are never mixed.
 | [PRISM](prism.md) | [Text-to-Motion](../leaderboards/README.md#text-to-motion), [Temporal Motion Completion](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard), [Sequential Text-to-Motion](https://huggingface.co/spaces/ZeyuLing/babel-sequential-generation-leaderboard) | `PRISM Motion-138` | [📦 1.0](https://huggingface.co/ZeyuLing/motius-prism-1.0-humanml3d) · [📦 KT](https://huggingface.co/ZeyuLing/motius-prism-kt-humanml3d) |
 | [ProjFlow](projflow.md) | [Temporal Motion Completion](https://huggingface.co/spaces/ZeyuLing/temporal-condition-leaderboard), [Kinematic Motion Control](../leaderboards/kinematic_motion_control.md), [Part-Level Motion Control](https://huggingface.co/spaces/ZeyuLing/body-part-condition-humanml3d-leaderboard) | `HumanML3D SMPL-22 joints` | [📦 Motius checkpoint](https://huggingface.co/ZeyuLing/motius-projflow-humanml3d) |
 | [ProtoMotions](protomotions.md) | [Motion Tracking](https://huggingface.co/spaces/ZeyuLing/motion-tracking-mujoco-leaderboard) | `G1 current state + four future references` | [📦 Motius checkpoint](https://huggingface.co/ZeyuLing/Motius-ProtoMotions-G1-BONES-SEED) |
-| [PromptHMR-Video](prompthmr.md) | **Restricted upstream runtime** | `SMPL-X` | [↗ Official weights](https://github.com/yufu-wang/PromptHMR#installation) |
+| [PromptHMR-Video](prompthmr.md) | Monocular Motion Capture | `SMPL-X` | [↗ Official weights](https://github.com/yufu-wang/PromptHMR#installation) |
 | [SONIC](sonic.md) | [Motion Tracking](https://huggingface.co/spaces/ZeyuLing/motion-tracking-mujoco-leaderboard) | `G1 64D universal token + policy state` | [📦 Motius checkpoint](https://huggingface.co/ZeyuLing/Motius-SONIC-G1) |
 | [T2M-GPT](t2mgpt.md) | [Text-to-Motion](../leaderboards/README.md#text-to-motion) | `HumanML3D-263` | [📦 Weights](https://huggingface.co/ZeyuLing/Motius-T2M-GPT-HumanML3D) |
 | [TM2D](tm2d.md) | [Text-to-Motion](../leaderboards/README.md#text-to-motion), [Music-to-Dance](https://huggingface.co/spaces/ZeyuLing/music-to-dance-aistpp-leaderboard) | `TM2D-287` | [📦 Weights](https://huggingface.co/ZeyuLing/Motius-TM2D-HumanML3D-AISTPP) |
