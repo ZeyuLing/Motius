@@ -124,35 +124,28 @@ This release implements base training; PHC+ GRPO training is outside its scope.
 pip install -e '.[flowhmr,video-to-motion]'
 ```
 
-```python
-from motius import Pipeline
-from motius.motion.representation.monocular_capture import save_monocular_capture_result
+With the neutral SMPL-H model available, run the standard or lightweight mode:
 
-pipe = Pipeline.from_pretrained(
-    "ZeyuLing/Motius-FlowHMR-Latest",  # or ZeyuLing/Motius-FlowHMR-Base
-    bundle_kwargs=dict(
-        body_model_path="outputs/checkpoints/flowhmr/body_models/smplh/neutral/model.npz",
-        j_regressor_path="outputs/checkpoints/flowhmr/body_models/smpl_neutral_J_regressor.pt",
-        device="cuda",
-    ),
-)
-result = pipe.infer_monocular_motion_capture(
-    "assets/model_zoo/flowhmr/demo_input.mp4",
-    work_dir="outputs/inference/flowhmr", vggt_frame_interval=100, seeds=[0],
-)
-save_monocular_capture_result(result, "outputs/inference/flowhmr/result.npz")
+```bash
+python tools/infer_flowhmr.py input.mp4 --mode standard --body-model /path/to/smplh/neutral/model.npz --profile
+python tools/infer_flowhmr.py input.mp4 --mode lightweight --body-model /path/to/smplh/neutral/model.npz --profile
 ```
 
-The `vggt_frame_interval=100` setting fits this 25-second demo on a 15 GB T4;
-use a denser camera sample on a larger GPU. Render the side-by-side preview with:
+Both modes retain all video frames and body, left-hand and right-hand features.
+Standard uses the original SAM 3D Body path; lightweight uses GPU crop processing
+and paired hand batches. Both use staged VGGT and FlowHMR memory optimizations.
+The default camera interval is one frame. The measured H200 performance and the
+limits of that comparison are in the [benchmark](../architecture/validation/flowhmr-mode-per-frame-20261027.md).
+The [Blender guide](../flowhmr-blender/README.md) covers installation and interactive use.
+
+To render the side-by-side preview:
 
 ```bash
 pip install -e '.[flowhmr-render]'
 python -m playwright install chromium
-python tools/render_flowhmr_demo.py assets/model_zoo/flowhmr/demo_input.mp4 \
+python tools/render_flowhmr_demo.py input.mp4 \
   outputs/inference/flowhmr/result.npz outputs/inference/flowhmr/demo.mp4 \
-  --body-model outputs/checkpoints/flowhmr/body_models/smplh/neutral/model.npz \
-  --checkpoint-label 'FlowHMR Latest'
+  --body-model /path/to/smplh/neutral/model.npz --checkpoint-label 'FlowHMR Latest'
 ```
 
 `--preview` writes a five-frame PNG contact sheet for visual inspection before
@@ -199,7 +192,6 @@ the official global batch size 64; another process count changes the recipe.
 
 ```bash
 export MOTIUS_SMPLH_MODEL=outputs/checkpoints/flowhmr/body_models/smplh/neutral/model.npz
-export MOTIUS_J_REGRESSOR=outputs/checkpoints/flowhmr/body_models/smpl_neutral_J_regressor.pt
 export MOTIUS_FLOWHMR_SHARDS='data/flowhmr/train-{00000..00025}.tar'
 accelerate launch --num_processes 8 tools/train.py configs/flowhmr/train_flowhmr.py
 # Resume model, optimizer, scheduler and runner state:
@@ -293,13 +285,13 @@ Follow the upstream project for publication and citation updates; no publication
 identifier is invented for this release. FlowHMR permits educational, research
 and non-profit use only. Its terms apply independently of the framework license.
 
-See [ATTRIBUTIONS](../../motius/models/flowhmr/ATTRIBUTIONS.md),
-[FlowHMR license](../../motius/models/flowhmr/vendor/UPSTREAM_LICENSE),
-[SAM license](../../motius/models/flowhmr/vendor/SAM3D_LICENSE),
-[VGGT-Omega license](../../motius/models/flowhmr/vendor/VGGT_OMEGA_LICENSE),
-[DINOv3 license](../../motius/models/flowhmr/vendor/DINOV3_LICENSE.md),
-[YOLOX license](../../motius/models/flowhmr/vendor/YOLOX_LICENSE) and
-[MHR license](../../motius/models/flowhmr/vendor/MHR_LICENSE).
+See [ATTRIBUTIONS](../../motius/licenses/flowhmr/ATTRIBUTIONS.md),
+[FlowHMR license](../../motius/licenses/flowhmr/UPSTREAM_LICENSE),
+[SAM license](../../motius/licenses/flowhmr/SAM3D_LICENSE),
+[VGGT-Omega license](../../motius/licenses/flowhmr/VGGT_OMEGA_LICENSE),
+[DINOv3 license](../../motius/licenses/flowhmr/DINOV3_LICENSE.md),
+[YOLOX license](../../motius/licenses/flowhmr/YOLOX_LICENSE) and
+[MHR license](../../motius/licenses/flowhmr/MHR_LICENSE).
 SMPL-H assets require their separate license and are not redistributed.
 
 <!-- MOTIUS_MODEL_CARD_FOOTER:START -->

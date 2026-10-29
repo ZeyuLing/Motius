@@ -8,7 +8,7 @@ from motius.registry import DATASETS
 @DATASETS.register_module()
 class FlowHMRDataset(Dataset):
     def __init__(self, roots, body_model_path, **kwargs):
-        from motius.models.flowhmr.vendor.flowhmr.datasets.v2m_generation.train_dataset_raw import V2MTrainDatasetRaw
+        from motius.datasets.flowhmr_data.train_dataset_raw import V2MTrainDatasetRaw
         kwargs.setdefault("load_hand", True)
         self.dataset = V2MTrainDatasetRaw(roots=roots, smpl_model_path=body_model_path, **kwargs)
         if not len(self.dataset):
@@ -30,7 +30,7 @@ class FlowHMRWebDataset(IterableDataset):
     """
     def __init__(self, tar_urls, body_model_path, **kwargs):
         super().__init__()
-        from motius.models.flowhmr.vendor.flowhmr.datasets.v2m_generation.train_dataset_raw import WDSV2MTrainDatasetRaw
+        from motius.datasets.flowhmr_data.train_dataset_raw import WDSV2MTrainDatasetRaw
         kwargs.setdefault("load_hand", True)
         kwargs.setdefault("resampled", True)
         kwargs["split_by_node"] = False

@@ -30,7 +30,7 @@ import torch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from motius.motion.representation.monocular_capture import load_monocular_capture_result
-from motius.models.flowhmr.vendor.flowhmr.core.bodymodels.smpl_skeleton import SMPLMesh, SMPLSkeleton
+from motius.motion.body_models.flowhmr.smpl_skeleton import SMPLMesh, SMPLSkeleton
 
 WIDTH, HEIGHT = 1600, 800
 STAGE_WIDTH, STAGE_HEIGHT = 500, 585

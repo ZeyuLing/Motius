@@ -1,21 +1,25 @@
-"""Trainer classes for motius."""
-
+"""Trainer exports, loaded on demand."""
+from importlib import import_module
 from motius.trainers.base_trainer import BaseTrainer
-from motius.trainers.flowhmr import FlowHMRTrainer
-from motius.trainers.gentrack import GenTrackFlowGRPOTrainer
-from motius.trainers.hymotion_t2m import HyMotionT2MTrainer
-from motius.trainers.prism import PrismTrainer
-from motius.trainers.protomotions import ProtoMotionsTrainer
-from motius.trainers.sonic import SonicTrainer
-from motius.trainers.tmr import TMRTrainer
 
-__all__ = [
-    "BaseTrainer",
-    "FlowHMRTrainer",
-    "GenTrackFlowGRPOTrainer",
-    "HyMotionT2MTrainer",
-    "PrismTrainer",
-    "ProtoMotionsTrainer",
-    "SonicTrainer",
-    "TMRTrainer",
-]
+_EXPORTS = {
+    "FlowHMRTrainer": "flowhmr",
+    "GenTrackFlowGRPOTrainer": "gentrack",
+    "HyMotionT2MTrainer": "hymotion_t2m",
+    "PrismTrainer": "prism",
+    "ProtoMotionsTrainer": "protomotions",
+    "SonicTrainer": "sonic",
+    "TMRTrainer": "tmr",
+}
+__all__ = ["BaseTrainer", *_EXPORTS]
+
+def __getattr__(name):
+    if name not in _EXPORTS:
+        raise AttributeError(name)
+    value = getattr(import_module(f"motius.trainers.{_EXPORTS[name]}"), name)
+    globals()[name] = value
+    return value
+
+def register_all_trainers():
+    for module in _EXPORTS.values():
+        import_module(f"motius.trainers.{module}")

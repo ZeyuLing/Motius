@@ -27,7 +27,13 @@ flowhmr = [
     "einops>=0.7",
     "imageio-ffmpeg>=0.4",
     "matplotlib>=3.5",
+    "lap>=0.5.13",
     "mmcv-lite>=2.0,<2.2",
+    "omegaconf>=2.3",
+    "pillow>=10",
+    "roma>=1.5",
+    "timm>=1.0",
+    "yacs>=0.1.8",
     "numpy<2",
     "opencv-python>=4.8",
     "pyyaml>=6.0",
@@ -344,8 +350,8 @@ include = ["motius*"]
 namespaces = false
 
 [tool.setuptools.package-data]
-"motius.models.flowhmr" = ["ATTRIBUTIONS.md", "assets/*.json", "assets/*.yml"]
-"motius.models.flowhmr.vendor" = ["UPSTREAM_LICENSE", "UPSTREAM_COMMIT", "VGGT_OMEGA_LICENSE", "SAM3D_LICENSE", "DINOV3_LICENSE.md", "YOLOX_LICENSE", "HY_MOTION_LICENSE", "HY_MOTION_NOTICE", "MHR_LICENSE"]
+"motius.configuration.flowhmr" = ["*.json", "*.yml"]
+"motius.licenses.flowhmr" = ["ATTRIBUTIONS.md", "UPSTREAM_LICENSE", "UPSTREAM_COMMIT", "VGGT_OMEGA_LICENSE", "SAM3D_LICENSE", "DINOV3_LICENSE.md", "YOLOX_LICENSE", "HY_MOTION_LICENSE", "HY_MOTION_NOTICE", "MHR_LICENSE", "FAST_SAM_LICENSE"]
 "motius.motion" = [
     "assets/*.npy",
     "retarget/_gmr/LICENSE",
