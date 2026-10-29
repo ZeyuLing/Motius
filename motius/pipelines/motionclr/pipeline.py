@@ -7,6 +7,10 @@ the IDEA License 1.0, Copyright (c) IDEA. All Rights Reserved.
 """
 
 from __future__ import annotations
+from motius.motion.conditioning.clip_text import tokenize_clip
+from .guidance import predict_with_cfg
+from motius.motion.representation.normalization import array_denormalize
+
 
 import inspect
 from typing import Optional, Sequence
@@ -162,7 +166,7 @@ class MotionCLRPipeline(BasePipeline):
             )
             self.scheduler.set_timesteps(steps, device=self.device)
             if enc_text is None:
-                enc_text = network.encode_text(captions, self.device)
+                enc_text = network.encode_text(tokenize_clip(captions), self.device)
             else:
                 enc_text = torch.as_tensor(enc_text, device=self.device, dtype=dtype)
                 if enc_text.shape[0] != batch_size:
@@ -180,7 +184,7 @@ class MotionCLRPipeline(BasePipeline):
                     device=self.device,
                 )
                 if getattr(network, "cond_mask_prob", 0.0) > 0:
-                    prediction = network.forward_with_cfg(
+                    prediction = predict_with_cfg(network,
                         sample,
                         timestep_batch,
                         enc_text=enc_text,
@@ -204,7 +208,7 @@ class MotionCLRPipeline(BasePipeline):
         for index, length in enumerate(lengths):
             motion = sample[index, :length].float()
             if not return_normalized:
-                motion = self.bundle.denormalize(motion)
+                motion = array_denormalize(motion, self.bundle.mean, self.bundle.std)
             outputs.append(motion if return_tensor else motion.cpu().numpy().astype(np.float32))
         return outputs
 

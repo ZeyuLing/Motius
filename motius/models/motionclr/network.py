@@ -93,13 +93,13 @@ class SelfAttention(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         batch, frames, dim = x.shape
         heads = self.num_head
-        normed = self.norm(x)
-        query = self.query(normed).view(batch, frames, heads, -1)
-        key = self.key(normed).view(batch, frames, heads, -1)
+        # Separate evaluations preserve the original backward accumulation order.
+        query = self.query(self.norm(x)).view(batch, frames, heads, -1)
+        key = self.key(self.norm(x)).view(batch, frames, heads, -1)
         attention = torch.einsum("bnhd,bmhd->bnmh", query, key)
         attention = attention / math.sqrt(dim // heads)
         weight = self.dropout(F.softmax(attention, dim=2))
-        value = self.value(normed).view(batch, frames, heads, -1)
+        value = self.value(self.norm(x)).view(batch, frames, heads, -1)
         return torch.einsum("bnmh,bmhd->bnhd", weight, value).reshape(
             batch, frames, dim
         )
@@ -277,12 +277,11 @@ class CrossAttention(nn.Module):
         text_tokens = text.shape[1]
         heads = self.num_head
         query = self.query(self.norm(x)).view(batch, frames, heads, -1)
-        text_normed = self.text_norm(text)
-        key = self.key(text_normed).view(batch, text_tokens, heads, -1)
+        key = self.key(self.text_norm(text)).view(batch, text_tokens, heads, -1)
         attention = torch.einsum("bnhd,bmhd->bnmh", query, key)
         attention = attention / math.sqrt(dim // heads)
         weight = self.dropout(F.softmax(attention, dim=2))
-        value = self.value(text_normed).view(batch, text_tokens, heads, -1)
+        value = self.value(self.text_norm(text)).view(batch, text_tokens, heads, -1)
         return torch.einsum("bnmh,bmhd->bnhd", weight, value).reshape(
             batch, frames, dim
         )
@@ -572,7 +571,6 @@ class MotionCLR(nn.Module):
         load_clip: bool = True,
         clip_path: Optional[str] = None,
         clip_model: Optional[nn.Module] = None,
-        tokenizer: Optional[Callable] = None,
     ):
         super().__init__()
         del edit_config, out_path
@@ -585,7 +583,6 @@ class MotionCLR(nn.Module):
         self.counting_map = []
         self.embed_text = nn.Linear(clip_dim, text_latent_dim)
         self.clip_version = clip_version
-        self._tokenizer = tokenizer
         if clip_model is not None:
             self.clip_model = clip_model
         elif load_clip:
@@ -627,7 +624,6 @@ class MotionCLR(nn.Module):
                 "`pip install -e '.[motionclr]'`."
             ) from exc
         clip_model, _ = clip.load(clip_source, device="cpu", jit=False)
-        self._tokenizer = clip.tokenize
         clip_model.eval()
         for parameter in clip_model.parameters():
             parameter.requires_grad = False
@@ -635,14 +631,14 @@ class MotionCLR(nn.Module):
 
     def encode_text(
         self,
-        raw_text: Sequence[str],
+        tokens: torch.Tensor,
         device: torch.device | str,
     ) -> torch.Tensor:
-        if self.clip_model is None or self._tokenizer is None:
+        if self.clip_model is None:
             raise RuntimeError(
                 "MotionCLR was created without OpenAI CLIP; encoded text was not supplied."
             )
-        texts = self._tokenizer(list(raw_text), truncate=True).to(device)
+        texts = tokens.to(device)
         with torch.no_grad():
             x = self.clip_model.token_embedding(texts).type(self.clip_model.dtype)
             x = x + self.clip_model.positional_embedding.type(self.clip_model.dtype)
@@ -663,7 +659,7 @@ class MotionCLR(nn.Module):
             return torch.empty(0, dtype=torch.long, device=device)
         if self.training and self.cond_mask_prob > 0.0:
             keep = 1.0 - torch.bernoulli(
-                torch.full((batch_size,), self.cond_mask_prob, device=device)
+                torch.ones(batch_size) * self.cond_mask_prob
             )
             return torch.nonzero(keep, as_tuple=False).squeeze(-1)
         return torch.arange(batch_size, device=device)
@@ -672,7 +668,7 @@ class MotionCLR(nn.Module):
         self,
         x: torch.Tensor,
         timesteps: torch.Tensor,
-        text: Optional[Sequence[str]] = None,
+        text: Optional[torch.Tensor] = None,
         uncond: bool = False,
         enc_text: Optional[torch.Tensor] = None,
     ) -> torch.Tensor:
@@ -688,29 +684,6 @@ class MotionCLR(nn.Module):
         x = self.unet(x, timesteps, enc_text, cond_indices)
         return x[:, :, :frames].transpose(1, 2)
 
-    def forward_with_cfg(
-        self,
-        x: torch.Tensor,
-        timesteps: torch.Tensor,
-        text: Optional[Sequence[str]] = None,
-        enc_text: Optional[torch.Tensor] = None,
-        cfg_scale: float = 2.5,
-    ) -> torch.Tensor:
-        batch, frames, _ = x.shape
-        if enc_text is None:
-            if text is None:
-                raise ValueError("text or enc_text is required")
-            enc_text = self.encode_text(text, x.device)
-        cond_indices = self.mask_cond(batch, device=x.device)
-        x = x.transpose(1, 2)
-        padding = (16 - (frames % 16)) % 16
-        x = F.pad(x, (0, padding), value=0)
-        combined_x = torch.cat([x, x], dim=0)
-        combined_t = torch.cat([timesteps, timesteps], dim=0)
-        output = self.unet(combined_x, combined_t, enc_text, cond_indices)
-        output = output[:, :, :frames].transpose(1, 2)
-        output_cond, output_uncond = torch.chunk(output, 2, dim=0)
-        return output_uncond + cfg_scale * (output_cond - output_uncond)
 
 
 __all__ = ["CondUnet1D", "MotionCLR"]
