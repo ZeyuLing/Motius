@@ -1,0 +1,8 @@
+{
+  "complete": true,
+  "scope": "Actual released MotionCanvas 0.46B weights, native ordinary Trainer/full configured geometric flow losses and shared Runner: three two-GPU updates on distinct prepared physical-motion/text-feature fixtures, all neural and orphan-condition replica hashes synchronized and checkpoint written. No raw-text encoder, raw corpus, sparse-rollout trainer or original distributed training protocol claim.",
+  "world_size": 2,
+  "updates": 3,
+  "neural_tensors": 302,
+  "orphan_condition_tensors": 4
+}

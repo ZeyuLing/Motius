@@ -133,7 +133,7 @@ def build_bundle(args, transformer_state, learned):
             actual = learned[name].detach().cpu().numpy().astype(np.float32)
             if not np.array_equal(actual, expected):
                 raise ValueError(f'checkpoint {name} differs from {args.stats_dir}')
-    bundle.set_bone_offsets_override(
+    MotionCanvasCodec(bundle).set_bone_offsets_override(
         torch.load(args.bone_offsets, map_location='cpu', weights_only=True)
     )
     return bundle

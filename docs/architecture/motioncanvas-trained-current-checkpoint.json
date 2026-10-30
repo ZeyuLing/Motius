@@ -1,0 +1,136 @@
+{
+  "complete": true,
+  "scope": "motioncanvas actual modified current neural tensors, complete public inference and frozen/current states through offline cold AutoPipeline loading. Export/migration evidence, not an independent original-source comparison.",
+  "tests": [
+    {
+      "tensor": "/condition/null_vtxt_feat",
+      "shape": [
+        1,
+        1,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/condition/null_ctxt_input",
+      "shape": [
+        1,
+        1,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/condition/special_game_vtxt_feat",
+      "shape": [
+        1,
+        1,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/condition/special_game_ctxt_feat",
+      "shape": [
+        1,
+        1,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/latent_denorm",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/rot6d",
+      "shape": [
+        2,
+        24,
+        22,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/transl",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/root_rotations_mat",
+      "shape": [
+        2,
+        24,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/latent",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/motion_198",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/lengths/0",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion/lengths/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mean",
+      "shape": [
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/std",
+      "shape": [
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

@@ -297,6 +297,25 @@ Completion zeroes generated cells in the edit context. Editing retains an
 explicit source value in those cells. Both paths fix all known coordinates to
 clean evidence at initialization and after every ODE step.
 
+## Native architecture validation
+
+The Bundle contains the motion/text networks and learned condition parameters.
+Task construction, padding, condition dropout and source-token policy live in
+shared conditioning code; the Pipeline and Trainer own their execution graphs.
+No bundled upstream application or runtime import alias is required.
+
+The released 0.46B checkpoint passes the preserved pre-migration implementation
+for all four public inference tasks at 50 steps, including ragged lengths,
+source tokens and position projection. These are migration regressions against
+Motius's own earlier implementation, rather than an external source certificate.
+See [condition/gradient ownership](../architecture/motioncanvas-condition-ownership.json)
+and [complete inference](../architecture/motioncanvas-pipeline-ownership.json).
+Three [two-GPU native updates](../architecture/motioncanvas-distributed.json),
+[public CLI resume](../architecture/motioncanvas-cli-resume.json), and
+[trained/current neural and text export with offline cold loading](../architecture/motioncanvas-trained-current-checkpoint.json)
+also pass. The fixtures do not establish full-corpus convergence or sparse-rollout
+training parity.
+
 ## Citation and License
 
 AnimateCanvas is a Motius-native method; no external AnimateCanvas paper or

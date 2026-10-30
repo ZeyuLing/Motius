@@ -17,7 +17,7 @@
     <default class="wrist_motor">
       <joint damping="0.05" armature="0.01" frictionloss="0.1"/>
     </default>
-
+    
   </default>
 
   <asset>
