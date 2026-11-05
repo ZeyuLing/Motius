@@ -1,0 +1,406 @@
+{
+  "complete": true,
+  "scope": "Independent author TM2D source and released mirrored weights. Prepared lexical tokens/438-D music features; three text and three single/multiple-window music sampling cases, all five neural hashes, VQ encoding, physical motion and joints. Raw caption NLP/raw music extraction and joint bimodal fusion are separate gates. Both original joint token objectives, label smoothing, audio-decoder routing, all active gradient hashes and CPU/CUDA RNG also match exactly.",
+  "upstream_commit": "98bef9571419b6459927630d5d96f8450898687e",
+  "artifact_files": {
+    "model_index.json": "2faf0e1d33c1565c157c1f363c80af240d377acf9956d73a4a32f2449e4858f2",
+    "std.npy": "b799b6ba0bb7d3a9ad0c98b53fc3f540713c73c24fae76dbae705842f72de50b",
+    "tm2d_config.json": "6a82a08610b590b717e8a44b4a8325436e001716eb927e691afc59b25ad7fe35",
+    "text_transformer.safetensors": "4100f46c94ece8b84964b43a0c28f3dd6ee4cb45a6b4e4f0f5213674ae3030c1",
+    "mean.npy": "1f0d5743aa7fd878d7fbc4e1e8af9e507de00f4ef30475bd7608e53c7ad6caab",
+    "quantizer.safetensors": "baea83237d2378b9e9af1825757ebdecd1c16c0440ab67ed430e87db75d5f1bf",
+    "vq_encoder.safetensors": "625ca823c5743518cea77d2534eb7125d3b1ab74da13c9db882f9ad39706a7a8",
+    "vocab.json": "64855c2f79c09d5c4b5df824ed4c79b318ae750c80e9bfa0396523efbdd7400c",
+    "vq_decoder.safetensors": "1a4f52f2887da012e7ecf8e1bd91e3314116095b9a545c04c19b44e518752e5b",
+    "audio_transformer.safetensors": "ce821c355b213862b2d3f2c7075bba5d7a6600c81b20582812c81a65fc85976b"
+  },
+  "tests": [
+    {
+      "tensor": "/text0/encoded",
+      "shape": [
+        1,
+        22,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text0/mask",
+      "shape": [
+        1,
+        1,
+        22
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text0/tokens",
+      "shape": [
+        1,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text0/motion",
+      "shape": [
+        1,
+        32,
+        287
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text0/joints",
+      "shape": [
+        1,
+        32,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text1/encoded",
+      "shape": [
+        1,
+        22,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text1/mask",
+      "shape": [
+        1,
+        1,
+        22
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text1/tokens",
+      "shape": [
+        1,
+        9
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text1/motion",
+      "shape": [
+        1,
+        72,
+        287
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text1/joints",
+      "shape": [
+        1,
+        72,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text2/encoded",
+      "shape": [
+        1,
+        22,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text2/mask",
+      "shape": [
+        1,
+        1,
+        22
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text2/tokens",
+      "shape": [
+        1,
+        12
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text2/motion",
+      "shape": [
+        1,
+        96,
+        287
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text2/joints",
+      "shape": [
+        1,
+        96,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio0/encoded",
+      "shape": [
+        1,
+        10,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio0/mask",
+      "shape": [
+        1,
+        1,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio0/tokens",
+      "shape": [
+        1,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio0/motion",
+      "shape": [
+        1,
+        80,
+        287
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio0/joints",
+      "shape": [
+        1,
+        80,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio1/encoded",
+      "shape": [
+        1,
+        62,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio1/mask",
+      "shape": [
+        1,
+        1,
+        62
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio1/tokens",
+      "shape": [
+        1,
+        62
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio1/motion",
+      "shape": [
+        1,
+        496,
+        287
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio1/joints",
+      "shape": [
+        1,
+        496,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio2/encoded",
+      "shape": [
+        1,
+        62,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio2/mask",
+      "shape": [
+        1,
+        1,
+        62
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio2/tokens",
+      "shape": [
+        1,
+        62
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio2/motion",
+      "shape": [
+        1,
+        496,
+        287
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio2/joints",
+      "shape": [
+        1,
+        496,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/codec/latent",
+      "shape": [
+        2,
+        8,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/codec/codes",
+      "shape": [
+        2,
+        8
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training0/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training0/audio_loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training0/text_loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training0/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training0/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training1/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training1/audio_loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training1/text_loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training1/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training1/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

@@ -1,3 +1,0 @@
-3dpw_fliptest:
-  _target_: gem.datasets.threedpw.threedpw_motion_test.ThreedpwSmplFullSeqDataset
-  flip_test: true

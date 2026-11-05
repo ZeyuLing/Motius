@@ -9,20 +9,10 @@ import torch
 
 from .encodec import EncodecFeatures
 from .modules.istft_head import ISTFTHead
-from .modules.utils import save_audio
 from .modules.vocos import VocosBackbone
 from motius.registry import MODELS
 
 
-def _import_torchaudio():
-    try:
-        import torchaudio
-    except Exception as exc:
-        raise RuntimeError(
-            "WavTokenizer audio file loading requires torchaudio and matching "
-            "torch/torchaudio binaries."
-        ) from exc
-    return torchaudio
 
 
 def find_config_and_checkpoint(repo):
@@ -132,7 +122,7 @@ class WavTokenizer(nn.Module):
                 module.flatten_parameters = lambda: None
 
     @classmethod
-    def from_hparams(cls, config_path: str) -> "Vocos":
+    def from_hparams(cls, config_path: str) -> "WavTokenizer":
         """
         Class method to create a new Vocos model instance from hyperparameters stored in a yaml configuration file.
         """
@@ -274,85 +264,3 @@ class WavTokenizer(nn.Module):
     @property
     def downsample_rate(self):
         return self.feature_extractor.downsample_rate
-
-
-if __name__ == "__main__":
-    import time
-
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"[WavTokenizer Test] device={device}")
-
-    # --- 1. Build model ---
-    print("[1] Building WavTokenizer model...")
-    model = WavTokenizer(
-        pretrained="checkpoints/WavTokenizer-large-unify-40token"
-    ).to(device).eval()
-
-    print(f"   Codebook size: {model.codebook_size}")
-    print(f"   Downsample rate: {model.downsample_rate}")
-    sample_rate = 24000
-
-    # --- 2. Load test audio (same file as UniCodec test) ---
-    audio_path = "data/motionhub/motionx/audio/music/Play_Flute_4_clip1.wav"
-    print(f"\n[2] Loading audio: {audio_path}")
-
-    torchaudio = _import_torchaudio()
-    wav, sr = torchaudio.load(audio_path)
-
-    # Resample to 24kHz if needed
-    if sr != sample_rate:
-        print(f"   Resampling {sr} -> {sample_rate}...")
-        wav = torchaudio.transforms.Resample(sr, sample_rate)(wav)
-
-    # Mono, first 5 seconds
-    if wav.dim() == 2 and wav.shape[0] > 1:
-        wav = wav.mean(dim=0, keepdim=True)
-    wav = wav[:, : sample_rate * 5]
-    audio = wav.to(device)
-    print(f"   Audio shape: {audio.shape}, duration: {audio.shape[-1]/sample_rate:.2f}s")
-
-    # --- 3. Encode ---
-    print("\n[3] Encoding...")
-    t0 = time.time()
-    with torch.no_grad():
-        features, codes = model.encode(audio)
-    t_enc = time.time() - t0
-    print(f"   Features shape: {features.shape}")
-    print(f"   Codes shape: {codes.shape}")
-    print(f"   Encode time: {t_enc:.3f}s")
-    n_tokens = codes.shape[-1]
-    duration = audio.shape[-1] / sample_rate
-    print(f"   Actual TPS: {n_tokens/duration:.1f}")
-
-    # --- 4. Decode from features ---
-    print("\n[4] Decoding from features...")
-    t0 = time.time()
-    with torch.no_grad():
-        audio_recon_feat = model.decode(features, is_idx=False)
-    t_dec = time.time() - t0
-    print(f"   Recon audio shape: {audio_recon_feat.shape}")
-    print(f"   Decode time: {t_dec:.3f}s")
-
-    # --- 5. Decode from codes ---
-    print("\n[5] Decoding from codes (indices)...")
-    with torch.no_grad():
-        audio_recon_idx = model.decode(codes, is_idx=True)
-    print(f"   Recon audio shape: {audio_recon_idx.shape}")
-
-    # --- 6. Save ---
-    out_dir = "outputs/wavtokenizer_test"
-    os.makedirs(out_dir, exist_ok=True)
-
-    input_path = os.path.join(out_dir, "input.wav")
-    recon_feat_path = os.path.join(out_dir, "recon_from_features.wav")
-    recon_idx_path = os.path.join(out_dir, "recon_from_codes.wav")
-
-    save_audio(audio.cpu(), input_path, sample_rate=sample_rate)
-    save_audio(audio_recon_feat.cpu(), recon_feat_path, sample_rate=sample_rate)
-    save_audio(audio_recon_idx.cpu(), recon_idx_path, sample_rate=sample_rate)
-
-    print(f"\n[6] Saved outputs to: {out_dir}")
-    print(f"   - {input_path}")
-    print(f"   - {recon_feat_path}")
-    print(f"   - {recon_idx_path}")
-    print("\n[Done]")

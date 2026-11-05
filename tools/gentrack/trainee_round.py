@@ -17,7 +17,7 @@ So the trainee continuously chases the generator's *evolving* motion distributio
 -> generator <-> trainee online co-training. The FROZEN judge that scores the
 generator is deliberately separate (unbiased reward), per the adversarial design.
 
-Runs the heavy train_agent.py in the IsaacGym py3.8 venv; the runner itself is
+Runs the native AccelerateRunner in the Isaac Lab Python environment; the runner itself is
 dependency-light and can run under any python.
 
 Example:
@@ -42,15 +42,8 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
-from motius.models.gentrack.tracker_paths import PROTOMOTIONS_ROOT
+from motius.configuration.gentrack import PROTOMOTIONS_ROOT, PROTOMOTIONS_ASSETS_ROOT
 
-DEFAULT_EXPERIMENT = (
-    PROTOMOTIONS_ROOT
-    / "examples"
-    / "experiments"
-    / "mimic"
-    / "gentrack_g1_xy_offset.py"
-)
 DEFAULT_WARMSTART = Path(
     os.environ.get(
         "MOTIUS_GENTRACK_TRAINEE_CHECKPOINT",
@@ -62,6 +55,7 @@ DEFAULT_WARMSTART = Path(
         / "last.ckpt",
     )
 )
+DEFAULT_EXPERIMENT = DEFAULT_WARMSTART.parent / "resolved_configs.yaml"
 DEFAULT_TRACKER_PYTHON = os.environ.get(
     "MOTIUS_GENTRACK_PROTO_PYTHON",
     sys.executable,
@@ -87,7 +81,7 @@ def _ckpt_epoch(path: str) -> int:
 
 def _tracker_env(output_root: Path) -> dict:
     env = os.environ.copy()
-    env["PYTHONPATH"] = f"{PROTOMOTIONS_ROOT}:{env.get('PYTHONPATH', '')}"
+    env["PYTHONPATH"] = f"{PROJECT_ROOT}:{env.get('PYTHONPATH', '')}"
     env["MOTIUS_PROTOMOTIONS_OUTPUT_ROOT"] = str(output_root)
     env.setdefault("ACCEPT_EULA", "Y")
     env.setdefault("OMNI_KIT_ACCEPT_EULA", "YES")
@@ -151,22 +145,13 @@ def _snapshot_pool(pool_dir: Path, round_dir: Path,
 
 
 def _build_train_cmd(args, snap_dir: Path, warm_ckpt: str, exp_name: str, max_steps: int) -> list:
-    cmd = [
-        args.tracker_python,
-        str(PROTOMOTIONS_ROOT / "protomotions" / "train_agent.py"),
-        "--robot-name", "g1",
-        "--simulator", args.simulator,
-        "--experiment-path", str(Path(args.experiment).resolve()),
-        "--experiment-name", exp_name,
-        "--motion-file", str(snap_dir.resolve()),
-        "--checkpoint", str(warm_ckpt),
-        "--num-envs", str(args.num_envs),
-        "--batch-size", str(args.batch_size),
-        "--training-max-steps", str(max_steps),
-        "--headless", "True",
-        "--skip-initial-eval",
-        "--overrides", f"agent.save_last_checkpoint_every={args.save_every}",
-    ]
+    iterations = max(1, (max_steps + args.num_envs * NUM_STEPS_PER_EPOCH - 1) // (args.num_envs * NUM_STEPS_PER_EPOCH))
+    cmd = [args.tracker_python, '-m', 'motius.trainers.protomotions.train',
+        '--checkpoint', str(warm_ckpt), '--configuration', str(Path(args.experiment).resolve()),
+        '--motion-file', str(snap_dir.resolve()), '--asset-root', str(PROTOMOTIONS_ASSETS_ROOT),
+        '--run-name', exp_name, '--num-envs', str(args.num_envs), '--batch-size', str(args.batch_size),
+        '--cap-discriminator-batch-size', str(args.batch_size), '--max-iterations', str(iterations),
+        '--headless', '--kit-args=--allow-root', '--overrides', 'agent.save_last_checkpoint_every='+str(args.save_every)]
     return cmd
 
 
@@ -180,10 +165,10 @@ def main() -> None:
         "--out-root",
         default="outputs/training/gentrack_g1/trainee_rounds",
     )
-    ap.add_argument("--experiment", default=str(DEFAULT_EXPERIMENT))
+    ap.add_argument("--configuration", "--experiment", dest="experiment", default=str(DEFAULT_EXPERIMENT))
     ap.add_argument("--warmstart-ckpt", default=str(DEFAULT_WARMSTART))
     ap.add_argument("--tracker-python", default=DEFAULT_TRACKER_PYTHON)
-    ap.add_argument("--simulator", default="isaacgym")
+    ap.add_argument("--simulator", choices=["isaaclab"], default="isaaclab")
     ap.add_argument("--num-envs", type=int, default=32)
     ap.add_argument("--batch-size", type=int, default=512)
     # Warm-start (--checkpoint) RESETS ProtoMotions' step_count to 0 each round

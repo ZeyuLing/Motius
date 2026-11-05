@@ -1,0 +1,142 @@
+{
+  "complete": true,
+  "scope": "Pristine original MotionStreamer AR/TAE classes and two-forward AR/streaming and TAE reconstruction objectives versus native neural modules, Pipeline sampling and Trainer. Original released AR/TAE checkpoints when --original-weights is provided, otherwise published Motius weights; both actual architectures loaded strictly; prepared T5 features. Three tokens with all original 50 diffusion steps, CFG=1/4, decoded motion, complete neural-state/gradient SHA256 and RNG. Raw text encoder, source continuation bug and full dataset training excluded.",
+  "upstream_commit": "8aace3f6f5f564ae1518aa77d925ae1380070c80",
+  "tests": [
+    {
+      "tensor": "/generation/0/latent",
+      "shape": [
+        1,
+        3,
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/0/motion",
+      "shape": [
+        1,
+        12,
+        272
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/0/rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/1/latent",
+      "shape": [
+        1,
+        3,
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/1/motion",
+      "shape": [
+        1,
+        12,
+        272
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/1/rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/ar/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/ar/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/ar/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/streaming/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/streaming/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/streaming/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/tae/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/tae/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "original_checkpoint_provenance": {
+    "repository": "lxxiao/MotionStreamer",
+    "revision": "24631098fe096ab55c4d95a3af410397bb05109a",
+    "files": [
+      {
+        "path": "Causal_TAE/net_last.pth",
+        "size": 304843534,
+        "sha256": "8becaeebbd0588d7080ea3baf19ca036fe06851035c8b5f214dac1a5cf23949c"
+      },
+      {
+        "path": "Experiments/t2m_model/latest.pth",
+        "size": 969288637,
+        "sha256": "07cd1dd03f703ca7aaa2b817052903bd3b666a4d87806103108c9bef1b4503aa"
+      }
+    ],
+    "text": {
+      "repository": "sentence-transformers/sentence-t5-xxl",
+      "revision": "97f38f2f69860f732f602829da6df76ee5c4c0f9",
+      "all_original_neural_files_sha256_equal_to_artifact": true
+    }
+  }
+}

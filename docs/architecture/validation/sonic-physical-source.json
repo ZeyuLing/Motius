@@ -1,0 +1,2236 @@
+{
+  "complete": true,
+  "tests": [
+    {
+      "tensor": "/traces/0/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/0/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/0/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/0/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/0/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/0/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/0/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/0/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/0/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/0/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/0/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/0/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/1/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/1/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/1/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/1/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/1/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/1/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/1/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/1/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/1/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/1/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/1/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/1/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/2/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/2/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/2/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/2/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/2/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/2/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/2/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/2/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/2/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/2/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/2/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/2/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/3/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/3/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/3/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/3/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/3/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/3/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/3/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/3/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/3/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/3/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/3/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/3/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/4/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/4/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/4/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/4/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/4/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/4/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/4/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/4/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/4/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/4/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/4/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/4/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/5/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/5/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/5/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/5/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/5/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/5/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/5/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/5/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/5/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/5/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/5/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/5/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/6/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/6/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/6/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/6/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/6/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/6/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/6/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/6/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/6/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/6/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/6/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/6/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/7/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/7/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/7/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/7/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/7/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/7/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/7/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/7/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/7/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/7/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/7/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/7/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/8/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/8/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/8/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/8/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/8/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/8/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/8/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/8/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/8/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/8/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/8/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/8/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/9/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/9/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/9/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/9/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/9/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/9/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/9/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/9/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/9/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/9/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/9/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/9/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/10/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/10/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/10/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/10/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/10/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/10/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/10/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/10/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/10/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/10/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/10/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/10/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/11/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/11/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/11/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/11/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/11/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/11/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/11/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/11/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/11/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/11/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/11/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/11/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/12/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/12/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/12/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/12/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/12/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/12/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/12/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/12/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/12/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/12/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/12/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/12/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/13/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/13/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/13/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/13/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/13/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/13/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/13/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/13/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/13/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/13/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/13/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/13/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/14/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/14/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/14/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/14/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/14/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/14/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/14/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/14/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/14/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/14/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/14/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/14/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/15/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/15/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/15/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/15/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/15/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/15/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/15/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/15/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/15/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/15/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/15/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/15/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/16/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/16/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/16/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/16/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/16/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/16/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/16/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/16/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/16/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/16/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/16/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/16/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/17/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/17/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/17/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/17/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/17/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/17/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/17/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/17/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/17/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/17/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/17/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/17/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/18/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/18/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/18/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/18/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/18/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/18/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/18/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/18/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/18/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/18/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/18/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/18/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/19/observation/actor_obs",
+      "shape": [
+        4,
+        930
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/19/observation/critic_obs",
+      "shape": [
+        4,
+        1645
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/19/observation/tokenizer_obs",
+      "shape": [
+        4,
+        1761
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/19/action",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/19/reward",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/19/done",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/19/timeout",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/19/root",
+      "shape": [
+        4,
+        13
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/19/joints",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/19/joint_velocity",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/19/body_position",
+      "shape": [
+        4,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/traces/19/body_orientation",
+      "shape": [
+        4,
+        30,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "scope": "Original released SONIC G1 manager environment and Actor versus selected native environment and public SONICPipeline, 20 physical steps, four environments, three modality branches, complete observation/action/state/reward/reset/RNG traces. Isaac Lab 2.3.2/Sim5.1 FP32. Synthetic short paired robot/SMPL-coordinate reference; plane terrain. Full real datasets, rough terrain, PPO and long-horizon behavior excluded.",
+  "contact_diagnostics": [
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    },
+    {
+      "source_self_absolute_bound": 0.0,
+      "native_absolute_error": 0.0
+    }
+  ]
+}

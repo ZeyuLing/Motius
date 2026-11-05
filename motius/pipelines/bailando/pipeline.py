@@ -9,13 +9,12 @@ from typing import Sequence
 import numpy as np
 import torch
 
-from motius.models.bailando.audio import (
-    BAILANDO_AUDIO_FEATURE_DIM,
-    BAILANDO_BEAT_CHANNEL,
-    extract_bailando_audio_features,
-)
+from motius.pipelines.bailando.audio import BAILANDO_AUDIO_FEATURE_DIM
+from motius.pipelines.bailando.audio import BAILANDO_BEAT_CHANNEL
+from motius.pipelines.bailando.audio import extract_bailando_audio_features
 from motius.pipelines.base_pipeline import BasePipeline
 from motius.registry import PIPELINES
+from .sampling import sample_codes
 
 
 @dataclass(frozen=True)
@@ -50,8 +49,8 @@ def _decoded_motion_to_world_joints(motion: torch.Tensor) -> torch.Tensor:
         raise ValueError(f"Expected decoded motion (B,T,72), got {tuple(motion.shape)}")
     velocity = motion[:, :, :3]
     root = torch.zeros_like(velocity)
-    if motion.shape[1] > 1:
-        root[:, 1:] = torch.cumsum(velocity[:, :-1], dim=1)
+    for frame in range(1, motion.shape[1]):
+        root[:, frame] = root[:, frame - 1] + velocity[:, frame - 1]
     relative = motion.reshape(motion.shape[0], motion.shape[1], 24, 3).clone()
     joints = relative + root[:, :, None]
     joints[:, :, 0] = root
@@ -191,7 +190,7 @@ class BailandoPipeline(BasePipeline):
             initial_motion=initial_motion,
             initial_codes=initial_codes,
         )
-        generated = self.bundle.gpt.sample(
+        generated = sample_codes(self.bundle.gpt,
             (seed_up, seed_down), cond=features[:, 1:]
         )
         codes_up, codes_down = generated[0][0], generated[1][0]

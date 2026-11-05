@@ -19,6 +19,7 @@ class MotionGPT3Pipeline(BasePipeline):
 
     def __init__(self, bundle, device=None, **kwargs):
         super().__init__(bundle, **kwargs)
+        self._decoder=None
         if device is not None:
             self.to(device)
 
@@ -29,6 +30,17 @@ class MotionGPT3Pipeline(BasePipeline):
     @property
     def device(self) -> torch.device:
         return self.bundle.device
+
+    @property
+    def decoder(self):
+        if self._decoder is None:
+            from .decoding import MotionGPT3Decoder
+            self._decoder=MotionGPT3Decoder(self.bundle)
+        self._decoder.device=self.device
+        return self._decoder
+
+    def denormalize(self,motion):
+        return motion*self.bundle.std.to(motion)+self.bundle.mean.to(motion)
 
     @staticmethod
     def clamp_length(n_frames: int, min_length: int = 40, max_length: int = 196) -> int:
@@ -45,19 +57,19 @@ class MotionGPT3Pipeline(BasePipeline):
     ) -> List[np.ndarray]:
         if len(captions) != len(lengths):
             raise ValueError("captions and lengths must have equal length")
-        model = self.bundle.model
+        model = self.bundle
         device = self.device
         lengths = [self.clamp_length(x) for x in lengths]
 
-        outputs = model.lm.generate_conditional(
+        outputs = self.decoder.generate_conditional(
             list(captions),
             lengths=lengths,
             stage=stage,
             tasks=None,
         )
-        sampled_token_latents, motion_mask = model.lm.sample_tokens(
+        sampled_token_latents, motion_mask = self.decoder.sample_tokens(
             outputs,
-            model.lm.device,
+            self.device,
             temperature=temperature,
             cfg=model.guidance_scale,
             vae_mean_std_inv=model.vae.mean_std_inv,
@@ -70,7 +82,7 @@ class MotionGPT3Pipeline(BasePipeline):
             while mask.ndim < feats.ndim:
                 mask = mask.unsqueeze(-1)
             feats = torch.where(mask, torch.zeros_like(feats), feats)
-        feats = self.bundle.denormalize(feats).detach().cpu().numpy().astype(np.float32)
+        feats = self.denormalize(feats).detach().cpu().numpy().astype(np.float32)
         return [feats[i, : lengths[i]] for i in range(len(lengths))]
 
     @torch.no_grad()
@@ -120,8 +132,8 @@ class MotionGPT3Pipeline(BasePipeline):
         for index, value in enumerate(normalized):
             motion_batch[index, : len(value)] = value
 
-        model = self.bundle.model
-        outputs = model.lm.generate_conditional(
+        model = self.bundle
+        outputs = self.decoder.generate_conditional(
             motion_feats=motion_batch,
             motion_encode_net=model.vae,
             lengths=valid_lengths,

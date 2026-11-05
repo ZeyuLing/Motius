@@ -112,12 +112,7 @@ motius/models/gvhmr/vendor/**/*.py[cod]
 !checkpoints/models/motioncanvas/normalization_provenance.md
 
 # Source-pinned physical-controller trainers and their small runtime assets.
-!motius/trainers/sonic/vendor/
-!motius/trainers/sonic/vendor/**
-motius/trainers/sonic/vendor/**/__pycache__/
-motius/trainers/sonic/vendor/**/*.py[cod]
 # Generated from the upstream body-model assets; the historical LFS object is unavailable.
-motius/trainers/sonic/vendor/gear_sonic/data/human/human_joints_info.pkl
 !motius/trainers/protomotions/vendor/
 !motius/trainers/protomotions/vendor/**
 motius/trainers/protomotions/vendor/**/__pycache__/
@@ -139,3 +134,7 @@ motius/trainers/beyondmimic/vendor/**/*.py[cod]
 !motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/
 !motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/**/
 !motius/models/gem_x/vendor/third_party/sam-3d-body/sam_3d_body/data/**/*.py
+
+# Pinned MotionBricks numeric rig constants (source assets, not checkpoints).
+!motius/configuration/motionbricks_assets/g1_model_rig.npz
+!motius/configuration/motionbricks_assets/soma_model_rig.npz

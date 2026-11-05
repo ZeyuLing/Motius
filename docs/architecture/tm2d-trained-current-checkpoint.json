@@ -1,0 +1,121 @@
+{
+  "complete": true,
+  "scope": "tm2d actual modified current neural tensors, complete public inference and frozen/current states through offline cold AutoPipeline loading. Export/migration evidence, not an independent original-source comparison.",
+  "tests": [
+    {
+      "tensor": "/text/joints",
+      "shape": [
+        32,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text/native_joints",
+      "shape": [
+        32,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text/model_motion",
+      "shape": [
+        32,
+        287
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text/motion_tokens",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text/native_fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio/joints",
+      "shape": [
+        496,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio/native_joints",
+      "shape": [
+        496,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio/model_motion",
+      "shape": [
+        496,
+        287
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio/motion_tokens",
+      "shape": [
+        62
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio/native_fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio/music_features",
+      "shape": [
+        62,
+        438
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/audio/music_beats",
+      "shape": [
+        62
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

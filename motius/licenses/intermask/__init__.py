@@ -1,0 +1,1 @@
+"""InterMask source license."""

@@ -57,9 +57,89 @@ class ARDYPipeline(BasePipeline):
 
     BUNDLE_CLS = "motius.models.ardy.ARDYBundle"
 
+    def __init__(self, bundle, *, text_encoder=None, **kwargs):
+        super().__init__(bundle, **kwargs)
+        self._runtime = None
+        self._text_encoder = text_encoder
+
     @property
     def model(self):
-        return self.bundle.model
+        if self._runtime is None:
+            from .composition import compose_runtime
+
+            self.bundle.load_model()
+            self._runtime = compose_runtime(self.bundle, self._text_encoder)
+            if self._text_encoder is not None:
+                self._bind_text_network(self._text_encoder)
+        return self._runtime
+
+    def save_pretrained(self, save_directory, **kwargs):
+        if kwargs.get("include_text_encoder"):
+            self._ensure_text_encoder()
+            frontend = self.model.text_encoder.model
+            kwargs["text_frontend_options"] = {
+                name: getattr(frontend, name)
+                for name in [
+                    "pooling_mode",
+                    "max_length",
+                    "doc_max_length",
+                    "skip_instruction",
+                ]
+            }
+        return self.bundle.save_pretrained(save_directory, **kwargs)
+
+    def to(self, device):
+        self.bundle.to(device)
+        if self._runtime is not None:
+            self._runtime.to(device)
+            self._runtime.device = torch.device(device)
+        return self
+
+    def _bind_text_network(self, frontend):
+        wrapper = getattr(frontend, "model", None)
+        neural = getattr(wrapper, "model", None)
+        if isinstance(neural, torch.nn.Module):
+            if self.bundle.text_weights_path is not None:
+                from safetensors.torch import load_file
+
+                neural.load_state_dict(
+                    load_file(self.bundle.text_weights_path), strict=True
+                )
+            self.bundle.text_model = neural
+            if "text_model" not in self.bundle._save_ckpt_modules:
+                self.bundle._save_ckpt_modules.append("text_model")
+
+    def _ensure_text_encoder(self):
+        if self.model.text_encoder is None and self.bundle.packed_text_path is not None:
+            from .text.llm2vec_wrapper import LLM2VecEncoder
+
+            network = self.bundle.load_text_model()
+            self.model.text_encoder = LLM2VecEncoder.from_network(
+                network, self.bundle.packed_text_path, self.device
+            )
+            return
+        if self.model.text_encoder is None and self.bundle.text_encoder_enabled:
+            import os
+            from motius.configuration.ardy.loader import load_text_encoder
+
+            previous = os.environ.get("TEXT_ENCODERS_DIR")
+            if self.bundle.text_encoders_dir:
+                os.environ["TEXT_ENCODERS_DIR"] = str(
+                    Path(self.bundle.text_encoders_dir).resolve()
+                )
+            try:
+                self.model.text_encoder = load_text_encoder(
+                    mode=self.bundle.text_encoder_mode,
+                    url=self.bundle.text_encoder_url,
+                    fp32=self.bundle.text_encoder_fp32,
+                    device=self.device,
+                )
+                self._bind_text_network(self.model.text_encoder)
+            finally:
+                if previous is None:
+                    os.environ.pop("TEXT_ENCODERS_DIR", None)
+                else:
+                    os.environ["TEXT_ENCODERS_DIR"] = previous
 
     @property
     def device(self) -> torch.device:
@@ -77,7 +157,9 @@ class ARDYPipeline(BasePipeline):
         maximum = int(self.model.diffusion.num_base_steps)
         steps = maximum if value is None else int(value)
         if not 1 <= steps <= maximum:
-            raise ValueError(f"num_denoising_steps must be in [1, {maximum}], got {steps}")
+            raise ValueError(
+                f"num_denoising_steps must be in [1, {maximum}], got {steps}"
+            )
         return steps
 
     def _history_frames(self, value: Optional[int]) -> int:
@@ -97,6 +179,7 @@ class ARDYPipeline(BasePipeline):
         text_pad_mask: Optional[torch.Tensor],
     ) -> Tuple[Optional[torch.Tensor], Optional[torch.Tensor]]:
         if text_feat is None:
+            self._ensure_text_encoder()
             if self.model.text_encoder is None:
                 raise RuntimeError(
                     "This ARDY model was loaded without a text encoder. Pass both "
@@ -104,17 +187,27 @@ class ARDYPipeline(BasePipeline):
                 )
             return None, None
         text_feat = torch.as_tensor(text_feat, device=self.device)
-        if text_feat.ndim != 3 or text_feat.shape[0] != len(prompts) or text_feat.shape[-1] != 4096:
+        if (
+            text_feat.ndim != 3
+            or text_feat.shape[0] != len(prompts)
+            or text_feat.shape[-1] != 4096
+        ):
             raise ValueError(
                 "text_feat must have shape (batch, tokens, 4096) matching captions; "
                 f"got {tuple(text_feat.shape)}"
             )
         if text_pad_mask is None:
-            text_pad_mask = torch.ones(text_feat.shape[:2], dtype=torch.bool, device=self.device)
+            text_pad_mask = torch.ones(
+                text_feat.shape[:2], dtype=torch.bool, device=self.device
+            )
         else:
-            text_pad_mask = torch.as_tensor(text_pad_mask, dtype=torch.bool, device=self.device)
+            text_pad_mask = torch.as_tensor(
+                text_pad_mask, dtype=torch.bool, device=self.device
+            )
         if tuple(text_pad_mask.shape) != tuple(text_feat.shape[:2]):
-            raise ValueError("text_pad_mask must match text_feat's first two dimensions")
+            raise ValueError(
+                "text_pad_mask must match text_feat's first two dimensions"
+            )
         return text_feat, text_pad_mask
 
     @torch.inference_mode()
@@ -146,20 +239,26 @@ class ARDYPipeline(BasePipeline):
         text_feat, text_pad_mask = self._text_inputs(prompts, text_feat, text_pad_mask)
         lengths_tensor = torch.tensor(lengths, dtype=torch.long, device=self.device)
         num_frames = max(lengths)
-        pad_mask = torch.arange(num_frames, device=self.device)[None] < lengths_tensor[:, None]
+        pad_mask = (
+            torch.arange(num_frames, device=self.device)[None] < lengths_tensor[:, None]
+        )
         if first_heading_angle is None:
             first_heading_angle = torch.zeros(len(prompts), device=self.device)
         else:
-            first_heading_angle = torch.as_tensor(first_heading_angle, device=self.device)
+            first_heading_angle = torch.as_tensor(
+                first_heading_angle, device=self.device
+            )
 
         observed_motion = motion_mask = None
         constraint_list = list(constraints or [])
         if constraint_list:
-            observed_motion, motion_mask = self.model.motion_rep.create_conditions_from_constraints_batched(
-                constraint_list,
-                lengths_tensor,
-                to_normalize=True,
-                device=str(self.device),
+            observed_motion, motion_mask = (
+                self.model.motion_rep.create_conditions_from_constraints_batched(
+                    constraint_list,
+                    lengths_tensor,
+                    to_normalize=True,
+                    device=str(self.device),
+                )
             )
 
         fork_devices = [self.device.index or 0] if self.device.type == "cuda" else []
@@ -184,8 +283,12 @@ class ARDYPipeline(BasePipeline):
         output = self.model.motion_rep.inverse(features, is_normalized=True)
         if postprocess:
             if "g1" in self.model.skeleton.name.lower():
-                raise ValueError("ARDY's official G1 inference disables motion postprocessing")
-            from motius.models.ardy.network.postprocess import post_process_motion
+                raise ValueError(
+                    "ARDY's official G1 inference disables motion postprocessing"
+                )
+            from motius.motion.representation.ardy.postprocess import (
+                post_process_motion,
+            )
 
             corrected = post_process_motion(
                 output["local_rot_mats"],
@@ -201,7 +304,9 @@ class ARDYPipeline(BasePipeline):
         output["fps"] = self.fps
         output["representation"] = self.representation
         if include_g1_qpos and "g1" in self.model.skeleton.name.lower():
-            from motius.models.ardy.network.exports.mujoco import MujocoQposConverter
+            from motius.motion.representation.ardy.exports.mujoco import (
+                MujocoQposConverter,
+            )
 
             output["qpos"] = MujocoQposConverter(self.model.skeleton).dict_to_qpos(
                 output, device=str(self.device), numpy=False
@@ -246,11 +351,13 @@ class ARDYPipeline(BasePipeline):
         motion_mask = observed_motion = None
         constraint_list = list(constraints or [])
         if constraint_list:
-            observed_motion, motion_mask = self.model.motion_rep.create_conditions_from_constraints_batched(
-                constraint_list,
-                torch.tensor([num_frames], device=self.device),
-                to_normalize=True,
-                device=str(self.device),
+            observed_motion, motion_mask = (
+                self.model.motion_rep.create_conditions_from_constraints_batched(
+                    constraint_list,
+                    torch.tensor([num_frames], device=self.device),
+                    to_normalize=True,
+                    device=str(self.device),
+                )
             )
 
         fork_devices = [self.device.index or 0] if self.device.type == "cuda" else []
@@ -306,7 +413,7 @@ class ARDYPipeline(BasePipeline):
         }
 
     def load_constraints(self, path_or_data, *, device=None, dtype=torch.float32):
-        from motius.models.ardy.network.constraints import load_constraints_lst
+        from motius.motion.representation.ardy.constraints import load_constraints_lst
 
         return load_constraints_lst(
             str(path_or_data) if isinstance(path_or_data, Path) else path_or_data,
@@ -324,7 +431,7 @@ class ARDYPipeline(BasePipeline):
         device=None,
     ):
         """Create sparse root-path and optional heading constraints."""
-        from motius.models.ardy.network.constraints import Root2DConstraintSet
+        from motius.motion.representation.ardy.constraints import Root2DConstraintSet
 
         return Root2DConstraintSet(
             self.model.skeleton,
@@ -347,7 +454,7 @@ class ARDYPipeline(BasePipeline):
         device=None,
     ):
         """Create full-body position keyframes in the native skeleton space."""
-        from motius.models.ardy.network.constraints import FullBodyConstraintSet
+        from motius.motion.representation.ardy.constraints import FullBodyConstraintSet
 
         return FullBodyConstraintSet(
             self.model.skeleton,
@@ -368,7 +475,9 @@ class ARDYPipeline(BasePipeline):
         device=None,
     ):
         """Create sparse native-joint position and rotation constraints."""
-        from motius.models.ardy.network.constraints import EndEffectorConstraintSet
+        from motius.motion.representation.ardy.constraints import (
+            EndEffectorConstraintSet,
+        )
 
         return EndEffectorConstraintSet(
             self.model.skeleton,

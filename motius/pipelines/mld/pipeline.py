@@ -1,11 +1,13 @@
 """MLD text-to-motion pipeline.
 
 Runs the Motius-native MLD latent diffusion path:
-SentenceT5 text features -> DDIM latent diffusion with classifier-free guidance
+Checkpoint-specific text features -> DDIM latent diffusion with classifier-free guidance
 -> MLD VAE decode -> HumanML3D-263 de-normalisation.
 """
 
 from __future__ import annotations
+from motius.motion.representation.normalization import affine_denormalize
+
 
 from typing import List, Optional, Sequence
 
@@ -28,6 +30,8 @@ class MLDPipeline(BasePipeline):
 
     def __init__(self, bundle, device: Optional[str] = None, **kwargs):
         super().__init__(bundle, **kwargs)
+        from .scheduler import build_scheduler
+        self.scheduler = build_scheduler(bundle._sched_cfg)
         if device is not None:
             self.to(device)
 
@@ -54,7 +58,7 @@ class MLDPipeline(BasePipeline):
         clamp: bool = True,
     ) -> List[np.ndarray]:
         """Generate HumanML3D-263 motions (physical scale) from text."""
-        from motius.models.motionlcm.network import generate_motion
+        from motius.pipelines.motionlcm.sampling import generate_motion
 
         if len(captions) != len(lengths):
             raise ValueError("captions and lengths must have equal length")
@@ -72,7 +76,7 @@ class MLDPipeline(BasePipeline):
             bundle.text_encoder,
             bundle.vae,
             bundle.denoiser,
-            bundle.scheduler,
+            self.scheduler,
             captions,
             frame_lens,
             guidance_scale=gs,
@@ -81,7 +85,7 @@ class MLDPipeline(BasePipeline):
 
         out = []
         for i, m in enumerate(motions):
-            denorm = bundle.denormalize(m.float())
+            denorm = affine_denormalize(m.float(), bundle.mean, bundle.std)
             out.append(denorm[: frame_lens[i]].cpu().numpy().astype(np.float32))
         return out
 

@@ -47,6 +47,10 @@ class VermoPipeline(BasePipeline):
         self.smpl_model_dir = smpl_model_dir
         self.hml263_rotation_init = hml263_rotation_init
         self._smpl_rest = None
+        from motius.configuration.vermo import configure_attention_runtime
+        from motius.motion.conditioning.vermo.processor import build_vermo_processor
+        configure_attention_runtime()
+        self.processor=build_vermo_processor(bundle)
 
     @property
     def device(self) -> torch.device:
@@ -104,24 +108,22 @@ class VermoPipeline(BasePipeline):
         input_representation: str = "humanml3d_263",
         max_new_tokens: int = 64,
     ) -> List[str]:
-        from motius.models.vermo.task_utils.modality import Caption
-        from motius.models.vermo.task_utils.task_lib.text_motion_tasks.motion2caption import (
-            Motion2Caption,
-        )
+        from motius.motion.conditioning.vermo.modality import Caption
+        from motius.motion.conditioning.vermo.task_lib.text_motion_tasks.motion2caption import Motion2Caption
 
         if lengths is None:
             lengths = [len(motion) for motion in motions]
         if len(motions) != len(lengths):
             raise ValueError("motions and lengths must have equal length")
 
-        tokenizer = self.bundle.processor.text_tokenizer
+        tokenizer = self.processor.text_tokenizer
         eos_token_id = tokenizer.convert_tokens_to_ids("<|eot_id|>")
         outputs: List[str] = []
         for motion, length in zip(motions, lengths):
             prepared = self._prepare_motion(
                 motion, int(length), input_representation=input_representation
             )
-            model_inputs = self.bundle.processor.process_train(
+            model_inputs = self.processor.process_train(
                 {
                     "task": [Motion2Caption()],
                     "num_person": [1],
@@ -133,7 +135,7 @@ class VermoPipeline(BasePipeline):
             attention = model_inputs.get("attention_mask")
             if attention is not None:
                 input_ids = input_ids[attention[0].bool()]
-            positions = (input_ids == self.bundle.processor.output_bos_id).nonzero(
+            positions = (input_ids == self.processor.output_bos_id).nonzero(
                 as_tuple=False
             )
             if positions.numel() == 0:
@@ -161,6 +163,20 @@ class VermoPipeline(BasePipeline):
                 caption = caption.strip()
             outputs.append(caption)
         return outputs
+
+    def save_pretrained(self,save_directory,**kwargs):
+        import shutil
+        target=Path(save_directory)
+        self.bundle.save_pretrained(save_directory,**kwargs)
+        self.processor.text_tokenizer.save_pretrained(target/'tokenizer')
+        for name in ['smpl_pose_processor','multi_person_smpl_pose_processor']:
+            processor=getattr(self.processor,name,None)
+            if processor is None:
+                continue
+            stats=target/'stats'/(name+'.json')
+            if Path(processor.stats_file).resolve()!=stats.resolve():
+                shutil.copy2(processor.stats_file,stats)
+        return str(target)
 
     def __call__(self, motions, lengths=None, **kwargs):
         return self.infer_m2t(motions, lengths=lengths, **kwargs)

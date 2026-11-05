@@ -1,0 +1,7 @@
+{
+  "complete": true,
+  "scope": "Public tools/train.py with the actual HYMotion 0.46B/native Trainer/flow losses and prepared synthetic audit dataset: two updates then full auto-resume to update three. Main network, all four orphan condition parameters and optimizer saved/restored, actual resumed neural/condition update. No raw-corpus/preprocessing/original full training protocol claim.",
+  "initial_updates": 2,
+  "resumed_update": 3,
+  "orphan_condition_tensors": 4
+}

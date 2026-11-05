@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "motius"
-version = "0.2.0"
+version = "0.3.23"
 description = "A reproducible framework for human motion models"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "accelerate>=0.20",
+    "accelerate>=1.3.0",
     "datasets>=2.0",
     "diffusers>=0.20",
     "huggingface_hub>=0.20",
@@ -22,6 +22,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+motionstreamer = ["numpy>=1.26,<2", "sentencepiece>=0.2", "torch>=2.6", "tqdm>=4.65", "transformers>=4.46,<5"]
+mogendit = ["tqdm>=4.65"]
+mogendit-physics = ["tqdm>=4.65", "qpsolvers[quadprog]>=4.0"]
 flowhmr = [
     "clip @ git+https://github.com/openai/CLIP.git",
     "einops>=0.7",
@@ -47,6 +50,19 @@ dev = [
 ]
 auto-rig = [
     "gradio-client>=1.0",
+]
+kimodo = [
+    "einops>=0.7",
+    "hydra-core>=1.3",
+    "numpy<2",
+    "omegaconf>=2.3",
+    "peft>=0.18",
+    "pydantic>=2.0",
+    "sentencepiece>=0.1",
+    "transformers==5.1.0",
+]
+kimodo-postprocess = [
+    "motion_correction @ git+https://github.com/nv-tlabs/kimodo.git@e1c219c99b4b94ba48be1fb6a1cbc64ecee4c954#subdirectory=MotionCorrection",
 ]
 prism = [
     "einops>=0.6",
@@ -135,6 +151,25 @@ video-to-motion = [
     "torchvision>=0.15",
     "yacs>=0.1.8",
 ]
+prompthmr = [
+    "torch==2.6.0",
+    "torchvision==0.21.0",
+    "xformers==0.0.29.post2",
+    "open_clip_torch==2.32.0",
+    "numpy==1.26.4",
+    "opencv-python==4.10.0.84",
+    "opencv-python-headless==4.10.0.84",
+    "timm>=0.9.12",
+    "einops>=0.7",
+    "hydra-core>=1.3",
+    "mmengine==0.10.7",
+    "smplx>=0.1",
+    "supervision==0.25.1",
+    "scikit-image==0.24.0",
+    "pytorch-minimize==0.0.2",
+    "av==13.0.0",
+    "joblib>=1.3",
+]
 gvhmr = [
     "av==13.0.0",
     "braceexpand>=0.1",
@@ -167,62 +202,39 @@ gvhmr = [
     "wis3d==1.0.1",
 ]
 gem-smpl = [
-    "av<14",
+    "av==13.0.0",
     "einops>=0.7",
-    "ffmpeg-python>=0.2",
-    "huggingface-hub>=0.24",
-    "hydra-colorlog>=1.2",
-    "hydra-core>=1.3",
-    "hydra-zen>=0.13",
     "imageio==2.34.1",
-    "joblib>=1.3",
-    "lightning==2.3.0",
-    "numpy==1.23.5",
+    "numpy>=1.26,<2",
+    "omegaconf>=2.3",
     "opencv-python>=4.8",
-    "open3d>=0.18",
-    "rich>=13",
-    "scikit-image>=0.22",
     "scipy>=1.10",
     "smplx>=0.1",
     "sentencepiece>=0.1.99",
-    "termcolor>=2.4",
-    "timm==0.6.7",
+    "timm==0.9.12",
     "torch>=2.5",
     "torchvision>=0.20",
-    "tqdm>=4.66",
-    "transformers>=4.44",
-    "trimesh>=4",
-    "ultralytics==8.3.50",
-    "wandb>=0.17",
-    "yacs>=0.1.8",
+    "transformers>=4.44,<5",
+    "ultralytics==8.2.42",
 ]
 gem-x = [
-    "av<14",
-    "braceexpand>=0.1",
+    "av==13.0.0",
     "cholespy>=2.1",
     "einops>=0.8",
-    "ffmpeg-python>=0.2",
-    "huggingface-hub>=0.24",
-    "hydra-colorlog>=1.2",
-    "hydra-core>=1.3",
     "imageio==2.34.1",
-    "lightning>=2.6",
-    "numpy==1.23.5",
-    "onnxruntime-gpu>=1.18",
+    "loralib>=0.1",
+    "numpy>=1.26,<2",
+    "omegaconf>=2.3",
+    "onnxruntime-gpu==1.20.2",
     "opencv-python>=4.8",
-    "open3d>=0.18",
-    "rich>=13",
-    "roma>=1.5",
     "rtree>=1.3",
     "scipy>=1.10",
-    "timm==0.6.7",
+    "timm==0.9.12",
     "torch>=2.5",
     "torchvision>=0.20",
-    "tqdm>=4.66",
-    "transformers>=4.44",
     "trimesh>=4",
-    "wandb>=0.17",
     "warp-lang>=1.8",
+    "webdataset>=0.2",
     "yacs>=0.1.8",
 ]
 motiongpt3 = [
@@ -255,18 +267,18 @@ ardy-text = [
     "transformers==5.8.1; python_version >= '3.10'",
 ]
 motionbricks = [
-    "adam-atan2-pytorch>=0.1",
-    "colorlog>=6.0",
-    "fast-simplification>=0.1",
-    "hydra-core>=1.3",
-    "matplotlib>=3.5",
-    "mujoco>=3.0",
+    "mujoco==3.3.3",
     "omegaconf>=2.3",
     "pynput>=1.7",
-    "pytorch-lightning>=2.0",
-    "trimesh>=4.0",
-    "vector-quantize-pytorch>=1.25",
+    "vector-quantize-pytorch==1.27.15",
 ]
+
+motionbricks-runtime = [
+    "warp-lang==1.18.0",
+    "usd-core==26.3",
+    "scipy>=1.11",
+]
+
 motion-tracking = [
     "onnxruntime>=1.18",
     "pyyaml>=6.0",
@@ -296,41 +308,33 @@ gentrack-retarget = [
 motion-tracking-train-sonic = [
     "accelerate>=1.3.0",
     "easydict",
-    "hydra-core==1.3.2",
+    "omegaconf>=2.3.0",
     "joblib",
     "lxml>=5.0",
     "loguru",
     "numpy==1.26.4",
     "onnx>=1.15",
     "onnxruntime>=1.18",
-    "open3d>=0.18",
     "rich>=13",
     "scipy>=1.10",
     "tensorboard",
-    "transformers>=4.56.2",
-    "trl==0.28.0",
-    "vector-quantize-pytorch>=1.25",
-    "wandb",
+    "vector-quantize-pytorch==1.27.15",
 ]
 motion-tracking-train-protomotions = [
+    "accelerate>=1.3.0",
     "dm-control>=1.0",
     "easydict",
-    "hydra-core==1.3.2",
-    "lightning",
     "matplotlib",
-    "moviepy",
-    "onnx>=1.15",
-    "onnxruntime>=1.18",
-    "pandas",
+    "moviepy<2",
+    "mujoco==3.3.3",
+    "numpy==1.26.4",
+    "omegaconf>=2.3",
     "pyyaml>=6.0",
     "rich>=13",
     "rtree==1.2.0",
     "scikit-image",
-    "tensordict==0.9.0",
-    "termcolor",
+    "tensorboard",
     "trimesh",
-    "typer>=0.6.1",
-    "wandb==0.23.0",
 ]
 motion-tracking-train-beyondmimic = [
     "onnxscript",
@@ -343,125 +347,87 @@ where = ["."]
 include = ["motius*"]
 namespaces = false
 
+[tool.setuptools.exclude-package-data]
+"*" = ["**/__pycache__/*", "**/*.pyc", "**/*.pyo"]
+
 [tool.setuptools.package-data]
-"motius.models.flowhmr" = ["ATTRIBUTIONS.md", "assets/*.json", "assets/*.yml"]
-"motius.models.flowhmr.vendor" = ["UPSTREAM_LICENSE", "UPSTREAM_COMMIT", "VGGT_OMEGA_LICENSE", "SAM3D_LICENSE", "DINOV3_LICENSE.md", "YOLOX_LICENSE", "HY_MOTION_LICENSE", "HY_MOTION_NOTICE", "MHR_LICENSE"]
+"motius.licenses" = ["**/*"]
+"motius.licenses.mogendit" = ["*.md", "*.json", "*LICENSE"]
+"motius.configuration.flowhmr" = ["*.json", "*.yml"]
+"motius.licenses.flowhmr" = ["ATTRIBUTIONS.md", "UPSTREAM_LICENSE", "UPSTREAM_COMMIT", "VGGT_OMEGA_LICENSE", "SAM3D_LICENSE", "DINOV3_LICENSE.md", "YOLOX_LICENSE", "HY_MOTION_LICENSE", "HY_MOTION_NOTICE", "MHR_LICENSE"]
 "motius.motion" = [
     "assets/*.npy",
+    "assets/hymotion_wooden/*.bin",
+    "assets/omnicontrol/*.npy",
+    "assets/projflow/*.npy",
     "retarget/_gmr/LICENSE",
     "retarget/_gmr/assets/unitree_g1/*.xml",
     "retarget/_gmr/ik_configs/*.json",
 ]
-"motius.models.kimodo" = [
-    "network/assets/skeletons/g1skel34/meshes/g1/*.STL",
-]
+"motius.configuration.kimodo" = ["assets/**/*"]
+"motius.licenses.kimodo" = ["LICENSE", "*.md"]
 "motius.models.tmr" = ["LICENSE"]
 "motius.models.tm2t" = ["LICENSE"]
 "motius.models.condmdi" = ["LICENSE"]
-"motius.models.omnicontrol" = ["LICENSE", "assets/*.npy"]
-"motius.trainers.sonic.vendor" = [
-    "UPSTREAM_LICENSE",
-    "THIRD_PARTY_NOTICES.txt",
-    "README.md",
-]
-"motius.trainers.sonic.vendor.gear_sonic" = [
-    "**/*.json",
-    "**/*.pkl",
-    "**/*.pt",
-    "**/*.stl",
-    "**/*.STL",
-    "**/*.urdf",
-    "**/*.xml",
-    "**/*.yaml",
-]
-"motius.trainers.protomotions.vendor" = [
-    "UPSTREAM_LICENSE.md",
-    "THIRD_PARTY_NOTICES.txt",
-    "README.md",
-    "data/scripts/*.py",
-    "examples/**/*.py",
-    "pyroki/*.py",
-]
-"motius.trainers.protomotions.vendor.protomotions" = [
-    "data/assets/checkerboard/*",
-    "data/assets/mesh/G1/*",
-    "data/assets/mesh/smpl/*",
-    "data/assets/mjcf/*",
-    "data/assets/urdf/**/*",
-    "data/assets/usd/**/*",
-]
-"motius.trainers.beyondmimic.vendor" = [
-    "README.md",
-    "UPSTREAM_COMMIT",
-    "UPSTREAM_LICENSE",
-    "UPSTREAM_README.md",
-    "scripts/**/*.py",
-]
-"motius.models.projflow" = ["ATTRIBUTIONS.md", "assets/*.npy"]
-"motius.models.intergen" = ["NOTICE", "network/configs/*.yaml"]
-"motius.models.intermask" = ["LICENSE"]
+"motius.models.omnicontrol" = ["LICENSE"]
+"motius.configuration.sonic" = ["*.json"]
+"motius.models.projflow" = ["ATTRIBUTIONS.md"]
+"motius.configuration.intergen" = ["*.yaml"]
+"motius.licenses.intergen" = ["NOTICE"]
+"motius.licenses.intermask" = ["LICENSE"]
 "motius.models.humanoid_gpt" = ["ATTRIBUTIONS.md"]
-"motius.models.beyondmimic" = ["ATTRIBUTIONS.md"]
-"motius.models.sonic" = ["ATTRIBUTIONS.md"]
-"motius.models.protomotions" = ["ATTRIBUTIONS.md"]
+"motius.licenses.sonic" = ["*"]
+"motius.licenses.protomotions" = ["*"]
 "motius.models.motionclr" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.models.bailando" = ["LICENSE", "ATTRIBUTIONS.md"]
-"motius.models.edge" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.models.maskcontrol" = ["ATTRIBUTIONS.md"]
 "motius.models.tm2d" = ["ATTRIBUTIONS.md"]
 "motius.models.unimumo" = ["ATTRIBUTIONS.md"]
-"motius.models.prompthmr" = ["ATTRIBUTIONS.md"]
-"motius.models.gem_smpl" = ["ATTRIBUTIONS.md"]
-"motius.models.gem_smpl.vendor" = [
-    "GENMO_LICENSE",
-    "GENMO_ATTRIBUTIONS.md",
-    "GVHMR_LICENSE",
-    "configs/**/*.yaml",
-]
-"motius.models.gem_smpl.vendor.gem.utils.body_model" = ["*.pt", "*.pth"]
-"motius.models.gem_smpl.vendor.gem.network.hmr2.configs" = ["*.yaml", "*.npz"]
-"motius.models.gem_x" = ["ATTRIBUTIONS.md"]
-"motius.models.gem_x.vendor" = [
-    "GEM_X_LICENSE",
-    "GEM_X_ATTRIBUTIONS.md",
-    "configs/**/*.yaml",
-    "third_party/**/*.py",
-    "third_party/**/*.md",
-    "third_party/**/*LICENSE*",
-]
+"motius.licenses.gem_smpl" = ["*"]
+"motius.licenses.gem_x" = ["*"]
 "motius.models.gvhmr" = ["ATTRIBUTIONS.md"]
-"motius.models.gvhmr.vendor" = ["GVHMR_LICENSE"]
-"motius.models.gvhmr.vendor.hmr4d" = [
-    "configs/*.yaml",
-    "configs/*/*.yaml",
-    "dataset/*/*.json",
-    "dataset/*/*.pt",
-    "dataset/*/*.txt",
-    "network/hmr2/configs/*.yaml",
-    "network/hmr2/configs/*.npz",
-    "utils/body_model/*.json",
-    "utils/body_model/*.npy",
-    "utils/body_model/*.pth",
-    "utils/body_model/*.pt",
-]
+"motius.configuration.gvhmr" = ["*.json", "*.yaml", "body/*.pt"]
+"motius.licenses.gvhmr" = ["LICENSE", "ATTRIBUTIONS.md"]
 "motius.simulators.mujoco" = [
     "ATTRIBUTIONS.md",
     "assets/unitree_g1/*.xml",
     "assets/unitree_g1/LICENSE",
 ]
-"motius.models.ardy" = [
-    "LICENSE",
-    "ATTRIBUTIONS.md",
-    "network/assets/skeletons/cskel27/*.p",
-    "network/assets/skeletons/cskel27/*.npz",
-    "network/assets/skeletons/g1skel34/*.p",
-    "network/assets/skeletons/g1skel34/xml/*.xml",
+"motius.licenses.ardy" = ["*"]
+"motius.motion.representation.ardy" = [
+    "assets/skeletons/cskel27/*.p",
+    "assets/skeletons/cskel27/*.npz",
+    "assets/skeletons/g1skel34/*.p",
+    "assets/skeletons/g1skel34/xml/*.xml",
 ]
-"motius.models.motionbricks" = [
-    "ATTRIBUTIONS.md",
-    "network/assets/skeletons/g1/*.xml",
-    "network/assets/skeletons/g1/meshes/*.STL",
-]
+"motius.configuration.prompthmr" = ["stats.json", "joint_names.json", "droid.json", "metric3d.json", "pipeline.yaml", "sam2_hiera_t.yaml", "detectron2/*.yaml"]
+"motius.licenses.prompthmr" = ["LICENSE", "ATTRIBUTIONS.md", "DROID_CALIB_LICENSE", "DROID_CALIB_THIRD_PARTY_LICENSES.txt", "METRIC3D_LICENSE"]
+"motius.licenses.beyondmimic" = ["*"]
+"motius.configuration.beyondmimic" = ["*.json"]
+"motius.configuration.protomotions" = ["*.json"]
+"motius.licenses.motionbricks" = ["LICENSE", "*.txt", "ATTRIBUTIONS.md"]
+"motius.configuration.motionbricks_assets" = ["*.npz", "*.json", "skeletons/g1/*.xml", "skeletons/g1/meshes/*.STL"]
+
+"motius.licenses.motiongpt" = ["LICENSE", "ATTRIBUTIONS.md"]
+"motius.licenses.motiongpt3" = ["ATTRIBUTIONS.md", "UPSTREAM_LICENSE_NOTICE"]
+"motius.configuration" = ["motiongpt3_text_parameters.json", "gem_smpl.json", "gem_x.json"]
+
+"motius.licenses.vimogen" = ["ATTRIBUTIONS.md", "UPSTREAM_COPYRIGHT_NOTICE"]
+
+"motius.licenses.dart" = ["*"]
+
+"motius.configuration.gem_smpl.body" = ["*.pt", "*.pth"]
+
+"motius.licenses.soma" = ["SOMA_LICENSE", "SOMA_ATTRIBUTIONS.md"]
+
+"motius.licenses.mdm" = ["*"]
+"motius.licenses.condmdi" = ["*"]
+"motius.licenses.omnicontrol" = ["*"]
+"motius.licenses.mld" = ["*"]
+"motius.licenses.motionlcm" = ["*"]
+"motius.licenses.edge" = ["*"]
+"motius.licenses.hymotion_t2m" = ["*"]
+"motius.licenses.humanml3d_evaluator" = ["*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

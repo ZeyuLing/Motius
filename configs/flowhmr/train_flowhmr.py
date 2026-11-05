@@ -5,11 +5,9 @@ custom_imports = dict(imports=["motius.models.flowhmr", "motius.trainers.flowhmr
                               "motius.datasets.flowhmr"], allow_failed_imports=False)
 work_dir = os.environ.get("MOTIUS_WORK_DIR", "outputs/training/flowhmr")
 body_model_path = os.environ.get("MOTIUS_SMPLH_MODEL", "outputs/checkpoints/flowhmr/body_models/smplh/neutral/model.npz")
-j_regressor_path = os.environ.get("MOTIUS_J_REGRESSOR", "outputs/checkpoints/flowhmr/body_models/smpl_neutral_J_regressor.pt")
-model = dict(type="FlowHMRBundle", body_model_path=body_model_path,
-             j_regressor_path=j_regressor_path,
+model = dict(type="FlowHMRBundle",
              ckpt_path=os.environ.get("MOTIUS_PRETRAINED_WEIGHTS"))
-trainer = dict(type="FlowHMRTrainer")
+trainer = dict(type="FlowHMRTrainer", body_model_path=body_model_path)
 train_dataloader = dict(batch_size=8, num_workers=4, shuffle=False, pin_memory=True,
     drop_last=True, persistent_workers=True,
     dataset=dict(type="FlowHMRWebDataset", body_model_path=body_model_path,

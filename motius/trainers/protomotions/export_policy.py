@@ -1,4 +1,4 @@
-"""Export a ProtoMotions checkpoint to its deployable ONNX package."""
+"""Export a ProtoMotions checkpoint to its native current-weight Pipeline artifact."""
 
 from __future__ import annotations
 
@@ -13,7 +13,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checkpoint", required=True, type=Path)
     parser.add_argument("--output", type=Path)
-    parser.add_argument("--no-validate", action="store_true")
+    parser.add_argument("--configuration", type=Path)
+    parser.add_argument("--device", default="cpu")
     return parser
 
 
@@ -22,7 +23,8 @@ def main(arguments: Optional[Sequence[str]] = None) -> Path:
     return ProtoMotionsTrainer.export_policy(
         args.checkpoint,
         args.output,
-        validate=not args.no_validate,
+        configuration=args.configuration,
+        device=args.device,
     )
 
 

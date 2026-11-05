@@ -17,7 +17,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from motius.evaluation.metrics.t2m import aggregate_t2m_metrics
-from motius.models.motionstreamer import MotionStreamer272Evaluator
+from motius.pipelines.motionstreamer_matching import MotionStreamerMatchingPipeline
 
 
 def parse_args() -> argparse.Namespace:
@@ -103,8 +103,8 @@ def main() -> None:
         reference_lengths.append(len(reference))
         prediction_lengths.append(len(prediction))
 
-    evaluator = MotionStreamer272Evaluator.from_pretrained(
-        args.evaluator, device=args.device
+    evaluator = MotionStreamerMatchingPipeline.from_pretrained(
+        args.evaluator, bundle_kwargs={"device": args.device}
     )
     text_embeddings = evaluator.encode_texts(captions, batch_size=args.batch_size)
     reference_embeddings = evaluator.encode_motions(

@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 
 from motius.trainers.beyondmimic.motion_contract import load_motion_npz
+from motius.datasets.beyondmimic import BeyondMimicMotion
 
 
 BODY_NAMES = ("pelvis", "left_foot", "right_foot")
@@ -80,6 +81,12 @@ def test_named_motion_reorders_joints_to_robot_order(tmp_path):
     )
 
     np.testing.assert_array_equal(arrays["joint_pos"][0], (2.0, 1.0))
+
+    # Exercise the same dataset object used by the native physical command.
+    dataset = BeyondMimicMotion(str(motion), (0, 5, 9),
+        body_names=BODY_NAMES, joint_names=JOINT_NAMES)
+    np.testing.assert_array_equal(dataset.joint_pos[0].numpy(), (2.0, 1.0))
+    assert dataset.body_pos_w.shape == (4, 3, 3)
 
 
 def test_official_full_body_motion_uses_robot_indexes(tmp_path):

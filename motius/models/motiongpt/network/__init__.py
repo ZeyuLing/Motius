@@ -1,1 +1,0 @@
-"""Vendored MotionGPT runtime package."""

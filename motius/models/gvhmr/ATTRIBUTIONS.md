@@ -1,15 +1,19 @@
 # GVHMR Attribution
 
-Motius vendors the inference runtime from
-[zju3dv/GVHMR](https://github.com/zju3dv/GVHMR) at immutable revision
+Motius implements the released network, trainer, preprocessing, motion codec and
+postprocessing as native components derived from
+[zju3dv/GVHMR](https://github.com/zju3dv/GVHMR), revision
 `6ec3ca39336c50492c0fae65fba2fb831fc7d866`.
 
-The vendored source is distributed for educational, research, and non-profit
-use under the upstream terms in `vendor/GVHMR_LICENSE`. Motius changes the
-package namespace, artifact path resolution, command entrypoint, optional
-rendering boundary, degenerate two-view handling, output contract, and parity
-instrumentation. The numerical preprocessing and network calls retain the
-upstream order and implementation.
+The neural tree contains only the motion network and required attention layers.
+HMR2 feature-token and ViTPose heatmap networks share their identical ViT
+backbone under `motius.models.vision.gvhmr`. Inference, tracking, geometry and
+rendering use their explicit framework owners. Original training applications,
+registries, datasets, demos and unused vision architectures are excluded.
+The optional DPVO configuration is pinned to submodule revision
+`c0c5a104c9c58663aa9be62c3f125d5b52874f3e`.
+
+See `motius/licenses/gvhmr/LICENSE` for the upstream terms.
 
 GVHMR is copyright 2022–2023 the 3D Vision Group at the State Key Lab of
 CAD&CG, Zhejiang University. Its repository license permits educational,

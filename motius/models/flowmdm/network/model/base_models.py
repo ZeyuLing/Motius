@@ -2,7 +2,7 @@
 import torch
 import clip
 import torch.nn as nn
-from motius.models.flowmdm.network.model.MDM import PositionalEncoding, TimestepEmbedder
+from motius.models.flowmdm.network.model.layers import PositionalEncoding, TimestepEmbedder
 
 
 class TextConditionalModel(nn.Module):
@@ -50,72 +50,24 @@ class TextConditionalModel(nn.Module):
         else:
             return cond
 
-    def encode_text(self, raw_text):
-        # raw_text - list (batch_size length) of strings with input text prompts
-        device = next(self.parameters()).device
-        max_text_len = 20 if self.dataset in ['humanml'] else None  # Specific hardcoding for humanml dataset
-        if max_text_len is not None:
-            default_context_length = 77
-            context_length = max_text_len + 2 # start_token + 20 + end_token
-            assert context_length < default_context_length
-            texts = clip.tokenize(raw_text, context_length=context_length, truncate=True).to(device) # [bs, context_length] # if n_tokens > context_length -> will truncate
-            zero_pad = torch.zeros([texts.shape[0], default_context_length-context_length], dtype=texts.dtype, device=texts.device)
-            texts = torch.cat([texts, zero_pad], dim=1)
-        else:
-            texts = clip.tokenize(raw_text, truncate=True).to(device) # [bs, context_length] # if n_tokens > 77 -> will truncate
+    def encode_text(self, tokens):
+        texts = tokens.to(next(self.parameters()).device)
         return self.clip_model.encode_text(texts).float()
 
+
     def compute_embedding(self, x, timesteps, y):
-        """
-            Explanation on what the buffers do:
-            - emb: stores the embedding for the current condition. It is used to avoid recomputing the embedding if the condition is the same (big inference speedup)
-            - emb_hash: stores the hash of the condition. It is used to check if the condition is the same as the one stored in emb
-            - emb_forcemask: stores the embedding for the current condition, but with the mask forced to True. It is used to avoid recomputing the embedding for the unconditional case
-            - emb_forcemask_hash: stores the hash of the condition. It is used to check if the condition is the same as the one stored in emb_forcemask
-        """
         bs, njoints, nfeats, nframes = x.shape
-
-        multitext_mode = "all_texts" in y or not isinstance(y['text'][0], str)
-        key = "all_texts" if "all_texts" in y else "text"
-
-        time_emb = self.embed_timestep(timesteps)  # [1, bs, d]
-        force_mask = y.get('uncond', False)
-        if not force_mask:
-            if 'text' == self.cond_mode:
-                primitive = frozenset(y[key]) if not multitext_mode else frozenset((frozenset(txts) for txts in y[key]))
-            else:
-                raise ValueError
-
-            hash_value = hash(primitive)
-            recompute = not hasattr(self, 'emb_hash') or self.emb_hash != hash_value
-            if not recompute:
-                return time_emb + self.emb
-        else:
-            hash_value = hash(frozenset(x.shape))
-            recompute = not hasattr(self, 'emb_forcemask_hash') or self.emb_forcemask_hash != hash_value
-            if not recompute:
-                return time_emb + self.emb_forcemask
+        multitext_mode = y.get("multi_text", False)
+        time_emb = self.embed_timestep(timesteps)
+        force_mask = y.get("uncond", False)
 
         # compute embedding
         if not multitext_mode: # --> single text training (e.g. HumanML3D dataset) / inference
-            enc_text = self.encode_text(y['text']) if "text_embeddings" not in y else y["text_embeddings"] # if precomputed --> faster
+            enc_text = y["text_embeddings"]
             cond_emb = self.embed_text(self.mask_cond(enc_text, force_mask=force_mask))
             cond_emb = cond_emb.unsqueeze(0).expand(nframes, -1, -1) # [T, N, d]
         else: # --> multi-text training / inference (e.g. Babel dataset)
-            if "text_embeddings" in y: # preloaded for fast training / eval
-                enc_text = y["text_embeddings"]
-            else:
-                # 'conditions_mask' has shape [I, T, N] where I is the number of different conditions, N is batch size, T is sequence length.
-                # y[key] is a list of size I with each element being a list of strings of size N
-                # We need to encode the text and build the embedding matrix
-                texts_list = y[key]
-                # homogeneize all lists to same length to stack them later
-                max_len = max([len(texts) for texts in texts_list])
-                for i, texts in enumerate(texts_list):
-                    if len(texts) < max_len:
-                        texts_list[i] = texts + [''] * (max_len - len(texts))
-                enc_text = [self.encode_text(text) for text in texts_list]
-                enc_text = torch.stack(enc_text, dim=1)
+            enc_text = y["text_embeddings"]
 
             I, N, d = enc_text.shape
             enc_text = enc_text.reshape(-1, enc_text.shape[-1]) # [I*N, d]
@@ -127,13 +79,5 @@ class TextConditionalModel(nn.Module):
             for i in range(I):
                 m = conditions_mask[i] # [T, N, d]
                 cond_emb = cond_emb + m * embedded_text[i].unsqueeze(0) # [T, N, d] --> [T, N, d]
-
-        # send to buffer
-        if force_mask:
-            self.register_buffer('emb_forcemask', cond_emb, persistent=False)
-            self.register_buffer('emb_forcemask_hash', torch.tensor(hash(frozenset(x.shape))), persistent=False)
-        else:
-            self.register_buffer('emb', cond_emb, persistent=False)
-            self.register_buffer('emb_hash', torch.tensor(hash(primitive)), persistent=False)
 
         return time_emb + cond_emb

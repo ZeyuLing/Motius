@@ -1,0 +1,223 @@
+{
+  "complete": true,
+  "tests": [
+    {
+      "tensor": "/training/0/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/0/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/0/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/0/numpy_rng/0",
+      "shape": [
+        624
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/0/numpy_rng/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/numpy_rng/0",
+      "shape": [
+        624
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/numpy_rng/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/2/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/2/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/2/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/2/numpy_rng/0",
+      "shape": [
+        624
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/2/numpy_rng/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/3/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/3/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/3/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/3/numpy_rng/0",
+      "shape": [
+        624
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/3/numpy_rng/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/4/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/4/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/4/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/4/numpy_rng/0",
+      "shape": [
+        624
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/4/numpy_rng/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/5/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/5/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/5/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/5/numpy_rng/0",
+      "shape": [
+        624
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/5/numpy_rng/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "upstream_commit": "081ce3152e5a95b14a4495fb2d32939c257c6216",
+  "scope": "Author original MLD checkpoint/code, VAE feature/joint/KL objectives and latent-diffusion noise objective, all active gradient hashes and CPU/CUDA/NumPy RNG over three ragged minibatches per stage, including storage padding beyond the local valid-frame maximum; native stage switch preserves intrinsic flags. Real CLIP/VAE/denoiser; original raw corpus/optimizer/distributed protocol excluded. Controlled FP32/math attention/deterministic convolution."
+}

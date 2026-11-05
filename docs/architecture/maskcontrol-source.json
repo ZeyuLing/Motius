@@ -1,0 +1,2660 @@
+{
+  "complete": true,
+  "comparison": "original MaskControl source and released weights; inference-time optimization and training gradients",
+  "upstream_commit": "71586fdeb1146ffe6b744d87d573febb10274237",
+  "source_files": {
+    "models/t2m_eval_wrapper.py": "b03398ef2ee0087076a6e0cbe6317ba1548c23b1d58e03988d2a98a25de49692",
+    "models/t2m_eval_modules.py": "6d4b069e06448828cbe8b4da609f6b0a186ec180a24b5b2e89098c2bb027e5fc",
+    "models/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "models/mask_transformer/tools.py": "b18c6bd32d9dd13b54f5900bf3c8965c15d8e1e5c09c14e9bc59f6a3324583d1",
+    "models/mask_transformer/transformer.py": "9fe445a23515b05c4bc9801d2b741dd731bd4cf0b6c8acff1f20dfd0433c4a29",
+    "models/mask_transformer/control_transformer.py": "96efd7acb16003c1774ace2694ec118e88219579760999d0a79657709e165028",
+    "models/mask_transformer/transformer_trainer.py": "d692d8226b7582cdc6b5df61701d9b12e1c530a23152717046a1d2d57d7e496a",
+    "models/mask_transformer/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "models/vq/resnet.py": "16ec902b0f5a5a2a6556bf21bfae50bdff28c0192cd83fbc93837f5dd914a795",
+    "models/vq/model.py": "bc43e6f921acfdc5f06dbc559f288645af741643df1bbc4a071b0a72133d3a39",
+    "models/vq/vq_trainer.py": "e643d39497d8a60961f0d07c939d7bda6003f0f365ece3c6246068a40cd6d3f3",
+    "models/vq/quantizer.py": "230dd5919cf1aaaf8911d1d848cb65d46c7de2197159a04131f2b22d0c8b8426",
+    "models/vq/residual_vq.py": "89c40279b6af3e08f95afbad00721394bf68da60d7d85090b931813fa47f7d15",
+    "models/vq/encdec.py": "ad3da666bc57397b3bf941fa06a3739f26d6cb24fe22b5d2b4f1ed5a95625c2e",
+    "models/vq/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "artifact_files": {
+    "model_index.json": "e68795b0f3ef50597d041fe65db0e1a53ed2fbe5d1c84d4bfb87392085c82113",
+    "Std.npy": "c1c366b81937ef2b1552d8ed6d062ca7b91d12fab612a732509baf0a86e2399f",
+    "residual.safetensors": "52b768c5799899f5f2304c0f9e79ad8a219163e831148de25951a7eba72dcbce",
+    "control.safetensors": "4ad81beb0f982ede41f8c39699d7421ab46a535640e67c2b3b780228fb86a8f6",
+    "vq.safetensors": "84f3116fe8197f12697b0528ba5895e231c4b9f236e63b2aa525d758fcc61525",
+    "maskcontrol_config.json": "02ffb715907182f5127d62fe824d58126b4e5d508c27bcdb26cb80f64434c399",
+    "Mean.npy": "f23187256a29c715a228b4e3439c14e308ec861759e320428f60fb26ae4b8a9e",
+    "length.safetensors": "86d4c86f01318027b4fd537c8317775732d9fcf3483f3988f52e97881bd58665",
+    "clip.safetensors": "e6d1bd7789aa45192b3bf90570a789b478bae1b74ebcce7eddd908e83a2b7c31"
+  },
+  "tests": [
+    {
+      "tensor": "/batch1_each0_final0_relativeFalse/normalized",
+      "shape": [
+        1,
+        196,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_each0_final0_relativeFalse/physical",
+      "shape": [
+        1,
+        196,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_each0_final0_relativeFalse/joints",
+      "shape": [
+        1,
+        196,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_each2_final3_relativeFalse/normalized",
+      "shape": [
+        2,
+        196,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_each2_final3_relativeFalse/physical",
+      "shape": [
+        2,
+        196,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch2_each2_final3_relativeFalse/joints",
+      "shape": [
+        2,
+        196,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_each2_final3_relativeTrue/normalized",
+      "shape": [
+        1,
+        196,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_each2_final3_relativeTrue/physical",
+      "shape": [
+        1,
+        196,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch1_each2_final3_relativeTrue/joints",
+      "shape": [
+        1,
+        196,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/ce",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/control",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/accuracy",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/first_zero_linear.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/first_zero_linear.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.0.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.0.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.1.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.2.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.3.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.3.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.4.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.4.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.5.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.5.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.6.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.6.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.7.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/mid_zero_linear.7.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.0.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.0.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.0.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.0.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.0.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.0.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.0.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.0.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.0.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.0.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.0.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.0.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.1.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.1.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.1.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.1.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.1.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.1.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.1.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.1.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.1.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.1.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.1.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.1.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.2.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.2.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.2.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.2.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.2.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.2.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.2.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.2.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.2.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.2.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.2.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.2.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.3.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.3.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.3.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.3.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.3.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.3.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.3.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.3.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.3.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.3.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.3.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.3.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.4.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.4.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.4.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.4.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.4.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.4.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.4.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.4.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.4.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.4.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.4.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.4.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.5.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.5.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.5.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.5.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.5.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.5.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.5.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.5.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.5.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.5.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.5.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.5.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.6.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.6.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.6.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.6.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.6.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.6.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.6.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.6.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.6.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.6.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.6.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.6.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.7.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.7.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.7.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.7.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.7.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.7.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.7.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.7.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.7.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.7.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.7.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/seqTransEncoder_control.layers.7.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.0.weight",
+      "shape": [
+        512,
+        36,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.0.weight",
+      "shape": [
+        512,
+        512,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.1.model.0.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.1.model.0.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.1.model.0.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.1.model.0.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.1.model.1.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.1.model.1.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.1.model.1.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.1.model.1.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.1.model.2.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.1.model.2.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.1.model.2.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.2.1.model.2.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.0.weight",
+      "shape": [
+        512,
+        512,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.1.model.0.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.1.model.0.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.1.model.0.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.1.model.0.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.1.model.1.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.1.model.1.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.1.model.1.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.1.model.1.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.1.model.2.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.1.model.2.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.1.model.2.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.3.1.model.2.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.4.weight",
+      "shape": [
+        384,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/random_training/gradients/encoder_control.model.4.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/ce",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/control",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/accuracy",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/first_zero_linear.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/first_zero_linear.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.0.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.0.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.1.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.2.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.3.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.3.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.4.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.4.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.5.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.5.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.6.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.6.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.7.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/mid_zero_linear.7.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.0.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.0.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.0.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.0.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.0.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.0.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.0.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.0.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.0.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.0.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.0.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.0.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.1.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.1.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.1.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.1.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.1.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.1.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.1.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.1.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.1.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.1.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.1.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.1.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.2.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.2.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.2.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.2.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.2.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.2.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.2.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.2.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.2.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.2.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.2.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.2.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.3.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.3.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.3.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.3.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.3.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.3.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.3.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.3.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.3.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.3.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.3.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.3.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.4.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.4.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.4.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.4.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.4.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.4.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.4.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.4.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.4.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.4.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.4.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.4.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.5.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.5.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.5.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.5.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.5.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.5.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.5.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.5.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.5.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.5.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.5.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.5.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.6.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.6.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.6.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.6.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.6.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.6.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.6.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.6.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.6.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.6.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.6.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.6.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.7.self_attn.in_proj_weight",
+      "shape": [
+        1152,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.7.self_attn.in_proj_bias",
+      "shape": [
+        1152
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.7.self_attn.out_proj.weight",
+      "shape": [
+        384,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.7.self_attn.out_proj.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.7.linear1.weight",
+      "shape": [
+        1024,
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.7.linear1.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.7.linear2.weight",
+      "shape": [
+        384,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.7.linear2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.7.norm1.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.7.norm1.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.7.norm2.weight",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/seqTransEncoder_control.layers.7.norm2.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.0.weight",
+      "shape": [
+        512,
+        36,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.0.weight",
+      "shape": [
+        512,
+        512,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.1.model.0.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.1.model.0.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.1.model.0.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.1.model.0.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.1.model.1.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.1.model.1.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.1.model.1.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.1.model.1.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.1.model.2.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.1.model.2.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.1.model.2.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.2.1.model.2.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.0.weight",
+      "shape": [
+        512,
+        512,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.1.model.0.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.1.model.0.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.1.model.0.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.1.model.0.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.1.model.1.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.1.model.1.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.1.model.1.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.1.model.1.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.1.model.2.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.1.model.2.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.1.model.2.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.3.1.model.2.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.4.weight",
+      "shape": [
+        384,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cross_training/gradients/encoder_control.model.4.bias",
+      "shape": [
+        384
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "cudnn_deterministic": true,
+  "cudnn_benchmark": false,
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "native_files": {
+    "motius/models/maskcontrol/network.py": "9b76130c8a44ed7665134ba576fd88517776aba145f9ab58cc6c318340ff389a",
+    "motius/models/maskcontrol/bundle.py": "14ea1a4f2a6ee2ee4f4b56bc49aec7d74ee9e834df302426335ee8f4e40f1848",
+    "motius/models/maskcontrol/__init__.py": "980ae884333f954cbddaf8d10a4a6b3bb786da1c521809f45a5ab5444d3b2139",
+    "motius/pipelines/maskcontrol/sampling.py": "ae8ffde60e0b6ec2d7b320280aac4216a089879180a82e2ddfb4c25409db5d07",
+    "motius/pipelines/maskcontrol/pipeline.py": "3b8217d69d2420177ee445ca6936c40e1244376b3501a4be6059b8c2329aa65b",
+    "motius/pipelines/maskcontrol/__init__.py": "89912c2eaa4477db319dc3f39461132696a8a880c44be11cb061959338fcd96c",
+    "motius/trainers/maskcontrol/trainer.py": "ddb6da75d7e2482c0d6d224b8c4a65ddecaf4c3da8bebbd35a5f0c07c6fc7c41",
+    "motius/trainers/maskcontrol/objective.py": "b0ce366e2ffdda870e1e32c5b54c40effb9e81d05a428ad57ad96b305d4832ae",
+    "motius/trainers/maskcontrol/__init__.py": "068997b36afc60c1b39ab628767b438fd64391398b91dbd40f76c02573c493cf"
+  }
+}

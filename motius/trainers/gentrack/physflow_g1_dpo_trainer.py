@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+from motius.trainers.gentrack.objective import flow_dpo_loss_g1
+from motius.pipelines.gentrack.sampling import latents_to_qpos
+from motius.pipelines.gentrack.sampling import sample_motion
+
 import json
 import os
 import tempfile
@@ -12,7 +16,7 @@ from typing import Any, Dict
 import numpy as np
 import torch
 
-from motius.models.gentrack.flow_grpo import (
+from motius.trainers.gentrack.flow_grpo import (
     select_reliable_preference_pairs,
 )
 from motius.registry import TRAINERS
@@ -357,7 +361,7 @@ class PhysFlowG1DPOTrainer(PhysFlowG1GRPOTrainer):
         return loss
 
     def _dpo_loss_from_cache(self, cache: Dict[str, Any]) -> Dict[str, Any]:
-        return self.bundle.flow_dpo_loss_g1(
+        return flow_dpo_loss_g1(self.bundle,
             cache["vtxt"],
             cache["ctxt"],
             cache["ctxt_len"],
@@ -570,7 +574,7 @@ class PhysFlowG1DPOTrainer(PhysFlowG1GRPOTrainer):
             dtype=torch.long,
         )
 
-        latents, initial_noise = self.bundle.sample_motion(
+        latents, initial_noise = sample_motion(self.bundle,
             vtxt_rep,
             ctxt_rep,
             ctxt_len_rep,
@@ -583,7 +587,7 @@ class PhysFlowG1DPOTrainer(PhysFlowG1GRPOTrainer):
         reference_transformer = self.bundle._reference_transformer()
         if reference_transformer is None:
             raise RuntimeError("Flow-DPO requires an immutable G0 reference")
-        reference_latents = self.bundle.sample_motion(
+        reference_latents = sample_motion(self.bundle,
             vtxt_rep,
             ctxt_rep,
             ctxt_len_rep,
@@ -593,7 +597,7 @@ class PhysFlowG1DPOTrainer(PhysFlowG1GRPOTrainer):
             initial_noise=initial_noise,
             transformer=reference_transformer,
         )
-        qpos = self.bundle.latents_to_qpos(latents)
+        qpos = latents_to_qpos(self.bundle, latents)
 
         rollout = tempfile.TemporaryDirectory(
             prefix=f"physflow_g1_dpo_step{self._global_step()}_",

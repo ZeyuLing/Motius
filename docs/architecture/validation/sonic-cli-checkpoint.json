@@ -1,0 +1,39 @@
+{
+  "complete": true,
+  "tests": [
+    {
+      "tensor": "/output/action",
+      "shape": [
+        3,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/output/encoded_tokens",
+      "shape": [
+        3,
+        64
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/output/decoder_input",
+      "shape": [
+        3,
+        994
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/output/control_hz",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "scope": "Actual public native SONIC CLI, four Isaac Lab G1 environments, two rollout iterations then full shared-checkpoint resume to iteration three. Checkpoint neural tensors equal the current policy artifact. Export directly from the shared checkpoint and cold offline Auto Pipeline reload: all neural hashes and three-mode public inference exact. Training integration/export evidence, not original-source parity or full-dataset convergence."
+}

@@ -1,0 +1,7018 @@
+{
+  "complete": true,
+  "comparison": "Original UniMuMo full checkpoint and native released artifact: motion codec, conditioned logits, greedy/stochastic generation and audio/motion decode",
+  "upstream_commit": "a75ddac791ff6806b5bd511d1ce887a1980e20d5",
+  "original_checkpoint_sha256": "fc6f4f05fe68b4e8fc882b3fdc62e7e496ff65c161bb52f87feb3f8f54cbb0c4",
+  "musicgen_base_sha256": "830fe5771e2835cbd305f3ffdda22d3ff38718fbbe8274bd19dc203265de7244",
+  "artifact_files": {
+    "model_index.json": "851bb7696d77408d5d1d4a22840305013cf23a0712428257c311458b4873ed56",
+    "std.npy": "691a059e75fa50aefedadfc2fe0df385a7430cbdf3b3f0b41e0166a02fcf9a20",
+    "core-00002-of-00002.safetensors": "4cc59c2038d73471ba7443aa2a92e4fd8facc1cf9041f5c3971db70014f1fa07",
+    "core.safetensors.index.json": "bee32bca6c0b3ac54f70549bbd8181ac38d8dca253a8ea8d1d9ae182838b0b9a",
+    "mean.npy": "ae9342be18f239eaeea6744b3fb3ea982022ce6436ec29e90bb66afadfd3e819",
+    "core-00001-of-00002.safetensors": "b5e3019652f148bee3c73611c5576a51d91f9e61153af8f8464ec45cb2ea1683",
+    "unimumo_config.json": "dd51a56a8cc8d0388c12846eb02d2acf8d5cbc3fbe4a83bae9033ef8f5d0ddf2",
+    "text_encoder/model.safetensors": "095878c81d21f17d235e1b4aa20e9595289177e2658ef4dcec69fa5aa3b07ca2",
+    "text_encoder/config.json": "2882ca0ffba9cf5d93097cecc3ce70410d1f0def8891a5dc0f4a715eff0278de",
+    "captioner/model.safetensors": "12e8f876e872ee84b8a0645da8d4eea2042b1bcee9f208cc99f0bfde383aef38",
+    "captioner/config.json": "1746de61c326bfc3ea42642d0aa5a6047f0e0b3fcd7923f533be9519627dbd62",
+    "captioner/generation_config.json": "f255ebafe18223fdec81434d30bbf2d04a7b45b8cef9aa53a3ba6fea9ac7e3f6",
+    "tokenizer/spiece.model": "d60acb128cf7b7f2536e8f38a5b18a05535c9e14c7a355904270e15b0945ea86",
+    "tokenizer/tokenizer_config.json": "f79c3aef92b9af347b2ed636c3577c1dc26010b83164336ef0e5b6dcddd9c44c",
+    "tokenizer/special_tokens_map.json": "5c87151ef0f72a99d1f766a4c418bd2a1f90aaa30a8e22fe5eca9641daebb64f",
+    "tokenizer/added_tokens.json": "837c900c616db7361a698e8036f2eb2ef19b18782c64ecacdf47cdaacc5cc590",
+    "tokenizer/tokenizer.json": "fd8850ac478fa651ddd19d16dec4c0d821ac967517ef7211f6d97a68a6fd4e53",
+    "audio_codec/model.safetensors": "faf2bf67766b859f3812ff1d4f5073c1359be3191bbc49d7420a7fd179a1396f",
+    "audio_codec/config.json": "b667bd429cc5920c48fff9930aa4217ad87599c3ffb8f0d22aef5414e58a0063"
+  },
+  "tests": [
+    {
+      "tensor": "/encoding/normalized",
+      "shape": [
+        2,
+        60,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/encoding/music_embedding",
+      "shape": [
+        2,
+        128,
+        50
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/encoding/raw_motion_embedding",
+      "shape": [
+        2,
+        128,
+        50
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/encoding/motion_embedding",
+      "shape": [
+        2,
+        128,
+        50
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/encoding/codes",
+      "shape": [
+        2,
+        4,
+        50
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/teacher_forcing_0/condition",
+      "shape": [
+        1,
+        8,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/teacher_forcing_0/mask",
+      "shape": [
+        1,
+        2,
+        8
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/teacher_forcing_0/music_logits",
+      "shape": [
+        26,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/teacher_forcing_0/motion_logits",
+      "shape": [
+        26,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/teacher_forcing_0/music_mask",
+      "shape": [
+        1,
+        4,
+        8
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/teacher_forcing_0/motion_mask",
+      "shape": [
+        1,
+        4,
+        8
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/intermediates/layer_input",
+      "shape": [
+        1,
+        18,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/intermediates/norm1",
+      "shape": [
+        1,
+        18,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/intermediates/self_attn",
+      "shape": [
+        1,
+        18,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/intermediates/norm_cross",
+      "shape": [
+        1,
+        18,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/intermediates/cross_attention",
+      "shape": [
+        1,
+        18,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/intermediates/norm2",
+      "shape": [
+        1,
+        9,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/intermediates/linear1",
+      "shape": [
+        1,
+        9,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/intermediates/linear2",
+      "shape": [
+        1,
+        9,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/intermediates/norm2_motion",
+      "shape": [
+        1,
+        9,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/intermediates/layer_output",
+      "shape": [
+        1,
+        18,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/teacher_forcing_1/condition",
+      "shape": [
+        2,
+        9,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/teacher_forcing_1/mask",
+      "shape": [
+        2,
+        2,
+        9
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/teacher_forcing_1/music_logits",
+      "shape": [
+        52,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/teacher_forcing_1/motion_logits",
+      "shape": [
+        52,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/teacher_forcing_1/music_mask",
+      "shape": [
+        2,
+        4,
+        8
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/teacher_forcing_1/motion_mask",
+      "shape": [
+        2,
+        4,
+        8
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/music_codes",
+      "shape": [
+        1,
+        4,
+        12
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/motion_codes",
+      "shape": [
+        1,
+        4,
+        12
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/waveform",
+      "shape": [
+        1,
+        1,
+        7680
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/motion",
+      "shape": [
+        1,
+        14,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/music_codes",
+      "shape": [
+        1,
+        4,
+        12
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/motion_codes",
+      "shape": [
+        1,
+        4,
+        12
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/waveform",
+      "shape": [
+        1,
+        1,
+        7680
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/motion",
+      "shape": [
+        1,
+        14,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/caption_music/context",
+      "shape": [
+        1,
+        22,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/caption_music/text/0",
+      "shape": [
+        120
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/caption_motion/context",
+      "shape": [
+        1,
+        22,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/caption_motion/text/0",
+      "shape": [
+        140
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.text_condition_projection.weight",
+      "shape": [
+        1024,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.text_condition_projection.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.music_embeddings.0.weight",
+      "shape": [
+        2049,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.music_embeddings.1.weight",
+      "shape": [
+        2049,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.music_embeddings.2.weight",
+      "shape": [
+        2049,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.music_embeddings.3.weight",
+      "shape": [
+        2049,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.motion_embeddings.0.weight",
+      "shape": [
+        2049,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.motion_embeddings.1.weight",
+      "shape": [
+        2049,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.motion_embeddings.2.weight",
+      "shape": [
+        2049,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.motion_embeddings.3.weight",
+      "shape": [
+        2049,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.0.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.1.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.2.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.3.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.4.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.5.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.6.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.7.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.8.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.9.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.10.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.11.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.12.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.13.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.14.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.15.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.16.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.17.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.18.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.19.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.20.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.21.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.22.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.self_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.self_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.self_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.self_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.music_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.music_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.self_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.self_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.music_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.music_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.cross_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.cross_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.cross_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.cross_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.cross_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.cross_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.motion_ffn_in.weight",
+      "shape": [
+        4096,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.motion_ffn_out.weight",
+      "shape": [
+        1024,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.motion_ffn_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.layers.23.motion_ffn_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.output_norm.weight",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.output_norm.bias",
+      "shape": [
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.music_heads.0.weight",
+      "shape": [
+        2048,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.music_heads.1.weight",
+      "shape": [
+        2048,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.music_heads.2.weight",
+      "shape": [
+        2048,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.music_heads.3.weight",
+      "shape": [
+        2048,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.motion_heads.0.weight",
+      "shape": [
+        2048,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.motion_heads.1.weight",
+      "shape": [
+        2048,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.motion_heads.2.weight",
+      "shape": [
+        2048,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_music_motion/gradients/core.generator.motion_heads.3.weight",
+      "shape": [
+        2048,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.0.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.0.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.0.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.0.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.1.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.1.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.1.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.1.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.2.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.2.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.2.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.2.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.3.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.3.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.3.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.3.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.4.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.4.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.4.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.4.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.5.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.5.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.5.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.5.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.6.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.6.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.6.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.6.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.7.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.7.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.7.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.7.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.8.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.8.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.8.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.8.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.9.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.9.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.9.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.9.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.10.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.10.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.10.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.10.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.11.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.11.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.11.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.11.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.12.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.12.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.12.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.12.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.13.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.13.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.13.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.13.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.14.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.14.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.14.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.14.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.15.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.15.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.15.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.15.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.16.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.16.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.16.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.16.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.17.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.17.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.17.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.17.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.18.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.18.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.18.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.18.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.19.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.19.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.19.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.19.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.20.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.20.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.20.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.20.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.21.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.21.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.21.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.21.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.22.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.22.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.22.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.22.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.23.caption_attention.q_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.23.caption_attention.k_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.23.caption_attention.v_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.generator.layers.23.caption_attention.out_proj.weight",
+      "shape": [
+        1024,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.shared.weight",
+      "shape": [
+        32128,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.0.SelfAttention.relative_attention_bias.weight",
+      "shape": [
+        32,
+        12
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.2.DenseReluDense.wi.weight",
+      "shape": [
+        3072,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        3072
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.0.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.1.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.1.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.1.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.1.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.1.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.1.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.1.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.1.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.1.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.1.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.1.layer.2.DenseReluDense.wi.weight",
+      "shape": [
+        3072,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.1.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        3072
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.1.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.2.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.2.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.2.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.2.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.2.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.2.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.2.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.2.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.2.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.2.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.2.layer.2.DenseReluDense.wi.weight",
+      "shape": [
+        3072,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.2.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        3072
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.2.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.3.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.3.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.3.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.3.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.3.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.3.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.3.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.3.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.3.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.3.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.3.layer.2.DenseReluDense.wi.weight",
+      "shape": [
+        3072,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.3.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        3072
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.3.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.4.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.4.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.4.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.4.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.4.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.4.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.4.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.4.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.4.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.4.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.4.layer.2.DenseReluDense.wi.weight",
+      "shape": [
+        3072,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.4.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        3072
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.4.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.5.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.5.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.5.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.5.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.5.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.5.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.5.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.5.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.5.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.5.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.5.layer.2.DenseReluDense.wi.weight",
+      "shape": [
+        3072,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.5.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        3072
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.5.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.6.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.6.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.6.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.6.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.6.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.6.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.6.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.6.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.6.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.6.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.6.layer.2.DenseReluDense.wi.weight",
+      "shape": [
+        3072,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.6.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        3072
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.6.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.7.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.7.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.7.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.7.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.7.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.7.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.7.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.7.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.7.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.7.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.7.layer.2.DenseReluDense.wi.weight",
+      "shape": [
+        3072,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.7.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        3072
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.7.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.8.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.8.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.8.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.8.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.8.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.8.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.8.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.8.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.8.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.8.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.8.layer.2.DenseReluDense.wi.weight",
+      "shape": [
+        3072,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.8.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        3072
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.8.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.9.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.9.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.9.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.9.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.9.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.9.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.9.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.9.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.9.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.9.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.9.layer.2.DenseReluDense.wi.weight",
+      "shape": [
+        3072,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.9.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        3072
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.9.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.10.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.10.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.10.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.10.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.10.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.10.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.10.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.10.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.10.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.10.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.10.layer.2.DenseReluDense.wi.weight",
+      "shape": [
+        3072,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.10.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        3072
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.10.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.11.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.11.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.11.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.11.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.11.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.11.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.11.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.11.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.11.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.11.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.11.layer.2.DenseReluDense.wi.weight",
+      "shape": [
+        3072,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.11.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        3072
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.block.11.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/captioner.decoder.final_layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.caption_context_projection.weight",
+      "shape": [
+        768,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/train_caption/gradients/core.caption_context_projection.bias",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "native_files": {
+    "motius/models/unimumo/motion_codec.py": "b0872817cf931321c0bd6560e39fa455edfa28f995ef1d641afb690211bf0a88",
+    "motius/models/unimumo/generator.py": "8af8e520837e53276c2ef11bef842538cf043940a6dcc75c61f643ca1c8f3dbf",
+    "motius/models/unimumo/bundle.py": "b9499b5794273dc607aca0e9ade911385093d03d1e1852a4f9dc03ce81ddf7d5",
+    "motius/models/unimumo/__init__.py": "d4a1c726e654c644b8c915071521c342ad06e4ab296e71e8eebfd55de7e8ba9f",
+    "motius/pipelines/unimumo/sampling.py": "6139be46759b14d2a65ad94a17407a0073cfb07716e627ae99be8e4b991358c1",
+    "motius/pipelines/unimumo/inference.py": "4ce51645f7025b59eb25fd8789d850af687da760e8f30321638f57872098fcd3",
+    "motius/pipelines/unimumo/pipeline.py": "e9f36c5024e20a421ff3a4b642eaf7ef72fa3988a5cc331f98d4647561fbba72",
+    "motius/pipelines/unimumo/__init__.py": "a80299662010af5516a1ef593db1b65fbe75512a2bae30452c299e097a072e2f",
+    "motius/trainers/unimumo/trainer.py": "7a72e052ef8b239210971065cdbf5925e5fe5fd5b32b9592acd6ceb6e5532070",
+    "motius/trainers/unimumo/__init__.py": "a60e31adcd7a7d0d0cc963df204f2a2e5e4c434ff42582740a3ecebaca4b360e",
+    "motius/motion/conditioning/unimumo_pattern.py": "d7419f5af99683348483c1d47ef3ba40c8b81241150128eb55b11d3bedaf0c34"
+  }
+}

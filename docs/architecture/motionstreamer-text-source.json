@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "scope": "Actual original SentenceTransformer 3.2.1/SentenceT5-XXL default-FP32 construction versus native tensor-only text backbone/pooling/projection/normalization with separate tokenizer/batching processor. Single/ragged/empty/whitespace prompts and complete native public T2M versus original 50-step-per-token AR/TAE graph. Every text neural tensor SHA256 checked. Published model weights are verified separately against original HF LFS hashes.",
+  "tests": [
+    {
+      "tensor": "/features/0",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/features/1",
+      "shape": [
+        3,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion",
+      "shape": [
+        12,
+        272
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

@@ -185,6 +185,7 @@ class KIMODOBundle(ModelBundle):
         text_encoders_repo: Optional[str] = None,
         text_encoders_subdir: str = "text_encoders",
         text_encoder_url: Optional[str] = None,
+        packed_text_path: Optional[str] = None,
         load_model: bool = True,
         **kwargs,
     ):
@@ -204,6 +205,9 @@ class KIMODOBundle(ModelBundle):
         self.text_encoders_repo = text_encoders_repo
         self.text_encoders_subdir = text_encoders_subdir
         self.text_encoder_url = text_encoder_url
+        self.packed_text_path = packed_text_path
+        self._trainable_modules = ["_model"]
+        self._save_ckpt_modules = ["_model"]
         self._model = None
         self._resolved_model_name = None
 
@@ -248,7 +252,7 @@ class KIMODOBundle(ModelBundle):
 
         _patch_llm2vec_adapter_configs(self.text_encoders_dir)
         with _patched_env(self._kimodo_env()):
-            from .network import load_model
+            from motius.utils.kimodo_loading import load_model
 
             self._model, self._resolved_model_name = load_model(
                 self.model_name,
@@ -258,37 +262,31 @@ class KIMODOBundle(ModelBundle):
             )
         return self._model
 
-    def generation_kwargs(self, **overrides) -> dict:
-        kwargs = {
-            "num_denoising_steps": self.diffusion_steps,
-            "post_processing": self.post_processing,
-        }
-        if self.cfg_type is not None:
-            kwargs["cfg_type"] = self.cfg_type
-        if self.cfg_weight is not None:
-            kwargs["cfg_weight"] = deepcopy(self.cfg_weight)
-        kwargs.update({k: v for k, v in overrides.items() if v is not None})
-        return kwargs
 
-    def generate(
-        self,
-        prompts,
-        num_frames,
-        constraints: Optional[list] = None,
-        multi_prompt: bool = False,
-        return_numpy: bool = True,
-        **kwargs,
-    ) -> dict:
-        """Run KIMODO generation through the official low-level API."""
-        call_kwargs = self.generation_kwargs(**kwargs)
-        return self.model(
-            prompts=prompts,
-            num_frames=num_frames,
-            multi_prompt=multi_prompt,
-            constraint_lst=constraints or [],
-            return_numpy=return_numpy,
-            **call_kwargs,
-        )
+
+    @property
+    def network(self):
+        model = self.model
+        while hasattr(model, "module"):
+            model = model.module
+        return model
+
+    def predict_motion(self, *args, **kwargs):
+        return self.model(*args, **kwargs)
+
+    def load_text_model(self):
+        if not hasattr(self, "text_model"):
+            from motius.configuration.kimodo.text import load_original_text_network, load_packed_text_network
+            if self.packed_text_path is not None:
+                self.text_model = load_packed_text_network(self.packed_text_path, self.network.device)
+            else:
+                self.text_model, self.text_frontend_metadata = load_original_text_network(self)
+            self._save_ckpt_modules.append("text_model")
+            self._frozen_modules.append("text_model")
+        return self.text_model
+
+    def encode_text(self, inputs):
+        return self.load_text_model()(**inputs)
 
     def config_dict(self) -> dict:
         components = {
@@ -320,6 +318,7 @@ class KIMODOBundle(ModelBundle):
             "text_encoders_repo": self.text_encoders_repo,
             "text_encoders_subdir": self.text_encoders_subdir,
             "text_encoder_url": self.text_encoder_url,
+            "packed_text_path": self.packed_text_path,
             "supported_tasks": deepcopy(self.SUPPORTED_TASKS),
             "components": components,
             "external_components": components,
@@ -364,6 +363,11 @@ class KIMODOBundle(ModelBundle):
             ckpt_src = self._resolve_checkpoint_source(checkpoint_source)
             ckpt_dst = save_dir / checkpoint_subdir / self.model_name
             _copy_tree(ckpt_src, ckpt_dst, copy_mode=copy_mode)
+            from safetensors.torch import save_file
+            temporary = ckpt_dst / "current-model.safetensors"
+            save_file({"denoiser.backbone." + key: value.detach().cpu().contiguous()
+                       for key, value in self.network.denoiser.state_dict().items()}, str(temporary))
+            os.replace(temporary, ckpt_dst / "model.safetensors")
             config["checkpoint_dir"] = checkpoint_subdir
             config["local_cache"] = True
             artifacts["kimodo_checkpoint"] = f"{checkpoint_subdir}/{self.model_name}"
@@ -375,16 +379,10 @@ class KIMODOBundle(ModelBundle):
             config["external_components"]["kimodo_checkpoint"] = config["components"]["kimodo_checkpoint"]
 
         if include_text_encoder:
-            text_src = Path(text_encoders_source or self.text_encoders_dir or _DEFAULT_TEXT_ENCODERS_DIR)
+            from motius.configuration.kimodo.text import save_current_text_network
             text_dst = save_dir / text_encoder_subdir
-            # The Meta Llama HF snapshot may contain an ``original/`` export with
-            # duplicate .pth weights. Transformers loads the safetensors shards.
-            _copy_tree(
-                text_src,
-                text_dst,
-                ignore_patterns=("original", ".cache"),
-                copy_mode=copy_mode,
-            )
+            save_current_text_network(self, text_dst)
+            config["packed_text_path"] = text_encoder_subdir
             config["text_encoder_mode"] = "local"
             config["text_encoders_dir"] = text_encoder_subdir
             artifacts["text_encoders"] = text_encoder_subdir
@@ -491,6 +489,7 @@ class KIMODOBundle(ModelBundle):
         cfg_dict.pop("components", None)
         cfg_dict.pop("external_components", None)
         if base_dir is not None:
+            cfg_dict["packed_text_path"] = _resolve_relative_path(cfg_dict.get("packed_text_path"), base_dir)
             cfg_dict["checkpoint_dir"] = _resolve_relative_path(
                 cfg_dict.get("checkpoint_dir"),
                 base_dir,
@@ -522,7 +521,7 @@ class KIMODOBundle(ModelBundle):
                 "The KIMODO artifact is incomplete: its bundled text encoder "
                 f"directory is missing at {text_encoders_dir!r}."
             )
-        if should_resolve_text_encoders and text_encoders_repo and (
+        if should_resolve_text_encoders and not cfg_dict.get("packed_text_path") and text_encoders_repo and (
             not text_encoders_dir or not Path(text_encoders_dir).exists()
         ):
             from huggingface_hub import snapshot_download
@@ -545,5 +544,5 @@ class KIMODOBundle(ModelBundle):
             return cls.from_config(cfg_file, **kwargs)
         return cls(model_name=_normalize_model_name(str(pretrained_model_name_or_path)), **kwargs)
 
-    def forward(self, *args, **kwargs):  # pragma: no cover - use generate/pipeline
-        return self.generate(*args, **kwargs)
+    def forward(self, *args, **kwargs):
+        return self.predict_motion(*args, **kwargs)

@@ -35,13 +35,13 @@ def test_all_registered_task_routes_are_parity_verified():
     assert report["summary"] == {
         "artifacts": 49,
         "artifact_task_bindings": 83,
-        "source_pipeline_classes": 47,
-        "pipeline_classes": 43,
-        "task_methods": 74,
-        "native": 26,
+        "source_pipeline_classes": 52,
+        "pipeline_classes": 45,
+        "task_methods": 76,
+        "native": 27,
         "identity": 43,
-        "verified_adapters": 5,
-        "class_exclusions": 4,
+        "verified_adapters": 6,
+        "class_exclusions": 7,
         "failed": 0,
     }
     assert report["coverage_errors"] == []
@@ -51,8 +51,11 @@ def test_all_registered_task_routes_are_parity_verified():
     } == {
         "BasePipeline": "abstract pipeline base class",
         "MotionCLIPPipeline": "evaluator/retrieval API, not a method Pipeline",
+        "MotionStreamerMatchingPipeline": "evaluator/retrieval API, not a method Pipeline",
+        "HumanML3DMatchingPipeline": "evaluator/retrieval API, not a method Pipeline",
         "Pipeline": "automatic artifact loader that returns a method Pipeline",
         "PrismARPipeline": "internal Diffusers backend used by PRISMPipeline",
+        "PostprocessPipeline": "internal FlowHMR motion postprocessing component",
     }
 
 
@@ -60,8 +63,8 @@ def test_ardy_sequential_adapter_matches_manual_stream_steps_bit_exact():
     pipeline = ARDYPipeline.__new__(ARDYPipeline)
     pipeline.bundle = SimpleNamespace(
         fps=30.0,
-        model=SimpleNamespace(skeleton=SimpleNamespace(name="G1")),
     )
+    pipeline._runtime = SimpleNamespace(skeleton=SimpleNamespace(name="G1"))
 
     def stream_step(caption, state=None, **kwargs):
         state = 0 if state is None else int(state)
@@ -115,6 +118,30 @@ def test_hymotion_text_adapter_forwards_the_exact_legacy_batch():
     }
 
 
+def test_gentrack_text_adapter_preserves_cached_conditions_and_sampling_options():
+    from motius.pipelines.gentrack import GenTrackPipeline
+
+    result = {"qpos": np.arange(12).reshape(2, 6)}
+
+    class ProbePipeline(GenTrackPipeline):
+        def __call__(self, batch, **options):
+            self.received = batch, options
+            return result
+
+    pipeline = ProbePipeline.__new__(ProbePipeline)
+    context = object()
+    noise = object()
+    actual = pipeline.infer_text_to_motion(
+        ["walk", "turn"], [24, 20], num_steps=5, guidance=2.5,
+        initial_noise=noise, text_ctxt_raw=context,
+    )
+    assert actual is result
+    assert pipeline.received == (
+        {"caption": ["walk", "turn"], "num_frames": [24, 20], "text_ctxt_raw": context},
+        {"num_steps": 5, "guidance": 2.5, "initial_noise": noise},
+    )
+
+
 def test_kimodo_scalar_text_adapter_matches_legacy_call_bit_exact():
     sentinel = {"motion": np.arange(12, dtype=np.float32).reshape(2, 6)}
     calls = []
@@ -125,6 +152,7 @@ def test_kimodo_scalar_text_adapter_matches_legacy_call_bit_exact():
             return sentinel
 
     pipeline = KIMODOPipeline(Bundle())
+    pipeline.generate = pipeline.bundle.generate
     legacy = pipeline.text_to_motion("walk forward", 120, seed=11)
     legacy_call = calls.pop()
     canonical = pipeline.infer_text_to_motion("walk forward", 120, seed=11)
@@ -144,6 +172,7 @@ def test_kimodo_batch_text_adapter_forwards_without_data_transforms():
             return sentinel
 
     pipeline = KIMODOPipeline(Bundle())
+    pipeline.generate = pipeline.bundle.generate
     actual = pipeline.infer_text_to_motion(
         ["walk", "turn"],
         [120, 180],
@@ -169,6 +198,7 @@ def test_kimodo_sequential_adapter_matches_multi_prompt_bit_exact():
             return sentinel
 
     pipeline = KIMODOPipeline(Bundle())
+    pipeline.generate = pipeline.bundle.generate
     legacy = pipeline.multi_prompt(["walk", "sit"], [90, 120], seed=17)
     legacy_call = calls.pop()
     canonical = pipeline.infer_sequential_text_to_motion(
@@ -208,6 +238,7 @@ def test_kimodo_temporal_adapter_accepts_native_reference(monkeypatch):
         ),
     )
     pipeline = KIMODOPipeline(Bundle())
+    pipeline.generate = pipeline.bundle.generate
     output = pipeline.infer_temporal_motion_completion(
         ["walk and turn"],
         [reference],
@@ -235,7 +266,7 @@ def test_kimodo_constraints_default_to_model_device():
 
 def test_kimodo_multi_prompt_defaults_to_one_sample(monkeypatch):
     import torch
-    from motius.models.kimodo.network.model.kimodo_model import Kimodo
+    from motius.pipelines.kimodo.sampling import Kimodo
 
     class StopGeneration(Exception):
         pass
@@ -281,7 +312,7 @@ def test_kimodo_multi_prompt_defaults_to_one_sample(monkeypatch):
 
 def test_kimodo_moves_plain_text_encoder_to_runtime_device(monkeypatch):
     import torch
-    from motius.models.kimodo.network.model import kimodo_model
+    from motius.pipelines.kimodo import sampling as kimodo_model
 
     class Denoiser(torch.nn.Module):
         def __init__(self):

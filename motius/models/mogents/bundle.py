@@ -202,12 +202,15 @@ class MoGenTSBundle(ModelBundle):
             vq_cfg["vq_norm"],
         )
 
+        self.fusion=vq_model.linear_out
+        del vq_model.linear_out
         mask_transformer_aux = None
         mask_transformer_ts = None
         res_transformer_aux = None
         res_transformer_ts = None
         if load_generation_models:
             mask_opt = SimpleNamespace(
+                num_tokens=vq_cfg["nb_code1d"],
                 num_tokens1d=vq_cfg["nb_code1d"],
                 num_tokens2d=vq_cfg["nb_code2d"],
                 num_quantizers=vq_cfg["num_quantizers"],
@@ -243,6 +246,7 @@ class MoGenTSBundle(ModelBundle):
             )
 
             res_opt = SimpleNamespace(
+                num_tokens=vq_cfg["nb_code1d"],
                 num_tokens1d=vq_cfg["nb_code1d"],
                 num_tokens2d=vq_cfg["nb_code2d"],
                 num_quantizers=vq_cfg["num_quantizers"],
@@ -414,6 +418,9 @@ class MoGenTSBundle(ModelBundle):
         else:
             ckpt = torch.load(p, map_location="cpu", weights_only=False)
             sd = self._extract_state(ckpt, key)
+        if hasattr(module,"quantizer1d"):
+            self.fusion.load_state_dict({k.removeprefix("linear_out."):v for k,v in sd.items() if k.startswith("linear_out.")},strict=True)
+            sd={k:v for k,v in sd.items() if not k.startswith("linear_out.")}
         missing, unexpected = module.load_state_dict(sd, strict=False)
         assert len(unexpected) == 0, f"unexpected keys loading {p}: {unexpected[:5]}"
         if allow_clip_missing:
@@ -426,9 +433,17 @@ class MoGenTSBundle(ModelBundle):
     def _state_dict_no_clip(module) -> dict:
         return {
             k: v.detach().cpu().contiguous()
-            for k, v in module.state_dict().items()
+            for k, v in MoGenTSBundle.unwrap_network(module).state_dict().items()
             if not k.startswith("clip_model.")
         }
+
+    def _vq_state_dict(self):
+        state=self.unwrap_network(self.vq_model).state_dict()
+        state.update({"linear_out."+k:v for k,v in self.unwrap_network(self.fusion).state_dict().items()})
+        return {k:v.detach().cpu().contiguous() for k,v in state.items()}
+
+    def fuse_motion(self,auxiliary,spatial):
+        return self.fusion(torch.concat([auxiliary,spatial],dim=2))
 
     def config_dict(self) -> dict:
         return {
@@ -528,7 +543,7 @@ class MoGenTSBundle(ModelBundle):
         if safe_serialization:
             from safetensors.torch import save_file
 
-            save_file(self.vq_model.state_dict(), str(save_dir / "vq.safetensors"))
+            save_file(self._vq_state_dict(), str(save_dir / "vq.safetensors"))
             save_file(self._state_dict_no_clip(self.mask_transformer_aux), str(save_dir / "mask_aux.safetensors"))
             save_file(self._state_dict_no_clip(self.mask_transformer_ts), str(save_dir / "mask_ts.safetensors"))
             save_file(self._state_dict_no_clip(self.res_transformer_aux), str(save_dir / "res_aux.safetensors"))
@@ -544,7 +559,7 @@ class MoGenTSBundle(ModelBundle):
                     str(save_dir / "clip.safetensors"),
                 )
         else:
-            torch.save(self.vq_model.state_dict(), str(save_dir / "vq.pt"))
+            torch.save(self._vq_state_dict(), str(save_dir / "vq.pt"))
             torch.save(self._state_dict_no_clip(self.mask_transformer_aux), str(save_dir / "mask_aux.pt"))
             torch.save(self._state_dict_no_clip(self.mask_transformer_ts), str(save_dir / "mask_ts.pt"))
             torch.save(self._state_dict_no_clip(self.res_transformer_aux), str(save_dir / "res_aux.pt"))
@@ -604,6 +619,7 @@ class MoGenTSBundle(ModelBundle):
     def to_device(self, device):
         device = torch.device(device)
         self.vq_model.to(device)
+        self.fusion.to(device)
         if self.mask_transformer_aux is not None:
             self.mask_transformer_aux.to(device)
         if self.mask_transformer_ts is not None:
@@ -623,13 +639,21 @@ class MoGenTSBundle(ModelBundle):
         return self.mean.device
 
     @torch.no_grad()
-    def encode_text(self, captions: List[str]) -> torch.Tensor:
+    def encode_text(self, captions: torch.Tensor) -> torch.Tensor:
         if self.mask_transformer_ts is None:
             raise RuntimeError("encode_text requires load_generation_models=True")
-        return self.mask_transformer_ts.encode_text(list(captions))
+        return self.mask_transformer_ts.encode_text(captions)
 
-    def denormalize(self, motion_263: torch.Tensor) -> torch.Tensor:
-        return motion_263 * self.std + self.mean
+    @staticmethod
+    def unwrap_network(model):
+        while hasattr(model,"module"):model=model.module
+        return model
+
+    def predict_tokens(self,stage,*args,**kwargs):
+        names={"aux_base":"mask_transformer_aux","ts_base":"mask_transformer_ts",
+               "aux_residual":"res_transformer_aux","ts_residual":"res_transformer_ts"}
+        return getattr(self,names[stage])(*args,**kwargs)
+
 
     def forward(self, *args, **kwargs):  # pragma: no cover - use pipeline
         raise NotImplementedError("Use MoGenTSPipeline.infer_t2m for inference.")

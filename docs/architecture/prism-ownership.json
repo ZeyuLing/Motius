@@ -1,0 +1,852 @@
+{
+  "complete": true,
+  "scope": "PRISM is an original Motius method. Full released PRISM-KT neural weights, actual UMT5 captions and all three public tasks at 50 steps compared with the original Bundle/Pipeline source at HEAD. Only the relocated processor import changes in the preserved facade; neural arithmetic and backend are shared unchanged. Native ownership migration evidence, not an external-paper source certificate. Two short ragged text motions, real SMPL prefix and two-segment fixed-canvas generation.",
+  "reference_commit": "38f6d4bf8bc14c094263f866ccb94054e43025a7",
+  "artifact_revision": "d51a75d176b493fe777215c827d23ef22e03fe01",
+  "tests": [
+    {
+      "tensor": "/t2m/0/motion_138",
+      "shape": [
+        17,
+        138
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/motion_135",
+      "shape": [
+        17,
+        135
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/trans",
+      "shape": [
+        17,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/transl",
+      "shape": [
+        17,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/poses",
+      "shape": [
+        17,
+        165
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/global_orient",
+      "shape": [
+        17,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/body_pose",
+      "shape": [
+        17,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/jaw_pose",
+      "shape": [
+        17,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/leye_pose",
+      "shape": [
+        17,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/reye_pose",
+      "shape": [
+        17,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/left_hand_pose",
+      "shape": [
+        17,
+        45
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/right_hand_pose",
+      "shape": [
+        17,
+        45
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/betas",
+      "shape": [
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/expression",
+      "shape": [
+        17,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/mocap_framerate",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/_prism_requested_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/_prism_generation_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/_prism_valid_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/_prism_generation_chunk_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/_prism_generation_chunk_valid_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/_prism_generation_chunk_segment_indices",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/_prism_raw_decoded_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/_prism_pretrim_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/smpl/_prism_final_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/0/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/motion_138",
+      "shape": [
+        13,
+        138
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/motion_135",
+      "shape": [
+        13,
+        135
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/trans",
+      "shape": [
+        13,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/transl",
+      "shape": [
+        13,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/poses",
+      "shape": [
+        13,
+        165
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/global_orient",
+      "shape": [
+        13,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/body_pose",
+      "shape": [
+        13,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/jaw_pose",
+      "shape": [
+        13,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/leye_pose",
+      "shape": [
+        13,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/reye_pose",
+      "shape": [
+        13,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/left_hand_pose",
+      "shape": [
+        13,
+        45
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/right_hand_pose",
+      "shape": [
+        13,
+        45
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/betas",
+      "shape": [
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/expression",
+      "shape": [
+        13,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/mocap_framerate",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/_prism_requested_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/_prism_generation_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/_prism_valid_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/_prism_generation_chunk_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/_prism_generation_chunk_valid_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/_prism_generation_chunk_segment_indices",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/_prism_raw_decoded_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/_prism_pretrim_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/smpl/_prism_final_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/t2m/1/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/motion_138",
+      "shape": [
+        21,
+        138
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/motion_135",
+      "shape": [
+        21,
+        135
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/trans",
+      "shape": [
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/transl",
+      "shape": [
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/poses",
+      "shape": [
+        21,
+        165
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/global_orient",
+      "shape": [
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/body_pose",
+      "shape": [
+        21,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/jaw_pose",
+      "shape": [
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/leye_pose",
+      "shape": [
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/reye_pose",
+      "shape": [
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/left_hand_pose",
+      "shape": [
+        21,
+        45
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/right_hand_pose",
+      "shape": [
+        21,
+        45
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/betas",
+      "shape": [
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/expression",
+      "shape": [
+        21,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/mocap_framerate",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/_prism_requested_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/_prism_generation_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/_prism_valid_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/_prism_generation_chunk_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/_prism_generation_chunk_valid_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/_prism_generation_chunk_segment_indices",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/_prism_raw_decoded_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/_prism_pretrim_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/smpl/_prism_final_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/tp2m/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/motion_138",
+      "shape": [
+        30,
+        138
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/motion_135",
+      "shape": [
+        30,
+        135
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/trans",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/transl",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/poses",
+      "shape": [
+        30,
+        165
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/global_orient",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/body_pose",
+      "shape": [
+        30,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/jaw_pose",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/leye_pose",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/reye_pose",
+      "shape": [
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/left_hand_pose",
+      "shape": [
+        30,
+        45
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/right_hand_pose",
+      "shape": [
+        30,
+        45
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/betas",
+      "shape": [
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/expression",
+      "shape": [
+        30,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/mocap_framerate",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/_prism_requested_num_frames",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/_prism_generation_num_frames",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/_prism_valid_num_frames",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/_prism_generation_chunk_num_frames",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/_prism_generation_chunk_valid_num_frames",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/_prism_generation_chunk_segment_indices",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/_prism_raw_decoded_num_frames",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/_prism_pretrim_num_frames",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/smpl/_prism_final_num_frames",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sequential/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

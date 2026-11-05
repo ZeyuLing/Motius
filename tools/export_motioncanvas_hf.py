@@ -19,6 +19,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from motius.models.motioncanvas import MotionCanvasBundle
+from motius.motion.representation.hymotion_runtime.codecs import MotionCanvasCodec
 
 
 LEARNED_BUNDLE_TENSORS = (
@@ -133,7 +134,7 @@ def build_bundle(args, transformer_state, learned):
             actual = learned[name].detach().cpu().numpy().astype(np.float32)
             if not np.array_equal(actual, expected):
                 raise ValueError(f'checkpoint {name} differs from {args.stats_dir}')
-    bundle.set_bone_offsets_override(
+    MotionCanvasCodec(bundle).set_bone_offsets_override(
         torch.load(args.bone_offsets, map_location='cpu', weights_only=True)
     )
     return bundle

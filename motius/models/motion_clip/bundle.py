@@ -2,16 +2,15 @@
 """MotionCLIPBundle.
 
 Wraps :class:`MotionCLIPModel` with:
-  * a CLIP tokenizer for text input,
-  * a frozen :class:`SMPLPoseProcessor` for motion normalization (mean/std).
+  * the CLIP text and motion encoders,
+  * learned projections and logit scale.
 
 The bundle exposes atomic forward APIs shared between the trainer and the
 inference pipeline:
 
-  - :meth:`tokenize` (text -> input_ids/attention_mask)
   - :meth:`encode_text` (text features after projection)
   - :meth:`encode_motion` (motion features after projection)
-  - :meth:`forward` (full contrastive pass with CLIP loss)
+  - :meth:`forward` (tensor-only text/motion embeddings and logits)
 
 It provides Motius artifact I/O around ``bundle_config.json`` plus
 ``motionclip_model.safetensors`` for inference and evaluation.
@@ -58,19 +57,6 @@ def _load_state_dict(path: Path) -> Dict[str, Tensor]:
     return torch.load(str(path), map_location="cpu")
 
 
-def _build_tokenizer(cfg: Dict[str, Any]):
-    cfg = deepcopy(cfg)
-    cfg_type = cfg.pop('type', 'CLIPTokenizer')
-    from_pretrained = cfg.pop('from_pretrained', None)
-    if cfg_type == 'CLIPTokenizer':
-        from transformers import CLIPTokenizer as _Cls
-    elif cfg_type == 'AutoTokenizer':
-        from transformers import AutoTokenizer as _Cls
-    else:
-        from transformers import AutoTokenizer as _Cls
-    if from_pretrained is None:
-        raise ValueError("Tokenizer config must include 'from_pretrained'.")
-    return _Cls.from_pretrained(**from_pretrained)
 
 
 @MODEL_BUNDLES.register_module()
@@ -136,18 +122,9 @@ class MotionCLIPBundle(ModelBundle):
                     or 'openai/clip-vit-base-patch32',
                 },
             }
-        self.tokenizer = _build_tokenizer(tokenizer)
-        self._extra_attributes['tokenizer'] = self.tokenizer
-
-        # SMPL motion stats (mean/std). For evaluation we only need normalize.
-        if smpl_pose_processor is not None:
-            from motius.registry import HF_MODELS
-            self.smpl_pose_processor = HF_MODELS.build(smpl_pose_processor)
-            self.smpl_pose_processor.eval()
-            for p in self.smpl_pose_processor.parameters():
-                p.requires_grad = False
-        else:
-            self.smpl_pose_processor = None
+        self.tokenizer_config = deepcopy(tokenizer)
+        self.smpl_pose_processor_config = deepcopy(smpl_pose_processor)
+        self.artifact_root = None
 
         if clip_pretrained is not None:
             self.load_clip_text_weights(clip_pretrained)
@@ -163,18 +140,15 @@ class MotionCLIPBundle(ModelBundle):
     def train(self, mode: bool = True):
         super().train(mode)
         if mode:
-            if self.smpl_pose_processor is not None:
-                self.smpl_pose_processor.eval()
-                for p in self.smpl_pose_processor.parameters():
-                    p.requires_grad = False
             if self.freeze_text_encoder:
                 self._freeze_text_encoder()
         return self
 
     def _freeze_text_encoder(self):
-        for p in self.motionclip_model.text_model.parameters():
+        model = getattr(self.motionclip_model, "module", self.motionclip_model)
+        for p in model.text_model.parameters():
             p.requires_grad = False
-        for p in self.motionclip_model.text_projection.parameters():
+        for p in model.text_projection.parameters():
             p.requires_grad = False
 
     # ------------------------------------------------------------------
@@ -240,23 +214,6 @@ class MotionCLIPBundle(ModelBundle):
     # Tokenization + encoding
     # ------------------------------------------------------------------
 
-    def tokenize(
-        self,
-        texts: Union[str, List[str]],
-        max_length: Optional[int] = None,
-    ) -> Dict[str, Tensor]:
-        if max_length is None:
-            max_length = self.motionclip_model.config.text_config.max_position_embeddings
-        if isinstance(texts, str):
-            texts = [texts]
-        encoding = self.tokenizer(
-            texts,
-            padding='max_length',
-            truncation=True,
-            max_length=max_length,
-            return_tensors='pt',
-        )
-        return encoding
 
     def encode_text(
         self,
@@ -276,63 +233,16 @@ class MotionCLIPBundle(ModelBundle):
             motion_values=motion_values, attention_mask=attention_mask,
         )
 
-    def normalize_motion(self, motion: Tensor) -> Tensor:
-        if self.smpl_pose_processor is None:
-            return motion
-        return self.smpl_pose_processor.normalize(motion)
 
     # ------------------------------------------------------------------
     # Bundle-level forward (used by trainer)
     # ------------------------------------------------------------------
 
-    def forward(
-        self,
-        motion: Tensor,
-        captions: List[str],
-        num_frames: List[int],
-        return_loss: bool = True,
-    ):
-        """Full contrastive forward pass.
 
-        Args:
-            motion: (B, T_max, D) raw motion (will be normalized internally).
-            captions: list of B caption strings.
-            num_frames: list of B valid frame counts (T_i <= T_max).
-            return_loss: whether to compute CLIP loss.
-
-        Returns:
-            ``MotionCLIPOutput`` from :class:`MotionCLIPModel.forward`.
-        """
-        device = motion.device
-
-        # Normalize motion in eval mode (no grad through processor).
-        if self.smpl_pose_processor is not None:
-            with torch.no_grad():
-                motion = self.smpl_pose_processor.normalize(motion)
-
-        # Build motion attention mask (1 = attend, 0 = pad).
-        max_len = max(int(nf) for nf in num_frames)
-        motion = motion[:, :max_len].contiguous()
-        B = motion.shape[0]
-        motion_attn = torch.zeros(
-            B, max_len, device=device, dtype=motion.dtype,
-        )
-        for i, nf in enumerate(num_frames):
-            motion_attn[i, : int(nf)] = 1.0
-
-        # Tokenize text.
-        enc = self.tokenize(captions)
-        input_ids = enc['input_ids'].to(device)
-        text_attn = enc['attention_mask'].to(device)
-
-        outputs = self.motionclip_model(
-            input_ids=input_ids,
-            motion_values=motion,
-            attention_mask=text_attn,
-            motion_attention_mask=motion_attn,
-            return_loss=return_loss,
-        )
-        return outputs
+    def forward(self, input_ids, motion_values, attention_mask=None, motion_attention_mask=None):
+        """Atomic tensor-only text/motion neural forward."""
+        return self.motionclip_model(input_ids=input_ids, motion_values=motion_values,
+            attention_mask=attention_mask, motion_attention_mask=motion_attention_mask)
 
     # ------------------------------------------------------------------
     # Motius artifact I/O
@@ -342,6 +252,8 @@ class MotionCLIPBundle(ModelBundle):
         return {
             "text_config": self.motionclip_model.config.text_config.to_dict(),
             "motion_config": self.motionclip_model.config.motion_config.to_dict(),
+            "tokenizer": deepcopy(self.tokenizer_config),
+            "smpl_pose_processor": deepcopy(self.smpl_pose_processor_config),
             "projection_dim": self.motionclip_model.config.projection_dim,
             "logit_scale_init_value": float(self.motionclip_model.config.logit_scale_init_value),
         }
@@ -421,5 +333,6 @@ class MotionCLIPBundle(ModelBundle):
             )
         state = _load_state_dict(weights)
         bundle.motionclip_model.load_state_dict(state, strict=strict)
+        bundle.artifact_root = path.resolve()
         bundle.eval()
         return bundle

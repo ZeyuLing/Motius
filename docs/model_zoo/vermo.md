@@ -86,8 +86,17 @@ Training FPS is the checkpoint's native temporal clock. Preview FPS only control
 | --------- | ---- |
 | Pipeline | `motius/pipelines/vermo/pipeline.py` |
 | Bundle | `motius/models/vermo/bundle.py` |
-| Processor | `motius/models/vermo/processor.py` |
-| Motion tasks | `motius/models/vermo/task_utils/` |
+| Processor | `motius/motion/conditioning/vermo/processor.py` |
+| Motion tasks | `motius/motion/conditioning/vermo/task_lib/` |
+
+Released-weight inference, prompts, weighted language losses and all gradients
+match the original Motius implementation after separating these owners. Native
+distributed language training also passes. Current language/motion weights,
+tokenizer, statistic files and dtype survive offline Pipeline export and cold
+caption generation exactly; see the
+[checkpoint report](../architecture/vermo-current-checkpoint.json).
+The optional audio variant and complete corpus training protocol are separate
+validation targets.
 
 ## Quick Start
 

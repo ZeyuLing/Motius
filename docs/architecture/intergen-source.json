@@ -1,0 +1,75 @@
+{
+  "complete": true,
+  "comparison": "original source with released checkpoint",
+  "upstream_commit": "b1750df4a859443b8a69329f759ce3a7503ae179",
+  "source_files": {
+    "models/losses.py": "082e5ebb7ff31146dcd6948339c6647b9751e7a9541a0ed4334f2ac02e72a3c9",
+    "models/gaussian_diffusion.py": "c833620155c5e826821b44a76743212890d7ddc732ea630e8cff5097f74b155b",
+    "models/utils.py": "3a42ffa24441eeef3a4f11d7497b909817bf49399beae003f314ca695d38feba",
+    "models/cfg_sampler.py": "145d131466563787855d3b3c802b7a3a892334f95750fad388fd964a92dfedaa",
+    "models/nets.py": "c1bd6b8c8542a67e6de9e60993485d325aa1d341c8ff78c65198afa6b53d9e8b",
+    "models/blocks.py": "db25461955c235d506e7ba84e7dc467366190a8e6e50345614fcadbb4a0d9bf0",
+    "models/intergen.py": "725db3a59e4b053328052d355753012c7f0768eee7937b70c9daaa4cdfdf4a5b",
+    "models/__init__.py": "23c038db26d82e5e5d6f8224fcee22be7db377d71d955d24ce5b926ea47b07e2",
+    "models/layers.py": "9924f20c7adc84d98fea57b6d1765ee9d8ef4fea2363445c3b94d120552eb676",
+    "utils/utils.py": "b51c0ea970714f9237052e1d1db981e7dddc52f5df4355d6a4222d5bf3532a81",
+    "utils/plot_script.py": "e7f21f0955395a4a33da182aa1ae4839ab12193bcb9f1637e8b9352e44d35122",
+    "utils/paramUtil.py": "fe0265f3dcd0d466690d816eae973fcece145f64551cef7e46fed7ef3de80d34",
+    "utils/metrics.py": "f939128b1ebb3d43af0f3987900b287858f9de6ea2bf1d5241c222ba7f34b9fa",
+    "utils/preprocess.py": "b676d7d393005e910efadd3bce188e806147ac8586b3f3602489e5899e44189b",
+    "utils/quaternion.py": "7cefe9caa94daf15da55a746ef1f74f96eeac636ebbccbed6da95de9c7747722",
+    "utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "utils/rotation_conversions.py": "bd4bcf1adec89ab15877e8022131633c38087b4b5908f38a75b02ff436e4b5ff",
+    "configs/__init__.py": "bb5d2b082f27fca6354a379ac58d3914687a9b13fbfe0583acc4258eca7617ee",
+    "common/quaternion.py": "7cefe9caa94daf15da55a746ef1f74f96eeac636ebbccbed6da95de9c7747722",
+    "common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "artifact_files": {
+    "model.safetensors": "39af424daf879d593c0007f77e2ccf93b9216c3b0e7d0f2e5bb3b91292f65b0c",
+    "global_mean.npy": "2f97b88889c773551cd597c32e88bfa070c2fb1721a992a80bfb7cf4c22e03b6",
+    "global_std.npy": "dd5988b979e9803786ab497f5945316c2d52b97c90b593d0427220fd49b03e4b"
+  },
+  "source_setup": "Official CLIP text architecture only; strict full checkpoint load; no forward substitutions",
+  "tests": [
+    {
+      "case": "seed13_frames30_batch1",
+      "shape": [
+        1,
+        30,
+        2,
+        262
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "case": "seed19_frames60_batch2",
+      "shape": [
+        2,
+        60,
+        2,
+        262
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "native_files": {
+    "motius/models/intergen/bundle.py": "bb385763b2289b318894a5619f6bf4b33fd59043b2a4336de3cc4e676de78c73",
+    "motius/models/intergen/__init__.py": "a5fbd606967bf9cdafd656d200ff0f4eb07a453b066d25f3735f0cf16b380d80",
+    "motius/models/intergen/network/__init__.py": "b3e2ed523c2cbba9aea35b9cfef75efad3dc0919b24e94abc41f798d7a911d2e",
+    "motius/models/intergen/network/models/utils.py": "d65543d55afab3997b75cf57686f2745a3f48a168c8a16e85ef4c1097dae8af9",
+    "motius/models/intergen/network/models/nets.py": "248f42955cd6f4de1ea3a01a2e728c9db958979acd18a80013a158bf35be958e",
+    "motius/models/intergen/network/models/blocks.py": "db25461955c235d506e7ba84e7dc467366190a8e6e50345614fcadbb4a0d9bf0",
+    "motius/models/intergen/network/models/intergen.py": "a1ef2940f89884ac533026f7f3e0b3f85e1549b8a11f548138129896f3d8c487",
+    "motius/models/intergen/network/models/__init__.py": "e57a98f87f0a26e30a4fae4706d4803e6cfe9385a5360323a568c8e67b33805f",
+    "motius/models/intergen/network/models/layers.py": "b6477c8b41367cc3812b2337214d57dfdd6d689c736ee766650eac237bffcae8",
+    "motius/pipelines/intergen/pipeline.py": "5732505316ee4faf9c8a697b962224aee1b3b52c1e3b8108a1eee1ef0d2ca009",
+    "motius/pipelines/intergen/__init__.py": "a9702f4b23700694c3730ba3acae56ee8adbad5b47c593a07b774a45b231f98e",
+    "motius/pipelines/intergen/guidance.py": "145d131466563787855d3b3c802b7a3a892334f95750fad388fd964a92dfedaa",
+    "motius/diffusion/intergen/gaussian_diffusion.py": "ba5b38606db992df892a1068d63a2fb9a004f56ed93459c5c095f4281bd66aab",
+    "motius/diffusion/intergen/__init__.py": "6770ef021befe275eb98fb0116b4c21eedf8414aa4392eacf1034e1e7700a739",
+    "motius/diffusion/intergen/factory.py": "d3666a2393f662ff841137ed2225be655880340cf8d55a74b8c9a27c8133170a"
+  }
+}

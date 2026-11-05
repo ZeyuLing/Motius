@@ -1,0 +1,62 @@
+{
+  "complete": true,
+  "scope": "Actual original MotionStreamer matching encoders, original released epoch99 checkpoint, complete raw-text frontend and unchanged original dataset/collate on explicit aligned single-crop fixtures. Single/ragged Float32/Float64 physical motions; undo only original collate output permutation. Full benchmark caption selection/random-crop protocol excluded.",
+  "original_sha256": "f45b844034e7942ab2c32f52449a4c08e0511ce33694602f70b93a4862a4f51f",
+  "upstream_commit": "8aace3f6f5f564ae1518aa77d925ae1380070c80",
+  "tests": [
+    {
+      "tensor": "/case0/text",
+      "shape": [
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case0/motion",
+      "shape": [
+        1,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case1/text",
+      "shape": [
+        8,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case1/motion",
+      "shape": [
+        8,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case2/text",
+      "shape": [
+        8,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case2/motion",
+      "shape": [
+        8,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

@@ -1,0 +1,303 @@
+{
+  "complete": true,
+  "scope": "Actual published MotionCanvas 0.46B and hash-verified Qwen3/CLIP weights: four full 50-step public inference paths (T2M, temporal completion, editing, keyframes), decoded outputs and known-coordinate projection versus the preserved pre-ownership original Motius pipeline class/Bundle methods. Uses paired real raw-caption features from this artifact's own existing lazy-device frontend; prepared physical-motion fixtures. This certifies ownership migration, not an independent external benchmark/whole original training protocol.",
+  "snapshot_pipeline_sha256": "1876e0b94899fc9c20a40ae4db91f5c333123335fbaf6319fdd21e2f83b22602",
+  "tests": [
+    {
+      "tensor": "/0/latent_denorm",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/rot6d",
+      "shape": [
+        2,
+        24,
+        22,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/transl",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/root_rotations_mat",
+      "shape": [
+        2,
+        24,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/latent",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/motion_198",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/lengths/0",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/lengths/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/latent_denorm",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/rot6d",
+      "shape": [
+        2,
+        24,
+        22,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/transl",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/root_rotations_mat",
+      "shape": [
+        2,
+        24,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/latent",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/motion_198",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/lengths/0",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/lengths/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/latent_denorm",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/rot6d",
+      "shape": [
+        2,
+        24,
+        22,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/transl",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/root_rotations_mat",
+      "shape": [
+        2,
+        24,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/latent",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/motion_198",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/lengths/0",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/2/lengths/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/latent_denorm",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/rot6d",
+      "shape": [
+        2,
+        24,
+        22,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/transl",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/root_rotations_mat",
+      "shape": [
+        2,
+        24,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/latent",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/motion_198",
+      "shape": [
+        2,
+        24,
+        198
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/lengths/0",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/3/lengths/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

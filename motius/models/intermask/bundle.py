@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import random
 import json
 import shutil
 from pathlib import Path
@@ -28,14 +27,6 @@ def _maybe_download_hub(name_or_path: str, local: Path) -> Path:
     return Path(snapshot_download(repo_id=name_or_path))
 
 
-def _seed_everything(seed: Optional[int]) -> None:
-    if seed is None:
-        return
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed)
 
 
 @MODEL_BUNDLES.register_module()
@@ -71,6 +62,9 @@ class InterMaskBundle(ModelBundle):
         self.time_steps = int(time_steps)
         self.topk_filter_thres = float(topk_filter_thres)
         self.temperature = float(temperature)
+        self._trainable_modules = ["transformer"]
+        self._frozen_modules = ["vq_model"]
+        self._save_ckpt_modules = ["vq_model", "transformer"]
         self.vq_model = None
         self.transformer = None
         self._load_report = None
@@ -131,7 +125,7 @@ class InterMaskBundle(ModelBundle):
         device = torch.device(self.device_name or ("cuda" if torch.cuda.is_available() else "cpu"))
         from .network.models.mask_transformer.transformer import MaskTransformer
         from .network.models.vq.model import RVQVAE
-        from .network.utils.get_opt import get_opt
+        from motius.utils.intermask_options import get_opt
 
         vq_opt = get_opt(str(self.vq_opt_path), device)
         trans_opt = get_opt(str(self.trans_opt_path), device)
@@ -207,60 +201,31 @@ class InterMaskBundle(ModelBundle):
         }
         return self.vq_model, self.transformer
 
-    def _denormalize_motion(self, motion: np.ndarray) -> np.ndarray:
-        if self._mean is None or self._std is None:
-            return motion
-        return motion * self._std + self._mean
 
-    @torch.no_grad()
-    def generate(
-        self,
-        texts: str | Sequence[str],
-        motion_len: int = 90,
-        seed: Optional[int] = None,
-        return_numpy: bool = True,
-        cond_scale: Optional[float] = None,
-        time_steps: Optional[int] = None,
-        topk_filter_thres: Optional[float] = None,
-        temperature: Optional[float] = None,
-    ):
-        """Generate InterMask motion.
 
-        InterHuman returns ``(B, T, 2, 262)``. InterX returns ``(B, T, 56, 12)``.
-        """
-        prompts = [texts] if isinstance(texts, str) else list(texts)
-        if not prompts:
-            raise ValueError("InterMaskBundle.generate needs at least one text prompt")
-        if int(motion_len) < 16 or int(motion_len) > 300 or int(motion_len) % 4:
-            raise ValueError("InterMask motion_len must be a multiple of four between 16 and 300")
-        vq, trans = self.load_model()
-        _seed_everything(seed)
-        device = next(trans.parameters()).device
-        motion_lens = torch.full((len(prompts),), int(motion_len), dtype=torch.long, device=device)
-        ids_length = motion_lens // 4
-        ids = trans.generate(
-            prompts,
-            ids_length,
-            int(time_steps or self.time_steps),
-            float(cond_scale if cond_scale is not None else self.cond_scale),
-            topk_filter_thres=float(topk_filter_thres if topk_filter_thres is not None else self.topk_filter_thres),
-            temperature=float(temperature if temperature is not None else self.temperature),
-        )
-        ids1, ids2 = ids[:, : ids.shape[1] // 2], ids[:, ids.shape[1] // 2 :]
-        motion1 = vq.forward_decoder(ids1.unsqueeze(-1).to(device))
-        motion2 = vq.forward_decoder(ids2.unsqueeze(-1).to(device))
-        motion = torch.cat([motion1, motion2], dim=-1).detach().cpu().numpy()
-        if self.dataset_name == "interhuman":
-            motion = motion.reshape(motion.shape[0], motion.shape[1], 2, -1)
-            motion = self._denormalize_motion(motion)
-        else:
-            motion = motion.reshape(motion.shape[0], motion.shape[1], 56, 12)
-        if return_numpy:
-            return motion
-        return torch.from_numpy(motion)
 
-    def forward(self, texts: str | Sequence[str], **kwargs):
-        return self.generate(texts, **kwargs)
+    @property
+    def token_network(self):
+        self.load_model()
+        model = self.transformer
+        while hasattr(model, "module"):
+            model = model.module
+        return model
+
+    def encode_text(self, texts):
+        return self.token_network.encode_text(texts)
+
+    def predict_logits(self, ids, cond, padding_mask, force_mask=False):
+        self.load_model()
+        return self.transformer(ids, cond, padding_mask, force_mask)
+
+    def encode_motion(self, motion):
+        self.load_model()
+        return self.vq_model.encode(motion)
+
+    def decode_tokens(self, tokens):
+        self.load_model()
+        return self.vq_model.forward_decoder(tokens)
 
     @classmethod
     def from_pretrained(cls, pretrained_model_name_or_path: str, **kwargs):

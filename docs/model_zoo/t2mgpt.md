@@ -123,6 +123,12 @@ decides sequence length through its EOS token.
 
 ## Evaluation Results
 
+The benchmark tables below predate the native architecture corrections. Current
+inference disables GPT dropout as the original evaluator does; the earlier
+wrapper incorrectly enabled it. Full-dataset metrics have not been rerun for
+this correction. Controlled original-source numerical checks are tracked in
+[the migration record](../architecture/native-methods.md).
+
 <!-- MOTIUS_CANONICAL_METRICS:START -->
 
 > **Canonical metrics.** Public results are tied to the sources below. Motius/uTMR FID always means per-sample L2-normalized embedding-space FID; `—` means the normalized value has not been recomputed. Historical raw-space FID is never substituted.

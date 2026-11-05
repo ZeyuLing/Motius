@@ -1,0 +1,613 @@
+{
+  "complete": true,
+  "comparison": "original KIMODO source and released SOMA-RP checkpoint, including the real LLM2Vec text encoder",
+  "upstream_commit": "e1c219c99b4b94ba48be1fb6a1cbc64ecee4c954",
+  "source_files": {
+    "kimodo/tools.py": "00eaa2315d95e0633ef8bd6564d883d1e4e3af0576454700918a88c874f6ae3c",
+    "kimodo/postprocess.py": "a6f6b81df44a76d0064efd79ea195b4360dd6aad3995790bdc68c8ceddd6a07a",
+    "kimodo/assets.py": "df261ed2d6021c389ea6578c2f377ac7984806b7fa5f5fcf43be9df1d22bee39",
+    "kimodo/meta.py": "33df532d8482fbb1c1e145d3191ac6d1b4112eda80e9989b9e80c9d20ad91606",
+    "kimodo/sanitize.py": "655c6ffa861b7aaa7143b09d9641823158f0fe90636d844dae1549283af50c09",
+    "kimodo/geometry.py": "9218c72ad39a478f23bdf6b010e4e3b1165f16dbd480168d0e358dee539f3169",
+    "kimodo/__init__.py": "0f2918216f4c2039502ad431e87790a4c9c689fc5131070d7a33a66e30dca0f2",
+    "kimodo/constraints.py": "f438dd7114b04e000472eb319dc3ebb1c5b32a21515c43f7da6fc6325345100d",
+    "kimodo/scripts/generate.py": "b9e3395a495dff1af91d7ffd516c0a842b2145bf16a2f281c33a20960cd1be5e",
+    "kimodo/scripts/run_text_encoder_server.py": "50b12972cc6dccbff25078ec44e29209ce34dc71bc54e0b9607b6602be64941f",
+    "kimodo/scripts/motion_convert.py": "a6c1efe94869ac0cd11b3423d35bbbfc8de7e5b520fa82b93becebc5991e02f7",
+    "kimodo/scripts/lock_requirements.py": "74fe4f50d3c31c8048725746850b3a5202fa87a064aa86c1b7b0ddc5ee5a4273",
+    "kimodo/scripts/mujoco_load.py": "ad385231b6510262c5be05df0190b0eb25e1941a6136b0b05f29fb8649da1e62",
+    "kimodo/scripts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "kimodo/scripts/gradio_theme.py": "a442c2e168c08a8e4ad4acdf677e13f8920e95927ac5d1820bd6841604897fd4",
+    "kimodo/motion_rep/smooth_root.py": "7c9ce7ebabe9e70b8e24ae534563068359337872365ae138fb2c337aa6ba9876",
+    "kimodo/motion_rep/conditioning.py": "3eaaefffa926f9f1925353ff1e9b206f5a735989d9f6f092969e972cb9c27b06",
+    "kimodo/motion_rep/stats.py": "87e8cf74021779d1a2f6db5c340d6a39207f095b973b1564601ee54dcfbfb796",
+    "kimodo/motion_rep/feature_utils.py": "5abbed7aa0cad06cc125ff542c8e22bf16bf7cb4f3543720ccf90763302946b8",
+    "kimodo/motion_rep/feet.py": "4dc7cf4813a76e6efb6ccdf5d045eafda407296a4d873b3a10e8fc3f304b3e24",
+    "kimodo/motion_rep/__init__.py": "c500998a1275304f961c1e72c6326b3a39490b5d5be8ff76b3e226ea1d151015",
+    "kimodo/model/common.py": "fa132d2e69e693318181ad9627b53c6874c7f42cb4741e80c1935b288155e0e8",
+    "kimodo/model/registry.py": "21234a5ffc670622dae5feaaa32353ae7beb1f048492a08ca6984aa36865bf51",
+    "kimodo/model/text_encoder_api.py": "bf8230ee3a5c7d6b69123b0c71b0d7ff1a5624858d137ff66dd61bfb2d42e96b",
+    "kimodo/model/backbone.py": "8c3cb09b52706bab140873c5453ed5a0a182688c1659a3ba0596db07ea2867a5",
+    "kimodo/model/tmr.py": "f1a014c1d985c705c8e9cbf3efb8ad04985c7f358564f0f057354445ab0ae0a3",
+    "kimodo/model/kimodo_model.py": "28e57e2ac0d9fa176b81ba2cb400ddaf414178a21833cba19e80b02c35b4f4aa",
+    "kimodo/model/diffusion.py": "52acbdc3f5f2b95511aa01bda5c8b579490b203f743735c3db3394def635b273",
+    "kimodo/model/loading.py": "6430b660bcc7c5bc0f41e4b14c4225065f4f3e68e82b9a147b87f4386c88befb",
+    "kimodo/model/twostage_denoiser.py": "50b5131755accc478b0f1cebe77743de0cb1a634116ff602bcd5f5bd13fcd302",
+    "kimodo/model/cfg.py": "e8713de29f4c1534ce1e7be4ecc3c60b2d44ae739dbd80448d19a72584236ae7",
+    "kimodo/model/__init__.py": "dc846a1050bad70d72b6f5efdc3d3aade871c4d8ede0f6203e644b1f4c9fae83",
+    "kimodo/model/load_model.py": "008092cd0b7adef1faea9fa9075718a61bea8ca9feaf9acf1b1d6caacaa0380a",
+    "kimodo/viz/viser_utils.py": "213aba61d05e64562352b12ac4e661dfcdc941c5e171b1740d01531072591509",
+    "kimodo/viz/g1_rig.py": "353451c8cfa69b3c46abcdfcd9532a1962fdb3a74c8825d77028ff149558e115",
+    "kimodo/viz/gui.py": "73ed4a449f0950c6d2bfd6938de98a86d7df2766181b1062692f3815f591a5d6",
+    "kimodo/viz/playback.py": "a5519e420cb7be83fac0af23ac858dc983d4d59c5b3b11d95a11f7db20ac0d69",
+    "kimodo/viz/coords.py": "9863e21fd89fe1ff173e68b5da437bbd867635709c9c60491a8f0c6315d1db68",
+    "kimodo/viz/constraint_ui.py": "6ed683685cf102eb26e5f08930be795d13c93b3701d75782a24d166c5217a4f9",
+    "kimodo/viz/scene.py": "02da15ec1ae07072d441f320ba56874cdb8f1ac6d1beca53cb17e6a3d7f8cac5",
+    "kimodo/viz/soma_skin.py": "2fd336c528c5dd536b9389952cb74ff21a082b6572cb491615d789b6c86df0fc",
+    "kimodo/viz/__init__.py": "1afc53aa67cfee4ca0b16d01238fbdd6024df08b4106fe0e63af9c9c08814add",
+    "kimodo/viz/soma_layer_skin.py": "1720f478cb4957a225b0bd66914dcf94d68dfba03d9ec55a9aeaa9b84b6a4fa0",
+    "kimodo/viz/smplx_skin.py": "b4f7a1cd089046c8b95caaa5abf882a17684a745838bd8a6ea5ee51d4f0891f8",
+    "kimodo/exports/motion_formats.py": "79ff12086a9713998f919eed4da30648f070bf3cd57ee0164a7bf26d9bfc8477",
+    "kimodo/exports/motion_io.py": "93abc68cecbfe3ac4193550cf5dbf2abfdb2d108e8b7677352b9e892cfa32403",
+    "kimodo/exports/mujoco.py": "6f02790948a325317e8ade85460a95ce318a32359262a428d490b187babfb6d5",
+    "kimodo/exports/motion_convert_lib.py": "2607906d7284b8a1036e25de9cb9e17fc46eaa9cb53bbb60050d294cf53c42c7",
+    "kimodo/exports/smplx.py": "58d7dadb453033b2bb75713fca1c2a149af36ccc00be193abb4b87cb67b4fd22",
+    "kimodo/exports/__init__.py": "43dd890b5c4826c1429be47a61b4b48bb013fd2ce71bd9bbfc1f8a24b24935d3",
+    "kimodo/exports/bvh.py": "d46ef26dfcb5780744411b99e2444c09499fec602b80294adc155376905d8949",
+    "kimodo/skeleton/registry.py": "e9c95a69cec9c5dd19257b5c110e517e0f54f510942229d3ae52ac91102bab11",
+    "kimodo/skeleton/base.py": "22a4772dc8c38601d9b7e1ccfadcc0a9bb4680d1169c7d75049e80973b51309e",
+    "kimodo/skeleton/transforms.py": "af0662a962d4674ed4723bdcb56592210c698076af6f8069a54a39d1e3ea2bff",
+    "kimodo/skeleton/definitions.py": "fafe12b5f82ca24096241932d9773b1d3d8c080da1197e74c77cfce8ce3a19fc",
+    "kimodo/skeleton/__init__.py": "9494c2b86434054015bf65c906207db192cdbb5836a795adc2265ff38d387662",
+    "kimodo/skeleton/bvh.py": "cef588c374dc61ad6f469b7108b0426ac5847983b6b5e1bede98e71ffdced81d",
+    "kimodo/skeleton/kinematics.py": "887ad65341669f6c6ee24031529f2cb86c35020892aba255fa3f4bfd2265101e",
+    "kimodo/demo/state.py": "3ed9c5e1ce92aa099efd2c72f46efdc99b5ca7dd5c7620459a1a23ce15c71313",
+    "kimodo/demo/__main__.py": "de5a330fdc666a961127c63254a01d02723c7ae2e769b78defb9669eec103173",
+    "kimodo/demo/app.py": "3fd83511905b901fbb8530b6a41759474da56637bd0a9a8a2e802ab4ead0aba7",
+    "kimodo/demo/queue_manager.py": "5caf66c6ced818c579ced50fb01ad2ba9137b8a5d376e3bafdcfcb1d4bf783f1",
+    "kimodo/demo/embedding_cache.py": "8ebf98e625dc2a3be262b81c32273eda8ac56d56d04fbb49d149812bcf41eb4e",
+    "kimodo/demo/ui.py": "a7d50224f2fcf11c1a5d2e665ddc02a83cf5cbf059ba1168d0264faa313cbe83",
+    "kimodo/demo/config.py": "70255150ae45553cf0476d97792d327111defefcce19ce49550aede9611a5961",
+    "kimodo/demo/generation.py": "301500e3d3e181cae17e5d8c031aacee6ab8e3c241275fef56d56537d810044c",
+    "kimodo/demo/__init__.py": "c31bb95e356f9f156ed6a2025028cbca1cf51f6d3246624e85c00541796711e3",
+    "kimodo/metrics/base.py": "52a99c705a3d8560cfa8a013cfc931ba55786000753c4c5f5454bd95bf3df866",
+    "kimodo/metrics/tmr.py": "5f2d8ef4202c1d7bea36453ac05249450c837c2cd57100631c06bb34193bf840",
+    "kimodo/metrics/foot_skate.py": "8d255b312493910dc6e0e447351ba5607d457e01699adb04e307b9e21b2eb802",
+    "kimodo/metrics/retrieval.py": "ba64d8e5a98e776f3770664003c8960b50b0cc2c40856729b5a4f89523ec46c6",
+    "kimodo/metrics/__init__.py": "5b918b913bfc21f6e8cb4bb781098629326b22c39589ea16783b88afc8f565fc",
+    "kimodo/metrics/constraints.py": "46e0c01b423fe3437367ede2eb746695ddcd0bbc5b99f5d6c3451a0837e1c397",
+    "kimodo/motion_rep/reps/base.py": "e1e21b5b6d2814eb0ff700270b4d46a472e3740ea61e8f5d973f8c9e4420457e",
+    "kimodo/motion_rep/reps/kimodo_motionrep.py": "c6ef8783d349fa0e371c203170d3a2f4e63d2e8964648627b570f88d6673765a",
+    "kimodo/motion_rep/reps/tmr_motionrep.py": "d3e6aff0a849b252d7fbe0cab5269a4200b89cf48dbca2e3de9db5c21181bfd1",
+    "kimodo/motion_rep/reps/ardy_motionrep.py": "d7dcd9bb068d6b82a3c7fd6b13744a7e5322738c1ce99a2321b2f0134336b49a",
+    "kimodo/motion_rep/reps/__init__.py": "fb601cef11b0fc3d0ecce22f48b6a1557c07b30a44e3f2a72c63cfc41cc4cb34",
+    "kimodo/model/llm2vec/llm2vec_wrapper.py": "e4dc146dd6a5a6f75a269b99b53d7ae43a873f6020992426ddb39bf3f924a1c4",
+    "kimodo/model/llm2vec/llm2vec.py": "dc6e8b7d38086b4f456e013ab22cd4cc2cd72eb7fd2c13069f037f42aec80857",
+    "kimodo/model/llm2vec/__init__.py": "a7558eb6849e9fd400d128ef24d5026d9ea99ae03df75b5f1b8b4c71a1b81600",
+    "kimodo/model/llm2vec/models/utils.py": "a426cf605dc015ee766dd06b3ebbbf402a6b2eda732324f533f154e5c29de864",
+    "kimodo/model/llm2vec/models/bidirectional_llama.py": "570e7726ec92db9ca173517bda5ca1404a913234d4f4568ad93fe90a61c8d30f",
+    "kimodo/model/llm2vec/models/attn_mask_utils.py": "f7246ce0a2105bfbc75b51e8693ece0468ffffaedb31fed08f251907796f05d9",
+    "kimodo/model/llm2vec/models/__init__.py": "62a5a40ee6cb9538d99a71690cf7e9d67314d31ceb70b2400347b49cbc0b2ad8"
+  },
+  "tests": [
+    {
+      "tensor": "/text_features/features",
+      "shape": [
+        2,
+        1,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/text_features/lengths",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/single/local_rot_mats",
+      "shape": [
+        1,
+        30,
+        77,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/single/global_rot_mats",
+      "shape": [
+        1,
+        30,
+        77,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/single/posed_joints",
+      "shape": [
+        1,
+        30,
+        77,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/single/posed_joints_norootpos",
+      "shape": [
+        1,
+        30,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/single/root_positions",
+      "shape": [
+        1,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/single/smooth_root_pos",
+      "shape": [
+        1,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/single/foot_contacts",
+      "shape": [
+        1,
+        30,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/single/global_root_heading",
+      "shape": [
+        1,
+        30,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch/local_rot_mats",
+      "shape": [
+        2,
+        40,
+        77,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch/global_rot_mats",
+      "shape": [
+        2,
+        40,
+        77,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch/posed_joints",
+      "shape": [
+        2,
+        40,
+        77,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch/posed_joints_norootpos",
+      "shape": [
+        2,
+        40,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch/root_positions",
+      "shape": [
+        2,
+        40,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch/smooth_root_pos",
+      "shape": [
+        2,
+        40,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch/foot_contacts",
+      "shape": [
+        2,
+        40,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/batch/global_root_heading",
+      "shape": [
+        2,
+        40,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt/local_rot_mats",
+      "shape": [
+        1,
+        44,
+        77,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt/global_rot_mats",
+      "shape": [
+        1,
+        44,
+        77,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt/posed_joints",
+      "shape": [
+        1,
+        44,
+        77,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt/posed_joints_norootpos",
+      "shape": [
+        1,
+        44,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt/root_positions",
+      "shape": [
+        1,
+        44,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt/smooth_root_pos",
+      "shape": [
+        1,
+        44,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt/foot_contacts",
+      "shape": [
+        1,
+        44,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt/global_root_heading",
+      "shape": [
+        1,
+        44,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt_postprocess/local_rot_mats",
+      "shape": [
+        1,
+        44,
+        77,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt_postprocess/global_rot_mats",
+      "shape": [
+        1,
+        44,
+        77,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt_postprocess/posed_joints",
+      "shape": [
+        1,
+        44,
+        77,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt_postprocess/posed_joints_norootpos",
+      "shape": [
+        1,
+        44,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt_postprocess/root_positions",
+      "shape": [
+        1,
+        44,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt_postprocess/smooth_root_pos",
+      "shape": [
+        1,
+        44,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt_postprocess/foot_contacts",
+      "shape": [
+        1,
+        44,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/multiprompt_postprocess/global_root_heading",
+      "shape": [
+        1,
+        44,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/root_control/local_rot_mats",
+      "shape": [
+        1,
+        30,
+        77,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/root_control/global_rot_mats",
+      "shape": [
+        1,
+        30,
+        77,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/root_control/posed_joints",
+      "shape": [
+        1,
+        30,
+        77,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/root_control/posed_joints_norootpos",
+      "shape": [
+        1,
+        30,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/root_control/root_positions",
+      "shape": [
+        1,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/root_control/smooth_root_pos",
+      "shape": [
+        1,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/root_control/foot_contacts",
+      "shape": [
+        1,
+        30,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/root_control/global_root_heading",
+      "shape": [
+        1,
+        30,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "artifact_files": {
+    "model_index.json": "eb302af40d99cb22afc7a630c3f3c40c70ea431bc28f1c10a2a85116dbb88e2f",
+    "kimodo_config.json": "e01948ffe8ec3f00e2871b203994b75af1d829c835cb90024212708c24688632",
+    "kimodo_checkpoint/Kimodo-SOMA-RP-v1/model.safetensors": "8adcdaa459bc58b6942b7c49d39a84dbb95d89f367f3f23bdc681b1e83ccad67",
+    "kimodo_checkpoint/Kimodo-SOMA-RP-v1/config.yaml": "905664ad05779b0e28c391b85dc81c9de166418bd5f471ef605f75ab746ce391",
+    "kimodo_checkpoint/Kimodo-SOMA-RP-v1/stats/motion/global_root/std.npy": "fb15aeed7143f5f0754611f0acf5fa5f55d1f6492a49c23e490fc62f7bf11fb0",
+    "kimodo_checkpoint/Kimodo-SOMA-RP-v1/stats/motion/global_root/mean.npy": "6c110980f9a0386e57a8c186f8eac7f55dc05bade92f44c4b391450ada598da1",
+    "kimodo_checkpoint/Kimodo-SOMA-RP-v1/stats/motion/local_root/std.npy": "5f57b41f51ced7832cffa81702f6e04d8694e16475c184baec6c8be0e98c8dba",
+    "kimodo_checkpoint/Kimodo-SOMA-RP-v1/stats/motion/local_root/mean.npy": "4c36e8e33d6d51e6c8206ac796a52b7b3a4da7f0dc49ebdbb4f130178e3e9d31",
+    "kimodo_checkpoint/Kimodo-SOMA-RP-v1/stats/motion/body/std.npy": "965bbad497726ef4e6c46b519827e2cbcb29f974214b25718d20a725b82279ed",
+    "kimodo_checkpoint/Kimodo-SOMA-RP-v1/stats/motion/body/mean.npy": "d42f35f8bb7ef52fdec66ae29c5cf590bd038f4f1aabd2d560d1d0f78663ed6f",
+    "text_encoders/meta-llama/Meta-Llama-3-8B-Instruct/model-00004-of-00004.safetensors": "67e9ad31c8c32abf3a55ee7fc7217b3ecb35fd3c74d98a5bd233e0e4d6964f46",
+    "text_encoders/meta-llama/Meta-Llama-3-8B-Instruct/tokenizer_config.json": "da0e3a7cce6e4d787e85eb1c24d548420e0d7fe2c7a214e192795c46e40d75bb",
+    "text_encoders/meta-llama/Meta-Llama-3-8B-Instruct/model.safetensors.index.json": "146776fce3f6db1103aa6f249e65ee5544c5923ce6f971b092eee79aa6e5d37b",
+    "text_encoders/meta-llama/Meta-Llama-3-8B-Instruct/config.json": "61f3de03a16ca8046b05dc777bce72717022bc8522152eee61a69072272ef54b",
+    "text_encoders/meta-llama/Meta-Llama-3-8B-Instruct/model-00002-of-00004.safetensors": "8d4782b4a69ef03845159ce1a15e272aadaaf134dc138d68f616098e8531729c",
+    "text_encoders/meta-llama/Meta-Llama-3-8B-Instruct/generation_config.json": "d1af74d8ba49428ab2faa65f7948165cc6bf52b740e57e840f8af772587c894c",
+    "text_encoders/meta-llama/Meta-Llama-3-8B-Instruct/special_tokens_map.json": "462d91939dbc37178aa5a3eae7068d1990ccc92e09f288cc71f42cdf139d69cc",
+    "text_encoders/meta-llama/Meta-Llama-3-8B-Instruct/model-00001-of-00004.safetensors": "d8cf9c4d0dd972e1a2131bfe656235ee98221679711a3beef6d46dadf0f20b5c",
+    "text_encoders/meta-llama/Meta-Llama-3-8B-Instruct/tokenizer.json": "e134af98b985517b4f068e3755ae90d4e9cd2d45d328325dc503f1c6b2d06cc7",
+    "text_encoders/meta-llama/Meta-Llama-3-8B-Instruct/model-00003-of-00004.safetensors": "3acdd690e65c24f42a24581b8467af98bd3ca357444580f8012aacd2bd607921",
+    "text_encoders/McGill-NLP/LLM2Vec-Meta-Llama-3-8B-Instruct-mntp-supervised/adapter_model.safetensors": "53f8f94ebdf396667ba99dd96e78203edae27bbcdbd1cf5f12b611e1d916b225",
+    "text_encoders/McGill-NLP/LLM2Vec-Meta-Llama-3-8B-Instruct-mntp-supervised/adapter_config.json": "c2706af6c0424669074d923aa3d6a18cf31c0b313038eafe29dd963315114c32",
+    "text_encoders/McGill-NLP/LLM2Vec-Meta-Llama-3-8B-Instruct-mntp/tokenizer_config.json": "0655c52e874137e4a455228155d982c4ea18419f461a10ceb57054995fec4223",
+    "text_encoders/McGill-NLP/LLM2Vec-Meta-Llama-3-8B-Instruct-mntp/adapter_model.safetensors": "de9c8736618a13173c6a1623cdef1b75e86c69317f1073ae82cd516ac36a632d",
+    "text_encoders/McGill-NLP/LLM2Vec-Meta-Llama-3-8B-Instruct-mntp/adapter_config.json": "e2ad2e8622504565a31c82a8e0a21223e8e4365172cc47a156837de841abdc5d",
+    "text_encoders/McGill-NLP/LLM2Vec-Meta-Llama-3-8B-Instruct-mntp/config.json": "416c570276487324e49dca7c3d79e212b948d9cb2282fa734b1fa8014de041d1",
+    "text_encoders/McGill-NLP/LLM2Vec-Meta-Llama-3-8B-Instruct-mntp/special_tokens_map.json": "849070cae53bd45439e64ce5b1ddd650a66081b1bd47895c5a58939a05055579",
+    "text_encoders/McGill-NLP/LLM2Vec-Meta-Llama-3-8B-Instruct-mntp/tokenizer.json": "52b583ee1699c6ca4468f70885bd5f96dd1f7517292362a67581038afc04f4d8"
+  },
+  "native_files": {
+    "motius/models/kimodo/bundle.py": "74ff2654a9c1f9049f0e544270169f29c0f5b28a4a8dd2851878ed0e46f44333",
+    "motius/models/kimodo/__init__.py": "f0f5edb62cb8e96dac647b57c9b72c8ea4dc9ab38739a6063b73566f203b8f35",
+    "motius/models/kimodo/network/__init__.py": "3b11e87ad76b4434371f012df79b61afc34f01e06170049c8c081db5e90c6a87",
+    "motius/models/kimodo/network/model/networks.py": "5f27b2abef53f902d6dc9fd301364b684e717a2066a1a1fba57de04dfc29b47e",
+    "motius/models/kimodo/network/model/backbone.py": "62353d77066faf7de44baf5bddaddb55c06c49593ea5fd58893e5809a7430b54",
+    "motius/models/kimodo/network/model/twostage_denoiser.py": "32fc5293c36a84bc71855d56ef3ac02a55d2eb45d4bce598725dcdeaeeb9331a",
+    "motius/models/kimodo/network/model/__init__.py": "13666107469f936637f595775a56c273b7098740891a695876038bdf47993495",
+    "motius/models/kimodo/network/model/llm2vec/__init__.py": "81e3576531e3a2214e9473c0648e35347394a62097ea38904cf3242fffd201f5",
+    "motius/models/kimodo/network/model/llm2vec/models/utils.py": "a426cf605dc015ee766dd06b3ebbbf402a6b2eda732324f533f154e5c29de864",
+    "motius/models/kimodo/network/model/llm2vec/models/bidirectional_llama.py": "570e7726ec92db9ca173517bda5ca1404a913234d4f4568ad93fe90a61c8d30f",
+    "motius/models/kimodo/network/model/llm2vec/models/attn_mask_utils.py": "f7246ce0a2105bfbc75b51e8693ece0468ffffaedb31fed08f251907796f05d9",
+    "motius/models/kimodo/network/model/llm2vec/models/__init__.py": "62a5a40ee6cb9538d99a71690cf7e9d67314d31ceb70b2400347b49cbc0b2ad8",
+    "motius/pipelines/kimodo/text.py": "655c6ffa861b7aaa7143b09d9641823158f0fe90636d844dae1549283af50c09",
+    "motius/pipelines/kimodo/sampling.py": "1966d0dffbab013ef3dbc39be5ce342228b8d908486609be37826aa25058c6db",
+    "motius/pipelines/kimodo/postprocessing.py": "5efc34105441f284f82a9be4e6a6d3db0eb89ff87a7187777b4fc9baeb3fdaf0",
+    "motius/pipelines/kimodo/__init__.py": "37ded2e3cc5c7feb729c06a14934bd29216a54357fa2543d3241e3f6fb7d37b3",
+    "motius/pipelines/kimodo/guidance.py": "e8713de29f4c1534ce1e7be4ecc3c60b2d44ae739dbd80448d19a72584236ae7",
+    "motius/pipelines/kimodo/kimodo_pipeline.py": "85a419dd30e6f31c51f679127c8e4719cef3676952012e813d0b89868f52d51d",
+    "motius/pipelines/kimodo/text_encoding/llm2vec_wrapper.py": "0f898c7d4f2030ac48b8eed0a9d707ab04232329a480f75f6540cf6e808813a9",
+    "motius/pipelines/kimodo/text_encoding/llm2vec.py": "825c06544d1e9b193899a0c3f801ee8754646df6fd48570ff03d4d82c38ea067",
+    "motius/pipelines/kimodo/text_encoding/__init__.py": "ecaeacef9eba09d9785d06d7a3dc59f5b8183ce57322328b2b120629be8b97e3",
+    "motius/motion/representation/kimodo/smooth_root.py": "3ca27dfd9c93b82576b094ee16596e849ee1fad2c8eccb7e61bb0ddb649ce2ee",
+    "motius/motion/representation/kimodo/conditioning.py": "3eaaefffa926f9f1925353ff1e9b206f5a735989d9f6f092969e972cb9c27b06",
+    "motius/motion/representation/kimodo/stats.py": "87e8cf74021779d1a2f6db5c340d6a39207f095b973b1564601ee54dcfbfb796",
+    "motius/motion/representation/kimodo/feature_utils.py": "4e9656bb007864b6aa041aab58dc31c8c3190c205053d4c3211d6cb23287b4e9",
+    "motius/motion/representation/kimodo/geometry.py": "9218c72ad39a478f23bdf6b010e4e3b1165f16dbd480168d0e358dee539f3169",
+    "motius/motion/representation/kimodo/feet.py": "c05b6baeba61fb81100b1f6e69ef98aed335ecfcccce629acca99142183f8790",
+    "motius/motion/representation/kimodo/__init__.py": "1a4183cf8b8d46ea0a64d2d82f1631c9855f6c08956e6e8af1b55315dc2a1844",
+    "motius/motion/representation/kimodo/reps/base.py": "4f5a5bdd370a16923060fb1c03cbe933bab533ae0e9e1c0127dca1397a6a5153",
+    "motius/motion/representation/kimodo/reps/kimodo_motionrep.py": "f5a3b10af0d9a1e147c2c71148a117b4f3862e6378f4c1fb3a55d85d653c8df5",
+    "motius/motion/representation/kimodo/reps/tmr_motionrep.py": "bcf79cf6706798b474f9e704e9d59f57948dd640f1aae60129dda0fb502b5d0f",
+    "motius/motion/representation/kimodo/reps/__init__.py": "652ab33fcfdd0c1eb122d63691c7492ef564fba41975c9ae92335c488456b1ab",
+    "motius/motion/body_models/kimodo/registry.py": "13edde40834365d363b382afa8c04ff4abd78354f5a514e0287aeadc0004c499",
+    "motius/motion/body_models/kimodo/base.py": "36e85eae7a2843191295f89ad5b38013b9c4bfe7df8cc47d6b9b6580a2dd4e6a",
+    "motius/motion/body_models/kimodo/transforms.py": "28564bab3cdffd9d07ac9cf3a49ac3d91eff1a55da838fd5898976ef6d5ecaf0",
+    "motius/motion/body_models/kimodo/definitions.py": "645e62341a32a0e4fbdf66e4fea269312daaf14010d36d2ac85a64cb4e6b2c59",
+    "motius/motion/body_models/kimodo/__init__.py": "8e16919a1dad26793f4253dab7da8eb583bf7fb41ff3b79814e938ff9808f099",
+    "motius/motion/body_models/kimodo/bvh.py": "cef588c374dc61ad6f469b7108b0426ac5847983b6b5e1bede98e71ffdced81d",
+    "motius/motion/body_models/kimodo/kinematics.py": "77f2920c3717a99807d444ddf298a0cb8d284b3954cf73950ae469f0f07bc193"
+  }
+}

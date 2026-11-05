@@ -4,7 +4,6 @@ import torch.nn as nn
 
 from .encdec import Encoder, Decoder, assert_shape
 from .bottleneck import NoBottleneck, Bottleneck
-from .utils.logger import average_metrics
 # from .utils.audio_utils import  audio_postprocess
 
 def dont_update(params):
@@ -38,8 +37,6 @@ def calculate_strides(strides, downs):
 #         return loss
 #     else:
 #         assert False, f"Unknown loss_fn {loss_fn}"
-def _loss_fn(x_target, x_pred):
-    return t.mean(t.abs(x_pred - x_target))
 
 class VQVAER(nn.Module):
     def __init__(self, hps, input_dim=72):
@@ -183,13 +180,6 @@ class VQVAER(nn.Module):
         zs = [t.cat(zs_level_list, dim=0) for zs_level_list in zip(*zs_list)]
         return zs
 
-    def sample(self, n_samples):
-        device = next(self.parameters()).device
-        zs = [
-            t.randint(0, self.l_bins, size=(n_samples, *z_shape), device=device)
-            for z_shape in self.z_shapes
-        ]
-        return self.decode(zs)
 
     def forward(self, x):
         self.bottleneck.eval()
@@ -225,81 +215,6 @@ class VQVAER(nn.Module):
             x_outs.append(x_out)
             x_outs_vel.append(x_vel_out)
 
-        # Loss
-        # def _spectral_loss(x_target, x_out, self.hps):
-        #     if hps.use_nonrelative_specloss:
-        #         sl = spectral_loss(x_target, x_out, self.hps) / hps.bandwidth['spec']
-        #     else:
-        #         sl = spectral_convergence(x_target, x_out, self.hps)
-        #     sl = t.mean(sl)
-        #     return sl
-
-        # def _multispectral_loss(x_target, x_out, self.hps):
-        #     sl = multispectral_loss(x_target, x_out, self.hps) / hps.bandwidth['spec']
-        #     sl = t.mean(sl)
-        #     return sl
-
-        recons_loss = t.zeros(()).to(x.device)
-        regularization = t.zeros(()).to(x.device)
-        velocity_loss = t.zeros(()).to(x.device)
-        acceleration_loss = t.zeros(()).to(x.device)
-        # spec_loss = t.zeros(()).to(x.device)
-        # multispec_loss = t.zeros(()).to(x.device)
-        x_target = x.float()[:, :, :self.hps.joint_channel]
-        # x_target = audio_postprocess(x.float(), self.hps)[:, :, :self.hps.joint_channel]
-
-        for level in reversed(range(self.levels)):
-            x_out_vel = self.postprocess(x_outs_vel[level])
-            x_out = self.postprocess(x_outs[level])
-            # x_out_vel = audio_postprocess(x_out_vel, self.hps)
-            # x_out = audio_postprocess(x_out, self.hps)
-            _, _, cc = x_out_vel.size()
-            x_out[:, :, :cc] = x_out_vel
-
-            # this_recons_loss = _loss_fn(loss_fn, x_target, x_out, hps)
-            this_recons_loss = _loss_fn(x_target, x_out_vel)
-            # this_spec_loss = _spectral_loss(x_target, x_out, hps)
-            # this_multispec_loss = _multispectral_loss(x_target, x_out, hps)
-            metrics[f'recons_loss_l{level + 1}'] = this_recons_loss
-            # metrics[f'spectral_loss_l{level + 1}'] = this_spec_loss
-            # metrics[f'multispectral_loss_l{level + 1}'] = this_multispec_loss
-            recons_loss += this_recons_loss
-            # spec_loss += this_spec_loss
-            # multispec_loss += this_multispec_loss
-            # regularization += t.mean((x_out[:, 2:] + x_out[:, :-2] - 2 * x_out[:, 1:-1])**2)
-
-            acceleration_loss +=  _loss_fn( x_out_vel[:, 1:] - x_out_vel[:, :-1], x_target[:, 1:] - x_target[:, :-1])
-            # acceleration_loss +=  _loss_fn(x_out[:, 2:] + x_out[:, :-2] - 2 * x_out[:, 1:-1], x_target[:, 2:] + x_target[:, :-2] - 2 * x_target[:, 1:-1])
-        # if not hasattr(self.)
-        # commit_loss = sum(commit_losses)
-        # loss = recons_loss + self.spectral * spec_loss + self.multispectral * multispec_loss + self.commit * commit_loss
-        loss = recons_loss + self.acc * acceleration_loss
-        # +  commit_loss * self.commit + self.reg * regularization + self.vel * velocity_loss + self.acc * acceleration_loss
-
-        with t.no_grad():
-            # sc = t.mean(spectral_convergence(x_target, x_out, hps))
-            # l2_loss = _loss_fn("l2", x_target, x_out, hps)
-            l1_loss = _loss_fn(x_target, x_out_vel)
-
-            # linf_loss = _loss_fn("linf", x_target, x_out, hps)
-
-        quantiser_metrics = average_metrics(quantiser_metrics)
-
-        metrics.update(dict(
-            recons_loss=recons_loss,
-            # spectral_loss=spec_loss,
-            # multispectral_loss=multispec_loss,
-            # spectral_convergence=sc,
-            # l2_loss=l2_loss,
-            l1_loss=l1_loss,
-            # linf_loss=linf_loss,
-            # commit_loss=commit_loss,
-            # regularization=regularization,
-            velocity_loss=l1_loss,
-            acceleration_loss=acceleration_loss,
-            **quantiser_metrics))
-
-        for key, val in metrics.items():
-            metrics[key] = val.detach()
-
-        return x_out, loss, metrics
+        return {"reconstructions": [self.postprocess(value) for value in x_outs],
+                "velocities": [self.postprocess(value) for value in x_outs_vel],
+                "commit_losses": commit_losses, "quantiser_metrics": quantiser_metrics}

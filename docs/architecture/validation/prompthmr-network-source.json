@@ -1,0 +1,1026 @@
+{
+  "complete": true,
+  "comparison": "Independent original PromptHMR with released image and official SHA-verified BEDLAM1+2 temporal weights versus native neural/geometry composition",
+  "scope": "Prepared normalized image/prompt tensors and temporal features; full video frontend, world fitting and training require separate verification",
+  "upstream_commit": "3b566b7dbb28ce506c7ea972c18693f4c705ce8c",
+  "tests": [
+    {
+      "tensor": "/image_0/0/pose",
+      "shape": [
+        1,
+        132
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/betas",
+      "shape": [
+        1,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/transl",
+      "shape": [
+        1,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/transl_c",
+      "shape": [
+        1,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/inv_depth_c",
+      "shape": [
+        1,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/cam_int",
+      "shape": [
+        1,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/features",
+      "shape": [
+        1,
+        2,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/rotmat",
+      "shape": [
+        1,
+        22,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/vertices",
+      "shape": [
+        1,
+        10475,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/body_joints",
+      "shape": [
+        1,
+        25,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/body_joints2d",
+      "shape": [
+        1,
+        25,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/smpl_vertices",
+      "shape": [
+        1,
+        6890,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/smpl_joints",
+      "shape": [
+        1,
+        25,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/smpl_joints2d",
+      "shape": [
+        1,
+        25,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_0/0/smpl_j3d",
+      "shape": [
+        1,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/pose",
+      "shape": [
+        2,
+        132
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/betas",
+      "shape": [
+        2,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/transl",
+      "shape": [
+        2,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/transl_c",
+      "shape": [
+        2,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/inv_depth_c",
+      "shape": [
+        2,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/cam_int",
+      "shape": [
+        2,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/features",
+      "shape": [
+        2,
+        2,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/rotmat",
+      "shape": [
+        2,
+        22,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/vertices",
+      "shape": [
+        2,
+        10475,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/body_joints",
+      "shape": [
+        2,
+        25,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/body_joints2d",
+      "shape": [
+        2,
+        25,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/smpl_vertices",
+      "shape": [
+        2,
+        6890,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/smpl_joints",
+      "shape": [
+        2,
+        25,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/smpl_joints2d",
+      "shape": [
+        2,
+        25,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_1/0/smpl_j3d",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/pose",
+      "shape": [
+        1,
+        132
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/betas",
+      "shape": [
+        1,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/transl",
+      "shape": [
+        1,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/transl_c",
+      "shape": [
+        1,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/inv_depth_c",
+      "shape": [
+        1,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/cam_int",
+      "shape": [
+        1,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/features",
+      "shape": [
+        1,
+        2,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/rotmat",
+      "shape": [
+        1,
+        22,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/vertices",
+      "shape": [
+        1,
+        10475,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/body_joints",
+      "shape": [
+        1,
+        25,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/body_joints2d",
+      "shape": [
+        1,
+        25,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/smpl_vertices",
+      "shape": [
+        1,
+        6890,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/smpl_joints",
+      "shape": [
+        1,
+        25,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/smpl_joints2d",
+      "shape": [
+        1,
+        25,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/0/smpl_j3d",
+      "shape": [
+        1,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/pose",
+      "shape": [
+        1,
+        132
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/betas",
+      "shape": [
+        1,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/transl",
+      "shape": [
+        1,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/transl_c",
+      "shape": [
+        1,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/inv_depth_c",
+      "shape": [
+        1,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/cam_int",
+      "shape": [
+        1,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/features",
+      "shape": [
+        1,
+        2,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/rotmat",
+      "shape": [
+        1,
+        22,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/vertices",
+      "shape": [
+        1,
+        10475,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/body_joints",
+      "shape": [
+        1,
+        25,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/body_joints2d",
+      "shape": [
+        1,
+        25,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/smpl_vertices",
+      "shape": [
+        1,
+        6890,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/smpl_joints",
+      "shape": [
+        1,
+        25,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/smpl_joints2d",
+      "shape": [
+        1,
+        25,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/image_2/1/smpl_j3d",
+      "shape": [
+        1,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/model_output/pred_context",
+      "shape": [
+        1,
+        16,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/model_output/pred_x",
+      "shape": [
+        1,
+        16,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/model_output/pred_cam",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/model_output/static_conf_logits",
+      "shape": [
+        1,
+        16,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/decode_dict/body_pose",
+      "shape": [
+        1,
+        16,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/decode_dict/betas",
+      "shape": [
+        1,
+        16,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/decode_dict/global_orient",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/decode_dict/global_orient_gv",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/decode_dict/local_transl_vel",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/pred_smpl_params_incam/body_pose",
+      "shape": [
+        1,
+        16,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/pred_smpl_params_incam/betas",
+      "shape": [
+        1,
+        16,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/pred_smpl_params_incam/global_orient",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/pred_smpl_params_incam/transl",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/pred_smpl_params_global/body_pose",
+      "shape": [
+        1,
+        16,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/pred_smpl_params_global/betas",
+      "shape": [
+        1,
+        16,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/pred_smpl_params_global/global_orient",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/pred_smpl_params_global/transl",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_0/static_conf_logits",
+      "shape": [
+        1,
+        16,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/model_output/pred_context",
+      "shape": [
+        2,
+        24,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/model_output/pred_x",
+      "shape": [
+        2,
+        24,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/model_output/pred_cam",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/model_output/static_conf_logits",
+      "shape": [
+        2,
+        24,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/decode_dict/body_pose",
+      "shape": [
+        2,
+        24,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/decode_dict/betas",
+      "shape": [
+        2,
+        24,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/decode_dict/global_orient",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/decode_dict/global_orient_gv",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/decode_dict/local_transl_vel",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/pred_smpl_params_incam/body_pose",
+      "shape": [
+        2,
+        24,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/pred_smpl_params_incam/betas",
+      "shape": [
+        2,
+        24,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/pred_smpl_params_incam/global_orient",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/pred_smpl_params_incam/transl",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/pred_smpl_params_global/body_pose",
+      "shape": [
+        2,
+        24,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/pred_smpl_params_global/betas",
+      "shape": [
+        2,
+        24,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/pred_smpl_params_global/global_orient",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/pred_smpl_params_global/transl",
+      "shape": [
+        2,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/video_1/static_conf_logits",
+      "shape": [
+        2,
+        24,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0+cu126",
+  "image_artifact": {
+    "repository": "Tinghong-Ye22/code-PromptHMR",
+    "revision": "df0688138f29e916f6aecc1b42b698a11cee9d93",
+    "archive": "FULL_SNAPSHOT.tar.zst.part-0000",
+    "files": [
+      {
+        "path": "data/body_models/smplx2smpl_joints.npy",
+        "sha256": "49864006d20c5205d7b30697db01744f3a56faf787c1cea748b25895e4b16ab2",
+        "size": 1382828
+      },
+      {
+        "path": "data/body_models/smplx2smpl.pkl",
+        "sha256": "c1d912d121ad98132e4492d8e7a0f1a8cf4412811e14a7ef8cb337bb48eef99e",
+        "size": 578019251
+      },
+      {
+        "path": "data/pretrain/phmr/config.yaml",
+        "sha256": "31142aaac12a7ef60adba77c85addffad1ea466a6555717b24c3fbed079a2447",
+        "size": 346
+      },
+      {
+        "path": "data/pretrain/phmr/checkpoint.ckpt",
+        "sha256": "a3ef04ef8a12c3068682b03c62c95f8959cd8554424e105c63bf97f6c8e97e99",
+        "size": 2298622395
+      }
+    ]
+  },
+  "video_artifact": {
+    "filename": "phmr_b1b2.ckpt",
+    "sha256": "2a36132715b5db0ea2acb6f1f92bbf963c9cf0fb1c3aea8d0f73dfede0b9e5e5",
+    "origin": "Original BEDLAM2 publisher, checksum verified"
+  },
+  "native_sha256": {
+    "motius/configuration/prompthmr/stats.json": "0954924ec99c5613d09535da04aae361696faa8fdc149a45ff47d27be2ee1aac",
+    "motius/models/gvhmr/__init__.py": "a51e2fc94335469be9e91cb62e9109691f5bad5a3461d7f1640919aac12c7e28",
+    "motius/models/gvhmr/attention.py": "8cb6af7d1d275242c1d8fdf7dd82e279c07255ab36af211e61ebceaacdcfc750",
+    "motius/models/gvhmr/bundle.py": "3f24a516ce22c28a020aca5bdad800c027c0b64e94bef06c00dd12c81d79195f",
+    "motius/models/gvhmr/network.py": "b6e0395134c280c038061be2cd82fc4a97b0a0ae039f3dadfed5d221874ae0e5",
+    "motius/models/gvhmr/rotary.py": "590f00248bc5b289b4230463a7c735db46c1c6293b2a9c050d47a711c6cce137",
+    "motius/models/prompthmr/components/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/models/prompthmr/components/camera_embed.py": "1da29af7cd479eeb8fe57e7e054c75fe0f90b7cbe868c63f71df3a86f9d3369f",
+    "motius/models/prompthmr/components/common.py": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+    "motius/models/prompthmr/components/image_encoder.py": "da825801af2f474b842c692cd4b476b72b4b857e5d4d95f58946a83c81af699c",
+    "motius/models/prompthmr/components/prompt_encoder.py": "bf99f04bb334813e6fe00e2e54bc95e788d19a134d3a2a8fb495f9fed0e52c1d",
+    "motius/models/prompthmr/components/smpl_decoder.py": "bad8a8169a57aef4a2832d91ff2cdbfa5686a5fd27a07bdce18e015e6cd057e0",
+    "motius/models/prompthmr/components/twoway_transformer.py": "eb0a064722ba7e938508fb6541d5da46650001f09877e61fb26d1a1c9edbce48",
+    "motius/models/prompthmr/dinov2/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/models/prompthmr/dinov2/layers/__init__.py": "3408204ff2883830709097985aacf6886dd4b9d4b65abd8e3709f3466c5f38ab",
+    "motius/models/prompthmr/dinov2/layers/attention.py": "b727a390d5d0a1248bb13b522805f7924466e9776bb20b6d6ca13e4acf1528ca",
+    "motius/models/prompthmr/dinov2/layers/block.py": "2ae3bb9036bd132486cd0f61f3368e2b06c1a81b8e2a2f53beb2e49a377e0425",
+    "motius/models/prompthmr/dinov2/layers/drop_path.py": "b9f8236e86054b9d9a71275efcad2a9ecaa1f86b529d4b8d6109ddb5e806f67a",
+    "motius/models/prompthmr/dinov2/layers/layer_scale.py": "abb7bbfae152a9de2e6d0961ab5e75c79428e849281bfe50dd07b66b54b485d1",
+    "motius/models/prompthmr/dinov2/layers/mlp.py": "255825c73b60a916dd00eb1e38aacbcdbf316e40d6a005efb46e245b7edb43aa",
+    "motius/models/prompthmr/dinov2/layers/patch_embed.py": "40da6add3d811198ea3e17cb99cdd4e5cda59e369efbbe3d18d89308618cf142",
+    "motius/models/prompthmr/dinov2/layers/swiglu_ffn.py": "71ba6a493575c2a477bde7f738c5d0958d448057d46fc175f7c3edf0a8bb33e2",
+    "motius/models/prompthmr/dinov2/vision_transformer.py": "800a2099f7e6702f60fa48b317e65ba9440f3c02f2b77b7cd53bd60891b29d32",
+    "motius/models/prompthmr/neural_bundle.py": "35ffdd009be559c7a075f4dfaadb30f1553a0db916cab115fd5f0decef1e49eb",
+    "motius/models/prompthmr/text.py": "d42b8843908cf83ff0f90b472c0b3ada4d389cc2dc899fd7d410b9e10afbffe8",
+    "motius/models/prompthmr/video.py": "942702ba1ede81417585b4b0709da83e5370d917159ae4c1061c6357fd68f48e",
+    "motius/motion/body_models/prompthmr/__init__.py": "a70d113ffc23eb78f8cca5dcceaeb8154224a1ad58a523f80b2b890df018856f",
+    "motius/motion/body_models/prompthmr/image.py": "b69b5ac78d20ba274b137447da0b09317c61bc6a95947031f752b7e5c09032d2",
+    "motius/motion/body_models/prompthmr/smpl_wrapper.py": "25e2a8b2dc888182e4c837bda451b4964d98021fd5f6febce63b0268896a4013",
+    "motius/motion/body_models/prompthmr/vertex_ids.py": "cfced54793f7f181835512c93b2360b27027f12859d20b5bcc013e368f6ad2ea",
+    "motius/motion/representation/prompthmr/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/motion/representation/prompthmr/camera.py": "cacc9057b80d819df89bca56a08ebc74581be4d47098b210dcd636664305728f",
+    "motius/motion/representation/prompthmr/image_rotation.py": "d8222a9df12a41f3f631454485c710a971c4f73042d1230e5d6ed31bc7264b9c",
+    "motius/motion/representation/prompthmr/rotation.py": "351835f0d56f8e65eee43e08229d8440769c2c415d3cc66e84d4bbcbec72b148",
+    "motius/motion/representation/prompthmr/video_codec.py": "bb8e494d03f323278a46651dab362c78e8199e52e319d45d65ffafe366e85054",
+    "motius/motion/representation/prompthmr/video_motion.py": "a6c94d11d2c9475b83279741bdb7dc2f298ef99abb1373cb46df50f7742eb536",
+    "motius/motion/representation/prompthmr/video_rotation.py": "32429f31340c8f6ea7e226a555af98968e30b7757f37eab8a03669ad5ef91a29",
+    "motius/pipelines/prompthmr/image.py": "f34e230417709d4fb8fd0989ce94b84bd8490a93a4dac9239eaab7ecd2782a54",
+    "motius/pipelines/prompthmr/video.py": "65b4f53ce35c2d623db08a82d0676d7c730512580bf922ef3acac19c3b39c44f"
+  }
+}

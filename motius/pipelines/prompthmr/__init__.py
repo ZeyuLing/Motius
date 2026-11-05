@@ -1,12 +1,7 @@
-"""PromptHMR-Video official-runtime pipeline."""
+"""Native PromptHMR capture, result conversion and licensed geometry."""
 
-from .pipeline import (
-    PROMPTHMR_WORLD_COORDINATE,
-    PromptHMROfficialCommand,
-    PromptHMRPipeline,
-    build_prompthmr_video_command,
-    parse_prompthmr_results,
-)
+from .pipeline import PromptHMRPipeline
+from .parser import PROMPTHMR_WORLD_COORDINATE,parse_prompthmr_results
 from .replay import (
     LicensedSMPLXProvenance,
     PromptHMRSMPLXParameters,
@@ -21,11 +16,9 @@ from .replay import (
 __all__ = [
     "LicensedSMPLXProvenance",
     "PROMPTHMR_WORLD_COORDINATE",
-    "PromptHMROfficialCommand",
     "PromptHMRPipeline",
     "PromptHMRSMPLXParameters",
     "SMPL_SMPLX_BODY22_NAMES",
-    "build_prompthmr_video_command",
     "inspect_licensed_smplx_model",
     "load_licensed_smplx_model",
     "parse_prompthmr_results",

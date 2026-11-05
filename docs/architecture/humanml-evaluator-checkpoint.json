@@ -1,0 +1,110 @@
+{
+  "complete": true,
+  "scope": "Actual released HumanML3D matching encoders with modified current weights, sub-FP32 statistics changes and non-default text/motion limits. Public text/ragged physical inference and every neural hash/statistic/config value match through offline fresh-process safetensors AND PyTorch artifact loading. Source parity is separately certified; this is current-weight export evidence, not training/convergence.",
+  "tests": [
+    {
+      "tensor": "/safe/mean",
+      "shape": [
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/safe/std",
+      "shape": [
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/safe/properties/max_text_length",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/safe/properties/max_motion_length",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/safe/properties/unit_length",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/safe/text",
+      "shape": [
+        3,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/safe/motion",
+      "shape": [
+        3,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/torch/mean",
+      "shape": [
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/torch/std",
+      "shape": [
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/torch/properties/max_text_length",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/torch/properties/max_motion_length",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/torch/properties/unit_length",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/torch/text",
+      "shape": [
+        3,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/torch/motion",
+      "shape": [
+        3,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

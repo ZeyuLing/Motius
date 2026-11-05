@@ -20,6 +20,8 @@ from tools.hf_checkpoint_specs import CHECKPOINT_SPECS
 # Public method Pipelines that intentionally cannot be distributed as Motius
 # Hugging Face artifacts are still part of the task-API contract.
 NON_HF_PIPELINE_TASKS = {
+    "motius.pipelines.gentrack.GenTrackPipeline": ("text_to_motion",),
+    "motius.pipelines.mogendit.MoGenDiTPipeline": ("motion_repair",),
     "motius.pipelines.beyondmimic.BeyondMimicPipeline": (
         "motion_tracking",
     ),
@@ -36,8 +38,11 @@ NON_HF_PIPELINE_TASKS = {
 PIPELINE_CLASS_EXCLUSIONS = {
     "BasePipeline": "abstract pipeline base class",
     "MotionCLIPPipeline": "evaluator/retrieval API, not a method Pipeline",
+    "MotionStreamerMatchingPipeline": "evaluator/retrieval API, not a method Pipeline",
+    "HumanML3DMatchingPipeline": "evaluator/retrieval API, not a method Pipeline",
     "Pipeline": "automatic artifact loader that returns a method Pipeline",
     "PrismARPipeline": "internal Diffusers backend used by PRISMPipeline",
+    "PostprocessPipeline": "internal FlowHMR motion postprocessing component",
 }
 
 
@@ -45,6 +50,7 @@ PIPELINE_CLASS_EXCLUSIONS = {
 # Tasks absent from this map were already implemented under their canonical
 # name and are classified as native.
 LEGACY_TASK_ROUTES = {
+    "motius.pipelines.gentrack.GenTrackPipeline": {"text_to_motion": "__call__"},
     "motius.pipelines.ardy.ARDYPipeline": {
         "text_to_motion": "infer_t2m",
         "sequential_text_to_motion": "stream_step",
@@ -152,6 +158,7 @@ LEGACY_TASK_ROUTES = {
 # These adapters intentionally change only the call shape. Their forwarding is
 # covered by strict tests in tests/test_pipeline_task_api_parity.py.
 VERIFIED_ADAPTER_ROUTES = {
+    ("motius.pipelines.gentrack.GenTrackPipeline", "text_to_motion"),
     ("motius.pipelines.ardy.ARDYPipeline", "sequential_text_to_motion"),
     ("motius.pipelines.hymotion_t2m.HyMotionT2MPipeline", "text_to_motion"),
     ("motius.pipelines.kimodo.KIMODOPipeline", "text_to_motion"),

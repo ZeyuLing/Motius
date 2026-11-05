@@ -114,9 +114,9 @@ def test_release_task_methods_and_packaged_statistics():
     assets = (
         Path(__file__).resolve().parents[1]
         / "motius"
-        / "models"
-        / "omnicontrol"
+        / "motion"
         / "assets"
+        / "omnicontrol"
     )
     assert np.load(assets / "Mean.npy").shape == (263,)
     assert np.load(assets / "Std.npy").shape == (263,)

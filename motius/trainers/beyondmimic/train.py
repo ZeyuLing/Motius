@@ -1,237 +1,138 @@
-"""Launch the vendored BeyondMimic Isaac Lab/RSL-RL trainer."""
+"""Launch native BeyondMimic neural roots, simulator and AccelerateRunner."""
 
-from __future__ import annotations
-
-from dataclasses import dataclass
-import os
 from pathlib import Path
-import runpy
-import sys
-from typing import Optional, Sequence
+import argparse, os
+from .trainer import BeyondMimicTrainer
+
+TASK_VARIANTS = {
+    'Tracking-Flat-G1-v0': 'flat',
+    'Tracking-Flat-G1-Wo-State-Estimation-v0': 'without_state_estimation',
+    'Tracking-Flat-G1-Low-Freq-v0': 'low_frequency',
+}
+DEFAULT_TASK = 'Tracking-Flat-G1-v0'
+DEFAULT_OUTPUT_ROOT = Path('outputs/training/beyondmimic')
+DEFAULT_ASSET_ROOT = Path('checkpoints/robots')
 
 
-VENDOR_ROOT = Path(__file__).resolve().parent / "vendor"
-TRAIN_SCRIPT = VENDOR_ROOT / "scripts/rsl_rl/train.py"
-UPSTREAM_COMMIT = "cd65172032893724b445448818c34165846d847d"
-DEFAULT_TASK = "Tracking-Flat-G1-v0"
-DEFAULT_OUTPUT_ROOT = Path("outputs/training/beyondmimic")
-DEFAULT_ASSET_ROOT = Path("checkpoints/robots")
-DEFAULT_ISAAC_ASSET_DIR = Path("isaac_assets/g1")
-
-
-@dataclass(frozen=True)
-class TrainingLaunch:
-    argv: tuple[str, ...]
-    output_root: Path
-    asset_root: Path
-    isaac_asset_dir: Path
-    resumed_from: Optional[Path]
-
-
-def _has_option(arguments: Sequence[str], name: str) -> bool:
-    return any(value == name or value.startswith(f"{name}=") for value in arguments)
-
-
-def _pop_value(arguments: list[str], name: str, default: str) -> str:
-    for index, value in enumerate(arguments):
-        if value.startswith(f"{name}="):
-            arguments.pop(index)
-            return value.split("=", 1)[1]
-        if value == name:
-            if index + 1 >= len(arguments):
-                raise ValueError(f"{name} requires a value")
-            arguments.pop(index)
-            return arguments.pop(index)
-    return default
-
-
-def _pop_flag(arguments: list[str], name: str) -> bool:
-    enabled = False
-    while name in arguments:
-        arguments.remove(name)
-        enabled = True
-    return enabled
-
-
-def _absolute_option(arguments: list[str], name: str, cwd: Path) -> None:
-    for index, value in enumerate(arguments):
-        if value.startswith(f"{name}="):
-            path = Path(value.split("=", 1)[1]).expanduser()
-            if not path.is_absolute():
-                path = cwd / path
-            arguments[index] = f"{name}={path.resolve()}"
-        elif value == name and index + 1 < len(arguments):
-            path = Path(arguments[index + 1]).expanduser()
-            if not path.is_absolute():
-                path = cwd / path
-            arguments[index + 1] = str(path.resolve())
-
-
-def _option_value(arguments: Sequence[str], name: str, default: str) -> str:
-    for index, value in enumerate(arguments):
-        if value.startswith(f"{name}="):
-            return value.split("=", 1)[1]
-        if value == name and index + 1 < len(arguments):
-            return arguments[index + 1]
-    return default
-
-
-def _latest_checkpoint(output_root: Path, experiment_name: str) -> Optional[Path]:
-    run_root = output_root / "logs/rsl_rl" / experiment_name
-    candidates = [
-        path
-        for path in run_root.glob("*/model_*.pt")
-        if path.is_file()
-    ]
-    if not candidates:
-        return None
-    return max(candidates, key=lambda path: (path.stat().st_mtime_ns, path.name))
-
-
-def build_launch(
-    arguments: Sequence[str],
-    *,
-    cwd: Optional[Path] = None,
-) -> TrainingLaunch:
-    launch_cwd = (cwd or Path.cwd()).resolve()
-    argv = list(arguments)
-    output_value = _pop_value(argv, "--output-root", str(DEFAULT_OUTPUT_ROOT))
-    asset_default = os.environ.get(
-        "MOTIUS_BEYONDMIMIC_ASSET_ROOT",
-        str(DEFAULT_ASSET_ROOT),
+def build_parser():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--task', choices=tuple(TASK_VARIANTS), default=DEFAULT_TASK)
+    parser.add_argument(
+        '--motion_file', '--motion-file', dest='motion_file', type=Path, required=True
     )
-    asset_value = _pop_value(argv, "--asset-root", asset_default)
-    isaac_asset_value = _pop_value(
-        argv,
-        "--isaac-asset-dir",
-        str(DEFAULT_ISAAC_ASSET_DIR),
+    parser.add_argument(
+        '--asset-root',
+        type=Path,
+        default=Path(
+            os.environ.get('MOTIUS_BEYONDMIMIC_ASSET_ROOT', DEFAULT_ASSET_ROOT)
+        ),
     )
-    auto_resume = _pop_flag(argv, "--auto-resume")
-
-    output_root = Path(output_value).expanduser()
-    if not output_root.is_absolute():
-        output_root = launch_cwd / output_root
-    output_root = output_root.resolve()
-
-    asset_root = Path(asset_value).expanduser()
-    if not asset_root.is_absolute():
-        asset_root = launch_cwd / asset_root
-    asset_root = asset_root.resolve()
-
-    isaac_asset_dir = Path(isaac_asset_value).expanduser()
-    if not isaac_asset_dir.is_absolute():
-        isaac_asset_dir = output_root / isaac_asset_dir
-    isaac_asset_dir = isaac_asset_dir.resolve()
-
-    _absolute_option(argv, "--motion_file", launch_cwd)
-    if not _has_option(argv, "--motion_file") and not _has_option(
-        argv, "--registry_name"
-    ):
-        raise ValueError(
-            "BeyondMimic training requires --motion_file or --registry_name"
-        )
-    if not _has_option(argv, "--task"):
-        argv[:0] = ["--task", DEFAULT_TASK]
-
-    resumed_from: Optional[Path] = None
-    if auto_resume and not _has_option(argv, "--resume"):
-        experiment_name = _option_value(argv, "--experiment_name", "g1_flat")
-        resumed_from = _latest_checkpoint(output_root, experiment_name)
-        if resumed_from is not None:
-            argv.extend(
-                [
-                    "--resume",
-                    "True",
-                    "--load_run",
-                    resumed_from.parent.name,
-                    "--checkpoint",
-                    resumed_from.name,
-                ]
-            )
-
-    return TrainingLaunch(
-        argv=tuple(argv),
-        output_root=output_root,
-        asset_root=asset_root,
-        isaac_asset_dir=isaac_asset_dir,
-        resumed_from=resumed_from,
+    parser.add_argument('--output-root', type=Path, default=DEFAULT_OUTPUT_ROOT)
+    parser.add_argument(
+        '--num_envs', '--num-envs', dest='num_envs', type=int, default=4096
     )
-
-
-def _validate_assets(asset_root: Path) -> None:
-    urdf = asset_root / "unitree_description/urdf/g1/main.urdf"
-    mesh_dir = asset_root / "unitree_description/meshes/g1"
-    if not urdf.is_file() or not mesh_dir.is_dir():
-        raise FileNotFoundError(
-            "BeyondMimic G1 assets are missing. Run "
-            "`python tools/download_beyondmimic_assets.py` or pass "
-            "`--asset-root PATH`."
-        )
-
-
-class BeyondMimicTrainer:
-    """Motius adapter for BeyondMimic's native Isaac Lab PPO loop."""
-
-    upstream_commit = UPSTREAM_COMMIT
-
-    @classmethod
-    def launch(cls, arguments: Optional[Sequence[str]] = None) -> None:
-        main(arguments)
-
-    @classmethod
-    def prepare_motion(cls, arguments: Sequence[str]) -> None:
-        from .prepare_motion import main as prepare_main
-
-        prepare_main(arguments)
-
-    @classmethod
-    def export_policy(cls, arguments: Sequence[str]) -> None:
-        from .export_policy import main as export_main
-
-        export_main(arguments)
-
-
-def main(arguments: Optional[Sequence[str]] = None) -> None:
-    launch = build_launch(
-        sys.argv[1:] if arguments is None else arguments,
-        cwd=Path.cwd(),
+    parser.add_argument(
+        '--max_iterations', '--max-iterations', dest='max_iterations', type=int
     )
-    _validate_assets(launch.asset_root)
-    launch.output_root.mkdir(parents=True, exist_ok=True)
-    launch.isaac_asset_dir.mkdir(parents=True, exist_ok=True)
+    parser.add_argument(
+        '--run_name', '--run-name', dest='run_name', default='lafan1_g1'
+    )
+    parser.add_argument('--checkpoint', type=Path)
+    parser.add_argument('--auto-resume', action='store_true')
+    parser.add_argument('--headless', action='store_true')
+    parser.add_argument(
+        '--logger', choices=['tensorboard', 'none'], default='tensorboard'
+    )
+    parser.add_argument('--seed', type=int, default=42)
+    parser.add_argument('--device', default='cuda:0')
+    return parser
 
-    vendor = str(VENDOR_ROOT)
-    script_root = str(TRAIN_SCRIPT.parent)
-    for path in (script_root, vendor):
-        if path not in sys.path:
-            sys.path.insert(0, path)
 
-    previous_cwd = Path.cwd()
-    previous_argv = sys.argv
-    previous_asset_root = os.environ.get("MOTIUS_BEYONDMIMIC_ASSET_ROOT")
-    previous_isaac_asset_dir = os.environ.get("BEYONDMIMIC_ISAAC_ASSET_DIR")
+def main(arguments=None):
+    args = build_parser().parse_args(arguments)
+    # Kit prepends its bundled Python packages at startup. Import the training
+    # runtime first so its installed boto3/botocore dependencies stay paired.
+    from accelerate import Accelerator
+    from accelerate.utils import set_seed
+    from isaaclab.app import AppLauncher
+
+    local_rank = os.environ.get('LOCAL_RANK')
+    if local_rank is not None:
+        args.device = 'cuda:' + local_rank
+    launcher = AppLauncher(headless=args.headless, device=args.device)
+    environment = None
     try:
-        os.environ["MOTIUS_BEYONDMIMIC_ASSET_ROOT"] = str(launch.asset_root)
-        os.environ["BEYONDMIMIC_ISAAC_ASSET_DIR"] = str(
-            launch.isaac_asset_dir
+        import torch
+
+        torch.backends.cuda.matmul.allow_tf32 = True
+        torch.backends.cudnn.allow_tf32 = True
+        torch.backends.cudnn.deterministic = False
+        torch.backends.cudnn.benchmark = False
+        from motius.runner.online_tracking import build_beyondmimic_runner
+        from motius.simulators.isaaclab.beyondmimic import (
+            create_beyondmimic_environment,
         )
-        os.chdir(launch.output_root)
-        sys.argv = [str(TRAIN_SCRIPT), *launch.argv]
-        runpy.run_path(str(TRAIN_SCRIPT), run_name="__main__")
-    finally:
-        os.chdir(previous_cwd)
-        sys.argv = previous_argv
-        if previous_asset_root is None:
-            os.environ.pop("MOTIUS_BEYONDMIMIC_ASSET_ROOT", None)
-        else:
-            os.environ["MOTIUS_BEYONDMIMIC_ASSET_ROOT"] = previous_asset_root
-        if previous_isaac_asset_dir is None:
-            os.environ.pop("BEYONDMIMIC_ISAAC_ASSET_DIR", None)
-        else:
-            os.environ["BEYONDMIMIC_ISAAC_ASSET_DIR"] = (
-                previous_isaac_asset_dir
+        from motius.pipelines.beyondmimic import BeyondMimicPipeline
+
+        work_dir = args.output_root.expanduser().resolve() / args.run_name
+        accelerator = Accelerator(
+            mixed_precision='no',
+            log_with='tensorboard' if args.logger == 'tensorboard' else None,
+            project_dir=str(work_dir),
+        )
+        seed = args.seed + accelerator.process_index
+        set_seed(seed)
+        variant = TASK_VARIANTS[args.task]
+        environment = create_beyondmimic_environment(
+            args.motion_file,
+            args.asset_root,
+            num_envs=args.num_envs,
+            device=accelerator.device,
+            seed=seed,
+            variant=variant,
+            output_dir=work_dir,
+        )
+        runner = build_beyondmimic_runner(
+            environment,
+            work_dir,
+            accelerator=accelerator,
+            variant=variant,
+            max_iterations=args.max_iterations,
+            checkpoint=args.checkpoint,
+            auto_resume=args.auto_resume,
+        )
+        accelerator.init_trackers('beyondmimic')
+        runner.train()
+        if accelerator.is_main_process:
+            command = environment.environment.command_manager.get_term('motion')
+            reference = {
+                name: getattr(command.motion, name).detach().cpu().numpy()
+                for name in [
+                    'joint_pos',
+                    'joint_vel',
+                    'body_pos_w',
+                    'body_quat_w',
+                    'body_lin_vel_w',
+                    'body_ang_vel_w',
+                ]
+            }
+            from motius.simulators.isaaclab.beyondmimic.factory import tracking_metadata
+
+            pipeline = BeyondMimicPipeline(
+                runner.bundle,
+                reference_motion=reference,
+                control_hz=1 / environment.environment.step_dt,
+                metadata=tracking_metadata(environment),
             )
+            pipeline.save_pretrained(work_dir / 'exported')
+    finally:
+        if environment is not None:
+            environment.close()
+        from isaaclab.sim import SimulationContext
+
+        SimulationContext.clear_instance()
+        launcher.app.close()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

@@ -1,0 +1,202 @@
+{
+  "complete": true,
+  "scope": "All native model-package imports from the installed wheel in a fresh process outside the checkout; dependency-specific construction and neural numerical parity are separate checks.",
+  "packages": [
+    {
+      "module": "motius.models.any2track",
+      "complete": true
+    },
+    {
+      "module": "motius.models.ardy",
+      "complete": true
+    },
+    {
+      "module": "motius.models.bailando",
+      "complete": true
+    },
+    {
+      "module": "motius.models.beyondmimic",
+      "complete": true
+    },
+    {
+      "module": "motius.models.condmdi",
+      "complete": true
+    },
+    {
+      "module": "motius.models.dart",
+      "complete": true
+    },
+    {
+      "module": "motius.models.edge",
+      "complete": true
+    },
+    {
+      "module": "motius.models.flowhmr",
+      "complete": true
+    },
+    {
+      "module": "motius.models.flowmdm",
+      "complete": true
+    },
+    {
+      "module": "motius.models.gem_smpl",
+      "complete": true
+    },
+    {
+      "module": "motius.models.gem_x",
+      "complete": true
+    },
+    {
+      "module": "motius.models.gentrack",
+      "complete": true
+    },
+    {
+      "module": "motius.models.gvhmr",
+      "complete": true
+    },
+    {
+      "module": "motius.models.humanml3d_evaluator",
+      "complete": true
+    },
+    {
+      "module": "motius.models.humanoid_gpt",
+      "complete": true
+    },
+    {
+      "module": "motius.models.hymotion_t2m",
+      "complete": true
+    },
+    {
+      "module": "motius.models.interclip",
+      "complete": true
+    },
+    {
+      "module": "motius.models.intergen",
+      "complete": true
+    },
+    {
+      "module": "motius.models.intermask",
+      "complete": true
+    },
+    {
+      "module": "motius.models.kimodo",
+      "complete": true
+    },
+    {
+      "module": "motius.models.maskcontrol",
+      "complete": true
+    },
+    {
+      "module": "motius.models.mdm",
+      "complete": true
+    },
+    {
+      "module": "motius.models.mld",
+      "complete": true
+    },
+    {
+      "module": "motius.models.mogendit",
+      "complete": true
+    },
+    {
+      "module": "motius.models.mogents",
+      "complete": true
+    },
+    {
+      "module": "motius.models.momask",
+      "complete": true
+    },
+    {
+      "module": "motius.models.motion_clip",
+      "complete": true
+    },
+    {
+      "module": "motius.models.motionbricks",
+      "complete": true
+    },
+    {
+      "module": "motius.models.motioncanvas",
+      "complete": true
+    },
+    {
+      "module": "motius.models.motionclr",
+      "complete": true
+    },
+    {
+      "module": "motius.models.motiongpt",
+      "complete": true
+    },
+    {
+      "module": "motius.models.motiongpt3",
+      "complete": true
+    },
+    {
+      "module": "motius.models.motionlcm",
+      "complete": true
+    },
+    {
+      "module": "motius.models.motionmillion",
+      "complete": true
+    },
+    {
+      "module": "motius.models.motionstreamer",
+      "complete": true
+    },
+    {
+      "module": "motius.models.omnicontrol",
+      "complete": true
+    },
+    {
+      "module": "motius.models.prism",
+      "complete": true
+    },
+    {
+      "module": "motius.models.projflow",
+      "complete": true
+    },
+    {
+      "module": "motius.models.prompthmr",
+      "complete": true
+    },
+    {
+      "module": "motius.models.protomotions",
+      "complete": true
+    },
+    {
+      "module": "motius.models.sonic",
+      "complete": true
+    },
+    {
+      "module": "motius.models.t2mgpt",
+      "complete": true
+    },
+    {
+      "module": "motius.models.tm2d",
+      "complete": true
+    },
+    {
+      "module": "motius.models.tm2t",
+      "complete": true
+    },
+    {
+      "module": "motius.models.tmr",
+      "complete": true
+    },
+    {
+      "module": "motius.models.unimumo",
+      "complete": true
+    },
+    {
+      "module": "motius.models.vermo",
+      "complete": true
+    },
+    {
+      "module": "motius.models.vimogen",
+      "complete": true
+    },
+    {
+      "module": "motius.models.vision",
+      "complete": true
+    }
+  ]
+}

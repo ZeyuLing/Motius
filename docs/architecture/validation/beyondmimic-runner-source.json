@@ -1,0 +1,4520 @@
+{
+  "complete": true,
+  "comparison": "Independent original RSL-RL OnPolicyRunner.learn versus actual Motius AccelerateRunner",
+  "scope": "Two 24x4 online rollouts in a deterministic tensor environment; real original G1 network, normalization, sampling, timeout bootstrapping, GAE, 40 PPO minibatch updates and optimizer/checkpoint integration. Not physical simulation or a released pretrained policy.",
+  "upstream_commit": "cd65172032893724b445448818c34165846d847d",
+  "rsl_rl_commit": "d38a378b13a60ea570923754184f84f48979ad74",
+  "tests": [
+    {
+      "tensor": "/snapshots/0/state/std",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/actor.0.weight",
+      "shape": [
+        512,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/actor.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/actor.2.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/actor.2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/actor.4.weight",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/actor.4.bias",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/actor.6.weight",
+      "shape": [
+        29,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/actor.6.bias",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/critic.0.weight",
+      "shape": [
+        512,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/critic.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/critic.2.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/critic.2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/critic.4.weight",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/critic.4.bias",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/critic.6.weight",
+      "shape": [
+        1,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/state/critic.6.bias",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/actor_norm/_mean",
+      "shape": [
+        1,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/actor_norm/_var",
+      "shape": [
+        1,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/actor_norm/_std",
+      "shape": [
+        1,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/actor_norm/count",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/critic_norm/_mean",
+      "shape": [
+        1,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/critic_norm/_var",
+      "shape": [
+        1,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/critic_norm/_std",
+      "shape": [
+        1,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/critic_norm/count",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/0/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/0/exp_avg",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/0/exp_avg_sq",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/1/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/1/exp_avg",
+      "shape": [
+        512,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/1/exp_avg_sq",
+      "shape": [
+        512,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/2/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/2/exp_avg",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/2/exp_avg_sq",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/3/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/3/exp_avg",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/3/exp_avg_sq",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/4/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/4/exp_avg",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/4/exp_avg_sq",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/5/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/5/exp_avg",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/5/exp_avg_sq",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/6/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/6/exp_avg",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/6/exp_avg_sq",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/7/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/7/exp_avg",
+      "shape": [
+        29,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/7/exp_avg_sq",
+      "shape": [
+        29,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/8/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/8/exp_avg",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/8/exp_avg_sq",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/9/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/9/exp_avg",
+      "shape": [
+        512,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/9/exp_avg_sq",
+      "shape": [
+        512,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/10/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/10/exp_avg",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/10/exp_avg_sq",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/11/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/11/exp_avg",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/11/exp_avg_sq",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/12/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/12/exp_avg",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/12/exp_avg_sq",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/13/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/13/exp_avg",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/13/exp_avg_sq",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/14/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/14/exp_avg",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/14/exp_avg_sq",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/15/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/15/exp_avg",
+      "shape": [
+        1,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/15/exp_avg_sq",
+      "shape": [
+        1,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/16/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/16/exp_avg",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/state/16/exp_avg_sq",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/lr",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/betas/0",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/betas/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/eps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/weight_decay",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/amsgrad",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/maximize",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/capturable",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/differentiable",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/0",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/2",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/3",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/4",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/5",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/6",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/7",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/8",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/9",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/10",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/11",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/12",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/13",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/14",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/15",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/optimizer/param_groups/0/params/16",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/learning_rate",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/std",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/actor.0.weight",
+      "shape": [
+        512,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/actor.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/actor.2.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/actor.2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/actor.4.weight",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/actor.4.bias",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/actor.6.weight",
+      "shape": [
+        29,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/actor.6.bias",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/critic.0.weight",
+      "shape": [
+        512,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/critic.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/critic.2.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/critic.2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/critic.4.weight",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/critic.4.bias",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/critic.6.weight",
+      "shape": [
+        1,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/gradients/critic.6.bias",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/rollout/observations",
+      "shape": [
+        24,
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/rollout/critic_observations",
+      "shape": [
+        24,
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/rollout/actions",
+      "shape": [
+        24,
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/rollout/values",
+      "shape": [
+        24,
+        4,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/rollout/actions_log_prob",
+      "shape": [
+        24,
+        4,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/rollout/mu",
+      "shape": [
+        24,
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/rollout/sigma",
+      "shape": [
+        24,
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/rollout/returns",
+      "shape": [
+        24,
+        4,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/rollout/advantages",
+      "shape": [
+        24,
+        4,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/0/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/std",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/actor.0.weight",
+      "shape": [
+        512,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/actor.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/actor.2.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/actor.2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/actor.4.weight",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/actor.4.bias",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/actor.6.weight",
+      "shape": [
+        29,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/actor.6.bias",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/critic.0.weight",
+      "shape": [
+        512,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/critic.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/critic.2.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/critic.2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/critic.4.weight",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/critic.4.bias",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/critic.6.weight",
+      "shape": [
+        1,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/state/critic.6.bias",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/actor_norm/_mean",
+      "shape": [
+        1,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/actor_norm/_var",
+      "shape": [
+        1,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/actor_norm/_std",
+      "shape": [
+        1,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/actor_norm/count",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/critic_norm/_mean",
+      "shape": [
+        1,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/critic_norm/_var",
+      "shape": [
+        1,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/critic_norm/_std",
+      "shape": [
+        1,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/critic_norm/count",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/0/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/0/exp_avg",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/0/exp_avg_sq",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/1/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/1/exp_avg",
+      "shape": [
+        512,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/1/exp_avg_sq",
+      "shape": [
+        512,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/2/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/2/exp_avg",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/2/exp_avg_sq",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/3/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/3/exp_avg",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/3/exp_avg_sq",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/4/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/4/exp_avg",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/4/exp_avg_sq",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/5/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/5/exp_avg",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/5/exp_avg_sq",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/6/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/6/exp_avg",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/6/exp_avg_sq",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/7/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/7/exp_avg",
+      "shape": [
+        29,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/7/exp_avg_sq",
+      "shape": [
+        29,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/8/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/8/exp_avg",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/8/exp_avg_sq",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/9/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/9/exp_avg",
+      "shape": [
+        512,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/9/exp_avg_sq",
+      "shape": [
+        512,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/10/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/10/exp_avg",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/10/exp_avg_sq",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/11/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/11/exp_avg",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/11/exp_avg_sq",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/12/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/12/exp_avg",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/12/exp_avg_sq",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/13/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/13/exp_avg",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/13/exp_avg_sq",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/14/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/14/exp_avg",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/14/exp_avg_sq",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/15/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/15/exp_avg",
+      "shape": [
+        1,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/15/exp_avg_sq",
+      "shape": [
+        1,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/16/step",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/16/exp_avg",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/state/16/exp_avg_sq",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/lr",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/betas/0",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/betas/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/eps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/weight_decay",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/amsgrad",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/maximize",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/capturable",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/differentiable",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/0",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/1",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/2",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/3",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/4",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/5",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/6",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/7",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/8",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/9",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/10",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/11",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/12",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/13",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/14",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/15",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/optimizer/param_groups/0/params/16",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/learning_rate",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/std",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/actor.0.weight",
+      "shape": [
+        512,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/actor.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/actor.2.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/actor.2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/actor.4.weight",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/actor.4.bias",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/actor.6.weight",
+      "shape": [
+        29,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/actor.6.bias",
+      "shape": [
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/critic.0.weight",
+      "shape": [
+        512,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/critic.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/critic.2.weight",
+      "shape": [
+        256,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/critic.2.bias",
+      "shape": [
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/critic.4.weight",
+      "shape": [
+        128,
+        256
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/critic.4.bias",
+      "shape": [
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/critic.6.weight",
+      "shape": [
+        1,
+        128
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/gradients/critic.6.bias",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/rollout/observations",
+      "shape": [
+        24,
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/rollout/critic_observations",
+      "shape": [
+        24,
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/rollout/actions",
+      "shape": [
+        24,
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/rollout/values",
+      "shape": [
+        24,
+        4,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/rollout/actions_log_prob",
+      "shape": [
+        24,
+        4,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/rollout/mu",
+      "shape": [
+        24,
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/rollout/sigma",
+      "shape": [
+        24,
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/rollout/returns",
+      "shape": [
+        24,
+        4,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/rollout/advantages",
+      "shape": [
+        24,
+        4,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/snapshots/1/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/0/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/0/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/0/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/0/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/0/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/0/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/1/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/1/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/1/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/1/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/1/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/1/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/2/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/2/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/2/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/2/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/2/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/2/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/3/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/3/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/3/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/3/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/3/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/3/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/4/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/4/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/4/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/4/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/4/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/4/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/5/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/5/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/5/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/5/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/5/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/5/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/6/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/6/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/6/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/6/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/6/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/6/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/7/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/7/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/7/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/7/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/7/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/7/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/8/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/8/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/8/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/8/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/8/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/8/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/9/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/9/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/9/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/9/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/9/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/9/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/10/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/10/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/10/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/10/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/10/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/10/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/11/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/11/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/11/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/11/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/11/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/11/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/12/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/12/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/12/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/12/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/12/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/12/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/13/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/13/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/13/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/13/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/13/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/13/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/14/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/14/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/14/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/14/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/14/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/14/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/15/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/15/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/15/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/15/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/15/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/15/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/16/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/16/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/16/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/16/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/16/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/16/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/17/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/17/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/17/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/17/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/17/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/17/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/18/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/18/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/18/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/18/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/18/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/18/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/19/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/19/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/19/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/19/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/19/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/19/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/20/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/20/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/20/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/20/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/20/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/20/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/21/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/21/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/21/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/21/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/21/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/21/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/22/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/22/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/22/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/22/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/22/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/22/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/23/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/23/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/23/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/23/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/23/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/23/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/24/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/24/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/24/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/24/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/24/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/24/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/25/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/25/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/25/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/25/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/25/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/25/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/26/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/26/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/26/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/26/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/26/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/26/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/27/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/27/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/27/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/27/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/27/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/27/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/28/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/28/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/28/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/28/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/28/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/28/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/29/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/29/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/29/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/29/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/29/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/29/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/30/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/30/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/30/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/30/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/30/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/30/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/31/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/31/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/31/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/31/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/31/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/31/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/32/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/32/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/32/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/32/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/32/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/32/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/33/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/33/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/33/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/33/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/33/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/33/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/34/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/34/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/34/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/34/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/34/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/34/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/35/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/35/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/35/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/35/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/35/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/35/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/36/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/36/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/36/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/36/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/36/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/36/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/37/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/37/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/37/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/37/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/37/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/37/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/38/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/38/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/38/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/38/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/38/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/38/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/39/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/39/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/39/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/39/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/39/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/39/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/40/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/40/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/40/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/40/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/40/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/40/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/41/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/41/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/41/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/41/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/41/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/41/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/42/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/42/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/42/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/42/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/42/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/42/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/43/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/43/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/43/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/43/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/43/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/43/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/44/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/44/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/44/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/44/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/44/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/44/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/45/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/45/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/45/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/45/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/45/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/45/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/46/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/46/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/46/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/46/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/46/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/46/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/47/actions",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/47/observations",
+      "shape": [
+        4,
+        160
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/47/critic",
+      "shape": [
+        4,
+        286
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/47/rewards",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/47/dones",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/trace/47/time_outs",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "native_modules": {
+    "motius/datasets/beyondmimic.py": "a4a96d6c7139193b7f37b923034a3f5423a94ae99ca13e1b492a3ee1c471b14a",
+    "motius/datasets/beyondmimic_motion_contract.py": "5a6cf91dd8641d7e8695d4931b3ae6856947a3a55ab190cfa86662c87cf12741",
+    "motius/datasets/online_tracking.py": "533e42097cdc7dd6a9e16a08a4a7f2d87c380b426f84f4db50fb99cfbb099e12",
+    "motius/models/beyondmimic/__init__.py": "0886fc739a49f7bab2f5d4dd61e0e98241aad803bbe5a62841f960bc7232ee95",
+    "motius/models/beyondmimic/actor_critic.py": "df413f34c50f05d1bc4d43f71a7f4d1f25ae2376be6b63b143357c755182c743",
+    "motius/models/beyondmimic/bundle.py": "20e2989a418303efb69c195ca9d1589668641495c17c2e549a552a2b5b9b7374",
+    "motius/models/beyondmimic/normalizer.py": "e3b6baaafc46e69aaa02e1adb44925900b79eda114e4509d5305f6980aef46a0",
+    "motius/models/beyondmimic/policy_bundle.py": "db6421cd07e759d8c413b1b4bd65225ca7e4cffd48c802f154a36e68a9ad0e50",
+    "motius/motion/representation/beyondmimic.py": "5a0364917bd268552c2b826f574b25d5d46a21247bb18cb3b5dc7f1fd78b3e06",
+    "motius/motion/representation/beyondmimic_quaternion.py": "0bd565c03adb56879d9079598f5cbe1fbe419c7f7fb16fd1e3530e45b83b7790",
+    "motius/pipelines/beyondmimic/__init__.py": "375114fd9e9b24f66b073db0f7eb1ed3d3e24fd171a9724dee2ca7b93e93c734",
+    "motius/pipelines/beyondmimic/export.py": "7359b0311509a0b6795bb5d4702fa9540b0ba0af75b2694c220b8f9c9f8062b6",
+    "motius/pipelines/beyondmimic/pipeline.py": "6b1a0b0eb0e13cb429a45adc09da21111c09bb734098fb28f5c4c32b40ec30b6",
+    "motius/runner/loops.py": "9e21e52538a4bd8b406f69689f2aa867e715fdd8a83b03260eb49a5899262d8c",
+    "motius/runner/online_tracking.py": "90c344ac162979356edc394db6ebc2f64e275406344fe1a74a77918b3614e75d",
+    "motius/simulators/isaaclab/beyondmimic/__init__.py": "2e65fb2dbd44c5c92059817a68e57109a5f29584349aa91ab15115aca2a53007",
+    "motius/simulators/isaaclab/beyondmimic/environment_config.py": "f0bd1556f703a649fb9212f282c3ff6a0d3a9451512cb38d22616aed853116c9",
+    "motius/simulators/isaaclab/beyondmimic/factory.py": "20bf30a763463d92be00845f2e38dc995007f758b75b85fac1a2ec77bc06f91a",
+    "motius/simulators/isaaclab/beyondmimic/g1_config.py": "6afd6d957603fceba171b2887680dd396c262f0639548de707aa30dc9c834704",
+    "motius/simulators/isaaclab/beyondmimic/mdp/__init__.py": "cc9507635d85f70d23305edfea478cfaa6a2b42fbd5c48006f3d7fea44491d32",
+    "motius/simulators/isaaclab/beyondmimic/mdp/commands.py": "b95977fe8aa1265472f4966f8aa78323dcaf7edbe2c07bdb0bbae1d5a10d9768",
+    "motius/simulators/isaaclab/beyondmimic/mdp/events.py": "2551324c3116cae9a55e6b73035dbf9e924cfeeb56def50f38fad17f97822b73",
+    "motius/simulators/isaaclab/beyondmimic/mdp/observations.py": "c1eb398b6f7f55be49ba973c84670ecf33ce5eaa25e00c06986293cb83585805",
+    "motius/simulators/isaaclab/beyondmimic/mdp/rewards.py": "bb635424fdc5a116ffb04b780641bd6d975921b84a2c36b0679f0812bc2eeb3e",
+    "motius/simulators/isaaclab/beyondmimic/mdp/terminations.py": "fdf834957f97219997abf4ac9a38ff4c7a0dfb977976f8bac3475042feba2bc9",
+    "motius/simulators/isaaclab/beyondmimic/prepare.py": "2270763cbde6286f9e431bc37e435907f38ed9477f943bcbc26790ce16ef76db",
+    "motius/simulators/isaaclab/beyondmimic/robot.py": "cd7e56d1ad05df6231f767e9c87395d5ae1b840fbbad6fd7d46705c38f90aae1",
+    "motius/simulators/rl/__init__.py": "2aaeb51cc62504087475ed3dd761d223a1aa432e46e7c8ded0cb11fed409b7b2",
+    "motius/simulators/rl/advantages.py": "968df87627325dec8f4a6438af9fdfa8007036e02e31813690432d1aaab72145",
+    "motius/simulators/rl/rollout.py": "734ae4d8bedbd2ba09074a8c524a451b57656a4f876685d12eac522ce4ee247a",
+    "motius/trainers/beyondmimic/__init__.py": "a64a25b491c6eb978bb75f4733cc4cafcce5746efe1cfea4a86babde621763bd",
+    "motius/trainers/beyondmimic/export_policy.py": "d564cd864c02d02406b74dcc0c61b0636eb0e5a78342be46edc971f2db5db95e",
+    "motius/trainers/beyondmimic/motion_contract.py": "16bdebd6f5eb42ac1a8914c784a35e3beb1d7b239869a2e99bdad094a3807168",
+    "motius/trainers/beyondmimic/prepare_motion.py": "65c2a04530e410b0dfb8c6885119aed66b9ea6e3397274826bdec1c2d64c9d81",
+    "motius/trainers/beyondmimic/train.py": "74a2bdced81e6bc4cfcd6037780415a6f581d6a55ed1ca26a22b696acb8f3195",
+    "motius/trainers/beyondmimic/trainer.py": "83cae30777b38236e372ab7ab05cca65c360adfa892fba0601aa39e9bf0a0764"
+  }
+}

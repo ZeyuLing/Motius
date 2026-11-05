@@ -135,9 +135,33 @@ motion_g1_38 = out["g1_38"]
 qpos_g1_36 = out["g1_qpos"]
 ```
 
-The pipeline pads inference to the 360-frame training length, integrates the
-flow-matching ODE, truncates to the requested length, and applies the official
-temporal smoothing by default.
+For human motion the pipeline clamps requested lengths to 20–360 frames,
+pads inference to 360, integrates the flow-matching ODE, and applies the original
+rotation/translation smoothing. Explicit `seed_input=[...]` reproduces the
+original per-sample generators; `random_generator_on_gpu=False` selects CPU
+noise. The original wooden character geometry supplies 52 output joints and
+vertex-based floor alignment. G1 retains its native 38D/qpos decoder.
+
+The [independent original-source comparison](../architecture/hymotion-motion-source.json)
+uses the complete official Lite checkpoint and actual raw-caption Qwen3/CLIP
+features. All network/condition hashes and decoded outputs match exactly in
+four full 50-step cases, including CFG, special Game conditions and CPU/GPU
+noise. Original mixed BF16 Qwen/FP32 CLIP precision is preserved; explicit
+per-component precision and G1 artifact settings remain authoritative.
+
+Legacy human conversions omitted the two special source parameters. To retain
+all original conditions, use `tools/convert_hymotion_official.py` with the
+official checkpoint/YAML and actual local Qwen/CLIP directories. Its strict
+308-tensor load preserves both conditions and statistics; add
+`--include-text-encoder` for a self-contained export. An enabled special
+condition with missing weights now raises an error.
+
+The native [two-GPU training](../architecture/hymotion-distributed.json),
+[public CLI/resume](../architecture/hymotion-cli-resume.json), and
+[trained/current full text export with offline cold loading](../architecture/hymotion-trained-current-checkpoint.json)
+checks also pass. Training uses prepared fixtures; the original repository does
+not release its complete training implementation. These checks do not establish
+full-corpus convergence or rerun the published benchmark rows.
 
 ### Training
 
@@ -190,6 +214,12 @@ See the [Training Hub](../training/README.md) for distributed launch, effective
 batch size, output layout, and resume semantics.
 
 ## Evaluation Results
+
+The tables below predate the source-aligned prompt, dynamic CLIP padding and
+per-encoder precision corrections. The native text path now matches the
+[original Qwen3-8B/CLIP-L implementation](../architecture/hymotion-text-source.json)
+on four controlled text batches and all neural weights. Full-dataset benchmark
+metrics for these corrections have not been rerun.
 
 <!-- MOTIUS_CANONICAL_METRICS:START -->
 

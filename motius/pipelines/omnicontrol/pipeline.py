@@ -1,13 +1,16 @@
 """OmniControl text-to-motion and 3D joint-position control pipeline."""
 
 from __future__ import annotations
+from motius.motion.conditioning.clip_text import encode_clip_text
+from motius.motion.representation.normalization import affine_denormalize
+
 
 from typing import Iterable, List, Optional, Sequence
 
 import numpy as np
 import torch
 
-from motius.models.omnicontrol.network import ClassifierFreeSampleModel
+from .guidance import ClassifierFreeSampleModel
 from motius.motion.representation.humanml import recover_from_ric
 from motius.pipelines.base_pipeline import BasePipeline
 from motius.registry import PIPELINES
@@ -30,14 +33,25 @@ class OmniControlPipeline(BasePipeline):
 
     BUNDLE_CLS = "motius.models.omnicontrol.OmniControlBundle"
 
-    def __init__(self, bundle, device: Optional[str] = None, **kwargs):
+    def __init__(self, bundle, device: Optional[str] = None, diffusion=None, **kwargs):
         super().__init__(bundle, **kwargs)
+        self._diffusion = diffusion
         if device is not None:
             self.to(device)
 
     def to(self, device):
         self.bundle.to(torch.device(device))
         return self
+
+    @property
+    def diffusion(self):
+        if self._diffusion is None:
+            from motius.diffusion.omnicontrol.factory import build_diffusion
+            self._diffusion = build_diffusion(self.bundle.config,
+                mean=self.bundle.mean.detach().cpu().numpy(), std=self.bundle.std.detach().cpu().numpy(),
+                raw_mean=self.bundle.raw_mean.detach().cpu().numpy(),
+                raw_std=self.bundle.raw_std.detach().cpu().numpy(), respacing=self.bundle.respacing)
+        return self._diffusion
 
     @property
     def device(self):
@@ -226,7 +240,7 @@ class OmniControlPipeline(BasePipeline):
         )[:, None]
         scale = self.bundle.guidance_param if guidance_param is None else float(guidance_param)
         inner_model = self.bundle.net
-        text_embed = inner_model.encode_text(list(captions))
+        text_embed = encode_clip_text(inner_model, captions, context_length=22 if inner_model.dataset in {"humanml", "kit"} else 77)
         model = ClassifierFreeSampleModel(inner_model) if scale != 1.0 else inner_model
         model_kwargs = {
             "y": {
@@ -247,7 +261,7 @@ class OmniControlPipeline(BasePipeline):
             noise = torch.randn(
                 (len(lengths), 263, 1, n_frames), device=self.device
             )
-            sample = self.bundle.diffusion.p_sample_loop(
+            sample = self.diffusion.p_sample_loop(
                 model,
                 noise.shape,
                 noise=noise,
@@ -256,7 +270,7 @@ class OmniControlPipeline(BasePipeline):
                 progress=progress,
             )
         sample = sample[:, :, 0, :].permute(0, 2, 1).contiguous()
-        arrays = self.bundle.denormalize(sample).cpu().numpy().astype(np.float32)
+        arrays = affine_denormalize(sample, self.bundle.mean, self.bundle.std).cpu().numpy().astype(np.float32)
         return [arrays[index, :length] for index, length in enumerate(lengths)]
 
     def infer_t2m(self, captions, lengths, **kwargs):

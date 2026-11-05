@@ -1,0 +1,620 @@
+{
+  "complete": true,
+  "tests": [
+    {
+      "tensor": "/motions/clip_0.motion/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_0.motion/dof_pos",
+      "shape": [
+        101,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_0.motion/dof_vel",
+      "shape": [
+        101,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_0.motion/rigid_body_pos",
+      "shape": [
+        101,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_0.motion/rigid_body_rot",
+      "shape": [
+        101,
+        33,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_0.motion/rigid_body_vel",
+      "shape": [
+        101,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_0.motion/rigid_body_ang_vel",
+      "shape": [
+        101,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_0.motion/rigid_body_contacts",
+      "shape": [
+        101,
+        33
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_1.motion/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_1.motion/dof_pos",
+      "shape": [
+        61,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_1.motion/dof_vel",
+      "shape": [
+        61,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_1.motion/rigid_body_pos",
+      "shape": [
+        61,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_1.motion/rigid_body_rot",
+      "shape": [
+        61,
+        33,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_1.motion/rigid_body_vel",
+      "shape": [
+        61,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_1.motion/rigid_body_ang_vel",
+      "shape": [
+        61,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/clip_1.motion/rigid_body_contacts",
+      "shape": [
+        61,
+        33
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-0.motion/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-0.motion/dof_pos",
+      "shape": [
+        51,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-0.motion/dof_vel",
+      "shape": [
+        51,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-0.motion/rigid_body_pos",
+      "shape": [
+        51,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-0.motion/rigid_body_rot",
+      "shape": [
+        51,
+        33,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-0.motion/rigid_body_vel",
+      "shape": [
+        51,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-0.motion/rigid_body_ang_vel",
+      "shape": [
+        51,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-0.motion/rigid_body_contacts",
+      "shape": [
+        51,
+        33
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-1.motion/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-1.motion/dof_pos",
+      "shape": [
+        101,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-1.motion/dof_vel",
+      "shape": [
+        101,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-1.motion/rigid_body_pos",
+      "shape": [
+        101,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-1.motion/rigid_body_rot",
+      "shape": [
+        101,
+        33,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-1.motion/rigid_body_vel",
+      "shape": [
+        101,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-1.motion/rigid_body_ang_vel",
+      "shape": [
+        101,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/csv-clip-1.motion/rigid_body_contacts",
+      "shape": [
+        101,
+        33
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-0.motion/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-0.motion/dof_pos",
+      "shape": [
+        61,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-0.motion/dof_vel",
+      "shape": [
+        61,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-0.motion/rigid_body_pos",
+      "shape": [
+        61,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-0.motion/rigid_body_rot",
+      "shape": [
+        61,
+        33,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-0.motion/rigid_body_vel",
+      "shape": [
+        61,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-0.motion/rigid_body_ang_vel",
+      "shape": [
+        61,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-0.motion/rigid_body_contacts",
+      "shape": [
+        61,
+        33
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-1.motion/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-1.motion/dof_pos",
+      "shape": [
+        121,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-1.motion/dof_vel",
+      "shape": [
+        121,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-1.motion/rigid_body_pos",
+      "shape": [
+        121,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-1.motion/rigid_body_rot",
+      "shape": [
+        121,
+        33,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-1.motion/rigid_body_vel",
+      "shape": [
+        121,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-1.motion/rigid_body_ang_vel",
+      "shape": [
+        121,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motions/retarget-clip-1.motion/rigid_body_contacts",
+      "shape": [
+        121,
+        33
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/package/gts",
+      "shape": [
+        496,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/package/grs",
+      "shape": [
+        496,
+        33,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/package/gvs",
+      "shape": [
+        496,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/package/gavs",
+      "shape": [
+        496,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/package/dvs",
+      "shape": [
+        496,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/package/dps",
+      "shape": [
+        496,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/package/length_starts",
+      "shape": [
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/package/motion_lengths",
+      "shape": [
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/package/motion_dt",
+      "shape": [
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/package/motion_num_frames",
+      "shape": [
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/package/motion_weights",
+      "shape": [
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/package/contacts",
+      "shape": [
+        496,
+        33
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampled/dof_pos",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampled/dof_vel",
+      "shape": [
+        4,
+        29
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampled/rigid_body_pos",
+      "shape": [
+        4,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampled/rigid_body_rot",
+      "shape": [
+        4,
+        33,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampled/rigid_body_vel",
+      "shape": [
+        4,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampled/rigid_body_ang_vel",
+      "shape": [
+        4,
+        33,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/sampled/rigid_body_contacts",
+      "shape": [
+        4,
+        33
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "scope": "Original checked-in GenTrack G1 NPZ/CSV converters, original PyRoki-output converter and pristine ProtoMotions FK/contact/MotionLib versus native conversion, portable COMMON data and package/reload/interpolation. Package provenance compared as relative filenames because worker output roots differ. Deterministic synthetic trajectories; not dataset coverage or full co-evolution training.",
+  "original_converter_sha256": "8b3fbff7995b620221b01ce64754ff2df349127bc352e2af5fdbff2973f199de",
+  "upstream_commit": "49fe5ad69de67ebbc07ea2b25d41b0f622c15c3c"
+}

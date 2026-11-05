@@ -1,0 +1,132 @@
+{
+  "complete": true,
+  "scope": "Legacy released human Lite artifact with original erroneous uniform-BF16 metadata (no component precision fields). Ordinary single/batch raw-caption 50-step public inference now matches independently captured original Tencent HY-Motion exactly. All motion neural and available null-condition hashes checked. The two omitted special-source weights require complete official checkpoint conversion and are outside this legacy certificate.",
+  "tests": [
+    {
+      "tensor": "/case0/latent",
+      "shape": [
+        1,
+        24,
+        201
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case0/latent_denorm",
+      "shape": [
+        1,
+        24,
+        201
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case0/rot6d",
+      "shape": [
+        1,
+        24,
+        22,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case0/transl",
+      "shape": [
+        1,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case0/root_rotations_mat",
+      "shape": [
+        1,
+        24,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case0/keypoints3d",
+      "shape": [
+        1,
+        24,
+        52,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case1/latent",
+      "shape": [
+        2,
+        40,
+        201
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case1/latent_denorm",
+      "shape": [
+        2,
+        40,
+        201
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case1/rot6d",
+      "shape": [
+        2,
+        40,
+        22,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case1/transl",
+      "shape": [
+        2,
+        40,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case1/root_rotations_mat",
+      "shape": [
+        2,
+        40,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/case1/keypoints3d",
+      "shape": [
+        2,
+        40,
+        52,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

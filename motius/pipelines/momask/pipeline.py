@@ -14,6 +14,8 @@ the original repo.
 """
 
 from __future__ import annotations
+from motius.motion.representation.normalization import affine_denormalize
+
 
 from typing import List, Optional, Sequence
 
@@ -85,10 +87,8 @@ class MoMaskPipeline(BasePipeline):
         Returns:
             List of B arrays, each ``(T_i, 263)`` un-standardized.
         """
-        from motius.models.momask.network import (
-            estimate_token_lengths,
-            generate_motion,
-        )
+        from motius.pipelines.momask.sampling import estimate_token_lengths
+        from motius.pipelines.momask.sampling import generate_motion
 
         bundle = self.bundle
         device = self.device
@@ -129,7 +129,7 @@ class MoMaskPipeline(BasePipeline):
             res_temperature=res_temperature,
         )  # (B, T, 263) normalized
 
-        data = bundle.denormalize(pred_motions.float()).cpu().numpy().astype(np.float32)
+        data = affine_denormalize(pred_motions.float(), bundle.mean, bundle.std).cpu().numpy().astype(np.float32)
         return [data[i, : frame_lens[i]] for i in range(bs)]
 
     @torch.no_grad()
@@ -162,7 +162,7 @@ class MoMaskPipeline(BasePipeline):
                 )
                 reconstructed, _, _ = bundle.vq_model((batch - mean) / std)
                 reconstructed = reconstructed.permute(0, 2, 1)
-                reconstructed = bundle.denormalize(reconstructed.float()).cpu().numpy()
+                reconstructed = affine_denormalize(reconstructed.float(), bundle.mean, bundle.std).cpu().numpy()
                 for row, (index, _) in enumerate(chunk):
                     outputs[index] = reconstructed[row, :length].astype(np.float32)
         return outputs

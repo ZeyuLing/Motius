@@ -9,7 +9,7 @@ import torch
 from torch import nn
 
 from .backbone import TransformerEncoderBlock
-from .loading import load_checkpoint_state_dict
+from motius.utils.kimodo_checkpoint import load_checkpoint_state_dict
 
 
 class TwostageDenoiser(nn.Module):

@@ -1,2 +1,0 @@
-bedlam_v2:
-  _target_: gem.datasets.bedlam.bedlam.BedlamDataset

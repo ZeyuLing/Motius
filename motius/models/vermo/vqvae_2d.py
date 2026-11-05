@@ -377,33 +377,3 @@ class VQVAEVermo2DTK(ModelMixin, ConfigMixin, FromOriginalModelMixin):
         if not return_dict:
             return out.quant, out.sample, out.indices
         return out
-
-
-def main(
-    cfg: str = "configs/smpl_vae/smpl_vqvae2dtk_nostatic_aug_4375.py",
-    checkpoint: str = "work_dirs/smpl_vqvae2dtk_nostatic_aug_4375/iter_430000.pth",
-    save_dir: str = "checkpoints/vermo_vqvae_nostatic_aug_hymotion_4375_iter_430000",
-):
-    # ----------------------------- Test code ----------------------------- #
-    _project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".."))
-    os.chdir(_project_root)
-    from mmengine.device import get_device
-    from mmengine import Config
-    from mmengine.runner import load_checkpoint
-
-    device = get_device()
-    dtype = torch.bfloat16
-
-    cfg = Config.fromfile(cfg)["model"]
-    model = MODELS.build(cfg)
-    load_checkpoint(model, checkpoint, map_location="cpu", strict=True)
-    model = model.to(device, dtype)
-
-    model.vqvae.save_pretrained(save_dir)
-    print(f"Saved to {save_dir}")
-
-
-if __name__ == "__main__":
-    import fire
-
-    fire.Fire(main)

@@ -1,0 +1,87 @@
+{
+  "complete": true,
+  "comparison": "Complete original masked DROID mapping, intrinsics optimization, bundle adjustment and trajectory filling versus native bundle/composition",
+  "scope": "Public 30-frame video, actual person masks, focal intrinsics optimization; metric scale requires a separate depth/scale comparison",
+  "tests": [
+    {
+      "tensor": "/trajectory",
+      "shape": [
+        30,
+        7
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/intrinsics",
+      "shape": [
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/timestamps",
+      "shape": [
+        9
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/poses",
+      "shape": [
+        9,
+        7
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/disparities",
+      "shape": [
+        9,
+        73,
+        41
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/upsampled_disparities",
+      "shape": [
+        9,
+        584,
+        328
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0+cu126",
+  "native_modules": {
+    "motius/models/vision/prompthmr/droid/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/models/vision/prompthmr/droid/bundle.py": "c01c14e7c43a7c8ebb3ab32f245714f27c95b759c5c5a086ac79a4b99c38e524",
+    "motius/models/vision/prompthmr/droid/clipping.py": "c737e35b2cea75ab58242985ea5c6f0218a2991a49fb1287b7bece0d79828d8f",
+    "motius/models/vision/prompthmr/droid/correlation.py": "df1421764225579ea75004f86e5cad2dd029b694c98ad75d7cbc2519dce87547",
+    "motius/models/vision/prompthmr/droid/encoders.py": "4952aaaae9afb60cd1c65ac005427d438af3e46e127d14687b73cec019d32b2f",
+    "motius/models/vision/prompthmr/droid/gru.py": "7dbbdfe3f7c805e68e74522970ce6b14956f7d98d52cba97380d357bcefb88b2",
+    "motius/models/vision/prompthmr/droid/update.py": "8cbc008ba4a5a0d778fadde7afd55f413ff468a249104d97a12022e0d9233874",
+    "motius/pipelines/prompthmr/odometry/__init__.py": "d52749e89f8780141998f620632ddde8bdd9a7703a7efe41552aea863e26af40",
+    "motius/pipelines/prompthmr/odometry/depth_utils.py": "3593efa999c4d73cbd6e6b9f97a6cb01c3b23fcfc7c766e85dd7ea9fbb845efc",
+    "motius/pipelines/prompthmr/odometry/depth_video.py": "8051ae0e1720a56dd83254b63056faa37fe407019fe6f5535f9aa3d8331f7328",
+    "motius/pipelines/prompthmr/odometry/droid.py": "4fc624208e0b959ba4e46445946f960339ee557bb87c2b94350d19d0ea3d7699",
+    "motius/pipelines/prompthmr/odometry/droid_backend.py": "f618b517f65f1a32960b8096bd3ffc286ee93e280e74d5997bdea091713bffb2",
+    "motius/pipelines/prompthmr/odometry/droid_frontend.py": "d3c85ffaaca6617a94e910393584fd62873e0f0e7f5b371fabab90835b978016",
+    "motius/pipelines/prompthmr/odometry/est_scale.py": "ced29b4bb65d2395b7acaa50adf5bd79ac4aa2df35e8adeef41060172bfacddc",
+    "motius/pipelines/prompthmr/odometry/factor_graph.py": "e4cbc2b838582b0b4534e6a1c141a4cf1fb7f720850be961423b859672e3689b",
+    "motius/pipelines/prompthmr/odometry/metric.py": "e210b56ad7eb28ddcc042d7ebf9fa9d8d9d44b9b3e4d7a6a206ba1e07933de77",
+    "motius/pipelines/prompthmr/odometry/motion_filter.py": "05a745294acd45b3800b808ef46c9c63fe1f4a363879f6357d08f99b2faaf8d6",
+    "motius/pipelines/prompthmr/odometry/processing.py": "ffd38885e25ff13c674fa00ae6d7d7d95bbca4575faa5cd6ac24f0a8d11cdeaf",
+    "motius/pipelines/prompthmr/odometry/projection.py": "5be23fbdcb7afe22c7539782d5a519e66f18bca815b2e55028ac1ee4b6331c58",
+    "motius/pipelines/prompthmr/odometry/slam.py": "47d6541e1777a0f0c188fffcd5e3c3d0303411daadfd27c770916a716ddcc723",
+    "motius/pipelines/prompthmr/odometry/trajectory_filler.py": "f9366664e1eed79474f881ca8acef89ffbcd488ee5af2a7e27c4254f3a295afd",
+    "motius/pipelines/prompthmr/odometry/upsampling.py": "474ee7b8467698ed26a52c8399dab81d4974b90e934f65c60c2f43af852e3939"
+  },
+  "upstream_commit": "3b566b7dbb28ce506c7ea972c18693f4c705ce8c"
+}

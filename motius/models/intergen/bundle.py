@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 import json
-import random
 import shutil
 from pathlib import Path
-from typing import List, Optional, Sequence
+from typing import Optional, Sequence
 
 import numpy as np
 import torch
@@ -15,8 +14,9 @@ from motius.models.base_model_bundle import ModelBundle
 from motius.registry import MODEL_BUNDLES
 
 
-_NETWORK_ROOT = Path(__file__).resolve().parent / "network"
-_DEFAULT_CONFIG = _NETWORK_ROOT / "configs" / "model.yaml"
+from motius.configuration.intergen import get_config
+
+_DEFAULT_CONFIG = Path(__file__).resolve().parents[2] / "configuration" / "intergen" / "model.yaml"
 
 
 def _maybe_download_hub(name_or_path: str, local: Path) -> Path:
@@ -29,14 +29,6 @@ def _maybe_download_hub(name_or_path: str, local: Path) -> Path:
     return Path(snapshot_download(repo_id=name_or_path))
 
 
-def _seed_everything(seed: Optional[int]) -> None:
-    if seed is None:
-        return
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed)
 
 
 @MODEL_BUNDLES.register_module()
@@ -68,6 +60,8 @@ class InterGenBundle(ModelBundle):
         self.device_name = device
         self.sampling_strategy = sampling_strategy
         self.cfg_weight = cfg_weight
+        self._trainable_modules = ["_model"]
+        self._save_ckpt_modules = ["_model"]
         self._model = None
         self._load_report = None
         mean = np.load(str(self.mean_path)).astype(np.float32)
@@ -100,7 +94,6 @@ class InterGenBundle(ModelBundle):
             raise FileNotFoundError(f"InterGen checkpoint missing: {self.checkpoint_path}")
         if not self.config_path.exists():
             raise FileNotFoundError(f"InterGen config missing: {self.config_path}")
-        from .network.configs import get_config
         from .network.models import InterGen
 
         cfg = get_config(str(self.config_path))
@@ -113,6 +106,7 @@ class InterGenBundle(ModelBundle):
         if self.cfg_weight is not None:
             cfg.CFG_WEIGHT = float(self.cfg_weight)
         cfg.freeze()
+        self.config = cfg
         model = InterGen(cfg)
         if self.checkpoint_path.suffix == ".safetensors":
             from safetensors.torch import load_file
@@ -142,36 +136,20 @@ class InterGenBundle(ModelBundle):
         }
         return self._model
 
-    @torch.no_grad()
-    def generate(
-        self,
-        texts: str | Sequence[str],
-        motion_len: int = 210,
-        seed: Optional[int] = None,
-        return_numpy: bool = True,
-    ):
-        """Generate denormalized InterHuman native-262 motion.
 
-        Returns an array shaped ``(B, T, 2, 262)`` when ``return_numpy=True``.
-        """
-        prompts: List[str] = [texts] if isinstance(texts, str) else list(texts)
-        if not prompts:
-            raise ValueError("InterGenBundle.generate needs at least one text prompt")
-        if not 15 <= int(motion_len) <= 300:
-            raise ValueError("InterGen motion_len must be between 15 and 300 frames")
-        model = self.load_model()
-        _seed_everything(seed)
-        device = next(model.parameters()).device
-        batch = {
-            "motion_lens": torch.full((len(prompts),), int(motion_len), dtype=torch.long, device=device),
-            "text": prompts,
-        }
-        out = model.forward_test(batch)["output"].reshape(len(prompts), int(motion_len), 2, -1)
-        out = out * self.std.to(device) + self.mean.to(device)
-        return out.detach().cpu().numpy() if return_numpy else out
 
-    def forward(self, texts: str | Sequence[str], **kwargs):
-        return self.generate(texts, **kwargs)
+    @property
+    def network(self):
+        model = self.model
+        while hasattr(model, "module"):
+            model = model.module
+        return model
+
+    def encode_text(self, texts: Sequence[str]):
+        return self.network.encode_text(texts)
+
+    def predict_motion(self, x, timesteps, mask=None, cond=None):
+        return self.model(x, timesteps, mask=mask, cond=cond)
 
     @classmethod
     def from_pretrained(cls, pretrained_model_name_or_path: str, **kwargs):
@@ -187,6 +165,8 @@ class InterGenBundle(ModelBundle):
             checkpoint = path / "model.safetensors"
             if not checkpoint.exists():
                 checkpoint = path / "intergen.ckpt"
+            if (path / "model.yaml").exists():
+                kwargs.setdefault("config_path", str(path / "model.yaml"))
             kwargs.setdefault("checkpoint_path", str(checkpoint))
             kwargs.setdefault("mean_path", str(path / "global_mean.npy"))
             kwargs.setdefault("std_path", str(path / "global_std.npy"))
@@ -197,8 +177,9 @@ class InterGenBundle(ModelBundle):
 
         out = Path(save_directory)
         out.mkdir(parents=True, exist_ok=True)
-        state = {key: value.detach().cpu().contiguous() for key, value in self.model.state_dict().items()}
+        state = {key: value.detach().cpu().contiguous() for key, value in self.network.state_dict().items()}
         save_file(state, str(out / "model.safetensors"))
+        shutil.copy2(self.config_path, out / "model.yaml")
         shutil.copy2(self.mean_path, out / "global_mean.npy")
         shutil.copy2(self.std_path, out / "global_std.npy")
         meta = {

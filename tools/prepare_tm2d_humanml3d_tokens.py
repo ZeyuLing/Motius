@@ -12,7 +12,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from motius.models.tm2d import TM2DTokenizer
+from motius.pipelines.tm2d.tokenizer import TM2DTokenizer
 from tools.infer_tm2d_humanml3d import selected_caption
 
 

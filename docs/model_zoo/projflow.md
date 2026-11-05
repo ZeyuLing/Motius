@@ -179,6 +179,12 @@ re-canonicalizes the generated joints and derives rotations, velocities, and
 contacts, so it is a lossy convenience representation rather than ProjFlow's
 native state.
 
+## Native implementation and validation
+
+Neural modules, native Trainer and inference Pipeline follow the shared architecture.
+See [prepared-motion training](../tasks/prepared_motion_training.md) and the
+[original-source validation scopes](../architecture/native-methods.md).
+
 ## Citation and License
 
 ```bibtex

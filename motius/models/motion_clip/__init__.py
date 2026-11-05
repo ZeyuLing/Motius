@@ -24,9 +24,6 @@ from motius.models.motion_clip.modeling_motionclip_base import (
     MotionCLIPEncoder,
     MotionCLIPEncoderLayer,
     MotionCLIPMLP,
-    clip_loss,
-    contrastive_loss,
-    gather_with_grad,
     get_vector_norm,
 )
 from motius.models.motion_clip.modeling_motionclip_motion import (
@@ -89,8 +86,5 @@ __all__ = [
     'MotionCLIPEncoderLayer',
     'MotionCLIPEncoder',
     'MotionCLIPBundle',
-    'clip_loss',
-    'contrastive_loss',
-    'gather_with_grad',
     'get_vector_norm',
 ]

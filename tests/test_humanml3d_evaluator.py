@@ -20,13 +20,6 @@ def test_bundle_loads_exported_safetensors_layout(tmp_path, monkeypatch):
     monkeypatch.setattr(bundle_module, "MovementConvEncoder", _TinyEncoder)
     monkeypatch.setattr(bundle_module, "TextEncoderBiGRUCo", _TinyEncoder)
     monkeypatch.setattr(bundle_module, "MotionEncoderBiGRUCo", _TinyEncoder)
-    monkeypatch.setattr(
-        bundle_module, "HumanML3DWordVectorizer", lambda path: SimpleNamespace()
-    )
-    monkeypatch.setitem(
-        sys.modules, "spacy", SimpleNamespace(load=lambda name: SimpleNamespace())
-    )
-
     (tmp_path / "glove").mkdir()
     (tmp_path / "stats").mkdir()
     np.save(tmp_path / "stats" / "mean.npy", np.zeros(263, dtype=np.float32))

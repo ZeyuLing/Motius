@@ -17,7 +17,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from motius.models.bailando.audio import extract_bailando_audio_features
+from motius.pipelines.bailando.audio import extract_bailando_audio_features
 
 
 DEFAULT_AUDIO_BASE_URL = "https://aistdancedb.ongaaccel.jp/v1.0.0/audio/mp3"

@@ -1,0 +1,221 @@
+{
+  "date": "2026-10-23T05:15:52.084995+00:00",
+  "complete": true,
+  "scope": "Supplied 750-frame video through the released Latest checkpoint, actual SMPL-H surface reconstruction, 52-joint real skinned Mixamo transfer, portable Blender animation and FBX round trip, and full 1080p audiovisual composition. Neural execution is native CPU FP32; this record does not represent a fresh upstream/GPU source-parity run.",
+  "inference": {
+    "checkpoint_variant": "Latest",
+    "frames": 750,
+    "device": "cpu",
+    "threads": 4,
+    "seed": 0,
+    "euler_steps": 20,
+    "cfg_scale": 1,
+    "postprocess": false,
+    "input_sha256": "8f9e9c1193163940eafb512e9a0621a31fe316406e7a69aa3a357f6deceb17f1",
+    "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+    "inference_settings": {
+      "lightweight": true,
+      "attention_query_chunk_size": 256,
+      "full_hand_features": true,
+      "camera_frame_interval": 100,
+      "camera_subsampled": true
+    },
+    "frontend_execution": {
+      "sam_workers": 4,
+      "threads_per_worker": 4,
+      "precision": "FP32",
+      "full_body_and_both_hands": true,
+      "token_only_early_exit": true,
+      "shards": [
+        [
+          0,
+          188
+        ],
+        [
+          188,
+          376
+        ],
+        [
+          376,
+          564
+        ],
+        [
+          564,
+          750
+        ]
+      ]
+    },
+    "cache_sha256": {
+      "boxes.npy": "c15a605601c6ce35fe6694e42eb3e6cfe1052e9c6ed326adc1cfc65e45c36e29",
+      "camera.npz": "e4c978219f02aee361b5a0ca269cdd6c672a95836e4b5620985a3d3cfce01b11",
+      "features.pt": "a8a78f660abb9216b7b29bc2cf18e8384e95bcbbbc82ee56387e5acd46c1d1cd"
+    },
+    "cached_frontend_sampling_seconds_including_model_loading": 58.935576090589166,
+    "source_transcoded_for_inference": false
+  },
+  "render": {
+    "frames": 750,
+    "fps": 30.0,
+    "camera_fit": [
+      {
+        "center_z": 0.9590256357192992,
+        "center_x": -0.0445098360457441,
+        "scale": 2.4012910294272074
+      },
+      {
+        "center_z": 1.000274763777852,
+        "center_x": -0.03793707857757472,
+        "scale": 2.6197769598449003
+      }
+    ],
+    "source_fbx_animation_imported": false,
+    "horizontal_root_centering": true,
+    "mapped_joints": 52,
+    "skinned_meshes": {
+      "Alpha_Surface": 17336,
+      "Alpha_Joints": 10514
+    },
+    "render_engine": "Cycles CPU",
+    "samples": 8,
+    "plate_resolution": [
+      568,
+      700
+    ],
+    "smpl_constant_floor_offset_m": 0.059001102447509765,
+    "mixamo_constant_floor_offset_m": 0.044661718755960464,
+    "root_travel_scale": 1.0376264195318035,
+    "temporal_pose_filter": false,
+    "foot_ik": false,
+    "character_sha256": "b9003ee562c87bf03051c3a502411b0808d3513f1d74a2011f7530d9f067069f",
+    "motion_sha256": "6a0f7caba7c4d7098e3e3459d3dec35a95624d2ede50857c3881e6e67d38c714",
+    "mesh_sha256": "ba87c360b9c4f54594ec0821261dd059368890cce55ebc88366563d760041684",
+    "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+    "inference_settings": {
+      "attention_query_chunk_size": 256,
+      "camera_frame_interval": 100,
+      "camera_subsampled": true,
+      "full_hand_features": true,
+      "lightweight": true
+    }
+  },
+  "blender_validation": {
+    "frames": 750,
+    "fps": 30,
+    "sample_frames": [
+      1,
+      151,
+      363,
+      376,
+      601,
+      750
+    ],
+    "native_surface_max_error_m": 4.52995301269965e-08,
+    "mixamo_global_rotation_matrix_max_error": 7.726350662318193e-07,
+    "mapped_joints": 52,
+    "fbx_frame_range": [
+      1.0,
+      750.0
+    ],
+    "fbx_import_animation_offset": 0.0,
+    "fbx_deformed_mesh_root_relative_max_error_m": 1.209962812609433e-06,
+    "blender_project_reopened": true,
+    "addon_not_required_for_playback": true,
+    "character_meshes": {
+      "Alpha_Surface": 17336,
+      "Alpha_Joints": 10514
+    }
+  },
+  "media_validation": {
+    "complete": true,
+    "ffprobe": {
+      "programs": [],
+      "streams": [
+        {
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "color_space": "bt709",
+          "r_frame_rate": "30/1",
+          "start_time": "0.000000",
+          "duration": "25.000000",
+          "nb_read_frames": "750"
+        },
+        {
+          "codec_type": "audio",
+          "r_frame_rate": "0/0",
+          "start_time": "0.000000",
+          "duration": "25.000000",
+          "nb_read_frames": "1077"
+        }
+      ]
+    },
+    "video_frames": 750,
+    "source_frames": 750,
+    "fps": 30,
+    "seconds": 25,
+    "source_audio_packets_identical": true,
+    "audio_packet_sha256": "292166bfbaa9a0e4f2c911baa39b5d4bf415170c1f6771e3632f6e766b6403f2",
+    "full_decode_without_errors": true,
+    "source_sha256": "8f9e9c1193163940eafb512e9a0621a31fe316406e7a69aa3a357f6deceb17f1",
+    "master_sha256": "1702cf43977ec1891b54c20e5ade3b31dd123ce179b3c806c6c48eb4dbcbf57c",
+    "poster_sha256": "5c82c17ce980bd49fd34eb7f103d0a43e7a06e234536299abf89345f6047e0cc"
+  },
+  "visual_review": {
+    "encoded_master_sample_frames": [
+      0,
+      150,
+      300,
+      362,
+      600,
+      749
+    ],
+    "checks": [
+      "Synchronized poses and gestures",
+      "Full-body framing",
+      "Consistent typography and studio lighting",
+      "Real skinned Mixamo animation including floor poses"
+    ]
+  },
+  "tests": {
+    "passed": 50,
+    "skipped": 1,
+    "skip_scope": "Gated upstream source environment"
+  },
+  "source_crop": {
+    "all_750_tracking_boxes_retained": true,
+    "min_tracking_bbox_margin_px": 13.307617,
+    "manual_samples": [
+      0,
+      150,
+      362,
+      600,
+      687,
+      749
+    ]
+  },
+  "files": {
+    "assets/model_zoo/flowhmr/blender_demo/motius-flowhmr-video-to-mixamo-1080p.mp4": "1702cf43977ec1891b54c20e5ade3b31dd123ce179b3c806c6c48eb4dbcbf57c",
+    "assets/model_zoo/flowhmr/blender_demo/motius-flowhmr-video-to-mixamo-poster.png": "5c82c17ce980bd49fd34eb7f103d0a43e7a06e234536299abf89345f6047e0cc",
+    "outputs/validation/flowhmr/promo/result.npz": "06ebe977e332a8c7cb141c5fd80b24029969e77257b32b08d1b011c4e1f1e62f",
+    "outputs/validation/flowhmr/promo/motion.blender.npz": "6a0f7caba7c4d7098e3e3459d3dec35a95624d2ede50857c3881e6e67d38c714",
+    "outputs/validation/flowhmr/promo/mesh.npz": "ba87c360b9c4f54594ec0821261dd059368890cce55ebc88366563d760041684",
+    "outputs/validation/flowhmr/promo/flowhmr-mixamo-studio.blend": "7065985916ee925893c2251543c9068eb634117878a4be7fef6d969dda5d5adf",
+    "outputs/validation/flowhmr/promo/flowhmr-mixamo-animation.fbx": "2a2ac7f1209adc7693dd8124370e26f569f4497aa0a91a85013d87841fbb8965"
+  },
+  "implementation_sha256": {
+    "tools/prepare_flowhmr_blender_assets.py": "ab6103f9a267cf1927034b6d84bc9f525ce3a6581b979f082507243cb8ee1ad8",
+    "tools/render_flowhmr_promo.py": "5f84a845b904cec32e1a375ceacdf0ade403f660a8df06bea6d2391a73e526cd",
+    "tools/compose_flowhmr_promo.py": "1a523d0f4165449972098ff0eca142d5c5b0286b62f7c2f6cbc01a6142b476ae",
+    "blender_extension/motius_flowhmr/animation.py": "3f3ba71c6e9b5e6cdb51840c4212b24db4e939aff20855a2a5ff64b9aadab793",
+    "blender_extension/motius_flowhmr/motion_data.py": "aac097653a2b6d1a371a0e4328d3bdf1d04239da78194f813f1d9266a77afb0d",
+    "blender_extension/motius_flowhmr/worker.py": "ff138c742a85a567754803746a01415d406064c451413ce42405d5599223fee3",
+    "blender_extension/motius_flowhmr/ui.py": "e0cbe3626e1b5b21f7ca1231e129b3595a5a7e5cddd066d313cdef5db8a8d213",
+    "motius/pipelines/flowhmr/pipeline.py": "452e579b3b909d27f38195930a5e19af6be5e2e694fca1b16b9c8df45930ff6e",
+    "motius/pipelines/flowhmr/features.py": "3427a1288f95c3553e985ad22629a6f40f0720dfc71dfba3c3ba34c9707fab8f",
+    "motius/pipelines/flowhmr/sam/inference.py": "f7cd7052a90fb833e8c94345295298c3e8abe061c8850024ff65994bf096f405",
+    "motius/pipelines/flowhmr/sam/sam_3d_body_estimator.py": "334042069b5d9dde0711188715f97b5a1940ad7ad96bbb1faa66eccb6017ddc3",
+    "motius/models/vision/sam3d_body/heads/mhr_head.py": "8cbf302da3a79befcba422cc11bb3600b63e4450e1a60bc595e25839cac04faa",
+    "motius/models/vision/sam3d_body/meta_arch/sam3d_body.py": "e7dc5f69499de2f2cf551560f2cb1ae193040d3c9ecb9b501741c7a04e1631f4",
+    "motius/motion/representation/flowhmr/__init__.py": "ab47fe32b97c1b7778216f3277e8368f29284ffee1d4fe5d4ddebf91f7437d36"
+  }
+}

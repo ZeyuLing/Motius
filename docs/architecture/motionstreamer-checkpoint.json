@@ -1,0 +1,25 @@
+{
+  "complete": true,
+  "scope": "Complete native MotionStreamer current-weight artifact: modified actual SentenceT5 projection, autoregressive output bias and TAE decoder bias, every neural tensor SHA256 plus text features and generated motion checked after cold public loading with original text directory hidden and HF offline. Separate certificates establish original-source numerical equivalence.",
+  "tests": [
+    {
+      "tensor": "/features",
+      "shape": [
+        2,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion",
+      "shape": [
+        12,
+        272
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "all_current_neural_tensors_sha256_equal": true
+}

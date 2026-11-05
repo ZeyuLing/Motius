@@ -1,0 +1,50 @@
+{
+  "complete": true,
+  "scope": "Text frontend separation; numerical scopes are in each independent original-source report. No full training or all-method equivalence claim.",
+  "evidence": {
+    "intergen": {
+      "report": "docs/architecture/intergen-source.json",
+      "tensor_comparisons": 2,
+      "sha256": "e90a507c5042cc73ec34bffff193588309aa3f43c4a8fc7039a78bc912f48851"
+    },
+    "intermask": {
+      "report": "docs/architecture/intermask-source.json",
+      "tensor_comparisons": 10,
+      "sha256": "9b48a510dd70ee3867c7344bbca439bf8bd83b68079e5ec58773aa3deaab2586"
+    },
+    "momask": {
+      "report": "docs/architecture/momask-source.json",
+      "tensor_comparisons": 234,
+      "sha256": "456bad678302954b33225ed2b8f9c5cc02f5113be429e88e72b76114ae926f63"
+    },
+    "mogents": {
+      "report": "docs/architecture/mogents-source.json",
+      "tensor_comparisons": 859,
+      "sha256": "24075dc27426518019c1ffc44fca03fc4f352deb6668284668851263bb81dfd1"
+    },
+    "maskcontrol": {
+      "report": "docs/architecture/maskcontrol-source.json",
+      "tensor_comparisons": 307,
+      "sha256": "6e37a1a74b546a2951f5b5ad7a70872dd75b16da87970c32cab419d76b62f332"
+    },
+    "flowmdm-humanml": {
+      "report": "docs/architecture/flowmdm-humanml-source.json",
+      "tensor_comparisons": 128,
+      "sha256": "3fddc09aad630896ba8b71f86380ca681b8026655319c5739ab1e87b6ae9c7ec"
+    },
+    "flowmdm-babel": {
+      "report": "docs/architecture/flowmdm-babel-source.json",
+      "tensor_comparisons": 128,
+      "sha256": "e143d41e30ab6a4fe6677b2d4e7bf833aa6747191c096d9533efbca8514781be"
+    },
+    "kimodo": {
+      "report": "docs/architecture/kimodo-source.json",
+      "tensor_comparisons": 42,
+      "sha256": "5f202862b6b92340e1f5b880846cdbf1248be417da7cb32eb574c89b49933901"
+    }
+  },
+  "data_processing_files": {
+    "motius/motion/conditioning/clip_text.py": "4f40558c6371676241ea7e3f889d716025a1c17620daea59929fb7ff4c181934",
+    "motius/motion/conditioning/flowmdm_text.py": "21fe84787b14174f68153152cfcdea6b9b8db45f88932dc4b711619c67bbe459"
+  }
+}

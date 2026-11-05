@@ -1,0 +1,129 @@
+{
+  "complete": true,
+  "tests": [
+    {
+      "tensor": "/training/0/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/0/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/0/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/normalized/0",
+      "shape": [
+        48,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/normalized/1",
+      "shape": [
+        41,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/physical/0",
+      "shape": [
+        48,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/physical/1",
+      "shape": [
+        41,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/normalized/0",
+      "shape": [
+        48,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/normalized/1",
+      "shape": [
+        41,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/physical/0",
+      "shape": [
+        48,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/physical/1",
+      "shape": [
+        41,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "upstream_commit": "a6f44a791940682fe335c82f1b436bae05a1cebb",
+  "scope": "Original MotionCLR source and SHA-pinned 6.7GB public EMA checkpoint: all neural hashes, original DDPMTrainer noise/timesteps, masked reconstruction losses, all gradients and CPU/CUDA RNG; full default 10-step DPM and 50-step DDIM samples with raw long/short text, normalized features and original float64-statistic denormalization at the common float32 output boundary. Controlled FP32/deterministic-convolution/math attention. FP16, edits, raw-data/EMA/optimizer/full training protocol excluded.",
+  "neural_state_hashes_compared": 963,
+  "gradient_hashes_compared": [
+    660,
+    660
+  ],
+  "checkpoint_sha256": "5852e139bbe45f5ca45b67b72cc54ab02b7da7ae18b42f27ea630a715c5c2b5f"
+}

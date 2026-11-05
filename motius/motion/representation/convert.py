@@ -577,7 +577,7 @@ def convert_motion(data, source: str, target: str, **kwargs):
                 recenter_root=kwargs.get("recenter_root", False),
             )
         if target == "g1_qpos" and source == "ardy_g1_414":
-            from motius.models.ardy.network.exports.mujoco import MujocoQposConverter
+            from motius.motion.representation.ardy.exports.mujoco import MujocoQposConverter
 
             return MujocoQposConverter(motion_rep.skeleton).dict_to_qpos(
                 output,

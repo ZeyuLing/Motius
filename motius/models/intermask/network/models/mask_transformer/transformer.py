@@ -13,7 +13,6 @@ from typing import Callable, Optional, List, Dict
 from copy import deepcopy
 from functools import partial
 from .transformer_modules import *
-from .tools import *
 from torch.distributions.categorical import Categorical
 from positional_encodings.torch_encodings import PositionalEncoding1D, PositionalEncoding2D, PositionalEncoding3D
 
@@ -152,8 +151,6 @@ class MaskTransformer(nn.Module):
                 load_pretrained=kargs.get('load_clip_weights', True),
             )
 
-        self.noise_schedule = cosine_schedule
-        self.noise_schedule_backward = cosine_schedule_backward
 
     def load_and_freeze_token_emb(self, codebook):
         '''
@@ -216,7 +213,7 @@ class MaskTransformer(nn.Module):
                 heads=12,
                 attn_mask=attention_mask,
             )
-            self.clip_positional_embedding = nn.Parameter(torch.empty(77, 768))
+            self.clip_positional_embedding = nn.Parameter(torch.empty(77, 768), requires_grad=False)
             self.clip_ln_final = CLIPLayerNorm(768)
             self.clip_dtype = torch.float32
 
@@ -236,12 +233,12 @@ class MaskTransformer(nn.Module):
         self.clipTrans = nn.TransformerEncoder(clipTransLayer, num_layers=2)
         self.clipln = nn.LayerNorm(768)
 
-    def encode_text(self, raw_text):
+    def encode_text(self, tokens):
         device = next(self.parameters()).device
 
         # From InterGen
         with torch.no_grad():
-            text = clip.tokenize(raw_text, truncate=True).to(device)
+            text = tokens.to(device)
             x = self.clip_token_embedding(text).type(self.clip_dtype)
             pe_tokens = x + self.clip_positional_embedding.type(self.clip_dtype)
             x = pe_tokens.permute(1,0,2)
@@ -297,333 +294,12 @@ class MaskTransformer(nn.Module):
         logits = self.output_process(output, cond) #(seqlen, b, e) -> (b, ntoken, seqlen)
         return logits
 
-    def forward(self, ids, y, m_lens):
-        '''
-        :param ids: (b, n)
-        :param y: raw text for cond_mode=text, (b, ) for cond_mode=action
-        :m_lens: (b,)
-        :return:
-        '''
 
-        bs, ntokens = ids.shape
-        device = ids.device
 
-        # Positions that are PADDED are ALL FALSE
-        max_len = ntokens/2
-        max_len = max_len/self.nbp
 
-        non_pad_mask = lengths_to_mask(m_lens, max_len) #(b, n)
-        non_pad_mask = non_pad_mask.repeat(1, self.nbp)
-        # print(f">>> Pad mask: {non_pad_mask.reshape(2,2,-1).reshape(2,2,5,-1)}")
 
-        ids = torch.where(non_pad_mask, ids, self.pad_id)
-        # print(f">>> Padded ids: {ids.reshape(2,2,-1).reshape(2,2,5,-1)}")
 
-        force_mask = False
-        if self.cond_mode == 'text':
-            cond_vector = self.encode_text(y)
-        elif self.cond_mode == 'action':
-            cond_vector = self.enc_action(y).to(device).float()
-        elif self.cond_mode == 'uncond':
-            cond_vector = torch.zeros(bs, self.latent_dim).float().to(device)
-            force_mask = True
-        else:
-            raise NotImplementedError("Unsupported condition mode!!!")
 
 
-        '''
-        Prepare mask
-        '''
-        interaction_mask = torch.bernoulli(torch.tensor(self.opt.interaction_mask_prob)).bool().item()
-        # print(f"Interaction: {interaction_mask}")
-        if interaction_mask:
-            mask_person_one = torch.bernoulli(torch.tensor(0.5)).bool().item()
-            # print(f"zero first: {zeros_first}")
-            if mask_person_one:
-                half_batch_mask = torch.cat((torch.zeros((bs//2,ntokens//2)), torch.ones((bs//2,ntokens//2))), dim=-1).bool()
-            else:
-                half_batch_mask = torch.cat((torch.ones((bs//2,ntokens//2)), torch.zeros((bs//2,ntokens//2))), dim=-1).bool()
-            mask = torch.cat((half_batch_mask, ~half_batch_mask), dim=0).to(device)
-            rand_mask_probs = torch.ones((bs,), device=device) * 0.5
-            rand_time = self.noise_schedule_backward(rand_mask_probs)
-
-        else:
-            rand_time = uniform((bs,), device=device)
-            rand_mask_probs = self.noise_schedule(rand_time)
-            num_token_masked = (ntokens * rand_mask_probs).round().clamp(min=1)
-
-            batch_randperm = torch.rand((bs, ntokens), device=device).argsort(dim=-1)
-            # Positions to be MASKED are ALL TRUE
-            mask = batch_randperm < num_token_masked.unsqueeze(-1)
-
-        # Positions to be MASKED must also be NON-PADDED
-        mask &= non_pad_mask
-
-        # Note this is our training target, not input
-        labels = torch.where(mask, ids, self.mask_id)
-
-        x_ids = ids.clone()
-
-        # Further Apply Bert Masking Scheme
-        # Step 1: 10% replace with an incorrect token
-        mask_rid = get_mask_subset_prob(mask, 0.1)
-        rand_id = torch.randint_like(x_ids, high=self.opt.num_tokens)
-        x_ids = torch.where(mask_rid, rand_id, x_ids)
-        # Step 2: 90% x 10% replace with correct token, and 90% x 88% replace with mask token
-        mask_mid = get_mask_subset_prob(mask & ~mask_rid, 0.88)
-
-        x_ids = torch.where(mask_mid, self.mask_id, x_ids)
-
-        logits = self.trans_forward(x_ids, cond_vector, ~non_pad_mask, force_mask)
-        ce_loss, pred_id, acc = cal_performance(logits, labels, ignore_index=self.mask_id)
-
-        logits = logits.permute(0,2,1) # B,ntokens,T -> B,T,ntokens
-
-        if self.opt.step_unroll:
-            su_ce_loss, su_pred_id, su_acc = self.step_unroll_forward(x_ids, mask_mid, labels, logits,
-                                                                cond_vector, non_pad_mask, force_mask)
-
-            return ce_loss + (self.opt.step_unroll * su_ce_loss), (acc + self.opt.step_unroll*su_acc)/2, pred_id, su_pred_id, logits
-        else:
-            return ce_loss, acc, pred_id, None, logits
-
-    def step_unroll_forward(self, prev_masked_ids, prev_mask, prev_labels, logits, cond_vector, non_pad_mask, force_mask):
-        # print(f">>>>>>>>>>>> Step unroll >>>>>>>>>>>>>>>")
-        total_timesteps = 20
-        prev_rand_mask_probs = prev_mask.count_nonzero(dim = -1).float() / prev_mask.shape[-1]
-        prev_rand_time = self.noise_schedule_backward(prev_rand_mask_probs)
-
-        rand_time = (prev_rand_time + (1/(total_timesteps+1))).clamp(max=1)
-        rand_mask_probs = self.noise_schedule(rand_time)
-
-        probs = logits.softmax(dim=-1)
-        scores, pred_ids = probs.max(dim=-1)
-        scores = scores.masked_fill(~prev_mask, 1e5)
-
-        sorted_indices = scores.argsort(dim=1)  # (b, k), sorted_indices[i, j] = the index of j-th lowest element in scores on dim=1
-        ranks = sorted_indices.argsort(dim=1)  # (b, k), rank[i, j] = the rank (0: lowest) of scores[i, j] on dim=1
-        num_token_masked = torch.round(rand_mask_probs * (scores.shape[-1])).clamp(min=1)
-
-        mask = (ranks < num_token_masked.unsqueeze(-1))
-
-        retained_preds = torch.logical_and(prev_mask == True,  mask == False)
-        labels = torch.where(retained_preds, self.mask_id, prev_labels)
-
-        x_ids = torch.where(retained_preds, pred_ids, prev_masked_ids)
-
-        step_unroll_logits = self.trans_forward(x_ids, cond_vector, ~non_pad_mask, force_mask)
-        return cal_performance(step_unroll_logits, labels, ignore_index=self.mask_id)
-
-
-
-    def forward_with_cond_scale(self,
-                                motion_ids,
-                                cond_vector,
-                                padding_mask,
-                                cond_scale=3,
-                                force_mask=False):
-        # bs = motion_ids.shape[0]
-        # if cond_scale == 1:
-        if force_mask:
-            return self.trans_forward(motion_ids, cond_vector, padding_mask, force_mask=True)
-
-        logits = self.trans_forward(motion_ids, cond_vector, padding_mask)
-        if cond_scale == 1:
-            return logits
-
-        aux_logits = self.trans_forward(motion_ids, cond_vector, padding_mask, force_mask=True)
-
-        scaled_logits = aux_logits + (logits - aux_logits) * cond_scale
-        return scaled_logits
-
-    @torch.no_grad()
-    @eval_decorator
-    def generate(self,
-                 conds,
-                 m_lens,
-                 timesteps: int,
-                 cond_scale: int,
-                 temperature=1,
-                 topk_filter_thres=0.9,
-                 gsample=False,
-                 force_mask=False
-                 ):
-
-        device = next(self.parameters()).device
-        seq_len = max(m_lens)
-        batch_size = len(m_lens)
-        token_lengths = m_lens*2
-
-        if self.cond_mode == 'text':
-            cond_vector = self.encode_text(conds)
-        elif self.cond_mode == 'action':
-            cond_vector = self.enc_action(conds).to(device)
-        elif self.cond_mode == 'uncond':
-            cond_vector = torch.zeros(batch_size, self.latent_dim).float().to(device)
-        else:
-            raise NotImplementedError("Unsupported condition mode!!!")
-
-        padding_mask = ~lengths_to_mask(m_lens, seq_len)
-        padding_mask = padding_mask.repeat(1, self.nbp)
-        token_lengths = token_lengths*self.nbp
-
-        # Start from all tokens being masked
-        ids = torch.where(padding_mask, self.pad_id, self.mask_id)
-        scores = torch.where(padding_mask, 1e5, 0.)
-        starting_temperature = temperature
-
-        for timestep, steps_until_x0 in zip(torch.linspace(0, 1, timesteps, device=device), reversed(range(timesteps))):
-            # 0 < timestep < 1
-            rand_mask_prob = self.noise_schedule(timestep)  # Tensor
-
-            '''
-            Maskout, and cope with variable length
-            '''
-            # fix: the ratio regarding lengths, instead of seq_len
-            num_token_masked = torch.round(rand_mask_prob * token_lengths).clamp(min=1)  # (b, )
-
-            # select num_token_masked tokens with lowest scores to be masked
-            sorted_indices = scores.argsort(dim=1)  # (b, k), sorted_indices[i, j] = the index of j-th lowest element in scores on dim=1
-            ranks = sorted_indices.argsort(dim=1)  # (b, k), rank[i, j] = the rank (0: lowest) of scores[i, j] on dim=1
-            is_mask = (ranks < num_token_masked.unsqueeze(-1))
-            ids = torch.where(is_mask, self.mask_id, ids)
-
-            '''
-            Preparing input
-            '''
-            # (b, num_token, seqlen)
-            logits = self.forward_with_cond_scale(ids, cond_vector=cond_vector,
-                                                  padding_mask=padding_mask,
-                                                  cond_scale=cond_scale,
-                                                  force_mask=force_mask)
-
-            logits = logits.permute(0, 2, 1)  # (b, seqlen, ntoken)
-
-            # clean low prob token
-            filtered_logits = top_k(logits, topk_filter_thres, dim=-1)
-
-            '''
-            Update ids
-            '''
-            temperature = starting_temperature
-            # temperature is annealed, gradually reducing temperature hence randomness
-            if gsample:  # use gumbel_softmax sampling
-                pred_ids = gumbel_sample(filtered_logits, temperature=temperature, dim=-1)  # (b, seqlen)
-            else:  # use multinomial sampling
-                probs = F.softmax(filtered_logits, dim=-1)  # (b, seqlen, ntoken)
-                pred_ids = Categorical(probs / temperature).sample()  # (b, seqlen)
-
-            ids = torch.where(is_mask, pred_ids, ids)
-
-            '''
-            Updating scores
-            '''
-            probs_without_temperature = logits.softmax(dim=-1)  # (b, seqlen, ntoken)
-            scores = probs_without_temperature.gather(2, pred_ids.unsqueeze(dim=-1))  # (b, seqlen, 1)
-            scores = scores.squeeze(-1)  # (b, seqlen)
-
-            # We do not want to re-mask the previously kept tokens, or pad tokens
-            scores = scores.masked_fill(~is_mask, 1e5)
-
-        ids = torch.where(padding_mask, -1, ids)
-        return ids
-
-    @torch.no_grad()
-    @eval_decorator
-    def generate_reaction(self,
-                            conds,
-                            motion1_ids,
-                            m_lens,
-                            timesteps: int,
-                            cond_scale: int,
-                            temperature=1,
-                            topk_filter_thres=0.9,
-                            gsample=False,
-                            force_mask=False
-                            ):
-
-        device = next(self.parameters()).device
-        seq_len = max(m_lens)
-        batch_size = len(m_lens)
-        token_lengths = m_lens
-
-        if self.cond_mode == 'text':
-            with torch.no_grad():
-                cond_vector = self.encode_text(conds)
-        elif self.cond_mode == 'action':
-            cond_vector = self.enc_action(conds).to(device)
-        elif self.cond_mode == 'uncond':
-            cond_vector = torch.zeros(batch_size, self.latent_dim).float().to(device)
-        else:
-            raise NotImplementedError("Unsupported condition mode!!!")
-
-        padding_mask = ~lengths_to_mask(m_lens, seq_len)
-        padding_mask = padding_mask.repeat(1, self.nbp)
-        token_lengths = token_lengths*self.nbp
-
-        # Start from all tokens being masked
-        ids1 = torch.where(padding_mask[:, :padding_mask.shape[1]//2], self.pad_id, motion1_ids)
-        ids = torch.where(padding_mask[:, :padding_mask.shape[1]//2], self.pad_id, self.mask_id)
-        scores = torch.where(ids == self.mask_id, 0., 1e5)
-
-        starting_temperature = temperature
-        for timestep, steps_until_x0 in zip(torch.linspace(0, 1, timesteps//2, device=device), reversed(range(timesteps))):
-            # 0 < timestep < 1
-            rand_mask_prob = self.noise_schedule(timestep)  # Tensor
-
-            '''
-            Maskout, and cope with variable length
-            '''
-            # fix: the ratio regarding lengths, instead of seq_len
-            num_token_masked = torch.round(rand_mask_prob * token_lengths).clamp(min=1)  # (b, )
-
-            # select num_token_masked tokens with lowest scores to be masked
-            sorted_indices = scores.argsort(dim=1)  # (b, k), sorted_indices[i, j] = the index of j-th lowest element in scores on dim=1
-            ranks = sorted_indices.argsort(dim=1)  # (b, k), rank[i, j] = the rank (0: lowest) of scores[i, j] on dim=1
-            is_mask = (ranks < num_token_masked.unsqueeze(-1))
-            ids = torch.where(is_mask, self.mask_id, ids)
-
-            '''
-            Preparing input
-            '''
-            # (b, num_token, seqlen)
-            logits = self.forward_with_cond_scale(torch.cat((ids1,ids), dim=-1), cond_vector=cond_vector,
-                                                  padding_mask=padding_mask,
-                                                  cond_scale=cond_scale,
-                                                  force_mask=force_mask)
-            logits = logits[:, :, padding_mask.shape[1]//2:]
-
-            logits = logits.permute(0, 2, 1)  # (b, seqlen, ntoken)
-            # print(logits.shape, self.opt.num_tokens)
-            # clean low prob token
-            filtered_logits = top_k(logits, topk_filter_thres, dim=-1)
-
-            '''
-            Update ids
-            '''
-            # if force_mask:
-            temperature = starting_temperature
-            if gsample:  # use gumbel_softmax sampling
-                pred_ids = gumbel_sample(filtered_logits, temperature=temperature, dim=-1)  # (b, seqlen)
-            else:  # use multinomial sampling
-                probs = F.softmax(filtered_logits, dim=-1)  # (b, seqlen, ntoken)
-                pred_ids = Categorical(probs / temperature).sample()  # (b, seqlen)
-
-            # print(pred_ids.max(), pred_ids.min())
-            # if pred_ids.
-            ids = torch.where(is_mask, pred_ids, ids)
-
-            '''
-            Updating scores
-            '''
-            probs_without_temperature = logits.softmax(dim=-1)  # (b, seqlen, ntoken)
-            scores = probs_without_temperature.gather(2, pred_ids.unsqueeze(dim=-1))  # (b, seqlen, 1)
-            scores = scores.squeeze(-1)  # (b, seqlen)
-
-            # We do not want to re-mask the previously kept tokens, or pad tokens
-            scores = scores.masked_fill(~is_mask, 1e5)
-
-        ids = torch.cat((ids1, ids), dim=-1)
-        ids = torch.where(padding_mask, -1, ids)
-
-        return ids
+    def forward(self, motion_ids, cond, padding_mask, force_mask=False):
+        return self.trans_forward(motion_ids, cond, padding_mask, force_mask)

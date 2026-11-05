@@ -2,7 +2,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from ._misc import WeightedSum
 
 try:
     import clip
@@ -10,24 +9,18 @@ except ImportError as exc:  # pragma: no cover - exercised only without CLIP ins
     clip = None
     _CLIP_IMPORT_ERROR = exc
 
-# BERT text encoder is only needed for the `trans_dec` + bert checkpoints; the
-# motius bundle targets the public CLIP `trans_enc` HumanML3D model, so make it
-# optional rather than dragging the BERT package into motius.
-try:
-    from model.BERT.BERT_encoder import load_bert  # type: ignore
-except Exception:  # noqa: BLE001
-    def load_bert(*_args, **_kwargs):  # pragma: no cover - bert path unused
-        raise RuntimeError(
-            "BERT text encoder is not included; only the CLIP trans_enc MDM "
-            "checkpoint is supported in motius."
-        )
 
-# Rotation2xyz is only needed for SMPL (rot6d) data_rep, never for hml_vec (263).
-try:
-    from model.rotation2xyz import Rotation2xyz  # type: ignore
-except Exception as exc:  # noqa: BLE001
-    Rotation2xyz = None
-    _ROT2XYZ_IMPORT_ERROR = exc
+
+class WeightedSum(nn.Module):
+    """Learnable convex-ish combination over rows (used by multi-target cond)."""
+
+    def __init__(self, num_rows):
+        super().__init__()
+        self.weights = nn.Parameter(torch.randn(num_rows))
+
+    def forward(self, x):
+        normalized_weights = self.weights / self.weights.sum()
+        return torch.matmul(normalized_weights, x)
 
 
 class MDM(nn.Module):
@@ -141,8 +134,7 @@ class MDM(nn.Module):
                     # assert self.emb_trans_dec == False # passing just the time embed so it's fine
                     print("Loading BERT...")
                     # bert_model_path = 'model/BERT/distilbert-base-uncased'
-                    bert_model_path = 'distilbert/distilbert-base-uncased'
-                    self.clip_model = load_bert(bert_model_path)  # Sorry for that, the naming is for backward compatibility
+                    raise ValueError("This native MDM architecture supports the released CLIP checkpoint")
                     self.encode_text = self.bert_encode_text
                     self.clip_dim = 768
                 else:
@@ -160,9 +152,7 @@ class MDM(nn.Module):
         if self.data_rep == 'hml_vec':
             self.rot2xyz = None
         else:
-            if Rotation2xyz is None:
-                raise _ROT2XYZ_IMPORT_ERROR
-            self.rot2xyz = Rotation2xyz(device='cpu', dataset=self.dataset)
+            raise ValueError("Use an external body codec for non-HumanML representations")
 
     def parameters_wo_clip(self):
         return [p for name, p in self.named_parameters() if not name.startswith('clip_model.')]
@@ -208,22 +198,10 @@ class MDM(nn.Module):
         else:
             return cond
 
-    def clip_encode_text(self, raw_text):
-        # raw_text - list (batch_size length) of strings with input text prompts
-        device = next(self.parameters()).device
-        max_text_len = 20 if self.dataset in ['humanml', 'kit'] else None  # Specific hardcoding for humanml dataset
-        if max_text_len is not None:
-            default_context_length = 77
-            context_length = max_text_len + 2 # start_token + 20 + end_token
-            assert context_length < default_context_length
-            texts = clip.tokenize(raw_text, context_length=context_length, truncate=True).to(device) # [bs, context_length] # if n_tokens > context_length -> will truncate
-            # print('texts', texts.shape)
-            zero_pad = torch.zeros([texts.shape[0], default_context_length-context_length], dtype=texts.dtype, device=texts.device)
-            texts = torch.cat([texts, zero_pad], dim=1)
-            # print('texts after pad', texts.shape, texts)
-        else:
-            texts = clip.tokenize(raw_text, truncate=True).to(device) # [bs, context_length] # if n_tokens > 77 -> will truncate
+    def clip_encode_text(self, tokens):
+        texts = tokens.to(next(self.parameters()).device)
         return self.clip_model.encode_text(texts).float().unsqueeze(0)
+
     
     def bert_encode_text(self, raw_text):
         # enc_text = self.clip_model(raw_text)
@@ -258,7 +236,7 @@ class MDM(nn.Module):
             if 'text_embed' in y.keys():  # caching option
                 enc_text = y['text_embed']
             else:
-                enc_text = self.encode_text(y['text'])
+                enc_text = self.encode_text(y['text_tokens'])
             if type(enc_text) == tuple:
                 enc_text, text_mask = enc_text
                 if text_mask.shape[0] == 1 and bs > 1:  # casting mask for the single-prompt-for-all case
@@ -331,17 +309,6 @@ class MDM(nn.Module):
         return output
 
 
-    def _apply(self, fn):
-        super()._apply(fn)
-        if self.rot2xyz is not None:
-            self.rot2xyz.smpl_model._apply(fn)
-
-
-    def train(self, *args, **kwargs):
-        super().train(*args, **kwargs)
-        if self.rot2xyz is not None:
-            self.rot2xyz.smpl_model.train(*args, **kwargs)
-
 
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model, dropout=0.1, max_len=5000):
@@ -355,7 +322,8 @@ class PositionalEncoding(nn.Module):
         pe[:, 1::2] = torch.cos(position * div_term)
         pe = pe.unsqueeze(0).transpose(0, 1)
 
-        self.register_buffer('pe', pe)
+        # Canonical singleton strides avoid aliasing in DDP's coalesced broadcast.
+        self.register_buffer('pe', pe.clone(memory_format=torch.contiguous_format))
 
     def forward(self, x):
         # not used in the final model

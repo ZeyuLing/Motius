@@ -227,6 +227,12 @@ Its internal spatial normalizer is packaged with the checkpoint. The model does
 not accept local joint rotations as native control input; SMPL Mesh output is
 materialized after HumanML3D recovery for evaluation and visualization.
 
+## Native implementation and validation
+
+Neural modules, native Trainer and inference Pipeline follow the shared architecture.
+See [prepared-motion training](../tasks/prepared_motion_training.md) and the
+[original-source validation scopes](../architecture/native-methods.md).
+
 ## Citation and License
 
 - Paper: [OmniControl: Control Any Joint at Any Time for Human Motion Generation](https://arxiv.org/abs/2310.08580)

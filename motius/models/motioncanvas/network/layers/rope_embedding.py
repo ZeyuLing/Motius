@@ -73,13 +73,3 @@ class ROPE(nn.Module):
         rotated_x = apply_rotary_emb(encoding, x, seq_dim=-2)
 
         return rotated_x
-
-
-if __name__ == "__main__":
-    # python -m hymotion.network.rotary_embedding
-    # 测试代码
-    dummy_x = torch.randn(2, 64, 64, 1920)  # [2, 64, 64, 1920]
-
-    rope = ROPE(1920)
-    dummy_x = rope.rotate_queries_or_keys(dummy_x)
-    print(f"dummy_x shape: {dummy_x.shape}")

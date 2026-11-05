@@ -20,6 +20,10 @@ to ``train()`` — because it is part of the released sampling distribution and 
 """
 
 from __future__ import annotations
+from .sampling import sample_tokens
+from motius.motion.conditioning.clip_text import encode_clip_text
+from motius.motion.representation.normalization import affine_denormalize
+
 
 from typing import List, Optional, Sequence
 
@@ -76,20 +80,17 @@ class T2MGPTPipeline(BasePipeline):
         bundle = self.bundle
         device = self.device
 
-        # Upstream keeps dropout active via train(); the VQ-VAE + CLIP stay eval.
-        bundle.gpt.train()
+        # Original eval_trans.evaluation_transformer disables transformer dropout.
+        bundle.gpt.eval()
 
-        text_feat = bundle.encode_text(list(captions)).to(device)  # (B, 512)
+        text_feat = encode_clip_text(bundle, list(captions)).to(device)  # (B, 512)
 
         outputs: List[np.ndarray] = []
         for i in range(len(captions)):
             feat = text_feat[i]
-            try:
-                token_idx = bundle.gpt.sample(feat[None], if_categorial)
-            except Exception:
-                token_idx = torch.ones(1, 1, device=device, dtype=torch.long)
+            token_idx = sample_tokens(bundle.gpt, feat[None], if_categorial)
             pred = bundle.vqvae.forward_decoder(token_idx)  # (1, T, 263), normalized
-            motion = bundle.denormalize(pred[0].float())     # (T, 263), raw scale
+            motion = affine_denormalize(pred[0].float(), bundle.mean, bundle.std)     # (T, 263), raw scale
             if lengths is not None and lengths[i] is not None:
                 motion = motion[: int(lengths[i])]
             outputs.append(motion.detach().cpu().numpy().astype(np.float32))
@@ -130,7 +131,7 @@ class T2MGPTPipeline(BasePipeline):
                     self.device
                 )
                 reconstructed, _, _ = bundle.vqvae((batch - mean) / std)
-                reconstructed = bundle.denormalize(reconstructed.float()).cpu().numpy()
+                reconstructed = affine_denormalize(reconstructed.float(), bundle.mean, bundle.std).cpu().numpy()
                 for row, (index, _) in enumerate(chunk):
                     outputs[index] = reconstructed[row, :length].astype(np.float32)
         return outputs

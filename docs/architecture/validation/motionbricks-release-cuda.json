@@ -1,0 +1,373 @@
+{
+  "upstream_commit": "54fc563aeaaf819a753d72cc9fdc6713989cdd43",
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "device": "cuda",
+  "gpu": "NVIDIA H200",
+  "tf32": false,
+  "complete": true,
+  "scope": "Independent official PyTorch raw generation vs native five-root bundle/pipeline; strict official weight loading and native save/reload. Excludes endpoint correction, scene control, TensorRT and motion-quality evaluation.",
+  "g1_input": "official CSV",
+  "soma_input": "synthetic varied poses",
+  "tests": [
+    {
+      "rig": "g1",
+      "case": 0,
+      "token_counts": [
+        7
+      ],
+      "tensors": [
+        {
+          "name": "pred_qpos",
+          "batch": 0,
+          "shape": [
+            28,
+            36
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_num_tokens",
+          "batch": 0,
+          "shape": [
+            1
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_foot_contacts",
+          "batch": 0,
+          "shape": [
+            28,
+            4
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        }
+      ]
+    },
+    {
+      "rig": "g1",
+      "case": 1,
+      "token_counts": [
+        6,
+        16
+      ],
+      "tensors": [
+        {
+          "name": "pred_qpos",
+          "batch": 0,
+          "shape": [
+            24,
+            36
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_qpos",
+          "batch": 1,
+          "shape": [
+            64,
+            36
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_num_tokens",
+          "batch": 0,
+          "shape": [
+            2
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_foot_contacts",
+          "batch": 0,
+          "shape": [
+            24,
+            4
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_foot_contacts",
+          "batch": 1,
+          "shape": [
+            64,
+            4
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        }
+      ]
+    },
+    {
+      "rig": "g1",
+      "case": 2,
+      "token_counts": [
+        6,
+        16
+      ],
+      "tensors": [
+        {
+          "name": "pred_qpos",
+          "batch": 0,
+          "shape": [
+            24,
+            36
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_qpos",
+          "batch": 1,
+          "shape": [
+            64,
+            36
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_num_tokens",
+          "batch": 0,
+          "shape": [
+            2
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_foot_contacts",
+          "batch": 0,
+          "shape": [
+            24,
+            4
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_foot_contacts",
+          "batch": 1,
+          "shape": [
+            64,
+            4
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        }
+      ]
+    },
+    {
+      "rig": "g1",
+      "case": 3,
+      "token_counts": [
+        10,
+        10
+      ],
+      "tensors": [
+        {
+          "name": "pred_qpos",
+          "batch": 0,
+          "shape": [
+            40,
+            36
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_qpos",
+          "batch": 1,
+          "shape": [
+            40,
+            36
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_num_tokens",
+          "batch": 0,
+          "shape": [
+            2
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_foot_contacts",
+          "batch": 0,
+          "shape": [
+            40,
+            4
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_foot_contacts",
+          "batch": 1,
+          "shape": [
+            40,
+            4
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        }
+      ]
+    },
+    {
+      "rig": "soma",
+      "case": 0,
+      "token_counts": [
+        16
+      ],
+      "tensors": [
+        {
+          "name": "pred_global_motions",
+          "batch": 0,
+          "shape": [
+            64,
+            366
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_num_tokens",
+          "batch": 0,
+          "shape": [
+            1
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        }
+      ]
+    },
+    {
+      "rig": "soma",
+      "case": 1,
+      "token_counts": [
+        6,
+        16
+      ],
+      "tensors": [
+        {
+          "name": "pred_global_motions",
+          "batch": 0,
+          "shape": [
+            24,
+            366
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_global_motions",
+          "batch": 1,
+          "shape": [
+            64,
+            366
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_num_tokens",
+          "batch": 0,
+          "shape": [
+            2
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        }
+      ]
+    },
+    {
+      "rig": "soma",
+      "case": 2,
+      "token_counts": [
+        6,
+        16
+      ],
+      "tensors": [
+        {
+          "name": "pred_global_motions",
+          "batch": 0,
+          "shape": [
+            24,
+            366
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_global_motions",
+          "batch": 1,
+          "shape": [
+            64,
+            366
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_num_tokens",
+          "batch": 0,
+          "shape": [
+            2
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        }
+      ]
+    },
+    {
+      "rig": "soma",
+      "case": 3,
+      "token_counts": [
+        13,
+        13
+      ],
+      "tensors": [
+        {
+          "name": "pred_global_motions",
+          "batch": 0,
+          "shape": [
+            52,
+            366
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_global_motions",
+          "batch": 1,
+          "shape": [
+            52,
+            366
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        },
+        {
+          "name": "pred_num_tokens",
+          "batch": 0,
+          "shape": [
+            2
+          ],
+          "bitwise_equal": true,
+          "max_abs_error": 0.0
+        }
+      ]
+    }
+  ]
+}

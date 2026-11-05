@@ -340,8 +340,8 @@ fitting error. Unitree G1 output can be exported exactly to MuJoCo qpos-36.
 ## Citation and License
 
 The adapted runtime preserves NVIDIA's Apache-2.0 notices and the vendored
-LLM2Vec MIT attribution. See `motius/models/ardy/LICENSE` and
-`motius/models/ardy/ATTRIBUTIONS.md`. Checkpoint and dataset licenses are
+LLM2Vec MIT attribution. See `motius/licenses/ardy/LICENSE` and
+`motius/licenses/ardy/ATTRIBUTIONS.md`. Checkpoint and dataset licenses are
 separate from the source-code license.
 
 ```bibtex

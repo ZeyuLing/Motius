@@ -97,7 +97,7 @@ def _local_viewer(
         target_is_directory=True,
     )
     mesh_source = (
-        ROOT / "motius/models/kimodo/network/assets/skeletons/"
+        ROOT / "motius/configuration/kimodo/assets/skeletons/"
         "g1skel34/meshes/g1"
     )
     mesh_output = temporary / "meshes"

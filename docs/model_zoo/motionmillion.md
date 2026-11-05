@@ -126,6 +126,11 @@ denormalized to the MotionStreamer-272 physical scale.
 
 ## Evaluation Results
 
+These benchmark tables predate source-parity corrections. Current default
+inference follows the original 50-token uncached autoregressive loop;
+`use_kv_cache=True` explicitly selects the optional cached implementation.
+Full-dataset metrics have not been rerun for this default-policy correction.
+
 <!-- MOTIUS_CANONICAL_METRICS:START -->
 
 > **Canonical metrics.** Public results are tied to the sources below. Motius/uTMR FID always means per-sample L2-normalized embedding-space FID; `—` means the normalized value has not been recomputed. Historical raw-space FID is never substituted.

@@ -34,10 +34,12 @@ def register_all_modules() -> None:
     import motius.visualization.file_visualizer  # noqa: F401
     import motius.visualization.tensorboard_visualizer  # noqa: F401
     import motius.datasets.transforms  # noqa: F401
-    import motius.datasets  # noqa: F401
+    from motius.datasets import register_all_datasets
+    register_all_datasets()
     import motius.evaluation.evaluators  # noqa: F401
     import motius.models.tmr  # noqa: F401
-    import motius.trainers  # noqa: F401
+    from motius.trainers import register_all_trainers
+    register_all_trainers()
 
 
 __all__ = [

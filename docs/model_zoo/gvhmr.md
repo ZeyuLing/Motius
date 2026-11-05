@@ -83,7 +83,7 @@ Training FPS is the checkpoint's native temporal clock. Preview FPS only control
 
 ## Quick Start
 
-Create the pinned CUDA 12.1 environment. The setup installs Motius itself and
+Create the pinned CUDA 12.1 environment and run Motius from that interpreter. The setup installs Motius itself and
 does not clone another source repository:
 
 ```bash
@@ -106,7 +106,6 @@ from motius import Pipeline
 pipeline = Pipeline.from_pretrained(
     "ZeyuLing/Motius-GVHMR",
     bundle_kwargs={
-        "python_executable": "outputs/envs/gvhmr/bin/python",
         "body_models_root": "checkpoints/body_models",
     },
 )
@@ -208,11 +207,11 @@ unverifiable transform.
 
 ## Citation and License
 
-The vendored GVHMR inference source and checkpoints retain the upstream
+The native GVHMR components and released checkpoints retain the upstream
 educational, research, and non-profit terms. SMPL and SMPL-X body models are
 not redistributed and must be supplied by the user. See
 [`ATTRIBUTIONS.md`](../../motius/models/gvhmr/ATTRIBUTIONS.md) and the packaged
-`GVHMR_LICENSE` before use.
+`motius/licenses/gvhmr/LICENSE` before use.
 
 <!-- MOTIUS_MODEL_CARD_FOOTER:START -->
 ---

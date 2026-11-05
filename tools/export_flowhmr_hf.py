@@ -11,16 +11,15 @@ from motius.models.flowhmr import FlowHMRBundle
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--checkpoint', required=True)
-    p.add_argument('--body-model', required=True)
-    p.add_argument('--j-regressor', required=True)
+    p.add_argument('--body-model', help='Accepted for compatibility; exporting networks needs no body asset')
+    p.add_argument('--j-regressor', help='Accepted for compatibility; exporting networks needs no joint regressor')
     p.add_argument('--sam-dir', type=Path, required=True)
     p.add_argument('--yolox', required=True)
     p.add_argument('--vggt', required=True)
     p.add_argument('--output-dir', type=Path, required=True)
     args = p.parse_args()
     args.output_dir.resolve().relative_to((ROOT / 'outputs').resolve())
-    bundle = FlowHMRBundle.from_pretrained(args.checkpoint, body_model_path=args.body_model,
-                                         j_regressor_path=args.j_regressor)
+    bundle = FlowHMRBundle.from_pretrained(args.checkpoint)
     bundle.save_pretrained(args.output_dir, source_assets={
         'preprocessor/sam/model.ckpt': args.sam_dir / 'model.ckpt',
         'preprocessor/sam/model_config.yaml': args.sam_dir / 'model_config.yaml',

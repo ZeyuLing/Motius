@@ -65,9 +65,7 @@ DEFAULT_NETWORK_CONFIG = {
 
 def _torch_load(path: str | Path) -> Any:
     try:
-        return torch.load(
-            str(path), map_location="cpu", weights_only=True, mmap=True
-        )
+        return torch.load(str(path), map_location="cpu", weights_only=True, mmap=True)
     except TypeError:  # torch < 2.0
         return torch.load(str(path), map_location="cpu")
     except RuntimeError as exc:
@@ -201,6 +199,7 @@ def _download_hub_layout(repo_id: str) -> dict[str, Path]:
                     "motionclr_config.json",
                     "model_index.json",
                     "model.safetensors",
+                    "clip.safetensors",
                     "model.pt",
                     "Mean.npy",
                     "Std.npy",
@@ -242,11 +241,17 @@ def _load_stats(
 ) -> torch.Tensor:
     if value is None:
         if path is None or not Path(path).is_file():
-            raise FileNotFoundError(f"MotionCLR requires a valid {name} statistics file")
+            raise FileNotFoundError(
+                f"MotionCLR requires a valid {name} statistics file"
+            )
         value = np.load(str(path))
-    tensor = torch.as_tensor(value, dtype=torch.float32)
+    tensor = torch.as_tensor(value)
+    if not tensor.is_floating_point():
+        tensor = tensor.float()
     if tensor.shape != (MOTIONCLR_DIM,):
-        raise ValueError(f"MotionCLR {name} must have shape (263,), got {tuple(tensor.shape)}")
+        raise ValueError(
+            f"MotionCLR {name} must have shape (263,), got {tuple(tensor.shape)}"
+        )
     if not torch.isfinite(tensor).all():
         raise ValueError(f"MotionCLR {name} contains non-finite values")
     if name.lower().startswith("std") and torch.any(tensor <= 0):
@@ -306,7 +311,9 @@ class MotionCLRBundle(ModelBundle):
         config.update(dict(network_config or {}))
         config["dim_mults"] = [int(value) for value in config["dim_mults"]]
         if int(config["input_feats"]) != MOTIONCLR_DIM:
-            raise ValueError("MotionCLR artifacts must use HumanML3D-263 input_feats=263")
+            raise ValueError(
+                "MotionCLR artifacts must use HumanML3D-263 input_feats=263"
+            )
         if not bool(config["no_eff"]):
             raise NotImplementedError(
                 "Only no_eff=True is supported because the released source omits "
@@ -322,24 +329,58 @@ class MotionCLRBundle(ModelBundle):
         self.num_inference_steps = int(num_inference_steps)
         self.guidance_scale = float(guidance_scale)
         self.inference_dtype = _resolve_dtype(torch_dtype)
-        self.register_buffer("mean", _load_stats(mean, mean_path, "Mean"), persistent=True)
+        self.register_buffer(
+            "mean", _load_stats(mean, mean_path, "Mean"), persistent=True
+        )
         self.register_buffer("std", _load_stats(std, std_path, "Std"), persistent=True)
 
         self.network: Optional[nn.Module] = network
         if load_model and self.network is None:
             from .network import MotionCLR
 
+            source = self.weights_path or self.checkpoint_path
+            if source is None:
+                raise FileNotFoundError(
+                    "MotionCLR requires checkpoint_path or weights_path"
+                )
+            state = _load_state(source, use_ema=self.use_ema)
+            local_clip = None
+            if self.load_clip and not self.clip_path:
+                clip_state = {
+                    key.removeprefix("clip_model."): value
+                    for key, value in state.items()
+                    if key.startswith("clip_model.")
+                }
+                if clip_state:
+                    import clip
+
+                    local_clip = (
+                        clip.model.build_model(clip_state)
+                        .float()
+                        .requires_grad_(False)
+                        .eval()
+                    )
+            if (
+                self.load_clip
+                and self.clip_path
+                and Path(self.clip_path).suffix == ".safetensors"
+            ):
+                from motius.models.clip_artifact import load_openai_clip
+
+                local_clip = load_openai_clip(self.clip_path)
+                # CLIP's architecture builder initially creates half-precision
+                # projections. Restore the actual saved FP32 tensors after the
+                # CPU float conversion, including modified frozen projections.
+                from safetensors.torch import load_file
+
+                local_clip.load_state_dict(load_file(self.clip_path), strict=True)
+                local_clip.requires_grad_(False).eval()
             self.network = MotionCLR(
                 **self.network_config,
                 load_clip=self.load_clip,
                 clip_path=self.clip_path,
+                clip_model=local_clip,
             )
-            source = self.weights_path or self.checkpoint_path
-            if source is None:
-                raise FileNotFoundError(
-                    "MotionCLR load_model=True requires checkpoint_path or weights_path"
-                )
-            state = _load_state(source, use_ema=self.use_ema)
             if self.weights_path:
                 incompatible = self.network.load_state_dict(state, strict=False)
                 bad_missing = [
@@ -378,25 +419,6 @@ class MotionCLRBundle(ModelBundle):
         self.to(torch.device(device))
         return self
 
-    def normalize(self, motion_263):
-        """Normalize physical-scale HumanML3D-263 features."""
-        if isinstance(motion_263, np.ndarray):
-            return (
-                motion_263 - self.mean.detach().cpu().numpy()
-            ) / self.std.detach().cpu().numpy()
-        motion = torch.as_tensor(motion_263, device=self.device)
-        return (motion - self.mean) / self.std
-
-    def denormalize(self, motion_263):
-        """Restore normalized HumanML3D-263 features to physical scale."""
-        if isinstance(motion_263, np.ndarray):
-            return (
-                motion_263 * self.std.detach().cpu().numpy()
-                + self.mean.detach().cpu().numpy()
-            )
-        motion = torch.as_tensor(motion_263, device=self.device)
-        return motion * self.std + self.mean
-
     def save_pretrained(
         self,
         save_directory: str | Path,
@@ -407,10 +429,13 @@ class MotionCLRBundle(ModelBundle):
         del kwargs
         save_dir = Path(save_directory)
         save_dir.mkdir(parents=True, exist_ok=True)
-        if self.network is not None:
+        from motius.utils.gaussian_motion_checkpoint import unwrap_network
+
+        network = unwrap_network(self.network) if self.network is not None else None
+        if network is not None:
             state = {
                 key: value.detach().cpu().contiguous()
-                for key, value in self.network.state_dict().items()
+                for key, value in network.state_dict().items()
                 if not key.startswith("clip_model.")
             }
         else:
@@ -433,14 +458,31 @@ class MotionCLRBundle(ModelBundle):
             save_file(state, str(weight_path))
         else:
             torch.save(state, str(weight_path))
-        np.save(save_dir / "Mean.npy", self.mean.detach().cpu().numpy().astype(np.float32))
-        np.save(save_dir / "Std.npy", self.std.detach().cpu().numpy().astype(np.float32))
+        np.save(save_dir / "Mean.npy", self.mean.detach().cpu().numpy())
+        np.save(save_dir / "Std.npy", self.std.detach().cpu().numpy())
 
         stored_clip = False
-        if self.clip_path and Path(self.clip_path).is_file():
+        clip_filename = None
+        clip_model = (
+            getattr(network, "clip_model", None) if network is not None else None
+        )
+        if self.load_clip and clip_model is not None:
+            from safetensors.torch import save_file
+
+            clip_filename = "clip.safetensors"
+            save_file(
+                {
+                    name: value.detach().cpu().contiguous()
+                    for name, value in clip_model.state_dict().items()
+                },
+                str(save_dir / clip_filename),
+            )
+            stored_clip = True
+        elif self.clip_path and Path(self.clip_path).is_file():
             clip_dir = save_dir / "clip"
             clip_dir.mkdir(exist_ok=True)
-            shutil.copy2(self.clip_path, clip_dir / "ViT-B-32.pt")
+            clip_filename = "clip/ViT-B-32.pt"
+            shutil.copy2(self.clip_path, save_dir / clip_filename)
             stored_clip = True
 
         metadata = {
@@ -461,7 +503,7 @@ class MotionCLRBundle(ModelBundle):
             "text_encoder": {
                 "name": "ViT-B/32",
                 "stored_in_artifact": stored_clip,
-                "path": "clip/ViT-B-32.pt" if stored_clip else None,
+                "path": clip_filename,
             },
             "load_clip": bool(stored_clip or self.load_clip),
             "use_ema": self.use_ema,
@@ -494,6 +536,13 @@ class MotionCLRBundle(ModelBundle):
                     "pipeline_class": metadata["pipeline_class"],
                     "source_revision": MOTIONCLR_SOURCE_REVISION,
                     "capabilities": self.SUPPORTED_TASKS,
+                    "required_files": [
+                        "motionclr_config.json",
+                        weight_name,
+                        "Mean.npy",
+                        "Std.npy",
+                        *([clip_filename] if stored_clip else []),
+                    ],
                 },
                 indent=2,
             )
@@ -569,7 +618,9 @@ class MotionCLRBundle(ModelBundle):
             )
         if verify_hashes:
             _verify_official_hashes(layout)
-        config = _network_config_from_options(_parse_official_options(layout["options"]))
+        config = _network_config_from_options(
+            _parse_official_options(layout["options"])
+        )
         defaults = {
             "network_config": config,
             "checkpoint_path": str(layout["checkpoint"]),

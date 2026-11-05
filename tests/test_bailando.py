@@ -16,7 +16,7 @@ from motius.evaluation.music_to_dance import (
     beat_alignment_score,
     motion_beat_frames,
 )
-from motius.models.bailando.audio import extract_bailando_audio_features
+from motius.pipelines.bailando.audio import extract_bailando_audio_features
 from motius.motion import aistpp_smpl24_fk, convert_motion, get_spec
 from motius.motion.representation.aistpp import AISTPP_SMPL24_PARENTS
 from motius.motion.representation.humanml import linear_resample_joints

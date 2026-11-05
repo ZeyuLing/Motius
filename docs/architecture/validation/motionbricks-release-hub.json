@@ -1,0 +1,26 @@
+{
+  "g1": {
+    "repo": "ZeyuLing/motius-motionbricks-g1-rp-v1",
+    "revision": "f8a12d0da798bd4e8c09db49fe1417823aed6394",
+    "hashes": {
+      "model.safetensors": "26ed5bce7aa3daedc27d3b65c8d06f29bdf68d1fa710dac27016a225819e9997",
+      "normalization.npz": "a4cf85fe3b4175ff8cb210c935d2ef833c6e3f66e95f0d239d193dd4b1b1bc92",
+      "model_index.json": "9067af09481d406b0028b66c896d1667cb098c89487332b14d020e6e66a40a30",
+      "README.md": "6252e9381047cf8a3ba95419f58bff3dc779588cb4b3412b0ff6602369c6b985",
+      "validation.json": "1ba293d0a2091561fcd951dbf614301aaa3a5e06fa585f6429df2f1368834dea"
+    },
+    "remote_pipeline_bitwise_equal": true
+  },
+  "soma": {
+    "repo": "ZeyuLing/motius-motionbricks-soma-rp-v1",
+    "revision": "c3aff7191e1f061101507f1b9e168ba22646c990",
+    "hashes": {
+      "model.safetensors": "03c9755330f246fd0b235c55057557edc43b8e6d69eeb4b9406e35a01529bd35",
+      "normalization.npz": "936286dbad5a6a49dc4c6ecf015b2f4e25856288616133eda857d42d1a21ce5f",
+      "model_index.json": "9067af09481d406b0028b66c896d1667cb098c89487332b14d020e6e66a40a30",
+      "README.md": "0a87e780a520a5322280e2a6d24ffb074920cec38c6f294bc302d700abcbe9fa",
+      "validation.json": "1ba293d0a2091561fcd951dbf614301aaa3a5e06fa585f6429df2f1368834dea"
+    },
+    "remote_pipeline_bitwise_equal": true
+  }
+}

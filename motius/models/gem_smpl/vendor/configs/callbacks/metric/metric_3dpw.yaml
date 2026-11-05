@@ -1,2 +1,0 @@
-metric_3dpw:
-  _target_: gem.callbacks.metric.metric_3dpw.Metric3DPW

@@ -14,10 +14,11 @@ from motius.models.base_model_bundle import ModelBundle
 from motius.models.clip_artifact import artifact_clip_load
 from motius.registry import MODEL_BUNDLES
 
-from .network import build_diffusion, build_model, load_model_wo_clip, normalize_config
+from .network import CMDM
+from motius.configuration.omnicontrol import normalize_config
 
 
-_ASSETS = Path(__file__).resolve().parent / "assets"
+_ASSETS = Path(__file__).resolve().parents[2] / "motion" / "assets" / "omnicontrol"
 
 
 def _resolve_artifact(name_or_path: str) -> Path:
@@ -40,6 +41,56 @@ def _load_weights(path: Path):
     if isinstance(value, dict) and "model" in value:
         return value["model"]
     return value
+
+
+def build_model(config=None):
+    cfg = normalize_config(config)
+    return CMDM(
+        modeltype="",
+        njoints=263,
+        nfeats=1,
+        num_actions=1,
+        translation=True,
+        pose_rep="rot6d",
+        glob=True,
+        glob_rot=True,
+        latent_dim=cfg["latent_dim"],
+        ff_size=1024,
+        num_layers=cfg["layers"],
+        num_heads=4,
+        dropout=0.1,
+        activation="gelu",
+        data_rep="hml_vec",
+        cond_mode=cfg["cond_mode"],
+        cond_mask_prob=cfg["cond_mask_prob"],
+        action_emb="tensor",
+        arch=cfg["arch"],
+        emb_trans_dec=cfg["emb_trans_dec"],
+        clip_version="ViT-B/32",
+        dataset="humanml",
+    )
+
+
+def load_model_wo_clip(model, state_dict):
+    state = dict(state_dict)
+    for key in list(state):
+        if "sequence_pos_encoder.pe" in key:
+            state.pop(key)
+    missing, unexpected = model.load_state_dict(state, strict=False)
+    invalid_missing = [
+        key
+        for key in missing
+        if not key.startswith("clip_model.") and "sequence_pos_encoder.pe" not in key
+    ]
+    invalid_unexpected = [key for key in unexpected if not key.startswith("rot2xyz.")]
+    if invalid_missing:
+        raise RuntimeError(
+            f"missing OmniControl checkpoint keys: {invalid_missing[:8]}"
+        )
+    if invalid_unexpected:
+        raise RuntimeError(
+            f"unexpected OmniControl checkpoint keys: {invalid_unexpected[:8]}"
+        )
 
 
 @MODEL_BUNDLES.register_module()
@@ -94,14 +145,6 @@ class OmniControlBundle(ModelBundle):
             self.net = build_model(self.config)
         if weights_path:
             load_model_wo_clip(self.net, _load_weights(Path(weights_path)))
-        self.diffusion = build_diffusion(
-            self.config,
-            mean=arrays["mean"],
-            std=arrays["std"],
-            raw_mean=arrays["raw_mean"],
-            raw_std=arrays["raw_std"],
-            respacing=self.respacing,
-        )
         if device is not None:
             self.to(torch.device(device))
 
@@ -111,13 +154,16 @@ class OmniControlBundle(ModelBundle):
         if path.is_file():
             return cls(weights_path=str(path), **kwargs)
         metadata_path = path / "omnicontrol_config.json"
-        metadata = json.loads(metadata_path.read_text()) if metadata_path.exists() else {}
-        weights = path / "model.safetensors"
+        metadata = (
+            json.loads(metadata_path.read_text()) if metadata_path.exists() else {}
+        )
+        weights = path / metadata.get("weights", "model.safetensors")
         if not weights.exists():
-            candidates = sorted(path.glob("*.pt"))
+            candidates = [path / "model.pt"] if (path / "model.pt").is_file() else []
             if not candidates:
                 raise FileNotFoundError(f"No OmniControl weights found under {path}")
             weights = candidates[0]
+
         def optional(name):
             value = path / name
             return str(value) if value.exists() else None
@@ -133,23 +179,35 @@ class OmniControlBundle(ModelBundle):
             std_path=optional("Std.npy"),
             raw_mean_path=optional("Mean_raw.npy"),
             raw_std_path=optional("Std_raw.npy"),
-            guidance_param=kwargs.pop("guidance_param", metadata.get("guidance_param", 2.5)),
+            guidance_param=kwargs.pop(
+                "guidance_param", metadata.get("guidance_param", 2.5)
+            ),
             respacing=kwargs.pop("respacing", metadata.get("respacing", "")),
             **kwargs,
         )
 
-    def normalize(self, motion):
-        return (motion - self.mean) / self.std
+    def save_pretrained(
+        self, save_directory: str, safe_serialization: bool = True, **kwargs
+    ):
+        from motius.utils.gaussian_motion_checkpoint import (
+            save_gaussian_motion_artifact,
+        )
 
-    def denormalize(self, motion):
-        return motion * self.std + self.mean
+        return save_gaussian_motion_artifact(
+            self,
+            save_directory,
+            method="omnicontrol",
+            safe_serialization=safe_serialization,
+        )
 
     @property
     def device(self):
         return self.mean.device
 
-    def forward(self, *args, **kwargs):
-        raise NotImplementedError("Use OmniControlPipeline for inference")
+    def denoise(self, motion, timesteps, **model_kwargs):
+        return self.net(motion, timesteps, **model_kwargs)
+
+    forward = denoise
 
 
 __all__ = ["OmniControlBundle"]

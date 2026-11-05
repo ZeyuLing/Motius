@@ -129,7 +129,7 @@ def _package_one(
     shard: list[Path],
     pattern: Path,
     python: Path,
-    vendor_root: Path,
+    project_root: Path,
     inputs_root: Path,
     logs_root: Path,
     env: dict[str, str],
@@ -152,8 +152,7 @@ def _package_one(
     temp_output.unlink(missing_ok=True)
     command = [
         str(python),
-        "-m",
-        "protomotions.components.motion_lib",
+        str(project_root / "tools/package_protomotions_motions.py"),
         "--motion-path",
         str(input_dir),
         "--output-file",
@@ -165,7 +164,7 @@ def _package_one(
     with log_path.open("w") as log_file:
         result = subprocess.run(
             command,
-            cwd=vendor_root,
+            cwd=project_root,
             env=env,
             stdout=log_file,
             stderr=subprocess.STDOUT,
@@ -191,7 +190,7 @@ def main() -> None:
     parser.add_argument("--output-pattern", required=True, type=Path)
     parser.add_argument("--num-shards", required=True, type=int)
     parser.add_argument("--python", required=True, type=Path)
-    parser.add_argument("--vendor-root", required=True, type=Path)
+    parser.add_argument("--project-root", required=True, type=Path)
     args = parser.parse_args()
 
     motion_dir = args.motion_dir.resolve(strict=True)
@@ -237,7 +236,7 @@ def main() -> None:
     logs_root.mkdir(parents=True, exist_ok=True)
     env = dict(os.environ)
     existing_pythonpath = env.get("PYTHONPATH", "")
-    env["PYTHONPATH"] = str(args.vendor_root) + (
+    env["PYTHONPATH"] = str(args.project_root) + (
         os.pathsep + existing_pythonpath if existing_pythonpath else ""
     )
 
@@ -250,7 +249,7 @@ def main() -> None:
                 shard,
                 pattern,
                 args.python,
-                args.vendor_root,
+                args.project_root,
                 inputs_root,
                 logs_root,
                 env,

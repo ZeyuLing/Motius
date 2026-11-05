@@ -1,0 +1,14 @@
+{
+  "complete": true,
+  "scope": "Every published Motius MLD VAE/denoiser tensor versus author MotionLCM V1 teacher extracted from the author's current prepare/download_pretrained_models.sh Google Drive archive. Establishes this artifact's neural provenance; text weights, supplied statistics, official CLIP MLD and full corpus training are separate certificates.",
+  "download_url": "https://drive.google.com/uc?id=1U7homKobR2gaDLfL5flS3N0g7e0a_AQd",
+  "download_script_commit": "81c06368c17b056713deef2e9f6483f3172eea42",
+  "download_script_sha256": "8e42e695c3c64774e3fb0945511d21f5cca2f37d1f7171dd6785ecfcfd2214d9",
+  "archive_sha256": "4db917a190b3e7704ec4992648c65c936135f345d4a4b6e5546e05953de255f1",
+  "archive_entry": "experiments_t2m/mld_humanml/mld_humanml_v1.ckpt",
+  "teacher_sha256": "61b4062ddc01236e482de782d872ed4850e27df402f1eb103e54c52d4231de4e",
+  "exact_neural_tensors": {
+    "vae": 297,
+    "denoiser": 125
+  }
+}

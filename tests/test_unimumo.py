@@ -9,7 +9,7 @@ import torch
 
 from motius.models.unimumo import UniMuMoBundle, UniMuMoGenerator
 from motius.models.unimumo.bundle import _adapt_audio_codec_state_dict
-from motius.models.unimumo.generator import (
+from motius.pipelines.unimumo.sampling import (
     DelayedPattern,
     _sample_logits,
     generate_parallel,
@@ -140,15 +140,15 @@ def test_unimumo_top_k_sampling_matches_upstream_full_vocabulary_order():
 
 def test_unimumo_description_modes():
     descriptions = ["piano solo <separation> a person spins"]
-    assert UniMuMoBundle._split_descriptions(descriptions, "music_motion") == (
+    assert UniMuMoPipeline._split_descriptions(descriptions, "music_motion") == (
         ["piano solo"],
         ["a person spins"],
     )
-    assert UniMuMoBundle._split_descriptions(descriptions, "music2motion") == (
+    assert UniMuMoPipeline._split_descriptions(descriptions, "music2motion") == (
         [""],
         ["a person spins"],
     )
-    assert UniMuMoBundle._split_descriptions(descriptions, "motion2music") == (
+    assert UniMuMoPipeline._split_descriptions(descriptions, "motion2music") == (
         ["piano solo"],
         [""],
     )
@@ -200,9 +200,9 @@ def test_unimumo_audio_codec_rejects_duplicate_key_layouts():
 def test_unimumo_cfg_conditions_share_padding_layout():
     class FakeBundle:
         device = torch.device("cpu")
-        _split_descriptions = staticmethod(UniMuMoBundle._split_descriptions)
-        _condition_from_streams = UniMuMoBundle._condition_from_streams
-        cfg_text_condition = UniMuMoBundle.cfg_text_condition
+        _split_descriptions = staticmethod(UniMuMoPipeline._split_descriptions)
+        _condition_from_streams = UniMuMoPipeline._condition_from_streams
+        cfg_text_condition = UniMuMoPipeline.cfg_text_condition
 
         def _encode_descriptions(self, descriptions):
             lengths = [max(1, len(value.split())) for value in descriptions]
@@ -269,6 +269,8 @@ def test_unimumo_motion_to_music_batches_equal_length_inputs():
 
     pipeline = UniMuMoPipeline.__new__(UniMuMoPipeline)
     pipeline.bundle = FakeBundle()
+    pipeline.encode_motion=pipeline.bundle.encode_motion
+    pipeline.generate_codes=pipeline.bundle.generate_codes
     pipeline._decode_batch = lambda music, motion: (music.shape, motion.shape)
 
     output = pipeline.infer_motion_to_music_batch(

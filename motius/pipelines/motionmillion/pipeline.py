@@ -17,6 +17,10 @@ motions and is **not** used here. Fully independent of the original repo.
 """
 
 from __future__ import annotations
+from .sampling import sample_tokens, sample_tokens_cached
+from motius.motion.conditioning.motionmillion_text import prepare_motionmillion_text
+from motius.motion.representation.normalization import affine_denormalize
+
 
 from contextlib import nullcontext
 from typing import List, Optional, Sequence
@@ -34,9 +38,10 @@ class MotionMillionPipeline(BasePipeline):
 
     BUNDLE_CLS = "motius.models.motionmillion.MotionMillionBundle"
 
-    def __init__(self, bundle, device: Optional[str] = None, max_sample_steps: int = 150, **kwargs):
+    def __init__(self, bundle, device: Optional[str] = None, max_sample_steps: int = 50, use_kv_cache: bool = False, **kwargs):
         super().__init__(bundle, **kwargs)
         self.max_sample_steps = int(max_sample_steps)
+        self.use_kv_cache = bool(use_kv_cache)
         if device is not None:
             self.to(device)
 
@@ -73,7 +78,7 @@ class MotionMillionPipeline(BasePipeline):
         """
         bundle = self.bundle
         steps = self.max_sample_steps if max_sample_steps is None else int(max_sample_steps)
-        feat, y_mask = bundle.encode_text(list(captions))
+        feat, y_mask = bundle.encode_text(prepare_motionmillion_text(bundle.text_model_name, captions))
 
         ar_dtype = next(bundle.ar.parameters()).dtype
         feat = feat.to(ar_dtype)
@@ -85,12 +90,12 @@ class MotionMillionPipeline(BasePipeline):
         outputs: List[np.ndarray] = []
         for i in range(len(captions)):
             with autocast:
-                idx = bundle.ar.sample_cached(
+                idx = (sample_tokens_cached if self.use_kv_cache else sample_tokens)(bundle.ar,
                     feat[i : i + 1], y_mask[i : i + 1],
                     if_categorial=if_categorial, max_sample_steps=steps,
                 )
                 pred = bundle.vqvae.forward_decoder(idx)  # (1, T, 272), normalized
-            motion = bundle.denormalize(pred[0].float())  # (T, 272), raw scale
+            motion = affine_denormalize(pred[0].float(), bundle.mean, bundle.std)  # (T, 272), raw scale
             if lengths is not None:
                 motion = motion[: int(lengths[i])]
             outputs.append(motion.cpu().numpy().astype(np.float32))

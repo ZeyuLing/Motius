@@ -47,7 +47,8 @@ def test_sonic_preserves_official_encoder_decoder_layout(tmp_path):
     decoder = FakeSession({"action": np.ones((1, 29), dtype=np.float32)})
     bundle._sessions = {"encoder": encoder, "decoder": decoder}
 
-    result = bundle.forward(
+    from motius.pipelines.sonic import SONICPipeline
+    result = SONICPipeline(bundle)(
         np.zeros((1, 1762), dtype=np.float32),
         np.full((1, 930), 5.0, dtype=np.float32),
     )
@@ -205,7 +206,8 @@ def test_any2track_assembles_official_156d_observation(tmp_path):
     )
     bundle._sessions = {"policy": session}
 
-    output = bundle.forward(components)
+    from motius.pipelines.any2track import Any2TrackPipeline
+    output = Any2TrackPipeline(bundle)(components)
 
     assert session.last_feeds["obs"].shape == (2, 156)
     np.testing.assert_array_equal(session.last_feeds["obs"][:, :29], 0.0)
@@ -267,14 +269,16 @@ def test_humanoid_gpt_preserves_official_observation_and_action_contract(tmp_pat
         for index, (name, dimension) in enumerate(bundle.OBSERVATION_LAYOUT)
     }
 
-    result = bundle.forward(components=components)
+    from motius.pipelines.humanoid_gpt import HumanoidGPTPipeline
+    pipeline = HumanoidGPTPipeline(bundle)
+    result = pipeline(components=components)
 
     assert session.last_feeds["obs"].shape == (2, 136)
     np.testing.assert_array_equal(session.last_feeds["obs"][:, :3], 0.0)
     np.testing.assert_array_equal(session.last_feeds["obs"][:, 3:6], 1.0)
     np.testing.assert_allclose(
         result["motor_targets"],
-        bundle.decode_motor_targets(action),
+        pipeline.decode_motor_targets(action),
     )
 
 

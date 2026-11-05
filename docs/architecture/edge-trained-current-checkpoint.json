@@ -1,0 +1,50 @@
+{
+  "complete": true,
+  "scope": "edge actual modified current neural tensors, complete public inference and frozen/current states through offline cold AutoPipeline loading. Export/migration evidence, not an independent original-source comparison.",
+  "tests": [
+    {
+      "tensor": "/joints",
+      "shape": [
+        225,
+        24,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/edge_motion",
+      "shape": [
+        225,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/motion135",
+      "shape": [
+        225,
+        135
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/scale",
+      "shape": [
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/offset",
+      "shape": [
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

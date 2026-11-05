@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 import torch
 
-from motius.models.maskcontrol.network import (
+from motius.motion.conditioning.maskcontrol import (
     BODY_PART_JOINTS,
     CONTROL_JOINT_IDS,
     relative_hml263_positions,
@@ -46,7 +46,10 @@ class _DummyBundle(torch.nn.Module):
 
 @pytest.fixture()
 def pipeline():
-    return MaskControlPipeline(_DummyBundle())
+    bundle = _DummyBundle()
+    pipeline = MaskControlPipeline(bundle)
+    pipeline.generate = bundle.generate
+    return pipeline
 
 
 def test_t2m_rounds_to_checkpoint_length_and_disables_control(pipeline):

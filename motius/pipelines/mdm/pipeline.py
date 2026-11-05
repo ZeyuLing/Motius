@@ -6,6 +6,9 @@ checkpoint, while exposing the Motius-native ``infer_t2m`` task interface.
 """
 
 from __future__ import annotations
+from motius.motion.conditioning.clip_text import encode_clip_text
+from motius.motion.representation.normalization import affine_denormalize
+
 
 from typing import List, Optional, Sequence
 
@@ -26,9 +29,10 @@ class MDMPipeline(BasePipeline):
 
     BUNDLE_CLS = "motius.models.mdm.MDMBundle"
 
-    def __init__(self, bundle, device: Optional[str] = None, **kwargs):
+    def __init__(self, bundle, device: Optional[str] = None, diffusion=None, **kwargs):
         super().__init__(bundle, **kwargs)
-        from motius.models.mdm.network import collate
+        self._diffusion = diffusion
+        from motius.datasets.motion.mdm_collate import collate
 
         self._collate = collate
         if device is not None:
@@ -40,6 +44,14 @@ class MDMPipeline(BasePipeline):
         self.bundle.mean = self.bundle.mean.to(device)
         self.bundle.std = self.bundle.std.to(device)
         return self
+
+    @property
+    def diffusion(self):
+        if self._diffusion is None:
+            from motius.diffusion.mdm.factory import create_gaussian_diffusion
+
+            self._diffusion = create_gaussian_diffusion(self.bundle._args)
+        return self._diffusion
 
     @property
     def device(self) -> torch.device:
@@ -75,16 +87,27 @@ class MDMPipeline(BasePipeline):
             raise ValueError("captions and lengths must have equal length")
         bundle = self.bundle
         net = bundle.net
-        diffusion = bundle.diffusion
+        diffusion = self.diffusion
         device = self.device
 
-        scale = bundle.guidance_param if guidance_param is None else float(guidance_param)
+        scale = (
+            bundle.guidance_param if guidance_param is None else float(guidance_param)
+        )
+        if scale != 1.0:
+            from .guidance import ClassifierFreeSampleModel
+
+            net = ClassifierFreeSampleModel(net)
         lengths = [self.clamp_length(x) for x in lengths]
         n_frames = max(lengths)
         bs = len(captions)
 
         collate_args = [
-            {"inp": torch.zeros(263, 1, n_frames), "tokens": None, "lengths": ml, "text": cap}
+            {
+                "inp": torch.zeros(263, 1, n_frames),
+                "tokens": None,
+                "lengths": ml,
+                "text": cap,
+            }
             for cap, ml in zip(captions, lengths)
         ]
         motion, model_kwargs = self._collate(collate_args)
@@ -95,7 +118,11 @@ class MDMPipeline(BasePipeline):
         if scale != 1.0:
             model_kwargs["y"]["scale"] = torch.ones(bs, device=device) * scale
         if "text" in model_kwargs["y"]:
-            model_kwargs["y"]["text_embed"] = net.encode_text(model_kwargs["y"]["text"])
+            model_kwargs["y"]["text_embed"] = encode_clip_text(
+                bundle.net,
+                model_kwargs["y"]["text"],
+                context_length=22 if bundle.net.dataset in {"humanml", "kit"} else 77,
+            )
 
         sample = diffusion.p_sample_loop(
             net,
@@ -116,7 +143,12 @@ class MDMPipeline(BasePipeline):
 
         # (bs, 263, 1, T) -> (bs, T, 263), then denormalize.
         sample = sample[:, :, 0, :].permute(0, 2, 1).contiguous()
-        sample = bundle.denormalize(sample).cpu().numpy().astype(np.float32)
+        sample = (
+            affine_denormalize(sample, bundle.mean, bundle.std)
+            .cpu()
+            .numpy()
+            .astype(np.float32)
+        )
 
         return [sample[i, : lengths[i]] for i in range(bs)]
 

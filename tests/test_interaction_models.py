@@ -5,31 +5,6 @@ from motius.pipelines.intergen import InterGenPipeline
 from motius.pipelines.intermask import InterMaskPipeline
 
 
-class _InteractionBundle:
-    def __init__(self):
-        self.calls = []
-
-    def eval(self):
-        return self
-
-    def generate(self, captions, **kwargs):
-        self.calls.append((captions, kwargs))
-        batch_size = 1 if isinstance(captions, str) else len(captions)
-        return np.zeros((batch_size, kwargs["motion_len"], 2, 262), dtype=np.float32)
-
-
-def test_interaction_pipelines_share_native262_contract():
-    for pipeline_cls in (InterGenPipeline, InterMaskPipeline):
-        bundle = _InteractionBundle()
-        pipeline = pipeline_cls(bundle)
-        motion = pipeline("two people shake hands", motion_len=60, seed=7)
-        assert motion.shape == (1, 60, 2, 262)
-        assert bundle.calls[0][0] == "two people shake hands"
-        assert bundle.calls[0][1]["motion_len"] == 60
-        assert bundle.calls[0][1]["seed"] == 7
-        assert bundle.calls[0][1]["return_numpy"] is True
-
-
 def test_interclip_retrieval_uses_official_fixed_batch_protocol():
     evaluator = InterHuman262Evaluator(
         "unused.safetensors",

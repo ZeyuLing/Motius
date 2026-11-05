@@ -1,0 +1,120 @@
+{
+  "date": "2026-10-23",
+  "platform": "Linux x86_64",
+  "blender": "4.5.3 LTS",
+  "complete": true,
+  "scope": "Historical validation of the package hashes listed below. Actual Blender registration, paired real Base-capture conversion/import, synthetic Mixamo rest-basis/length tests including rotated/scaled FBX object transforms, animated FBX round trip, subprocess doctor/cancellation/cleanup, and installation of both final ZIPs. GPU inference itself is covered by flowhmr-lightweight.json and is not rerun here.",
+  "gpu_validation_record": "flowhmr-lightweight.json",
+  "unit_tests": {
+    "blender_protocol_and_dispatch": 15,
+    "flowhmr_regression_passed": 35,
+    "flowhmr_regression_skipped": 1
+  },
+  "packages": [
+    {
+      "file": "motius-flowhmr-0.1.0-standard.zip",
+      "default_mode": "STANDARD",
+      "bytes": 32783,
+      "sha256": "6353d24e93752110f801a1163fc96852e5f77bb0ab03f17f1f06f0c5d018f7bf"
+    },
+    {
+      "file": "motius-flowhmr-0.1.0-accelerated.zip",
+      "default_mode": "LIGHTWEIGHT",
+      "bytes": 32783,
+      "sha256": "54d0956b546471f6565ba922f0d2d558756ab9f37160a626ce50d9b46815c0a2"
+    }
+  ],
+  "cases": {
+    "standard": {
+      "capture_sha256": "b51077c89e8ca4f03d743c2c32a9babe3dd4cf9b8c63fba1dd6f44aaecf3b8fd",
+      "capture_variant": "Base",
+      "cpu_export_body22_max_position_error_m": 2.4027400513659813e-07,
+      "blender_smoke": {
+        "blender": "4.5.3 LTS",
+        "frames": 30,
+        "native_joints": 52,
+        "native_max_position_error_m": 5.556661865571597e-06,
+        "native_max_rotation_matrix_error": 1.4011609906994238e-05,
+        "mixamo_rest_basis_max_error": 7.748603820800781e-07,
+        "mixamo_max_bone_length_error": 1.952931203419439e-06,
+        "mixamo_object_transform_world_rotation_error": 2.857045693187288e-05,
+        "fbx_export_import": true,
+        "external_doctor": true,
+        "fbx_frame_range": [
+          12.0,
+          41.0
+        ],
+        "job_cancellation": true
+      },
+      "installed_extension": {
+        "blender": "4.5.3 LTS",
+        "package": "bl_ext.user_default.motius_flowhmr",
+        "mode": "STANDARD",
+        "import_joints": 52,
+        "external_capture_conversion": true,
+        "checkpoint_sha256": "f8dca504bfe1682ab0a8ec6cb99e555b4c93e77220cc5c80636a87f0492ced46",
+        "inference_settings": {
+          "attention_query_chunk_size": 0,
+          "camera_frame_interval": 1,
+          "camera_subsampled": false,
+          "full_hand_features": true,
+          "lightweight": false
+        },
+        "message": "Ready: 30 frames at 30 fps \u2014 animation imported"
+      }
+    },
+    "accelerated": {
+      "capture_sha256": "4c9ccbbe8c201e1595b1abad0eca99860a7eda26cd7604ac454fce9b726ad8f4",
+      "capture_variant": "Base",
+      "cpu_export_body22_max_position_error_m": 3.6286698446019727e-07,
+      "blender_smoke": {
+        "blender": "4.5.3 LTS",
+        "frames": 30,
+        "native_joints": 52,
+        "native_max_position_error_m": 5.423392448068695e-06,
+        "native_max_rotation_matrix_error": 1.4041846395862478e-05,
+        "mixamo_rest_basis_max_error": 7.152557373046875e-07,
+        "mixamo_max_bone_length_error": 2.0699135783175393e-06,
+        "mixamo_object_transform_world_rotation_error": 2.837474653633043e-05,
+        "fbx_export_import": true,
+        "external_doctor": true,
+        "fbx_frame_range": [
+          12.0,
+          41.0
+        ],
+        "job_cancellation": true
+      },
+      "installed_extension": {
+        "blender": "4.5.3 LTS",
+        "package": "bl_ext.user_default.motius_flowhmr",
+        "mode": "LIGHTWEIGHT",
+        "import_joints": 52,
+        "external_capture_conversion": true,
+        "checkpoint_sha256": "f8dca504bfe1682ab0a8ec6cb99e555b4c93e77220cc5c80636a87f0492ced46",
+        "inference_settings": {
+          "attention_query_chunk_size": 256,
+          "camera_frame_interval": 1,
+          "camera_subsampled": false,
+          "full_hand_features": true,
+          "lightweight": true
+        },
+        "message": "Ready: 30 frames at 30 fps \u2014 animation imported"
+      }
+    }
+  },
+  "extension_source_sha256": {
+    "blender_extension/motius_flowhmr/LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "blender_extension/motius_flowhmr/NOTICE.md": "3d9e9625ddb02e3e1e014c88858a933ea978e26bd745368db9d4274d5ac40713",
+    "blender_extension/motius_flowhmr/README.md": "d7e4eefe1ba1d64830df9670050c40427928af0b5c16752e0259eb39aedb65c6",
+    "blender_extension/motius_flowhmr/__init__.py": "aaa024ea5c96907bcca8d9d318c4848bb684d327959c82fe7f68a95328845a24",
+    "blender_extension/motius_flowhmr/animation.py": "3f3ba71c6e9b5e6cdb51840c4212b24db4e939aff20855a2a5ff64b9aadab793",
+    "blender_extension/motius_flowhmr/blender_manifest.toml": "c8d71f8a7ce9ce7d1abfee4dcdeda3abc2ed5ccdbe6272ff5db9ce728a986483",
+    "blender_extension/motius_flowhmr/defaults.py": "faa579ed6fceba1ce6d6f5b5102bc28edc9e1bc5ae9eb8f26f95be1c65122159",
+    "blender_extension/motius_flowhmr/jobs.py": "f468826a5310602c8e668445b0b534971499c5dad9e4347b87d483e7325abb63",
+    "blender_extension/motius_flowhmr/motion_data.py": "aac097653a2b6d1a371a0e4328d3bdf1d04239da78194f813f1d9266a77afb0d",
+    "blender_extension/motius_flowhmr/ui.py": "e0cbe3626e1b5b21f7ca1231e129b3595a5a7e5cddd066d313cdef5db8a8d213",
+    "blender_extension/motius_flowhmr/worker.py": "ff138c742a85a567754803746a01415d406064c451413ce42405d5599223fee3"
+  },
+  "historical_packages": true,
+  "current_workflow_and_packages": "flowhmr-blender-workflow.json"
+}

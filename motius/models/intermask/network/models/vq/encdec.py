@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from torch_geometric.nn.conv import SAGEConv
 
 from .resnet import Resnet
-from ...utils.paramUtil import t2m_edge_indices as edge_indices
+from motius.motion.representation.intermask_skeleton import t2m_edge_indices as edge_indices
 
 
 class Encoder(nn.Module):

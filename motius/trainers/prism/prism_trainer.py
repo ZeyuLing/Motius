@@ -10,6 +10,16 @@ import torch.nn.functional as F
 from motius.registry import TRAINERS
 from motius.trainers.base_trainer import BaseTrainer
 
+def _get_sigmas(scheduler, timesteps: torch.Tensor, n_dim: int) -> torch.Tensor:
+    sigmas = scheduler.sigmas.to(device=timesteps.device, dtype=torch.float32)
+    schedule = scheduler.timesteps.to(device=timesteps.device)
+    indices = [(schedule == timestep).nonzero().item() for timestep in timesteps]
+    sigma = sigmas[indices].flatten()
+    while sigma.ndim < n_dim:
+        sigma = sigma.unsqueeze(-1)
+    return sigma
+
+
 
 @TRAINERS.register_module()
 class PrismTrainer(BaseTrainer):
@@ -43,6 +53,22 @@ class PrismTrainer(BaseTrainer):
         self._null_embedding_path = null_embedding_path
         self.use_fp16_autocast = use_fp16_autocast
         self.log_channel_loss = log_channel_loss
+        self.bundle.load_model()
+        from diffusers import FlowMatchEulerDiscreteScheduler
+        from motius.motion.representation.prism import PRISMMotionProcessor
+        config = self.bundle.artifact_config
+        root = self.bundle.artifact_dir
+        components = config.get("components", {})
+        self.scheduler = FlowMatchEulerDiscreteScheduler.from_pretrained(root / components.get("scheduler", "scheduler"))
+        self.scheduler.set_timesteps(self.scheduler.config.num_train_timesteps)
+        self.processor = PRISMMotionProcessor(root / config.get("stats_file", "motion_stats.json"))
+        vae = self.bundle.vae
+        parameter = next(vae.parameters())
+        self.register_buffer("latents_mean", torch.tensor(vae.config.latents_mean, dtype=parameter.dtype,
+            device=parameter.device).view(1, vae.config.z_dim, 1, 1), persistent=False)
+        self.register_buffer("latents_std", torch.tensor(vae.config.latents_std, dtype=parameter.dtype,
+            device=parameter.device).view(1, vae.config.z_dim, 1, 1), persistent=False)
+        self.tokenizer = None
 
     def _load_null_t5_embedding(self):
         """Load the pre-extracted null embedding (empty string '') for prompt dropout.
@@ -96,10 +122,10 @@ class PrismTrainer(BaseTrainer):
         num_frames = batch.get('num_frames')
 
         # ---- VAE encoding + data prep (fp32, no autocast) ----
-        latents = self.bundle.encode_motion(motion)
+        latents = self.encode_motion(motion)
         batch_size, _, latent_frames, latent_joints = latents.shape
 
-        padding_mask = self.bundle.create_padding_mask(
+        padding_mask = self.create_padding_mask(
             num_frames=num_frames,
             batch_size=batch_size,
             latent_frames=latent_frames,
@@ -126,13 +152,13 @@ class PrismTrainer(BaseTrainer):
                     text_states[drop_mask] = null_emb
                     text_mask[drop_mask] = null_mask
         else:
-            text_states, text_mask = self.bundle.encode_prompt_with_mask(
+            text_states, text_mask = self.encode_prompt_with_mask(
                 captions,
                 max_sequence_length=self.max_text_length,
                 prompt_drop_rate=self.prompt_drop_rate,
                 dtype=next(self.bundle.transformer.parameters()).dtype,
             )
-        condition_frame_mask_vae = self.bundle.create_condition_mask(
+        condition_frame_mask_vae = self.create_condition_mask(
             latents,
             frame_condition_rate=self.frame_condition_rate,
             condition_num_frames=self.condition_num_frames,
@@ -141,20 +167,20 @@ class PrismTrainer(BaseTrainer):
 
         step_indices = torch.randint(
             0,
-            len(self.bundle.scheduler.timesteps),
+            len(self.scheduler.timesteps),
             (batch_size,),
             device=latents.device,
         )
-        scheduler_timesteps = self.bundle.scheduler.timesteps.to(device=latents.device)
+        scheduler_timesteps = self.scheduler.timesteps.to(device=latents.device)
         timesteps = scheduler_timesteps[step_indices]
 
-        noisy_latents, targets = self.bundle.add_flow_noise(latents, timesteps)
+        noisy_latents, targets = self.add_flow_noise(latents, timesteps)
         noisy_latents = torch.where(condition_frame_mask_vae, noisy_latents, latents)
         # Access patch_size from transformer config (unwrap FSDP/DDP wrapper)
         transformer_module = getattr(
             self.bundle.transformer, 'module', self.bundle.transformer
         )
-        timesteps = self.bundle.create_sequence_ts(
+        timesteps = self.create_sequence_ts(
             timesteps,
             condition_frame_mask_vae,
             transformer_module.config.patch_size,
@@ -169,7 +195,7 @@ class PrismTrainer(BaseTrainer):
             else torch.cuda.amp.autocast(enabled=False)
         )
         with autocast_ctx:
-            model_pred = self.bundle.transformer(
+            model_pred = self.bundle.predict_flow(
                 hidden_states=noisy_latents,
                 encoder_hidden_states=text_states,
                 timestep=timesteps,
@@ -240,7 +266,7 @@ class PrismTrainer(BaseTrainer):
             for rank, (idx, value) in enumerate(zip(top_indices, top_values)):
                 output[f'loss_ch_top{rank}_idx'] = idx.float().detach()
                 output[f'loss_ch_top{rank}'] = value.detach()
-        latent_stats = getattr(self.bundle, '_last_latent_norm_stats', None)
+        latent_stats = getattr(self, '_last_latent_norm_stats', None)
         if latent_stats:
             output.update({
                 key: value.detach() if isinstance(value, torch.Tensor) else value
@@ -259,3 +285,145 @@ class PrismTrainer(BaseTrainer):
             guidance_scale=self.guidance_scale,
         )
         return {'preds': preds, 'prompts': self.val_prompts}
+
+
+    @torch.no_grad()
+    def encode_motion(self, motion: torch.Tensor) -> torch.Tensor:
+        """Normalize a 138D motion and encode it with the frozen fp32 VAE."""
+        from motius.models.prism.gaussian_distribution import (
+            DiagonalGaussianDistributionNd,
+        )
+
+        self.bundle.load_model()
+        motion = motion.float()
+        if motion.ndim == 2:
+            motion = motion.unsqueeze(0)
+        motion = self.processor.normalize(motion)
+        motion = motion.reshape(*motion.shape[:2], 23, 6)
+        with torch.autocast(motion.device.type, enabled=False):
+            parameters = self.bundle.encode_motion_parameters(motion.float())
+        posterior = DiagonalGaussianDistributionNd(parameters)
+        latents = (
+            posterior.sample()
+            if self.bundle.latent_sample_method == "sample"
+            else posterior.mode()
+        )
+        latents = (
+            latents - self.latents_mean.to(latents)
+        ) / self.latents_std.to(latents)
+        stats = latents.detach().float()
+        channel_mean = stats.mean(dim=(0, 2, 3))
+        channel_std = stats.std(dim=(0, 2, 3), unbiased=False)
+        self._last_latent_norm_stats = {
+            "latent_norm_mean": stats.mean(),
+            "latent_norm_std": stats.std(unbiased=False),
+            "latent_norm_channel_mean_abs_max": channel_mean.abs().max(),
+            "latent_norm_channel_std_min": channel_std.min(),
+            "latent_norm_channel_std_max": channel_std.max(),
+        }
+        return latents
+
+    @torch.no_grad()
+    def encode_prompt_with_mask(
+        self,
+        prompt: Union[str, List[str]],
+        max_sequence_length: int = 128,
+        prompt_drop_rate: float = 0.0,
+        dtype: Optional[torch.dtype] = None,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        self.bundle.load_model()
+        if self.tokenizer is None:
+            from transformers import AutoTokenizer
+            components = self.bundle.artifact_config.get("components", {})
+            self.tokenizer = AutoTokenizer.from_pretrained(self.bundle.artifact_dir / components.get("tokenizer", "tokenizer"))
+        prompts = [prompt] if isinstance(prompt, str) else list(prompt)
+        if prompt_drop_rate > 0:
+            prompts = [
+                "" if torch.rand(()).item() < prompt_drop_rate else value
+                for value in prompts
+            ]
+        device = next(self.bundle.text_encoder.parameters()).device
+        dtype = dtype or next(self.bundle.text_encoder.parameters()).dtype
+        tokens = self.tokenizer(
+            prompts,
+            padding="max_length",
+            max_length=max_sequence_length,
+            truncation=True,
+            add_special_tokens=True,
+            return_attention_mask=True,
+            return_tensors="pt",
+        )
+        attention_mask = tokens.attention_mask.to(device)
+        encoded = self.bundle.encode_text_tokens(tokens.input_ids.to(device), attention_mask)
+        return encoded.to(dtype=dtype), attention_mask
+
+    def create_padding_mask(
+        self,
+        num_frames: Optional[torch.Tensor],
+        batch_size: int,
+        latent_frames: int,
+        latent_joints: int,
+        device: torch.device,
+    ) -> torch.Tensor:
+        if num_frames is None:
+            return torch.ones(batch_size, latent_frames, latent_joints, device=device)
+        lengths = torch.as_tensor(num_frames, device=device).long()
+        scale = int(self.bundle.vae.config.scale_factor_temporal)
+        lengths = ((lengths + scale - 1) // scale).clamp(0, latent_frames)
+        valid = torch.arange(latent_frames, device=device)[None] < lengths[:, None]
+        return valid.unsqueeze(-1).expand(-1, -1, latent_joints).float()
+
+    def create_condition_mask(
+        self,
+        latents: torch.Tensor,
+        frame_condition_rate: float = 0.1,
+        condition_num_frames: Union[int, List[int]] = 1,
+        num_frames: Optional[torch.Tensor] = None,
+    ) -> torch.Tensor:
+        batch_size, _, latent_frames, latent_joints = latents.shape
+        device = latents.device
+        mask = torch.ones(
+            batch_size, 1, latent_frames, latent_joints,
+            dtype=torch.bool,
+            device=device,
+        )
+        if frame_condition_rate <= 0:
+            return mask
+        candidates = (
+            [condition_num_frames]
+            if isinstance(condition_num_frames, int)
+            else list(condition_num_frames)
+        )
+        selected = torch.tensor(candidates, device=device)[
+            torch.randint(len(candidates), (batch_size,), device=device)
+        ]
+        scale = int(self.bundle.vae.config.scale_factor_temporal)
+        selected = ((selected + scale - 1) // scale).clamp(0, latent_frames)
+        selected *= (torch.rand(batch_size, device=device) < frame_condition_rate)
+        frames = torch.arange(latent_frames, device=device)[None]
+        condition = frames < selected[:, None]
+        mask = (~condition).unsqueeze(1).unsqueeze(-1).expand_as(mask).clone()
+        if num_frames is not None:
+            valid = torch.as_tensor(num_frames, device=device).long()
+            valid = ((valid + scale - 1) // scale).clamp(0, latent_frames)
+            padded = frames >= valid[:, None]
+            mask |= padded.unsqueeze(1).unsqueeze(-1).expand_as(mask)
+        return mask
+
+    @staticmethod
+    def create_sequence_ts(
+        timesteps: torch.Tensor,
+        condition_mask: torch.Tensor,
+        patch_size=(1, 1),
+    ) -> torch.Tensor:
+        patch_t, patch_j = patch_size
+        sampled_mask = condition_mask[:, 0, ::patch_t, ::patch_j]
+        expanded = timesteps[:, None, None].expand_as(sampled_mask)
+        return torch.where(sampled_mask, expanded, 0).flatten(1)
+
+    def add_flow_noise(
+        self, latents: torch.Tensor, timesteps: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        noise = torch.randn_like(latents)
+        sigmas = _get_sigmas(self.scheduler, timesteps, latents.ndim).to(latents)
+        return (1 - sigmas) * latents + sigmas * noise, noise - latents

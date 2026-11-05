@@ -15,7 +15,8 @@ from torch import nn
 from motius.models.base_model_bundle import ModelBundle
 from motius.registry import MODEL_BUNDLES
 
-from .network import DanceDecoder, EDGE_REPR_DIM
+from motius.models.edge.network import DanceDecoder
+from motius.motion.representation.edge import EDGE_REPR_DIM
 
 
 EDGE_REPO_ID = "ZeyuLing/Motius-EDGE-AISTPP"
@@ -80,6 +81,7 @@ def _resolve_artifact(
                 "normalizer.npz",
                 "LICENSE",
                 "ATTRIBUTIONS.md",
+                "PYTORCH3D_LICENSE",
                 "README.md",
             ],
         )
@@ -100,6 +102,7 @@ class EDGEBundle(ModelBundle):
         normalizer_min=None,
         provenance: Mapping[str, Any] | None = None,
         strict: bool = True,
+        device=None,
     ):
         super().__init__()
         self.config = copy.deepcopy(dict(config or DEFAULT_EDGE_CONFIG))
@@ -119,7 +122,9 @@ class EDGEBundle(ModelBundle):
         scale = torch.as_tensor(normalizer_scale, dtype=torch.float32)
         offset = torch.as_tensor(normalizer_min, dtype=torch.float32)
         if scale.shape != (EDGE_REPR_DIM,) or offset.shape != (EDGE_REPR_DIM,):
-            raise ValueError("EDGE normalizer_scale and normalizer_min must have shape (151,)")
+            raise ValueError(
+                "EDGE normalizer_scale and normalizer_min must have shape (151,)"
+            )
         if not torch.isfinite(scale).all() or torch.any(scale <= 0):
             raise ValueError("EDGE normalizer_scale must be finite and positive")
         if not torch.isfinite(offset).all():
@@ -127,6 +132,8 @@ class EDGEBundle(ModelBundle):
         self.register_buffer("normalizer_scale", scale)
         self.register_buffer("normalizer_min", offset)
         self.network.eval()
+        if device is not None:
+            self.to(device)
 
     @property
     def device(self) -> torch.device:
@@ -136,15 +143,14 @@ class EDGEBundle(ModelBundle):
     def fps(self) -> float:
         return float(self.config.get("fps", 30.0))
 
-    def denormalize(self, value: torch.Tensor) -> torch.Tensor:
-        value = value.clamp(-1, 1)
-        return (value - self.normalizer_min.to(value)) / self.normalizer_scale.to(value)
-
-    def save_pretrained(self, save_directory: str, **_kwargs):
+    def save_pretrained(self, save_directory: str, *, use_ema=False, **_kwargs):
         from safetensors.torch import save_file
 
         output = Path(save_directory)
         output.mkdir(parents=True, exist_ok=True)
+        network = self.ema_network if use_ema else self.network
+        while hasattr(network, "module"):
+            network = network.module
         metadata = {
             "artifact_format": EDGE_ARTIFACT_FORMAT,
             "model_type": "edge",
@@ -153,6 +159,7 @@ class EDGEBundle(ModelBundle):
             "official_checkpoint_sha256": EDGE_OFFICIAL_CHECKPOINT_SHA256,
             "provenance": self.provenance,
             "config": self.config,
+            "exported_neural_state": "current_ema" if use_ema else "current_network",
         }
         (output / "edge_config.json").write_text(json.dumps(metadata, indent=2) + "\n")
         (output / "model_index.json").write_text(
@@ -161,6 +168,16 @@ class EDGEBundle(ModelBundle):
                     "_class_name": "EDGEPipeline",
                     "_motius_bundle": "EDGEBundle",
                     "artifact_format": EDGE_ARTIFACT_FORMAT,
+                    "bundle_class": "motius.models.edge.EDGEBundle",
+                    "pipeline_class": "motius.pipelines.edge.EDGEPipeline",
+                    "required_files": [
+                        "edge_config.json",
+                        "model.safetensors",
+                        "normalizer.npz",
+                        "LICENSE",
+                        "ATTRIBUTIONS.md",
+                        "PYTORCH3D_LICENSE",
+                    ],
                 },
                 indent=2,
             )
@@ -172,7 +189,7 @@ class EDGEBundle(ModelBundle):
                 # model. Clone every tensor so safetensors receives independent
                 # storage while preserving the exact state-dict keys.
                 key: value.detach().cpu().clone()
-                for key, value in self.network.state_dict().items()
+                for key, value in network.state_dict().items()
             },
             str(output / "model.safetensors"),
         )
@@ -181,8 +198,8 @@ class EDGEBundle(ModelBundle):
             scale=self.normalizer_scale.detach().cpu().numpy(),
             min=self.normalizer_min.detach().cpu().numpy(),
         )
-        source_dir = Path(__file__).resolve().parent
-        for name in ("LICENSE", "ATTRIBUTIONS.md"):
+        source_dir = Path(__file__).resolve().parents[2] / "licenses" / "edge"
+        for name in ("LICENSE", "ATTRIBUTIONS.md", "PYTORCH3D_LICENSE"):
             shutil.copy2(source_dir / name, output / name)
         return str(output)
 
@@ -204,7 +221,9 @@ class EDGEBundle(ModelBundle):
         )
         metadata = json.loads((artifact / "edge_config.json").read_text())
         if metadata.get("artifact_format") != EDGE_ARTIFACT_FORMAT:
-            raise ValueError(f"Unsupported EDGE artifact: {metadata.get('artifact_format')}")
+            raise ValueError(
+                f"Unsupported EDGE artifact: {metadata.get('artifact_format')}"
+            )
         with np.load(artifact / "normalizer.npz", allow_pickle=False) as stats:
             scale = np.asarray(stats["scale"], dtype=np.float32)
             offset = np.asarray(stats["min"], dtype=np.float32)

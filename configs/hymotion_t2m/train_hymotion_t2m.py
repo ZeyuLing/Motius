@@ -1,9 +1,9 @@
 """Public HYMotion T2M flow-matching training recipe."""
 
+_base_ = "../_base_/default_runtime.py"
 import os
 
 
-_base_ = "../_base_/default_runtime.py"
 
 data_root = os.environ.get("MOTIUS_DATA_ROOT", "data/training")
 manifest = os.environ.get("MOTIUS_TRAIN_MANIFEST", "train.json")

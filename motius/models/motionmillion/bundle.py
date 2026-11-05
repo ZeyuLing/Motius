@@ -7,11 +7,10 @@ implementation behind a clean ``ModelBundle`` interface.
 Architecture (implemented in ``motius.models.motionmillion.network``):
 
 * **HumanVQVAE** — non-causal 1D-conv encoder/decoder + **FSQ** tokenizer
-  (Finite Scalar Quantization, 65536-code codebook, levels ``[8,8,8,5,5,5]``).
+  (Finite Scalar Quantization, 64000-code codebook, levels ``[8,8,8,5,5,5]``).
 * **LLaMAHF** — 7B (or 3B) autoregressive transformer with RoPE and a
   length-causal text cross-attention mask; greedy AR decoding with EOS stop.
-* **Flan-T5-XL** text encoder (frozen, reloaded by name; not stored in the
-  Motius artifact, exactly like CLIP in MDM / SentenceT5 in MotionStreamer).
+* **Flan-T5-XL** text encoder (frozen, current weights stored in the artifact).
 
 Representation: the released model emits the **same 272-dim, 30 fps
 ``humanml3d_272``** representation used by MotionStreamer (root xz-vel + heading
@@ -24,9 +23,7 @@ HumanML3D-263 evaluator) — no rotation re-encoding required.
 from __future__ import annotations
 
 import json
-import pickle
 import shutil
-import types
 from pathlib import Path
 from typing import List, Optional, Union
 
@@ -67,45 +64,18 @@ _VQVAE_DEFAULTS = {
 }
 # LLaMA AR defaults — released 7B config.
 _AR_DEFAULTS = {
-    "config_name": "7B",   # n_layer=36, n_head=32, n_embd=4096
+    "config_name": "7B",  # n_layer=36, n_head=32, n_embd=4096
     "block_size": 301,
-    "clip_dim": 2048,      # flan-t5-xl hidden size
+    "clip_dim": 2048,  # flan-t5-xl hidden size
     "tie_weights": False,
 }
 
 
-def _tolerant_pickle_module():
-    """A ``pickle`` shim whose Unpickler tolerates unimportable classes.
-
-    The released ``t2m_*_all.zip`` checkpoints bundle a DeepSpeed/optimizer state
-    alongside the ``trans`` weights; importing those classes fails in a clean
-    env. We only read the tensor ``state_dict``, so unknown classes are replaced
-    with a no-op stub — keeping the loader independent of the original repo.
-    """
-
-    class _Stub:
-        def __init__(self, *a, **k):
-            pass
-
-    class _Unpickler(pickle.Unpickler):
-        def find_class(self, module, name):
-            try:
-                return super().find_class(module, name)
-            except Exception:
-                return _Stub
-
-    shim = types.ModuleType("motius_tolerant_pickle_motionmillion")
-    shim.Unpickler = _Unpickler
-    shim.load = lambda f, **kw: _Unpickler(f, **kw).load()
-    shim.loads = pickle.loads
-    shim.Pickler = pickle.Pickler
-    shim.dump = pickle.dump
-    shim.dumps = pickle.dumps
-    return shim
-
-
 def _strip_module_prefix(state: dict) -> dict:
-    return {(k[len("module.") :] if k.startswith("module.") else k): v for k, v in state.items()}
+    return {
+        (k[len("module.") :] if k.startswith("module.") else k): v
+        for k, v in state.items()
+    }
 
 
 def _maybe_download_hub(name_or_path: str, local: Path) -> Path:
@@ -117,16 +87,6 @@ def _maybe_download_hub(name_or_path: str, local: Path) -> Path:
         return Path(snapshot_download(repo_id=name_or_path))
     except Exception:
         return local
-
-
-def _copy_pretrained_tree(src: Path, dst: Path, ignore_patterns: Optional[tuple[str, ...]] = None) -> None:
-    if not src.exists() or not any(src.iterdir()):
-        raise FileNotFoundError(f"pretrained component not found or empty: {src}")
-    if dst.exists():
-        shutil.rmtree(dst)
-    dst.parent.mkdir(parents=True, exist_ok=True)
-    ignore = shutil.ignore_patterns(*(ignore_patterns or ())) if ignore_patterns else None
-    shutil.copytree(src, dst, symlinks=False, ignore=ignore)
 
 
 def _resolve_repo_path(value: Union[str, Path]) -> Path:
@@ -193,13 +153,22 @@ class MotionMillionBundle(ModelBundle):
 
         # --- tokenizer (HumanVQVAE + FSQ) ------------------------------- #
         vqvae = HumanVQVAE(
-            nb_code=vq_cfg["nb_code"], code_dim=vq_cfg["code_dim"],
-            output_emb_width=vq_cfg["output_emb_width"], down_t=vq_cfg["down_t"],
-            stride_t=vq_cfg["stride_t"], width=vq_cfg["width"], depth=vq_cfg["depth"],
-            dilation_growth_rate=vq_cfg["dilation_growth_rate"], activation=vq_cfg["activation"],
-            norm=vq_cfg["norm"], kernel_size=vq_cfg["kernel_size"], use_patcher=vq_cfg["use_patcher"],
-            patch_size=vq_cfg["patch_size"], patch_method=vq_cfg["patch_method"],
-            input_dim=vq_cfg["input_dim"], quantizer=vq_cfg["quantizer"],
+            nb_code=vq_cfg["nb_code"],
+            code_dim=vq_cfg["code_dim"],
+            output_emb_width=vq_cfg["output_emb_width"],
+            down_t=vq_cfg["down_t"],
+            stride_t=vq_cfg["stride_t"],
+            width=vq_cfg["width"],
+            depth=vq_cfg["depth"],
+            dilation_growth_rate=vq_cfg["dilation_growth_rate"],
+            activation=vq_cfg["activation"],
+            norm=vq_cfg["norm"],
+            kernel_size=vq_cfg["kernel_size"],
+            use_patcher=vq_cfg["use_patcher"],
+            patch_size=vq_cfg["patch_size"],
+            patch_method=vq_cfg["patch_method"],
+            input_dim=vq_cfg["input_dim"],
+            quantizer=vq_cfg["quantizer"],
         )
 
         # --- AR transformer --------------------------------------------- #
@@ -233,18 +202,22 @@ class MotionMillionBundle(ModelBundle):
         self.vqvae = vqvae
         self.ar = ar
         self.nfeats = 272
+        self._save_ckpt_modules = ["vqvae", "ar", "text_model"]
+        self._trainable_modules = ["ar"]
+        self._frozen_modules = ["vqvae", "text_model"]
 
-        # --- text encoder (frozen, reloadable; not stored in artifact) -- #
-        self.tokenizer = None
+        # --- frozen text encoder --------------------------------------- #
         self.text_model = None
         if load_text_model:
-            self.tokenizer, self.text_model = self._build_text_model(text_model_name)
+            self.text_model = self._build_text_model(text_model_name)
 
         # --- normalization buffers (272-dim) ---------------------------- #
         mean = np.load(str(mean_path or _DEFAULT_MEAN)).astype(np.float32)
         std = np.load(str(std_path or _DEFAULT_STD)).astype(np.float32)
         if mean.shape != (272,) or std.shape != (272,):
-            raise ValueError(f"expected 272-dim mean/std, got {mean.shape} and {std.shape}")
+            raise ValueError(
+                f"expected 272-dim mean/std, got {mean.shape} and {std.shape}"
+            )
         self.register_buffer("mean", torch.from_numpy(mean), persistent=True)
         self.register_buffer("std", torch.from_numpy(std), persistent=True)
 
@@ -262,27 +235,24 @@ class MotionMillionBundle(ModelBundle):
 
             sd = load_file(p)
         else:
-            try:
-                ckpt = torch.load(p, map_location="cpu", weights_only=False)
-            except Exception:
-                ckpt = torch.load(
-                    p, map_location="cpu", pickle_module=_tolerant_pickle_module(),
-                    weights_only=False,
-                )
-            sd = ckpt[key] if (key is not None and isinstance(ckpt, dict) and key in ckpt) else ckpt
+            ckpt = torch.load(p, map_location="cpu", weights_only=False)
+            sd = (
+                ckpt[key]
+                if (key is not None and isinstance(ckpt, dict) and key in ckpt)
+                else ckpt
+            )
         sd = _strip_module_prefix(sd)
         module.load_state_dict(sd, strict=True)
 
     @staticmethod
     def _build_text_model(name: str):
-        from transformers import T5EncoderModel, T5Tokenizer
+        from transformers import T5EncoderModel
 
-        tokenizer = T5Tokenizer.from_pretrained(name)
         text_model = T5EncoderModel.from_pretrained(name)
         text_model.eval()
         for p in text_model.parameters():
             p.requires_grad = False
-        return tokenizer, text_model
+        return text_model
 
     # ------------------------------------------------------------------
     # diffusers-style artifact I/O (self-contained, repo-independent)
@@ -290,7 +260,9 @@ class MotionMillionBundle(ModelBundle):
     def config_dict(self) -> dict:
         return {"vqvae": dict(self._vq_cfg), "ar": dict(self._ar_cfg)}
 
-    def save_pretrained(self, save_directory: str, safe_serialization: bool = True, **kwargs):
+    def save_pretrained(
+        self, save_directory: str, safe_serialization: bool = True, **kwargs
+    ):
         """Export a self-contained Motius MotionMillion artifact.
 
         Layout::
@@ -315,26 +287,37 @@ class MotionMillionBundle(ModelBundle):
 
         text_model_name = self.text_model_name
         if include_text_encoder:
-            src_name = text_model_source or self.text_model_name
-            src = _resolve_repo_path(src_name)
-            if not src.exists() or not any(src.iterdir()):
-                from huggingface_hub import snapshot_download
+            from motius.motion.conditioning.motionmillion_text import text_tokenizer
 
-                src = Path(snapshot_download(repo_id=str(src_name)))
-            _copy_pretrained_tree(
-                src,
-                save_dir / text_encoder_subdir,
-                ignore_patterns=(
-                    ".cache",
-                    "pytorch_model*.bin",
-                    "pytorch_model.bin.index.json",
-                    "tf_model*.h5",
-                    "tf_model.h5.index.json",
-                    "flax_model*.msgpack",
-                    "flax_model.msgpack.index.json",
-                    "rust_model.ot",
-                ),
+            destination = save_dir / text_encoder_subdir
+            if destination.resolve() == Path(self.text_model_name).resolve():
+                raise ValueError(
+                    "Export text directory must differ from the loaded artifact"
+                )
+            if destination.exists():
+                shutil.rmtree(destination)
+            model = self.text_model
+            if model is None:
+                raise RuntimeError(
+                    "Materialize the text encoder before exporting its current weights"
+                )
+            while hasattr(model, "module") or hasattr(model, "_orig_mod"):
+                model = model.module if hasattr(model, "module") else model._orig_mod
+            model.save_pretrained(destination, safe_serialization=True)
+            text_tokenizer(text_model_source or self.text_model_name).save_pretrained(
+                destination
             )
+            source = _resolve_repo_path(text_model_source or self.text_model_name)
+            if source.is_dir():
+                for name in (
+                    "LICENSE",
+                    "LICENSE.txt",
+                    "LICENSE.md",
+                    "NOTICE",
+                    "README.md",
+                ):
+                    if (source / name).is_file():
+                        shutil.copy2(source / name, destination / name)
             text_model_name = text_encoder_subdir
 
         cfg = {
@@ -352,6 +335,8 @@ class MotionMillionBundle(ModelBundle):
         (save_dir / "mm_config.json").write_text(json.dumps(cfg, indent=2))
 
         def _cpu_state(m):
+            while hasattr(m, "module") or hasattr(m, "_orig_mod"):
+                m = m.module if hasattr(m, "module") else m._orig_mod
             return {k: v.detach().cpu().contiguous() for k, v in m.state_dict().items()}
 
         if safe_serialization:
@@ -363,8 +348,14 @@ class MotionMillionBundle(ModelBundle):
             torch.save(_cpu_state(self.vqvae), str(save_dir / "fsq.pt"))
             torch.save(_cpu_state(self.ar), str(save_dir / "ar.pt"))
 
-        np.save(str(save_dir / "mean.npy"), self.mean.detach().cpu().numpy().astype(np.float32))
-        np.save(str(save_dir / "std.npy"), self.std.detach().cpu().numpy().astype(np.float32))
+        np.save(
+            str(save_dir / "mean.npy"),
+            self.mean.detach().cpu().numpy().astype(np.float32),
+        )
+        np.save(
+            str(save_dir / "std.npy"),
+            self.std.detach().cpu().numpy().astype(np.float32),
+        )
         model_index = {
             "_class_name": "MotionMillionPipeline",
             "_diffusers_version": "motius",
@@ -451,25 +442,21 @@ class MotionMillionBundle(ModelBundle):
         return self.mean.device
 
     @torch.no_grad()
-    def encode_text(self, captions: List[str], max_tokens: int = 150):
+    def encode_text(self, inputs, max_tokens: int = 150):
         """Flan-T5-XL text features ``(B, L, 2048)`` and attention mask ``(B, L)``."""
         if self.text_model is None:
             raise RuntimeError("text encoder not loaded (load_text_model=False).")
         device = self.text_model.device
-        inputs = self.tokenizer(list(captions), padding=True, truncation=True, return_tensors="pt")
         y_mask = inputs.attention_mask.to(device)
         feat = self.text_model(
             input_ids=inputs.input_ids.to(device),
-            attention_mask=y_mask, output_hidden_states=False,
+            attention_mask=y_mask,
+            output_hidden_states=False,
         ).last_hidden_state
         if feat.shape[1] > max_tokens:
             feat = feat[:, :max_tokens, :]
             y_mask = y_mask[:, :max_tokens]
         return feat, y_mask
-
-    def denormalize(self, motion_272: torch.Tensor) -> torch.Tensor:
-        """Un-standardize MotionMillion-272 features back to physical (raw) scale."""
-        return motion_272 * self.std + self.mean
 
     def forward(self, *args, **kwargs):  # pragma: no cover - use pipeline
         if self.ar is None:

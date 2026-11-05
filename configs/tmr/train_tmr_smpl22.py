@@ -1,9 +1,9 @@
 """Public TMR recipe for 22-joint position features."""
 
+_base_ = "../_base_/default_runtime.py"
 import os
 
 
-_base_ = "../_base_/default_runtime.py"
 
 dataset_dir = os.environ.get("MOTIUS_DATA_ROOT", "data/training/tmr")
 work_dir = os.environ.get("MOTIUS_WORK_DIR", "outputs/training/tmr_smpl22")
@@ -30,12 +30,11 @@ model = dict(
         dropout=0.1,
         activation="gelu",
     ),
-    lmd=dict(recons=1.0, latent=1.0e-5, kl=1.0e-5, contrastive=0.1),
-    temperature=0.1,
-    threshold_selfsim=0.8,
     sample_mean=False,
 )
-trainer = dict(type="TMRTrainer")
+trainer = dict(type="TMRTrainer",
+               lmd=dict(recons=1.0, latent=1.0e-5, kl=1.0e-5, contrastive=0.1),
+               temperature=0.1, threshold_selfsim=0.8)
 
 train_dataloader = dict(
     batch_size=64,

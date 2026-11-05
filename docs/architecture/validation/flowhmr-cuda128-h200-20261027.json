@@ -1,0 +1,31 @@
+{
+  "torch": "2.7.1+cu128",
+  "cuda": "12.8",
+  "gpu": "NVIDIA H200",
+  "frames": 750,
+  "fps": 30,
+  "precision": "float16",
+  "camera_interval": 1,
+  "full_hand_features": true,
+  "total_seconds_including_model_loading": 111.50153746362776,
+  "peak_allocated_bytes": 4188000768,
+  "peak_reserved_bytes": 4760535040,
+  "comparison_to_torch_2_6_cu124": {
+    "same_frames": true,
+    "world_joint_mm": {
+      "mean": 1.1710178852081299,
+      "p95": 1.9831776678562163,
+      "max": 7.536141872406006
+    },
+    "body_rotation_deg": {
+      "mean": 0.032694645508819974,
+      "p95": 0.10688722213743287,
+      "max": 1.242744629429921
+    },
+    "hand_rotation_deg": {
+      "mean": 0.054373077170490676,
+      "p95": 0.20341434150593296,
+      "max": 1.993982601502434
+    }
+  }
+}

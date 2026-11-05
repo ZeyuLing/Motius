@@ -31,11 +31,11 @@ def test_monocular_methods_have_linked_model_cards():
 
     prompthmr = (ROOT / "docs/model_zoo/prompthmr.md").read_text()
     assert "Official source" in prompthmr
-    assert "| Task status | Restricted upstream runtime |" in prompthmr
+    assert "| Task status | Native research implementation; validation scope below |" in prompthmr
     assert "Pipeline.from_pretrained" in prompthmr
     assert (
         "| [PromptHMR-Video](prompthmr.md) | "
-        "**Restricted upstream runtime** |"
+        "Monocular Motion Capture |"
     ) in model_zoo
 
 
@@ -56,16 +56,16 @@ def test_monocular_runtime_legal_files_are_packaged():
     pyproject = (ROOT / "pyproject.toml").read_text()
     expected = (
         '"motius.models.gvhmr" = ["ATTRIBUTIONS.md"]',
-        '"motius.models.prompthmr" = ["ATTRIBUTIONS.md"]',
-        '"motius.models.gem_smpl" = ["ATTRIBUTIONS.md"]',
-        '"motius.models.gem_smpl.vendor" = [',
-        '"GENMO_LICENSE",',
-        '"GVHMR_LICENSE",',
-        '"motius.models.gem_x" = ["ATTRIBUTIONS.md"]',
-        '"motius.models.gem_x.vendor" = [',
-        '"GEM_X_LICENSE",',
-        '"third_party/**/*LICENSE*",',
-        '"motius.models.flowhmr" = [',
-        '"motius.models.flowhmr.vendor" = [',
+        '"motius.licenses.prompthmr" = [',
+        '"motius.licenses.gem_smpl" = ["*"]',
+        '"motius.licenses.gem_x" = ["*"]',
+        '"motius.configuration.flowhmr" = [',
+        '"motius.licenses.flowhmr" = [',
     )
     assert all(entry in pyproject for entry in expected)
+    for package,names in {
+        'prompthmr':['LICENSE','DROID_CALIB_LICENSE','METRIC3D_LICENSE'],
+        'gem_smpl':['GENMO_LICENSE','GVHMR_LICENSE'],
+        'gem_x':['GEM_X_LICENSE'],
+    }.items():
+        for name in names:assert (ROOT/'motius/licenses'/package/name).stat().st_size>100

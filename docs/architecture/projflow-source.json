@@ -1,0 +1,93 @@
+{
+  "complete": true,
+  "tests": [
+    {
+      "tensor": "/training/0/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/0/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/0/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/cpu_rng",
+      "shape": [
+        5056
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/1/cuda_rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/0",
+      "shape": [
+        48,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/1",
+      "shape": [
+        36,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/0",
+      "shape": [
+        48,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/1",
+      "shape": [
+        36,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "upstream_commit": "9550501a439964a73063505b7a52e574ae11a43c",
+  "scope": "Released ACMDM Raw Flow S prior, original network/transport objective, all gradient hashes and CPU/CUDA RNG; two ragged 48-frame minibatches with raw long/short text. Two full 100-step original samplers versus native public control Pipeline, with and without ProjFlow projection and CFG. Original corpus ingestion, EMA/optimizer and full training protocol excluded. Controlled FP32/math-attention/deterministic-convolution runtime.",
+  "source_dependency": "timm 1.0.9, as pinned in original environment.yml",
+  "native_dependency": "timm 1.0.26; norm constructor accepts device/dtype without changing equations"
+}

@@ -165,7 +165,7 @@ translation. See the [InterHuman-262 reference](../motion/representations.md#int
   Complex Interactions](https://arxiv.org/abs/2304.05684)
 - Original source: [tr3e/InterGen](https://github.com/tr3e/InterGen)
 - Release terms: CC BY-NC-SA 4.0; packaged notices are recorded in
-  [`motius/models/intergen/NOTICE`](../../motius/models/intergen/NOTICE).
+  [`motius/licenses/intergen/NOTICE`](../../motius/licenses/intergen/NOTICE).
 
 <!-- MOTIUS_MODEL_CARD_FOOTER:START -->
 ---

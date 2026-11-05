@@ -42,9 +42,6 @@ from .modeling_motionclip_base import (
     MotionCLIPMLP,
     MotionCLIPEncoderLayer,
     MotionCLIPEncoder,
-    clip_loss,
-    contrastive_loss,
-    gather_with_grad,
     get_vector_norm,
 )
 
@@ -292,7 +289,6 @@ class MotionCLIPModel(MotionCLIPPreTrainedModel):
         attention_mask: Optional[torch.Tensor] = None,
         motion_attention_mask: Optional[torch.Tensor] = None,
         position_ids: Optional[torch.LongTensor] = None,
-        return_loss: Optional[bool] = None,
         **kwargs,
     ) -> MotionCLIPOutput:
         """
@@ -304,7 +300,6 @@ class MotionCLIPModel(MotionCLIPPreTrainedModel):
             attention_mask: Attention mask for text of shape (batch_size, seq_len)
             motion_attention_mask: Attention mask for motion of shape (batch_size, motion_seq_len)
             position_ids: Position ids for text
-            return_loss: Whether or not to return the contrastive loss.
 
         Returns:
             MotionCLIPOutput with loss, logits, and embeddings
@@ -336,30 +331,14 @@ class MotionCLIPModel(MotionCLIPPreTrainedModel):
         logit_scale = self.logit_scale.exp()
         logit_scale = torch.clamp(logit_scale, max=100.0)
 
-        loss = None
-        if return_loss and self.training:
-            # During training, gather embeddings across GPUs for richer negatives
-            all_motion_embeds = gather_with_grad(motion_embeds)
-            all_text_embeds = gather_with_grad(text_embeds)
-
-            global_logits = torch.matmul(
-                all_text_embeds, all_motion_embeds.t()
-            ) * logit_scale
-            loss = clip_loss(global_logits)
-            if dist.is_initialized() and dist.get_world_size() > 1:
-                loss = loss * dist.get_world_size()
-
         # Local logits for output (consistent with local embed batch size)
         logits_per_text = torch.matmul(
             text_embeds, motion_embeds.t()
         ) * logit_scale
         logits_per_motion = logits_per_text.t()
 
-        if return_loss and not self.training:
-            loss = clip_loss(logits_per_text)
-
         return MotionCLIPOutput(
-            loss=loss,
+            loss=None,
             logits_per_motion=logits_per_motion,
             logits_per_text=logits_per_text,
             text_embeds=text_embeds,

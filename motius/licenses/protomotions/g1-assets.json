@@ -1,0 +1,456 @@
+{
+  "repository": "NVlabs/ProtoMotions",
+  "revision": "49fe5ad69de67ebbc07ea2b25d41b0f622c15c3c",
+  "files": [
+    {
+      "file": "protomotions/data/assets/mesh/G1/LICENSE",
+      "size": 1536,
+      "sha256": "61bfd0013f0bd1c32d49112610d3cca0ed592df3575cda79ffb198e751c91dfd",
+      "lfs_sha256": null
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/README.md",
+      "size": 438,
+      "sha256": "6d52a3798bc8ce9b10b6317e6a1cbafcac4aa3cfefdd5eaad638a9c5e690ebb0",
+      "lfs_sha256": null
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/head_link.stl",
+      "size": 932784,
+      "sha256": "005fb67fbd3eff94aa8bf4a6e83238174e9f91b6721f7111594322f223724411",
+      "lfs_sha256": "005fb67fbd3eff94aa8bf4a6e83238174e9f91b6721f7111594322f223724411"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_ankle_pitch_link.stl",
+      "size": 71184,
+      "sha256": "d49e3abc6f5b12e532062cd575b87b5ef40cd2a3fc18f54a1ca5bba4f773d51d",
+      "lfs_sha256": "d49e3abc6f5b12e532062cd575b87b5ef40cd2a3fc18f54a1ca5bba4f773d51d"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_ankle_roll_link.stl",
+      "size": 653384,
+      "sha256": "c4092af943141d4d9f74232f3cfa345afc6565f46a077793b8ae0e68b39dc33f",
+      "lfs_sha256": "c4092af943141d4d9f74232f3cfa345afc6565f46a077793b8ae0e68b39dc33f"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_elbow_link.stl",
+      "size": 88784,
+      "sha256": "fa752198accd104d5c4c3a01382e45165b944fbbc5acce085059223324e5bed3",
+      "lfs_sha256": "fa752198accd104d5c4c3a01382e45165b944fbbc5acce085059223324e5bed3"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_hand_index_0_link.stl",
+      "size": 475984,
+      "sha256": "6b35f2f77211d5a366f0b9a4e47c4ee35e536731266f1a34e9efa12db579b892",
+      "lfs_sha256": "6b35f2f77211d5a366f0b9a4e47c4ee35e536731266f1a34e9efa12db579b892"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_hand_index_1_link.stl",
+      "size": 1521784,
+      "sha256": "9e315ebc8a7a0cb98e033985b586b20d81cf8aa761181ae61ce56fcb14077a06",
+      "lfs_sha256": "9e315ebc8a7a0cb98e033985b586b20d81cf8aa761181ae61ce56fcb14077a06"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_hand_middle_0_link.stl",
+      "size": 475984,
+      "sha256": "6b35f2f77211d5a366f0b9a4e47c4ee35e536731266f1a34e9efa12db579b892",
+      "lfs_sha256": "6b35f2f77211d5a366f0b9a4e47c4ee35e536731266f1a34e9efa12db579b892"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_hand_middle_1_link.stl",
+      "size": 1521784,
+      "sha256": "9e315ebc8a7a0cb98e033985b586b20d81cf8aa761181ae61ce56fcb14077a06",
+      "lfs_sha256": "9e315ebc8a7a0cb98e033985b586b20d81cf8aa761181ae61ce56fcb14077a06"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_hand_palm_link.stl",
+      "size": 2140184,
+      "sha256": "23a486b75bd78a9bf03cec25d84d87f97f3dae038cf21a743b6d469b337e4004",
+      "lfs_sha256": "23a486b75bd78a9bf03cec25d84d87f97f3dae038cf21a743b6d469b337e4004"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_hand_thumb_0_link.stl",
+      "size": 8884,
+      "sha256": "a90c721661c0622685488a3c74d1e122c7da89242d3a1daef75edb83422d05e0",
+      "lfs_sha256": "a90c721661c0622685488a3c74d1e122c7da89242d3a1daef75edb83422d05e0"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_hand_thumb_1_link.stl",
+      "size": 475984,
+      "sha256": "445c54a45bc13ce36001556f66bc0f49c83cb40321205ae4d676bb2874325684",
+      "lfs_sha256": "445c54a45bc13ce36001556f66bc0f49c83cb40321205ae4d676bb2874325684"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_hand_thumb_2_link.stl",
+      "size": 1521784,
+      "sha256": "3d8dbe5085acfc213d21aa8b0782e89cd79084e9678f3a85fc7b04a86b029db5",
+      "lfs_sha256": "3d8dbe5085acfc213d21aa8b0782e89cd79084e9678f3a85fc7b04a86b029db5"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_hip_pitch_link.stl",
+      "size": 181684,
+      "sha256": "4725168105ee768ee31638ef22b53f6be2d7641bfd7cfefe803488d884776fa4",
+      "lfs_sha256": "4725168105ee768ee31638ef22b53f6be2d7641bfd7cfefe803488d884776fa4"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_hip_roll_link.stl",
+      "size": 192184,
+      "sha256": "91f25922ee8a7c3152790051bebad17b4d9cd243569c38fe340285ff93a97acf",
+      "lfs_sha256": "91f25922ee8a7c3152790051bebad17b4d9cd243569c38fe340285ff93a97acf"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_hip_yaw_link.stl",
+      "size": 296284,
+      "sha256": "a16d88aa6ddac8083aa7ad55ed317bea44b1fa003d314fba88965b7ed0f3b55b",
+      "lfs_sha256": "a16d88aa6ddac8083aa7ad55ed317bea44b1fa003d314fba88965b7ed0f3b55b"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_knee_link.stl",
+      "size": 854884,
+      "sha256": "8d92b9e3d3a636761150bb8025e32514c4602b91c7028d523ee42b3e632de477",
+      "lfs_sha256": "8d92b9e3d3a636761150bb8025e32514c4602b91c7028d523ee42b3e632de477"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_rubber_hand.stl",
+      "size": 2287484,
+      "sha256": "cff2221a690fa69303f61fce68f2d155c1517b52efb6ca9262dd56e0bc6e70fe",
+      "lfs_sha256": "cff2221a690fa69303f61fce68f2d155c1517b52efb6ca9262dd56e0bc6e70fe"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_shoulder_pitch_link.stl",
+      "size": 176784,
+      "sha256": "f0d1cfd02fcf0d42f95e678eeca33da3afbcc366ffba5c052847773ec4f31d52",
+      "lfs_sha256": "f0d1cfd02fcf0d42f95e678eeca33da3afbcc366ffba5c052847773ec4f31d52"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_shoulder_roll_link.stl",
+      "size": 400284,
+      "sha256": "fb9df21687773522598dc384f1a2945c7519f11cbc8bd372a49170316d6eee88",
+      "lfs_sha256": "fb9df21687773522598dc384f1a2945c7519f11cbc8bd372a49170316d6eee88"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_shoulder_yaw_link.stl",
+      "size": 249184,
+      "sha256": "1aa97e9748e924336567992181f78c7cd0652fd52a4afcca3df6b2ef6f9e712e",
+      "lfs_sha256": "1aa97e9748e924336567992181f78c7cd0652fd52a4afcca3df6b2ef6f9e712e"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_wrist_pitch_link.stl",
+      "size": 85984,
+      "sha256": "b251d8e05047f695d0f536cd78c11973cfa4e78d08cfe82759336cc3471de3a9",
+      "lfs_sha256": "b251d8e05047f695d0f536cd78c11973cfa4e78d08cfe82759336cc3471de3a9"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_wrist_roll_link.stl",
+      "size": 356184,
+      "sha256": "edc387c9a0ba8c2237e9b296d32531426fabeb6f53e58df45c76106bca74148c",
+      "lfs_sha256": "edc387c9a0ba8c2237e9b296d32531426fabeb6f53e58df45c76106bca74148c"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_wrist_roll_rubber_hand.stl",
+      "size": 3484884,
+      "sha256": "e81030abd023bd9e4a308ef376d814a2c12d684d8a7670c335bbd5cd7809c909",
+      "lfs_sha256": "e81030abd023bd9e4a308ef376d814a2c12d684d8a7670c335bbd5cd7809c909"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/left_wrist_yaw_link.stl",
+      "size": 318684,
+      "sha256": "83f8fb3a726bf9613d65dd14f0f447cb918c3c95b3938042a0c9c09749267d3b",
+      "lfs_sha256": "83f8fb3a726bf9613d65dd14f0f447cb918c3c95b3938042a0c9c09749267d3b"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/logo_link.stl",
+      "size": 243384,
+      "sha256": "8571a0a19bc4916fa55f91449f51d5fdefd751000054865a842449429d5f155b",
+      "lfs_sha256": "8571a0a19bc4916fa55f91449f51d5fdefd751000054865a842449429d5f155b"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/pelvis.stl",
+      "size": 1060884,
+      "sha256": "5ba6bbc888e630550140d3c26763f10206da8c8bd30ed886b8ede41c61f57a31",
+      "lfs_sha256": "5ba6bbc888e630550140d3c26763f10206da8c8bd30ed886b8ede41c61f57a31"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/pelvis_contour_link.stl",
+      "size": 1805184,
+      "sha256": "5cc5c2c7a312329e3feeb2b03d3fc09fc29705bd01864f6767e51be959662420",
+      "lfs_sha256": "5cc5c2c7a312329e3feeb2b03d3fc09fc29705bd01864f6767e51be959662420"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_ankle_pitch_link.stl",
+      "size": 71184,
+      "sha256": "15be426539ec1be70246d4d82a168806db64a41301af8b35c197a33348c787a9",
+      "lfs_sha256": "15be426539ec1be70246d4d82a168806db64a41301af8b35c197a33348c787a9"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_ankle_roll_link.stl",
+      "size": 653784,
+      "sha256": "4b66222ea56653e627711b56d0a8949b4920da5df091da0ceb343f54e884e3a5",
+      "lfs_sha256": "4b66222ea56653e627711b56d0a8949b4920da5df091da0ceb343f54e884e3a5"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_elbow_link.stl",
+      "size": 88784,
+      "sha256": "1be925d7aa268bb8fddf5362b9173066890c7d32092c05638608126e59d1e2ab",
+      "lfs_sha256": "1be925d7aa268bb8fddf5362b9173066890c7d32092c05638608126e59d1e2ab"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_hand_index_0_link.stl",
+      "size": 475984,
+      "sha256": "12ab4300c95e437e834f9aef772b3b431c671bf34338930b52ad11aef73bbd0d",
+      "lfs_sha256": "12ab4300c95e437e834f9aef772b3b431c671bf34338930b52ad11aef73bbd0d"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_hand_index_1_link.stl",
+      "size": 1521784,
+      "sha256": "c9c34efce4563cacdcfd29fc838a982976d40f5442c71219811dcbbf3923a33d",
+      "lfs_sha256": "c9c34efce4563cacdcfd29fc838a982976d40f5442c71219811dcbbf3923a33d"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_hand_middle_0_link.stl",
+      "size": 475984,
+      "sha256": "12ab4300c95e437e834f9aef772b3b431c671bf34338930b52ad11aef73bbd0d",
+      "lfs_sha256": "12ab4300c95e437e834f9aef772b3b431c671bf34338930b52ad11aef73bbd0d"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_hand_middle_1_link.stl",
+      "size": 1521784,
+      "sha256": "c9c34efce4563cacdcfd29fc838a982976d40f5442c71219811dcbbf3923a33d",
+      "lfs_sha256": "c9c34efce4563cacdcfd29fc838a982976d40f5442c71219811dcbbf3923a33d"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_hand_palm_link.stl",
+      "size": 2140184,
+      "sha256": "86c0b231cc44477d64a6493e5a427ba16617a00738112dd187c652675b086fb9",
+      "lfs_sha256": "86c0b231cc44477d64a6493e5a427ba16617a00738112dd187c652675b086fb9"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_hand_thumb_0_link.stl",
+      "size": 8884,
+      "sha256": "544298d0ea1088f5b276a10cc6a6a9e533efdd91594955fdc956c46211d07f83",
+      "lfs_sha256": "544298d0ea1088f5b276a10cc6a6a9e533efdd91594955fdc956c46211d07f83"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_hand_thumb_1_link.stl",
+      "size": 475984,
+      "sha256": "0a9a820da8dd10f298778b714f1364216e8a5976f4fd3a05689ea26327d44bf6",
+      "lfs_sha256": "0a9a820da8dd10f298778b714f1364216e8a5976f4fd3a05689ea26327d44bf6"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_hand_thumb_2_link.stl",
+      "size": 1521784,
+      "sha256": "3f1bfb37668e8f61801c8d25f171fa1949e08666be86c67acad7e0079937cc45",
+      "lfs_sha256": "3f1bfb37668e8f61801c8d25f171fa1949e08666be86c67acad7e0079937cc45"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_hip_pitch_link.stl",
+      "size": 181284,
+      "sha256": "e4f3c99d7f4a7d34eadbef9461fc66e3486cb5442db1ec50c86317d459f1a9c6",
+      "lfs_sha256": "e4f3c99d7f4a7d34eadbef9461fc66e3486cb5442db1ec50c86317d459f1a9c6"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_hip_roll_link.stl",
+      "size": 192684,
+      "sha256": "4c254ef66a356f492947f360dd931965477b631e3fcc841f91ccc46d945d54f6",
+      "lfs_sha256": "4c254ef66a356f492947f360dd931965477b631e3fcc841f91ccc46d945d54f6"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_hip_yaw_link.stl",
+      "size": 296284,
+      "sha256": "e479c2936ca2057e9eb2f7dff6c189b7419d7b8484dea0b298cbb36a2a6aa668",
+      "lfs_sha256": "e479c2936ca2057e9eb2f7dff6c189b7419d7b8484dea0b298cbb36a2a6aa668"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_knee_link.stl",
+      "size": 852284,
+      "sha256": "63c4008449c9bbe701a6e2b557b7a252e90cf3a5abcf54cee46862b9a69f8ec8",
+      "lfs_sha256": "63c4008449c9bbe701a6e2b557b7a252e90cf3a5abcf54cee46862b9a69f8ec8"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_rubber_hand.stl",
+      "size": 2192684,
+      "sha256": "99533b778bca6246144fa511bb9d4e555e075c641f2a0251e04372869cd99d67",
+      "lfs_sha256": "99533b778bca6246144fa511bb9d4e555e075c641f2a0251e04372869cd99d67"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_shoulder_pitch_link.stl",
+      "size": 176784,
+      "sha256": "24cdb387e0128dfe602770a81c56cdce3a0181d34d039a11d1aaf8819b7b8c02",
+      "lfs_sha256": "24cdb387e0128dfe602770a81c56cdce3a0181d34d039a11d1aaf8819b7b8c02"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_shoulder_roll_link.stl",
+      "size": 401884,
+      "sha256": "962b97c48f9ce9e8399f45dd9522e0865d19aa9fd299406b2d475a8fc4a53e81",
+      "lfs_sha256": "962b97c48f9ce9e8399f45dd9522e0865d19aa9fd299406b2d475a8fc4a53e81"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_shoulder_yaw_link.stl",
+      "size": 249984,
+      "sha256": "a0b76489271da0c72461a344c9ffb0f0c6e64f019ea5014c1624886c442a2fe5",
+      "lfs_sha256": "a0b76489271da0c72461a344c9ffb0f0c6e64f019ea5014c1624886c442a2fe5"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_wrist_pitch_link.stl",
+      "size": 79584,
+      "sha256": "d22f8f3b3127f15a63e5be1ee273cd5075786c3142f1c3d9f76cbf43d2a26477",
+      "lfs_sha256": "d22f8f3b3127f15a63e5be1ee273cd5075786c3142f1c3d9f76cbf43d2a26477"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_wrist_roll_link.stl",
+      "size": 356084,
+      "sha256": "a7ee9212ff5b94d6cb7f52bb1bbf3f352194d5b598acff74f4c77d340c5b344f",
+      "lfs_sha256": "a7ee9212ff5b94d6cb7f52bb1bbf3f352194d5b598acff74f4c77d340c5b344f"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_wrist_roll_rubber_hand.stl",
+      "size": 3481584,
+      "sha256": "0729aff1ac4356f9314de13a46906267642e58bc47f0d8a7f17f6590a6242ccf",
+      "lfs_sha256": "0729aff1ac4356f9314de13a46906267642e58bc47f0d8a7f17f6590a6242ccf"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/right_wrist_yaw_link.stl",
+      "size": 341484,
+      "sha256": "bc9dece2d12509707e0057ba2e48df8f3d56db0c79410212963a25e8a50f61a6",
+      "lfs_sha256": "bc9dece2d12509707e0057ba2e48df8f3d56db0c79410212963a25e8a50f61a6"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/torso_constraint_L_link.stl",
+      "size": 203584,
+      "sha256": "82be7f93e85b3d303a1d1e1847e2c916939bd61c424ed1ebd28691ec33909dd1",
+      "lfs_sha256": "82be7f93e85b3d303a1d1e1847e2c916939bd61c424ed1ebd28691ec33909dd1"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/torso_constraint_L_rod_link.stl",
+      "size": 74884,
+      "sha256": "c10de1effa7ea797ac268006aa2a739036c7e1f326b2012d711ee2c20c5a6e96",
+      "lfs_sha256": "c10de1effa7ea797ac268006aa2a739036c7e1f326b2012d711ee2c20c5a6e96"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/torso_constraint_R_link.stl",
+      "size": 203584,
+      "sha256": "54ded433a3a0c76027365856fdbd55215643de88846f7d436598a4071e682725",
+      "lfs_sha256": "54ded433a3a0c76027365856fdbd55215643de88846f7d436598a4071e682725"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/torso_constraint_R_rod_link.stl",
+      "size": 74884,
+      "sha256": "cb83fd38a9f06c99e3f301c70f12d94ae770a8f0cf9501f83580a27f908990b4",
+      "lfs_sha256": "cb83fd38a9f06c99e3f301c70f12d94ae770a8f0cf9501f83580a27f908990b4"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/torso_link.stl",
+      "size": 2232984,
+      "sha256": "e96d023f0368a4e3450b86ca5d4f10227d8141156a373e7da8cb3c93266523e0",
+      "lfs_sha256": "e96d023f0368a4e3450b86ca5d4f10227d8141156a373e7da8cb3c93266523e0"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/torso_link_rev_1_0.stl",
+      "size": 2570584,
+      "sha256": "11ddb46f2098efbbd8816b1d65893632d8e78be936376c7cdcd6771899ccc723",
+      "lfs_sha256": "11ddb46f2098efbbd8816b1d65893632d8e78be936376c7cdcd6771899ccc723"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/waist_constraint_L.stl",
+      "size": 114684,
+      "sha256": "8ebafdcb4de6871113f0ca2c356618d6e46b1d50f6c0bf9e37f47b9d8e100d99",
+      "lfs_sha256": "8ebafdcb4de6871113f0ca2c356618d6e46b1d50f6c0bf9e37f47b9d8e100d99"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/waist_constraint_R.stl",
+      "size": 114684,
+      "sha256": "791902a291ffbd35ab97383b7b44ea5d975de7c80eef838797c970790b382ca9",
+      "lfs_sha256": "791902a291ffbd35ab97383b7b44ea5d975de7c80eef838797c970790b382ca9"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/waist_roll_link.stl",
+      "size": 24184,
+      "sha256": "34f0aa73f41131230be4d25876c944fdf6c24d62553f199ff8b980c15e8913df",
+      "lfs_sha256": "34f0aa73f41131230be4d25876c944fdf6c24d62553f199ff8b980c15e8913df"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/waist_roll_link_rev_1_0.stl",
+      "size": 85884,
+      "sha256": "b67c347a05abc3e8ddae600d98a082bee273bb39f8e651647708b0a7140a8a97",
+      "lfs_sha256": "b67c347a05abc3e8ddae600d98a082bee273bb39f8e651647708b0a7140a8a97"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/waist_support_link.stl",
+      "size": 150484,
+      "sha256": "1fae9e1bb609848a1667d32eed8d6083ae443538a306843056a2a660f1b2926a",
+      "lfs_sha256": "1fae9e1bb609848a1667d32eed8d6083ae443538a306843056a2a660f1b2926a"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/waist_yaw_link.stl",
+      "size": 336284,
+      "sha256": "2883f20e03f09b669b5b4ce10677ee6b5191c0934b584d7cbaef2d0662856ffb",
+      "lfs_sha256": "2883f20e03f09b669b5b4ce10677ee6b5191c0934b584d7cbaef2d0662856ffb"
+    },
+    {
+      "file": "protomotions/data/assets/mesh/G1/waist_yaw_link_rev_1_0.stl",
+      "size": 619984,
+      "sha256": "ec6db442b11f25eed898b5add07940c85d804f300de24dcbd264ccd8be7d554c",
+      "lfs_sha256": "ec6db442b11f25eed898b5add07940c85d804f300de24dcbd264ccd8be7d554c"
+    },
+    {
+      "file": "protomotions/data/assets/mjcf/g1_holo_compat.xml",
+      "size": 40649,
+      "sha256": "f9a455ff0b2822b3d3f68e55b02cd7e21c601a84cf3173237b7bfaf494492846",
+      "lfs_sha256": null
+    },
+    {
+      "file": "protomotions/data/assets/usd/g1_holo_compat/.asset_hash",
+      "size": 32,
+      "sha256": "c6588fb3c0d882db1949afad699dc7cbbe746d3a3b43f1b020ef52ce67fb583b",
+      "lfs_sha256": null
+    },
+    {
+      "file": "protomotions/data/assets/usd/g1_holo_compat/config.yaml",
+      "size": 374,
+      "sha256": "789885951abeb080a5b53c69dd681379f68d19af77a6471a7745ebea374a2f05",
+      "lfs_sha256": null
+    },
+    {
+      "file": "protomotions/data/assets/usd/g1_holo_compat/configuration/g1_holo_compat_base.usd",
+      "size": 29694159,
+      "sha256": "f70bfbc443999a25e47b604bf8443ba44a9afca3af1d72a20bd1712acfecec07",
+      "lfs_sha256": "f70bfbc443999a25e47b604bf8443ba44a9afca3af1d72a20bd1712acfecec07"
+    },
+    {
+      "file": "protomotions/data/assets/usd/g1_holo_compat/configuration/g1_holo_compat_physics.usd",
+      "size": 12018,
+      "sha256": "92b465cf0750f01f818e396a49399a6c0d6a481000a0ccbd3ed9dda6abe7fa16",
+      "lfs_sha256": "92b465cf0750f01f818e396a49399a6c0d6a481000a0ccbd3ed9dda6abe7fa16"
+    },
+    {
+      "file": "protomotions/data/assets/usd/g1_holo_compat/configuration/g1_holo_compat_robot.usd",
+      "size": 2111,
+      "sha256": "7d05683bf7528c487abac31c2898d248a5fb0ec79f2db6b5071ee2770c50f1b3",
+      "lfs_sha256": "7d05683bf7528c487abac31c2898d248a5fb0ec79f2db6b5071ee2770c50f1b3"
+    },
+    {
+      "file": "protomotions/data/assets/usd/g1_holo_compat/configuration/g1_holo_compat_sensor.usd",
+      "size": 662,
+      "sha256": "4c440817512375f03722b770a3049643a449bbc50cf5e03b4e90eadbdf806c39",
+      "lfs_sha256": "4c440817512375f03722b770a3049643a449bbc50cf5e03b4e90eadbdf806c39"
+    },
+    {
+      "file": "protomotions/data/assets/usd/g1_holo_compat/g1_holo_compat.usda",
+      "size": 871,
+      "sha256": "db3670aee5591a4f6534dfb879b6c9e6a9d277cc3f7248685e5ea0dcd20912c8",
+      "lfs_sha256": "db3670aee5591a4f6534dfb879b6c9e6a9d277cc3f7248685e5ea0dcd20912c8"
+    },
+    {
+      "file": "protomotions/data/assets/mjcf/g1_bm_box_feet.xml",
+      "size": 27994,
+      "sha256": "20e06dec99e82d578e156584f05142141d7794532b2be835f1ad7ea29d200c82",
+      "lfs_sha256": null
+    },
+    {
+      "file": "protomotions/data/assets/urdf/for_retargeting/g1.urdf",
+      "size": 38269,
+      "sha256": "bd199a00d2bd38f17b47ecf896c3891605af658ebc76d8954b6c2060af071c8e",
+      "lfs_sha256": null
+    }
+  ]
+}

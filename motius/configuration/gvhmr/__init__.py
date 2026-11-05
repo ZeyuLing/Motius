@@ -1,0 +1,1 @@
+"""GVHMR released configuration assets."""

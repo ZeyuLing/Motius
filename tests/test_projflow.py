@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 import torch
 
-from motius.models.projflow.network.sampler import ProjFlowSampler
+from motius.pipelines.projflow.sampler import ProjFlowSampler
 from motius.pipelines.auto import PIPELINE_CLASS_PATHS
 from motius.pipelines.projflow import ProjFlowPipeline
 
@@ -81,7 +81,7 @@ def test_projflow_hml263_output_preserves_requested_frame_count():
 
 
 def test_projflow_stats_match_the_official_humanml3d_joint_space():
-    assets = ROOT / "motius" / "models" / "projflow" / "assets"
+    assets = ROOT / "motius" / "motion" / "assets" / "projflow"
 
     np.testing.assert_allclose(
         np.load(assets / "joints_mean.npy"),

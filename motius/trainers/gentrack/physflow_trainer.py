@@ -17,12 +17,16 @@ in this file remains available only for ablations.
 
 from __future__ import annotations
 
+from motius.pipelines.gentrack.sampling import latents_to_qpos
+from motius.pipelines.gentrack.sampling import save_qpos_csv
+
 import math
 import os
 import re
 import tempfile
 from typing import Any, Dict, List, Optional
 
+import numpy as np
 import torch
 
 from motius.registry import TRAINERS
@@ -246,7 +250,7 @@ class PhysFlowTrainer(BaseTrainer):
         self.style_reward_weight = float(style_reward_weight)
         self._style_bank = None
         if self.style_reward_bank and self.style_reward_weight > 0.0:
-            from motius.models.gentrack.g1_style_reward import G1StyleBank
+            from motius.evaluation.gentrack.g1_style_reward import G1StyleBank
 
             self._style_bank = G1StyleBank.load(self.style_reward_bank)
         self.accept_max_joint_error_rad = accept_max_joint_error_rad
@@ -466,7 +470,7 @@ class PhysFlowTrainer(BaseTrainer):
     ) -> None:
         if self._style_bank is None or self.style_reward_weight <= 0.0:
             return
-        from motius.models.gentrack.g1_style_reward import categorize_style_text
+        from motius.evaluation.gentrack.g1_style_reward import categorize_style_text
 
         for flat_idx, record in enumerate(metrics):
             b = flat_idx // group_size
@@ -861,7 +865,7 @@ class PhysFlowTrainer(BaseTrainer):
         # Humanoid-GPT judge runs in its own venv worker (jax/mujoco-mjx); it does
         # not use the ProtoMotions ONNX-ensemble spec mechanism.
         if self.judge_backend == "hgpt":
-            from motius.models.gentrack.hgpt_reward import HgptJudgeReward
+            from motius.evaluation.gentrack.hgpt_reward import HgptJudgeReward
 
             if self._reward is None:
                 self._reward = HgptJudgeReward(
@@ -873,7 +877,7 @@ class PhysFlowTrainer(BaseTrainer):
             return self._reward
 
         if self.judge_backend in {"any2track", "opentrack"}:
-            from motius.models.gentrack.any2track_reward import Any2TrackJudgeReward
+            from motius.evaluation.gentrack.any2track_reward import Any2TrackJudgeReward
 
             if self._reward is None:
                 self._reward = Any2TrackJudgeReward(
@@ -886,7 +890,7 @@ class PhysFlowTrainer(BaseTrainer):
             return self._reward
 
         if self.judge_backend == "sonic":
-            from motius.models.gentrack.sonic_reward import SonicJudgeReward
+            from motius.evaluation.gentrack.sonic_reward import SonicJudgeReward
 
             if self._reward is None:
                 self._reward = SonicJudgeReward(
@@ -906,7 +910,7 @@ class PhysFlowTrainer(BaseTrainer):
             return self._reward
 
         if self.judge_backend == "sonic_mujoco":
-            from motius.models.gentrack.sonic_mujoco_reward import (
+            from motius.evaluation.gentrack.sonic_mujoco_reward import (
                 SonicMujocoJudgeReward,
             )
 
@@ -924,7 +928,7 @@ class PhysFlowTrainer(BaseTrainer):
                 )
             return self._reward
 
-        from motius.models.gentrack.reward import PhysicsJudgeReward
+        from motius.evaluation.gentrack.reward import PhysicsJudgeReward
 
         spec = os.environ.get("PHYSFLOW_JUDGE_SPEC")
         if spec and os.path.isfile(spec):
@@ -972,7 +976,7 @@ class PhysFlowTrainer(BaseTrainer):
             stem = f"p{b:03d}_s{flat_idx % group_size:02d}"
             stems.append(stem)
             sample = np.asarray(qpos[flat_idx])[:length]
-            self.bundle.save_qpos_csv(sample, os.path.join(csv_dir, f"{stem}.csv"))
+            save_qpos_csv(sample, os.path.join(csv_dir, f"{stem}.csv"))
 
         if not self.enable_reward:
             return [{"score": 0.0} for _ in stems]
@@ -1001,7 +1005,7 @@ class PhysFlowTrainer(BaseTrainer):
             diffusion_steps=self.diffusion_steps,
             cfg_weight=self.cfg_weight, cfg_type=self.cfg_type,
         )  # [B*N, Tmax, D]
-        qpos = self.bundle.latents_to_qpos(latents)  # numpy [B*N, Tmax, 36]
+        qpos = latents_to_qpos(self.bundle, latents)  # numpy [B*N, Tmax, 36]
 
         # 2) score with the frozen judge tracker (lower == more trackable)
         ctx = tempfile.TemporaryDirectory(

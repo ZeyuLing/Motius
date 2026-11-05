@@ -20,6 +20,32 @@ class BeyondMimicBundle(OnnxTrackingBundle):
     DEFAULT_FILES = {"policy": "policy.onnx"}
     ONNX_ROLES = ("policy",)
 
+    @classmethod
+    def from_pretrained(cls, pretrained_model_name_or_path, **kwargs):
+        from motius.models.onnx_policy import resolve_pretrained_directory
+        from pathlib import Path
+
+        path = Path(pretrained_model_name_or_path).expanduser()
+        if path.is_file() and path.suffix in {'.pt', '.pth', '.ckpt'}:
+            from .policy_bundle import BeyondMimicPolicyBundle
+
+            return BeyondMimicPolicyBundle.from_original_checkpoint(
+                path, **kwargs
+            ).eval()
+        options = {
+            name: kwargs.pop(name)
+            for name in ['revision', 'cache_dir', 'token', 'local_files_only']
+            if name in kwargs
+        }
+        root = resolve_pretrained_directory(pretrained_model_name_or_path, **options)
+        if (root / 'beyondmimic_neural.json').is_file():
+            from .policy_bundle import BeyondMimicPolicyBundle
+
+            return BeyondMimicPolicyBundle.from_pretrained(root, **kwargs)
+        return super().from_pretrained(
+            pretrained_model_name_or_path, **options, **kwargs
+        )
+
     def artifact_contract(self) -> dict[str, Any]:
         return {
             "robot": "Unitree G1",
@@ -52,7 +78,9 @@ class BeyondMimicBundle(OnnxTrackingBundle):
     def policy_metadata(self) -> dict[str, str]:
         return self.session("policy").metadata
 
-    def forward(self, observation: Any, time_step: int | np.ndarray) -> dict[str, np.ndarray]:
+    def forward(
+        self, observation: Any, time_step: int | np.ndarray
+    ) -> dict[str, np.ndarray]:
         obs = as_numpy(observation, np.dtype(np.float32))
         if obs.ndim == 1:
             obs = obs[None]

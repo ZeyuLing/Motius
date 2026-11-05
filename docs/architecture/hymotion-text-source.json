@@ -1,0 +1,119 @@
+{
+  "complete": true,
+  "scope": "Independent original HY-Motion Qwen3-8B BF16 and CLIP-L FP32 text encoders, prompt/crop, dynamic sentence padding and all used neural hashes. Native decoder-only Qwen3 omits the original unused vocabulary projection; source model-prefix names are canonicalized. Four raw-text batches; excludes motion denoiser/training and MotionCanvas-specific frontend settings.",
+  "upstream_commit": "4e426f5a1021cbcf7f375458c37b840ee7225229",
+  "tests": [
+    {
+      "tensor": "/cases/0/0",
+      "shape": [
+        1,
+        1,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/1",
+      "shape": [
+        1,
+        64,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/2",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/0",
+      "shape": [
+        2,
+        1,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/1",
+      "shape": [
+        2,
+        64,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/2",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/0",
+      "shape": [
+        2,
+        1,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/1",
+      "shape": [
+        2,
+        64,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/2",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/0",
+      "shape": [
+        1,
+        1,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/1",
+      "shape": [
+        1,
+        64,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/3/2",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

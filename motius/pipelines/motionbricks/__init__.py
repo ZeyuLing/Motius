@@ -1,5 +1,13 @@
-"""MotionBricks inference pipeline."""
+"""MotionBricks pipelines; legacy navigation dependencies remain optional."""
+from importlib import import_module
 
-from .pipeline import MotionBricksPipeline
+__all__ = ['MotionBricksPipeline', 'MotionBricksReleasePipeline']
 
-__all__ = ["MotionBricksPipeline"]
+
+def __getattr__(name):
+    modules = {'MotionBricksPipeline': 'pipeline', 'MotionBricksReleasePipeline': 'release_pipeline'}
+    if name not in modules:
+        raise AttributeError(name)
+    value = getattr(import_module(f'{__name__}.{modules[name]}'), name)
+    globals()[name] = value
+    return value

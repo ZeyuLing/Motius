@@ -283,30 +283,3 @@ class VQVAEVermo1D(ModelMixin, ConfigMixin, FromOriginalModelMixin):
         if not return_dict:
             return out.quant, out.sample, out.indices
         return out
-
-
-def main(
-    cfg: str = "configs/smpl_vae/smpl_vqvae1d_1x_nostatic_aug_rvq_1kx6_none_hq.py",
-    checkpoint: str = "work_dirs/smpl_vqvae1d_1x_nostatic_aug_rvq_1kx6_none_hq/iter_77000.pth",
-    save_dir: str = "checkpoints/vermo_vqvae1d_rvq_1kx6_none_hq_iter_77000",
-):
-    from mmengine.device import get_device
-    from mmengine import Config
-    from mmengine.runner import load_checkpoint
-
-    device = get_device()
-    dtype = torch.bfloat16
-
-    cfg = Config.fromfile(cfg)["model"]
-    model = MODELS.build(cfg)
-    load_checkpoint(model, checkpoint, map_location="cpu", strict=True)
-    model = model.to(device, dtype)
-
-    model.vqvae.save_pretrained(save_dir)
-    print(f"Saved to {save_dir}")
-
-
-if __name__ == "__main__":
-    import fire
-
-    fire.Fire(main)

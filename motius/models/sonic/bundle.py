@@ -12,6 +12,23 @@ from motius.registry import MODEL_BUNDLES
 
 @MODEL_BUNDLES.register_module()
 class SONICBundle(OnnxTrackingBundle):
+    @classmethod
+    def from_pretrained(cls, pretrained_model_name_or_path, **kwargs):
+        from pathlib import Path
+        from motius.models.onnx_policy import resolve_pretrained_directory
+
+        hub = {
+            key: kwargs.pop(key)
+            for key in ['revision', 'cache_dir', 'token', 'local_files_only']
+            if key in kwargs
+        }
+        root = resolve_pretrained_directory(pretrained_model_name_or_path, **hub)
+        if (Path(root) / 'sonic_neural.json').is_file():
+            from .policy_bundle import SONICPolicyBundle
+
+            return SONICPolicyBundle.from_pretrained(root, **kwargs)
+        return super().from_pretrained(root, **kwargs)
+
     CONFIG_NAME = "sonic_config.json"
     MODEL_TYPE = "sonic_g1"
     METHOD_NAME = "SONIC"
@@ -107,35 +124,18 @@ class SONICBundle(OnnxTrackingBundle):
                 "SONIC encoder_observation must have shape "
                 f"[1, {self.encoder_dim}], got {observation.shape}."
             )
-        return self.session("encoder").run({"obs_dict": observation})[
-            "encoded_tokens"
-        ]
+        return self.session("encoder").run({"obs_dict": observation})["encoded_tokens"]
 
-    def forward(
-        self,
-        encoder_observation: Any,
-        decoder_observation: Any,
-    ) -> dict[str, np.ndarray]:
-        tokens = self.encode(encoder_observation)
-        state = as_numpy(decoder_observation, np.dtype(np.float32))
-        if state.ndim == 1:
-            state = state[None]
-        if state.shape != (1, self.decoder_state_dim):
+    def decode(self, decoder_input: Any) -> np.ndarray:
+        observation = as_numpy(decoder_input, np.dtype(np.float32))
+        if observation.ndim == 1:
+            observation = observation[None]
+        if observation.shape != (1, self.decoder_dim):
             raise ValueError(
-                "SONIC decoder_observation must exclude the encoded token and have "
-                f"shape [1, {self.decoder_state_dim}], got {state.shape}."
+                "SONIC decoder input must contain tokens and state with "
+                f"shape [1, {self.decoder_dim}], got {observation.shape}."
             )
-        if tokens.shape[:-1] != state.shape[:-1]:
-            raise ValueError(
-                f"SONIC encoder/decoder batch mismatch: {tokens.shape} vs {state.shape}."
-            )
-        decoder_input = np.concatenate([tokens, state], axis=-1)
-        outputs = self.session("decoder").run({"obs_dict": decoder_input})
-        return {
-            "action": outputs["action"],
-            "encoded_tokens": tokens,
-            "decoder_input": decoder_input,
-        }
+        return self.session("decoder").run({"obs_dict": observation})['action']
 
 
 __all__ = ["SONICBundle"]

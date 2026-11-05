@@ -266,10 +266,3 @@ class WanCausalConv2dTK(nn.Conv2d):
             x = F.pad(x, (pad_w_left, pad_w_right, pad_h_top, pad_h_bot))
 
         return super().forward(x)
-
-
-if __name__ == "__main__":
-    motion = torch.randn(2, 6, 17, 32)
-    conv = WanCausalConv2dTK(6, 32, kernel_size=(3, 1), stride=(2, 1), padding=(1, 0))
-    out = conv(motion)
-    print(out.shape)

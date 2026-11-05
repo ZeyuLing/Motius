@@ -15,14 +15,14 @@ except ImportError:
             return lambda fn: fn
         return method
 import mmengine
-from motius.models.vermo.task_utils import (
-    ABBR_TASK_MAPPING,
-    ALL_TASKS,
-    abbr_list_to_task_list,
-)
-from motius.models.vermo.task_utils.modality import Audio, Caption, Modality
-from motius.models.vermo.task_utils.task_lib.base_task import BaseTask
-from motius.models.vermo.task_utils.task_lib.completion_tasks.motion_inbetween import MotionInbetween
+from motius.motion.conditioning.vermo import ABBR_TASK_MAPPING
+from motius.motion.conditioning.vermo import ALL_TASKS
+from motius.motion.conditioning.vermo import abbr_list_to_task_list
+from motius.motion.conditioning.vermo.modality import Audio
+from motius.motion.conditioning.vermo.modality import Caption
+from motius.motion.conditioning.vermo.modality import Modality
+from motius.motion.conditioning.vermo.task_lib.base_task import BaseTask
+from motius.motion.conditioning.vermo.task_lib.completion_tasks.motion_inbetween import MotionInbetween
 from motius.datasets.motion.motionhub.single_agent_dataset import MotionHubSingleAgentDataset
 from motius.datasets.motion.motionhub.flexible_collate import flexible_collate
 from mmcv.transforms import BaseTransform

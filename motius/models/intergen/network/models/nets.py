@@ -1,73 +1,9 @@
+"""Paired motion denoiser; checkpoint names follow InterGen."""
 import torch
-
-from .utils import *
-from .cfg_sampler import ClassifierFreeSampleModel
-from .blocks import *
-from ..utils.utils import *
-
-from .gaussian_diffusion import (
-    MotionDiffusion,
-    space_timesteps,
-    get_named_beta_schedule,
-    create_named_schedule_sampler,
-    ModelMeanType,
-    ModelVarType,
-    LossType
-)
-import random
-
-class MotionEncoder(nn.Module):
-    def __init__(self, cfg):
-        super().__init__()
-
-        self.cfg = cfg
-        self.input_feats = cfg.INPUT_DIM
-        self.latent_dim = cfg.LATENT_DIM
-        self.ff_size = cfg.FF_SIZE
-        self.num_layers = cfg.NUM_LAYERS
-        self.num_heads = cfg.NUM_HEADS
-        self.dropout = cfg.DROPOUT
-        self.activation = cfg.ACTIVATION
-
-        self.query_token = nn.Parameter(torch.randn(1, self.latent_dim))
-
-        self.embed_motion = nn.Linear(self.input_feats*2, self.latent_dim)
-        self.sequence_pos_encoder = PositionalEncoding(self.latent_dim, self.dropout, max_len=2000)
-
-        seqTransEncoderLayer = nn.TransformerEncoderLayer(d_model=self.latent_dim,
-                                                          nhead=self.num_heads,
-                                                          dim_feedforward=self.ff_size,
-                                                          dropout=self.dropout,
-                                                          activation=self.activation,
-                                                          batch_first=True)
-        self.transformer = nn.TransformerEncoder(seqTransEncoderLayer, num_layers=self.num_layers)
-        self.out_ln = nn.LayerNorm(self.latent_dim)
-        self.out = nn.Linear(self.latent_dim, 512)
-
-
-    def forward(self, batch):
-        x, mask = batch["motions"], batch["mask"]
-        B, T, D  = x.shape
-
-        x = x.reshape(B, T, 2, -1)[..., :-4].reshape(B, T, -1)
-
-        x_emb = self.embed_motion(x)
-
-        emb = torch.cat([self.query_token[torch.zeros(B, dtype=torch.long, device=x.device)][:,None], x_emb], dim=1)
-
-        seq_mask = (mask>0.5)
-        token_mask = torch.ones((B, 1), dtype=bool, device=x.device)
-        valid_mask = torch.cat([token_mask, seq_mask], dim=1)
-
-        h = self.sequence_pos_encoder(emb)
-        h = self.transformer(h, src_key_padding_mask=~valid_mask)
-        h = self.out_ln(h)
-        motion_emb = self.out(h[:,0])
-
-        batch["motion_emb"] = motion_emb
-
-        return batch
-
+from torch import nn
+from .utils import PositionalEncoding, TimestepEmbedder, zero_module
+from .blocks import TransformerBlock
+from .layers import FinalLayer
 
 class InterDenoiser(nn.Module):
     def __init__(self,
@@ -148,119 +84,13 @@ class InterDenoiser(nn.Module):
 
 
 class InterDiffusion(nn.Module):
-    def __init__(self, cfg, sampling_strategy="ddim50"):
+    """Checkpoint-compatible denoiser container (no diffusion process)."""
+    def __init__(self, cfg):
         super().__init__()
-        self.cfg = cfg
-        self.nfeats = cfg.INPUT_DIM
-        self.latent_dim = cfg.LATENT_DIM
-        self.ff_size = cfg.FF_SIZE
-        self.num_layers = cfg.NUM_LAYERS
-        self.num_heads = cfg.NUM_HEADS
-        self.dropout = cfg.DROPOUT
-        self.activation = cfg.ACTIVATION
-        self.motion_rep = cfg.MOTION_REP
+        self.net = InterDenoiser(cfg.INPUT_DIM, cfg.LATENT_DIM, ff_size=cfg.FF_SIZE,
+                                num_layers=cfg.NUM_LAYERS, num_heads=cfg.NUM_HEADS,
+                                dropout=cfg.DROPOUT, activation=cfg.ACTIVATION,
+                                cfg_weight=cfg.CFG_WEIGHT)
 
-        self.cfg_weight = cfg.CFG_WEIGHT
-        self.diffusion_steps = cfg.DIFFUSION_STEPS
-        self.beta_scheduler = cfg.BETA_SCHEDULER
-        self.sampler = cfg.SAMPLER
-        self.sampling_strategy = sampling_strategy
-
-        self.net = InterDenoiser(self.nfeats, self.latent_dim, ff_size=self.ff_size, num_layers=self.num_layers,
-                                       num_heads=self.num_heads, dropout=self.dropout, activation=self.activation, cfg_weight=self.cfg_weight)
-
-
-        self.diffusion_steps = self.diffusion_steps
-        self.betas = get_named_beta_schedule(self.beta_scheduler, self.diffusion_steps)
-
-        timestep_respacing=[self.diffusion_steps]
-        self.diffusion = MotionDiffusion(
-            use_timesteps=space_timesteps(self.diffusion_steps, timestep_respacing),
-            betas=self.betas,
-            motion_rep=self.motion_rep,
-            model_mean_type=ModelMeanType.START_X,
-            model_var_type=ModelVarType.FIXED_SMALL,
-            loss_type=LossType.MSE,
-            rescale_timesteps = False,
-            mean_path=getattr(cfg, "MEAN_PATH", None),
-            std_path=getattr(cfg, "STD_PATH", None),
-        )
-        self.sampler = create_named_schedule_sampler(self.sampler, self.diffusion)
-
-    def mask_cond(self, cond, cond_mask_prob = 0.1, force_mask=False):
-        bs = cond.shape[0]
-        if force_mask:
-            return torch.zeros_like(cond)
-        elif cond_mask_prob > 0.:
-            mask = torch.bernoulli(torch.ones(bs, device=cond.device) * cond_mask_prob).view([bs]+[1]*len(cond.shape[1:]))  # 1-> use null_cond, 0-> use real cond
-            return cond * (1. - mask), (1. - mask)
-        else:
-            return cond, None
-
-    def generate_src_mask(self, T, length):
-        B = length.shape[0]
-        src_mask = torch.ones(B, T, 2)
-        for p in range(2):
-            for i in range(B):
-                for j in range(length[i], T):
-                    src_mask[i, j, p] = 0
-        return src_mask
-
-
-    def compute_loss(self, batch):
-        cond = batch["cond"]
-        x_start = batch["motions"]
-        B,T = batch["motions"].shape[:2]
-
-
-        if cond is not None:
-            cond, cond_mask = self.mask_cond(cond, 0.1)
-
-
-        seq_mask = self.generate_src_mask(batch["motions"].shape[1], batch["motion_lens"]).to(x_start.device)
-
-        t, _ = self.sampler.sample(B, x_start.device)
-        output = self.diffusion.training_losses(
-            model=self.net,
-            x_start=x_start,
-            t=t,
-            mask=seq_mask,
-            t_bar=self.cfg.T_BAR,
-            cond_mask=cond_mask,
-            model_kwargs={"mask":seq_mask,
-                          "cond":cond,
-                          },
-        )
-        return output
-
-    def forward(self, batch):
-        cond = batch["cond"]
-        # x_start = batch["motions"]
-        B = cond.shape[0]
-        T = batch["motion_lens"][0]
-
-        timestep_respacing= self.sampling_strategy
-        self.diffusion_test = MotionDiffusion(
-            use_timesteps=space_timesteps(self.diffusion_steps, timestep_respacing),
-            betas=self.betas,
-            motion_rep=self.motion_rep,
-            model_mean_type=ModelMeanType.START_X,
-            model_var_type=ModelVarType.FIXED_SMALL,
-            loss_type=LossType.MSE,
-            rescale_timesteps = False,
-            mean_path=getattr(self.cfg, "MEAN_PATH", None),
-            std_path=getattr(self.cfg, "STD_PATH", None),
-        )
-
-        self.cfg_model = ClassifierFreeSampleModel(self.net, self.cfg_weight)
-        output = self.diffusion_test.ddim_sample_loop(
-            self.cfg_model,
-            (B, T, self.nfeats*2),
-            clip_denoised=False,
-            progress=True,
-            model_kwargs={
-                "mask":None,
-                "cond":cond,
-            },
-            x_start=None)
-        return {"output":output}
+    def forward(self, x, timesteps, mask=None, cond=None):
+        return self.net(x, timesteps, mask=mask, cond=cond)

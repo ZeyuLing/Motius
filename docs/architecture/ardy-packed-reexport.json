@@ -1,0 +1,125 @@
+{
+  "complete": true,
+  "scope": "Re-export of the complete previously verified real 8B ARDY text artifact using only packed tokenizer, current neural tensors and notices. Fresh native Pipeline reconstruction; no original text-model directory read.",
+  "tests": [
+    {
+      "tensor": "/features",
+      "shape": [
+        1,
+        1,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/lengths",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/output/local_rot_mats",
+      "shape": [
+        1,
+        52,
+        27,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/output/global_rot_mats",
+      "shape": [
+        1,
+        52,
+        27,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/output/posed_joints",
+      "shape": [
+        1,
+        52,
+        27,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/output/root_positions",
+      "shape": [
+        1,
+        52,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/output/smooth_root_pos",
+      "shape": [
+        1,
+        52,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/output/foot_contacts",
+      "shape": [
+        1,
+        52,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/output/global_root_heading",
+      "shape": [
+        1,
+        52,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/output/features",
+      "shape": [
+        1,
+        52,
+        330
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/output/lengths",
+      "shape": [
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/output/fps",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "all_current_neural_tensors_sha256_equal": true,
+  "notices_preserved": true
+}

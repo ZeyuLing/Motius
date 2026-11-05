@@ -16,10 +16,10 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from motius.models.omnicontrol.network.model_util import DEFAULT_CONFIG
+from motius.configuration.omnicontrol import DEFAULT_CONFIG
 
 
-PACKAGE_ASSETS = ROOT / "motius" / "models" / "omnicontrol" / "assets"
+PACKAGE_ASSETS = ROOT / "motius" / "motion" / "assets" / "omnicontrol"
 PACKAGE_LICENSE = ROOT / "motius" / "models" / "omnicontrol" / "LICENSE"
 ARTIFACT_FILES = (
     "model.safetensors",

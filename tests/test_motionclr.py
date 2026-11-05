@@ -1,6 +1,10 @@
 """Focused contract tests for the native MotionCLR integration."""
 
 from __future__ import annotations
+from motius.motion.representation.normalization import (
+    array_normalize,
+    array_denormalize,
+)
 
 import json
 from pathlib import Path
@@ -11,7 +15,11 @@ import pytest
 import torch
 from torch import nn
 
-from motius.models.motionclr import MOTIONCLR_SOURCE_REVISION, MotionCLR, MotionCLRBundle
+from motius.models.motionclr import (
+    MOTIONCLR_SOURCE_REVISION,
+    MotionCLR,
+    MotionCLRBundle,
+)
 from motius.models.motionclr.bundle import _download_hub_layout
 from motius.pipelines.motionclr import MotionCLRPipeline
 from motius.registry import MODEL_BUNDLES, PIPELINES
@@ -82,11 +90,21 @@ def test_humanml263_normalize_denormalize_roundtrip():
     )
     motion = np.arange(3 * 263, dtype=np.float32).reshape(3, 263) / 100.0
     np.testing.assert_allclose(
-        bundle.denormalize(bundle.normalize(motion)), motion, rtol=1e-6, atol=1e-6
+        array_denormalize(
+            array_normalize(motion, bundle.mean, bundle.std), bundle.mean, bundle.std
+        ),
+        motion,
+        rtol=1e-6,
+        atol=1e-6,
     )
 
     tensor = torch.from_numpy(motion)
-    torch.testing.assert_close(bundle.denormalize(bundle.normalize(tensor)), tensor)
+    torch.testing.assert_close(
+        array_denormalize(
+            array_normalize(tensor, bundle.mean, bundle.std), bundle.mean, bundle.std
+        ),
+        tensor,
+    )
 
 
 def test_motionclr_artifact_roundtrip_strips_clip_weights(tmp_path: Path):
@@ -345,3 +363,47 @@ def test_pipeline_rejects_invalid_lengths(captions, lengths, message):
     pipe = MotionCLRPipeline(_MockBundle(), scheduler=_MockScheduler())
     with pytest.raises(ValueError, match=message):
         pipe.infer_t2m(captions, lengths)
+
+
+def test_current_export_preserves_original_float64_statistics(tmp_path):
+    mean = np.linspace(-1, 1, 263, dtype=np.float64) + 1e-12
+    std = np.linspace(0.5, 1.5, 263, dtype=np.float64) + 1e-12
+    bundle = MotionCLRBundle(
+        network_config=_tiny_network_config(),
+        mean=mean,
+        std=std,
+        network=MotionCLR(**_tiny_network_config(), load_clip=False),
+        load_model=False,
+        load_clip=False,
+    )
+    bundle.save_pretrained(tmp_path)
+    np.testing.assert_array_equal(np.load(tmp_path / "Mean.npy"), mean)
+    np.testing.assert_array_equal(np.load(tmp_path / "Std.npy"), std)
+
+
+def test_current_export_serializes_loaded_clip_instead_of_stale_file(tmp_path):
+    mean, std = _stats()
+    network = MotionCLR(**_tiny_network_config(), load_clip=False)
+    network.clip_model = nn.Linear(2, 2)
+    stale = tmp_path / "stale.pt"
+    stale.write_bytes(b"unused stale clip file")
+    bundle = MotionCLRBundle(
+        network_config=_tiny_network_config(),
+        mean=mean,
+        std=std,
+        network=network,
+        load_model=False,
+        load_clip=True,
+        clip_path=str(stale),
+    )
+    with torch.no_grad():
+        network.clip_model.weight.add_(0.125)
+    bundle.save_pretrained(tmp_path / "export")
+    from safetensors.torch import load_file
+
+    state = load_file(str(tmp_path / "export/clip.safetensors"))
+    torch.testing.assert_close(
+        state["weight"], network.clip_model.weight, rtol=0, atol=0
+    )
+    metadata = json.loads((tmp_path / "export/motionclr_config.json").read_text())
+    assert metadata["text_encoder"]["path"] == "clip.safetensors"

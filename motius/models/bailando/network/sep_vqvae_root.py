@@ -98,39 +98,13 @@ class SepVQVAER(nn.Module):
         zdown = self.vqvae_down.encode(x.view(b, t, c//self.chanel_num, self.chanel_num)[:, :, smpl_down].view(b, t, -1), start_level, end_level, bs_chunks)
         return (zup, zdown)
 
-    def sample(self, n_samples):
-        # zs = [torch.randint(0, self.l_bins, size=(n_samples, *z_shape), device='cuda') for z_shape in self.z_shapes]
-        xup = self.vqvae_up.sample(n_samples)
-        xdown = self.vqvae_up.sample(n_samples)
-        b, t, cup = xup.size()
-        _, _, cdown = xdown.size()
-        x = xup.new_zeros(b, t, (cup+cdown)//self.chanel_num, self.chanel_num)
-        x[:, :, smpl_up] = xup.view(b, t, cup//self.chanel_num, self.chanel_num)
-        x[:, :, smpl_down] = xdown.view(b, t, cdown//self.chanel_num, self.chanel_num)
-        return x
+
 
     def forward(self, x):
-        b, t, c = x.size()
-        x = x.view(b, t, c//self.chanel_num, self.chanel_num)
-        xup = x[:, :, smpl_up, :].view(b, t, -1)
-        xdown = x[:, :, smpl_down, :].view(b, t, -1)
-        # xup[:] = 0
-
+        b, t, c = x.shape
+        joints = x.view(b, t, c // self.chanel_num, self.chanel_num)
+        upper = joints[:, :, smpl_up, :].reshape(b, t, -1)
+        lower = joints[:, :, smpl_down, :].reshape(b, t, -1)
         self.vqvae_up.eval()
-        x_out_up, loss_up, metrics_up = self.vqvae_up(xup)
-        x_out_down , loss_down , metrics_down  = self.vqvae_down(xdown)
-
-        _, _, cup = x_out_up.size()
-        _, _, cdown = x_out_down.size()
-
-        xout = x_out_up.new_zeros(
-            b, t, (cup+cdown)//self.chanel_num, self.chanel_num
-        ).float()
-        xout[:, :, smpl_up] = x_out_up.view(b, t, cup//self.chanel_num, self.chanel_num)
-        xout[:, :, smpl_down] = x_out_down.view(b, t, cdown//self.chanel_num, self.chanel_num)
-
-        # xout[:, :, smpl_up] = xup.view(b, t, cup//self.chanel_num, self.chanel_num).float()
-        # xout[:, :, smpl_down] = xdown.view(b, t, cdown//self.chanel_num, self.chanel_num).float()
-        metrics_up['acceleration_loss'] *= 0
-        metrics_up['velocity_loss'] *= 0
-        return xout.view(b, t, -1), loss_down, [metrics_up, metrics_down]
+        return {"upper": self.vqvae_up(upper), "lower": self.vqvae_down(lower),
+                "upper_target": upper, "lower_target": lower}

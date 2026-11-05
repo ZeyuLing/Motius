@@ -26,7 +26,7 @@ from motius.datasets.motion.motionhub.transforms.load_smplx import (
     process_smplx_pose,
     process_transl,
 )
-from motius.models.vermo.task_utils.modality import Audio
+from motius.motion.conditioning.vermo.modality import Audio
 from motius.registry import TRANSFORMS
 
 logger = logging.getLogger(__name__)

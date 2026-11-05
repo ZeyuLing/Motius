@@ -1,0 +1,34 @@
+{
+  "complete": true,
+  "scope": "Actual Qwen3 decoder/CLIP text towers with modified current embedding/LN weights, all used neural hashes and raw-caption features through offline cold component export. Mixed BF16 decoder/FP32 sentence dtypes persist via per-component saved-config auto dtype. No unused language/vision output heads. Shared HY-Motion/MotionCanvas export helper integration; not a motion-generation/source-training certificate.",
+  "tests": [
+    {
+      "tensor": "/features/0",
+      "shape": [
+        2,
+        1,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/features/1",
+      "shape": [
+        2,
+        64,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/features/2",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

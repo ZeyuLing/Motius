@@ -1,0 +1,257 @@
+{
+  "complete": true,
+  "comparison": "Original DROID-Calib released feature/context encoders, GRU update and graph aggregation versus native neural roots",
+  "runtime_policy": "Same PyTorch deterministic algorithms and cuDNN settings in both workers",
+  "scope": "Neural components in FP16 autocast, batches 1/2; full camera odometry/optimization requires a separate certificate",
+  "tests": [
+    {
+      "tensor": "/0/features",
+      "shape": [
+        1,
+        4,
+        128,
+        8,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/context",
+      "shape": [
+        1,
+        4,
+        256,
+        8,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/one/0",
+      "shape": [
+        1,
+        4,
+        128,
+        8,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/one/1",
+      "shape": [
+        1,
+        4,
+        8,
+        10,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/one/2",
+      "shape": [
+        1,
+        4,
+        8,
+        10,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/graph/0",
+      "shape": [
+        1,
+        4,
+        128,
+        8,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/graph/1",
+      "shape": [
+        1,
+        4,
+        8,
+        10,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/graph/2",
+      "shape": [
+        1,
+        4,
+        8,
+        10,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/graph/3",
+      "shape": [
+        1,
+        2,
+        8,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/graph/4",
+      "shape": [
+        1,
+        2,
+        576,
+        8,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/features",
+      "shape": [
+        2,
+        4,
+        128,
+        8,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/context",
+      "shape": [
+        2,
+        4,
+        256,
+        8,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/one/0",
+      "shape": [
+        2,
+        4,
+        128,
+        8,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/one/1",
+      "shape": [
+        2,
+        4,
+        8,
+        10,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/one/2",
+      "shape": [
+        2,
+        4,
+        8,
+        10,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/graph/0",
+      "shape": [
+        2,
+        4,
+        128,
+        8,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/graph/1",
+      "shape": [
+        2,
+        4,
+        8,
+        10,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/graph/2",
+      "shape": [
+        2,
+        4,
+        8,
+        10,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/graph/3",
+      "shape": [
+        2,
+        2,
+        8,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/graph/4",
+      "shape": [
+        2,
+        2,
+        576,
+        8,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0+cu126",
+  "native_sha256": {
+    "motius/models/vision/prompthmr/droid/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "motius/models/vision/prompthmr/droid/bundle.py": "c01c14e7c43a7c8ebb3ab32f245714f27c95b759c5c5a086ac79a4b99c38e524",
+    "motius/models/vision/prompthmr/droid/clipping.py": "c737e35b2cea75ab58242985ea5c6f0218a2991a49fb1287b7bece0d79828d8f",
+    "motius/models/vision/prompthmr/droid/correlation.py": "df1421764225579ea75004f86e5cad2dd029b694c98ad75d7cbc2519dce87547",
+    "motius/models/vision/prompthmr/droid/encoders.py": "4952aaaae9afb60cd1c65ac005427d438af3e46e127d14687b73cec019d32b2f",
+    "motius/models/vision/prompthmr/droid/gru.py": "7dbbdfe3f7c805e68e74522970ce6b14956f7d98d52cba97380d357bcefb88b2",
+    "motius/models/vision/prompthmr/droid/update.py": "8cbc008ba4a5a0d778fadde7afd55f413ff468a249104d97a12022e0d9233874"
+  },
+  "upstream_commit": "3b566b7dbb28ce506c7ea972c18693f4c705ce8c"
+}

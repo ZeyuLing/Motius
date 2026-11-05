@@ -237,6 +237,18 @@ CHECKPOINT_SPECS = (
         "ZeyuLing/Motius-MoMask-HumanML3D",
     ),
     _spec(
+        "ZeyuLing/motius-motionbricks-soma-rp-v1",
+        "motius.pipelines.motionbricks.MotionBricksReleasePipeline",
+        "motius.models.motionbricks.release_bundle.MotionBricksReleaseBundle",
+        (),
+    ),
+    _spec(
+        "ZeyuLing/motius-motionbricks-g1-rp-v1",
+        "motius.pipelines.motionbricks.MotionBricksReleasePipeline",
+        "motius.models.motionbricks.release_bundle.MotionBricksReleaseBundle",
+        (),
+    ),
+    _spec(
         "ZeyuLing/motius-motionbricks-g1",
         "motius.pipelines.motionbricks.MotionBricksPipeline",
         "motius.models.motionbricks.MotionBricksBundle",

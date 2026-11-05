@@ -1,18 +1,19 @@
 """CondMDI text-to-motion and motion-control pipeline."""
 
 from __future__ import annotations
+from motius.motion.conditioning.clip_text import tokenize_clip
+from motius.motion.representation.normalization import affine_denormalize, affine_normalize
+
 
 from typing import Iterable, List, Optional, Sequence
 
 import numpy as np
 import torch
 
-from motius.models.condmdi.network import (
-    ClassifierFreeSampleModel,
-    absolute_to_relative,
-    build_observation_mask,
-    relative_to_absolute,
-)
+from .guidance import ClassifierFreeSampleModel
+from motius.motion.representation.condmdi import absolute_to_relative
+from motius.motion.conditioning.condmdi_masks import build_observation_mask
+from motius.motion.representation.condmdi import relative_to_absolute
 from motius.pipelines.base_pipeline import BasePipeline
 from motius.registry import PIPELINES
 
@@ -27,14 +28,22 @@ class CondMDIPipeline(BasePipeline):
 
     BUNDLE_CLS = "motius.models.condmdi.CondMDIBundle"
 
-    def __init__(self, bundle, device: Optional[str] = None, **kwargs):
+    def __init__(self, bundle, device: Optional[str] = None, diffusion=None, **kwargs):
         super().__init__(bundle, **kwargs)
+        self._diffusion = diffusion
         if device is not None:
             self.to(device)
 
     def to(self, device):
         self.bundle.to(torch.device(device))
         return self
+
+    @property
+    def diffusion(self):
+        if self._diffusion is None:
+            from motius.diffusion.condmdi.factory import build_diffusion
+            self._diffusion = build_diffusion(self.bundle.config, respacing=self.bundle.respacing)
+        return self._diffusion
 
     @property
     def device(self):
@@ -76,11 +85,12 @@ class CondMDIPipeline(BasePipeline):
         seed: int = 0,
         progress: bool = False,
         return_absolute: bool = False,
+        return_joints: bool = False,
     ) -> List[np.ndarray]:
         if len(captions) != len(lengths):
             raise ValueError("captions and lengths must have equal batch size")
         absolute, lengths, n_frames = self._prepare_inputs(motions, lengths)
-        normalized = self.bundle.normalize_absolute(absolute)
+        normalized = affine_normalize(absolute, self.bundle.mean_abs, self.bundle.std_abs)
 
         if observation_mask is None:
             obs_mask = build_observation_mask(
@@ -106,6 +116,7 @@ class CondMDIPipeline(BasePipeline):
             "mask": valid[:, None, None, :],
             "lengths": torch.tensor(lengths, device=self.device),
             "text": list(captions),
+            "text_tokens": tokenize_clip(captions, context_length=22 if self.bundle.net.dataset in {"humanml", "kit"} else 77),
             "diffusion_steps": self.bundle.config["diffusion_steps"],
             "text_scale": torch.full((len(lengths),), scale, device=self.device),
             "reconstruction_guidance": False,
@@ -133,7 +144,7 @@ class CondMDIPipeline(BasePipeline):
                 (len(lengths), 263, 1, n_frames),
                 device=self.device,
             )
-            sample = self.bundle.diffusion.p_sample_loop(
+            sample = self.diffusion.p_sample_loop(
                 model,
                 noise.shape,
                 noise=noise,
@@ -141,9 +152,12 @@ class CondMDIPipeline(BasePipeline):
                 model_kwargs=model_kwargs,
                 progress=progress,
             )
-        absolute_output = self.bundle.denormalize_absolute(
-            sample[:, :, 0, :].permute(0, 2, 1).contiguous()
-        )
+        absolute_output = affine_denormalize(sample[:, :, 0, :].permute(0, 2, 1).contiguous(), self.bundle.mean_abs, self.bundle.std_abs)
+        if return_joints:
+            from motius.motion.representation.condmdi import recover_from_absolute
+            # Original synthesis decodes the denormalized sample on CPU.
+            joints = recover_from_absolute(absolute_output.detach().cpu()).numpy()
+            return [joints[index, :length] for index, length in enumerate(lengths)]
         output = absolute_output if return_absolute else absolute_to_relative(absolute_output)
         arrays = output.detach().cpu().numpy().astype(np.float32)
         return [arrays[index, :length] for index, length in enumerate(lengths)]

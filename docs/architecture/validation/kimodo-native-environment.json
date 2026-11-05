@@ -1,0 +1,9 @@
+{
+  "torch": "2.6.0a0+ecf3bae40a.nv25.1",
+  "transformers": "5.1.0",
+  "peft": "0.18.1",
+  "accelerate": "1.10.1",
+  "numpy": "1.26.4",
+  "device": "NVIDIA H200",
+  "cuda": "12.8"
+}

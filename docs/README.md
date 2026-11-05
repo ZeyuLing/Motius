@@ -110,3 +110,6 @@ that owns that contract and update downstream references rather than creating
 a parallel definition.
 
 <p align="right"><a href="../README.md">Back to the repository overview</a></p>
+
+- [World / in-place root motion](root-motion-and-inplace.md): reversible reference
+  extraction and composition, Maya/MotionBuilder conventions, NumPy API and CLI.

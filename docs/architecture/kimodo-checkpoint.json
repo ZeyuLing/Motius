@@ -1,0 +1,102 @@
+{
+  "complete": true,
+  "scope": "Actual modified KIMODO denoiser and 8B Llama/LoRA text tensors, full hashes and public raw-text generation through offline cold loading of a lean current-weight artifact. Migration/export evidence, not an independent original-source comparison.",
+  "tests": [
+    {
+      "tensor": "/features",
+      "shape": [
+        1,
+        1,
+        4096
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generated/local_rot_mats",
+      "shape": [
+        1,
+        30,
+        77,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generated/global_rot_mats",
+      "shape": [
+        1,
+        30,
+        77,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generated/posed_joints",
+      "shape": [
+        1,
+        30,
+        77,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generated/posed_joints_norootpos",
+      "shape": [
+        1,
+        30,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generated/root_positions",
+      "shape": [
+        1,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generated/smooth_root_pos",
+      "shape": [
+        1,
+        30,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generated/foot_contacts",
+      "shape": [
+        1,
+        30,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generated/global_root_heading",
+      "shape": [
+        1,
+        30,
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

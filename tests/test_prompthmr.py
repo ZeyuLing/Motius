@@ -1,4 +1,4 @@
-"""Tests for the isolated PromptHMR-Video method integration."""
+"""PromptHMR native result contract and licensed geometry tests."""
 
 from __future__ import annotations
 
@@ -11,17 +11,15 @@ import numpy as np
 import pytest
 import torch
 
-from motius.models.prompthmr import (
+from motius.configuration.prompthmr import (
     PROMPTHMR_REVISION,
     PROMPTHMR_VIDEO_CHECKPOINTS,
-    PromptHMRBundle,
 )
 from motius.motion.representation.monocular_joints import select_common_hmr15
 from motius.pipelines.prompthmr import (
     LicensedSMPLXProvenance,
     PromptHMRPipeline,
     SMPL_SMPLX_BODY22_NAMES,
-    build_prompthmr_video_command,
     inspect_licensed_smplx_model,
     parse_prompthmr_results,
     replay_prompthmr_geometry,
@@ -87,12 +85,6 @@ def _official_results(*, include_world: bool = True):
     return results
 
 
-def test_prompthmr_bundle_imports_without_upstream_or_weights():
-    bundle = PromptHMRBundle()
-    assert PROMPTHMR_REVISION == "3b566b7dbb28ce506c7ea972c18693f4c705ce8c"
-    assert bundle.video_checkpoint == "bedlam1+2"
-    assert bundle.expected_checkpoint_sha256 == VIDEO_SHA256
-    assert bundle.resolved_video_checkpoint_path() is None
 
 
 def test_prompthmr_official_video_checkpoint_hashes_are_fixed():
@@ -106,144 +98,12 @@ def test_prompthmr_official_video_checkpoint_hashes_are_fixed():
     }
 
 
-def test_prompthmr_runtime_patch_is_exact_and_reversible(tmp_path: Path):
-    runtime = tmp_path / "upstream"
-    wrapper = runtime / "pipeline/utils_detectron2.py"
-    wrapper.parent.mkdir(parents=True)
-    wrapper.write_text(
-        '            image = torch.as_tensor(image.astype("float32").transpose(2, 0, 1))\n'
-        "            image.to(self.cfg.MODEL.DEVICE)\n"
-        "\n"
-        '            inputs = {"image": image, "height": height, "width": width}\n'
-    )
-    patcher = (
-        Path(__file__).resolve().parents[1]
-        / "tools"
-        / "patch_prompthmr_runtime.py"
-    )
-
-    subprocess.run(
-        [sys.executable, str(patcher), "--runtime-root", str(runtime)],
-        check=True,
-    )
-    assert "image = image.to(self.cfg.MODEL.DEVICE)" in wrapper.read_text()
-
-    subprocess.run(
-        [
-            sys.executable,
-            str(patcher),
-            "--runtime-root",
-            str(runtime),
-            "--restore",
-        ],
-        check=True,
-    )
-    assert "image.to(self.cfg.MODEL.DEVICE)" in wrapper.read_text()
 
 
-def test_prompthmr_bundle_accepts_only_explicit_audited_patch(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-):
-    upstream = tmp_path / "upstream"
-    (upstream / "scripts").mkdir(parents=True)
-    (upstream / "scripts/demo_video.py").write_text("")
-    subprocess.run(["git", "init", "-q", str(upstream)], check=True)
-    subprocess.run(
-        ["git", "-C", str(upstream), "config", "user.email", "test@example.com"],
-        check=True,
-    )
-    subprocess.run(
-        ["git", "-C", str(upstream), "config", "user.name", "Test"],
-        check=True,
-    )
-    wrapper = upstream / "pipeline/utils_detectron2.py"
-    wrapper.parent.mkdir(parents=True)
-    wrapper.write_text("image.to(device)\n")
-    subprocess.run(["git", "-C", str(upstream), "add", "."], check=True)
-    subprocess.run(
-        ["git", "-C", str(upstream), "commit", "-qm", "fixture"],
-        check=True,
-    )
-    revision = subprocess.run(
-        ["git", "-C", str(upstream), "rev-parse", "HEAD"],
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout.strip()
-    wrapper.write_text("image = image.to(device)\n")
-    monkeypatch.setenv("MOTIUS_PROMPTHMR_AUDITED_PATCH", "1")
-    monkeypatch.setattr(
-        "motius.models.prompthmr.bundle.PROMPTHMR_REVISION",
-        revision,
-    )
-
-    assert PromptHMRBundle(
-        upstream_dir=str(upstream)
-    ).verify_upstream_revision() == upstream.resolve()
 
 
-def test_prompthmr_checkpoint_hashes_are_cached_by_file_signature(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-):
-    video = tmp_path / "video.ckpt"
-    image = tmp_path / "image.ckpt"
-    video.write_bytes(b"video")
-    image.write_bytes(b"image")
-    calls = []
-
-    def fake_sha256(path: Path) -> str:
-        calls.append(path)
-        if path == video:
-            return VIDEO_SHA256
-        return "b" * 64
-
-    monkeypatch.setattr(
-        "motius.models.prompthmr.bundle.sha256_file",
-        fake_sha256,
-    )
-    bundle = PromptHMRBundle(
-        video_checkpoint_path=str(video),
-        image_checkpoint_path=str(image),
-    )
-
-    first = bundle.verify_checkpoints()
-    second = bundle.verify_checkpoints()
-
-    assert first == second
-    assert calls == [video, image]
 
 
-def test_prompthmr_command_builder_matches_official_tyro_cli(tmp_path: Path):
-    upstream = tmp_path / "upstream"
-    bundle = PromptHMRBundle(
-        upstream_dir=str(upstream),
-        python_command=("conda", "run", "-n", "phmr_pt2.4", "python"),
-    )
-    command = build_prompthmr_video_command(
-        bundle,
-        tmp_path / "clip.v1.mp4",
-        static_camera=True,
-        viser_total=100,
-        viser_subsample=3,
-    )
-    assert command.cwd == upstream.resolve()
-    assert command.argv[:5] == (
-        "conda",
-        "run",
-        "-n",
-        "phmr_pt2.4",
-        "python",
-    )
-    assert command.argv[5:8] == (
-        "scripts/demo_video.py",
-        "--input-video",
-        str((tmp_path / "clip.v1.mp4").resolve()),
-    )
-    assert "--no-run-viser" in command.argv
-    assert "--static-camera" in command.argv
-    assert command.output_path == upstream.resolve() / "results/clip/results.pkl"
 
 
 def test_prompthmr_parser_maps_official_camera_and_world_fields():
@@ -310,16 +170,6 @@ def test_prompthmr_parser_rejects_inconsistent_component_hash():
         )
 
 
-def test_prompthmr_pipeline_parser_needs_no_official_runtime():
-    pipeline = PromptHMRPipeline(PromptHMRBundle())
-    assert hasattr(pipeline, "infer_monocular_motion_capture")
-    result = pipeline.parse_output(
-        _official_results(include_world=False),
-        checkpoint_sha256=VIDEO_SHA256,
-        original_fps=30.0,
-    )
-    assert result.num_tracks == 1
-    assert result.tracks[0].body_model == "SMPL-X neutral"
 
 
 def test_prompthmr_camera_pose_split_matches_pinned_upstream():

@@ -1,6 +1,8 @@
 """Motius-native inference for EDGE music-to-dance generation."""
 
 from __future__ import annotations
+from motius.motion.representation.normalization import range_denormalize
+
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -8,15 +10,15 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from motius.models.edge.audio import (
-    extract_edge_jukebox_features,
-    validate_edge_music_features,
+from motius.pipelines.edge.audio import extract_edge_jukebox_features
+from motius.pipelines.edge.audio import validate_edge_music_features
+from motius.motion.representation.edge import (
+    edge_axis_angle_forward_kinematics,
+    edge_zup_to_aistpp_yup,
 )
-from motius.models.edge.network import (
-    edge_motion_to_aistpp_joints,
-    edge_motion_to_motion135,
-)
-from motius.models.edge.network.sampler import edge_ddim_sample, stitch_edge_windows
+from motius.motion.representation.edge import edge_motion_to_motion135
+from motius.pipelines.edge.sampler import edge_ddim_sample
+from motius.pipelines.edge.sampler import stitch_edge_windows
 from motius.pipelines.base_pipeline import BasePipeline
 from motius.registry import PIPELINES
 
@@ -102,13 +104,18 @@ class EDGEPipeline(BasePipeline):
             eta=float(sampling["eta"] if eta is None else eta),
             generator=generator,
         )
-        windows = self.bundle.denormalize(normalized)
-        motion = stitch_edge_windows(windows)
+        windows = range_denormalize(
+            normalized, self.bundle.normalizer_min, self.bundle.normalizer_scale
+        )
+        motion, angles, root = stitch_edge_windows(windows, return_pose=True)
         if max_frames is not None:
             if max_frames < 1:
                 raise ValueError("max_frames must be positive")
             motion = motion[: int(max_frames)]
-        joints = edge_motion_to_aistpp_joints(motion)[0]
+            angles, root = angles[: int(max_frames)], root[: int(max_frames)]
+        joints = edge_zup_to_aistpp_yup(
+            edge_axis_angle_forward_kinematics(angles.unsqueeze(0), root.unsqueeze(0))
+        )[0]
         motion_135 = edge_motion_to_motion135(motion)
         motion_np = motion.float().cpu().numpy().astype(np.float32)
         return EDGEGenerationOutput(

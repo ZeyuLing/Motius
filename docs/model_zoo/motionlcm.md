@@ -17,6 +17,19 @@ Model* (Dai et al., ECCV 2024). This Motius release exposes the text-to-motion
 path: SentenceT5 text features, latent consistency sampling in the MLD latent
 space, MLD VAE decoding, and HumanML3D-263 denormalization.
 
+The native `MotionLCMTrainer` now owns the original text-only consistency
+distillation objective and optimizer/EMA order. [Independent original-source
+comparison](../architecture/motionlcm-training-source.json) covers three complete
+gradient/AdamW/target-EMA updates with the real V1 teacher and SentenceT5, including
+all neural/gradient hashes and random state. The [teacher provenance record](../architecture/mld-t5-teacher-provenance.json)
+checks every VAE/denoiser tensor against the author's download archive.
+[Two-GPU native training](../architecture/motionlcm-distributed.json) and the
+[public prepared-data CLI/resume check](../architecture/motionlcm-prepared-cli.json)
+are separate integration evidence. See the [training recipe](../tasks/prepared_motion_training.md)
+for the explicit teacher and prepared-motion inputs. ControlNet, complete raw
+corpus preparation and the full original training schedule remain outside these
+certificates.
+
 <!-- MOTIUS_MODEL_CARD_NAV:START -->
 <p align="center">
   <a href="#visual-results">Visual Results</a> ·

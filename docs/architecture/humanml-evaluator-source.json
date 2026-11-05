@@ -1,0 +1,78 @@
+{
+  "complete": true,
+  "scope": "Original Guo HumanML3D raw-text dataset, actual prepared-motion DatasetV2 normalization/collation and complete EvaluatorModelWrapper versus public native pipeline. Actual author checkpoint, all 42 neural tensors, statistics and GloVe bytes independently verified. Three single/ragged cases cover case-sensitive/empty/long/punctuated captions and Float32/Float64 physical inputs, with explicit inverse of original output sorting. Shared spaCy 3.7.5/en_core_web_sm3.7.1, controlled FP32 deterministic CUDA. Random crop/caption-selection full corpus and historical benchmark metrics excluded.",
+  "upstream_commit": "72df96ec453edea2fbe9603b1d58a955eaf71636",
+  "checkpoint_sha256": "881e45bea6fb84b15eca6e7cdd75d602b58a72f2038c223ee96ab75d4f684ada",
+  "tests": [
+    {
+      "tensor": "/cases/0/text",
+      "shape": [
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/0/motion",
+      "shape": [
+        1,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/text",
+      "shape": [
+        8,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/1/motion",
+      "shape": [
+        8,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/text",
+      "shape": [
+        8,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/cases/2/motion",
+      "shape": [
+        8,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mean",
+      "shape": [
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/std",
+      "shape": [
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

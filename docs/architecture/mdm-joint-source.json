@@ -1,0 +1,349 @@
+{
+  "complete": true,
+  "tests": [
+    {
+      "tensor": "/inference/0/output/0",
+      "shape": [
+        48,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/output/1",
+      "shape": [
+        40,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/0/t",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/0/sample",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/0/pred_xstart",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/1/t",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/1/sample",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/1/pred_xstart",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/2/t",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/2/sample",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/2/pred_xstart",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/3/t",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/3/sample",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/3/pred_xstart",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/4/t",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/4/sample",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/0/steps/4/pred_xstart",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/output/0",
+      "shape": [
+        48,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/output/1",
+      "shape": [
+        40,
+        22,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/0/t",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/0/sample",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/0/pred_xstart",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/1/t",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/1/sample",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/1/pred_xstart",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/2/t",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/2/sample",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/2/pred_xstart",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/3/t",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/3/sample",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/3/pred_xstart",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/4/t",
+      "shape": [
+        2
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/4/sample",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/inference/1/steps/4/pred_xstart",
+      "shape": [
+        2,
+        263,
+        1,
+        48
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "method": "mdm",
+  "upstream_commit": "ef8edce6a53c6ab19e53b4d4dcf15bc0bc60a778",
+  "scope": "Published HumanML3D weights and original repository network, CFG, full released 1000-step ancestral diffusion, raw CLIP captions, ragged lengths, text-only and method-native control conditions versus the public native inference Pipeline. Samples and selected denoising steps compared bitwise in separate processes. CondMDI uses its original absolute-root output representation. Original raw corpus ingestion, SMPL visualization, training and modified-current export are outside this inference certificate. Final original CPU world-joint recovery is included; CondMDI exercises public return_joints=True without relative-root conversion.",
+  "neural_state_hashes_compared": 410
+}

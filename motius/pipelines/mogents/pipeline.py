@@ -8,6 +8,8 @@ MaskTransformer -> 1D/2D residual transformers -> dual-stream RVQ-VAE decoder
 """
 
 from __future__ import annotations
+from motius.motion.representation.normalization import affine_denormalize
+
 
 from typing import List, Optional, Sequence
 
@@ -61,10 +63,8 @@ class MoGenTSPipeline(BasePipeline):
         clamp: bool = True,
     ) -> List[np.ndarray]:
         """Generate HumanML3D-263 motions (physical scale) from text."""
-        from motius.models.mogents.network import (
-            estimate_token_lengths,
-            generate_motion,
-        )
+        from motius.pipelines.mogents.sampling import estimate_token_lengths
+        from motius.pipelines.mogents.sampling import generate_motion
 
         bundle = self.bundle
         device = self.device
@@ -107,9 +107,10 @@ class MoGenTSPipeline(BasePipeline):
             res_cond_scale=res_cond_scale,
             res_temperature=res_temperature,
             n_joint_groups=bundle.n_joint_groups,
+            fusion=bundle.fuse_motion,
         )
 
-        data = bundle.denormalize(pred_motions.float()).cpu().numpy().astype(np.float32)
+        data = affine_denormalize(pred_motions.float(), bundle.mean, bundle.std).cpu().numpy().astype(np.float32)
         return [data[i, : frame_lens[i]] for i in range(bs)]
 
     def __call__(self, captions, lengths=None, **kwargs):

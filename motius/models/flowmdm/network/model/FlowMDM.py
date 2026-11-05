@@ -1,8 +1,7 @@
 import numpy as np
 import torch
 import torch.nn as nn
-from motius.models.flowmdm.network.model.rotation2xyz import Rotation2xyz
-from motius.models.flowmdm.network.model.MDM import InputProcess, OutputProcess
+from motius.models.flowmdm.network.model.layers import InputProcess, OutputProcess
 from motius.models.flowmdm.network.model.base_models import TextConditionalModel
 from motius.models.flowmdm.network.model.x_transformers.x_transformers import ContinuousTransformerWrapper, Encoder
 
@@ -110,7 +109,6 @@ class FlowMDM(TextConditionalModel):
 
         self.output_process = OutputProcess(self.data_rep, self.input_feats, self.latent_dim, self.njoints,
                                             self.nfeats)
-        self.rot2xyz = Rotation2xyz(device='cpu', dataset=self.dataset)
 
     def forward(self, x, timesteps, y):
         """
@@ -144,13 +142,3 @@ class FlowMDM(TextConditionalModel):
 
         # ============== OUTPUT PROCESSING ==============
         return self.output_process(output)  # [bs, njoints, nfeats, nframes]
-
-
-    def _apply(self, fn):
-        super()._apply(fn)
-        self.rot2xyz.smpl_model._apply(fn)
-
-
-    def train(self, *args, **kwargs):
-        super().train(*args, **kwargs)
-        self.rot2xyz.smpl_model.train(*args, **kwargs)

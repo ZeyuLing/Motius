@@ -11,7 +11,7 @@ from pydantic.dataclasses import dataclass
 from torch import Tensor, nn
 from torch.nn import TransformerEncoder, TransformerEncoderLayer
 
-from motius.models.kimodo.network.tools import validate
+from motius.utils.kimodo import validate
 
 log = logging.getLogger(__name__)
 

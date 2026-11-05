@@ -1,0 +1,32 @@
+{
+  "complete": true,
+  "scope": "tm2t actual modified current neural tensors, complete public inference and frozen/current states through offline cold AutoPipeline loading. Export/migration evidence, not an independent original-source comparison.",
+  "tests": [
+    {
+      "tensor": "/logits",
+      "shape": [
+        1,
+        4,
+        4200
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/mean",
+      "shape": [
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/std",
+      "shape": [
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

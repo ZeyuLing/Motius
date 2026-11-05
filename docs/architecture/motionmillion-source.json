@@ -1,0 +1,149 @@
+{
+  "complete": true,
+  "scope": "Original MotionMillion 7B, real Flan-T5-XL, FSQ and complete default 50-token greedy generation, full neural hashes, original AR corruption/shifted CE and FSQ reconstruction/velocity/acceleration objectives with all gradient hashes and RNG. Native public generation checked against the same original graph. Controlled FP32/math-attention/deterministic-convolution runtime; dataset, optimizer/distributed protocol, other releases and optional KV cache excluded.",
+  "upstream_commit": "8a2a7dfa66ecb6a1533d3d9cb49c743a697e1e1c",
+  "tests": [
+    {
+      "tensor": "/generation/0/features",
+      "shape": [
+        1,
+        6,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/0/mask",
+      "shape": [
+        1,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/0/tokens/0",
+      "shape": [
+        1,
+        50
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/0/motion/0",
+      "shape": [
+        100,
+        272
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/0/rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/1/features",
+      "shape": [
+        2,
+        8,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/1/mask",
+      "shape": [
+        2,
+        8
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/1/tokens/0",
+      "shape": [
+        1,
+        39
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/1/tokens/1",
+      "shape": [
+        1,
+        50
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/1/motion/0",
+      "shape": [
+        78,
+        272
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/1/motion/1",
+      "shape": [
+        100,
+        272
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation/1/rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/ar/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/ar/accuracy",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/ar/rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/vq/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/vq/rng",
+      "shape": [
+        16
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ]
+}

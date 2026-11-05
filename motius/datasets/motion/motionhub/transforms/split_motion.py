@@ -4,12 +4,8 @@ from mmcv import BaseTransform
 import numpy as np
 import torch
 
-from motius.models.vermo.task_utils.task_lib.completion_tasks.motion_inbetween import (
-    MotionInbetween,
-)
-from motius.models.vermo.task_utils.task_lib.completion_tasks.motion_prediction import (
-    MotionPrediction,
-)
+from motius.motion.conditioning.vermo.task_lib.completion_tasks.motion_inbetween import MotionInbetween
+from motius.motion.conditioning.vermo.task_lib.completion_tasks.motion_prediction import MotionPrediction
 from motius.registry import TRANSFORMS
 
 

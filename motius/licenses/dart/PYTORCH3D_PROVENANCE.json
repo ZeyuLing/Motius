@@ -1,0 +1,16 @@
+{
+  "version": "0.7.9",
+  "reference_module_sha256": "4051c64ab8ce54fbe73ae19763c007ee7f8221fd7de9a84e602815f584121af6",
+  "functions": {
+    "quaternion_to_matrix": "672aeb279dcb977dd538d96557962f0a078ca1dd277c5c91bf24eba924abc8d5",
+    "_sqrt_positive_part": "81f144f7d9da43bba1e46e20d9cbfc6aebcc382c300a8588b82430f2875b0c6b",
+    "matrix_to_quaternion": "2efbb9f16037fb283909ccd05133f6fbd0dcafc2749fc5a41f493f3d51a21833",
+    "standardize_quaternion": "4e6ed10108f8baf1e64f2db2129ce96de873097ed38befb5cb20c0252b4d715e",
+    "axis_angle_to_matrix": "c707f512efc408a71e940267816529c494c4e8e062bb92565f3368c947897fc7",
+    "matrix_to_axis_angle": "b9b05578d10065a28102476c3b7acef8100b5f92f8b4e35b9ccfe35f0a11ef04",
+    "axis_angle_to_quaternion": "201542b9c2965f81d72999fb365efcf99c4882ace9c1a37373bd7aec360e907b",
+    "quaternion_to_axis_angle": "dd2ca58210cadd8848ab3901b66844f154bb91faf5354e794cc547e3ec802cef",
+    "rotation_6d_to_matrix": "8e90a24909a5935f2beb8a8b9204677e5a744842c7350e7dc98c5d6a0f08a6cf",
+    "matrix_to_rotation_6d": "c7c20c9e7d40e4bc2181e4bd073ece9bcdfff22f171a0c1997700692d3c9c311"
+  }
+}

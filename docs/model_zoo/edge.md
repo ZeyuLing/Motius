@@ -23,6 +23,18 @@ tags:
 </p>
 
 EDGE is the CVPR 2023 work *EDGE: Editable Dance Generation From Music*.
+
+The native [training entry point](../tasks/prepared_edge_training.md) now includes
+the original four-term objective, Adan and EMA. The [author-checkpoint audit](../architecture/edge-checkpoint-provenance.json)
+matches all 249 EMA states and both scaler tensors. An [independent original-source
+comparison](../architecture/edge-source.json) covers complete 50-step short/long
+inference, pose stitching/FK and three loss/gradient/Adan/EMA updates under
+controlled FP32 with pinned PyTorch3D v0.7.2 rotation math. Separate
+[two-GPU integration](../architecture/edge-distributed.json),
+[public CLI and full resume](../architecture/edge-prepared-cli.json), and
+[trained-current EMA offline export](../architecture/edge-trained-current-checkpoint.json)
+checks use prepared fixtures; raw Jukebox extraction, the complete corpus/epoch
+protocol and FP16 are outside those certificates.
 Motius reproduces the released AIST++ network, cosine DDIM sampler, classifier-
 free guidance schedule, long-sequence overlap, Jukebox conditioning contract,
 motion decoder, and coordinate conversion without importing an upstream

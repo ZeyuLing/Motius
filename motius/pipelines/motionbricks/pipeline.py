@@ -1,81 +1,67 @@
-"""Pipeline wrapper for NVIDIA MotionBricks G1 runtime."""
-
-from __future__ import annotations
-
+"""Native MotionBricks network, primitive and robot-geometry composition."""
+from pathlib import Path
+import json,shutil
 from typing import Any
-
-import numpy as np
 import torch
-
 from motius.pipelines.base_pipeline import BasePipeline
 from motius.registry import PIPELINES
+from motius.configuration.motionbricks import checkpoint_root
+from .navigation import build_navigation,rollout_navigation
 
 
 @PIPELINES.register_module()
 class MotionBricksPipeline(BasePipeline):
-    """Run MotionBricks as a stateful Unitree G1 motion primitive runtime."""
+    BUNDLE_CLS='motius.models.motionbricks.MotionBricksBundle'
+    fps=30
+    representation='motionbricks_g1_414'
 
-    BUNDLE_CLS = "motius.models.motionbricks.MotionBricksBundle"
+    def __init__(self,bundle,*,controller=None,clips=None,**runtime_options):
+        super().__init__(bundle)
+        root=bundle.artifact_root
+        config={}
+        if root is not None:
+            file=root/'motionbricks_pipeline.json'
+            if file.exists():config=json.loads(file.read_text())
+            elif (root/'motionbricks_config.json').exists():config=json.loads((root/'motionbricks_config.json').read_text()).get('config',{})
+        self.controller=controller or config.get('controller','wasd')
+        self.clips=clips or config.get('clips','G1')
+        self.runtime_options={**config.get('runtime_kwargs',{}),**runtime_options}
+        self._agent=None
 
-    @property
-    def fps(self) -> int:
-        return self.bundle.fps
+    def validate_checkpoints(self):
+        root=checkpoint_root(self.bundle.artifact_root)
+        if not (root/'G1-clip.ckpt').is_file():raise FileNotFoundError(root/'G1-clip.ckpt')
 
-    @property
-    def representation(self) -> str:
-        return self.bundle.representation
-
-    def build_demo_agent(self, **overrides: Any):
-        """Construct the official MotionBricks navigation demo agent."""
-        return self.bundle.load_model(**overrides)
-
-    def validate_checkpoints(self) -> None:
-        self.bundle.validate_checkpoints()
+    def build_demo_agent(self,*,seed=None,controller=None,**overrides:Any):
+        self.validate_checkpoints()
+        options={**self.runtime_options,**overrides}
+        self._agent=build_navigation(self.bundle,controller=controller or self.controller,clips=self.clips,seed=seed,**options)
+        return self._agent
 
     @torch.inference_mode()
-    def rollout(self, steps: int = 120, *, controller: str | None = None, **overrides: Any) -> dict[str, Any]:
-        """Run a headless MotionBricks rollout and return qpos frames.
+    def rollout(self,steps=120,*,controller=None,seed=None,**overrides):
+        agent=self.build_demo_agent(controller=controller,seed=seed,**overrides)
+        return rollout_navigation(agent,steps)
 
-        This uses the official `navigation_demo` runtime with `has_viewer=0`.
-        It requires complete MotionBricks LFS checkpoints.
-        """
-        if controller is not None:
-            overrides["controller"] = controller
-        overrides.setdefault("has_viewer", 0)
-        agent = self.build_demo_agent(**overrides)
-        agent.full_agent.reset()
-        qpos_frames = []
-        steps = int(steps)
-        idle_tail = min(100, max(0, steps // 5))
-        for step in range(steps):
-            force_idle = idle_tail > 0 and step >= steps - idle_tail
-            qpos = agent.full_agent.get_next_frame()
-            qpos_frames.append(np.asarray(qpos, dtype=np.float32).copy())
-            context_qpos = agent.full_agent.get_context_mujoco_qpos()
-            agent.mj_data.qpos[:] = qpos
-            control_signals = agent.controller.generate_control_signals(
-                None,
-                agent.mj_model,
-                agent.mj_data,
-                visualize=False,
-                control_info={"force_idle": force_idle, "allowed_mode": getattr(agent.args, "allowed_mode", None)},
-            )
-            control_signals["context_mujoco_qpos"] = context_qpos
-            agent.full_agent.generate_new_frames(
-                control_signals,
-                agent.controller.get_controller_dt() * agent.args.generate_dt,
-            )
-        return {
-            "qpos": np.stack(qpos_frames, axis=0),
-            "fps": self.fps,
-            "representation": self.representation,
-        }
+    infer_g1_realtime_navigation=rollout
+    infer_g1_qpos_generation=rollout
 
-    def infer_t2m(self, *args, **kwargs):  # pragma: no cover - not a T2M model
-        raise NotImplementedError("MotionBricks is a G1 primitive/runtime pipeline, not a T2M pipeline.")
+    def infer_t2m(self,*args,**kwargs):raise NotImplementedError('Use the G1 navigation or qpos task API')
 
-    infer_g1_realtime_navigation = rollout
-    infer_g1_qpos_generation = rollout
-
-
-__all__ = ["MotionBricksPipeline"]
+    def save_pretrained(self,save_directory,**kwargs):
+        destination=Path(save_directory);self.bundle.save_pretrained(destination,**kwargs)
+        root=checkpoint_root(self.bundle.artifact_root)
+        for stage in ['pose','root','vqvae']:
+            source=root/('motionbricks_'+stage)/'version_1';target=destination/('motionbricks_'+stage)/'version_1'
+            for name in ['hparams.yaml','skeleton','stats']:
+                file=source/name
+                if not file.exists():raise FileNotFoundError(file)
+                out=target/name
+                if file.resolve()==out.resolve():continue
+                out.parent.mkdir(parents=True,exist_ok=True)
+                if file.is_dir():shutil.copytree(file,out,dirs_exist_ok=True)
+                else:shutil.copy2(file,out)
+        source=root/'G1-clip.ckpt';target=destination/source.name
+        if source.resolve()!=target.resolve():shutil.copy2(source,target)
+        (destination/'motionbricks_pipeline.json').write_text(json.dumps(dict(controller=self.controller,clips=self.clips,runtime_kwargs=self.runtime_options),indent=2)+'\n')
+        return str(destination)

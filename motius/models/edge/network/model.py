@@ -330,12 +330,6 @@ class DanceDecoder(nn.Module):
 
         self.final_layer = nn.Linear(latent_dim, output_feats)
 
-    def guided_forward(self, x, cond_embed, times, guidance_weight):
-        unc = self.forward(x, cond_embed, times, cond_drop_prob=1)
-        conditioned = self.forward(x, cond_embed, times, cond_drop_prob=0)
-
-        return unc + (conditioned - unc) * guidance_weight
-
     def forward(
         self, x: Tensor, cond_embed: Tensor, times: Tensor, cond_drop_prob: float = 0.0
     ):

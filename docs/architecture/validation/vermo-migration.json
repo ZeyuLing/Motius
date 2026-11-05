@@ -1,0 +1,1501 @@
+{
+  "complete": true,
+  "comparison": "Pre-migration package versus native VerMo with full released motion codec and Llama weights",
+  "evidence_kind": "migration_snapshot_not_independent_original_source",
+  "reference_files": {
+    "motius/models/vermo/fs_quantizer.py": "1c94a39d59510ffa5c1f1d7d433e8e1c12824d2dee6bb8960c90cfc143271d62",
+    "motius/models/vermo/llama.py": "7ecb02b6ceb5d640787ecd8ad71a94966740c7e12c38076c1ac7f3f925f6c525",
+    "motius/models/vermo/vqvae_1d.py": "83fe2e79c4a7ccf345b1116819f2bda7a2564ead72fe4de54ad5642663838179",
+    "motius/models/vermo/bundle.py": "2965f1227e4014178f13db54fbc56d56087a664c373ad52189704f8b06f84a82",
+    "motius/models/vermo/qwen3.py": "b95140d7e9b6ce113439930b287199f48d860a86dbe47ff8c970f8b0e0fd9f24",
+    "motius/models/vermo/pose_processor.py": "3f818b4e0185fef3cee14cb3cf9586378cad69e8f064b108aaad1584a6588ea2",
+    "motius/models/vermo/processor.py": "3bb8f5504bd5bff13506a6fa88490bceafeb6192e20319975f01f6e5c6207042",
+    "motius/models/vermo/__init__.py": "5616df03853f133b90a3278a42cb87b7c7d0fc67983af54ef97ec2b5ba26a723",
+    "motius/models/vermo/vqvae_2d.py": "eb183cd5ddb64d56a6eeaafafa32db3df0b92d0647fd7afc21ab238613d84a4b",
+    "motius/models/vermo/wavtokenizer/wavtokenizer.py": "6fb37255b2ffcb7d0b87cad7e8ae752a38ac7885aef0acc1878c53ebdd125779",
+    "motius/models/vermo/wavtokenizer/encodec.py": "9cc6880232bf0b55a294fdd3e49d047ea92b020a7c41641a573393524f4e3fe2",
+    "motius/models/vermo/wavtokenizer/__init__.py": "48dd7fc1b2a9d2fe0fa84c787988de9de6716115422f2944231bed7e846da5e4",
+    "motius/models/vermo/task_utils/modality.py": "4d361ebb20d6588928f79931feae5986a97336ec412e7b3e4b14ef3af47c7f45",
+    "motius/models/vermo/task_utils/__init__.py": "194abdd044bd632ba858595f224cd7b4ea7008f2c6df05dbb5899fe26b5d6551",
+    "motius/models/vermo/wan_blocks/wan_norm.py": "be0417b6f625a3678a0be322db8e6f311e8cec8f8387d6848f1991c6af64ac4d",
+    "motius/models/vermo/wan_blocks/wan_attention.py": "1b9c2efef6763424b39c6e45053b673ca82db1adaa8778fdf51f7f140d8bdecc",
+    "motius/models/vermo/wan_blocks/wan_encdec.py": "257fc3c3f20e13ff4e8db7757118cb72483d0e14f3180dc00e5466e7a39030f1",
+    "motius/models/vermo/wan_blocks/wan_resample.py": "f1e9b4ea6616424d134470e5529dd0e9dd3350e8f98b4c3c51139d9997e8efcb",
+    "motius/models/vermo/wan_blocks/wan_resnet.py": "4590e242699064b8fbf5c345bc073f068baf97a58ef96d9d2f08dd7a30bcbec5",
+    "motius/models/vermo/wan_blocks/wan_causalconv.py": "e306851cee0c98dd33dd08fb636df4729ee7b0f8af8d40c385e545624499c1ec",
+    "motius/models/vermo/wan_blocks/__init__.py": "0dbee5822804fd5ede7a0e8d51808a1b8b49d870a14daa7e4b229d25f555d809",
+    "motius/models/vermo/wavtokenizer/modules/utils.py": "e5f0b87a5bb0e1ca9205032e3e8141798bfa49177239640ea4b41f61616da4e5",
+    "motius/models/vermo/wavtokenizer/modules/distrib.py": "4ddeaa1aef165fd82f6bb850fc339e98d233bcf47e2fa2bc7c4df3d7552cd5f4",
+    "motius/models/vermo/wavtokenizer/modules/istft_head.py": "e886ebc6c6b4fc410ebc768f21943bfdbb9dc512568fe4783670229fba54418d",
+    "motius/models/vermo/wavtokenizer/modules/transformer.py": "473b94d6a663e06c95f6018ed48732fe1ec23a1c13894b0ddc9c89bd1cae06e7",
+    "motius/models/vermo/wavtokenizer/modules/vocos.py": "86a27d47682130353d17322e0b2139f510e2944ad941675d51ac38a10fd6d40f",
+    "motius/models/vermo/wavtokenizer/modules/res_quantizer.py": "1d60a3c91b02582155fa46307e9dd6e85ed5fe7399f3fd60f0e030521cd647f6",
+    "motius/models/vermo/wavtokenizer/modules/seanet.py": "33bac20337a0738d2fe479055d2554322679fcb957140602de16721faab98930",
+    "motius/models/vermo/wavtokenizer/modules/__init__.py": "788dad785a9fa5a1aec24497bbe08bcd57fca5b532ff283dfba68b0f285c4cb9",
+    "motius/models/vermo/task_utils/task_lib/base_task.py": "498d3e666a7f72ed41138a72de658c68ebc2184fe7c2ef618df705f6ef8a7184",
+    "motius/models/vermo/task_utils/task_lib/motion_pretrain.py": "384b96faadafe943f95159abe3844a40dc21aa80ec32442f29186a6f106920ab",
+    "motius/models/vermo/task_utils/task_lib/__init__.py": "f4e4d4c45d99bee113401d4405eb713ba450fdbcbad987e96b3810df8a8af217",
+    "motius/models/vermo/task_utils/task_lib/dance_tasks/caption2music_dance.py": "77ed18eb2e5bfafb6fdba8be76363607fc22ecc4f9297cb0970eddb0fc90c31f",
+    "motius/models/vermo/task_utils/task_lib/dance_tasks/random2music_dance.py": "4a96b1d860db5271af78beb8d3996a3b19ed023541d70ce5fb619f128fb47dc4",
+    "motius/models/vermo/task_utils/task_lib/dance_tasks/music2dance.py": "d90aa604e5e712d84342db55516c9a9e7cf1b565aa90c42462895b38f4ff579e",
+    "motius/models/vermo/task_utils/task_lib/dance_tasks/dance2music.py": "2c9b3cec4864d1bf24ea5fa8e875e89523ee3161c01be9cab8fd6bb377bdcf04",
+    "motius/models/vermo/task_utils/task_lib/dance_tasks/genre2music_dance.py": "28159fd0a913a43aa9fa66bb03f7b395125e367515236c9a190c7bd30a9ecefe",
+    "motius/models/vermo/task_utils/task_lib/dance_tasks/music2dance_with_init.py": "34e7fd8e17b31e63c8a3257072e52590d707d89ea0759c60433bc87d51d880a1",
+    "motius/models/vermo/task_utils/task_lib/dance_tasks/dance2music_with_init.py": "bb5adaf7e420b2e9b0cd08b0f038a077cac489f0cc032bff5e0d352280248013",
+    "motius/models/vermo/task_utils/task_lib/dance_tasks/__init__.py": "8499ea45da8ad528eeb5b9062319b817186273d84e9d0b9ca426c6e27d092502",
+    "motius/models/vermo/task_utils/task_lib/speech_tasks/gesture2speech.py": "c2944965dab9b1a6d4ea1b55f1c4344c21e5888f2fe978af63e696d544d9eb00",
+    "motius/models/vermo/task_utils/task_lib/speech_tasks/random2speech_gesture.py": "e33e5a73648a269ba0f6cf5a587eb4cfe940bf5177488a4bc17548eae01f192e",
+    "motius/models/vermo/task_utils/task_lib/speech_tasks/speech2gesture.py": "117a39185e0fec7513e4a3dbbf89adfe256249b63bdb9ff5793496052e46bf38",
+    "motius/models/vermo/task_utils/task_lib/speech_tasks/script2speech_gesture.py": "9341a3a62a729e35375fc0791bde1b7ceb9980f72ff481a620218ea777a220dc",
+    "motius/models/vermo/task_utils/task_lib/speech_tasks/speech2gesture_with_init.py": "4529c0aac025a04c16b54a1f24cc206b5c42ef7aaf66e166ada983aecc2dba9f",
+    "motius/models/vermo/task_utils/task_lib/speech_tasks/caption2speech_gesture.py": "40b895ce2b903c82e064b35922f7515bf58439702e634d2df838108f08214fa0",
+    "motius/models/vermo/task_utils/task_lib/speech_tasks/__init__.py": "3598145efcf4c54fb10689308f71d8c42e352f9bee2964ccdf75cd66e26caf88",
+    "motius/models/vermo/task_utils/task_lib/completion_tasks/motion_prediction.py": "43c91754056bcf755b4c7390031253867dd7ce980916d84cf3d756eb5fae0e19",
+    "motius/models/vermo/task_utils/task_lib/completion_tasks/motion_inbetween.py": "39a1c482010e357d559b3a1e134e594fa9d44078283f63eccccd49994ec4c470",
+    "motius/models/vermo/task_utils/task_lib/completion_tasks/__init__.py": "dd197aee8519bab5a48d85f1e0ae77350a4a1678516c2201dc375d170b80174f",
+    "motius/models/vermo/task_utils/task_lib/text_motion_tasks/random2caption_motion.py": "4f4c99702cc22d0ee64aec3584dae9059cfc8758e56ad21253f9d5afaf4f2c50",
+    "motius/models/vermo/task_utils/task_lib/text_motion_tasks/caption2motion.py": "ca354440610eb0810bf3086269f8410bc4c35233fbe73c36a3a98f70cbd8631d",
+    "motius/models/vermo/task_utils/task_lib/text_motion_tasks/motion2caption.py": "ab100488f6b35a6413495d9a05c168d82f24c0578411d6fb3358cfab4cd8f019",
+    "motius/models/vermo/task_utils/task_lib/text_motion_tasks/__init__.py": "3da83e6aa22fb47ca5319aa70c234dc80efb4b63fcd5e087a8ee0b9536d8900b"
+  },
+  "artifact_files": {
+    "model_index.json": "1c723458f9574747b2a9f25a7d6a2632f42e8a0a29481f93f63582ff53b8710b",
+    "artifact_manifest.json": "3eccbe16f3a41818b6dc2ce6c5d268c43f7907a300d03765b2094c84d2912780",
+    ".gitattributes": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+    "README.md": "e8e04902088459c393fdfdc88251b2b192581b41dd173a036f56b61f5c4663ef",
+    "bundle_config.json": "be2beb1065435c3c714c58cba88ef845b5bc32542a097012227cf0f91f34c102",
+    "motion_tokenizer/diffusion_pytorch_model.safetensors": "9b607e2d645ab74dd3ad20aa1c98834fa670300e3f6d1405ba8262cb430e1097",
+    "motion_tokenizer/config.json": "2470e029d5bd859db8946a95eb4b1de5397fac7453b310e5e0c91bba166d6f37",
+    "lm/model.safetensors": "a934ed2abac860066b98c16ae87b96dc1359fd624dda8887420981a7e60f4be9",
+    "lm/config.json": "fc8c5068aa87ac7efb9fb68f151108cde690c25c199c90fb98ec702c71c8c4c6",
+    "lm/generation_config.json": "88effbb63300dbbc7390143fbbdd9d9fa50587b37e8bfd16c8c90d4970a74a36",
+    "tokenizer/tokenizer_config.json": "9823dcfdc1121869029da45192238e85cf44f0b232a6d9dc20e4fe6f4242a14e",
+    "tokenizer/special_tokens_map.json": "6f38c73729248f6c127296386e3cdde96e254636cc58b4169d3fd32328d9a8ec",
+    "tokenizer/tokenizer.json": "79e3e522635f3171300913bb421464a87de6222182a0570b9b2ccba2a964b2b4",
+    "stats/smplh_universal_stats_aug.json": "2aa4ad3b804ff1ec097edc4a666208421e5a3d20403be6d5cb6dace60cf4f87a"
+  },
+  "tests": [
+    {
+      "tensor": "/16/input_ids",
+      "shape": [
+        1,
+        120
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/16/labels",
+      "shape": [
+        1,
+        120
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/16/logits",
+      "shape": [
+        1,
+        120,
+        147743
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/16/caption",
+      "shape": [
+        37
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/25/input_ids",
+      "shape": [
+        1,
+        189
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/25/labels",
+      "shape": [
+        1,
+        189
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/25/logits",
+      "shape": [
+        1,
+        189,
+        147743
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/25/caption",
+      "shape": [
+        50
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.embed_tokens.weight",
+      "shape": [
+        147743,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.0.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.0.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.0.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.0.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.0.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.0.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.0.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.0.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.1.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.1.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.1.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.1.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.1.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.1.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.1.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.1.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.1.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.2.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.2.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.2.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.2.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.2.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.2.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.2.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.2.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.2.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.3.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.3.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.3.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.3.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.3.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.3.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.3.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.3.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.3.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.4.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.4.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.4.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.4.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.4.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.4.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.4.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.4.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.4.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.5.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.5.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.5.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.5.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.5.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.5.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.5.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.5.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.5.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.6.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.6.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.6.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.6.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.6.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.6.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.6.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.6.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.6.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.7.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.7.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.7.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.7.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.7.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.7.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.7.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.7.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.7.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.8.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.8.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.8.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.8.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.8.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.8.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.8.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.8.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.8.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.9.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.9.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.9.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.9.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.9.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.9.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.9.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.9.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.9.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.10.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.10.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.10.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.10.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.10.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.10.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.10.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.10.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.10.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.11.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.11.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.11.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.11.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.11.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.11.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.11.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.11.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.11.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.12.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.12.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.12.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.12.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.12.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.12.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.12.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.12.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.12.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.13.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.13.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.13.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.13.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.13.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.13.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.13.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.13.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.13.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.14.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.14.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.14.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.14.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.14.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.14.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.14.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.14.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.14.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.15.self_attn.q_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.15.self_attn.k_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.15.self_attn.v_proj.weight",
+      "shape": [
+        512,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.15.self_attn.o_proj.weight",
+      "shape": [
+        2048,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.15.mlp.gate_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.15.mlp.up_proj.weight",
+      "shape": [
+        8192,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.15.mlp.down_proj.weight",
+      "shape": [
+        2048,
+        8192
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.15.input_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.layers.15.post_attention_layernorm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/training/gradients/model.norm.weight",
+      "shape": [
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "native_files": {
+    "motius/models/vermo/fs_quantizer.py": "1c94a39d59510ffa5c1f1d7d433e8e1c12824d2dee6bb8960c90cfc143271d62",
+    "motius/models/vermo/llama.py": "9a366aaeadea8595a065b945e1241754e765540c4502f69ebf4f36130d9d52d2",
+    "motius/models/vermo/vqvae_1d.py": "5ef0a613ca5b863758194c557dc4ea5a626a10de2910b1693b36c9332a816720",
+    "motius/models/vermo/bundle.py": "4192710206f1688d3585a8dae2c4dc5ee2350db287169f26f079c022f8f84997",
+    "motius/models/vermo/qwen3.py": "b95140d7e9b6ce113439930b287199f48d860a86dbe47ff8c970f8b0e0fd9f24",
+    "motius/models/vermo/__init__.py": "1bc7a6fa42f38b1b1c6c3f2dc105bb28935d7f536aca55cc6d948a15e4550413",
+    "motius/models/vermo/vqvae_2d.py": "b1b832581fb45bae41c5a91f0ff1d79de90a92d0f21b3d255384b8c20044436c",
+    "motius/models/vermo/wavtokenizer/wavtokenizer.py": "ff5db7e93df4dbfdab279354600f828479f7453369fc2ad631705ecaef743b1c",
+    "motius/models/vermo/wavtokenizer/encodec.py": "dd2c92953fc76b1574f5d154d0171c546d36877a8c0f12078e40f96c19d4fbb2",
+    "motius/models/vermo/wavtokenizer/__init__.py": "48dd7fc1b2a9d2fe0fa84c787988de9de6716115422f2944231bed7e846da5e4",
+    "motius/models/vermo/wan_blocks/wan_norm.py": "0462b0b2fd5fe751d66dcd254a201d0091dd3fac9e1e4c9c2d84463b9b13e346",
+    "motius/models/vermo/wan_blocks/wan_attention.py": "be646356cab7295ad172e5c0a8fb849c6f15ab410aa00aa77d82ee249558d5db",
+    "motius/models/vermo/wan_blocks/wan_encdec.py": "257fc3c3f20e13ff4e8db7757118cb72483d0e14f3180dc00e5466e7a39030f1",
+    "motius/models/vermo/wan_blocks/wan_resample.py": "1f26b83d326394fe79024e1b5e453635983f6286a1711e107f4756160b715ebd",
+    "motius/models/vermo/wan_blocks/wan_resnet.py": "c48510e2f4afad9656619df392825eb63a58b9c5eb378b8807bdb6ea5bb95042",
+    "motius/models/vermo/wan_blocks/wan_causalconv.py": "b06d0c3da4b750bfc8afa76b9929ca1fe52e95a69add60bccbd9cc3dba1a1e8c",
+    "motius/models/vermo/wan_blocks/__init__.py": "0dbee5822804fd5ede7a0e8d51808a1b8b49d870a14daa7e4b229d25f555d809",
+    "motius/models/vermo/wavtokenizer/modules/utils.py": "be0bd69b5091fc76b6eebd31cde313014fd556f688f12d0ebdcafa84c399b270",
+    "motius/models/vermo/wavtokenizer/modules/distrib.py": "4ddeaa1aef165fd82f6bb850fc339e98d233bcf47e2fa2bc7c4df3d7552cd5f4",
+    "motius/models/vermo/wavtokenizer/modules/istft_head.py": "e886ebc6c6b4fc410ebc768f21943bfdbb9dc512568fe4783670229fba54418d",
+    "motius/models/vermo/wavtokenizer/modules/transformer.py": "473b94d6a663e06c95f6018ed48732fe1ec23a1c13894b0ddc9c89bd1cae06e7",
+    "motius/models/vermo/wavtokenizer/modules/vocos.py": "86a27d47682130353d17322e0b2139f510e2944ad941675d51ac38a10fd6d40f",
+    "motius/models/vermo/wavtokenizer/modules/res_quantizer.py": "1d60a3c91b02582155fa46307e9dd6e85ed5fe7399f3fd60f0e030521cd647f6",
+    "motius/models/vermo/wavtokenizer/modules/seanet.py": "19a69551fb97ded9d64718a2fa669cdcc06c17a0db54bf5447be012e0fc01ad2",
+    "motius/models/vermo/wavtokenizer/modules/__init__.py": "788dad785a9fa5a1aec24497bbe08bcd57fca5b532ff283dfba68b0f285c4cb9",
+    "motius/trainers/vermo/trainer.py": "e5f1f8fdb2c5d51fcb1c438179c491d91a2d507c66bbf43b6fb701bc77605654",
+    "motius/trainers/vermo/objective.py": "bd250b3c731eb41dd80b3323e88c7bc699095f1a2d7c7f8b82ab4ee759149aa1",
+    "motius/trainers/vermo/__init__.py": "38be82192f252592f4bb31d5f02f0a883a629a33388fa4fbb4c48ff1a96f6f55",
+    "motius/pipelines/vermo/pipeline.py": "50e9a96b084ddeaeef43d19285d0f1103679a2ba59875e9ca46fab90b246748d",
+    "motius/pipelines/vermo/__init__.py": "3afafbbda0ed9fc2420434caf7cc61ceef96dd3451dfc51ab33bfe6c74d1fcf6",
+    "motius/motion/conditioning/vermo/modality.py": "4d361ebb20d6588928f79931feae5986a97336ec412e7b3e4b14ef3af47c7f45",
+    "motius/motion/conditioning/vermo/processor.py": "96115156e15102b63e3b76299d5788b1b37b060c2a99318f46bcdac7d6caa0f3",
+    "motius/motion/conditioning/vermo/__init__.py": "194abdd044bd632ba858595f224cd7b4ea7008f2c6df05dbb5899fe26b5d6551",
+    "motius/motion/conditioning/vermo/task_lib/base_task.py": "498d3e666a7f72ed41138a72de658c68ebc2184fe7c2ef618df705f6ef8a7184",
+    "motius/motion/conditioning/vermo/task_lib/motion_pretrain.py": "fd79aa61daa4870cc8132047f5e267a92a300d32cc0c784fa77325c1e766cca9",
+    "motius/motion/conditioning/vermo/task_lib/__init__.py": "f4e4d4c45d99bee113401d4405eb713ba450fdbcbad987e96b3810df8a8af217",
+    "motius/motion/conditioning/vermo/task_lib/dance_tasks/caption2music_dance.py": "6ca830c02251537b0e423ffcf4df2a81cecace519f7b3e2b5cc30bb6fdb2634f",
+    "motius/motion/conditioning/vermo/task_lib/dance_tasks/random2music_dance.py": "a7a40563fa96c19935d93554439a0337cf7c033a81c9ce7e8cfe95a5f4233c48",
+    "motius/motion/conditioning/vermo/task_lib/dance_tasks/music2dance.py": "bba31355ae120d1cf6f93fc0fd0e62d836d53b83060c80a9d71569305a0b5d10",
+    "motius/motion/conditioning/vermo/task_lib/dance_tasks/dance2music.py": "ef73377812f5932ca68bb5023f9c6230d4f0a64d1c885382e29872d36244bd60",
+    "motius/motion/conditioning/vermo/task_lib/dance_tasks/genre2music_dance.py": "d293fe4ecb94952e2d5259d92cdc4b78897601f4aa0b516086eb8d1214a087d2",
+    "motius/motion/conditioning/vermo/task_lib/dance_tasks/music2dance_with_init.py": "e5f25275e68d77d198b7c5175f7905a08638db96e64e7cd1ca6d68cc1bc881ce",
+    "motius/motion/conditioning/vermo/task_lib/dance_tasks/dance2music_with_init.py": "01f75dea08f7519c8be9250056e8faefa82fe5d3a62ad59211381258dc284bed",
+    "motius/motion/conditioning/vermo/task_lib/dance_tasks/__init__.py": "8499ea45da8ad528eeb5b9062319b817186273d84e9d0b9ca426c6e27d092502",
+    "motius/motion/conditioning/vermo/task_lib/speech_tasks/gesture2speech.py": "af5a4c16b202b5e8ee3a361c1deddc338a3757f9b98fbe15523b3d2627815e49",
+    "motius/motion/conditioning/vermo/task_lib/speech_tasks/random2speech_gesture.py": "ac2d724a41c431eadbe1b73f6bd8478f8d5917de63541edbaf840d107b6fb4e0",
+    "motius/motion/conditioning/vermo/task_lib/speech_tasks/speech2gesture.py": "515c3a0148c795e4187c2ca9bdb5e511008352bc5d1fcdd1802ed3f8aca78f55",
+    "motius/motion/conditioning/vermo/task_lib/speech_tasks/script2speech_gesture.py": "d0536e505df2bb57ff674a21949d42d37de15352d61ae78a84cb425550b66d01",
+    "motius/motion/conditioning/vermo/task_lib/speech_tasks/speech2gesture_with_init.py": "73c6005f000ff1bd1928bfcf9a0eea0a9f2d576c070e15cfbcf70c84c07aec33",
+    "motius/motion/conditioning/vermo/task_lib/speech_tasks/caption2speech_gesture.py": "3f7229d06dc23cf4e8d02d9f4f5f9e2fa530dbfff197f55bae7616fb687733ab",
+    "motius/motion/conditioning/vermo/task_lib/speech_tasks/__init__.py": "3598145efcf4c54fb10689308f71d8c42e352f9bee2964ccdf75cd66e26caf88",
+    "motius/motion/conditioning/vermo/task_lib/completion_tasks/motion_prediction.py": "4bd136c2fdaf0532dbb4f342d9282d83c432e7a3710111ed4c427c808ea2b7c3",
+    "motius/motion/conditioning/vermo/task_lib/completion_tasks/motion_inbetween.py": "6b9cd278e2ea3355cba35fe84ac03a2ab73e35962521f694412eae97fd9fb7d7",
+    "motius/motion/conditioning/vermo/task_lib/completion_tasks/__init__.py": "dd197aee8519bab5a48d85f1e0ae77350a4a1678516c2201dc375d170b80174f",
+    "motius/motion/conditioning/vermo/task_lib/text_motion_tasks/random2caption_motion.py": "84720367c4bdb6b33dca364a3a85b3660e59e899ead1762ad0357d58b9f8e2c3",
+    "motius/motion/conditioning/vermo/task_lib/text_motion_tasks/caption2motion.py": "69c880928bc1e0e624eae45eb3c7fbd62d57f693842bcb3879aa8ee3fd2e7107",
+    "motius/motion/conditioning/vermo/task_lib/text_motion_tasks/motion2caption.py": "72bcbbd3c0e2b22ccb98a21ba0c3ba542b7f3be1f093e736f941420cdfe33e70",
+    "motius/motion/conditioning/vermo/task_lib/text_motion_tasks/__init__.py": "3da83e6aa22fb47ca5319aa70c234dc80efb4b63fcd5e087a8ee0b9536d8900b",
+    "motius/motion/representation/vermo.py": "3f818b4e0185fef3cee14cb3cf9586378cad69e8f064b108aaad1584a6588ea2",
+    "motius/configuration/vermo.py": "0b875c8b9281303fad0e67d0808a3bedae9432d66dd0e73f5ebb1bc5177fad6c"
+  }
+}

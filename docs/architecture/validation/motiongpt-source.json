@@ -1,0 +1,3929 @@
+{
+  "complete": true,
+  "comparison": "Original MotionGPT source and released FLAN-T5/VQ weights: text generation, motion captions, reconstruction, language/VQ objectives and gradients",
+  "reference_construction": "Base pretrained T5 weight download redirected to identical artifact config; full released MotionGPT state loaded strictly; original math and tokenizer unchanged",
+  "upstream_commit": "001aaca8d0ee218fc17f8265d11ac124044fe42f",
+  "source_files": {
+    "mGPT/archs/tm2t_evaluator.py": "03ebf74e9d68c2e51ddc4a14030671990b066d3093de9f2c29d903db7059bd82",
+    "mGPT/archs/mgpt_vq.py": "b2c51f209a7b511ef896a50c74ceeb99390410b228aa973d12b07cb156b0184c",
+    "mGPT/archs/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mGPT/archs/mgpt_lm.py": "9d0115ef30037e814a98db77452004f2070162570303897744c2f41c5394d53d",
+    "mGPT/archs/tools/resnet.py": "f5e79053ca6b5bf4c896dbb7ce97c472f8e996d0104463fb5af5cca05cea2cd5",
+    "mGPT/archs/tools/quantize_cnn.py": "e51e7640d420a38b52c9cf371093d740d9b2b3ece025e5d6fa3372781762c28b",
+    "mGPT/archs/tools/transformer_layers.py": "4278fad8cafa56507799eba1a3c1301087b5f6f4784cbad257418326ef3d037f",
+    "mGPT/archs/tools/embeddings.py": "ed00f45854fdb1b3a40e921e01bf8bf8a277f1bb865b96073c6781c018ce893a",
+    "mGPT/archs/tools/token_emb.py": "6aefa550b7a6400842810fa8aef884b209773ffd9615064145ad42b785db54f6",
+    "mGPT/losses/base.py": "2c13a8da576c719bb13109c42377eb3538ebc6f2e6cc196187b7c438606a5f8b",
+    "mGPT/losses/__init__.py": "2aa392f7d346cd22a23dd85a51803ea0b7ab746fcc0968cf0fce30606cfb5fcb",
+    "mGPT/losses/mgpt.py": "08e02bb6860443f47f67d1bcd5516446d73a733f435204ceea6f5bbb09282987"
+  },
+  "artifact_files": {
+    "model_index.json": "65b8abc83a18508731f51c5430bcda78f1589945b41ba4ece4faf3c28aeb0009",
+    "motiongpt_s3_h3d.tar": "0d8a9e1a0c3bd15ed2d2160a22abe3edef299920eb9565a7e9decf1da4c8e79c",
+    ".gitattributes": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+    "README.md": "30637dcd7c24d0913623c0cd048445d204762c8d51b257a9c244b00f8fd51eb1",
+    "deps/flan-t5-base/spiece.model": "d60acb128cf7b7f2536e8f38a5b18a05535c9e14c7a355904270e15b0945ea86",
+    "deps/flan-t5-base/tokenizer_config.json": "4c55124402e4ce48c7125d04b9af152a125eda9e7c80829f8f99f2ec69f3f68d",
+    "deps/flan-t5-base/config.json": "7c1853dbfa0e4aac093eb109a358b6ab25fe86b7c15185a91322f0ed26f0f940",
+    "deps/flan-t5-base/generation_config.json": "f5a1c7e2be8092018d8835128987edf0111637dd98e90599cc80310fef75d95a",
+    "deps/flan-t5-base/special_tokens_map.json": "5c87151ef0f72a99d1f766a4c418bd2a1f90aaa30a8e22fe5eca9641daebb64f",
+    "deps/flan-t5-base/tokenizer.json": "fe2ebbbbde2985be723e0ce18217853e4020c5e9d35bd07be2c27ab9d3ead57a",
+    "assets/meta/std.npy": "6a5f7d60301c9465972fc225f8ad0ee8f957e7720431189123eb6d15873a9557",
+    "assets/meta/mean.npy": "0bdb5ba69a3a9e34d71990db15bc535ebc024c8d95ddb5574196f96058faa7d3"
+  },
+  "tests": [
+    {
+      "tensor": "/generation_0/tokens/0",
+      "shape": [
+        20
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/0",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/1",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/2",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/3",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/4",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/5",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/6",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/7",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/8",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/9",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/10",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/11",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/12",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/13",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/14",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/15",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/16",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/17",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/18",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/19",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/20",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/21",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/logits/22",
+      "shape": [
+        1,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/normalized/0",
+      "shape": [
+        80,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_0/physical/0",
+      "shape": [
+        80,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/tokens/0",
+      "shape": [
+        30
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/tokens/1",
+      "shape": [
+        40
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/0",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/1",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/2",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/3",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/4",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/5",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/6",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/7",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/8",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/9",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/10",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/11",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/12",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/13",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/14",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/15",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/16",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/17",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/18",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/19",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/20",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/21",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/22",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/23",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/24",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/25",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/26",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/27",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/28",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/29",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/30",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/31",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/32",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/33",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/34",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/35",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/36",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/37",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/38",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/39",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/40",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/41",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/logits/42",
+      "shape": [
+        2,
+        1,
+        32615
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/normalized/0",
+      "shape": [
+        120,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/normalized/1",
+      "shape": [
+        160,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/physical/0",
+      "shape": [
+        120,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/generation_1/physical/1",
+      "shape": [
+        160,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/reconstruction/codes",
+      "shape": [
+        2,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/reconstruction/motion",
+      "shape": [
+        2,
+        40,
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/reconstruction/commitment",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/reconstruction/perplexity",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/reconstruction/captions/0",
+      "shape": [
+        84
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/reconstruction/captions/1",
+      "shape": [
+        114
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.shared.weight",
+      "shape": [
+        32615,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.0.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.0.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.0.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.0.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.0.layer.0.SelfAttention.relative_attention_bias.weight",
+      "shape": [
+        32,
+        12
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.0.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.0.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.0.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.0.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.0.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.1.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.1.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.1.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.1.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.1.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.1.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.1.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.1.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.1.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.2.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.2.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.2.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.2.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.2.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.2.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.2.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.2.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.2.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.3.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.3.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.3.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.3.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.3.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.3.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.3.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.3.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.3.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.4.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.4.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.4.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.4.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.4.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.4.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.4.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.4.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.4.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.5.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.5.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.5.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.5.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.5.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.5.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.5.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.5.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.5.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.6.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.6.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.6.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.6.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.6.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.6.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.6.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.6.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.6.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.7.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.7.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.7.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.7.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.7.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.7.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.7.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.7.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.7.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.8.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.8.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.8.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.8.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.8.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.8.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.8.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.8.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.8.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.9.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.9.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.9.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.9.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.9.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.9.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.9.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.9.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.9.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.10.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.10.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.10.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.10.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.10.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.10.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.10.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.10.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.10.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.11.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.11.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.11.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.11.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.11.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.11.layer.1.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.11.layer.1.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.11.layer.1.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.block.11.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.encoder.final_layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.0.SelfAttention.relative_attention_bias.weight",
+      "shape": [
+        32,
+        12
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.0.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.1.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.2.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.3.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.4.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.5.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.6.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.7.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.8.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.9.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.10.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.0.SelfAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.0.SelfAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.0.SelfAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.0.SelfAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.0.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.1.EncDecAttention.q.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.1.EncDecAttention.k.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.1.EncDecAttention.v.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.1.EncDecAttention.o.weight",
+      "shape": [
+        768,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.1.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.2.DenseReluDense.wi_0.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.2.DenseReluDense.wi_1.weight",
+      "shape": [
+        2048,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.2.DenseReluDense.wo.weight",
+      "shape": [
+        768,
+        2048
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.block.11.layer.2.layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.decoder.final_layer_norm.weight",
+      "shape": [
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/language_training/gradients/language_model.lm_head.weight",
+      "shape": [
+        32615,
+        768
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/loss",
+      "shape": [],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.0.weight",
+      "shape": [
+        512,
+        263,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.0.weight",
+      "shape": [
+        512,
+        512,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.1.model.0.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.1.model.0.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.1.model.0.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.1.model.0.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.1.model.1.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.1.model.1.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.1.model.1.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.1.model.1.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.1.model.2.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.1.model.2.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.1.model.2.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.2.1.model.2.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.0.weight",
+      "shape": [
+        512,
+        512,
+        4
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.1.model.0.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.1.model.0.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.1.model.0.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.1.model.0.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.1.model.1.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.1.model.1.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.1.model.1.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.1.model.1.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.1.model.2.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.1.model.2.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.1.model.2.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.3.1.model.2.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.4.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/encoder.model.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.0.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.0.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.0.model.0.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.0.model.0.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.0.model.0.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.0.model.0.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.0.model.1.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.0.model.1.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.0.model.1.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.0.model.1.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.0.model.2.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.0.model.2.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.0.model.2.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.0.model.2.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.2.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.2.2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.0.model.0.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.0.model.0.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.0.model.0.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.0.model.0.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.0.model.1.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.0.model.1.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.0.model.1.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.0.model.1.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.0.model.2.conv1.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.0.model.2.conv1.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.0.model.2.conv2.weight",
+      "shape": [
+        512,
+        512,
+        1
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.0.model.2.conv2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.2.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.3.2.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.4.weight",
+      "shape": [
+        512,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.4.bias",
+      "shape": [
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.6.weight",
+      "shape": [
+        263,
+        512,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/gradients/decoder.model.6.bias",
+      "shape": [
+        263
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/vq_training/updated_codebook",
+      "shape": [
+        512,
+        512
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "deterministic_cudnn": true,
+  "native_files": {
+    "motius/models/motiongpt/resnet.py": "6614f2ec7aa3c5f8588ae3537a02a7c82cb4c7ba28c028f277350bb1fc21db1e",
+    "motius/models/motiongpt/quantize_cnn.py": "7b0200d07cde471b40d2210b320a10eab80bcb7a34f7797a1cec39ca82c01f5b",
+    "motius/models/motiongpt/vq.py": "49016ec039518aed0b58d92a975859be1a2c40c61d99f658d4bf7690aa4e1f4b",
+    "motius/models/motiongpt/bundle.py": "241b24e637eef76399c2e6ac149cca4e8e15b92da0135efc79427920464a93a6",
+    "motius/models/motiongpt/language.py": "f0e49954f6cdfabf23dbf90d32acf74d2ababc1d80e054717248097caf2ba44d",
+    "motius/models/motiongpt/__init__.py": "0a99801ca80da2a2ddd58038cf86358b11a2ba6a501f24d20bd6c3ff2f4ff460",
+    "motius/pipelines/motiongpt/decoding.py": "a14849ceef60a0508789c6a6c619692e3a8970c6df8c35179127f5eec930f4a6",
+    "motius/pipelines/motiongpt/pipeline.py": "c7f8f0487b0d572d74743ee584804f4b4cde1c5f1f0dd65b97543e3c17db0c33",
+    "motius/pipelines/motiongpt/__init__.py": "363b4f325a876adce4d3356b55140707f9956a914de97241bb2ac192b5fbfe78",
+    "motius/trainers/motiongpt/trainer.py": "081a0bc80bb836021e411af06d2556d00af95bf8cccd2a0ea92532bdb4bfe777",
+    "motius/trainers/motiongpt/objective.py": "2eb37fda6a2ca2ec543f5474f6c636122e52358bafd68b7eec34704c6d460d05",
+    "motius/trainers/motiongpt/__init__.py": "17b72d141688bf58c70258422fa85665dbc9885617e9ffc572c6bd5640b6b0f8",
+    "motius/motion/conditioning/motiongpt.py": "f3ec85cc073c738e9d83fa4b0c5c1b504a7c503b7b2060f2781ede67b9fdb805"
+  }
+}

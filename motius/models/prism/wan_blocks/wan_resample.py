@@ -502,22 +502,3 @@ class WanResample2DTK(nn.Module):
 
         else:
             return self.resample(x)
-
-
-if __name__ == "__main__":
-    x = torch.randn(2, 32, 16, 22)
-    down = AvgDown2DTK(32, 64, 2)
-    up = DupUp2DTK(64, 32, 2)
-    y = down(x)
-    z = up(y, first_chunk=True)
-    z_2 = up(y)
-    print(y.shape, z.shape, z_2.shape)
-
-    x = torch.randn(2, 32, 17, 22)
-    resample_down1d = WanResample2DTK(32, mode="downsample1d")
-    y_down = resample_down1d(x)
-    print(y_down.shape)
-
-    resample_up1d = WanResample2DTK(32, mode="upsample1d")
-    z_up = resample_up1d(x)
-    print(z_up.shape)

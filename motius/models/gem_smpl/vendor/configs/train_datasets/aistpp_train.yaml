@@ -1,3 +1,0 @@
-aistpp_train:
-  _target_: gem.datasets.aistpp.aistplusplus.AISTPlusPlusSmplDataset
-  feat_version: v2

@@ -1,0 +1,1 @@
+"""FlowMDM Gaussian diffusion equations."""

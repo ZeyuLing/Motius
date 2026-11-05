@@ -58,16 +58,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-from motius.models.gentrack.tracker_paths import PROTOMOTIONS_ROOT
+from motius.configuration.gentrack import PROTOMOTIONS_ROOT, PROTOMOTIONS_ASSETS_ROOT, PROTOMOTIONS_G1_ONNX
 
 PROTO = PROTOMOTIONS_ROOT
 DEFAULT_PROTO_OUTPUT_ROOT = (
     ROOT / "outputs" / "training" / "protomotions"
 )
-FROZEN_ONNX = (
-    PROTO / "data" / "pretrained_models" / "motion_tracker"
-    / "g1-bones-deploy" / "compiled_models" / "unified_pipeline.onnx"
-)
+FROZEN_ONNX = PROTOMOTIONS_G1_ONNX
 NUM_STEPS_PER_EPOCH = 32  # ProtoMotions PPO rollout horizon (base_agent num_steps)
 _FILE_IDENTITY_CACHE = {}
 _PICKLE_MARK = object()
@@ -1592,18 +1589,13 @@ def main():
         ),
     )
     ap.add_argument(
-        "--trainee-exp",
-        default=str(
-            PROTO
-            / "examples"
-            / "experiments"
-            / "mimic"
-            / "gentrack_g1_xy_offset.py"
-        ),
+        "--trainee-configuration", "--trainee-exp", dest="trainee_exp",
+        default=os.environ.get('MOTIUS_GENTRACK_PROTO_CONFIGURATION',
+            str(DEFAULT_PROTO_OUTPUT_ROOT / 'gentrack_g1_t0' / 'resolved_configs.yaml')),
     )
     ap.add_argument("--root", default="outputs/training/gentrack_coevolve")
-    ap.add_argument("--py310", default=sys.executable)
-    ap.add_argument("--py38", default=sys.executable)
+    ap.add_argument("--generator-python", "--py310", dest="py310", default=sys.executable)
+    ap.add_argument("--tracker-python", "--py38", dest="py38", default=sys.executable)
     ap.add_argument("--hf-home", default="checkpoints/huggingface")
     args = ap.parse_args()
 
@@ -2388,7 +2380,7 @@ def main():
                 "--output-pattern", package_pattern,
                 "--num-shards", str(args.trainee_ngpu),
                 "--python", args.py38,
-                "--vendor-root", PROTO,
+                "--project-root", ROOT,
             ]
             log(
                 state,
@@ -2434,26 +2426,16 @@ def main():
                 shards=package_data["num_shards"],
                 pattern=str(package_pattern),
             )
-        tr_cmd = [
-            args.py38, "protomotions/train_agent.py",
-            "--robot-name", "g1", "--simulator", "isaacgym",
-            "--experiment-path", args.trainee_exp,
-            "--experiment-name", exp,
-            "--motion-file", str(motion_file),
-            "--checkpoint", str(prev_trainee),
-            "--num-envs", str(args.num_envs), "--batch-size", str(args.batch_size),
-            "--ngpu", str(args.trainee_ngpu),
-            "--seed", str(round_seed),
-            "--training-max-steps", str(max_steps),
-            "--headless", "True",
-            # Held-out evaluation runs separately from saved round checkpoints.
-            # Avoid ProtoMotions' one-off warm-start evaluator here: on the
-            # 17k-motion mixed replay snapshot it allocates a multi-gigabyte
-            # metric tensor after the first PPO epoch and can OOM an otherwise
-            # healthy 40-GB training process.
-            "--skip-initial-eval",
-            "--disable-training-eval",
-        ]
+        launch = [args.py38, '-m', 'motius.trainers.protomotions.train']
+        if args.trainee_ngpu > 1:
+            launch = [args.py38, '-m', 'torch.distributed.run', '--standalone',
+                '--nproc_per_node', str(args.trainee_ngpu), '--module', 'motius.trainers.protomotions.train']
+        tr_cmd = [*launch, '--checkpoint', str(prev_trainee), '--resume-original',
+            '--configuration', args.trainee_exp, '--motion-file', str(motion_file),
+            '--asset-root', str(PROTOMOTIONS_ASSETS_ROOT), '--run-name', exp,
+            '--num-envs', str(args.num_envs), '--batch-size', str(args.batch_size),
+            '--cap-discriminator-batch-size', str(args.batch_size), '--seed', str(round_seed),
+            '--max-iterations', str(target_epoch), '--headless', '--kit-args=--allow-root']
         # ProtoMotions defines --overrides with nargs="*": pass the flag once,
         # followed by all key=value entries. Repeating the flag keeps only the
         # final occurrence, while comma-joining entries turns them into one bad
@@ -2486,7 +2468,7 @@ def main():
                 [
                     sys.executable,
                     ROOT / "tools" / "gentrack" / "release_occupy_until_process.py",
-                    "--command-kind", "train_agent.py",
+                    "--command-kind", "motius.trainers.protomotions.train",
                     "--process-substring", exp,
                     "--timeout-seconds", "600",
                     "--post-start-seconds", "120",
@@ -2612,7 +2594,7 @@ def main():
             if py38_extensions:
                 exp_env["TORCH_EXTENSIONS_DIR"] = py38_extensions
             exp_cmd = [
-                args.py38, "deployment/export_bm_tracker_onnx.py",
+                args.py38, str(ROOT / "tools/export_protomotions_onnx.py"),
                 "--checkpoint", str(trainee_ckpt), "--output", str(out),
             ]
             log(state, "judge_export", round=r)

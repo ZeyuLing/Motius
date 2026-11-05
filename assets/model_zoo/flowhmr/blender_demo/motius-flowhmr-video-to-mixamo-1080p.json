@@ -1,0 +1,147 @@
+{
+  "frames": 750,
+  "fps": 30,
+  "seconds": 25,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "source_sha256": "8f9e9c1193163940eafb512e9a0621a31fe316406e7a69aa3a357f6deceb17f1",
+  "capture_sha256": "06ebe977e332a8c7cb141c5fd80b24029969e77257b32b08d1b011c4e1f1e62f",
+  "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+  "checkpoint_label": "FlowHMR Latest",
+  "video_sha256": "1702cf43977ec1891b54c20e5ade3b31dd123ce179b3c806c6c48eb4dbcbf57c",
+  "original_audio_stream_copy": true,
+  "source_crop": {
+    "method": "Smoothed full-body portrait reframe; letterbox wide poses",
+    "width_range": [
+      503.0857238769531,
+      724.521484375
+    ],
+    "height_range": [
+      620.0,
+      720.0
+    ],
+    "envelope_frames": 31,
+    "gaussian_sigma_frames": 8
+  },
+  "flowhmr_inference": {
+    "attention_query_chunk_size": 256,
+    "camera_frame_interval": 100,
+    "camera_subsampled": true,
+    "full_hand_features": true,
+    "lightweight": true
+  },
+  "character_credit": "Mixamo character from the three.js Samba Dancing FBX example",
+  "character_source": "https://github.com/mrdoob/three.js/blob/dev/examples/models/fbx/Samba%20Dancing.fbx",
+  "upstream": "https://github.com/flowhmr/flowhmr",
+  "workflow_reference": "https://github.com/MaxLiu22/Motion2MixamoRig",
+  "engineering_reference": "https://github.com/flowhmr/flowhmr/issues/4",
+  "render": {
+    "frames": 750,
+    "fps": 30.0,
+    "camera_fit": [
+      {
+        "center_z": 0.9590256357192992,
+        "center_x": -0.0445098360457441,
+        "scale": 2.4012910294272074
+      },
+      {
+        "center_z": 1.000274763777852,
+        "center_x": -0.03793707857757472,
+        "scale": 2.6197769598449003
+      }
+    ],
+    "source_fbx_animation_imported": false,
+    "horizontal_root_centering": true,
+    "mapped_joints": 52,
+    "skinned_meshes": {
+      "Alpha_Surface": 17336,
+      "Alpha_Joints": 10514
+    },
+    "render_engine": "Cycles CPU",
+    "samples": 8,
+    "plate_resolution": [
+      568,
+      700
+    ],
+    "smpl_constant_floor_offset_m": 0.059001102447509765,
+    "mixamo_constant_floor_offset_m": 0.044661718755960464,
+    "root_travel_scale": 1.0376264195318035,
+    "temporal_pose_filter": false,
+    "foot_ik": false,
+    "character_sha256": "b9003ee562c87bf03051c3a502411b0808d3513f1d74a2011f7530d9f067069f",
+    "motion_sha256": "6a0f7caba7c4d7098e3e3459d3dec35a95624d2ede50857c3881e6e67d38c714",
+    "mesh_sha256": "ba87c360b9c4f54594ec0821261dd059368890cce55ebc88366563d760041684",
+    "checkpoint_sha256": "f4ae4168a6f576ffe08a3a19b245e0fd65c0d304b8e93bc2c6ab0a46a6f86912",
+    "inference_settings": {
+      "attention_query_chunk_size": 256,
+      "camera_frame_interval": 100,
+      "camera_subsampled": true,
+      "full_hand_features": true,
+      "lightweight": true
+    }
+  },
+  "media_validation": {
+    "complete": true,
+    "ffprobe": {
+      "programs": [],
+      "streams": [
+        {
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "color_space": "bt709",
+          "r_frame_rate": "30/1",
+          "start_time": "0.000000",
+          "duration": "25.000000",
+          "nb_read_frames": "750"
+        },
+        {
+          "codec_type": "audio",
+          "r_frame_rate": "0/0",
+          "start_time": "0.000000",
+          "duration": "25.000000",
+          "nb_read_frames": "1077"
+        }
+      ]
+    },
+    "video_frames": 750,
+    "source_frames": 750,
+    "fps": 30,
+    "seconds": 25,
+    "source_audio_packets_identical": true,
+    "audio_packet_sha256": "292166bfbaa9a0e4f2c911baa39b5d4bf415170c1f6771e3632f6e766b6403f2",
+    "full_decode_without_errors": true,
+    "source_sha256": "8f9e9c1193163940eafb512e9a0621a31fe316406e7a69aa3a357f6deceb17f1",
+    "master_sha256": "1702cf43977ec1891b54c20e5ade3b31dd123ce179b3c806c6c48eb4dbcbf57c",
+    "poster_sha256": "5c82c17ce980bd49fd34eb7f103d0a43e7a06e234536299abf89345f6047e0cc"
+  },
+  "blender_validation": {
+    "frames": 750,
+    "fps": 30,
+    "sample_frames": [
+      1,
+      151,
+      363,
+      376,
+      601,
+      750
+    ],
+    "native_surface_max_error_m": 4.52995301269965e-08,
+    "mixamo_global_rotation_matrix_max_error": 7.726350662318193e-07,
+    "mapped_joints": 52,
+    "fbx_frame_range": [
+      1.0,
+      750.0
+    ],
+    "fbx_import_animation_offset": 0.0,
+    "fbx_deformed_mesh_root_relative_max_error_m": 1.209962812609433e-06,
+    "blender_project_reopened": true,
+    "addon_not_required_for_playback": true,
+    "character_meshes": {
+      "Alpha_Surface": 17336,
+      "Alpha_Joints": 10514
+    }
+  }
+}

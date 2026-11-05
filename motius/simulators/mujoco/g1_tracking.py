@@ -16,7 +16,7 @@ from motius.simulators.metrics import (
 )
 from motius.simulators.reference import TrackingReference
 from motius.simulators.rollout import TrackingRolloutResult
-from motius.models.humanoid_gpt.bundle import (
+from motius.configuration.humanoid_gpt import (
     DAMPING as HUMANOID_GPT_DAMPING,
     DEFAULT_JOINT_POSITION as HUMANOID_GPT_DEFAULT_JOINT_POSITION,
     STIFFNESS as HUMANOID_GPT_STIFFNESS,

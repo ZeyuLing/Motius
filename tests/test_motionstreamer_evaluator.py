@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import torch
 
-from motius.models.motionstreamer.evaluator import (
+from motius.models.motionstreamer.evaluator_network import (
     ActorAgnosticEncoder,
     PositionalEncoding,
 )

@@ -1,22 +1,15 @@
-"""MotionStreamer ModelBundle.
+"""Neural roots and current-weight artifact I/O for MotionStreamer.
 
-Wraps the Motius-native MotionStreamer implementation (causal TAE + LLaMA
-autoregressive transformer + per-token diffusion head; see
-``motius.models.motionstreamer.network``) behind a clean
-``ModelBundle`` interface.
-
-The text encoder is SentenceT5-XXL, frozen and stored in the Motius artifact.
-
-Representation: MotionStreamer-272 (272-dim, 30 fps).
-Generation path: text -> SentenceT5 -> LLaMA AR (CFG, per-token diffusion
-sampling) -> latent tokens -> TAE decoder -> 272-dim motion.
+The Bundle owns the causal TAE, autoregressive transformer, diffusion head and
+frozen SentenceT5 network. Text preparation, sampling and training objectives
+live in their respective framework components.
 """
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Sequence
 
 import numpy as np
 import torch
@@ -43,6 +36,7 @@ def _maybe_download_hub(name_or_path: str, local: Path) -> Path:
     except Exception:
         return local
 
+
 # MotionStreamer-272 normalization (released ``humanml3d_272/mean_std``). These
 # travel inside the Motius artifact so a checkpoint is self-contained.
 _DEFAULT_MEAN = _REPO_ROOT / "checkpoints/motionstreamer/t2m_humanml272/Mean.npy"
@@ -66,7 +60,7 @@ _TAE_DEFAULTS = {
     "clip_range": [-30, 20],
 }
 _AR_DEFAULTS = {
-    "config_name": "Normal_size",   # n_layer=12, n_head=12, n_embd=768
+    "config_name": "Normal_size",  # n_layer=12, n_head=12, n_embd=768
     "block_size": 78,
     "num_diffusion_head_layers": 9,
     "latent_dim": 16,
@@ -99,6 +93,7 @@ class MotionStreamerBundle(ModelBundle):
         mean_path: Optional[str] = None,
         std_path: Optional[str] = None,
         load_text_model: bool = True,
+        initialize_from_scratch: Sequence[str] = (),
         device: Optional[str] = None,
         **kwargs,
     ):
@@ -115,12 +110,23 @@ class MotionStreamerBundle(ModelBundle):
           :meth:`from_pretrained` / :meth:`save_pretrained` use.
         """
         super().__init__()
-        if tae_weights_path is None and tae_path is None:
+        initialize_from_scratch = set(initialize_from_scratch)
+        if not initialize_from_scratch <= {"tae", "ar"}:
+            raise ValueError("Only tae/ar neural roots can be initialized from scratch")
+        if (
+            tae_weights_path is None
+            and tae_path is None
+            and "tae" not in initialize_from_scratch
+        ):
             raise ValueError(
                 "MotionStreamerBundle requires tae_weights_path from an "
                 "Motius artifact or an explicit raw tae_path for conversion."
             )
-        if ar_weights_path is None and ar_path is None:
+        if (
+            ar_weights_path is None
+            and ar_path is None
+            and "ar" not in initialize_from_scratch
+        ):
             raise ValueError(
                 "MotionStreamerBundle requires ar_weights_path from an "
                 "Motius artifact or an explicit raw ar_path for conversion."
@@ -137,7 +143,9 @@ class MotionStreamerBundle(ModelBundle):
         self._tae_cfg = tae_cfg
         self._ar_cfg = ar_cfg
 
-        build_device = torch.device(device) if device is not None else torch.device("cpu")
+        build_device = (
+            torch.device(device) if device is not None else torch.device("cpu")
+        )
 
         # --- TAE -------------------------------------------------------- #
         tae = Causal_HumanTAE(
@@ -164,14 +172,16 @@ class MotionStreamerBundle(ModelBundle):
         )
 
         # --- load weights ---------------------------------------------- #
-        if tae_weights_path is not None:
-            self._load_weights(tae, tae_weights_path, key=None)
-        else:
-            self._load_weights(tae, str(tae_path), key="net")
-        if ar_weights_path is not None:
-            self._load_weights(ar, ar_weights_path, key=None)
-        else:
-            self._load_weights(ar, str(ar_path), key="trans")
+        if "tae" not in initialize_from_scratch:
+            if tae_weights_path is not None:
+                self._load_weights(tae, tae_weights_path, key=None)
+            else:
+                self._load_weights(tae, str(tae_path), key="net")
+        if "ar" not in initialize_from_scratch:
+            if ar_weights_path is not None:
+                self._load_weights(ar, ar_weights_path, key=None)
+            else:
+                self._load_weights(ar, str(ar_path), key="trans")
 
         tae.eval()
         ar.eval()
@@ -183,7 +193,15 @@ class MotionStreamerBundle(ModelBundle):
         # --- frozen text encoder --------------------------------------- #
         self.text_model = None
         if load_text_model:
-            self.text_model = self._build_text_model(text_model_name, build_device)
+            self.text_model, text_directory = self._build_text_model(
+                text_model_name, build_device
+            )
+            self.text_model_name = str(text_directory)
+        self._save_ckpt_modules = ["tae", "ar"]
+        self._trainable_modules = ["ar"]
+        self._frozen_modules = ["tae", "text_model"]
+        if self.text_model is not None:
+            self._save_ckpt_modules.append("text_model")
 
         # --- normalization buffers (272-dim) --------------------------- #
         mean_p = Path(mean_path) if mean_path else Path(_DEFAULT_MEAN)
@@ -212,27 +230,19 @@ class MotionStreamerBundle(ModelBundle):
             sd = load_file(p)
         else:
             ckpt = torch.load(p, map_location="cpu")
-            sd = ckpt[key] if (key is not None and isinstance(ckpt, dict) and key in ckpt) else ckpt
+            sd = (
+                ckpt[key]
+                if (key is not None and isinstance(ckpt, dict) and key in ckpt)
+                else ckpt
+            )
         sd = _strip_module_prefix(sd)
         module.load_state_dict(sd, strict=True)
 
     @staticmethod
     def _build_text_model(name: str, device: torch.device):
-        from sentence_transformers import SentenceTransformer
+        from motius.configuration.motionstreamer.text import load_text_network
 
-        m = SentenceTransformer(
-            name,
-            device=str(device),
-            local_files_only=Path(name).is_dir(),
-            model_kwargs={
-                "low_cpu_mem_usage": True,
-                "dtype": "auto",
-            },
-        )
-        m.eval()
-        for p in m.parameters():
-            p.requires_grad = False
-        return m
+        return load_text_network(name, device)
 
     # ------------------------------------------------------------------
     # diffusers-style artifact I/O (self-contained, raw-checkout-independent)
@@ -243,7 +253,9 @@ class MotionStreamerBundle(ModelBundle):
             "ar": dict(self._ar_cfg),
         }
 
-    def save_pretrained(self, save_directory: str, safe_serialization: bool = True, **kwargs):
+    def save_pretrained(
+        self, save_directory: str, safe_serialization: bool = True, **kwargs
+    ):
         """Export a self-contained Motius MotionStreamer artifact.
 
         Layout::
@@ -274,9 +286,10 @@ class MotionStreamerBundle(ModelBundle):
                     "Cannot export a complete MotionStreamer artifact without "
                     "a loaded text encoder."
                 )
-            self.text_model.save(
-                str(save_dir / _TEXT_MODEL_SUBDIR),
-                safe_serialization=True,
+            from motius.configuration.motionstreamer.text import save_text_network
+
+            save_text_network(
+                self.text_model, self.text_model_name, save_dir / _TEXT_MODEL_SUBDIR
             )
         (save_dir / "ms_config.json").write_text(json.dumps(cfg, indent=2))
 
@@ -292,8 +305,39 @@ class MotionStreamerBundle(ModelBundle):
             torch.save(_cpu_state(self.tae), str(save_dir / "tae.pt"))
             torch.save(_cpu_state(self.ar), str(save_dir / "ar.pt"))
 
-        np.save(str(save_dir / "Mean.npy"), self.mean.detach().cpu().numpy().astype(np.float32))
-        np.save(str(save_dir / "Std.npy"), self.std.detach().cpu().numpy().astype(np.float32))
+        np.save(
+            str(save_dir / "Mean.npy"),
+            self.mean.detach().cpu().numpy().astype(np.float32),
+        )
+        np.save(
+            str(save_dir / "Std.npy"),
+            self.std.detach().cpu().numpy().astype(np.float32),
+        )
+        extension = "safetensors" if safe_serialization else "pt"
+        artifacts = dict(
+            config="ms_config.json",
+            tae=f"tae.{extension}",
+            ar=f"ar.{extension}",
+            mean="Mean.npy",
+            std="Std.npy",
+        )
+        if include_text_encoder:
+            artifacts["text_encoder"] = _TEXT_MODEL_SUBDIR
+        (save_dir / "model_index.json").write_text(
+            json.dumps(
+                dict(
+                    _class_name="MotionStreamerPipeline",
+                    _library_name="motius",
+                    model_type="motionstreamer",
+                    format="motius-motionstreamer-neural-v2",
+                    bundle_class="motius.models.motionstreamer.MotionStreamerBundle",
+                    pipeline_class="motius.pipelines.motionstreamer.MotionStreamerPipeline",
+                    artifacts=artifacts,
+                ),
+                indent=2,
+            )
+            + "\n"
+        )
         return save_directory
 
     @classmethod
@@ -322,9 +366,7 @@ class MotionStreamerBundle(ModelBundle):
         guidance_param = kwargs.pop("guidance_param", meta.get("guidance_param", 4.0))
         explicit_text_model = kwargs.pop("text_model_name", None)
         load_text_model = bool(kwargs.get("load_text_model", True))
-        bundled_text_model = path / str(
-            meta.get("text_model_name", _TEXT_MODEL_SUBDIR)
-        )
+        bundled_text_model = path / str(meta.get("text_model_name", _TEXT_MODEL_SUBDIR))
         if explicit_text_model is not None:
             text_model_name = explicit_text_model
         elif bundled_text_model.is_dir():
@@ -363,10 +405,6 @@ class MotionStreamerBundle(ModelBundle):
     @property
     def device(self) -> torch.device:
         return self.mean.device
-
-    def denormalize(self, motion_272: torch.Tensor) -> torch.Tensor:
-        """Un-standardize MotionStreamer-272 features back to physical scale."""
-        return motion_272 * self.std + self.mean
 
     def forward(self, *args, **kwargs):  # pragma: no cover - use pipeline
         raise NotImplementedError("Use MotionStreamerPipeline.infer_t2m for inference.")

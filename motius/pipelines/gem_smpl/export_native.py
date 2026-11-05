@@ -1,4 +1,4 @@
-"""Run inside the pinned GEM-SMPL environment to export numeric native results."""
+"""Materialize GEM-SMPL body parameters using the original SMPL-X to SMPL maps."""
 
 from __future__ import annotations
 
@@ -37,19 +37,24 @@ def _apply_sparse_vertex_map(
     return mapped.reshape(vertex_map.shape[0], frames, 3).permute(1, 0, 2)
 
 
-def export(input_path: Path, output_path: Path, *, device: str) -> None:
+def export(input_path: Path, output_path: Path, *, device: str, body_models_root) -> None:
     """Materialize official SMPL-X geometry on the neutral SMPL topology."""
 
     payload = _load(input_path)
-    from gem.utils.body_model import __file__ as body_asset_module
-    from gem.utils.smplx_utils import make_smplx
+    arrays = materialize_prediction(payload, body_models_root, device)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(output_path, **arrays)
 
-    body_asset_root = Path(body_asset_module).parent
+
+@torch.no_grad()
+def materialize_prediction(payload, body_models_root, device):
+    from motius.motion.body_models.gem_smpl.body import make_smplx
+    body_asset_root = Path(__file__).resolve().parents[2] / "configuration/gem_smpl/body"
     smplx_to_smpl = _load(body_asset_root / "smplx2smpl_sparse.pt").to(device)
     smpl_joint_regressor = _load(
         body_asset_root / "smpl_neutral_J_regressor.pt"
     ).to(device)
-    body_model = make_smplx("supermotion").to(device).eval()
+    body_model = make_smplx("supermotion", model_root=body_models_root).to(device).eval()
     arrays: dict[str, np.ndarray] = {}
     with torch.no_grad():
         for group_name, joints_name, vertices_name in (
@@ -75,8 +80,7 @@ def export(input_path: Path, output_path: Path, *, device: str) -> None:
             arrays[vertices_name] = _cpu_array(smpl_vertices)
     if "K_fullimg" in payload:
         arrays["K_fullimg"] = _cpu_array(payload["K_fullimg"])
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(output_path, **arrays)
+    return arrays
 
 
 def main() -> None:
@@ -84,8 +88,9 @@ def main() -> None:
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", default="cuda")
+    parser.add_argument("--body-models-root", type=Path, required=True)
     args = parser.parse_args()
-    export(args.input, args.output, device=args.device)
+    export(args.input, args.output, device=args.device, body_models_root=args.body_models_root)
 
 
 if __name__ == "__main__":

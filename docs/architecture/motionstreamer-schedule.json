@@ -1,0 +1,185 @@
+{
+  "complete": true,
+  "scope": "Actual original AR warmup/cosine and TAE exclusive warmup/milestone schedulers with AdamW versus native scheduler built through the shared Runner, including the original inclusive final iteration. Native optimizer/scheduler restored after update nine and remains identical to uninterrupted original trajectory. Tiny real parameter optimizer probe; not a full model training certificate.",
+  "exact_parameter_and_learning_rate_trajectory": true,
+  "tests": [
+    {
+      "iteration": 0,
+      "used": 0.0,
+      "next": 2e-05
+    },
+    {
+      "iteration": 1,
+      "used": 2e-05,
+      "next": 4e-05
+    },
+    {
+      "iteration": 2,
+      "used": 4e-05,
+      "next": 6e-05
+    },
+    {
+      "iteration": 3,
+      "used": 6e-05,
+      "next": 8e-05
+    },
+    {
+      "iteration": 4,
+      "used": 8e-05,
+      "next": 0.0001
+    },
+    {
+      "iteration": 5,
+      "used": 0.0001,
+      "next": 9.924038765061042e-05
+    },
+    {
+      "iteration": 6,
+      "used": 9.924038765061042e-05,
+      "next": 9.698463103929544e-05
+    },
+    {
+      "iteration": 7,
+      "used": 9.698463103929544e-05,
+      "next": 9.330127018922195e-05
+    },
+    {
+      "iteration": 8,
+      "used": 9.330127018922195e-05,
+      "next": 8.83022221559489e-05
+    },
+    {
+      "iteration": 9,
+      "used": 8.83022221559489e-05,
+      "next": 8.213938048432697e-05
+    },
+    {
+      "iteration": 10,
+      "used": 8.213938048432697e-05,
+      "next": 7.500000000000001e-05
+    },
+    {
+      "iteration": 11,
+      "used": 7.500000000000001e-05,
+      "next": 6.710100716628346e-05
+    },
+    {
+      "iteration": 12,
+      "used": 6.710100716628346e-05,
+      "next": 5.868240888334653e-05
+    },
+    {
+      "iteration": 13,
+      "used": 5.868240888334653e-05,
+      "next": 5e-05
+    },
+    {
+      "iteration": 14,
+      "used": 5e-05,
+      "next": 4.131759111665349e-05
+    },
+    {
+      "iteration": 15,
+      "used": 4.131759111665349e-05,
+      "next": 3.289899283371658e-05
+    },
+    {
+      "iteration": 16,
+      "used": 3.289899283371658e-05,
+      "next": 2.5000000000000015e-05
+    },
+    {
+      "iteration": 17,
+      "used": 2.5000000000000015e-05,
+      "next": 1.7860619515673033e-05
+    },
+    {
+      "iteration": 18,
+      "used": 1.7860619515673033e-05,
+      "next": 1.1697777844051107e-05
+    },
+    {
+      "iteration": 19,
+      "used": 1.1697777844051107e-05,
+      "next": 6.698729810778077e-06
+    },
+    {
+      "iteration": 20,
+      "used": 6.698729810778077e-06,
+      "next": 3.015368960704585e-06
+    },
+    {
+      "iteration": 21,
+      "used": 3.015368960704585e-06,
+      "next": 7.596123493895992e-07
+    },
+    {
+      "iteration": 22,
+      "used": 7.596123493895992e-07,
+      "next": 0.0
+    },
+    {
+      "iteration": 23,
+      "used": 0.0,
+      "next": 7.596123493895991e-07
+    }
+  ],
+  "tae_tests": [
+    {
+      "iteration": 0,
+      "used": 1.6666666666666667e-05
+    },
+    {
+      "iteration": 1,
+      "used": 2.5e-05
+    },
+    {
+      "iteration": 2,
+      "used": 3.3333333333333335e-05
+    },
+    {
+      "iteration": 3,
+      "used": 4.1666666666666665e-05
+    },
+    {
+      "iteration": 4,
+      "used": 4.1666666666666665e-05
+    },
+    {
+      "iteration": 5,
+      "used": 4.1666666666666665e-05
+    },
+    {
+      "iteration": 6,
+      "used": 4.1666666666666665e-05
+    },
+    {
+      "iteration": 7,
+      "used": 2.0833333333333334e-06
+    },
+    {
+      "iteration": 8,
+      "used": 2.0833333333333334e-06
+    },
+    {
+      "iteration": 9,
+      "used": 2.0833333333333334e-06
+    },
+    {
+      "iteration": 10,
+      "used": 2.0833333333333334e-06
+    },
+    {
+      "iteration": 11,
+      "used": 1.0416666666666668e-07
+    },
+    {
+      "iteration": 12,
+      "used": 1.0416666666666668e-07
+    },
+    {
+      "iteration": 13,
+      "used": 1.0416666666666668e-07
+    }
+  ]
+}

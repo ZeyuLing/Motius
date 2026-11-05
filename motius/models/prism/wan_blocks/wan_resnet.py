@@ -201,10 +201,3 @@ class WanResidualBlock2DTK(nn.Module):
             y = self.conv2(y)
 
         return y + h
-
-
-if __name__ == "__main__":
-    motion = torch.randn(2, 32, 17, 22)
-    conv = WanResidualBlockTK(32, 32)
-    out = conv(motion)
-    print(out.shape)

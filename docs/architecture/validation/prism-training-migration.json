@@ -1,0 +1,30 @@
+{
+  "complete": true,
+  "comparison": "pre-migration Motius PRISM training graph with synthetic neural weights; not upstream pretrained certification",
+  "cases": [
+    {
+      "latent_sample_method": "mode",
+      "frame_condition_rate": 0.0,
+      "exact": true,
+      "loss": 9.10353946685791
+    },
+    {
+      "latent_sample_method": "mode",
+      "frame_condition_rate": 1.0,
+      "exact": true,
+      "loss": 8.123592376708984
+    },
+    {
+      "latent_sample_method": "sample",
+      "frame_condition_rate": 0.0,
+      "exact": true,
+      "loss": 1505.9208984375
+    },
+    {
+      "latent_sample_method": "sample",
+      "frame_condition_rate": 1.0,
+      "exact": true,
+      "loss": 21.816913604736328
+    }
+  ]
+}

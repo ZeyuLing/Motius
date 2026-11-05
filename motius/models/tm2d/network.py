@@ -220,40 +220,13 @@ class _MotionTokenTransformer(nn.Module):
         )
         self.trg_word_prj.weight = self.decoder.trg_word_emb.weight
 
-    def decode_logits(self, tokens, encoded, source_mask):
-        mask = token_mask(tokens, self.trg_pad_idx) & causal_mask(tokens)
+    def decode_logits(self, tokens, encoded, source_mask, *, mask_padding=True):
+        mask = causal_mask(tokens)
+        if mask_padding:
+            mask = token_mask(tokens, self.trg_pad_idx) & mask
         values = self.decoder(tokens, mask, encoded, source_mask)
         return self.trg_word_prj(values)
 
-    def generate_from_encoded(
-        self,
-        encoded,
-        source_mask,
-        initial_tokens,
-        steps,
-        *,
-        sample=False,
-        top_k=None,
-        forbidden_ids=(),
-        generator=None,
-    ):
-        tokens = initial_tokens
-        for _ in range(int(steps)):
-            logits = self.decode_logits(tokens, encoded, source_mask)[:, -1]
-            if top_k is not None and 0 < int(top_k) < logits.shape[-1]:
-                threshold = torch.topk(logits, int(top_k), dim=-1).values[:, -1:]
-                logits = logits.masked_fill(logits < threshold, -torch.inf)
-            if forbidden_ids:
-                logits[:, list(forbidden_ids)] = -torch.inf
-            if sample:
-                probabilities = F.softmax(logits, dim=-1)
-                next_token = torch.multinomial(
-                    probabilities, 1, generator=generator
-                )
-            else:
-                next_token = logits.argmax(dim=-1, keepdim=True)
-            tokens = torch.cat([tokens, next_token], dim=1)
-        return tokens
 
 
 class AudioMotionTransformer(_MotionTokenTransformer):
@@ -277,6 +250,22 @@ class TextMotionTransformer(_MotionTokenTransformer):
     def encode(self, tokens):
         mask = token_mask(tokens, self.src_pad_idx)
         return self.encoder(tokens, mask), mask
+
+
+class JointTokenNetwork(nn.Module):
+    """Both source encoders route through the joint checkpoint's audio decoder."""
+
+    def __init__(self, audio_transformer, text_transformer):
+        super().__init__()
+        self.audio_transformer = audio_transformer
+        self.text_transformer = text_transformer
+
+    def forward(self, audio_features, audio_lengths, dance_input, text_input, motion_input):
+        encoded, mask = self.audio_transformer.encode(audio_features, audio_lengths)
+        audio_logits = self.audio_transformer.decode_logits(dance_input, encoded, mask)
+        encoded, mask = self.text_transformer.encode(text_input)
+        text_logits = self.audio_transformer.decode_logits(motion_input, encoded, mask)
+        return audio_logits, text_logits
 
 
 class ResBlock(nn.Module):
@@ -323,7 +312,7 @@ class VectorQuantizer(nn.Module):
         distance = (
             flat.square().sum(dim=1, keepdim=True)
             + self.embedding.weight.square().sum(dim=1)
-            - 2 * flat @ self.embedding.weight.t()
+            - 2 * (flat @ self.embedding.weight.t())
         )
         return distance.argmin(dim=1).reshape(latent.shape[:-1])
 

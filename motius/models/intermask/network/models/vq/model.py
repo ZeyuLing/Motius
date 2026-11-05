@@ -58,37 +58,12 @@ class RVQVAE(nn.Module):
 
         self.quantizer = ResidualVQ(**rvqvae_config)
 
-    def preprocess(self, x):
-        if self.dataset_name == "interhuman":
-            pos = x[..., :self.joints_num*3].reshape([x.shape[0], x.shape[1], self.joints_num, 3])
-            vel = x[..., self.joints_num*3 : self.joints_num*3*2].reshape([x.shape[0], x.shape[1], self.joints_num, 3])
 
-            rot = x[..., self.joints_num*3*2 : self.joints_num*3*2 + (self.joints_num-1)*6].reshape([x.shape[0], x.shape[1], self.joints_num-1, 6])
-            rot = torch.cat([torch.zeros(rot.shape[0], rot.shape[1], 1, 6).to(x.device), rot], dim=2)
-
-            joints = torch.cat([pos, vel, rot], dim=-1)
-        else:
-            joints = x
-        joints = joints.permute(0, 3, 2, 1).float() # B, D=12, J=22, T
-
-        return joints
-
-    def postprocess(self, x):
-        x = x.permute(0, 3, 2, 1).float()
-
-        if self.dataset_name == "interhuman":
-            pos = x[:,:,:,:3].reshape([x.shape[0], x.shape[1], -1])
-            vel = x[:,:,:,3:6].reshape([x.shape[0], x.shape[1], -1])
-            rot = x[:,:,1:,6:6+6].reshape([x.shape[0], x.shape[1], -1])
-            fc = torch.zeros((x.shape[0], x.shape[1], 4)).to(x.device)
-
-            x = torch.cat([pos, vel, rot, fc], dim=-1)
-        return x
 
     def encode(self, x):
         # N, T, _, _ = x.shape
 
-        x_in = self.preprocess(x) # B, D=12, J=22, T || B, J=22xD=12, T
+        x_in = x # B, D=12, J=22, T || B, J=22xD=12, T
         x_encoder = self.encoder(x_in) # B, D=512, 5, T/2 || B, J=7xD=512, T//4
 
 
@@ -101,7 +76,7 @@ class RVQVAE(nn.Module):
     def forward(self, x, verbose=False):
 
         # Encode
-        x_in = self.preprocess(x) # B, D=12, J=22, T || B, J=22xD=12, T
+        x_in = x # B, D=12, J=22, T || B, J=22xD=12, T
         if verbose: print(f'preprocess: {x_in.shape}')
 
         x_encoder = self.encoder(x_in) # B, D=512, 5, T/2 || B, J=7xD=512, T//4
@@ -121,7 +96,6 @@ class RVQVAE(nn.Module):
         x_out = self.decoder(x_quantized) # B, D=12, J=22, T || B, J=22xD=12, T
         if verbose: print(f'decoder: {x_out.shape}')
 
-        x_out = self.postprocess(x_out) # B,T,D=262
         if verbose: print(f'postprocess: {x_out.shape}')
         # if verbose: exit()
         return x_out, commit_loss, perplexity
@@ -140,5 +114,4 @@ class RVQVAE(nn.Module):
 
         # decoder
         x_out = self.decoder(x)
-        x_out = self.postprocess(x_out)
         return x_out

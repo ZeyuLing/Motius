@@ -1,0 +1,654 @@
+{
+  "complete": true,
+  "comparison": "Complete unchanged original GEM model/pipeline from real released weights versus native feature-to-body composition",
+  "scope": "Input features fixed; video frontend and source training objectives require separate certificates",
+  "soma_revision": null,
+  "upstream_commit": "16bebf402d8893184249ee206d957b8248cd8310",
+  "tests": [
+    {
+      "tensor": "/0/body_params_global/body_pose",
+      "shape": [
+        16,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/body_params_global/global_orient",
+      "shape": [
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/body_params_global/transl",
+      "shape": [
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/body_params_global/betas",
+      "shape": [
+        16,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/body_params_incam/body_pose",
+      "shape": [
+        16,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/body_params_incam/global_orient",
+      "shape": [
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/body_params_incam/transl",
+      "shape": [
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/body_params_incam/betas",
+      "shape": [
+        16,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/K_fullimg",
+      "shape": [
+        16,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/model_output/sample",
+      "shape": [
+        1,
+        16,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/model_output/pred_xstart",
+      "shape": [
+        1,
+        16,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/model_output/mean",
+      "shape": [
+        1,
+        16,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/model_output/variance",
+      "shape": [
+        1,
+        16,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/model_output/log_variance",
+      "shape": [
+        1,
+        16,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/model_output/pred_context",
+      "shape": [
+        1,
+        16,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/model_output/pred_x",
+      "shape": [
+        1,
+        16,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/model_output/pred_cam",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/model_output/static_conf_logits",
+      "shape": [
+        1,
+        16,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/decode_dict/body_pose",
+      "shape": [
+        1,
+        16,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/decode_dict/betas",
+      "shape": [
+        1,
+        16,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/decode_dict/global_orient",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/decode_dict/global_orient_gv",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/decode_dict/local_transl_vel",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/decode_dict/offset",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/pred_body_params_incam/body_pose",
+      "shape": [
+        1,
+        16,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/pred_body_params_incam/global_orient",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/pred_body_params_incam/transl",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/pred_body_params_incam/betas",
+      "shape": [
+        1,
+        16,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/pred_body_params_global/body_pose",
+      "shape": [
+        1,
+        16,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/pred_body_params_global/global_orient",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/pred_body_params_global/transl",
+      "shape": [
+        1,
+        16,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/pred_body_params_global/betas",
+      "shape": [
+        1,
+        16,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/0/net_outputs/static_conf_logits",
+      "shape": [
+        1,
+        16,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/body_params_global/body_pose",
+      "shape": [
+        21,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/body_params_global/global_orient",
+      "shape": [
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/body_params_global/transl",
+      "shape": [
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/body_params_global/betas",
+      "shape": [
+        21,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/body_params_incam/body_pose",
+      "shape": [
+        21,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/body_params_incam/global_orient",
+      "shape": [
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/body_params_incam/transl",
+      "shape": [
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/body_params_incam/betas",
+      "shape": [
+        21,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/K_fullimg",
+      "shape": [
+        21,
+        3,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/model_output/sample",
+      "shape": [
+        1,
+        21,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/model_output/pred_xstart",
+      "shape": [
+        1,
+        21,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/model_output/mean",
+      "shape": [
+        1,
+        21,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/model_output/variance",
+      "shape": [
+        1,
+        21,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/model_output/log_variance",
+      "shape": [
+        1,
+        21,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/model_output/pred_context",
+      "shape": [
+        1,
+        21,
+        1024
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/model_output/pred_x",
+      "shape": [
+        1,
+        21,
+        151
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/model_output/pred_cam",
+      "shape": [
+        1,
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/model_output/static_conf_logits",
+      "shape": [
+        1,
+        21,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/decode_dict/body_pose",
+      "shape": [
+        1,
+        21,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/decode_dict/betas",
+      "shape": [
+        1,
+        21,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/decode_dict/global_orient",
+      "shape": [
+        1,
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/decode_dict/global_orient_gv",
+      "shape": [
+        1,
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/decode_dict/local_transl_vel",
+      "shape": [
+        1,
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/decode_dict/offset",
+      "shape": [
+        1,
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/pred_body_params_incam/body_pose",
+      "shape": [
+        1,
+        21,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/pred_body_params_incam/global_orient",
+      "shape": [
+        1,
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/pred_body_params_incam/transl",
+      "shape": [
+        1,
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/pred_body_params_incam/betas",
+      "shape": [
+        1,
+        21,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/pred_body_params_global/body_pose",
+      "shape": [
+        1,
+        21,
+        63
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/pred_body_params_global/global_orient",
+      "shape": [
+        1,
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/pred_body_params_global/transl",
+      "shape": [
+        1,
+        21,
+        3
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/pred_body_params_global/betas",
+      "shape": [
+        1,
+        21,
+        10
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    },
+    {
+      "tensor": "/1/net_outputs/static_conf_logits",
+      "shape": [
+        1,
+        21,
+        6
+      ],
+      "bitwise_equal": true,
+      "max_abs_error": 0.0
+    }
+  ],
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01"
+}
