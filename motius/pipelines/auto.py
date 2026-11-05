@@ -42,6 +42,7 @@ PIPELINE_CLASS_PATHS = {
     "MotionStreamerMatchingPipeline": "motius.pipelines.motionstreamer_matching.MotionStreamerMatchingPipeline",
     "MoGenTSPipeline": "motius.pipelines.mogents.MoGenTSPipeline",
     "MoMaskPipeline": "motius.pipelines.momask.MoMaskPipeline",
+    "MotionBricksReleasePipeline": "motius.pipelines.motionbricks.MotionBricksReleasePipeline",
     "MotionBricksPipeline": "motius.pipelines.motionbricks.MotionBricksPipeline",
     "AnimateCanvasPipeline": "motius.pipelines.animatecanvas.AnimateCanvasPipeline",
     "MotionCanvasPipeline": "motius.pipelines.motioncanvas.MotionCanvasPipeline",

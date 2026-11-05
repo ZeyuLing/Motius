@@ -1,0 +1,49 @@
+{
+  "complete": true,
+  "source_revision": "54fc563aeaaf819a753d72cc9fdc6713989cdd43",
+  "device": "NVIDIA H200",
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "warp_version": "1.18.0",
+  "atol": 0,
+  "rtol": 0,
+  "backend": "pytorch",
+  "scope": "Independent official model and character/state/playback code, scripted controls and primitive interactions; excludes renderer/UI and automatic nearest-primitive dispatcher",
+  "tests": [
+    {
+      "rig": "g1",
+      "bitwise_equal": true,
+      "frames": 990,
+      "pose_max_abs_error": 0.0,
+      "states": [
+        "Crouching Locomotion",
+        "Idle",
+        "Interaction",
+        "Locomotion"
+      ],
+      "interactions": [
+        "VelocityMatchingSequenceBehavior",
+        "VelocityMatchingSequenceBehavior",
+        "SittingBehavior",
+        "VelocityMatchingSequenceBehavior"
+      ]
+    },
+    {
+      "rig": "soma",
+      "bitwise_equal": true,
+      "frames": 990,
+      "pose_max_abs_error": 0.0,
+      "states": [
+        "Crouching Locomotion",
+        "Idle",
+        "Interaction",
+        "Locomotion"
+      ],
+      "interactions": [
+        "VelocityMatchingSequenceBehavior",
+        "VelocityMatchingSequenceBehavior",
+        "SittingBehavior",
+        "VelocityMatchingSequenceBehavior"
+      ]
+    }
+  ]
+}

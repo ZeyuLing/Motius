@@ -1,0 +1,113 @@
+{
+  "complete": true,
+  "source_revision": "54fc563aeaaf819a753d72cc9fdc6713989cdd43",
+  "pose_atol": 0.0002,
+  "contacts_atol": 0.0005,
+  "rtol": 0.0002,
+  "scope": "Native PyTorch + native pose runtime versus official TensorRT FP32 (TF32 disabled) + official pose runtime",
+  "device": "NVIDIA H200",
+  "torch_version": "2.6.0a0+ecf3bae40a.nv25.01",
+  "warp_version": "1.18.0",
+  "tests": [
+    {
+      "rig": "g1",
+      "case": 0,
+      "chained_context": false,
+      "tokens": 6,
+      "target_poses": 1,
+      "corrected": true,
+      "pose_max_abs_error": 5.21540641784668e-06,
+      "contacts_max_abs_error": 4.996359348297119e-05
+    },
+    {
+      "rig": "g1",
+      "case": 1,
+      "chained_context": false,
+      "tokens": 16,
+      "target_poses": 4,
+      "corrected": true,
+      "pose_max_abs_error": 6.973743438720703e-06,
+      "contacts_max_abs_error": 2.2351741790771484e-05
+    },
+    {
+      "rig": "g1",
+      "case": 2,
+      "chained_context": false,
+      "tokens": 10,
+      "target_poses": 4,
+      "corrected": false,
+      "pose_max_abs_error": 9.624287486076355e-06,
+      "contacts_max_abs_error": 2.4757348001003265e-05
+    },
+    {
+      "rig": "g1",
+      "case": 3,
+      "chained_context": false,
+      "tokens": 8,
+      "target_poses": 2,
+      "corrected": true,
+      "pose_max_abs_error": 3.814697265625e-06,
+      "contacts_max_abs_error": 3.129243850708008e-05
+    },
+    {
+      "rig": "g1",
+      "case": 4,
+      "chained_context": true,
+      "tokens": 12,
+      "target_poses": 4,
+      "corrected": true,
+      "pose_max_abs_error": 1.5735626220703125e-05,
+      "contacts_max_abs_error": 0.0002342313528060913
+    },
+    {
+      "rig": "soma",
+      "case": 0,
+      "chained_context": false,
+      "tokens": 6,
+      "target_poses": 1,
+      "corrected": true,
+      "pose_max_abs_error": 2.4884939193725586e-06,
+      "contacts_max_abs_error": 9.459559805691242e-06
+    },
+    {
+      "rig": "soma",
+      "case": 1,
+      "chained_context": false,
+      "tokens": 16,
+      "target_poses": 4,
+      "corrected": true,
+      "pose_max_abs_error": 3.0249357223510742e-06,
+      "contacts_max_abs_error": 2.7298927307128906e-05
+    },
+    {
+      "rig": "soma",
+      "case": 2,
+      "chained_context": false,
+      "tokens": 10,
+      "target_poses": 4,
+      "corrected": false,
+      "pose_max_abs_error": 4.707835614681244e-06,
+      "contacts_max_abs_error": 2.3799482733011246e-05
+    },
+    {
+      "rig": "soma",
+      "case": 3,
+      "chained_context": false,
+      "tokens": 8,
+      "target_poses": 2,
+      "corrected": true,
+      "pose_max_abs_error": 2.950429916381836e-06,
+      "contacts_max_abs_error": 1.0419171303510666e-05
+    },
+    {
+      "rig": "soma",
+      "case": 4,
+      "chained_context": true,
+      "tokens": 12,
+      "target_poses": 4,
+      "corrected": true,
+      "pose_max_abs_error": 7.614493370056152e-06,
+      "contacts_max_abs_error": 3.9577484130859375e-05
+    }
+  ]
+}

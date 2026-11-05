@@ -1,0 +1,27 @@
+{
+  "complete": true,
+  "source_revision": "54fc563aeaaf819a753d72cc9fdc6713989cdd43",
+  "scope": "Official algorithm tests, assertions unchanged; imports and mock patch namespaces adapted to native modules",
+  "excluded_test_prefixes": [
+    "test_scene_preview_"
+  ],
+  "tests": 86,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "source_files": {
+    "motionbricks/test_dof_endpoint_correction.py": "729668160384867b81ab2fcaf12f675901eb6dfe31b5238e393ac8e911c8ac86",
+    "motionbricks/test_dof_buffers.py": "bfd7d6f6654ae312387700d7b36a2de0657f2764c83ee17006e315b5281b1949",
+    "motionbricks/test_math_utils.py": "d435fb226c1ab89c82645fd31a7618674051fbee0ac323f93171a90c2c481d25",
+    "motionbricks/test_motion_player.py": "a3a4594b14ae7b68585a39b1e2eb9d62021601a54482e45940768f4cd19b8c05",
+    "motionbricks/test_blend_spaces.py": "738b7ce147167d46929e5786e3528e30c7803d69248d5b73677cce7a94986644",
+    "motionbricks/test_target_pose.py": "e09dedd0d7e2c82dc48c28f1bf8dcfc37c7157afa31c36d9c7d78fb9185c912c",
+    "motionbricks/test_pose_buffers.py": "bbd49644bd201aaedb06bd1fa92f94b8457adb0b7877413e58086bddcbdc2987",
+    "motionbricks/test_pivot.py": "8cb5aac3808eec233f636d12563f3e9c50fbfc13831574d7794da934cd57200f",
+    "motionbricks/test_animation_blending.py": "b9875d52699f1a144d3c3aab1ece5d816b5ba80c0a1ea6379dbcde61b9f522e4",
+    "app/test_state_machine.py": "3a23515aff9602ea96df84dc5a6cbe37e292433180e731afc86b53beef7b0b26",
+    "app/test_locomotion_character_states.py": "a716976dbc974bcd11150ad6775d035b1be9caebcf4214e47ffae699ed2548e0",
+    "app/test_clip_registry.py": "bfa2533e2b153c49184447de373a796fbb06af58c77666dd7245589120f3eba1",
+    "app/test_runtime_smart_primitive.py": "999367999268a15b159e1e892babe871e76bd4893eac0d8f798c200dd227d97a"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "upstream_commit": "54fc563aeaaf819a753d72cc9fdc6713989cdd43",
+  "components": {
+    "app.runtime.common.character": "motius.pipelines.motionbricks.scene_character",
+    "app.runtime.common.clip_registry": "motius.pipelines.motionbricks.scene_clip_registry",
+    "app.runtime.common.interaction": "motius.pipelines.motionbricks.scene_interaction",
+    "app.runtime.common.io.document_io": "motius.motion.io.motionbricks.document_io",
+    "app.runtime.common.io.scene_document": "motius.motion.io.motionbricks.scene_document",
+    "app.runtime.common.io.smart_primitive_document": "motius.motion.io.motionbricks.smart_primitive_document",
+    "app.runtime.common.motion": "motius.pipelines.motionbricks.scene_motion",
+    "app.runtime.common.smart_primitive_behaviors": "motius.pipelines.motionbricks.scene_smart_primitive_behaviors",
+    "app.runtime.common.state_machine": "motius.pipelines.motionbricks.scene_state_machine",
+    "app.runtime.common.states": "motius.pipelines.motionbricks.scene_states",
+    "app.runtime.common.target_pose_blender": "motius.pipelines.motionbricks.scene_target_pose_blender",
+    "app.runtime.soma.character": "motius.pipelines.motionbricks.scene_soma_character",
+    "app.runtime.soma.presets": "motius.pipelines.motionbricks.scene_soma_presets",
+    "app.runtime.soma.target_pose_blender": "motius.pipelines.motionbricks.scene_soma_target_pose_blender",
+    "app.runtime.unitree_g1.character": "motius.pipelines.motionbricks.scene_unitree_g1_character",
+    "app.runtime.unitree_g1.presets": "motius.pipelines.motionbricks.scene_unitree_g1_presets",
+    "app.runtime.unitree_g1.target_pose_blender": "motius.pipelines.motionbricks.scene_unitree_g1_target_pose_blender",
+    "motionbricks.animation.animation_buffer": "motius.motion.runtime.motionbricks.animation_buffer",
+    "motionbricks.animation.foot_contacts": "motius.motion.runtime.motionbricks.foot_contacts",
+    "motionbricks.animation.ik": "motius.motion.runtime.motionbricks.ik",
+    "motionbricks.animation.skeleton": "motius.motion.runtime.motionbricks.skeleton",
+    "motionbricks.io.bvh": "motius.motion.io.motionbricks.bvh",
+    "motionbricks.io.csv": "motius.motion.io.motionbricks.csv",
+    "motionbricks.model.config": "motius.configuration.motionbricks_runtime",
+    "motionbricks.model.generation": "motius.pipelines.motionbricks.runtime_generation",
+    "motionbricks.model.kernels": "motius.motion.runtime.motionbricks.shared_kernels",
+    "motionbricks.model.soma.buffers": "motius.motion.runtime.motionbricks.soma_buffers",
+    "motionbricks.model.soma.engine": "motius.pipelines.motionbricks.runtime_soma_engine",
+    "motionbricks.model.soma.kernels": "motius.motion.runtime.motionbricks.soma_kernels",
+    "motionbricks.model.unitree_g1.buffers": "motius.motion.runtime.motionbricks.unitree_g1_buffers",
+    "motionbricks.model.unitree_g1.engine": "motius.pipelines.motionbricks.runtime_unitree_g1_engine",
+    "motionbricks.model.unitree_g1.kernels": "motius.motion.runtime.motionbricks.unitree_g1_kernels",
+    "motionbricks.robotics.dof_animation_buffer": "motius.motion.runtime.motionbricks.dof_animation_buffer",
+    "motionbricks.runtime.blend_spaces": "motius.pipelines.motionbricks.scene_blend_spaces",
+    "motionbricks.runtime.motion_player": "motius.pipelines.motionbricks.scene_motion_player",
+    "motionbricks.runtime.motion_recorder": "motius.pipelines.motionbricks.scene_motion_recorder",
+    "motionbricks.runtime.pivot": "motius.pipelines.motionbricks.scene_pivot",
+    "motionbricks.runtime.smart_primitive": "motius.pipelines.motionbricks.scene_smart_primitive",
+    "motionbricks.runtime.target_pose": "motius.pipelines.motionbricks.scene_target_pose",
+    "motionbricks.utils.dof_utils": "motius.motion.runtime.motionbricks.dof_utils",
+    "motionbricks.utils.math_utils": "motius.motion.runtime.motionbricks.math_utils",
+    "motionbricks.utils.pose_utils": "motius.motion.runtime.motionbricks.pose_utils",
+    "motionbricks.utils.time_utils": "motius.motion.runtime.motionbricks.time_utils",
+    "motionbricks.io.usd": "motius.motion.io.motionbricks.usd_skeleton"
+  },
+  "subsets": {
+    "motionbricks.io.usd": "Skeleton loading only; mesh and rendering excluded"
+  },
+  "constants": {
+    "G1_reference_pose": {
+      "source": "motionbricks/assets/robots/unitree_g1/g1_29dof_rev_1_0.xml",
+      "sha256": "5f9118483faf22d64ddefb7445dda33f2261cd5cd0901849017d65f02496b8ca",
+      "verification": "Compared to independent official get_unitree_g1_model(load_visuals=False).joint_q"
+    }
+  }
+}

@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "motius"
-version = "0.3.20"
+version = "0.3.23"
 description = "A reproducible framework for human motion models"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "accelerate>=0.28",
+    "accelerate>=1.3.0",
     "datasets>=2.0",
     "diffusers>=0.20",
     "huggingface_hub>=0.20",
@@ -284,6 +284,12 @@ motionbricks = [
     "vector-quantize-pytorch==1.27.15",
 ]
 
+motionbricks-runtime = [
+    "warp-lang==1.18.0",
+    "usd-core==26.3",
+    "scipy>=1.11",
+]
+
 motion-tracking = [
     "onnxruntime>=1.18",
     "pyyaml>=6.0",
@@ -423,8 +429,8 @@ namespaces = false
     "assets/unitree_g1/*.xml",
     "assets/unitree_g1/LICENSE",
 ]
-"motius.licenses.motionbricks" = ["LICENSE", "ATTRIBUTIONS.md"]
-"motius.configuration.motionbricks_assets" = ["skeletons/g1/*.xml", "skeletons/g1/meshes/*.STL"]
+"motius.licenses.motionbricks" = ["LICENSE", "*.txt", "ATTRIBUTIONS.md"]
+"motius.configuration.motionbricks_assets" = ["*.npz", "*.json", "skeletons/g1/*.xml", "skeletons/g1/meshes/*.STL"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

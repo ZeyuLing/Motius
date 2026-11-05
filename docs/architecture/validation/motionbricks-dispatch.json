@@ -1,0 +1,6 @@
+{
+  "complete": true,
+  "cases": 64,
+  "source_revision": "54fc563aeaaf819a753d72cc9fdc6713989cdd43",
+  "scope": "Manual/automatic dispatch, active interaction button forwarding, completion blocking and leave/re-enter unblocking; all boolean combinations against unchanged official methods"
+}

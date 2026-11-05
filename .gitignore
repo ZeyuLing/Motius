@@ -104,3 +104,7 @@ CLAUDE.md
 !checkpoints/models/animatecanvas/Std.npy
 !checkpoints/models/animatecanvas/bone_offsets_22.pt
 !checkpoints/models/animatecanvas/normalization_provenance.md
+
+# Pinned MotionBricks numeric rig constants (source assets, not checkpoints).
+!motius/configuration/motionbricks_assets/g1_model_rig.npz
+!motius/configuration/motionbricks_assets/soma_model_rig.npz

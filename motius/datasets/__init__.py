@@ -31,5 +31,7 @@ def __getattr__(name):
     return value
 
 def register_all_datasets():
-    for module, _ in _EXPORTS.values():
+    for module, _ in dict.fromkeys(_EXPORTS.values()):
         import_module(module)
+    from .motion import register_motion_datasets
+    register_motion_datasets()
