@@ -21,6 +21,8 @@ import torch
 import torch.nn.functional as F
 from scipy.spatial.transform import Rotation as R
 
+from .position_ik import estimate_local_rotations
+
 
 N_SMPL_JOINTS = 22
 SMPL22_NAMES = [
@@ -125,9 +127,9 @@ class SOMAToSMPLIKConfig:
     batch_size: int = 512
     floor_align: bool = True
     foot_height_align: bool = True
-    refine_iters: int = 5
-    refine_lr: float = 2e-2
-    orientation_mode: str = "parent_frame"
+    refine_iters: int = 30
+    refine_lr: float = 5e-3
+    orientation_mode: str = "bone"
     parent_ref_weight: float = 0.25
     pose_l2_weight: float = 0.0
     angle_prior_weight: float = 0.0
@@ -537,69 +539,6 @@ def smpl_soma30_roundtrip(motion_135: np.ndarray, **kwargs: Any) -> dict[str, np
     return SMPLSOMARetargeter(**kwargs).roundtrip_smpl(motion_135)
 
 
-def _safe_normalize(v: np.ndarray, eps: float = 1e-8) -> tuple[np.ndarray, np.ndarray]:
-    n = np.linalg.norm(v, axis=-1, keepdims=True)
-    valid = n[..., 0] > eps
-    return v / np.maximum(n, eps), valid
-
-
-def _estimate_local_rotations(
-    target_joints: np.ndarray,
-    rest_joints: np.ndarray,
-    parents: np.ndarray,
-    orientation_mode: str = "bone",
-    parent_ref_weight: float = 0.25,
-) -> np.ndarray:
-    target_joints = np.asarray(target_joints, dtype=np.float64)
-    rest_joints = np.asarray(rest_joints, dtype=np.float64)
-    parents = np.asarray(parents[:N_SMPL_JOINTS], dtype=np.int64)
-    children: list[list[int]] = [[] for _ in range(N_SMPL_JOINTS)]
-    for j in range(1, N_SMPL_JOINTS):
-        p = int(parents[j])
-        if 0 <= p < N_SMPL_JOINTS:
-            children[p].append(j)
-
-    offsets = np.zeros((N_SMPL_JOINTS, 3), dtype=np.float64)
-    for j in range(1, N_SMPL_JOINTS):
-        offsets[j] = rest_joints[j] - rest_joints[int(parents[j])]
-
-    local = np.tile(np.eye(3, dtype=np.float64), (len(target_joints), N_SMPL_JOINTS, 1, 1))
-    global_r = np.tile(np.eye(3, dtype=np.float64), (len(target_joints), N_SMPL_JOINTS, 1, 1))
-    for t, joints in enumerate(target_joints):
-        for j in range(N_SMPL_JOINTS):
-            parent = int(parents[j])
-            parent_global = np.eye(3) if parent < 0 else global_r[t, parent]
-            child_ids = children[j]
-            rest_vecs = [offsets[c] for c in child_ids]
-            target_vecs = [joints[c] - joints[j] for c in child_ids]
-            weights = [1.0] * len(rest_vecs)
-            if orientation_mode == "parent_frame" and parent >= 0:
-                rest_vecs.append(rest_joints[parent] - rest_joints[j])
-                target_vecs.append(joints[parent] - joints[j])
-                weights.append(parent_ref_weight)
-            if not rest_vecs:
-                rot_local = np.eye(3)
-            else:
-                rest_unit, rest_valid = _safe_normalize(np.stack(rest_vecs, axis=0))
-                target_unit, target_valid = _safe_normalize(np.stack(target_vecs, axis=0))
-                valid = rest_valid & target_valid
-                if not np.any(valid):
-                    rot_local = np.eye(3)
-                else:
-                    dst_local = (parent_global.T @ target_unit[valid].T).T
-                    try:
-                        rot_local = R.align_vectors(
-                            dst_local,
-                            rest_unit[valid],
-                            weights=np.asarray(weights, dtype=np.float64)[valid],
-                        )[0].as_matrix()
-                    except Exception:
-                        rot_local = np.eye(3)
-            local[t, j] = rot_local
-            global_r[t, j] = parent_global @ rot_local
-    return local.astype(np.float32)
-
-
 def _append_guide(
     rest_vecs: list[np.ndarray],
     target_vecs: list[np.ndarray],
@@ -644,68 +583,6 @@ def _add_soma77_orientation_guides(
         _append_guide(rest_vecs, target_vecs, weights, np.array([0.0, 0.0, 0.12]), soma[SOMA77_IDX["LeftToeEnd"]] - soma[SOMA77_IDX["LeftToeBase"]], leaf_weight)
     elif joint_index == 11:
         _append_guide(rest_vecs, target_vecs, weights, np.array([0.0, 0.0, 0.12]), soma[SOMA77_IDX["RightToeEnd"]] - soma[SOMA77_IDX["RightToeBase"]], leaf_weight)
-
-
-def _estimate_local_rotations_with_soma77_guides(
-    target_joints: np.ndarray,
-    soma77: np.ndarray,
-    rest_joints: np.ndarray,
-    parents: np.ndarray,
-    orientation_mode: str,
-    parent_ref_weight: float,
-    head_guide_weight: float,
-    leaf_guide_weight: float,
-) -> np.ndarray:
-    target_joints = np.asarray(target_joints, dtype=np.float64)
-    soma77 = np.asarray(soma77, dtype=np.float64)
-    rest_joints = np.asarray(rest_joints, dtype=np.float64)
-    parents = np.asarray(parents[:N_SMPL_JOINTS], dtype=np.int64)
-    children: list[list[int]] = [[] for _ in range(N_SMPL_JOINTS)]
-    for j in range(1, N_SMPL_JOINTS):
-        parent = int(parents[j])
-        if 0 <= parent < N_SMPL_JOINTS:
-            children[parent].append(j)
-
-    offsets = np.zeros((N_SMPL_JOINTS, 3), dtype=np.float64)
-    for j in range(1, N_SMPL_JOINTS):
-        offsets[j] = rest_joints[j] - rest_joints[int(parents[j])]
-
-    local = np.tile(np.eye(3, dtype=np.float64), (len(target_joints), N_SMPL_JOINTS, 1, 1))
-    global_r = np.tile(np.eye(3, dtype=np.float64), (len(target_joints), N_SMPL_JOINTS, 1, 1))
-    for t, joints in enumerate(target_joints):
-        soma = soma77[min(t, len(soma77) - 1)]
-        for j in range(N_SMPL_JOINTS):
-            parent = int(parents[j])
-            parent_global = np.eye(3) if parent < 0 else global_r[t, parent]
-            rest_vecs = [offsets[c] for c in children[j]]
-            target_vecs = [joints[c] - joints[j] for c in children[j]]
-            weights = [1.0] * len(rest_vecs)
-            if orientation_mode == "parent_frame" and parent >= 0:
-                rest_vecs.append(rest_joints[parent] - rest_joints[j])
-                target_vecs.append(joints[parent] - joints[j])
-                weights.append(parent_ref_weight)
-            _add_soma77_orientation_guides(j, soma, rest_vecs, target_vecs, weights, head_guide_weight, leaf_guide_weight)
-            if not rest_vecs:
-                rot_local = np.eye(3)
-            else:
-                rest_unit, rest_valid = _safe_normalize(np.stack(rest_vecs, axis=0))
-                target_unit, target_valid = _safe_normalize(np.stack(target_vecs, axis=0))
-                valid = rest_valid & target_valid
-                if not np.any(valid):
-                    rot_local = np.eye(3)
-                else:
-                    dst_local = (parent_global.T @ target_unit[valid].T).T
-                    try:
-                        rot_local = R.align_vectors(
-                            dst_local,
-                            rest_unit[valid],
-                            weights=np.asarray(weights, dtype=np.float64)[valid],
-                        )[0].as_matrix()
-                    except Exception:
-                        rot_local = np.eye(3)
-            local[t, j] = rot_local
-            global_r[t, j] = parent_global @ rot_local
-    return local.astype(np.float32)
 
 
 def _make_joint_fit_weights(preset: str) -> np.ndarray | None:
@@ -1069,25 +946,21 @@ class KIMODOSOMAToSMPLRetargeter:
             if soma77_arr is not None:
                 soma77_arr[..., 1] -= floor
 
+        orientation_guides = None
         if self.config.soma_orientation_guides and soma77_arr is not None:
-            local_r = _estimate_local_rotations_with_soma77_guides(
-                target,
-                soma77_arr,
-                self.rest_joints,
-                self.parents,
-                self.config.orientation_mode,
-                self.config.parent_ref_weight,
-                self.config.head_guide_weight,
-                self.config.leaf_guide_weight,
-            )
-        else:
-            local_r = _estimate_local_rotations(
-                target,
-                self.rest_joints,
-                self.parents,
-                self.config.orientation_mode,
-                self.config.parent_ref_weight,
-            )
+            def orientation_guides(frame, joint, rest_vectors, target_vectors, weights):
+                _add_soma77_orientation_guides(
+                    joint, soma77_arr[min(frame, len(soma77_arr) - 1)],
+                    rest_vectors, target_vectors, weights,
+                    self.config.head_guide_weight, self.config.leaf_guide_weight,
+                )
+
+        local_r = estimate_local_rotations(
+            target, self.rest_joints, self.parents,
+            self.config.orientation_mode, self.config.parent_ref_weight,
+            temporal_twist_stabilization=True,
+            orientation_guides=orientation_guides,
+        )
 
         aa = R.from_matrix(local_r.reshape(-1, 3, 3)).as_rotvec().astype(np.float32)
         aa = aa.reshape(len(target), N_SMPL_JOINTS, 3)
@@ -1112,15 +985,6 @@ class KIMODOSOMAToSMPLRetargeter:
             self.device,
             self.joint_fit_weights,
         )
-        if self.config.foot_height_align:
-            target_floor_y = target[:, FOOT_HEIGHT_JOINTS, 1].min(axis=1)
-            fitted_floor_y = fitted[:, FOOT_HEIGHT_JOINTS, 1].min(axis=1)
-            y_delta = (target_floor_y - fitted_floor_y).astype(np.float32)
-            transl = transl.copy()
-            fitted = fitted.copy()
-            transl[:, 1] += y_delta
-            fitted[..., 1] += y_delta[:, None]
-
         local_r = R.from_rotvec(
             np.concatenate([global_orient[:, None, :], body_pose.reshape(len(target), 21, 3)], axis=1).reshape(-1, 3)
         ).as_matrix().reshape(len(target), N_SMPL_JOINTS, 3, 3).astype(np.float32)
@@ -1129,7 +993,7 @@ class KIMODOSOMAToSMPLRetargeter:
             axis=-1,
         ).astype(np.float32)
         mpjpe_mm = (np.linalg.norm(fitted - target, axis=-1).mean(axis=1) * 1000.0).astype(np.float32)
-        return {
+        result = {
             "motion_135": motion_135,
             "transl": transl.astype(np.float32),
             "global_orient": global_orient.astype(np.float32),
@@ -1139,6 +1003,16 @@ class KIMODOSOMAToSMPLRetargeter:
             "fit_mpjpe_mm": mpjpe_mm,
             "retarget_method": np.array("soma_position_ik_fallback", dtype=object),
         }
+        # Match the rotation route: align actual mesh soles once for the clip,
+        # rather than moving the root separately in every frame using joints.
+        result, aligned_target = self._align_rotation_result_floor(
+            result, np.asarray(positions22, dtype=np.float32), soma77,
+        )
+        result["target_joints"] = aligned_target
+        result["fit_mpjpe_mm"] = (
+            np.linalg.norm(result["fitted_joints"] - aligned_target, axis=-1).mean(axis=1) * 1000
+        ).astype(np.float32)
+        return result
 
     def retarget_file(self, path: str | Path) -> dict[str, np.ndarray]:
         path = Path(path)

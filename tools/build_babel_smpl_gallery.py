@@ -24,8 +24,8 @@ from motius.motion.representation.rotation import (
     matrix_to_rotation_6d,
     rotation_6d_to_matrix,
 )
+from motius.motion.retarget.position_ik import estimate_local_rotations
 from motius.motion.retarget._hml263_smpl_impl import (
-    estimate_local_rotations,
     matrix_to_rot6d_rowmajor,
 )
 from motius.motion.retarget.hml263_smpl import load_smpl_rest

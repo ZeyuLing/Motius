@@ -178,7 +178,6 @@ def main() -> None:
             target_fps=30.0,
             floor_align=True,
             refine_iters=0,
-            rotation_init="position_ik",
         )
         np.savez_compressed(smpl_dir / f"{path.stem}.npz", **converted)
         if index % 100 == 0 or index == len(paths):

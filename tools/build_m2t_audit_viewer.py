@@ -235,7 +235,6 @@ def main() -> None:
                 floor_align=True,
                 refine_iters=args.refine_iters,
                 refine_lr=args.refine_lr,
-                rotation_init="position_ik",
             )
             keep = keyframe_indices(len(source), args.mesh_keyframes)
             vertices = render_vertices(model, torch, converted, keep, device)

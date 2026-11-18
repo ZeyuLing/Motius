@@ -66,7 +66,6 @@ def pair_to_vertices(
             target_fps=args.fps,
             refine_iters=args.refine_iters,
             floor_align=False,
-            rotation_init="position_ik",
         )
         people.append(renderer.vertices(fit["global_orient"], fit["body_pose"], fit["transl"]))
         errors.append(float(np.asarray(fit["fit_mpjpe_mm"]).mean()))

@@ -3,8 +3,7 @@
 This module exposes the public library wrapper for the repository's validated
 HML263 -> SMPL chain. The conversion recovers HumanML3D joint positions, solves
 the articulated SMPL chain from those positions, and refines against all
-recovered 22 joints. HumanML3D local rotations can be requested explicitly as
-an initialization, but are not mixed into the default SMPL mesh path.
+recovered 22 joints. HumanML3D local rotations are never used to construct SMPL poses.
 
 The implementation shares one in-package IK/FK backend with the public API so
 that evaluation and standalone conversion use identical math.
@@ -22,22 +21,20 @@ from scipy.spatial.transform import Rotation as R
 
 from ._hml263_smpl_impl import (
     N_JOINTS,
-    estimate_local_rotations,
     fit_length_linear,
-    hml263_rotations_to_smpl_init,
     load_smpl_rest as _load_smpl_rest,
     matrix_to_rot6d_rowmajor,
-    merge_hml263_end_effectors,
-    recover_hml263_local_rotations,
     recover_from_ric,
     refine_smpl_fit,
-    fit_length_rotations,
-    resample_rotations,
     resample_linear,
     smpl_forward_22,
     smpl_motion_integrity_metrics,
+    smpl_mesh_floor_offset,
     validate_smpl_motion_integrity,
 )
+
+from .position_ik import estimate_local_rotations
+
 
 def _as_device(device: str | torch.device | None) -> torch.device:
     if device is None:
@@ -80,10 +77,11 @@ def retarget_hml263_clip(
     floor_align: bool = False,
     refine_iters: int = 0,
     refine_lr: float = 2e-2,
-    rotation_init: str = "position_ik",
     orientation_mode: str = "bone",
     parent_ref_weight: float = 0.25,
-    temporal_twist_stabilization: bool = False,
+    temporal_twist_stabilization: bool = True,
+    anatomical_fit_iters: int = 300,
+    anatomical_prior_weight: float = 1e-3,
     pose_keep_weight: float = 1e-4,
     pose_l2_weight: float = 0.0,
     angle_prior_weight: float = 0.0,
@@ -103,13 +101,10 @@ def retarget_hml263_clip(
     The returned ``motion_135`` is ROW-major rot6d:
     ``[root_translation(3), 22 * rot6d_row(132)]`` at ``target_fps``.
 
-    Args:
-        rotation_init: ``"position_ik"`` (default) derives the complete SMPL
-            articulated chain from recovered HumanML3D joint positions. This
-            avoids malformed meshes caused by mixing HumanML3D local rotations
-            with a different SMPL rest skeleton. ``"auto"`` is retained as an
-            alias for ``"position_ik"``. The HML rotation initializers are
-            available only through explicit opt-in.
+    All inputs are decoded to positions before the shared position IK solve.
+    Shared position IK initializes a regularized whole-chain fit. The stronger
+    spine/neck prior avoids folding short bones to match noisy landmarks.
+    Set anatomical_fit_iters=0 for the unregularized diagnostic initialization.
     """
 
     if rot6d_convention != "row":
@@ -118,44 +113,26 @@ def retarget_hml263_clip(
         raise ValueError(f"unsupported orientation_mode: {orientation_mode}")
     if root_translation_mode not in {"auto", "canonical", "source_transl"}:
         raise ValueError(f"unsupported root_translation_mode: {root_translation_mode}")
-    if rotation_init not in {"auto", "position_ik", "hml263", "hml263_end_effectors", "hml263_init"}:
-        raise ValueError(f"unsupported rotation_init: {rotation_init}")
-
     device_t = _as_device(device)
     model, rest_joints, parents = smpl_rest or load_smpl_rest(
         model_dir, device_t, gender=gender
     )
 
     arr = np.asarray(feats, dtype=np.float32)
-    hml_local_r = None
-    hml_feature_input = False
-    use_hml_rot = rotation_init in {"hml263", "hml263_end_effectors", "hml263_init"}
     if arr.ndim == 3 and arr.shape[1:] == (N_JOINTS, 3):
         target = resample_linear(arr, source_fps, target_fps)
-        if rotation_init == "auto":
-            rotation_init = "position_ik"
     else:
         if arr.ndim != 2 or arr.shape[-1] != 263:
             raise ValueError(f"expected (T,263) or (T,{N_JOINTS},3), got {arr.shape}")
-        hml_feature_input = True
-        if rotation_init == "auto":
-            rotation_init = "position_ik"
         if mean is not None and std is not None:
             arr = arr * std + mean
-        if use_hml_rot:
-            hml_local_r = recover_hml263_local_rotations(arr, N_JOINTS)
-            hml_local_r = resample_rotations(hml_local_r, source_fps, target_fps)
-        target = recover_from_ric(arr, N_JOINTS)
-        target = resample_linear(target, source_fps, target_fps)
+        target = resample_linear(recover_from_ric(arr, N_JOINTS), source_fps, target_fps)
     target = fit_length_linear(target, target_len)
-    hml_local_r = fit_length_rotations(hml_local_r, target_len) if hml_local_r is not None else None
     if floor_align:
         target = target.copy()
         target[..., 1] -= target[..., 1].min()
 
-    if rotation_init in {"hml263", "hml263_end_effectors", "hml263_init"} and hml_local_r is None:
-        raise ValueError(f"rotation_init={rotation_init!r} requires HML263 feature input")
-    position_local_r = estimate_local_rotations(
+    local_r = estimate_local_rotations(
         target,
         rest_joints,
         parents,
@@ -163,20 +140,16 @@ def retarget_hml263_clip(
         parent_ref_weight=parent_ref_weight,
         temporal_twist_stabilization=temporal_twist_stabilization,
     )
-    if rotation_init == "hml263":
-        local_r = hml_local_r
-        rotation_init_used = "hml263"
-    elif rotation_init == "hml263_end_effectors":
-        local_r = merge_hml263_end_effectors(position_local_r, hml_local_r, rest_joints, parents)
-        rotation_init_used = "hml263_end_effectors"
-    elif rotation_init == "hml263_init":
-        local_r = hml263_rotations_to_smpl_init(hml_local_r, position_local_r, rest_joints, parents)
-        rotation_init_used = "hml263_init"
-    else:
-        local_r = position_local_r
-        rotation_init_used = "position_ik"
+    from .anatomical_fit import fit_anatomical_pose
+
+    local_r = fit_anatomical_pose(
+        target, rest_joints, parents, local_r,
+        iterations=anatomical_fit_iters,
+        prior_weight=anatomical_prior_weight,
+        device=device_t,
+    )
     if lock_global_orient is None:
-        lock_global_orient = bool(hml_feature_input and rotation_init_used != "position_ik")
+        lock_global_orient = False
     aa = R.from_matrix(local_r.reshape(-1, 3, 3)).as_rotvec().astype(np.float32)
     aa = aa.reshape(len(target), N_JOINTS, 3)
     global_orient = aa[:, 0]
@@ -199,14 +172,26 @@ def retarget_hml263_clip(
         lock_global_orient=bool(lock_global_orient),
         lock_body_joint_ids=lock_body_joint_ids,
     )
-    canonical_transl = transl.copy()
-    canonical_fitted = fitted.copy()
-    canonical_mpjpe_mm = np.linalg.norm(canonical_fitted - target, axis=-1).mean(axis=1).astype(np.float32) * 1000.0
-    root_translation_restored = False
+    # An explicitly restored source translation takes precedence over grounding.
     restore_source_transl = (
         root_translation_mode == "source_transl"
         or (root_translation_mode == "auto" and source_motion135_transl is not None)
     )
+    mesh_floor_delta = 0.0
+    mesh_floor_aligned = False
+    if floor_align and not restore_source_transl:
+        offset = smpl_mesh_floor_offset(
+            model, global_orient, body_pose, transl, device_t,
+        )
+        if offset is not None:
+            mesh_floor_delta = offset
+            mesh_floor_aligned = True
+        transl[:, 1] += mesh_floor_delta
+        fitted[..., 1] += mesh_floor_delta
+    canonical_transl = transl.copy()
+    canonical_fitted = fitted.copy()
+    canonical_mpjpe_mm = np.linalg.norm(canonical_fitted - target, axis=-1).mean(axis=1).astype(np.float32) * 1000.0
+    root_translation_restored = False
     if restore_source_transl:
         if source_motion135_transl is None:
             raise ValueError("source_motion135_transl is required when root_translation_mode='source_transl'")
@@ -237,7 +222,11 @@ def retarget_hml263_clip(
         "source_fps": np.array(source_fps, dtype=np.float32),
         "target_fps": np.array(target_fps, dtype=np.float32),
         "refine_iters": np.array(refine_iters, dtype=np.int32),
-        "rotation_init": np.array(rotation_init_used),
+        "anatomical_fit_iters": np.array(anatomical_fit_iters, dtype=np.int32),
+        "anatomical_prior_weight": np.array(anatomical_prior_weight, dtype=np.float32),
+        "mesh_floor_delta_y": np.array(mesh_floor_delta, dtype=np.float32),
+        "mesh_floor_aligned": np.array(mesh_floor_aligned),
+        "rotation_init": np.array("position_ik"),
         "root_translation_restore_mode": np.array("source_transl" if root_translation_restored else "canonical"),
         "root_translation_restored": np.array(root_translation_restored),
         "global_orient_locked": np.array(bool(lock_global_orient)),

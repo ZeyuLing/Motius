@@ -22,8 +22,8 @@ from motius.motion.retarget.hml263_smpl import (
     retarget_hml263_clip,
     validate_smpl_motion_integrity,
 )
+from motius.motion.retarget.position_ik import estimate_local_rotations
 from motius.motion.retarget._hml263_smpl_impl import (
-    estimate_local_rotations,
     matrix_to_rot6d_rowmajor,
     recover_from_ric,
     resample_linear,
@@ -94,7 +94,6 @@ def materialize_case(source: Path, destination: Path, *, args, smpl_rest) -> dic
         gender="neutral",
         floor_align=True,
         refine_iters=0,
-        rotation_init="position_ik",
         temporal_twist_stabilization=True,
         compute_mesh_metrics=True,
     )

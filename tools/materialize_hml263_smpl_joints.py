@@ -91,11 +91,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-rotation-jump-p99-deg", type=float, default=90.0)
     parser.add_argument("--max-mesh-edge-ratio-p99", type=float, default=2.0)
     parser.add_argument("--min-mesh-edge-ratio-p01", type=float, default=0.2)
-    parser.add_argument(
-        "--rotation-init",
-        default="position_ik",
-        choices=("hml263_end_effectors", "position_ik", "hml263_init"),
-    )
     parser.add_argument("--shard-index", type=int, default=0)
     parser.add_argument("--num-shards", type=int, default=1)
     parser.add_argument("--ids", default="", help="Comma-separated case ids.")
@@ -143,7 +138,6 @@ def materialize_case(
     target_fps: float,
     refine_iters: int,
     refine_lr: float,
-    rotation_init: str,
     max_fit_mpjpe_mm: float = 50.0,
     max_rotation_jump_p99_deg: float = 90.0,
     max_mesh_edge_ratio_p99: float = 2.0,
@@ -168,7 +162,6 @@ def materialize_case(
             floor_align=True,
             refine_iters=refine_iters,
             refine_lr=refine_lr,
-            rotation_init=rotation_init,
             temporal_twist_stabilization=stabilize_twist,
             compute_mesh_metrics=True,
         )
@@ -318,7 +311,6 @@ def main() -> None:
                 target_fps=args.target_fps,
                 refine_iters=args.refine_iters,
                 refine_lr=args.refine_lr,
-                rotation_init=args.rotation_init,
                 max_fit_mpjpe_mm=args.max_fit_mpjpe_mm,
                 max_rotation_jump_p99_deg=args.max_rotation_jump_p99_deg,
                 max_mesh_edge_ratio_p99=args.max_mesh_edge_ratio_p99,
@@ -341,7 +333,7 @@ def main() -> None:
         "protocol": protocol,
         "source_representation": "HumanML3D-263",
         "target_representation": "SMPL-22 joints66",
-        "rotation_init": args.rotation_init,
+        "rotation_init": "position_ik",
         "refine_iters": args.refine_iters,
         "max_fit_mpjpe_mm": args.max_fit_mpjpe_mm,
         "max_rotation_jump_p99_deg": args.max_rotation_jump_p99_deg,

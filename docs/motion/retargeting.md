@@ -20,16 +20,53 @@ fit_mpjpe_mm = result["fit_mpjpe_mm"]
 ```
 
 This route first recovers the official HML263 joint positions, solves the
-articulated SMPL chain from those positions, retains compatible end-effector
-orientations, then optionally refines all 22 joints. The HML263 local-rotation
+articulated SMPL chain through the shared position IK solver, then optionally
+refines all 22 joints. End-effector twist is not recovered from HumanML rotations. The HML263 local-rotation
 block is defined on the HumanML3D canonical skeleton and must not be treated as
 directly interchangeable with SMPL local rotations; doing so can produce
 malformed limbs and torsos even when the source positions are valid.
 
 The conversion is inherently lossy because HML263 does not uniquely determine
 body shape or twist. Inspect the rendered SMPL mesh as well as joint MPJPE before
-using converted data for evaluation. The default `rotation_init="auto"` selects
-the position-driven path for HML263 features.
+using converted data for evaluation. Position IK is the only conversion path;
+there is no rotation initialization selector or HumanML rotation-mapping fallback.
+
+## Timing, continuity and grounding
+
+FPS conversion samples at `k / target_fps`, with output frame count
+`max(1, round(T * target_fps / source_fps))`; empty inputs remain empty at the
+resampling layer. The last observation is held where the output clock extends
+past it. Explicit `target_len` is a separate time-warp operation.
+
+The candidate following the rejected November 16 videos adds anatomical frame
+constraints: shoulder–elbow–wrist and hip–knee–ankle bend planes resolve limb
+twist using positive SMPL hinge axes; hip/shoulder lateral directions distribute
+torso twist over the spine. Near-straight limb planes are interpolated in a
+transported frame. These are priors, not exact recovery of arbitrary authored
+rotations. See [the reopened visual review](conversion_twist_review_20261116.md).
+
+Single-bone continuity is enabled by default. Each frame transports the previous
+orientation to the observed bone direction, avoiding the rest-antipode
+singularity. It does not recover unobserved anatomical twist.
+
+For HumanML previews, `floor_align=True` first normalizes source joint height
+and then applies one constant vertical offset to the fitted mesh, putting its
+lowest vertex at Y=0. `mesh_floor_delta_y` records that second offset and
+`mesh_floor_aligned` confirms mesh availability. Skeleton-only SMPL-H adapters
+retain joint-based normalization and report false; they cannot certify soles.
+Explicit source-translation restoration takes precedence over mesh grounding.
+The default `floor_align=False` preserves the source root trajectory.
+
+SOMA position retargeting defaults to `orientation_mode="bone"`, 30 refinement
+iterations at learning rate 0.005, and continuous single-bone frames. Both SOMA
+routes align actual mesh soles with a single clip-wide offset when
+`foot_height_align=True`. They do not move the root independently each frame.
+When true SOMA rotations are available, the rotation-transfer route remains the
+preferred route. Cross-skeleton conversion still cannot guarantee zero foot
+sliding or original twist from positions alone.
+
+See the [2026-11-16 validation](conversion_validation_20261116.md) for the
+same-source measurements and fixed-world render procedure.
 
 ## InterHuman To SMPL
 
@@ -155,3 +192,16 @@ preview rendering. See the
 [representation-to-FBX guide](fbx.md) for the route matrix, Python and CLI
 usage, coordinate conventions, root-motion scaling, and target-rig
 requirements.
+
+### HumanML whole-chain anatomical fit (2026-11-16)
+
+After IK initialization, HumanML → SMPL135 fits joint positions across the
+whole chain with a stronger neutral pose prior on spine/neck joints. This
+avoids concentrating large opposite bends on short spine segments. Defaults
+are `anatomical_fit_iters=300` and `anatomical_prior_weight=1e-3`; iteration
+count zero exposes the unregularized diagnostic result. Root positions remain
+fixed; clip-wide grounding remains a separate operation. The prior trades
+some exact landmark fitting for pose plausibility and can attenuate extreme
+intended spinal bends. This step does not modify KIMODO or the canonical
+HumanML → Motion272 representation bridge. See
+[the torso follow-up](conversion_torso_fix_20261116.md) for same-input evidence.

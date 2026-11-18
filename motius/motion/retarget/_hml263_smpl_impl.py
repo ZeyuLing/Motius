@@ -6,10 +6,9 @@ This script keeps the HumanML3D-to-SMPL conversion auditable in one place:
               -> global_orient/body_pose/transl + motion_135
 
 The conversion is not mathematically exact: HumanML3D-263 does not uniquely
-determine SMPL pose twist, shape, or mesh details.  The default ``auto`` path
-maps the HML263 rotation block from the canonical HumanML skeleton to the SMPL
-rest skeleton for full feature input, and falls back to position IK only when
-the input is already raw joints.  The saved fit MPJPE is a diagnostic for how
+determine SMPL pose twist, shape, or mesh details. The shared position IK solver handles both features and raw joints.
+There are no HumanML rotation initializers or alternative conversion paths.
+The saved fit MPJPE is a diagnostic for how
 well the SMPL skeleton tracks the recovered 22 joints, but it does not by itself
 validate terminal mesh orientation.
 """
@@ -23,7 +22,7 @@ from typing import Iterable
 
 import numpy as np
 import torch
-from scipy.spatial.transform import Rotation as R, Slerp
+from scipy.spatial.transform import Rotation as R
 
 
 def _patch_numpy_chumpy_aliases() -> None:
@@ -104,36 +103,6 @@ from smplx.lbs import batch_rigid_transform, batch_rodrigues, blend_shapes  # no
 
 # HumanML3D 22-joint skeleton order follows the first 22 SMPL joints.
 N_JOINTS = 22
-HML263_END_EFFECTOR_JOINTS = np.asarray([10, 11, 15, 20, 21], dtype=np.int64)
-HML263_RAW_OFFSETS = np.asarray(
-    [
-        [0, 0, 0],
-        [1, 0, 0],
-        [-1, 0, 0],
-        [0, 1, 0],
-        [0, -1, 0],
-        [0, -1, 0],
-        [0, 1, 0],
-        [0, -1, 0],
-        [0, -1, 0],
-        [0, 1, 0],
-        [0, 0, 1],
-        [0, 0, 1],
-        [0, 1, 0],
-        [1, 0, 0],
-        [-1, 0, 0],
-        [0, 0, 1],
-        [0, -1, 0],
-        [0, -1, 0],
-        [0, -1, 0],
-        [0, -1, 0],
-        [0, -1, 0],
-        [0, -1, 0],
-    ],
-    dtype=np.float32,
-)
-
-
 def _qinv(q: np.ndarray) -> np.ndarray:
     return q * np.array([1, -1, -1, -1], dtype=q.dtype)
 
@@ -174,75 +143,20 @@ def recover_from_ric(data: np.ndarray, joints_num: int = N_JOINTS) -> np.ndarray
     return np.concatenate([r_pos[..., None, :], positions], axis=-2)
 
 
-def cont6d_to_matrix_hml(cont6d: np.ndarray) -> np.ndarray:
-    """HumanML/MoMask column-major cont6d -> rotation matrix."""
-    cont6d = np.asarray(cont6d, dtype=np.float32)
-    x_raw = cont6d[..., 0:3]
-    y_raw = cont6d[..., 3:6]
-    x = x_raw / np.maximum(np.linalg.norm(x_raw, axis=-1, keepdims=True), 1e-8)
-    z = np.cross(x, y_raw)
-    z = z / np.maximum(np.linalg.norm(z, axis=-1, keepdims=True), 1e-8)
-    y = np.cross(z, x)
-    return np.stack([x, y, z], axis=-1).astype(np.float32)
-
-
-def quat_wxyz_to_matrix(quat: np.ndarray) -> np.ndarray:
-    quat = np.asarray(quat, dtype=np.float32)
-    xyzw = quat[..., [1, 2, 3, 0]]
-    return R.from_quat(xyzw.reshape(-1, 4)).as_matrix().reshape(quat.shape[:-1] + (3, 3)).astype(np.float32)
-
-
-def recover_hml263_local_rotations(feats: np.ndarray, joints_num: int = N_JOINTS) -> np.ndarray:
-    """Recover HumanML canonical-skeleton local rotations from a 263D clip.
-
-    These are not original SMPL rotations. They are the local rotations produced
-    by HumanML3D/MoMask inverse kinematics on the canonical 22-joint skeleton,
-    and are useful as a twist/orientation prior for SMPL fitting.
-    """
-    feats = np.asarray(feats, dtype=np.float32)
-    if feats.ndim != 2 or feats.shape[-1] != 263:
-        raise ValueError(f"expected HML263 features (T,263), got {feats.shape}")
-    root_quat, _ = _recover_root_rot_pos(feats)
-    root_mat = quat_wxyz_to_matrix(root_quat)
-    start = 4 + (joints_num - 1) * 3
-    end = start + (joints_num - 1) * 6
-    body = feats[:, start:end].reshape(len(feats), joints_num - 1, 6)
-    body_mat = cont6d_to_matrix_hml(body)
-    return np.concatenate([root_mat[:, None], body_mat], axis=1).astype(np.float32)
-
-
-def _slerp_length(rot: np.ndarray, target_len: int) -> np.ndarray:
-    rot = np.asarray(rot, dtype=np.float32)
-    if target_len <= 0 or len(rot) == target_len:
-        return rot
-    if len(rot) < 2:
-        return np.repeat(rot[:1], target_len, axis=0).astype(np.float32)
-    src_times = np.arange(len(rot), dtype=np.float64)
-    dst_times = np.linspace(0.0, len(rot) - 1, int(target_len), dtype=np.float64)
-    out = np.empty((int(target_len), rot.shape[1], 3, 3), dtype=np.float32)
-    for j in range(rot.shape[1]):
-        out[:, j] = Slerp(src_times, R.from_matrix(rot[:, j]))(dst_times).as_matrix().astype(np.float32)
-    return out
-
-
-def resample_rotations(rot: np.ndarray, src_fps: float, dst_fps: float) -> np.ndarray:
-    if abs(src_fps - dst_fps) < 1e-6 or len(rot) < 2:
-        return np.asarray(rot, dtype=np.float32)
-    return _slerp_length(rot, max(2, int(round(len(rot) * dst_fps / src_fps))))
-
-
-def fit_length_rotations(rot: np.ndarray, target_len: int | None) -> np.ndarray:
-    if target_len is None:
-        return np.asarray(rot, dtype=np.float32)
-    return _slerp_length(rot, int(target_len))
-
-
 def resample_linear(x: np.ndarray, src_fps: float, dst_fps: float) -> np.ndarray:
+    """Sample at physical output timestamps, holding the final source sample.
+
+    Clip duration uses the frame-count convention ``T / fps``. Unlike explicit
+    ``fit_length_linear`` time warping, FPS conversion must not stretch the
+    interval between the first and last observations to fill the output grid.
+    """
     x = np.asarray(x, dtype=np.float32)
-    if abs(src_fps - dst_fps) < 1e-6 or len(x) < 2:
+    if not np.isfinite([src_fps, dst_fps]).all() or src_fps <= 0 or dst_fps <= 0:
+        raise ValueError("src_fps and dst_fps must be finite and positive")
+    if abs(src_fps - dst_fps) < 1e-6 or len(x) == 0:
         return x
-    new_t = max(2, int(round(len(x) * dst_fps / src_fps)))
-    grid = np.linspace(0.0, len(x) - 1, new_t)
+    new_t = max(1, int(round(len(x) * dst_fps / src_fps)))
+    grid = np.minimum(np.arange(new_t, dtype=np.float64) * src_fps / dst_fps, len(x) - 1)
     lo = np.floor(grid).astype(np.int64)
     hi = np.minimum(lo + 1, len(x) - 1)
     w = (grid - lo).astype(np.float32)
@@ -302,231 +216,6 @@ def _restore_root_translation(
         "source_frames": int(len(source)),
         "output_frames": int(len(restored)),
     }
-
-
-def _safe_normalize(v: np.ndarray, eps: float = 1e-8) -> tuple[np.ndarray, np.ndarray]:
-    n = np.linalg.norm(v, axis=-1, keepdims=True)
-    valid = n[..., 0] > eps
-    return v / np.maximum(n, eps), valid
-
-
-def _preserve_twist_continuity(
-    current: np.ndarray,
-    previous: np.ndarray,
-    bone_axis: np.ndarray,
-) -> np.ndarray:
-    """Choose the one-bone IK twist closest to the preceding frame.
-
-    Aligning one rest bone to one observed bone determines swing but leaves
-    rotation around the rest bone unconstrained. Right-multiplying by a twist
-    around that rest axis preserves the observed child position. Projecting the
-    current-to-previous relative quaternion onto that axis selects the smoothest
-    member of this equivalent family without changing the positional fit.
-    """
-
-    axis = np.asarray(bone_axis, dtype=np.float64)
-    norm = float(np.linalg.norm(axis))
-    if norm <= 1e-8:
-        return current
-    axis /= norm
-    relative = np.asarray(current, dtype=np.float64).T @ np.asarray(
-        previous, dtype=np.float64
-    )
-    quat = R.from_matrix(relative).as_quat()
-    projected = axis * float(np.dot(quat[:3], axis))
-    twist = np.concatenate([projected, quat[3:4]])
-    twist_norm = float(np.linalg.norm(twist))
-    if twist_norm <= 1e-8:
-        return current
-    twist /= twist_norm
-    return np.asarray(current, dtype=np.float64) @ R.from_quat(twist).as_matrix()
-
-
-def estimate_local_rotations(
-    target_joints: np.ndarray,
-    rest_joints: np.ndarray,
-    parents: np.ndarray,
-    orientation_mode: str = "bone",
-    parent_ref_weight: float = 0.25,
-    temporal_twist_stabilization: bool = True,
-) -> np.ndarray:
-    """Estimate local rotations by aligning SMPL rest bones to target bones."""
-    target_joints = np.asarray(target_joints, dtype=np.float64)
-    rest_joints = np.asarray(rest_joints, dtype=np.float64)
-    parents = np.asarray(parents[:N_JOINTS], dtype=np.int64)
-    children: list[list[int]] = [[] for _ in range(N_JOINTS)]
-    for j in range(1, N_JOINTS):
-        p = int(parents[j])
-        if 0 <= p < N_JOINTS:
-            children[p].append(j)
-
-    offsets = np.zeros((N_JOINTS, 3), dtype=np.float64)
-    for j in range(1, N_JOINTS):
-        offsets[j] = rest_joints[j] - rest_joints[int(parents[j])]
-
-    local = np.tile(np.eye(3, dtype=np.float64), (len(target_joints), N_JOINTS, 1, 1))
-    global_r = np.tile(np.eye(3, dtype=np.float64), (len(target_joints), N_JOINTS, 1, 1))
-
-    for t, joints in enumerate(target_joints):
-        for j in range(N_JOINTS):
-            child_ids = children[j]
-            parent = int(parents[j])
-            parent_global = np.eye(3) if parent < 0 else global_r[t, parent]
-            rest_vecs_list = [offsets[c] for c in child_ids]
-            target_vecs_list = [joints[c] - joints[j] for c in child_ids]
-            weights = [1.0] * len(rest_vecs_list)
-            if orientation_mode == "parent_frame" and parent >= 0:
-                # Position-only IK leaves twist around a single bone undefined.
-                # A weak joint-to-parent reference chooses a stable local frame
-                # without letting the virtual axis dominate child-bone fitting.
-                rest_vecs_list.append(rest_joints[parent] - rest_joints[j])
-                target_vecs_list.append(joints[parent] - joints[j])
-                weights.append(parent_ref_weight)
-            if not rest_vecs_list:
-                local[t, j] = np.eye(3)
-                global_r[t, j] = parent_global @ local[t, j]
-                continue
-
-            rest_vecs = np.stack(rest_vecs_list, axis=0)
-            target_vecs = np.stack(target_vecs_list, axis=0)
-            rest_unit, rest_valid = _safe_normalize(rest_vecs)
-            target_unit, target_valid = _safe_normalize(target_vecs)
-            valid = rest_valid & target_valid
-            if not np.any(valid):
-                rot_local = np.eye(3)
-            else:
-                src = rest_unit[valid]
-                dst_world = target_unit[valid]
-                dst_local = (parent_global.T @ dst_world.T).T
-                valid_weights = np.asarray(weights, dtype=np.float64)[valid]
-                try:
-                    rot_local = R.align_vectors(dst_local, src, weights=valid_weights)[0].as_matrix()
-                except Exception:
-                    rot_local = np.eye(3)
-            if (
-                temporal_twist_stabilization
-                and t > 0
-                and orientation_mode == "bone"
-                and len(child_ids) == 1
-            ):
-                rot_local = _preserve_twist_continuity(
-                    rot_local,
-                    local[t - 1, j],
-                    offsets[child_ids[0]],
-                )
-            local[t, j] = rot_local
-            global_r[t, j] = parent_global @ rot_local
-    return local.astype(np.float32)
-
-
-def _global_rotations_from_local(local_r: np.ndarray, parents: np.ndarray) -> np.ndarray:
-    local_r = np.asarray(local_r, dtype=np.float32)
-    parents = np.asarray(parents[: local_r.shape[1]], dtype=np.int64)
-    out = np.zeros_like(local_r)
-    for j in range(local_r.shape[1]):
-        parent = int(parents[j])
-        if parent < 0:
-            out[:, j] = local_r[:, j]
-        else:
-            out[:, j] = out[:, parent] @ local_r[:, j]
-    return out
-
-
-def hml263_rotations_to_smpl_init(
-    hml_local_r: np.ndarray,
-    position_local_r: np.ndarray,
-    rest_joints: np.ndarray,
-    parents: np.ndarray,
-) -> np.ndarray:
-    """Convert HumanML IK rotations into an SMPL-local initialization.
-
-    HumanML3D stores local rotations on the canonical T2M skeleton.  In that
-    skeleton, the rotation attached to joint ``j`` is used together with the
-    incoming offset ``parent(j) -> j``.  SMPL local pose instead defines the
-    skinning/outgoing frame at joint ``j``.  Directly copying the HumanML local
-    matrices into SMPL therefore corrupts terminal mesh orientation.
-
-    This initializer keeps the useful twist/orientation signal from HML263 by
-    first converting HML local matrices to global joint frames, aligning each
-    SMPL incoming rest bone to the corresponding HumanML raw incoming axis, and
-    then converting those desired global frames back to SMPL local rotations.
-    The root frame is copied directly from the HumanML root quaternion.  Unlike
-    body twist, HumanML root heading is an explicit trajectory channel and should
-    survive HML263 <-> SMPL conversion without being re-estimated from positions.
-    """
-
-    if hml_local_r.shape != position_local_r.shape:
-        raise ValueError(f"rotation shapes differ: {hml_local_r.shape} vs {position_local_r.shape}")
-    parents22 = np.asarray(parents[: N_JOINTS], dtype=np.int64)
-    hml_global = _global_rotations_from_local(hml_local_r, parents22)
-    pos_global = _global_rotations_from_local(position_local_r, parents22)
-    rest_joints = np.asarray(rest_joints[: N_JOINTS], dtype=np.float32)
-
-    desired_global = np.empty_like(hml_global)
-    desired_global[:, 0] = hml_global[:, 0]
-    for j in range(1, N_JOINTS):
-        parent = int(parents22[j])
-        smpl_incoming = rest_joints[j] - rest_joints[parent]
-        hml_incoming = HML263_RAW_OFFSETS[j]
-        correction = _align_vector_matrix(smpl_incoming, hml_incoming)
-        desired_global[:, j] = hml_global[:, j] @ correction
-
-    out = np.empty_like(desired_global)
-    out[:, 0] = desired_global[:, 0]
-    for j in range(1, N_JOINTS):
-        parent = int(parents22[j])
-        out[:, j] = np.einsum(
-            "tij,tjk->tik",
-            desired_global[:, parent].transpose(0, 2, 1),
-            desired_global[:, j],
-        )
-    return out.astype(np.float32)
-
-
-def _align_vector_matrix(src: np.ndarray, dst: np.ndarray) -> np.ndarray:
-    src = np.asarray(src, dtype=np.float64)
-    dst = np.asarray(dst, dtype=np.float64)
-    src = src / max(np.linalg.norm(src), 1e-8)
-    dst = dst / max(np.linalg.norm(dst), 1e-8)
-    try:
-        return R.align_vectors(dst[None], src[None])[0].as_matrix().astype(np.float32)
-    except Exception:
-        return np.eye(3, dtype=np.float32)
-
-
-def merge_hml263_end_effectors(
-    position_local_r: np.ndarray,
-    hml_local_r: np.ndarray,
-    rest_joints: np.ndarray,
-    parents: np.ndarray,
-) -> np.ndarray:
-    """Diagnostic injection of HML263 terminal orientation.
-
-    HumanML3D/MoMask ``cont6d_params[j]`` rotates the incoming bone
-    ``parent(j) -> j`` on the canonical skeleton. SMPL local pose ``pose[j]``
-    instead defines joint ``j``'s own skinning/child frame. Copying HML local
-    rotations directly into SMPL local rotations therefore deforms terminal
-    meshes. This function is kept only for explicit diagnostics; it must pass a
-    mesh-integrity check before any result using it is trusted.
-    """
-
-    if position_local_r.shape != hml_local_r.shape:
-        raise ValueError(f"rotation shapes differ: {position_local_r.shape} vs {hml_local_r.shape}")
-    out = position_local_r.copy()
-    parents22 = np.asarray(parents[: N_JOINTS], dtype=np.int64)
-    smpl_global = _global_rotations_from_local(position_local_r, parents22)
-    hml_global = _global_rotations_from_local(hml_local_r, parents22)
-    rest_joints = np.asarray(rest_joints[: N_JOINTS], dtype=np.float32)
-    for j in HML263_END_EFFECTOR_JOINTS:
-        parent = int(parents22[int(j)])
-        if parent < 0:
-            continue
-        smpl_incoming = rest_joints[int(j)] - rest_joints[parent]
-        hml_incoming = HML263_RAW_OFFSETS[int(j)]
-        correction = _align_vector_matrix(smpl_incoming, hml_incoming)
-        desired_global = hml_global[:, int(j)] @ correction
-        out[:, int(j)] = np.einsum("tij,tjk->tik", smpl_global[:, parent].transpose(0, 2, 1), desired_global)
-    return out
 
 
 def matrix_to_rot6d_rowmajor(rotmat: np.ndarray) -> np.ndarray:
@@ -794,6 +483,33 @@ def validate_smpl_motion_integrity(
             f"{metrics['mesh_edge_ratio_p01']:.3f} is below "
             f"{min_mesh_edge_ratio_p01:.3f}"
         )
+
+
+def smpl_mesh_floor_offset(model, global_orient, body_pose_21, transl, device, batch_size=32):
+    """One clip-wide offset placing the lowest skinned vertex on Y=0.
+
+    Joint centers are above the soles. Aligning joint minima leaves the actual
+    mesh underground; per-frame offsets instead introduce artificial root bob.
+    Return None for skeleton-only adapters, which cannot certify mesh contact.
+    """
+    minimum = float("inf")
+    with torch.no_grad():
+        for start in range(0, len(transl), batch_size):
+            end = min(start + batch_size, len(transl))
+            body = torch.zeros(end - start, 69, device=device)
+            body[:, :63] = torch.as_tensor(body_pose_21[start:end], device=device)
+            output = model(
+                betas=torch.zeros(end - start, 10, device=device),
+                body_pose=body,
+                global_orient=torch.as_tensor(global_orient[start:end], device=device),
+                transl=torch.as_tensor(transl[start:end], device=device),
+            )
+            if getattr(output, "vertices", None) is None:
+                return None
+            minimum = min(minimum, float(output.vertices[..., 1].min()))
+    if not np.isfinite(minimum):
+        raise ValueError("cannot align an empty or non-finite SMPL mesh")
+    return -minimum
 
 
 def refine_smpl_fit(

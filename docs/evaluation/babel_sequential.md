@@ -181,7 +181,7 @@ python tools/materialize_hml263_smpl_joints.py \
   --hml263-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v3/motion272/_hml263 \
   --output-dir outputs/evaluation/babel_sequential/official_val_shortmerge30_llm_v1/motionlab_f5_actiongroups_v4_smplfit \
   --smpl-model-dir checkpoints/body_models/smpl \
-  --device cuda --refine-iters 80 --rotation-init hml263_end_effectors \
+  --device cuda --refine-iters 80 \
   --max-fit-mpjpe-mm 50
 ```
 

@@ -111,7 +111,6 @@ def aistpp_smpl24_to_motion135(
         target_fps=target_fps,
         gender=gender,
         device=device,
-        rotation_init="position_ik",
         **ik_kwargs,
     )
     return result["motion_135"]

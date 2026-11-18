@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Materialize MotionStreamer-272 predictions without an SMPL/mesh IK bridge."""
+"""Materialize MotionStreamer-272 with canonical position IK, without mesh fitting."""
 
 from __future__ import annotations
 
@@ -85,8 +85,8 @@ def main() -> None:
         "source_representation": "HumanML3D-263",
         "target_representation": "MotionStreamer-272",
         "bridge": (
-            "native positions plus HumanML incoming-bone rotations mapped to "
-            "the canonical MotionStreamer skeleton; no SMPL IK"
+            "native positions plus outgoing-frame position IK rotations on "
+            "the canonical MotionStreamer skeleton; no body-model assets or mesh fit"
         ),
         "requested": len(ids),
         "shard_index": args.shard_index,

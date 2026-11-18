@@ -99,7 +99,7 @@ def test_hml263_materializer_preserves_positions_via_smpl_fit(
             "motion_135": np.zeros((frames, 135), dtype=np.float32),
             "fitted_joints": joints,
             "fit_mpjpe_mm": np.full(frames, 12.0, dtype=np.float32),
-            "rotation_init": np.asarray("hml263_end_effectors"),
+            "rotation_init": np.asarray("position_ik"),
             "mesh_integrity": _good_mesh_integrity(),
         }
 
@@ -115,14 +115,13 @@ def test_hml263_materializer_preserves_positions_via_smpl_fit(
         target_fps=30.0,
         refine_iters=80,
         refine_lr=0.02,
-        rotation_init="hml263_end_effectors",
     )
 
-    assert captured["rotation_init"] == "hml263_end_effectors"
+    assert "rotation_init" not in captured
     assert stats["fit_mpjpe_mm_mean"] == 12.0
     assert np.load(tmp_path / "joints66" / "case.npy").shape == (7, 66)
     with np.load(tmp_path / "smpl" / "case.npz", allow_pickle=False) as smpl:
-        assert smpl["rotation_init"].item() == "hml263_end_effectors"
+        assert smpl["rotation_init"].item() == "position_ik"
 
 
 def test_hml263_materializer_derives_target_length_from_source(
@@ -156,7 +155,6 @@ def test_hml263_materializer_derives_target_length_from_source(
         target_fps=30.0,
         refine_iters=80,
         refine_lr=0.02,
-        rotation_init="position_ik",
     )
 
     assert np.load(tmp_path / "joints66" / "case.npy").shape == (12, 66)
@@ -199,7 +197,7 @@ def test_hml263_materializer_rejects_bad_smpl_fit(
             "transl": np.zeros((frames, 3), dtype=np.float32),
             "fitted_joints": np.zeros((frames, 22, 3), dtype=np.float32),
             "fit_mpjpe_mm": np.full(frames, 75.0, dtype=np.float32),
-            "rotation_init": np.asarray("hml263_end_effectors"),
+            "rotation_init": np.asarray("position_ik"),
         }
 
     monkeypatch.setattr(HML_MODULE, "retarget_hml263_clip", fake_retarget)
@@ -215,7 +213,6 @@ def test_hml263_materializer_rejects_bad_smpl_fit(
             target_fps=30.0,
             refine_iters=80,
             refine_lr=0.02,
-            rotation_init="hml263_end_effectors",
         )
 
 
@@ -257,7 +254,6 @@ def test_hml263_materializer_uses_minimum_twist_fit(
         target_fps=30.0,
         refine_iters=0,
         refine_lr=0.02,
-        rotation_init="position_ik",
     )
 
     assert calls == [False]

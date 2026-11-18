@@ -13,6 +13,21 @@
 - Redesign the homepage News section and README release list. Keep News limited
   to release announcements; record implementation updates here.
 
+## 0.3.25 — 2026-11-16 (unreleased; visual review open)
+
+- Fit HumanML-to-SMPL joint positions over the full chain with a stronger spine/neck pose prior, addressing chest folds and extreme neck rotations missed by independent short-bone alignment. Preserve the root trajectory; expose fitting iterations and prior weight. KIMODO is unchanged by this follow-up.
+- Add candidate anatomical limb bend-plane and distributed torso-frame constraints after visual rejection of the position-only IK output; add known-pose rotation regression tests. Visual acceptance remains open.
+- Preserve physical timestamps during HumanML frame-rate conversion, including short clips.
+- Transport single-bone IK frames continuously across antipodes; enable continuity for SMPL135 and SOMA position retargeting. Remove the unstable parent-reference default in SOMA and use smaller refinement steps.
+- Ground skinned meshes with one clip-wide offset instead of joint centers or per-frame root adjustments; preserve explicit source translations and mark skeleton-only adapters as not mesh-grounded.
+- Add same-source, full-precision conversion audits with fixed-world mesh videos, source hashes, independent FK and clock checks, and foot-speed diagnostics.
+
+## 0.3.24 — 2026-11-09
+
+- Fix HumanML3D-263 to MotionStreamer-272 rotations using outgoing-frame position IK on the canonical skeleton, preserving native joint positions and stabilizing single-bone twist over time.
+- Consolidate position-to-SMPL rotations in one shared IK solver, including SOMA landmark constraints. Delete HumanML rotation mapping, end-effector merging, alternate 272 bridges and initialization selectors; timing options are passed directly to conversion APIs.
+- Remove executable legacy conversion from the comparison tool; comparisons now load saved baseline motions.
+
 ## 0.3.23 — 2026-10-30
 
 - Add native MotionBricks CUDA pose services with official alignment, boundary decoding, G1 filtering, endpoint correction, SOMA IK, and headless scene/Smart Primitive control.

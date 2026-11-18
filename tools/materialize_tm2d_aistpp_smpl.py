@@ -76,7 +76,6 @@ def materialize_case(
         gender="neutral",
         floor_align=True,
         refine_iters=0,
-        rotation_init="position_ik",
         temporal_twist_stabilization=True,
         compute_mesh_metrics=True,
     )

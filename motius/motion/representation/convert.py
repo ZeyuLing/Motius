@@ -360,34 +360,19 @@ def hml263_to_motion135(m263, **kwargs):
 def hml263_to_motion272(
     m263,
     *,
-    bridge: str = "native",
     source_fps: float = 20.0,
     target_fps: float = 30.0,
     target_len: int | None = None,
-    ik_kwargs: dict | None = None,
-    **kwargs,
 ):
     """Convert HumanML3D-263 features to MotionStreamer-272.
 
-    The default ``native`` bridge reuses the joint positions stored by
-    HumanML3D and maps its incoming-bone rotation frames onto the canonical
-    MotionStreamer skeleton. It therefore avoids introducing a mesh/SMPL IK
-    solve into evaluator input. ``bridge="smpl"`` keeps the lossy legacy route
-    for callers that explicitly need it.
+    Input features must be un-normalized. Positions are decoded, resampled,
+    and passed to the shared position IK solver on the canonical 272 skeleton.
+    HumanML incoming-bone rotation channels are not SMPL pose rotations.
+    Stored positions retain HumanML proportions, so canonical FK can retain a
+    bone-length/branch-geometry residual. No body-model assets are required.
+    There is no bridge selector or alternate rotation conversion.
     """
-
-    if bridge == "smpl":
-        motion135 = hml263_to_motion135(m263, **dict(ik_kwargs or {}))
-        return motion135_to_motion272(motion135, **kwargs)
-    if bridge != "native":
-        raise ValueError("bridge must be 'native' or 'smpl'")
-    if ik_kwargs:
-        raise ValueError("ik_kwargs are only valid with bridge='smpl'")
-    if kwargs:
-        raise ValueError(
-            "native HML263 -> MS272 does not accept SMPL/FK options: "
-            f"{sorted(kwargs)}"
-        )
 
     import numpy as np
 
@@ -397,24 +382,17 @@ def hml263_to_motion272(
     )
     from motius.motion.retarget._hml263_smpl_impl import (
         fit_length_linear,
-        fit_length_rotations,
-        hml263_rotations_to_smpl_init,
         recover_from_ric,
-        recover_hml263_local_rotations,
         resample_linear,
-        resample_rotations,
     )
+    from motius.motion.retarget.position_ik import estimate_local_rotations
     from motius.motion.skeleton.names import SMPL22_PARENTS
 
     motion = np.asarray(m263, dtype=np.float32)
     if motion.ndim != 2 or motion.shape[1] != 263:
         raise ValueError(f"m263 must have shape (T,263), got {motion.shape}")
     joints = resample_linear(recover_from_ric(motion), source_fps, target_fps)
-    rotations = resample_rotations(
-        recover_hml263_local_rotations(motion), source_fps, target_fps
-    )
     joints = fit_length_linear(joints, target_len)
-    rotations = fit_length_rotations(rotations, target_len)
     parents = np.asarray(SMPL22_PARENTS, dtype=np.int64)
     rest_joints = np.zeros((22, 3), dtype=np.float32)
     offsets = _canonical_272_offsets().astype(np.float32)
@@ -422,11 +400,11 @@ def hml263_to_motion272(
         rest_joints[joint_index] = (
             rest_joints[parents[joint_index]] + offsets[joint_index]
         )
-    rotations = hml263_rotations_to_smpl_init(
-        rotations,
-        rotations,
+    rotations = estimate_local_rotations(
+        joints,
         rest_joints,
         parents,
+        temporal_twist_stabilization=True,
     )
     return np.asarray(encode_smpl_to_272(joints, rotations), dtype=np.float32)
 

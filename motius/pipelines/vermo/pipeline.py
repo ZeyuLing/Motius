@@ -40,12 +40,12 @@ class VermoPipeline(BasePipeline):
         bundle,
         *,
         smpl_model_dir: Optional[str] = None,
-        hml263_rotation_init: str = "position_ik",
         **kwargs,
     ) -> None:
+        if "hml263_rotation_init" in kwargs:
+            raise TypeError("hml263_rotation_init was removed; HumanML conversion uses shared position IK")
         super().__init__(bundle, **kwargs)
         self.smpl_model_dir = smpl_model_dir
-        self.hml263_rotation_init = hml263_rotation_init
         self._smpl_rest = None
         from motius.configuration.vermo import configure_attention_runtime
         from motius.motion.conditioning.vermo.processor import build_vermo_processor
@@ -75,7 +75,6 @@ class VermoPipeline(BasePipeline):
             source_fps=20.0,
             target_fps=20.0,
             refine_iters=0,
-            rotation_init=self.hml263_rotation_init,
         )
         return motion135_to_vermo138(motion135)
 

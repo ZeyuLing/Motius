@@ -198,7 +198,6 @@ def _fit_smpl_vertices(
         target_fps=fps,
         refine_iters=refine_iters,
         floor_align=False,
-        rotation_init="position_ik",
     )
     device_t = torch.device(device if torch.cuda.is_available() or device == "cpu" else "cpu")
     model = smplx.create(

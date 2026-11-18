@@ -77,7 +77,6 @@ def main() -> None:
             source_fps=20.0,
             target_fps=30.0,
             target_len=target_frames,
-            rotation_init="position_ik",
             floor_align=True,
             refine_iters=0,
         )

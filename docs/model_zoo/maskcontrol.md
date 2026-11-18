@@ -385,7 +385,6 @@ python tools/materialize_hml263_smpl_joints.py \
   --ids-file outputs/evaluation/t2m/maskcontrol_humanml3d_official_intersection.txt \
   --hml263-dir outputs/evaluation/maskcontrol/humanml3d_selected_caption \
   --output-dir outputs/evaluation/maskcontrol/humanml3d_selected_smpl_position_ik_official4012 \
-  --rotation-init position_ik \
   --smpl-model-dir checkpoints/body_models/smpl --device cuda
 
 python tools/eval_physical_metrics.py \

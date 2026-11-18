@@ -113,7 +113,6 @@ def main() -> None:
                 floor_align=True,
                 refine_iters=args.refine_iters,
                 refine_lr=args.refine_lr,
-                rotation_init="auto",
             )
             motion135 = np.asarray(converted["motion_135"], dtype=np.float32)
             joints66 = np.asarray(converted["fitted_joints"], dtype=np.float32).reshape(

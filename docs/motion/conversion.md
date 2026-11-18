@@ -97,6 +97,7 @@ store the converted array under `motion` and record source/target names.
 | ------ | ------ | --------- |
 | HML263 | joints | Native RIC decode; deterministic |
 | HML263 | motion135 | SMPL IK; lossy; needs SMPL assets |
+| HML263 | MS272 | Native positions plus canonical position IK; no body-model assets; skeleton-proportion residual remains |
 | SMPL parameters | joints | Shape-aware FK; uses explicit beta, gender, and model file |
 | SMPL parameters | HML263 | Shape-aware FK followed by the official HumanML3D protocol |
 | joints | HML263 | Official skeleton retargeting, canonicalization, IK, velocities, and contacts |
@@ -121,13 +122,29 @@ store the converted array under `motion` and record source/target names.
 | G1-38 | G1 qpos-36 | Exact root quaternion + 29-DOF decode |
 | G1 qpos-36 | G1-38 | Optional root canonicalization and XY velocity encoding |
 
-Routes can compose through `motion135`, for example DART276 to MS272. HML263
-to MS272 first performs the lossy SMPL IK step.
+Routes can compose through `motion135`, for example DART276 to MS272.
+`hml263_to_motion272` has one route: decode HumanML positions, resample them,
+solve outgoing-frame local rotations with the shared
+`motius.motion.retarget.position_ik.estimate_local_rotations`, and encode 272.
+The same solver is used by SMPL fitting, FBX export and SOMA position retargeting;
+the target rest skeleton and optional landmark constraints are data, not
+alternative conversion algorithms. HumanML incoming-bone rotation channels are
+never used as SMPL pose rotations. Native positions keep their original bone
+proportions, so canonical FK can retain a skeleton-geometry residual.
+Inputs must already be de-normalized. Pass `source_fps`, `target_fps` and
+`target_len` directly to the conversion API.
+
+The old `bridge`/`ik_kwargs` selectors on `hml263_to_motion272`, the
+`rotation_init` selector on `retarget_hml263_clip`, and CLI `--rotation-init`
+have been removed. Remove those arguments from callers; old options are not
+silently redirected. Use the SMPL output API when actual SMPL parameters are
+needed, with the same position IK and optional body-model refinement.
+See the [real-motion validation and Benchmark Hub audit](hml263_motion272_validation.md)
+for measured residuals and the mesh-comparison command.
 
 InterHuman-262 intentionally does not expose a direct exact `motion135` decode:
 the representation omits root rotation and does not uniquely determine twist.
-Use its exact joint decode followed by `retarget_hml263_clip(...,
-rotation_init="position_ik")` when an SMPL mesh or `motion135` approximation is
+Use its exact joint decode followed by `retarget_hml263_clip(...)` when an SMPL mesh or `motion135` approximation is
 required.
 
 ARDY-330 follows the same honesty rule. The official ARDY repository does not

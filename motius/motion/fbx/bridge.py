@@ -131,7 +131,6 @@ def _fit_joint_positions(
         model_dir=_ik_model_dir(model_path),
         source_fps=source_fps,
         target_fps=output_fps,
-        rotation_init="position_ik",
         gender=gender,
         **accepted,
     )
@@ -394,6 +393,8 @@ def motion_to_smpl_animation(
     else:
         joints = None
         if source == "hml263":
+            if "rotation_init" in options:
+                raise TypeError("rotation_init was removed; HumanML conversion uses shared position IK")
             from motius.motion.retarget.hml263_smpl import retarget_hml263_clip
 
             hml_options = {
@@ -404,7 +405,6 @@ def motion_to_smpl_animation(
                     "floor_align",
                     "refine_iters",
                     "refine_lr",
-                    "rotation_init",
                     "orientation_mode",
                     "parent_ref_weight",
                     "pose_keep_weight",
@@ -422,7 +422,6 @@ def motion_to_smpl_animation(
             }
             # HML local rotations are tied to the HumanML3D rest skeleton.
             # Position IK preserves the visible source joints across body models.
-            hml_options.setdefault("rotation_init", "position_ik")
             fit = retarget_hml263_clip(
                 data,
                 model_dir=_ik_model_dir(model_path),

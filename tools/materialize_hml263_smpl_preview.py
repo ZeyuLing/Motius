@@ -72,7 +72,6 @@ def main() -> None:
             floor_align=True,
             refine_iters=args.refine_iters,
             refine_lr=args.refine_lr,
-            rotation_init="position_ik",
         )
         errors = np.asarray(converted["fit_mpjpe_mm"], dtype=np.float32)
         mean_error = float(errors.mean())

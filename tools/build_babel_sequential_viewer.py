@@ -67,7 +67,6 @@ class _SMPLMeshFitter:
             gender="neutral",
             source_fps=30.0,
             target_fps=30.0,
-            rotation_init="position_ik",
             floor_align=False,
             refine_iters=0,
         )
