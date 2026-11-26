@@ -88,7 +88,6 @@ def main() -> None:
         kwargs["bone_offsets"] = np.load(args.bone_offsets, allow_pickle=False)
     if args.smpl_model_dir:
         kwargs["model_dir"] = args.smpl_model_dir
-        kwargs["model_path"] = args.smpl_model_dir
     for name in (
         "gender",
         "model_type",

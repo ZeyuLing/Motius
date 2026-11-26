@@ -8,6 +8,7 @@ import torch
 from scipy.spatial.transform import Rotation
 
 from motius.motion.retarget.anatomical_fit import fit_anatomical_pose
+from motius.motion.retarget.hml263_smpl import retarget_hml263_clip
 from motius.motion.retarget.position_ik import estimate_local_rotations
 from tools.smpl_audit_rig import GallerySMPL
 from tools.validate_hml263_motion272 import forward_kinematics
@@ -61,3 +62,30 @@ def test_fit_can_be_disabled_and_rejects_invalid_configuration():
         fit_anatomical_pose(np.zeros((1, 22, 3)), None, None, initial, iterations=0),
         initial,
     )
+
+
+def test_turn_across_axis_angle_boundary_stays_continuous_through_refinement():
+    rig = GallerySMPL(
+        Path(__file__).resolve().parents[1]
+        / "docs/leaderboards/hf_space_t2m_humanml3d/cases/smpl_model"
+    )
+    rest = rig.rest[:22].numpy()
+    parents = rig.parents[:22].numpy()
+    root = Rotation.from_euler("y", np.linspace(172, 188, 5)[:, None], degrees=True).as_matrix()
+    trajectory = np.zeros((5, 3), dtype=np.float32)
+    trajectory[:, 0] = np.arange(5) * 0.02
+    trajectory[:, 1] = 0.9
+    target = (root @ (rest - rest[0]).T).transpose(0, 2, 1) + trajectory[:, None]
+
+    with torch.inference_mode():
+        result = retarget_hml263_clip(
+            target, smpl_rest=(rig, rest, parents), device="cpu",
+            source_fps=30, target_fps=30, refine_iters=20,
+        )
+
+    fitted_root = Rotation.from_rotvec(result["global_orient"])
+    steps = (fitted_root[1:] * fitted_root[:-1].inv()).magnitude()
+    error = (fitted_root * Rotation.from_matrix(root).inv()).magnitude()
+    assert np.rad2deg(steps).max() < 10
+    assert np.rad2deg(error).max() < 10
+    np.testing.assert_allclose(result["fitted_joints"][:, 0], trajectory, atol=1e-6)

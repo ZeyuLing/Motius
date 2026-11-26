@@ -64,6 +64,7 @@ def load_smpl_rest(
     return _load_smpl_rest(Path(resolved), _as_device(device), gender=gender)
 
 
+@torch.inference_mode(False)
 def retarget_hml263_clip(
     feats: np.ndarray,
     *,
@@ -102,8 +103,10 @@ def retarget_hml263_clip(
     ``[root_translation(3), 22 * rot6d_row(132)]`` at ``target_fps``.
 
     All inputs are decoded to positions before the shared position IK solve.
-    Shared position IK initializes a regularized whole-chain fit. The stronger
-    spine/neck prior avoids folding short bones to match noisy landmarks.
+    Shared position IK initializes a regularized whole-chain fit. Robust
+    landmark residuals downweight outliers, and temporal penalties use
+    rotation matrices to keep the fit continuous across axis-angle wraps.
+    Both fitting stages preserve the root trajectory before optional grounding.
     Set anatomical_fit_iters=0 for the unregularized diagnostic initialization.
     """
 

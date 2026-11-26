@@ -512,6 +512,8 @@ def smpl_mesh_floor_offset(model, global_orient, body_pose_21, transl, device, b
     return -minimum
 
 
+@torch.inference_mode(False)
+@torch.enable_grad()
 def refine_smpl_fit(
     model,
     target_joints: np.ndarray,
@@ -524,22 +526,27 @@ def refine_smpl_fit(
     pose_keep_weight: float,
     angle_prior_weight: float,
     device: torch.device,
-    smooth_weight: float = 1e-3,
+    smooth_weight: float = 1e-2,
     lock_global_orient: bool = False,
     lock_body_joint_ids: Iterable[int] | None = None,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """Refine IK initialization by optimizing SMPL pose/transl against joints."""
+    """Refine SMPL pose against joints while preserving the pelvis trajectory."""
     if iters <= 0:
         fitted = smpl_forward_22(model, global_orient, body_pose_21, transl, 512, device)
         return global_orient, body_pose_21, transl, fitted
+
+    from motius.motion.representation.rotation import axis_angle_to_matrix
+
+    from .anatomical_fit import robust_landmark_loss, rotation_temporal_loss
 
     target = torch.from_numpy(target_joints.astype(np.float32)).to(device)
     n = len(target_joints)
     g = torch.tensor(global_orient, dtype=torch.float32, device=device, requires_grad=not lock_global_orient)
     b21 = torch.tensor(body_pose_21, dtype=torch.float32, device=device, requires_grad=True)
-    tr = torch.tensor(transl, dtype=torch.float32, device=device, requires_grad=True)
+    tr = torch.tensor(transl, dtype=torch.float32, device=device)
     b21_init = b21.detach().clone()
-    params = [b21, tr] if lock_global_orient else [g, b21, tr]
+    initial_rotations = axis_angle_to_matrix(b21_init.reshape(n, 21, 3))
+    params = [b21] if lock_global_orient else [g, b21]
     opt = torch.optim.Adam(params, lr=lr)
     lock_slices: list[slice] = []
     for joint_id in lock_body_joint_ids or []:
@@ -559,8 +566,11 @@ def refine_smpl_fit(
             transl=tr,
         )
         joints = out.joints[:, :N_JOINTS]
-        data_loss = ((joints - target) ** 2).sum(dim=-1).mean()
-        pose_keep = ((b21 - b21_init) ** 2).mean()
+        data_loss = robust_landmark_loss(
+            (joints[:, 1:] - joints[:, :1]) - (target[:, 1:] - target[:, :1])
+        )
+        local = axis_angle_to_matrix(torch.cat([g, b21], dim=1).reshape(n, 22, 3))
+        pose_keep = (local[:, 1:] - initial_rotations).square().sum((-1, -2)).mean() / 6
         pose_prior = (body_23 ** 2).mean()
         if angle_prior_weight > 0:
             # SMPLify angle prior indices in the 69-dim body-pose vector:
@@ -570,12 +580,7 @@ def refine_smpl_fit(
             angle_prior = torch.exp(body_23[:, idx] * signs).pow(2).mean()
         else:
             angle_prior = torch.tensor(0.0, device=device)
-        if n >= 3:
-            tr_acc = tr[2:] - 2 * tr[1:-1] + tr[:-2]
-            pose_acc = b21[2:] - 2 * b21[1:-1] + b21[:-2]
-            smooth = (tr_acc ** 2).mean() + 1e-2 * (pose_acc ** 2).mean()
-        else:
-            smooth = torch.tensor(0.0, device=device)
+        smooth = rotation_temporal_loss(local)
         loss = (
             data_loss
             + pose_keep_weight * pose_keep
@@ -600,7 +605,10 @@ def refine_smpl_fit(
             global_orient=g,
             transl=tr,
         )
-        fitted = out.joints[:, :N_JOINTS].detach().cpu().numpy().astype(np.float32)
+        joints = out.joints[:, :N_JOINTS]
+        root_delta = target[:, 0] - joints[:, 0]
+        tr = tr + root_delta
+        fitted = (joints + root_delta[:, None]).cpu().numpy().astype(np.float32)
     return (
         g.detach().cpu().numpy().astype(np.float32),
         b21.detach().cpu().numpy().astype(np.float32),

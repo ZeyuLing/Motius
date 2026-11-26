@@ -682,13 +682,17 @@ def convert_motion(data, source: str, target: str, **kwargs):
     if source == "hml263":
         if target == "joints":
             return hml263_to_joints(data)
-        if target == "ms272":
-            return hml263_to_motion272(data, **kwargs)
         source_kwargs = {
             key: value
             for key, value in kwargs.items()
             if key not in {"bone_offsets", "rotation_space", "skeleton"}
         }
+        for alias, key in (("src_fps", "source_fps"), ("dst_fps", "target_fps")):
+            if alias in source_kwargs:
+                fps = source_kwargs.pop(alias)
+                source_kwargs.setdefault(key, fps)
+        if target == "ms272":
+            return hml263_to_motion272(data, **source_kwargs)
         data = hml263_to_motion135(data, **source_kwargs)
         source = "motion135"
     elif source == "ms272":

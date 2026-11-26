@@ -427,6 +427,39 @@ def test_convert_motion_cli_roundtrip(tmp_path: Path):
         assert result["representation"].item() == "hymotion201"
 
 
+@pytest.mark.parametrize(("target", "width"), [("ms272", 272), ("motion135", 135)])
+def test_convert_humanml_cli_routes(tmp_path: Path, target: str, width: int):
+    fixture = Path(__file__).parent / "assets/humanml3d/004822_protocol.npz"
+    with np.load(fixture) as sample:
+        source = sample["hml263"][:12]
+        rest = sample["joints"][0].astype(np.float32)
+    np.save(tmp_path / "hml.npy", source)
+    model_flags = []
+    if target == "motion135":
+        model = tmp_path / "model.npz"
+        np.savez(
+            model,
+            J_regressor=np.eye(22, dtype=np.float32),
+            v_template=rest,
+            shapedirs=np.zeros((22, 3, 10), dtype=np.float32),
+            kintree_table=np.stack((SMPL22_PARENTS, np.arange(22))),
+        )
+        model_flags = ["--smpl-model-dir", str(model), "--device", "cpu"]
+    output = tmp_path / "converted.npy"
+    subprocess.run(
+        [
+            sys.executable, "tools/convert_motion.py", str(tmp_path / "hml.npy"),
+            str(output), "--src", "humanml3d-263", "--dst", target,
+            "--src-fps", "20", "--dst-fps", "25", *model_flags,
+        ],
+        check=True,
+        cwd=Path(__file__).resolve().parents[1],
+    )
+    motion = np.load(output)
+    assert motion.shape == (15, width)
+    assert np.isfinite(motion).all()
+
+
 def test_g1_output_helpers_and_motion135_rotation_decode(tmp_path: Path):
     from motius.motion.retarget.smpl_g1 import GMRSMPLToG1Retargeter
 
